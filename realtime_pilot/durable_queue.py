@@ -1,5 +1,7 @@
 """Bounded execution over a persisted queue; no per-submission executor futures."""
 import threading
+import logging
+import sqlite3
 
 class DurableQueue:
     def __init__(self,store,workers):
@@ -14,21 +16,28 @@ class DurableQueue:
         self.resume()
 
     def resume(self):
-        if self.stopped:return
-        if self.thread is None:
-            self.thread=threading.Thread(target=self.loop,daemon=True,name='durable-dispatcher')
-            self.thread.start()
+        with self.store.lock:
+            if self.stopped:return
+            if self.thread is None or not self.thread.is_alive():
+                self.thread=threading.Thread(target=self.loop,daemon=True,name='durable-dispatcher')
+                self.thread.start()
         self.wake.set()
 
     def loop(self):
         while not self.stopped:
-            with self.store.lock:
-                if not self.stopped:
-                    pending=sorted((j for j in self.store.jobs.values() if j['status']=='queued' and j['id'] not in self.active),key=lambda j:(j['created_at'],j['id']))
-                    for job in pending[:max(0,self.workers-len(self.active))]:
-                        self.active.add(job['id'])
-                        threading.Thread(target=self.run,args=(job['id'],),daemon=True,name='job-'+job['id']).start()
-            self.wake.wait(.25)
+            delay=.25
+            try:
+                with self.store.lock:
+                    if not self.stopped:
+                        self.store.expire_queued()
+                        pending=sorted((j for j in self.store.jobs.summaries() if j['status']=='queued' and j['id'] not in self.active),key=lambda j:(j['created_at'],j['id']))
+                        for job in pending[:max(0,self.workers-len(self.active))]:
+                            self.active.add(job['id'])
+                            threading.Thread(target=self.run,args=(job['id'],),daemon=True,name='job-'+job['id']).start()
+            except (sqlite3.Error,OSError):
+                logging.exception('Queue storage temporarily unavailable; will retry')
+                delay=1
+            self.wake.wait(delay)
             self.wake.clear()
 
     def run(self,jid):

@@ -12,12 +12,15 @@ cd "$app_root/realtime_pilot"
 : "${EB_MAX_PENDING:=100}"
 : "${EB_MAX_SESSION_JOBS:=3}"
 : "${EB_MAX_DAILY_JOBS:=250}"
+: "${EB_MAX_QUEUE_WAIT:=120}"
+: "${EB_ESTIMATED_JOB_SECONDS:=60}"
 GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0="$app_root/upstream_2b17ae6" \
     "$python_bin" "$app_root/scripts/bootstrap_upstream.py" --verify-only
 args=(server.py --port 8767 --data-dir "$EB_DATA_DIR" --workers "$EB_WORKERS"
       --timeout "$EB_JOB_TIMEOUT" --public-origin "$EB_PUBLIC_ORIGIN"
       --max-pending "$EB_MAX_PENDING" --max-session-jobs "$EB_MAX_SESSION_JOBS"
-      --max-daily-jobs "$EB_MAX_DAILY_JOBS")
+      --max-daily-jobs "$EB_MAX_DAILY_JOBS" --max-queue-wait "$EB_MAX_QUEUE_WAIT"
+      --estimated-job-seconds "$EB_ESTIMATED_JOB_SECONDS")
 case "$EB_HUMAN_PILOT" in
   1) args+=(--human-pilot) ;;
   0) ;;

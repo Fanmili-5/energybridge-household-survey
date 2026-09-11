@@ -125,6 +125,7 @@ class ProposalTests(unittest.TestCase):
         self.assertFalse(pair_display(original,executable(original),j["baseline_source"])["has_changes"])
         for status,task in [("failed","plan_judgement"),("complete","outcome_rating")]:
             j.update(status=status,task=task)
+            self.store.persist(j)
             with self.assertRaises(ValueError):self.store.decide(j["id"],"owner",self.decision(j))
 
 if __name__=="__main__":unittest.main(verbosity=2)

@@ -8,9 +8,10 @@ from common import digest,write_json
 from verify_paired_physics import answers
 from paired_contract import CONTEXT,QUESTIONS,QUESTIONNAIRE_VERSION
 
-def main(root,count,workers):
+def main(root,count,workers,max_wait_seconds=1200):
     root.mkdir(parents=True,exist_ok=False)
-    server=make_server(0,root,workers=workers,disable_planning=True)
+    # Capacity/recovery test deliberately queues every case. Not a latency SLA test.
+    server=make_server(0,root,workers=workers,disable_planning=True,max_queue_wait=0)
     server.planning_disabled=False # Only this private test server accepts submissions.
     thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
     host,port=server.server_address
@@ -29,7 +30,7 @@ def main(root,count,workers):
         conn.request('POST' if body is not None else 'GET',path,None if body is None else json.dumps(body),headers)
         resp=conn.getresponse();code=resp.status;data=json.loads(resp.read());conn.close()
         return code,data,time.perf_counter()-started
-    report={'ep_slots':os.environ.get('EB_EP_SLOTS'), 'api_slots':os.environ.get('EB_API_SLOTS'), 'count':count,'workers':workers,'api_calls':0,'data_origin':'synthetic_engineering_test'}
+    report={'ep_slots':os.environ.get('EB_EP_SLOTS'), 'api_slots':os.environ.get('EB_API_SLOTS'), 'count':count,'workers':workers,'api_calls':0,'data_origin':'synthetic_engineering_test','queue_wait_guard_enabled':False,'batch_wait_limit_seconds':max_wait_seconds}
     try:
         barrier=threading.Barrier(count)
         def submit(i):barrier.wait();return call(owners[i],'/api/paired',payloads[i])
@@ -48,9 +49,9 @@ def main(root,count,workers):
         # stop after claiming a job but before a usable result was committed.
         job=server.store.jobs[ids[0]];job.update(status='running',attempts=1);server.store.persist(job)
         server.shutdown();server.server_close();server.store.db.close()
-        server=make_server(port,root,workers=workers,disable_planning=True)
+        server=make_server(port,root,workers=workers,disable_planning=True,max_queue_wait=0)
         server.planning_disabled=False
-        assert all(j['status']=='queued' for j in server.store.jobs.values())
+        assert all(j['status']=='queued' for j in server.store.jobs.summaries())
         server.store.worker_command=lambda folder:[sys.executable,str(ROOT/'deploy/ep_fixture_worker.py'),str(folder)]
         thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
         started=time.perf_counter();server.store.pool.resume();peak_active=0;scored=set();status_bytes=0
@@ -65,10 +66,10 @@ def main(root,count,workers):
                         else:fcntl.flock(f,fcntl.LOCK_UN)
                 ep_peak[0]=max(ep_peak[0],busy)
         monitor_thread=threading.Thread(target=monitor,daemon=True);monitor_thread.start()
-        while time.perf_counter()-started<300:
+        while time.perf_counter()-started<max_wait_seconds:
             with server.store.lock:
                 peak_active=max(peak_active,len(server.store.processes))
-                states={j['id']:j['status'] for j in server.store.jobs.values()}
+                states={j['id']:j['status'] for j in server.store.jobs.summaries()}
             assert not any(s in {'failed','timeout','interrupted'} for s in states.values()),states
             for i,jid in enumerate(ids):
                 if states[jid]=='complete' and jid not in scored:
@@ -109,4 +110,4 @@ def main(root,count,workers):
         server.store.pool.shutdown();server.server_close();server.store.db.close()
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--count',type=int,default=50);p.add_argument('--workers',type=int,default=2);a=p.parse_args();main(a.out,a.count,a.workers)
+    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--count',type=int,default=50);p.add_argument('--workers',type=int,default=2);p.add_argument('--max-wait-seconds',type=int,default=1200);a=p.parse_args();main(a.out,a.count,a.workers,a.max_wait_seconds)

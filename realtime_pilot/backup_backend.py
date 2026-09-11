@@ -12,25 +12,28 @@ def backup(root,output,include_traces=True):
         with sqlite3.connect((root/'state.sqlite3').as_uri()+'?mode=ro',uri=True) as src,sqlite3.connect(snapshot) as dst:
             src.backup(dst)
             assert dst.execute('PRAGMA integrity_check').fetchone()[0]=='ok'
-            jobs=[json.loads(r[0]) for r in dst.execute('SELECT payload FROM jobs')]
-            docs=dst.execute('SELECT job_id,name,payload FROM documents').fetchall()
-        with tarfile.open(str(output)+'.tmp','w:gz') as archive:
+        with sqlite3.connect(snapshot) as snapshot_db,tarfile.open(str(output)+'.tmp','w:gz') as archive:
+            jobs=snapshot_db.execute('SELECT id,status FROM jobs').fetchall()
+            document_count=snapshot_db.execute('SELECT count(*) FROM documents').fetchone()[0]
             archive.add(snapshot,arcname='state.sqlite3')
-            for jid,name,payload in docs:
+            for jid,name,payload in snapshot_db.execute('SELECT job_id,name,payload FROM documents'):
                 if Path(name).name!=name or Path(jid).name!=jid:raise ValueError('Invalid backup path')
                 path=Path(tmp)/jid/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(payload)
                 archive.add(path,arcname=f'{jid}/{name}')
             # Running EP outputs are not a valid checkpoint. Their durable inputs
             # are in the DB and can be replayed after an interrupted-job recovery.
             if include_traces:
-                for job in jobs:
-                    if job['status']!='complete':continue
-                    case=root/job['id']
+                for jid,status in jobs:
+                    if status!='complete':continue
+                    case=root/jid
                     for name in ('attempts','baseline','proposal','planning'):
                         path=case/name
-                        if path.exists():archive.add(path,arcname=f"{job['id']}/{name}")
+                        if path.exists():archive.add(path,arcname=f"{jid}/{name}")
         Path(str(output)+'.tmp').replace(output)
-    report={'created_at':time.time(),'jobs':len(jobs),'documents':len(docs),'sqlite_integrity':'ok','includes_completed_traces':include_traces,'sha256':hashlib.sha256(output.read_bytes()).hexdigest(),'bytes':output.stat().st_size,'path':str(output)}
+    checksum=hashlib.sha256()
+    with output.open('rb') as stream:
+        for block in iter(lambda:stream.read(1024*1024),b''):checksum.update(block)
+    report={'created_at':time.time(),'jobs':len(jobs),'documents':document_count,'sqlite_integrity':'ok','includes_completed_traces':include_traces,'sha256':checksum.hexdigest(),'bytes':output.stat().st_size,'path':str(output)}
     write_json(output.with_suffix('.manifest.json'),report)
     return report
 

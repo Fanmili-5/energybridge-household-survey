@@ -149,3 +149,7 @@ body.survey-page,body.preview-page{--ink:#24363c;--muted:#6b787d;--line:#e5e9e7;
 .household-receipt h3{margin:0 0 8px;font-size:17px}.household-receipt p{margin:8px 0;line-height:1.7}
 .household-receipt code{overflow-wrap:anywhere;word-break:break-all;font-size:12px}
 .household-receipt[hidden]{display:none!important}
+
+#job-timing{display:grid;gap:6px;line-height:1.7}#retry-generation{margin:8px 0 16px}#retry-generation[hidden],#queue-policy[hidden]{display:none!important}
+
+#job-panel #cancel{flex-shrink:0;white-space:nowrap}

@@ -4,6 +4,7 @@ import sqlite3
 import threading
 from pathlib import Path
 from common import write_json
+from job_index import SUMMARY_FIELDS
 
 class Database:
     def __init__(self, root):
@@ -78,6 +79,32 @@ class Database:
         with self.lock:
             row=self.conn.execute('SELECT payload FROM household_submissions WHERE id=?',(sid,)).fetchone()
         return json.loads(row[0]) if row else None
+
+    def job(self, jid):
+        with self.lock:
+            row=self.conn.execute('SELECT payload FROM jobs WHERE id=?',(jid,)).fetchone()
+        return json.loads(row[0]) if row else None
+
+    def job_summaries(self):
+        # SQLite extracts the small scalar index; Python never decodes all history.
+        columns=','.join("json_extract(payload, '$."+key+"')" for key in SUMMARY_FIELDS)
+        with self.lock:
+            rows=self.conn.execute('SELECT '+columns+' FROM jobs ORDER BY created,id')
+            return [{key:(bool(value) if key in {'decision_saved','rating_saved'} else value)
+                     for key,value in zip(SUMMARY_FIELDS,row) if value is not None} for row in rows]
+
+    def household_by_request(self, owner, request_id):
+        with self.lock:
+            row=self.conn.execute('SELECT payload FROM household_submissions WHERE owner=? AND request_id=?',
+                                  (owner,request_id)).fetchone()
+        return json.loads(row[0]) if row else None
+
+    def household_summaries(self, owner):
+        fields=('id','created_at','questionnaire_version','questionnaire_hash','household_record_hash')
+        columns=','.join("json_extract(payload, '$."+key+"')" for key in fields)
+        with self.lock:
+            rows=self.conn.execute('SELECT '+columns+' FROM household_submissions WHERE owner=? ORDER BY created,id',(owner,))
+            return [{key:value for key,value in zip(fields,row) if value is not None} for row in rows]
 
     def jobs(self):
         with self.lock:

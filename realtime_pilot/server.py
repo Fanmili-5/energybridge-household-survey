@@ -4,6 +4,8 @@ import argparse
 from copy import deepcopy
 from durable_storage import Database
 from durable_queue import DurableQueue
+from job_index import LazyJobIndex, TERMINAL_STATUSES
+from queue_policy import forecast
 import sqlite3
 import logging
 import fcntl
@@ -27,7 +29,7 @@ from questionnaire_persona import QUESTIONNAIRE_VERSION, components, visible_pro
 import proposal_contract as proposals
 import paired_contract as paired
 
-TERMINAL = {"complete", "failed", "timeout", "cancelled", "interrupted"}
+TERMINAL = TERMINAL_STATUSES
 
 def stop_process(process):
     # The worker owns native EP descendants; kill the whole group on cancellation/timeout.
@@ -37,8 +39,11 @@ def stop_process(process):
         pass
 
 class Store:
-    def __init__(self, root, workers=1, timeout=240, human_pilot=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250):
+    def __init__(self, root, workers=1, timeout=240, human_pilot=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60):
         if min(max_pending,max_session_jobs,max_daily_jobs)<1:raise ValueError('Admission limits must be positive')
+        if workers<1 or max_queue_wait<0 or estimated_job_seconds<=0:raise ValueError('Invalid queue configuration')
+        self.max_queue_wait=max_queue_wait
+        self.estimated_job_seconds=estimated_job_seconds
         self.max_daily_jobs=max_daily_jobs
         self.max_pending=max_pending
         self.max_session_jobs=max_session_jobs
@@ -49,7 +54,7 @@ class Store:
         self.timeout = timeout
         self.workers = workers
         self.db = Database(self.root)
-        self.jobs = {job['id']:job for job in self.db.jobs()}
+        self.jobs = LazyJobIndex(self.db)
         self.processes = {}
         self.pool = DurableQueue(self,workers)
         # Import old files once, without inventing missing requests or labels.
@@ -61,8 +66,9 @@ class Store:
                 src=path.parent/name
                 if src.exists():docs[name]=json.loads(src.read_text())
             self.persist(job,docs)
-        for job in list(self.jobs.values()):
-            if job['status'] not in TERMINAL:
+        for summary in self.jobs.summaries():
+            if summary['status'] not in TERMINAL:
+                job=self.jobs[summary['id']]
                 request=self.db.document(job['id'],'request.json')
                 if request is None:
                     job.update(status='interrupted',message='旧任务缺少执行输入，已保留原记录，请重新提交。')
@@ -71,10 +77,11 @@ class Store:
                 else:
                     job.update(status='queued',message='答案已保存，等待计算（中断的仿真将重新开始）。')
                     job['recovery_count']=job.get('recovery_count',0)+1
-                    for key in ('started_at','finished_at','end_to_end_seconds'):
+                    for key in ('started_at','finished_at','end_to_end_seconds','queue_seconds'):
                         job.pop(key,None)
                 self.persist(job)
-            self.db.export(job['id'])
+                self.db.export(job['id'])
+        self.expire_queued()
 
     def persist(self, job, documents=None):
         self.db.save(job,documents)
@@ -93,7 +100,7 @@ class Store:
         keys=('id','created_at','questionnaire_version','questionnaire_hash','household_record_hash')
         out={k:row[k] for k in keys}
         out.update(submission_id=row['id'],saved=True,
-                   case_ids=[j['id'] for j in self.jobs.values() if j.get('household_submission_id')==row['id']])
+                   case_ids=[j['id'] for j in self.jobs.summaries() if j.get('household_submission_id')==row['id']])
         if full:
             out.update({k:row[k] for k in ('profile','raw_answers','questionnaire_snapshot','household_record','research_consent','research_notice_version','ui_version')})
         return out
@@ -104,10 +111,10 @@ class Store:
             raise ValueError('提交标识无效，请刷新后重试')
         request_hash=digest(payload)
         with self.lock:
-            for previous in self.db.households(session):
-                if previous['request_id']==nonce:
-                    if previous['request_hash']!=request_hash:raise ValueError('同一提交标识不能修改家庭资料')
-                    return {**self.household_public(previous,False),'duplicate':True}
+            previous=self.db.household_by_request(session,nonce)
+            if previous:
+                if previous['request_hash']!=request_hash:raise ValueError('同一提交标识不能修改家庭资料')
+                return {**self.household_public(previous,False),'duplicate':True}
             for key,expected in (('questionnaire_version',paired.QUESTIONNAIRE_VERSION),('questionnaire_hash',digest(paired.QUESTIONS))):
                 if payload.get(key)!=expected:raise ValueError('问卷版本已更新，请刷新核对后保存；已有资料保持原样')
             if self.human_pilot and (payload.get('research_consent') is not True or payload.get('research_notice_version')!='eb.research_notice.v1'):
@@ -142,10 +149,10 @@ class Store:
         # Retry receipts are returned before version and queue admission checks.
         nonce=payload.get('request_id','')
         with self.lock:
-            for previous in self.jobs.values():
+            for previous in self.jobs.summaries():
                 if previous['owner']==session and previous['request_id']==nonce:
                     if previous['request_hash']!=digest(payload):raise ValueError('同一提交标识不能修改内容')
-                    return previous
+                    return self.jobs[previous['id']]
         if paired_flow:
             proposal = True
             if payload.get('submission_id'):
@@ -185,20 +192,23 @@ class Store:
             raise ValueError("提交标识无效，请刷新后重试")
         request_hash = digest(payload)
         with self.lock:
-            for job in self.jobs.values():
+            self.expire_queued()
+            for job in self.jobs.summaries():
                 if job["owner"] == session and job["request_id"] == nonce:
                     if job["request_hash"] != request_hash:
                         raise ValueError("同一提交标识不能修改内容")
-                    return job
-            if any(j["owner"] == session and j["status"] not in TERMINAL for j in self.jobs.values()):
+                    return self.jobs[job['id']]
+            if any(j["owner"] == session and j["status"] not in TERMINAL for j in self.jobs.summaries()):
                 raise OverflowError("您已有一项计算正在进行")
             utc_day=int(time.time()//86400)
-            if sum(int(j.get('created_at',0)//86400)==utc_day for j in self.jobs.values())>=self.max_daily_jobs:
+            if sum(int(j.get('created_at',0)//86400)==utc_day for j in self.jobs.summaries())>=self.max_daily_jobs:
                 raise OverflowError('今日方案生成额度已用完，家庭资料仍已保存，请明天再试')
-            if sum(j['status'] not in TERMINAL for j in self.jobs.values())>=self.max_pending:
+            if sum(j['status'] not in TERMINAL for j in self.jobs.summaries())>=self.max_pending:
                 raise OverflowError('计算队列已满，家庭资料仍已保存，请稍后重试生成')
-            if sum(j['owner']==session for j in self.jobs.values())>=self.max_session_jobs:
+            if sum(j['owner']==session and j['status']!='expired' for j in self.jobs.summaries())>=self.max_session_jobs:
                 raise OverflowError('本会话已达到方案生成次数上限，已保存的家庭资料和评价不受影响')
+            if self.max_queue_wait and self.queue_forecast()['next_wait_seconds']>=self.max_queue_wait:
+                raise OverflowError('目前预计等待较久，家庭资料仍已保存，请稍后点击重新生成。')
             documents = {}
             jid = secrets.token_hex(16)
             if paired_flow:
@@ -216,6 +226,7 @@ class Store:
                 "created_at": time.time(), "status": "queued", "message": "等待计算", "rating_saved": False,
             }
             if intake:job['household_submission_id']=intake['id']
+            if self.max_queue_wait:job['queue_deadline_at']=job['created_at']+self.max_queue_wait
             request = {"profile": profile, "data_origin": job["data_origin"]}
             if intake:request['household_submission_id']=intake['id']
             if proposal:
@@ -280,6 +291,7 @@ class Store:
             return job
 
     def execute(self, jid):
+        job=None
         process=None
         log=None
         result=None
@@ -287,6 +299,7 @@ class Store:
         message='计算未完成，答案已保存；请勿对失败任务填写评价。'
         try:
             with self.lock:
+                self.expire_queued()
                 job=self.jobs[jid]
                 if job['status']!='queued' or getattr(self,'stopping',False):return
                 proposal=job.get('task')=='plan_judgement'
@@ -326,6 +339,8 @@ class Store:
             status,message='timeout',f'计算超过 {self.timeout} 秒，已停止；您的答案已保存。'
         except Exception:
             logging.exception('Job %s failed',jid)
+            # An expiry/storage failure before claiming this job leaves it queued.
+            if job is None:return
         finally:
             if process and process.poll() is None:
                 stop_process(process)
@@ -340,7 +355,7 @@ class Store:
                 job.update(status=status,message=message,finished_at=time.time())
                 job['end_to_end_seconds']=job['finished_at']-job['created_at']
                 if status=='queued':
-                    for key in ('started_at','finished_at','end_to_end_seconds'):
+                    for key in ('started_at','finished_at','end_to_end_seconds','queue_seconds'):
                         job.pop(key,None)
                 docs={}
                 if status=='complete' and result is not None:
@@ -349,13 +364,40 @@ class Store:
                 self.persist(job,docs)
 
     def owned(self, jid, session):
+        self.owned_summary(jid,session)
         job = self.jobs.get(jid)
         if job is None or not secrets.compare_digest(job["owner"], session):
             raise KeyError("找不到本次任务")
         return job
 
+    def owned_summary(self, jid, session):
+        job=self.jobs.summary(jid)
+        if job is None or not secrets.compare_digest(job['owner'],session):
+            raise KeyError('找不到本次任务')
+        return job
+
+    def queue_forecast(self):
+        origin='local_pilot_self_reported_human' if self.human_pilot else 'synthetic_engineering_test'
+        return forecast(self.jobs.summaries(),self.workers,time.time(),self.estimated_job_seconds,origin)
+
+    def expire_queued(self):
+        with self.lock:
+            now=time.time()
+            for summary in self.jobs.summaries():
+                if summary['status']!='queued':continue
+                deadline=summary.get('queue_deadline_at')
+                if deadline is None and self.max_queue_wait:
+                    deadline=summary['created_at']+self.max_queue_wait
+                if deadline is None or now<deadline:continue
+                job=deepcopy(self.jobs[summary['id']])
+                job.update(status='expired',queue_deadline_at=deadline,finished_at=now,
+                           end_to_end_seconds=now-job['created_at'],
+                           message='等待计算超时，家庭资料已保存。您可以稍后重新生成，无需重新填写。')
+                self.persist(job)
+
     def public(self, job):
         data = {k: v for k, v in job.items() if k not in {"owner", "request_hash", "request_id"}}
+        data.update(self.status(job))
         progress = self.root / job["id"] / job.get("run_directory","") / "progress.json"
         if progress.exists():
             try:data["progress"] = json.loads(progress.read_text())
@@ -363,10 +405,14 @@ class Store:
         return data
 
     def status(self,job):
-        data={k:job[k] for k in ('id','flow','status','created_at','started_at','finished_at','end_to_end_seconds','message','decision_saved','rating_saved') if k in job}
+        data={k:job[k] for k in ('id','flow','status','created_at','started_at','finished_at','end_to_end_seconds','queue_seconds','queue_deadline_at','household_submission_id','message','decision_saved','rating_saved') if k in job}
+        data.update(estimated_wait_seconds=None,estimate_basis=None,queue_wait_limit_seconds=self.max_queue_wait)
+        if job.get('queue_deadline_at') is not None:
+            data['queue_wait_limit_seconds']=max(0,job['queue_deadline_at']-job['created_at'])
         if job['status']=='queued':
-            waiting=sorted((j for j in self.jobs.values() if j['status']=='queued'),key=lambda j:(j['created_at'],j['id']))
-            data['queue_position']=next(i+1 for i,j in enumerate(waiting) if j['id']==job['id'])
+            prediction=self.queue_forecast()
+            data.update(prediction['jobs'].get(job['id'],{}),estimate_basis=prediction['estimate_basis'])
+            data.setdefault('queue_position',1)
             data['message']=f"回答已保存，前面还有 {data['queue_position']-1} 个等待任务。"
         if job['status']=='running':
             path=self.root/job['id']/job.get('run_directory','')/'progress.json'
@@ -426,9 +472,9 @@ class Store:
         if not outcome_path.exists():
             raise ValueError("还没有可回看的真实测试结果")
         with self.lock:
-            for job in self.jobs.values():
+            for job in self.jobs.summaries():
                 if job["owner"] == session and job.get("replay_source") == source.name:
-                    return job
+                    return self.jobs[job['id']]
             request = json.loads((source / "request.json").read_text())
             result = json.loads(outcome_path.read_text())
             jid = secrets.token_hex(16)
@@ -501,8 +547,8 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/session":
             session = self.session() or secrets.token_hex(32)
             with self.server.store.lock:
-                jobs = [self.server.store.status(j) for j in sorted(self.server.store.jobs.values(),key=lambda j:j.get("created_at",0)) if j.get("owner") == session][-100:]
-                households=[self.server.store.household_public(r,False) for r in self.server.store.db.households(session)]
+                jobs = [self.server.store.status(j) for j in sorted(self.server.store.jobs.summaries(),key=lambda j:j.get("created_at",0)) if j.get("owner") == session][-100:]
+                households=[self.server.store.household_public(r,False) for r in self.server.store.db.household_summaries(session)]
             return self.reply(200, {"households":households,"intake_enabled":True,"research_notice_version":"eb.research_notice.v1","schema_version": VERSION, "scenario": SCENARIO,
                                    "paired_version": paired.VERSION, "paired_context": paired.CONTEXT, "paired_questions": paired.QUESTIONS,
                                    "paired_questionnaire_version": paired.QUESTIONNAIRE_VERSION,
@@ -526,7 +572,8 @@ class Handler(BaseHTTPRequestHandler):
         if match:
             try:
                 with self.server.store.lock:
-                    job = self.server.store.owned(match[1], self.session() or "")
+                    lookup=self.server.store.owned_summary if match[2] else self.server.store.owned
+                    job = lookup(match[1], self.session() or "")
                     data=self.server.store.status(job) if match[2] else self.server.store.public(job)
                 return self.reply(200,data)
             except KeyError:
@@ -583,7 +630,7 @@ class Handler(BaseHTTPRequestHandler):
         except (sqlite3.Error,OSError):
             return self.reply(503,{"error":"保存暂时不可用，请保留页面并重试同一次提交。"})
 
-def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250):
+def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60):
     if public_origin:
         origin = urlparse(public_origin)
         if (origin.scheme not in {"http", "https"} or not origin.hostname
@@ -602,7 +649,7 @@ def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False,
     if public_origin:
         server.allowed_hosts.add(origin.netloc)
         server.allowed_origins.add(public_origin)
-    server.store = Store(root or ROOT / "data/web", workers, timeout, human_pilot,max_pending,max_session_jobs,max_daily_jobs)
+    server.store = Store(root or ROOT / "data/web", workers, timeout, human_pilot,max_pending,max_session_jobs,max_daily_jobs,max_queue_wait,estimated_job_seconds)
     if not disable_planning:server.store.pool.resume()
     return server
 
@@ -618,13 +665,15 @@ if __name__ == "__main__":
     parser.add_argument('--max-pending',type=int,default=100,help='Maximum admitted unfinished calculations')
     parser.add_argument('--max-session-jobs',type=int,default=3,help='Lifetime calculation quota per browser session')
     parser.add_argument('--max-daily-jobs',type=int,default=250,help='Global new calculation quota per UTC calendar day; failed jobs count')
+    parser.add_argument('--max-queue-wait',type=int,default=120,help='Queue deadline in seconds; 0 disables wait admission and expiry for capacity tests')
+    parser.add_argument('--estimated-job-seconds',type=int,default=60,help='Cold-start estimate only, replaced by recent same-mode paired run durations')
     args = parser.parse_args()
     data_root=args.data_dir or ROOT/'data/web'
     data_root.mkdir(parents=True,exist_ok=True)
     singleton=(data_root/'server.lock').open('a')
     try:fcntl.flock(singleton,fcntl.LOCK_EX|fcntl.LOCK_NB)
     except BlockingIOError:parser.error('This data directory already has an active server')
-    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs)
+    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs,max_queue_wait=args.max_queue_wait,estimated_job_seconds=args.estimated_job_seconds)
     print(f"Local: http://127.0.0.1:{server.server_address[1]}", flush=True)
     def terminate(signum,frame):
         threading.Thread(target=server.shutdown,daemon=True).start()
