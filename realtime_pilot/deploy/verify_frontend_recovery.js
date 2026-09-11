@@ -1,3 +1,4 @@
+process.chdir(require('path').resolve(__dirname,'..'));
 // Isolated UI regression: every API response is a fixture; no live writes or LLM calls.
 const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert');
 (async()=>{

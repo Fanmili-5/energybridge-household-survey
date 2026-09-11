@@ -1,3 +1,4 @@
+process.chdir(require('path').resolve(__dirname,'..'));
 // Full frontend lifecycle audit. All routes mocked; no live storage/API/EP access.
 const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert');
 (async()=>{

@@ -1,3 +1,4 @@
+process.chdir(require('path').resolve(__dirname,'..'));
 // All network requests intercepted; fake submit only, no live jobs/API calls.
 const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert');
 (async()=>{

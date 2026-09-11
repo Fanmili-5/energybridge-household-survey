@@ -1,3 +1,4 @@
+process.chdir(require('path').resolve(__dirname,'..'));
 // Mock every request; no actual planner/API request or persistent participant record.
 const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert');
 (async()=>{

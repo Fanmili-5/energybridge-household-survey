@@ -1,3 +1,4 @@
+process.chdir(require('path').resolve(__dirname,'..'));
 // Isolated option audit: every request is mocked; no records or real model API calls.
 const { chromium }=require('playwright'),fs=require('fs'),assert=require('assert');
 (async()=>{

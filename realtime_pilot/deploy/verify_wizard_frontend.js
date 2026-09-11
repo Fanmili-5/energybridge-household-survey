@@ -1,3 +1,4 @@
+process.chdir(require('path').resolve(__dirname,'..'));
 // All requests intercepted: exercise the four-page form without real jobs/APIs.
 const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert');
 (async()=>{

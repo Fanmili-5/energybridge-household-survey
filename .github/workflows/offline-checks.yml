@@ -1,5 +1,8 @@
 name: Offline verification
 on: [push, pull_request, workflow_dispatch]
+concurrency:
+  group: offline-verification-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
