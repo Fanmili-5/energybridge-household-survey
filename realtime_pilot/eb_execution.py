@@ -9,6 +9,7 @@ from functools import lru_cache
 from io import StringIO
 import json
 import math
+import os
 import sys
 from types import SimpleNamespace
 from common import UPSTREAM, file_hash
@@ -17,6 +18,9 @@ MODEL = UPSTREAM / 'energybridge/roleplay/personas/all_appliances_full.json'
 
 @lru_cache(maxsize=1)
 def upstream():
+    # Original runner/config imports may discover parent .env files.
+    # Credentials are supplied only through explicit runtime configuration.
+    os.environ["PYTHON_DOTENV_DISABLED"] = "1"
     if str(UPSTREAM) not in sys.path:
         sys.path.insert(0, str(UPSTREAM))
     from experiments.benchmark import family_runner

@@ -31,3 +31,8 @@ jobs:
           for test in realtime_pilot/deploy/verify*.js; do node "$test"; done
         env:
           NODE_PATH: ${{ runner.temp }}/browser-tests/node_modules
+      - name: Native deployment template checks
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y nginx
+          bash scripts/check_deploy_linux.sh
