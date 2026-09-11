@@ -1,5 +1,6 @@
 // Offline queue UX regression: every HTTP request is mocked, no planner/API execution.
 const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert');
+process.chdir(require('path').resolve(__dirname,'..'));
 (async()=>{
  const out='ui_audit_20260911/queue_frontend';fs.mkdirSync(out,{recursive:true});
  const schema=JSON.parse(fs.readFileSync('ui_audit_20260911/options_audit/schema.json'));
