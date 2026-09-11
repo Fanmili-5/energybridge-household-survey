@@ -15,6 +15,9 @@ http {
     access_log off;
     client_body_temp_path $check_dir/body;
     proxy_temp_path $check_dir/proxy;
+    fastcgi_temp_path $check_dir/fastcgi;
+    uwsgi_temp_path $check_dir/uwsgi;
+    scgi_temp_path $check_dir/scgi;
     include $check_dir/site.conf;
 }
 CONF
