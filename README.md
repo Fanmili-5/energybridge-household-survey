@@ -66,3 +66,10 @@ EPLUS_ROOT=/你的/EnergyPlus-24.1目录 EB_TEST_NATIVE_EP=1 .venv/bin/python sc
 - [部署配置](deploy/service.env.example)
 
 50 人同时填写与保存，不等于 50 个 EP 仿真同时运行。2 vCPU / 4 GB 可先设置 2 个任务工作线程、1 个 EP 计算槽，按实测再决定是否升至 2 个 EP 槽；真实模型等待时间、排队时间、内存和磁盘都需要观察。
+# 演示数据备份
+
+`scripts/scheduled_backup.py --data-dir <任务目录> --backup-dir <备份目录> --keep 24`
+使用 SQLite 一致性快照保存问卷、任务和评分，每次成功后保留最近 24 份。
+它不调用模型，也不复制 EP 原始轨迹；原始轨迹仍保留在任务目录。
+部署时可用 systemd timer 每小时执行。备份目录应仅服务账号可读写。
+同机快照用于误操作恢复，不能替代服务器故障时所需的异地备份。

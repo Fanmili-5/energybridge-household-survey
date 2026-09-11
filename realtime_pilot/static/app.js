@@ -4,7 +4,19 @@ let schema, currentJob, timer;
 const terminal = new Set(["complete","failed","timeout","cancelled","interrupted","expired"]);
 const el = (tag, text, className) => {const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(className)n.className=className;return n;};
 function error(message){$("error").textContent=message;$("error").hidden=false;}
-async function api(path,body){const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),15000);try{const response=await fetch(path,{signal:controller.signal,credentials:"same-origin",...(body===undefined?{}:{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})});const data=await response.json();if(!response.ok)throw new Error(data.error||"请求失败，请稍后再试");return data;}finally{clearTimeout(timeout);}}
+async function api(path,body){
+ const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),15000);
+ try{
+  const response=await fetch(path,{signal:controller.signal,credentials:"same-origin",...(body===undefined?{}:{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})});
+  let data;try{data=await response.json();}catch{}
+  if(!response.ok){
+   const messages={401:'登录已失效，请刷新页面并重新登录。',429:'当前请求较多，请稍后再试。',502:'计算服务暂时不可用，请稍后再试。',503:'服务暂时不可用，请稍后再试。',504:'服务器响应超时，请稍后再试。'};
+   throw new Error(data?.error||messages[response.status]||'请求失败，请稍后再试。');
+  }
+  if(!data||typeof data!=='object')throw new Error('服务器返回异常，请稍后再试。');
+  return data;
+ }finally{clearTimeout(timeout);}
+}
 // Keep canonical select values for saved snapshots; present short option lists directly.
 function inlineChoices(select,options,required=false){
  const group=el('div',undefined,'inline-choices');group.setAttribute('role','group');
@@ -364,6 +376,9 @@ async function init(){
  $('generate').disabled=true;renderScores();
  try{
   schema=await api('/api/session');renderQuestions(schema.paired_questions);
+  const human=schema.collection_mode==='human_pilot';
+  $('collection-badge').textContent=human?'家庭用电研究':'演示试用';
+  $('collection-footer').textContent=human?'展示研究情境中的模拟结果，不控制真实电器。':'演示试用，填写与评价会保存为测试数据。模拟结果不控制真实电器。';
   $('scenario-facts').replaceChildren(...schema.paired_context.facts.map(f=>el('li',f)));conditional();renderHistory(schema.jobs);
   await recoverReceipt(schema);
   const jobs=schema.jobs.filter(j=>j.flow==='paired_ep_v1'),active=readBrowser(localStorage,'eb:active-view'),pendingPlan=readBrowser(localStorage,'eb:pending-plan');

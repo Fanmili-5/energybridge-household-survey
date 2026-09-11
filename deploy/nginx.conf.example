@@ -35,7 +35,8 @@ server {
     location = /api/example { return 403; }
     location = /legacy { return 404; }
     location = /legacy.js { return 404; }
-    location = /plan-preview.html { return 404; }
+    # The read-only timeline example is linked from the questionnaire.
+    # It serves bundled example data and never creates a calculation.
 
     location = /api/paired {
         # Shared campus/home networks can burst; application quotas remain authoritative.
