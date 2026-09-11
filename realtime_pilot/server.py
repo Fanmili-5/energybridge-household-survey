@@ -105,7 +105,7 @@ class Store:
             out.update({k:row[k] for k in ('profile','raw_answers','questionnaire_snapshot','household_record','research_consent','research_notice_version','ui_version')})
         return out
 
-    def save_household(self, session, payload):
+    def save_household(self, session, payload, admin=False):
         nonce=payload.get('request_id','')
         if not isinstance(nonce,str) or not re.fullmatch(r'[a-zA-Z0-9_-]{16,80}',nonce):
             raise ValueError('提交标识无效，请刷新后重试')
@@ -137,13 +137,14 @@ class Store:
                  'raw_answers':deepcopy(payload.get('answers')),'questionnaire_snapshot':deepcopy(paired.QUESTIONS),
                  'questionnaire_version':paired.QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(paired.QUESTIONS),
                  'household_record':record,'household_record_hash':digest(record),
-                 'data_origin':'local_pilot_self_reported_human' if self.human_pilot else 'synthetic_engineering_test',
+                 'data_origin':'local_pilot_self_reported_human' if self.human_pilot and not admin else 'synthetic_engineering_test',
+                 'admin_test':bool(admin),
                  'research_consent':payload.get('research_consent') is True,
                  'research_notice_version':payload.get('research_notice_version'),'ui_version':payload.get('ui_version')}
             self.db.save_household(row)
             return self.household_public(row,False)
 
-    def create(self, session, payload, proposal=False, paired_flow=False):
+    def create(self, session, payload, proposal=False, paired_flow=False, admin=False):
         intake=None
         if self.human_pilot and not paired_flow:raise ValueError('真人采集仅开放当前问卷流程')
         # Retry receipts are returned before version and queue admission checks.
@@ -157,7 +158,7 @@ class Store:
             proposal = True
             if payload.get('submission_id'):
                 intake=self.household_owned(payload['submission_id'],session)
-                expected_origin='local_pilot_self_reported_human' if self.human_pilot else 'synthetic_engineering_test'
+                expected_origin='local_pilot_self_reported_human' if self.human_pilot and not admin else 'synthetic_engineering_test'
                 if intake['data_origin']!=expected_origin:raise ValueError('采集模式已变化，请重新确认并保存家庭资料')
                 if intake['questionnaire_version']!=paired.QUESTIONNAIRE_VERSION or intake['questionnaire_hash']!=digest(paired.QUESTIONS):
                     raise ValueError('家庭资料使用旧版问卷，请核对并保存新版资料；原记录仍已保留')
@@ -201,11 +202,11 @@ class Store:
             if any(j["owner"] == session and j["status"] not in TERMINAL for j in self.jobs.summaries()):
                 raise OverflowError("您已有一项计算正在进行")
             utc_day=int(time.time()//86400)
-            if sum(int(j.get('created_at',0)//86400)==utc_day for j in self.jobs.summaries())>=self.max_daily_jobs:
+            if not admin and sum(not j.get('admin_test') and int(j.get('created_at',0)//86400)==utc_day for j in self.jobs.summaries())>=self.max_daily_jobs:
                 raise OverflowError('今日方案生成额度已用完，家庭资料仍已保存，请明天再试')
             if sum(j['status'] not in TERMINAL for j in self.jobs.summaries())>=self.max_pending:
                 raise OverflowError('计算队列已满，家庭资料仍已保存，请稍后重试生成')
-            if sum(j['owner']==session and j['status']!='expired' for j in self.jobs.summaries())>=self.max_session_jobs:
+            if not admin and sum(j['owner']==session and j['status']!='expired' for j in self.jobs.summaries())>=self.max_session_jobs:
                 raise OverflowError('本会话已达到方案生成次数上限，已保存的家庭资料和评价不受影响')
             if self.max_queue_wait and self.queue_forecast()['next_wait_seconds']>=self.max_queue_wait:
                 raise OverflowError('目前预计等待较久，家庭资料仍已保存，请稍后点击重新生成。')
@@ -214,7 +215,7 @@ class Store:
             if paired_flow:
                 original, scenario = paired.prepare(profile, jid)
             job = {
-                "schema_version": VERSION, "id": jid, "owner": session,
+                "schema_version": VERSION, "id": jid, "owner": session, "admin_test":bool(admin),
                 "household_id": "household_"+digest(session)[:20],
                 "respondent_id": "respondent_"+digest(session)[:20],
                 "profile": profile, "profile_hash": digest(profile),
@@ -222,7 +223,7 @@ class Store:
                 "scenario_id": scenario["id"], "applicability": applicability,
                 "scenario": scenario, "scenario_hash": digest(scenario),
                 "questionnaire_hash": digest([QUESTIONS[k] for k in PROFILE_IDS+RATING_IDS]),
-                "data_origin": "synthetic_engineering_test" if payload.get("engineering_test", True) else "local_pilot_self_reported_human",
+                "data_origin": "synthetic_engineering_test" if admin or payload.get("engineering_test", True) else "local_pilot_self_reported_human",
                 "created_at": time.time(), "status": "queued", "message": "等待计算", "rating_saved": False,
             }
             if intake:job['household_submission_id']=intake['id']
@@ -248,7 +249,7 @@ class Store:
                            scenario_hash=digest(scenario), questionnaire_version=paired.QUESTIONNAIRE_VERSION,
                            questionnaire_snapshot=paired.QUESTIONS, questionnaire_hash=digest(paired.QUESTIONS),
                            profile_components=paired.profile_components(profile), baseline_source=original["source"],
-                           data_origin="local_pilot_self_reported_human" if self.human_pilot else "synthetic_engineering_test")
+                           data_origin="local_pilot_self_reported_human" if self.human_pilot and not admin else "synthetic_engineering_test")
                 job.pop("original_confirmed_at", None)
                 request.update(scenario=scenario, data_origin=job["data_origin"], flow="paired_ep_v1",
                                baseline_source=job["baseline_source"], questionnaire_version=paired.QUESTIONNAIRE_VERSION,
@@ -530,7 +531,15 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def is_admin(self):
+        values = self.headers.get_all('X-EB-Authenticated-User', [])
+        expected = self.server.admin_user
+        return bool(expected and len(values)==1 and re.fullmatch(r'[A-Za-z0-9_-]{1,64}',values[0]) and secrets.compare_digest(values[0], expected))
+
     def session(self):
+        # Admin owners cannot be supplied through the public 64-hex cookie.
+        if self.is_admin():
+            return 'admin_' + digest({'admin_user': self.server.admin_user})
         cookies = SimpleCookie()
         cookies.load(self.headers.get("Cookie", ""))
         value = cookies.get("pilot_session")
@@ -540,6 +549,25 @@ class Handler(BaseHTTPRequestHandler):
         path = urlparse(self.path).path
         if self.headers.get("Host") not in self.server.allowed_hosts:
             return self.reply(403, {"error": "请求地址不匹配"})
+        if path in {'/admin', '/admin.js', '/api/admin/status'}:
+            if not self.is_admin():
+                return self.reply(403, {'error':'此入口仅供管理员使用'})
+            if path == '/api/admin/status':
+                with self.server.store.lock:
+                    rows=list(self.server.store.jobs.summaries())
+                return self.reply(200, {
+                    'planning_enabled':not self.server.planning_disabled,
+                    'captcha_enabled':False,
+                    'limits':{'personal_quota_exempt':True,'public_daily_quota_exempt':True,
+                              'workers':self.server.store.workers,'pending_limit':self.server.store.max_pending,
+                              'timeout_seconds':self.server.store.timeout,
+                              'queue_wait_seconds':self.server.store.max_queue_wait},
+                    'tasks':{'queued':sum(j['status']=='queued' for j in rows),
+                             'running':sum(j['status']=='running' for j in rows),
+                             'admin_tests':sum(bool(j.get('admin_test')) for j in rows)},
+                    'test_data_only':True})
+            name='admin.html' if path=='/admin' else 'admin.js'
+            return self.reply(200,(ROOT/'static'/name).read_bytes(),content_type=('text/html' if path=='/admin' else 'application/javascript')+'; charset=utf-8')
         if path in {"/", "/app.js", "/time-input.js", "/preview.js", "/plan-view.js", "/plan-preview.html", "/style.css", "/legacy", "/legacy.js"}:
             name = {"/": "index.html", "/app.js": "app.js", "/time-input.js": "time-input.js", "/preview.js": "preview.js", "/plan-view.js": "plan-view.js", "/plan-preview.html": "plan-preview.html", "/style.css": "style.css", "/legacy": "legacy.html", "/legacy.js": "legacy.js"}[path]
             mime = "text/html" if name.endswith("html") else "application/javascript" if name.endswith("js") else "text/css"
@@ -553,13 +581,14 @@ class Handler(BaseHTTPRequestHandler):
                                    "paired_version": paired.VERSION, "paired_context": paired.CONTEXT, "paired_questions": paired.QUESTIONS,
                                    "paired_questionnaire_version": paired.QUESTIONNAIRE_VERSION,
                                    "paired_questionnaire_hash": digest(paired.QUESTIONS),
-                                   "collection_mode": "human_pilot" if self.server.store.human_pilot else "engineering",
+                                   "collection_mode": "human_pilot" if self.server.store.human_pilot and not self.is_admin() else "engineering",
+                                   "is_admin":self.is_admin(),
                                    "planning_enabled": not self.server.planning_disabled,
                                    "proposal_context": proposals.CONTEXT, "proposal_version": proposals.VERSION,
                                    "proposal_profile_questions": PROPOSAL_PROFILE_QUESTIONS,
                                    "proposal_questionnaire_version": QUESTIONNAIRE_VERSION,
                                    "profile_questions": [QUESTIONS[k] for k in PROFILE_IDS],
-                                   "rating_questions": [QUESTIONS[k] for k in RATING_IDS], "jobs": jobs}, cookie=session)
+                                   "rating_questions": [QUESTIONS[k] for k in RATING_IDS], "jobs": jobs}, cookie=None if self.is_admin() else session)
         household_match=re.fullmatch(r"/api/households/([a-f0-9]{32})",path)
         if household_match:
             try:
@@ -595,19 +624,19 @@ class Handler(BaseHTTPRequestHandler):
                 raise ValueError("请求格式无效")
             path = urlparse(self.path).path
             if path=='/api/households':
-                return self.reply(201,self.server.store.save_household(session,payload))
+                return self.reply(201,self.server.store.save_household(session,payload,admin=self.is_admin()))
             if self.server.store.human_pilot and path in {'/api/jobs','/api/proposals','/api/example'}:
                 return self.reply(403,{'error':'真人采集仅开放当前问卷流程'})
             if self.server.planning_disabled and path in {"/api/jobs", "/api/paired", "/api/proposals", "/api/example"}:
                 return self.reply(503, {"error": "正在进行 EnergyPlus 独立测试，模型 API 与方案生成已暂停。"})
             if path == "/api/jobs":
-                job = self.server.store.create(session, payload)
+                job = self.server.store.create(session, payload,admin=self.is_admin())
                 return self.reply(202, self.server.store.public(job))
             if path == "/api/paired":
-                job = self.server.store.create(session, payload, paired_flow=True)
+                job = self.server.store.create(session, payload, paired_flow=True,admin=self.is_admin())
                 return self.reply(202, self.server.store.public(job))
             if path == "/api/proposals":
-                job = self.server.store.create(session, payload, proposal=True)
+                job = self.server.store.create(session, payload, proposal=True,admin=self.is_admin())
                 return self.reply(202, self.server.store.public(job))
             if path == "/api/example":
                 return self.reply(200, self.server.store.public(self.server.store.example(session)))
@@ -630,7 +659,9 @@ class Handler(BaseHTTPRequestHandler):
         except (sqlite3.Error,OSError):
             return self.reply(503,{"error":"保存暂时不可用，请保留页面并重试同一次提交。"})
 
-def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60):
+def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, admin_user=None):
+    if admin_user is not None and not re.fullmatch(r"[A-Za-z0-9_-]{1,64}",admin_user):
+        raise ValueError("Invalid admin username")
     if public_origin:
         origin = urlparse(public_origin)
         if (origin.scheme not in {"http", "https"} or not origin.hostname
@@ -641,6 +672,7 @@ def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False,
         raise ValueError('Public human data collection requires an HTTPS public_origin')
     if min(max_pending,max_session_jobs,max_daily_jobs)<1:raise ValueError('Admission limits must be positive')
     server = PilotHTTPServer(("127.0.0.1", port), Handler)
+    server.admin_user=admin_user
     server.secure_cookie=bool(public_origin and origin.scheme=='https')
     server.planning_disabled = disable_planning
     port = server.server_address[1]
@@ -661,6 +693,7 @@ if __name__ == "__main__":
     parser.add_argument("--human-pilot", action="store_true", help="Record real pilot self-reports; default is engineering test mode")
     parser.add_argument("--public-origin", help="Exact external origin served by a reverse proxy; listener remains loopback")
     parser.add_argument("--data-dir", type=Path, help="Persistent job directory outside the application release")
+    parser.add_argument("--admin-user", help="Trusted authenticated reverse-proxy username; proxy must overwrite X-EB-Authenticated-User")
     parser.add_argument("--disable-planning", action="store_true", help="Keep the UI readable but reject all job creation; no model calls")
     parser.add_argument('--max-pending',type=int,default=100,help='Maximum admitted unfinished calculations')
     parser.add_argument('--max-session-jobs',type=int,default=3,help='Lifetime calculation quota per browser session')
@@ -673,7 +706,7 @@ if __name__ == "__main__":
     singleton=(data_root/'server.lock').open('a')
     try:fcntl.flock(singleton,fcntl.LOCK_EX|fcntl.LOCK_NB)
     except BlockingIOError:parser.error('This data directory already has an active server')
-    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs,max_queue_wait=args.max_queue_wait,estimated_job_seconds=args.estimated_job_seconds)
+    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs,max_queue_wait=args.max_queue_wait,estimated_job_seconds=args.estimated_job_seconds,admin_user=args.admin_user)
     print(f"Local: http://127.0.0.1:{server.server_address[1]}", flush=True)
     def terminate(signum,frame):
         threading.Thread(target=server.shutdown,daemon=True).start()

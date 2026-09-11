@@ -377,8 +377,9 @@ async function init(){
  try{
   schema=await api('/api/session');renderQuestions(schema.paired_questions);
   const human=schema.collection_mode==='human_pilot';
-  $('collection-badge').textContent=human?'家庭用电研究':'演示试用';
-  $('collection-footer').textContent=human?'展示研究情境中的模拟结果，不控制真实电器。':'演示试用，填写与评价会保存为测试数据。模拟结果不控制真实电器。';
+  $('admin-link').hidden=!schema.is_admin;
+  $('collection-badge').textContent=schema.is_admin?'管理员测试':human?'家庭用电研究':'演示试用';
+  $('collection-footer').textContent=schema.is_admin?'管理员测试数据单独标记；个人次数与参与者每日额度不适用，并发和超时保护仍生效。':human?'展示研究情境中的模拟结果，不控制真实电器。':'演示试用，填写与评价会保存为测试数据。模拟结果不控制真实电器。';
   $('scenario-facts').replaceChildren(...schema.paired_context.facts.map(f=>el('li',f)));conditional();renderHistory(schema.jobs);
   await recoverReceipt(schema);
   const jobs=schema.jobs.filter(j=>j.flow==='paired_ep_v1'),active=readBrowser(localStorage,'eb:active-view'),pendingPlan=readBrowser(localStorage,'eb:pending-plan');

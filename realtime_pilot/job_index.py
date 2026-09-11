@@ -6,7 +6,7 @@ TERMINAL_STATUSES=frozenset({'complete','failed','timeout','cancelled','interrup
 # Only scalar routing, quota, recovery and participant status fields belong here.
 SUMMARY_FIELDS=(
     'id','owner','request_id','request_hash','status','created_at','flow','task',
-    'data_origin','household_id','respondent_id','household_submission_id',
+    'admin_test','data_origin','household_id','respondent_id','household_submission_id',
     'started_at','finished_at','end_to_end_seconds','queue_seconds','queue_deadline_at','message',
     'decision_saved','rating_saved','attempts','recovery_count','run_directory',
     'replay_source','questionnaire_version','questionnaire_hash',
