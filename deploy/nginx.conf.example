@@ -29,6 +29,15 @@ server {
     client_body_timeout 15s;
     add_header Strict-Transport-Security "max-age=86400" always;
 
+    # Optional invited demo authentication: configure auth_basic and its password
+    # file separately. Preserve the 401 challenge, but explain browser login.
+    error_page 401 /_auth_required.html;
+    location = /_auth_required.html {
+        internal;
+        auth_basic off;
+        alias /opt/energybridge/realtime_pilot/static/auth-required.html;
+    }
+
     # Legacy generation and engineering replay are not public collection routes.
     location = /api/jobs { return 403; }
     location = /api/proposals { return 403; }
