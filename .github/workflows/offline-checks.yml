@@ -17,6 +17,11 @@ jobs:
           cache: pip
       - run: python -m pip install -r requirements.txt
       - run: python scripts/check_secrets.py
+      - name: Native deployment template checks
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y nginx
+          sudo bash scripts/check_deploy_linux.sh
       - run: python scripts/bootstrap_upstream.py
       - run: bash scripts/install_energyplus_linux.sh "$RUNNER_TEMP/energyplus"
       - name: Backend and native EP regression without model APIs
@@ -34,8 +39,3 @@ jobs:
           for test in realtime_pilot/deploy/verify*.js; do node "$test"; done
         env:
           NODE_PATH: ${{ runner.temp }}/browser-tests/node_modules
-      - name: Native deployment template checks
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y nginx
-          bash scripts/check_deploy_linux.sh

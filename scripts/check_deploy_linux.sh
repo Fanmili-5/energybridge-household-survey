@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Run with sudo: Nginx validates production ports and reads root-owned defaults.
 # Validate templates using native Linux tools without installing a service.
 set -euo pipefail
 project_root=$(cd "$(dirname "$0")/.." && pwd)
