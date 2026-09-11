@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>家庭用电安排 · 本地试填</title><meta name="description" content="填写家庭情况，查看用电安排的模拟结果，并代表家庭作出评价。"><link rel="stylesheet" href="/style.css"><script src="/legacy.js" defer></script></head>
+<body>
+<header><a href="/" class="brand">EnergyBridge <span>家庭用电安排</span></a><span class="badge">本地开发试填</span></header>
+<main><p class="notice">旧版：执行后评价流程。<a href="/">返回原安排与 EB 建议比较</a>。这里的结果不作为同意调整的标签。</p>
+  <div class="intro"><p class="eyebrow">一个人，代表一个家庭</p><h1>什么样的用电安排，适合您家？</h1><p>请按全家人的情况和取舍回答。说不清的可以选择“说不清”或留空。计算后的评价也没有标准答案。</p></div>
+  <div id="error" class="error" role="alert" hidden></div>
+  <form id="profile-form">
+    <section class="panel"><h2>先了解您家</h2><div id="basic-questions" class="basic-grid"></div><div class="rule"></div><p class="hint">下面这些说法，您认为符合您家吗？</p><div id="attitude-questions"></div></section>
+    <section class="panel"><h2 id="scenario-title">本次模拟情境</h2><p id="scenario-description"></p><ul id="scenario-facts"></ul><p class="notice">这套模型仍在验证中。本次只测试流程与等待时间，结果和评价暂不进入正式训练数据。</p>
+      <label class="field">这段情境能让您代入自己家吗？<select id="applicability" required><option value="">请选择</option><option value="close">比较接近，可以评价</option><option value="different_but_evaluable">有些差别，但可以按情境评价</option><option value="not_evaluable">差别太大，无法评价</option></select></label>
+      <label class="check"><input id="understood" type="checkbox" required>我理解这是研究设定的模拟情境，愿意进行本地试填。</label>
+      <label class="check"><input id="engineering" type="checkbox" checked>本次使用测试答案，仅检查功能。</label>
+      <div class="submit-row"><button id="generate" type="submit">根据这些回答生成方案 <span>→</span></button><small>不需要购买服务器。首轮实测曾超过 7 分钟；当前任务最多等待 4 分钟。</small></div>
+    </section>
+  </form>
+  <section id="job-panel" class="panel" hidden><div class="section-top"><h2>本次计算</h2><button id="cancel" class="secondary" type="button">取消计算</button></div><p id="job-status" role="status" aria-live="polite"></p><div id="wait-track"><span class="pulse"></span><span id="job-stage"></span></div><p class="hint">计算在后台进行。刷新页面后，可以恢复本次任务；取消和失败不会被记成“不满意”。</p><p id="job-timing" class="hint"></p></section>
+  <section id="result-panel" class="panel" hidden><p class="eyebrow">假设采用这份安排</p><h2>先看结果，再作评价</h2><p id="result-window"></p><div id="metrics" class="metrics"></div><div class="chart-wrap"><svg id="temperature-chart" role="img" aria-label="模拟全天室内温度变化" viewBox="0 0 760 220"></svg></div><p class="hint">橙色区域为 18:00—19:00；曲线为居住热区室温，并非亲身体验的温感。</p><h3>控制器记录的安排</h3><div class="table-wrap"><table><thead><tr><th>模拟时刻</th><th>空调</th><th>洗衣安排</th></tr></thead><tbody id="actions"></tbody></table></div><p id="service-status"></p><ul id="limitations" class="hint"></ul></section>
+  <form id="rating-form" class="panel" hidden><h2>以您家的立场评价</h2><p class="hint">请根据上面实际展示的安排和结果作答。未回答、无法判断和不适用会分别保存。</p><div id="rating-questions"></div><button id="save-rating" type="submit">保存这次家庭评价</button><p id="rating-status" role="status" aria-live="polite"></p></form>
+  <section class="panel"><div class="section-top"><h2>本机的试填记录</h2><button id="new-case" class="secondary" type="button">再评一个案例</button></div><button id="example" class="secondary" type="button">查看已跑完的测试案例</button><p class="hint">回看使用测试家庭的既有结果，不会调用 API，也不会按您的回答重新计算。</p><div id="history"><p class="hint">还没有记录。</p></div></section>
+</main><footer>一个家庭可以评价多个案例。所有结果均来自模拟；开发试填不代表研究结论。</footer>
+</body></html>

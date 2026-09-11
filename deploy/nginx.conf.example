@@ -1,0 +1,61 @@
+# Include from nginx.conf's http context, for example /etc/nginx/sites-enabled/energybridge.
+# Replace survey.example.org and provision its certificate before nginx -t/reload.
+# Do not throttle polling/reading from many participants behind one campus NAT.
+map $request_method $eb_write_client {
+    default "";
+    POST $binary_remote_addr;
+}
+limit_req_zone $eb_write_client zone=eb_general:10m rate=20r/s;
+limit_req_zone $binary_remote_addr zone=eb_generate:10m rate=10r/m;
+
+server {
+    listen 80;
+    server_name survey.example.org;
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/lib/energybridge/acme;
+    }
+    location / {
+        return 301 https://survey.example.org$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name survey.example.org;
+    ssl_certificate /etc/letsencrypt/live/survey.example.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/survey.example.org/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    client_max_body_size 32k;
+    client_body_timeout 15s;
+    add_header Strict-Transport-Security "max-age=86400" always;
+
+    # Legacy generation and engineering replay are not public collection routes.
+    location = /api/jobs { return 403; }
+    location = /api/proposals { return 403; }
+    location = /api/example { return 403; }
+    location = /legacy { return 404; }
+    location = /legacy.js { return 404; }
+    location = /plan-preview.html { return 404; }
+
+    location = /api/paired {
+        # Shared campus/home networks can burst; application quotas remain authoritative.
+        limit_req zone=eb_generate burst=60 nodelay;
+        limit_req_status 429;
+        proxy_pass http://127.0.0.1:8767;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 30s;
+    }
+    location / {
+        limit_req zone=eb_general burst=300 nodelay;
+        limit_req_status 429;
+        proxy_pass http://127.0.0.1:8767;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 30s;
+    }
+}

@@ -1,0 +1,1653 @@
+{
+  "schema_version": "eb.household_questionnaire.v1.3_profile_coverage",
+  "status": "draft_for_cognitive_interviews_and_pilot",
+  "target_schema_version": "household_evaluator_v3",
+  "unit": "one fixed household represented by one human",
+  "response_cell": {
+    "value": "answer value or null",
+    "response_status": [
+      "answered",
+      "dont_know",
+      "declined",
+      "skipped",
+      "not_asked",
+      "not_applicable",
+      "cannot_judge",
+      "technical_failure"
+    ]
+  },
+  "special_option_rule": "Special status options map to value=null and the matching response_status; never use 0/3 as a missing code. Numeric values only for genuine numeric answers.",
+  "counts": {
+    "basic_items": 5,
+    "attitude_items": 12,
+    "pilot_strategy_cards_per_household": 4,
+    "suggested_pilot_scenarios_per_household": 2,
+    "strategies_per_scenario": 2
+  },
+  "profile_defaults": [
+    "B01",
+    "B02",
+    "B04",
+    "B05",
+    "B06",
+    "A01",
+    "A02",
+    "A03",
+    "A04",
+    "A05",
+    "A06",
+    "A07",
+    "A08",
+    "A09",
+    "A10",
+    "A11",
+    "A12"
+  ],
+  "cluster_defaults": [
+    "A01",
+    "A02",
+    "A03",
+    "A04",
+    "A05",
+    "A06",
+    "A07",
+    "A08",
+    "A09",
+    "A10",
+    "A11",
+    "A12"
+  ],
+  "order_variants": {
+    "O1": [
+      "A01",
+      "A03",
+      "A05",
+      "A07",
+      "A09",
+      "A11",
+      "A02",
+      "A04",
+      "A06",
+      "A08",
+      "A10",
+      "A12"
+    ],
+    "O2": [
+      "A12",
+      "A10",
+      "A08",
+      "A06",
+      "A04",
+      "A02",
+      "A11",
+      "A09",
+      "A07",
+      "A05",
+      "A03",
+      "A01"
+    ]
+  },
+  "dimensions_are_content_domains_not_validated_factors": true,
+  "case_metadata_required": [
+    "household_id",
+    "respondent_id",
+    "profile_version",
+    "case_id",
+    "case_family",
+    "case_order",
+    "eligibility_rule",
+    "plan_version",
+    "display_version",
+    "questionnaire_version",
+    "target_schema_version",
+    "feedback_basis",
+    "assessment_stage",
+    "assessment_cutoff",
+    "proposal_condition_profile_id",
+    "respondent_profile_id",
+    "scenario_id",
+    "case_pair_id",
+    "form_version",
+    "assignment_rule",
+    "building_model_id",
+    "zone_mapping_id",
+    "binding_mode",
+    "declared_overrides",
+    "applicability_status"
+  ],
+  "technical_provenance": [
+    "upstream_commit",
+    "energyplus_version",
+    "idf_hash",
+    "weather_source",
+    "run_id",
+    "trajectory_ref",
+    "tariff_version",
+    "metering_window",
+    "reference_estimation_source",
+    "epw_hash",
+    "weather_kind",
+    "simulation_dates",
+    "timezone",
+    "pre_event_inputs_hash"
+  ],
+  "future_input_rule": "For static outcome_rating, include the displayed plan and outcome; no C/R target enters its own inputs or baseline clusters. Do not derive plan-only judgement training rows from C01 in this version.",
+  "sample_generation_rule": "Static survey: outcome_rating from human responses; optional C01 is informed_acceptability after seeing results, not pre-execution consent. No runtime branching or imputation.",
+  "questions": [
+    {
+      "id": "P00",
+      "prompt": "阅读研究信息后，您是否愿意参加？",
+      "type": "single_choice",
+      "allow_skip": false,
+      "default": null,
+      "required_for_participation": true,
+      "model_role": "metadata",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S7"
+      ],
+      "options": [
+        {
+          "value": "yes",
+          "label": "愿意参加"
+        },
+        {
+          "value": "no",
+          "label": "不愿意参加"
+        }
+      ],
+      "branch": {
+        "no": "end"
+      }
+    },
+    {
+      "id": "B01",
+      "prompt": "您平时对家里的用电安排了解多少？",
+      "type": "single_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "descriptive_or_eligibility",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S8"
+      ],
+      "options": [
+        {
+          "value": "primary",
+          "label": "主要由我安排"
+        },
+        {
+          "value": "joint",
+          "label": "我和家里其他人一起安排"
+        },
+        {
+          "value": "familiar",
+          "label": "我不负责安排，但比较了解"
+        },
+        {
+          "value": "limited",
+          "label": "我了解得不多"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        },
+        {
+          "value": "declined",
+          "label": "不愿回答"
+        }
+      ]
+    },
+    {
+      "id": "B02",
+      "prompt": "您家通常一起居住的有几个人，包括您自己？",
+      "type": "single_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "descriptive_or_eligibility",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S8"
+      ],
+      "options": [
+        {
+          "value": "1",
+          "label": "1人"
+        },
+        {
+          "value": "2",
+          "label": "2人"
+        },
+        {
+          "value": "3",
+          "label": "3人"
+        },
+        {
+          "value": "4",
+          "label": "4人"
+        },
+        {
+          "value": "5",
+          "label": "5人"
+        },
+        {
+          "value": "6_plus",
+          "label": "6人及以上"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        },
+        {
+          "value": "declined",
+          "label": "不愿回答"
+        }
+      ]
+    },
+    {
+      "id": "B04",
+      "prompt": "通常在工作日白天，您家有人在家吗？",
+      "type": "single_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "descriptive_or_eligibility",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S8"
+      ],
+      "options": [
+        {
+          "value": "mostly_occupied",
+          "label": "大部分时间有人"
+        },
+        {
+          "value": "sometimes_occupied",
+          "label": "部分时间有人"
+        },
+        {
+          "value": "mostly_absent",
+          "label": "大部分时间没人"
+        },
+        {
+          "value": "variable",
+          "label": "不固定，很难概括"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        },
+        {
+          "value": "declined",
+          "label": "不愿回答"
+        }
+      ]
+    },
+    {
+      "id": "B05",
+      "prompt": "您家平时使用哪些设备？",
+      "type": "multi_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "descriptive_or_eligibility",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S8"
+      ],
+      "options": [
+        {
+          "value": "ac",
+          "label": "空调"
+        },
+        {
+          "value": "washer",
+          "label": "洗衣机"
+        },
+        {
+          "value": "dishwasher",
+          "label": "洗碗机"
+        },
+        {
+          "value": "dryer",
+          "label": "烘干机"
+        },
+        {
+          "value": "electric_water_heater",
+          "label": "电热水器"
+        },
+        {
+          "value": "home_ev",
+          "label": "在家充电的电动汽车"
+        },
+        {
+          "value": "none",
+          "label": "以上都没有"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "exclusive_options": [
+        "none",
+        "dont_know"
+      ]
+    },
+    {
+      "id": "B06",
+      "prompt": "您家用过电器定时运行或自动调整用电的功能吗？",
+      "type": "single_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "descriptive_or_eligibility",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S8"
+      ],
+      "options": [
+        {
+          "value": "frequent",
+          "label": "目前经常使用"
+        },
+        {
+          "value": "occasional",
+          "label": "偶尔使用"
+        },
+        {
+          "value": "past",
+          "label": "以前用过，现在不用"
+        },
+        {
+          "value": "never",
+          "label": "没用过"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ]
+    },
+    {
+      "id": "A01",
+      "prompt": "选择用电安排时，我们家很在意电费的高低。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S9"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "cost_attention",
+      "scale_validated": false
+    },
+    {
+      "id": "A02",
+      "prompt": "我们家会优先考虑电费更低的用电安排。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S9"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "cost_attention",
+      "scale_validated": false
+    },
+    {
+      "id": "A03",
+      "prompt": "即使电费稍高一些，我们家也更愿意保持舒适的室温。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S9"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "comfort_priority",
+      "scale_validated": false
+    },
+    {
+      "id": "A04",
+      "prompt": "如果节电安排让家人觉得太热或太冷，我们家希望尽快恢复原来的设置。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S9"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "comfort_priority",
+      "scale_validated": false
+    },
+    {
+      "id": "A05",
+      "prompt": "只要能在需要前完成，我们家愿意把家务电器的运行时间往后挪。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S3",
+        "S4"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "time_shift_willingness",
+      "scale_validated": false
+    },
+    {
+      "id": "A06",
+      "prompt": "我们家通常能接受家务电器比原计划晚一会儿运行。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S3",
+        "S4"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "time_shift_willingness",
+      "scale_validated": false
+    },
+    {
+      "id": "A07",
+      "prompt": "即使已开通自动调整功能，每次改变电器安排前，我们家仍希望先确认。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S2",
+        "S3"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "control_preference",
+      "scale_validated": false
+    },
+    {
+      "id": "A08",
+      "prompt": "使用自动调整功能时，我们家希望能随时取消这次调整。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S2",
+        "S3"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "control_preference",
+      "scale_validated": false
+    },
+    {
+      "id": "A09",
+      "prompt": "我们家相信自动控制系统能够把电器运行安排好。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "automation_trust",
+      "scale_validated": false
+    },
+    {
+      "id": "A10",
+      "prompt": "我们家通常相信自动控制系统给出的费用说明。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "automation_trust",
+      "scale_validated": false
+    },
+    {
+      "id": "A11",
+      "prompt": "减少能源浪费是我们家选择用电安排时会考虑的事。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S9"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "energy_conservation_orientation",
+      "scale_validated": false
+    },
+    {
+      "id": "A12",
+      "prompt": "即使省下的电费不多，我们家也愿意为减少能源浪费做些小调整。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "profile_input",
+      "cluster_role": "primary_candidate",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S9"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "dimension": "energy_conservation_orientation",
+      "scale_validated": false
+    },
+    {
+      "id": "X01",
+      "prompt": "即使没有额外补偿，我们家也愿意考虑在大家集中用电时少用一些电。",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "optional_profile_input",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S3",
+        "S4"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "非常不同意"
+        },
+        {
+          "value": 2,
+          "label": "比较不同意"
+        },
+        {
+          "value": 3,
+          "label": "既不赞同也不反对"
+        },
+        {
+          "value": 4,
+          "label": "比较同意"
+        },
+        {
+          "value": 5,
+          "label": "非常同意"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "enabled_by_default": false,
+      "precompiled_optional_module": true
+    },
+    {
+      "id": "X02",
+      "prompt": "作决定前，您家最想先了解哪些信息？",
+      "type": "multi_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "optional_profile_input",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S3",
+        "S7"
+      ],
+      "options": [
+        {
+          "value": "cost",
+          "label": "电费会怎样变化"
+        },
+        {
+          "value": "comfort",
+          "label": "会不会影响舒适"
+        },
+        {
+          "value": "service",
+          "label": "会不会耽误电器使用"
+        },
+        {
+          "value": "control",
+          "label": "怎样取消或恢复"
+        },
+        {
+          "value": "explanation",
+          "label": "为什么提出这次调整"
+        },
+        {
+          "value": "none",
+          "label": "没有特别想了解的"
+        },
+        {
+          "value": "other",
+          "label": "其他"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "enabled_by_default": false,
+      "max_choices": 2,
+      "exclusive_options": [
+        "none",
+        "dont_know"
+      ],
+      "other_text_for": "other",
+      "precompiled_optional_module": true
+    },
+    {
+      "id": "C00",
+      "prompt": "这段情境是否容易理解并想象成您家的情况？",
+      "type": "single_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "metadata",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S7"
+      ],
+      "options": [
+        {
+          "value": "clear",
+          "label": "容易理解，也能想象"
+        },
+        {
+          "value": "clarify",
+          "label": "基本能理解，但有地方想确认"
+        },
+        {
+          "value": "unclear",
+          "label": "难以理解"
+        },
+        {
+          "value": "not_relatable",
+          "label": "与我家情况差别太大，难以想象"
+        }
+      ],
+      "free_text_followup": "需要确认的内容",
+      "precompiled_placement": "first case only"
+    },
+    {
+      "id": "C01",
+      "prompt": "看过上述方案及模拟结果后，您家是否接受这样的安排？",
+      "type": "single_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "outcome_target",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S2",
+        "S4"
+      ],
+      "options": [
+        {
+          "value": "accept",
+          "label": "接受当前方案"
+        },
+        {
+          "value": "reject",
+          "label": "不接受当前方案"
+        },
+        {
+          "value": "request_change",
+          "label": "修改后再考虑"
+        },
+        {
+          "value": "need_information",
+          "label": "目前信息不够，无法判断"
+        }
+      ],
+      "target_field": "informed_acceptability",
+      "repeated_per_case": true
+    },
+    {
+      "id": "C02",
+      "prompt": "请简单说说原因。",
+      "type": "text",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "outcome_target",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S5",
+        "S7"
+      ],
+      "target_field": "reason_text",
+      "conditional_target_fields": {
+        "request_change": "requested_change_text",
+        "need_information": "missing_information_text"
+      },
+      "repeated_per_case": true
+    },
+    {
+      "id": "C03",
+      "prompt": "哪些方面最影响您刚才的判断？",
+      "type": "multi_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "outcome_target",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S3",
+        "S5",
+        "S7"
+      ],
+      "options": [
+        {
+          "value": "cost",
+          "label": "电费或补偿"
+        },
+        {
+          "value": "comfort",
+          "label": "家人舒适"
+        },
+        {
+          "value": "routine",
+          "label": "是否耽误日常安排"
+        },
+        {
+          "value": "control",
+          "label": "能否自己确认、取消或恢复"
+        },
+        {
+          "value": "trust",
+          "label": "是否相信系统的安排和说明"
+        },
+        {
+          "value": "conservation",
+          "label": "减少能源浪费"
+        },
+        {
+          "value": "grid_support",
+          "label": "支持大家集中用电时的供电需要"
+        },
+        {
+          "value": "information",
+          "label": "提供的信息是否足够"
+        },
+        {
+          "value": "other",
+          "label": "其他"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "max_choices": 2,
+      "exclusive_options": [
+        "dont_know"
+      ],
+      "other_text_for": "other",
+      "target_field": "reason_tags",
+      "show_after": "C02",
+      "repeated_per_case": true
+    },
+    {
+      "id": "R01",
+      "prompt": "综合考虑您家的需要，您对这次展示的安排和结果有多满意？",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "outcome_target",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S4",
+        "S7"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "很不满意"
+        },
+        {
+          "value": 2,
+          "label": "比较不满意"
+        },
+        {
+          "value": 3,
+          "label": "一般（不偏向满意或不满意）"
+        },
+        {
+          "value": 4,
+          "label": "比较满意"
+        },
+        {
+          "value": 5,
+          "label": "很满意"
+        },
+        {
+          "value": "cannot_judge",
+          "label": "无法判断"
+        },
+        {
+          "value": "not_applicable",
+          "label": "不适用"
+        }
+      ],
+      "target_field": "score",
+      "repeated_per_case": true,
+      "enabled_by_default": true,
+      "scale_validated": false,
+      "precompile_include_if": "outcome_shown"
+    },
+    {
+      "id": "R02",
+      "prompt": "根据展示的室温变化，您预计家人对室内舒适程度会有多满意？",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "outcome_target",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S4",
+        "S7"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "很不满意"
+        },
+        {
+          "value": 2,
+          "label": "比较不满意"
+        },
+        {
+          "value": 3,
+          "label": "一般（不偏向满意或不满意）"
+        },
+        {
+          "value": 4,
+          "label": "比较满意"
+        },
+        {
+          "value": 5,
+          "label": "很满意"
+        },
+        {
+          "value": "cannot_judge",
+          "label": "无法判断"
+        },
+        {
+          "value": "not_applicable",
+          "label": "不适用"
+        }
+      ],
+      "target_field": "comfort_score",
+      "repeated_per_case": true,
+      "enabled_by_default": true,
+      "scale_validated": false,
+      "precompile_include_if": "thermal_outcome_shown"
+    },
+    {
+      "id": "R03",
+      "prompt": "对这次安排最终需要支付的费用，您有多满意？",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "outcome_target",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S4",
+        "S7"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "很不满意"
+        },
+        {
+          "value": 2,
+          "label": "比较不满意"
+        },
+        {
+          "value": 3,
+          "label": "一般（不偏向满意或不满意）"
+        },
+        {
+          "value": 4,
+          "label": "比较满意"
+        },
+        {
+          "value": 5,
+          "label": "很满意"
+        },
+        {
+          "value": "cannot_judge",
+          "label": "无法判断"
+        },
+        {
+          "value": "not_applicable",
+          "label": "不适用"
+        }
+      ],
+      "target_field": "cost_score",
+      "repeated_per_case": true,
+      "enabled_by_default": true,
+      "scale_validated": false,
+      "precompile_include_if": "net_cost_shown"
+    },
+    {
+      "id": "R04",
+      "prompt": "对电器是否在需要时完成任务，您有多满意？",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "outcome_target",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S4",
+        "S7"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "很不满意"
+        },
+        {
+          "value": 2,
+          "label": "比较不满意"
+        },
+        {
+          "value": 3,
+          "label": "一般（不偏向满意或不满意）"
+        },
+        {
+          "value": 4,
+          "label": "比较满意"
+        },
+        {
+          "value": 5,
+          "label": "很满意"
+        },
+        {
+          "value": "cannot_judge",
+          "label": "无法判断"
+        },
+        {
+          "value": "not_applicable",
+          "label": "不适用"
+        }
+      ],
+      "target_field": "service_score",
+      "repeated_per_case": true,
+      "enabled_by_default": true,
+      "scale_validated": false,
+      "precompile_include_if": "service_outcome_shown"
+    },
+    {
+      "id": "R05",
+      "prompt": "对这次安排支持集中用电时段供电的结果，您有多满意？",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "outcome_target",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S4",
+        "S7"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "很不满意"
+        },
+        {
+          "value": 2,
+          "label": "比较不满意"
+        },
+        {
+          "value": 3,
+          "label": "一般（不偏向满意或不满意）"
+        },
+        {
+          "value": 4,
+          "label": "比较满意"
+        },
+        {
+          "value": 5,
+          "label": "很满意"
+        },
+        {
+          "value": "cannot_judge",
+          "label": "无法判断"
+        },
+        {
+          "value": "not_applicable",
+          "label": "不适用"
+        }
+      ],
+      "target_field": "vpp_score",
+      "repeated_per_case": true,
+      "enabled_by_default": true,
+      "scale_validated": false,
+      "precompile_include_if": "verified_grid_outcome_shown"
+    },
+    {
+      "id": "R06",
+      "prompt": "对这次安排的用电量表现，您有多满意？",
+      "type": "ordinal_1_5",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "outcome_target",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S4",
+        "S7"
+      ],
+      "options": [
+        {
+          "value": 1,
+          "label": "很不满意"
+        },
+        {
+          "value": 2,
+          "label": "比较不满意"
+        },
+        {
+          "value": 3,
+          "label": "一般（不偏向满意或不满意）"
+        },
+        {
+          "value": 4,
+          "label": "比较满意"
+        },
+        {
+          "value": 5,
+          "label": "很满意"
+        },
+        {
+          "value": "cannot_judge",
+          "label": "无法判断"
+        },
+        {
+          "value": "not_applicable",
+          "label": "不适用"
+        }
+      ],
+      "target_field": "energy_score",
+      "repeated_per_case": true,
+      "enabled_by_default": false,
+      "scale_validated": false,
+      "precompile_include_if": "energy_module_enabled_and_comparison_shown"
+    },
+    {
+      "id": "R07",
+      "prompt": "这次最让您满意或不满意的是什么？下次希望怎样调整？",
+      "type": "text",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "outcome_target",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S5",
+        "S7"
+      ],
+      "target_field": "comment",
+      "repeated_per_case": true
+    },
+    {
+      "id": "D02",
+      "prompt": "您目前主要的工作或生活状态？",
+      "type": "single_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "research_only",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S7"
+      ],
+      "options": [
+        {
+          "value": "full_time",
+          "label": "全职工作"
+        },
+        {
+          "value": "part_flexible",
+          "label": "兼职或灵活就业"
+        },
+        {
+          "value": "student",
+          "label": "在校学习"
+        },
+        {
+          "value": "retired",
+          "label": "退休"
+        },
+        {
+          "value": "care_home",
+          "label": "主要照顾家庭"
+        },
+        {
+          "value": "not_working",
+          "label": "暂未工作"
+        },
+        {
+          "value": "other",
+          "label": "其他"
+        },
+        {
+          "value": "declined",
+          "label": "不愿回答"
+        }
+      ],
+      "enabled_by_default": false,
+      "subject": "respondent"
+    },
+    {
+      "id": "D03",
+      "prompt": "您家月均总收入大约属于哪个范围？",
+      "type": "single_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "research_only",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S1",
+        "S7"
+      ],
+      "options": [
+        {
+          "value": "lt_5000",
+          "label": "5000元以下"
+        },
+        {
+          "value": "5000_9999",
+          "label": "5000—不足10000元"
+        },
+        {
+          "value": "10000_19999",
+          "label": "10000—不足20000元"
+        },
+        {
+          "value": "20000_29999",
+          "label": "20000—不足30000元"
+        },
+        {
+          "value": "ge_30000",
+          "label": "30000元及以上"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        },
+        {
+          "value": "declined",
+          "label": "不愿回答"
+        }
+      ],
+      "enabled_by_default": false,
+      "subject": "household"
+    },
+    {
+      "id": "F01",
+      "prompt": "哪道题最难理解，或者最难替您家回答？",
+      "type": "text",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "research_only",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S7"
+      ],
+      "show_if": "pilot"
+    },
+    {
+      "id": "F02",
+      "prompt": "整份问卷给您的感觉是？",
+      "type": "single_choice",
+      "allow_skip": true,
+      "default": null,
+      "required_for_participation": false,
+      "model_role": "research_only",
+      "cluster_role": "excluded",
+      "wording_origin": "project_authored",
+      "evidence_ids": [
+        "S7"
+      ],
+      "options": [
+        {
+          "value": "too_short",
+          "label": "太短"
+        },
+        {
+          "value": "suitable",
+          "label": "长度合适"
+        },
+        {
+          "value": "somewhat_long",
+          "label": "有点长"
+        },
+        {
+          "value": "too_long",
+          "label": "太长"
+        },
+        {
+          "value": "dont_know",
+          "label": "说不清"
+        }
+      ],
+      "show_if": "pilot"
+    }
+  ],
+  "retired_question_ids": {
+    "P01": "removed age eligibility question per user scope",
+    "B03": "removed household age composition per user scope",
+    "D01": "removed age-band background to keep age-free instrument"
+  },
+  "age_information_policy": "No age screening, household adult/child classification, or age-band input in this instrument; household size remains.",
+  "delivery_mode": {
+    "single_questionnaire": true,
+    "runtime_energyplus": false,
+    "runtime_personalization": false,
+    "runtime_result_branching": false,
+    "case_assignment": "fixed before distribution",
+    "material_visibility": "scenario_plan_and_simulated_outcome_shown_together",
+    "default_feedback_basis": "hypothetical_outcome",
+    "plan_judgement_data_supported": false,
+    "acceptability_semantics": "informed_acceptability_after_outcome_view"
+  },
+  "profile_matching_contract": {
+    "generation_profiles": "development or pilot household answers; record provenance, never invent empirical clusters",
+    "respondent_profiles": "collected in the same final questionnaire; primary SFT condition",
+    "generation_is_not_validation": true,
+    "assignment": "precompiled forms independent of current target answers; preserve shared paired comparisons",
+    "real_time_personalization": false,
+    "clustering_required_before_generation": false
+  },
+  "physical_context_contract_ref": "PHYSICAL_CONTEXT_CONTRACT.json"
+}
