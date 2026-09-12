@@ -29,7 +29,7 @@ def main():
     manifest={'version':1,'git_head_before_release':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
               'files':{name:hashlib.sha256(path.read_bytes()).hexdigest() for name,path in sorted(allfiles.items())}}
     a.output.parent.mkdir(parents=True,exist_ok=True)
-    with tarfile.open(a.output,'w:gz') as archive:
+    with tarfile.open(a.output,'w:gz',compresslevel=1) as archive:
         for name,path in sorted(allfiles.items()):archive.add(path,arcname=name,recursive=False)
         body=json.dumps(manifest,sort_keys=True).encode();info=tarfile.TarInfo('RELEASE_MANIFEST.json');info.size=len(body);archive.addfile(info,io.BytesIO(body))
     print(json.dumps({'file':str(a.output),'files':len(allfiles),'sha256':hashlib.sha256(a.output.read_bytes()).hexdigest()}))

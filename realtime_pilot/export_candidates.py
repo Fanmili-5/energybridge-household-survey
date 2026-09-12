@@ -21,6 +21,9 @@ def verify_candidate(row, job, documents, intake=None):
     if digest(job['questionnaire_snapshot']) != job.get('questionnaire_hash'):
         raise ValueError('Questionnaire snapshot hash mismatch')
     if job.get('household_record'):
+        record=job['household_record']
+        if record['normalized_answers'] != job['profile'] or record['questionnaire_snapshot'] != job['questionnaire_snapshot']:
+            raise ValueError('Planning profile differs from frozen household answers or questions')
         if digest(job['household_record']) != job.get('household_record_hash'):
             raise ValueError('Household record hash mismatch')
         if documents.get('household_record.json') != job['household_record']:
