@@ -70,10 +70,8 @@ def build_household_config(profile, questions, original, household_id):
         if record.get('active'):
             day='次日' if record['deadline_h']<record['earliest_h'] else '当日'
             deadlines[device]=f"{day}{record['deadline_h']:g}:00 前完成；可开始时刻 {record['earliest_h']:g}:00；时长 {record['duration_h']:g} 小时"
-    if appliances['ev'].get('present'):
-        sources['appliances.ev.charger_kw']={'kind':'simulation_interface_parameter','source':'EB actuator/EP design load 7 kW; same in both branches'}
-    from evaluation_window import make_window
-    simulation_days=make_window(original)['simulation_days']
+    from native_scenario import SIMULATION_DAYS
+    simulation_days=SIMULATION_DAYS
     constraints={'appliance_deadlines':deadlines}
     if appliances['ev'].get('present'):constraints['next_departure_h']=appliances['ev']['departure_h']
     schedule=occupancy_schedule(profile)
@@ -128,6 +126,18 @@ def ensure_household_config(request):
     from paired_contract import QUESTIONS
     household_id=request.get('household_id') or request.get('household_config',{}).get('id') or 'unidentified_local_fixture'
     expected=build_household_config(request['profile'],request.get('questionnaire_snapshot',QUESTIONS),request['original_plan'],household_id)
+    environment=request.get('scenario',{}).get('environment')
+    if environment:
+        expected['simulation_environment']=deepcopy(environment)
+        text={'id':'SIMULATION_ENVIRONMENT','question':'本次研究仿真采用的环境（由系统匹配，不是用户实测事实）',
+              'answer':{'city':environment['weather']['city'],'date':environment['simulation_start_date'],
+                        'model_id':environment['building']['id'],'indoor_area_m2':environment['building']['indoor_area_m2'],
+                        'assumptions':environment['assumptions'],'tariff_scope':environment['tariff_scope']},
+              'source':'resolved_simulation_context'}
+        expected['onboarding']['answers'].append({**text,'answer':json.dumps(text['answer'],ensure_ascii=False),'selected_option_ids':[]})
+        expected['llm_prompts']['agent_context']+='\nSimulation environment (matched research assumptions): '+json.dumps(text['answer'],ensure_ascii=False)
+        expected['field_sources']['simulation_environment']={'kind':'matched_research_environment',
+            'environment_hash':environment['environment_hash']}
     config=request.get('household_config')
     if config is not None and digest(config)!=digest(expected):raise ValueError('Household configuration does not match questionnaire snapshot')
     request['household_config']=expected

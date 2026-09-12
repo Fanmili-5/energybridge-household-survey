@@ -6,8 +6,10 @@ import sys
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
+if sys.version_info < (3,10):
+    raise SystemExit('Use Python 3.10+ (CI uses 3.11), not the macOS system Python.')
 for key in list(os.environ):
-    if key.startswith('LLM_') or key=='EB_PILOT_ENV_FILE':os.environ.pop(key)
+    if key.startswith(('LLM_','ROLEPLAY_')) or key=='EB_PILOT_ENV_FILE':os.environ.pop(key)
 os.environ.update(PYTHON_DOTENV_DISABLED='1',USE_LLM='1',LLM_API_KEY='offline-fixture',
                   LLM_MODEL='offline-fixture',LLM_BASE_URL='http://127.0.0.1:9/v1',
                   NO_PROXY='127.0.0.1,localhost',no_proxy='127.0.0.1,localhost')

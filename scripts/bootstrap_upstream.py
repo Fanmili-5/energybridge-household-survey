@@ -4,7 +4,7 @@ import subprocess
 from pathlib import Path
 
 COMMIT='2b17ae63e613da776c93e900f5dace50d63a88a8'
-URL='https://github.com/Fanmili-5/EnergyBridge.git'
+URL='https://github.com/Agentic-Intelligence-Lab/EnergyBridge.git'
 
 
 def main():

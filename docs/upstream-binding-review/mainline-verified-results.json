@@ -1,0 +1,284 @@
+{
+  "author": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge",
+  "commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "main_jobs_prepared_not_simulated": 50,
+  "groups": [
+    {
+      "city": "Tianjin",
+      "household_id": "household_s1_dual_commuter_standard",
+      "members": 4,
+      "sha256": "177e324b35ed5a6e3a4f53534d2c0ea767be0d4bb37dd2e4d8653358f7c6838f",
+      "methods": [
+        "agent",
+        "hema_agent",
+        "mpc_dynamic",
+        "rule_milp",
+        "rl_ppo_pref_v2"
+      ],
+      "idf": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/main/tianjin/_run_assets/household_s1_dual_commuter_standard_EnergyBridge_tianjin_7days/family_simple_7day_2025-06-01_7days.idf",
+      "epw": "/private/tmp/energybridge-author-latest-20260912/experiments/weather/epw/CHN_TJ_Tianjin.545270_CSWD.epw"
+    },
+    {
+      "city": "Tianjin",
+      "household_id": "household_s2_multigeneration_caregiver",
+      "members": 5,
+      "sha256": "dc2464860dc044341dee133e7a8361998a0536a4e1151f84322a715671e30a49",
+      "methods": [
+        "agent",
+        "hema_agent",
+        "mpc_dynamic",
+        "rule_milp",
+        "rl_ppo_pref_v2"
+      ],
+      "idf": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/main/tianjin/_run_assets/household_s2_multigeneration_caregiver_EnergyBridge_tianjin_7days/family_simple_7day_2025-06-01_7days.idf",
+      "epw": "/private/tmp/energybridge-author-latest-20260912/experiments/weather/epw/CHN_TJ_Tianjin.545270_CSWD.epw"
+    },
+    {
+      "city": "Tianjin",
+      "household_id": "household_s3_hybrid_work_from_home",
+      "members": 3,
+      "sha256": "dc2464860dc044341dee133e7a8361998a0536a4e1151f84322a715671e30a49",
+      "methods": [
+        "agent",
+        "hema_agent",
+        "mpc_dynamic",
+        "rule_milp",
+        "rl_ppo_pref_v2"
+      ],
+      "idf": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/main/tianjin/_run_assets/household_s3_hybrid_work_from_home_EnergyBridge_tianjin_7days/family_simple_7day_2025-06-01_7days.idf",
+      "epw": "/private/tmp/energybridge-author-latest-20260912/experiments/weather/epw/CHN_TJ_Tianjin.545270_CSWD.epw"
+    },
+    {
+      "city": "Tianjin",
+      "household_id": "household_s4_ev_commuter_flexible",
+      "members": 4,
+      "sha256": "177e324b35ed5a6e3a4f53534d2c0ea767be0d4bb37dd2e4d8653358f7c6838f",
+      "methods": [
+        "agent",
+        "hema_agent",
+        "mpc_dynamic",
+        "rule_milp",
+        "rl_ppo_pref_v2"
+      ],
+      "idf": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/main/tianjin/_run_assets/household_s4_ev_commuter_flexible_EnergyBridge_tianjin_7days/family_simple_7day_2025-06-01_7days.idf",
+      "epw": "/private/tmp/energybridge-author-latest-20260912/experiments/weather/epw/CHN_TJ_Tianjin.545270_CSWD.epw"
+    },
+    {
+      "city": "Tianjin",
+      "household_id": "household_s5_shared_roommates_irregular",
+      "members": 4,
+      "sha256": "5a746dcb3fd1594c0af91930c9df293a3e70fb3a5226aaf22901377f53da17b6",
+      "methods": [
+        "agent",
+        "hema_agent",
+        "mpc_dynamic",
+        "rule_milp",
+        "rl_ppo_pref_v2"
+      ],
+      "idf": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/main/tianjin/_run_assets/household_s5_shared_roommates_irregular_EnergyBridge_tianjin_7days/family_simple_7day_2025-06-01_7days.idf",
+      "epw": "/private/tmp/energybridge-author-latest-20260912/experiments/weather/epw/CHN_TJ_Tianjin.545270_CSWD.epw"
+    },
+    {
+      "city": "Germany",
+      "household_id": "household_s1_dual_commuter_standard",
+      "members": 4,
+      "sha256": "48de941862dce0d9979282c8c23fe63922d7bf478df54a7f6ad91d95b4fed26b",
+      "methods": [
+        "agent",
+        "hema_agent",
+        "mpc_dynamic",
+        "rule_milp",
+        "rl_ppo_pref_v2"
+      ],
+      "idf": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/main/germany/_run_assets/household_s1_dual_commuter_standard_EnergyBridge_germany_7days/berlin_family_geg_final_2025-06-01_7days.idf",
+      "epw": "/private/tmp/energybridge-author-latest-20260912/experiments/weather/epw/DEU_Germany_2025_real.epw"
+    },
+    {
+      "city": "Germany",
+      "household_id": "household_s2_multigeneration_caregiver",
+      "members": 5,
+      "sha256": "05b398f5665755ac5aab10b27dd3f2e0b3ab1d26e63562c8cfacc470a58ea887",
+      "methods": [
+        "agent",
+        "hema_agent",
+        "mpc_dynamic",
+        "rule_milp",
+        "rl_ppo_pref_v2"
+      ],
+      "idf": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/main/germany/_run_assets/household_s2_multigeneration_caregiver_EnergyBridge_germany_7days/berlin_family_geg_final_2025-06-01_7days.idf",
+      "epw": "/private/tmp/energybridge-author-latest-20260912/experiments/weather/epw/DEU_Germany_2025_real.epw"
+    },
+    {
+      "city": "Germany",
+      "household_id": "household_s3_hybrid_work_from_home",
+      "members": 3,
+      "sha256": "05b398f5665755ac5aab10b27dd3f2e0b3ab1d26e63562c8cfacc470a58ea887",
+      "methods": [
+        "agent",
+        "hema_agent",
+        "mpc_dynamic",
+        "rule_milp",
+        "rl_ppo_pref_v2"
+      ],
+      "idf": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/main/germany/_run_assets/household_s3_hybrid_work_from_home_EnergyBridge_germany_7days/berlin_family_geg_final_2025-06-01_7days.idf",
+      "epw": "/private/tmp/energybridge-author-latest-20260912/experiments/weather/epw/DEU_Germany_2025_real.epw"
+    },
+    {
+      "city": "Germany",
+      "household_id": "household_s4_ev_commuter_flexible",
+      "members": 4,
+      "sha256": "48de941862dce0d9979282c8c23fe63922d7bf478df54a7f6ad91d95b4fed26b",
+      "methods": [
+        "agent",
+        "hema_agent",
+        "mpc_dynamic",
+        "rule_milp",
+        "rl_ppo_pref_v2"
+      ],
+      "idf": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/main/germany/_run_assets/household_s4_ev_commuter_flexible_EnergyBridge_germany_7days/berlin_family_geg_final_2025-06-01_7days.idf",
+      "epw": "/private/tmp/energybridge-author-latest-20260912/experiments/weather/epw/DEU_Germany_2025_real.epw"
+    },
+    {
+      "city": "Germany",
+      "household_id": "household_s5_shared_roommates_irregular",
+      "members": 4,
+      "sha256": "4dc3a1c199107b3f5fb650b1755e8a098f42380e677e7bf2f9ff608208a69ee1",
+      "methods": [
+        "agent",
+        "hema_agent",
+        "mpc_dynamic",
+        "rule_milp",
+        "rl_ppo_pref_v2"
+      ],
+      "idf": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/main/germany/_run_assets/household_s5_shared_roommates_irregular_EnergyBridge_germany_7days/berlin_family_geg_final_2025-06-01_7days.idf",
+      "epw": "/private/tmp/energybridge-author-latest-20260912/experiments/weather/epw/DEU_Germany_2025_real.epw"
+    }
+  ],
+  "daily_jobs_constructed_not_simulated": 840,
+  "daily_preparation_example": {
+    "method": "agent",
+    "days": 1,
+    "household_id": "household_s1_dual_commuter_standard",
+    "members": 4,
+    "schema": "multi_user_physical_household_v1",
+    "devices": [
+      "ac",
+      "dishwasher",
+      "dryer",
+      "ev",
+      "refrigerator",
+      "washer",
+      "water_heater"
+    ],
+    "idf": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/daily/june/_run_assets/household_s1_dual_commuter_standard_EnergyBridge_germany_d01_hist_d01_1_2025-06-01_1day/berlin_family_geg_final_2025-06-01_1days.idf",
+    "pre_event_hook": "pre_event_preference_callback",
+    "post_event_hook": "post_event_score_callback",
+    "sha256": "b0df18fd65219f7989e959b9eed1f29f392143b5b993f2d19b5e2f3427fda962",
+    "epw": "/private/tmp/energybridge-author-latest-20260912/experiments/weather/epw/DEU_Germany_2025_real.epw",
+    "price": "/private/tmp/energybridge-author-latest-20260912/experiments/real_data/germany_2025_price.csv"
+  },
+  "real_reference_runs": [
+    {
+      "city": "Tianjin",
+      "days": 7,
+      "exit_code": 0,
+      "handles": {
+        "washer": -1,
+        "dishwasher": -1,
+        "dryer": -1,
+        "refrigerator": -1,
+        "ev": 54,
+        "ewh_sp": 55
+      },
+      "python_device_power_max_kw": {
+        "washer": 1.5,
+        "dishwasher": 1.2,
+        "dryer": 2.5,
+        "water_heater": 2.0,
+        "ev": 7.4,
+        "refrigerator": 0.15
+      },
+      "energy_kwh": 347.97423823206447,
+      "llm_call_count": 0,
+      "output": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/native_no_dr/tianjin_7days"
+    },
+    {
+      "city": "Germany",
+      "days": 7,
+      "exit_code": 0,
+      "handles": {
+        "washer": -1,
+        "dishwasher": -1,
+        "dryer": -1,
+        "refrigerator": -1,
+        "ev": 50,
+        "ewh_sp": 52
+      },
+      "python_device_power_max_kw": {
+        "washer": 1.5,
+        "dishwasher": 1.2,
+        "dryer": 2.5,
+        "water_heater": 2.0,
+        "ev": 7.4,
+        "refrigerator": 0.15
+      },
+      "energy_kwh": 258.5623755416819,
+      "llm_call_count": 0,
+      "output": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/native_no_dr/germany_7days"
+    },
+    {
+      "city": "Tianjin",
+      "days": 1,
+      "exit_code": 0,
+      "handles": {
+        "washer": -1,
+        "dishwasher": -1,
+        "dryer": -1,
+        "refrigerator": -1,
+        "ev": 54,
+        "ewh_sp": 55
+      },
+      "python_device_power_max_kw": {
+        "washer": 1.5,
+        "dishwasher": 1.2,
+        "dryer": 2.5,
+        "water_heater": 2.0,
+        "ev": 7.4,
+        "refrigerator": 0.15
+      },
+      "energy_kwh": 56.03151112797829,
+      "llm_call_count": 0,
+      "output": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/native_no_dr/tianjin_1days"
+    },
+    {
+      "city": "Germany",
+      "days": 1,
+      "exit_code": 0,
+      "handles": {
+        "washer": -1,
+        "dishwasher": -1,
+        "dryer": -1,
+        "refrigerator": -1,
+        "ev": 50,
+        "ewh_sp": 52
+      },
+      "python_device_power_max_kw": {
+        "washer": 1.5,
+        "dishwasher": 1.2,
+        "dryer": 2.5,
+        "water_heater": 2.0,
+        "ev": 7.4,
+        "refrigerator": 0.15
+      },
+      "energy_kwh": 60.7036774683413,
+      "llm_call_count": 0,
+      "output": "/Users/fanmili/studytest/energybridge-household-survey/artifacts/author_mainline_20260912_v2/native_no_dr/germany_1days"
+    }
+  ],
+  "paid_model_calls": 0,
+  "network_attempts": [],
+  "main_policy_runs_completed": 0,
+  "author_release_tests_passed": 11,
+  "additional_selected_mainline_tests_passed": 113,
+  "upstream_source_modified": false
+}

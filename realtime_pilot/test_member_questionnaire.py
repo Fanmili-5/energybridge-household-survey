@@ -63,7 +63,9 @@ class MemberTests(unittest.TestCase):
     def test_legacy_snapshot_config_hash_is_preserved(self):
         fixture=json.loads(Path('ui_audit_20260911/fixture.json').read_text())
         if fixture.get('household_config'):
-            self.assertEqual(ensure_household_config(fixture),fixture['household_config'])
+            frozen=copy.deepcopy(fixture)
+            with self.assertRaises(ValueError):ensure_household_config(fixture)
+            self.assertEqual(fixture,frozen)  # Historical data is not rewritten to new runtime defaults.
         questions=[q for q in QUESTIONS if q['type']!='member_list']
         p=self.profile();p.pop('M_MEMBERS');o,s=prepare(self.profile(),'legacy')
         h=build_household_config(p,questions,o,'legacy')
@@ -71,6 +73,7 @@ class MemberTests(unittest.TestCase):
         self.assertNotIn('reported_members',h)
 
     def test_member_text_reaches_actual_eb_prompt_without_a_model_call(self):
+        from legacy_test_support import prepare
         from eb_execution import upstream
         from closed_loop import EBPlanner
         runner,Suite=upstream()

@@ -1,3 +1,4 @@
+from date_sampling import assigned_context
 """Queue waiting bounds preserve independent human submissions; no model calls."""
 import concurrent.futures
 import http.client
@@ -10,14 +11,14 @@ from common import digest
 from paired_contract import CONTEXT,QUESTIONNAIRE_VERSION,QUESTIONS
 from server import Store,make_server
 from test_pilot import NoExecute
-from verify_paired_physics import answers
+from regional_test_support import answers
 from export_household_records import records
 from queue_policy import forecast
 
 
 class QueuePolicyTests(unittest.TestCase):
     def intake(self,store,owner):
-        return store.save_household(owner,{'answers':answers(),'request_id':'queue_intake_00000001',
+        return store.save_household(owner,{'questionnaire_context_hash':assigned_context(owner)["context_hash"],'answers':answers(),'request_id':'queue_intake_00000001',
             'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS),
             'research_consent':True,'research_notice_version':'eb.research_notice.v1'})
     def payload(self,sid,nonce='queue_generate_00000001'):
@@ -38,6 +39,26 @@ class QueuePolicyTests(unittest.TestCase):
                 self.assertEqual(len(store.db.household_summaries('owner-49')),1)
                 self.assertEqual(len(list(records(root))),50)
                 self.assertEqual(len(store.jobs),len(admitted))
+            finally:store.db.close()
+
+    def test_school_capacity_admits_fifty_distinct_families_without_losing_answers(self):
+        with tempfile.TemporaryDirectory() as root:
+            store=Store(root,human_pilot=True,workers=16,max_pending=64,max_daily_jobs=50,
+                        max_session_jobs=2,max_queue_wait=600,estimated_job_seconds=60)
+            store.pool=NoExecute()
+            try:
+                with patch('server.subprocess.Popen') as process:
+                    with concurrent.futures.ThreadPoolExecutor(50) as pool:
+                        intakes=list(pool.map(lambda i:self.intake(store,'owner-'+str(i)),range(50)))
+                    with concurrent.futures.ThreadPoolExecutor(50) as pool:
+                        jobs=list(pool.map(lambda i:store.create('owner-'+str(i),self.payload(intakes[i]['id']),paired_flow=True),range(50)))
+                    self.assertEqual(len({j['id'] for j in jobs}),50)
+                    self.assertEqual(len(list(records(root))),50)
+                    self.assertEqual(len(store.jobs),50)
+                    for i,job in enumerate(jobs):
+                        self.assertEqual(job['household_record_hash'],intakes[i]['household_record_hash'])
+                        self.assertEqual(store.create('owner-'+str(i),self.payload(intakes[i]['id']),paired_flow=True)['id'],job['id'])
+                    process.assert_not_called()
             finally:store.db.close()
 
     def test_expired_never_spawns_and_new_nonce_retries_frozen_intake(self):
@@ -167,7 +188,7 @@ class QueuePolicyTests(unittest.TestCase):
             try:
                 with patch('server.subprocess.Popen') as process:
                     with concurrent.futures.ThreadPoolExecutor(50) as pool:
-                        receipts=list(pool.map(lambda i:call(i,'/api/households',payload),range(50)))
+                        receipts=list(pool.map(lambda i:call(i,'/api/households',{**payload,'questionnaire_context_hash':assigned_context(owners[i])['context_hash']}),range(50)))
                     self.assertTrue(all(code==201 for code,row in receipts))
                     self.assertEqual(len(srv.store.db.households()),50)
                     with concurrent.futures.ThreadPoolExecutor(50) as pool:

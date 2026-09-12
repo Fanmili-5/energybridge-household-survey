@@ -46,7 +46,7 @@ class HTTPTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.temp = tempfile.TemporaryDirectory()
-        cls.server = make_server(0, cls.temp.name)
+        cls.server = make_server(0, cls.temp.name, allow_legacy_test_routes=True)
         cls.server.store.pool.shutdown()
         cls.server.store.pool = NoExecute()
         cls.thread = threading.Thread(target=cls.server.serve_forever, daemon=True)

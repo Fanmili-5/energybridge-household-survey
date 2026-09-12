@@ -8,7 +8,7 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-22.04
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -23,6 +23,11 @@ jobs:
           sudo apt-get install -y nginx
           sudo bash scripts/check_deploy_linux.sh
       - run: python scripts/bootstrap_upstream.py
+      - uses: actions/cache@v4
+        with:
+          path: simulation_resources/weather
+          key: weather-${{ hashFiles('simulation_resources/catalog.json') }}
+      - run: python scripts/bootstrap_resources.py
       - run: bash scripts/install_energyplus_linux.sh "$RUNNER_TEMP/energyplus"
       - name: Backend and native EP regression without model APIs
         run: python scripts/test_offline.py
@@ -34,8 +39,11 @@ jobs:
           node-version: '22'
       - run: npm install --prefix "$RUNNER_TEMP/browser-tests" playwright@1.55.0
       - run: "$RUNNER_TEMP/browser-tests/node_modules/.bin/playwright install --with-deps chromium"
-      - name: Browser mock regression
+      - name: Browser and actual collection regression (no paid API)
         run: |
-          for test in realtime_pilot/deploy/verify*.js; do node "$test"; done
+          python scripts/test_frontend.py
+          node realtime_pilot/deploy/verify_demo_entry.js
+          node realtime_pilot/deploy/verify_frontend_recovery.js
         env:
           NODE_PATH: ${{ runner.temp }}/browser-tests/node_modules
+          EPLUS_ROOT: ${{ runner.temp }}/energyplus

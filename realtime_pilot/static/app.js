@@ -69,25 +69,43 @@ function question(q, container, prefix){
   if(q.type==="multi_choice"||(["attitude","stated_preference"].includes(q.group)&&!q.device)){
     const group=el("div",undefined,["attitude","stated_preference"].includes(q.group)?"attitude-options":"options");group.id=prefix+q.id;group.setAttribute("role","group");group.setAttribute("aria-label",q.prompt);
     for(const option of q.options){const l=el("label",undefined,"check"),input=el("input");input.type=["attitude","stated_preference"].includes(q.group)?"radio":"checkbox";input.name=prefix+q.id;if(q.required&&["attitude","stated_preference"].includes(q.group))input.required=true;input.value=JSON.stringify(option.value);l.append(input);if(q.id==="B05"){l.dataset.deviceValue=option.value;l.append(EBTime.icon(option.value));}if(row.classList.contains("importance-row"))l.append(el("strong",option.value,"importance-number"));l.append(el("span",option.label));group.append(l);}row.append(group);
-  }else if(q.type==="text"){const t=el("textarea");t.id=prefix+q.id;t.maxLength=1000;t.placeholder="可以留空";row.append(t);
+  }else if(q.type==="text"){
+    const t=el(q.cities_by_region?'input':'textarea');t.id=prefix+q.id;t.maxLength=1000;t.placeholder=q.environment_input?'填写实际常住城市':'可以留空';row.append(t);
+    if(q.cities_by_region){
+     const cities=el('select');cities.id=prefix+q.id+'_choices';cities.setAttribute('aria-label','常住城市');row.insertBefore(cities,t);
+     cities.onchange=()=>{t.hidden=cities.value!=='__other';t.value=cities.value==='__other'?'':cities.value;t.dispatchEvent(new Event('change',{bubbles:true}));if(!t.hidden)t.focus();};
+     t._citiesSync=(provinceChanged=false)=>{
+      const province=$('p_X_REGION')?.value?JSON.parse($('p_X_REGION').value):'';
+      const manual=cities.value==='__other'&&!provinceChanged;
+      if(provinceChanged)t.value='';
+      const available=q.cities_by_region[province]||[];
+      const placeholder=el('option',province?'请选择常住城市':'请先选择省级地区');placeholder.value='';cities.replaceChildren(placeholder);
+      for(const city of available){const option=el('option',city);option.value=city;cities.append(option);}
+      if(province){const other=el('option',available.length?'其他城市（自行填写）':'填写常住城市');other.value='__other';cities.append(other);}
+      const actual=t.value.trim().replace(/市$/,'');cities.value=available.includes(actual)?actual:t.value||manual?'__other':'';
+      if(province&&!available.length)cities.value='__other';
+      t.hidden=cities.value!=='__other';cities.disabled=!province||!!currentJob;t.disabled=!province||!!currentJob;
+     };
+    }
   }else{const s=el("select");s.id=prefix+q.id;const empty=el("option","请选择");empty.value="";s.append(empty);for(const o of q.options){const option=el("option",o.label);option.value=JSON.stringify(o.value);s.append(option);}row.append(s);}
   row.dataset.questionId=q.id; if(q.device)row.dataset.device=q.device;
   container.append(row);
+  if(q.help)row.append(el('p',q.help,'hint'));
   const select=row.querySelector("select");if(select){
-   if(q.id==="X_REGION")return;
-   if(q.research_only||!q.device||q.id==='H_ac'||q.group==='stated_preference'&&q.id!=='P_HOT_WATER')inlineChoices(select,q.options.map(o=>({value:JSON.stringify(o.value),label:o.label})),!!q.required||['B02','B04','F_EVENING','H_ac'].includes(q.id));
+   if(q.id==="X_REGION"||q.cities_by_region){$(prefix+q.id)?._citiesSync?.();return;}
+   if(q.research_only||q.environment_input||!q.device||q.id==='H_ac'||q.group==='stated_preference'&&q.id!=='P_HOT_WATER')inlineChoices(select,q.options.map(o=>({value:JSON.stringify(o.value),label:o.label})),!!q.required||['B02','B04','F_EVENING','H_ac'].includes(q.id));
    else{select.required=q.required!==false;EBTime.mount(q,select,row);}
  }
 }
 function collect(questions,prefix){const answers={};for(const q of questions){if(q.type==="member_list"){answers[q.id]=memberValues(q);continue;}if(q.type==="multi_choice"||(["attitude","stated_preference"].includes(q.group)&&!q.device)){const values=[...document.getElementsByName(prefix+q.id)].filter(x=>x.checked).map(x=>JSON.parse(x.value));answers[q.id]=q.type==="multi_choice"?values:values[0]??null;}else{const value=$(prefix+q.id).value;answers[q.id]=q.type==="text"?value:value?JSON.parse(value):null;}}for(const q of questions){const row=document.querySelector(`[data-question-id="${q.id}"]`);if(row?.hidden)answers[q.id]=null;}return answers;}
-function renderQuestions(questions){schema.profile_questions=questions;$("basic-questions").replaceChildren();$("attitude-questions").replaceChildren();$("device-questions").replaceChildren();$("member-questions").replaceChildren();$("housing-questions").replaceChildren();$("research-questions").replaceChildren();EBTime.group($("basic-questions"),questions.filter(q=>!q.research_only),(q,c)=>question(q,c,"p_"),$("device-questions"));for(const q of questions.filter(q=>["attitude","stated_preference"].includes(q.group)&&!q.device))question(q,$("attitude-questions"),"p_");for(const q of questions.filter(q=>q.research_only))question(q,$(q.research_section==="housing"?"housing-questions":"research-questions"),"p_");showWizard(0,{save:false});}
+function renderQuestions(questions){schema.profile_questions=questions;$("basic-questions").replaceChildren();$("attitude-questions").replaceChildren();$("device-questions").replaceChildren();$("member-questions").replaceChildren();$("housing-questions").replaceChildren();$("research-questions").replaceChildren();EBTime.group($("basic-questions"),questions.filter(q=>!q.research_only&&!q.environment_input),(q,c)=>question(q,c,"p_"),$("device-questions"));for(const q of questions.filter(q=>["attitude","stated_preference"].includes(q.group)&&!q.device))question(q,$("attitude-questions"),"p_");for(const q of questions.filter(q=>q.research_only||q.environment_input))question(q,$(q.research_section==="housing"?"housing-questions":"research-questions"),"p_");showWizard(0,{save:false});}
 function restore(profile){for(const q of schema.profile_questions){if(q.type==="member_list")continue;const cell=profile[q.id];if(!cell)continue;let value=cell.response_status==="answered"?cell.value:cell.response_status;if(q.type==="multi_choice"||(["attitude","stated_preference"].includes(q.group)&&!q.device)){if(!Array.isArray(value))value=[value];for(const input of document.getElementsByName("p_"+q.id))input.checked=value.includes(JSON.parse(input.value));}else $("p_"+q.id).value=cell.response_status!=="answered"?"":q.type==="text"?value:JSON.stringify(value);}
  const mq=schema.profile_questions.find(q=>q.type==='member_list');if(mq){const values=profile[mq.id]?.value||[];$('p_'+mq.id).dataset.count=values.length;syncMembers();values.forEach((member,i)=>{const card=$('p_'+mq.id).querySelectorAll('.member-card')[i];if(card)for(const f of mq.fields){const s=card.querySelector(`[data-member-field="${f.id}"]`);if(s.multiple){for(const o of s.options)o.selected=(member[f.id]||[]).includes(o.value);}else s.value=member[f.id]||'';}});}
 }
 const devices={ac:"空调",washer:"洗衣机",dishwasher:"洗碗机",dryer:"烘干机",electric_water_heater:"电热水器",home_ev:"家用电动汽车充电"};
 const scoreFields={score:"整体：这份方案总体适合您家吗？",comfort_score:"舒适：室温和生活安排的变化合适吗？",energy_score:"用电与费用：模拟用电量和费用符合您家期望吗？",vpp_score:"响应安排：您对本次错峰用电的处理方式满意吗？请考虑安排调整和自主决定体验。"};
 let generation=0,pendingSubmit=false;
-const UI_VERSION="eb.survey_ui.v6.0";
+const UI_VERSION="eb.survey_ui.v6.2";
 const RESEARCH_NOTICE_VERSION="eb.research_notice.v1";
 let savedReceipt=null,savedHouseholdRecord=null;
 const pendingDecisions=new Set(),pendingRequests=new Map();
@@ -96,15 +114,15 @@ function readBrowser(store,key){try{return JSON.parse(store.getItem(key)||'null'
 function writeBrowser(store,key,value){try{store.setItem(key,JSON.stringify(value));return true;}catch{return false;}}
 function removeBrowser(store,key){try{store.removeItem(key);}catch{}}
 function stableJson(value){return JSON.stringify(value,(_,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.keys(v).sort().map(k=>[k,v[k]])):v);}
-function householdBody(){return {answers:collect(schema.profile_questions,'p_'),questionnaire_version:schema.paired_questionnaire_version,questionnaire_hash:schema.paired_questionnaire_hash};}
-function householdFingerprint(body=householdBody()){return stableJson({answers:body.answers,questionnaire_version:body.questionnaire_version,questionnaire_hash:body.questionnaire_hash});}
+function householdBody(){return {answers:collect(schema.profile_questions,'p_'),questionnaire_version:schema.paired_questionnaire_version,questionnaire_hash:schema.paired_questionnaire_hash,questionnaire_context_hash:schema.questionnaire_context.context_hash};}
+function householdFingerprint(body=householdBody()){return stableJson({answers:body.answers,questionnaire_version:body.questionnaire_version,questionnaire_hash:body.questionnaire_hash,questionnaire_context_hash:body.questionnaire_context_hash});}
 function receiptMatches(){try{return !!savedReceipt&&savedReceipt.fingerprint===householdFingerprint();}catch{return false;}}
-function saveReceipt(receipt,body){savedReceipt={id:receipt.id||receipt.submission_id,household_record_hash:receipt.household_record_hash,questionnaire_version:receipt.questionnaire_version||body.questionnaire_version,questionnaire_hash:receipt.questionnaire_hash||body.questionnaire_hash,created_at:receipt.created_at,case_ids:receipt.case_ids||[],fingerprint:householdFingerprint(body)};writeBrowser(localStorage,'eb:household-receipt',savedReceipt);renderReceipt();}
+function saveReceipt(receipt,body){savedReceipt={id:receipt.id||receipt.submission_id,household_record_hash:receipt.household_record_hash,questionnaire_version:receipt.questionnaire_version||body.questionnaire_version,questionnaire_hash:receipt.questionnaire_hash||body.questionnaire_hash,created_at:receipt.created_at,environment_readiness:receipt.environment_readiness,case_ids:receipt.case_ids||[],fingerprint:householdFingerprint(body)};writeBrowser(localStorage,'eb:household-receipt',savedReceipt);renderReceipt();}
 function renderReceipt(){
  const panel=$('household-receipt');if(!panel)return;panel.hidden=!savedReceipt;
  if(!savedReceipt)return;
  $('receipt-id').textContent=savedReceipt.id;
- $('receipt-status').textContent=receiptMatches()?'这份家庭资料已保存到研究服务器。生成失败或稍后再来，不会删除已保存资料。':'已有一份资料保存在研究服务器。当前回答有改动，请重新保存后再生成。';
+ $('receipt-status').textContent=receiptMatches()?'这份家庭资料已保存到研究服务器。'+(savedReceipt.environment_readiness?.status==='ready'?'可用环境：'+savedReceipt.environment_readiness.summary+'。':savedReceipt.environment_readiness?.issues?.join('；')||''):'已有一份资料保存在研究服务器。当前回答有改动，请重新保存后再生成。';
  $('plan-saved').hidden=!!currentJob;
  $('plan-saved').disabled=pendingSubmit||schema?.planning_enabled===false||!receiptMatches();
 }
@@ -134,15 +152,36 @@ function restoreDecisionDraft(job){
  }catch{}
 }
 function draftKey(){return "eb:questionnaire-draft:"+schema.paired_questionnaire_version;}
+let environmentTimer,environmentPreviewVersion=0;
+function scheduleEnvironmentPreview(){
+ clearTimeout(environmentTimer);const version=++environmentPreviewVersion;
+ environmentTimer=setTimeout(async()=>{
+  const panel=$('environment-preview');if(!schema||!panel)return;
+  const questions=schema.profile_questions.filter(q=>q.environment_input);
+  const answers=collect(questions,'p_');
+  try{const result=await api('/api/environment-preview',{answers});if(version!==environmentPreviewVersion)return;
+   panel.textContent=result.status==='ready'?'本次可用：'+result.summary+'。两份安排都使用上方抽定的日期；先运行当天对照仿真，再生成调整方案。':result.issues.join('；')+'。';
+  }catch(e){if(version===environmentPreviewVersion)panel.textContent='暂未取得环境匹配结果；您的填写内容仍保留。';}
+ },350);
+}
 function saveDraft(){if(!schema||currentJob||pendingSubmit)return;
- const saved=writeBrowser(localStorage,draftKey(),{answers:collect(schema.profile_questions,'p_'),wizard_step:wizardStep,saved_at:Date.now()});
+ scheduleEnvironmentPreview();
+ const saved=writeBrowser(localStorage,draftKey(),{answers:collect(schema.profile_questions,'p_'),wizard_step:wizardStep,questionnaire_context_hash:schema.questionnaire_context.context_hash,saved_at:Date.now()});
  writeBrowser(localStorage,'eb:active-view',{mode:'draft',questionnaire_version:schema.paired_questionnaire_version});
  $('draft-status').textContent=saved?'草稿已保存在此浏览器；点击最后一步的保存按钮后，才会提交到研究服务器。':'此浏览器无法保存草稿，请保持页面打开并完成最后的保存。';
  renderReceipt();
 }
-function migrateAnswers(answers,sourceVersion){
+function migrateAnswers(answers,sourceVersion,contextHash){
  const copy=JSON.parse(JSON.stringify(answers));
- if(['eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.9'].includes(schema.paired_questionnaire_version)&&['eb.persona_questionnaire.v3.6','eb.persona_questionnaire.v3.7'].includes(sourceVersion)){
+ if(sourceVersion!==schema.paired_questionnaire_version||contextHash!==schema.questionnaire_context.context_hash){
+  for(const k of Object.keys(copy))if(/^(H_|D_|E_|T_|P_|X_FREQ_)/.test(k)||['B04','F_EVENING','X_BILL'].includes(k))copy[k]=null;
+  for(const m of copy.M_MEMBERS||[])for(const k of ['routine','comfort','task'])m[k]=null;
+ }
+ if(schema.paired_questionnaire_version==='eb.persona_questionnaire.v4.0'&&sourceVersion!==schema.paired_questionnaire_version){
+  if(copy.X_BUILDING==='house')copy.X_BUILDING=null;
+  copy.X_AREA_BASIS=null;copy.X_FLOOR=null;
+ }
+ if(['eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v4.0'].includes(schema.paired_questionnaire_version)&&['eb.persona_questionnaire.v3.6','eb.persona_questionnaire.v3.7'].includes(sourceVersion)){
   for(const k of Object.keys(copy))if(k.startsWith('X_FREQ_')||['X_RESTORE','X_AREA'].includes(k))copy[k]=null;
   for(const m of copy.M_MEMBERS||[]){m.participation=null;m.grid_importance=null;m.needs_priority=null;}
  }
@@ -151,15 +190,15 @@ function migrateAnswers(answers,sourceVersion){
 function answerProfile(answers){return Object.fromEntries(Object.entries(answers).map(([k,value])=>[k,{value,response_status:value==null?'skipped':'answered'}]));}
 function restoreDraft(){try{
  const version=schema.paired_questionnaire_version;
- const versions=[version,...(version==='eb.persona_questionnaire.v3.9'?['eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.7','eb.persona_questionnaire.v3.6']:version==='eb.persona_questionnaire.v3.8'?['eb.persona_questionnaire.v3.7','eb.persona_questionnaire.v3.6']:version==='eb.persona_questionnaire.v3.7'?['eb.persona_questionnaire.v3.6']:[])];
+ const versions=[version,...(version==='eb.persona_questionnaire.v4.1'?['eb.persona_questionnaire.v4.0','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8']:version==='eb.persona_questionnaire.v4.0'?['eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.7','eb.persona_questionnaire.v3.6']:version==='eb.persona_questionnaire.v3.9'?['eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.7','eb.persona_questionnaire.v3.6']:version==='eb.persona_questionnaire.v3.8'?['eb.persona_questionnaire.v3.7','eb.persona_questionnaire.v3.6']:version==='eb.persona_questionnaire.v3.7'?['eb.persona_questionnaire.v3.6']:[])];
  for(const source of versions){const d=JSON.parse(localStorage.getItem('eb:questionnaire-draft:'+source)||'null');if(!d?.answers)continue;
-  wizardStep=Number.isInteger(d.wizard_step)?d.wizard_step:0;restore(answerProfile(migrateAnswers(d.answers,source)));
-  $('draft-status').textContent=['eb.persona_questionnaire.v3.6','eb.persona_questionnaire.v3.7'].includes(source)&&['eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.9'].includes(version)?'已恢复原草稿；使用频率、成员参与方式等选项已更新，请重新选择。原草稿保留。':'已恢复上次未提交的填写内容。';return true;
+  wizardStep=Number.isInteger(d.wizard_step)?d.wizard_step:0;restore(answerProfile(migrateAnswers(d.answers,source,d.questionnaire_context_hash)));
+  $('draft-status').textContent=(source!==version||d.questionnaire_context_hash!==schema.questionnaire_context.context_hash)?'已恢复家庭基本资料；情境日期或问卷已更新，请按指定月份重新填写习惯和偏好。原记录保留。':['eb.persona_questionnaire.v3.6','eb.persona_questionnaire.v3.7'].includes(source)&&['eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v4.0'].includes(version)?'已恢复原草稿；使用频率、成员参与方式等选项已更新，请重新选择。原草稿保留。':'已恢复上次未提交的填写内容。';return true;
  }
 }catch{}return false;}
 function at(h){const total=Math.round(h*60),day=Math.floor(total/1440),m=total%1440;if(total===1440)return "24:00";return `${day===1?"次日":day>1?`第${day+1}日`:""}${String(Math.floor(m/60)).padStart(2,"0")}:${String(m%60).padStart(2,"0")}`;}
 function selectedDevices(){return [...document.getElementsByName("p_B05")].filter(x=>x.checked).map(x=>JSON.parse(x.value));}
-function conditional(){syncMembers();const selected=selectedDevices();for(const q of schema.profile_questions){if(!q.device)continue;const row=document.querySelector(`[data-question-id="${q.id}"]`);row.hidden=!selected.includes(q.device)||(q.show_when&&$('p_'+q.show_when.question_id)?.value!==JSON.stringify(q.show_when.value));for(const input of row.querySelectorAll("input,select,button"))input.disabled=row.hidden||!!currentJob;}EBTime.sync();document.querySelectorAll("#profile-form select").forEach(s=>s._choiceSync?.());}
+function conditional(){$("p_X_CITY")?._citiesSync?.();syncMembers();const selected=selectedDevices();for(const q of schema.profile_questions){if(!q.device&&!q.show_when)continue;const row=document.querySelector(`[data-question-id="${q.id}"]`);row.hidden=(q.device&&!selected.includes(q.device))||(q.show_when&&$('p_'+q.show_when.question_id)?.value!==JSON.stringify(q.show_when.value));for(const input of row.querySelectorAll("input,select,button"))input.disabled=row.hidden||!!currentJob;}EBTime.sync();document.querySelectorAll("#profile-form select").forEach(s=>s._choiceSync?.());}
 function freeze(on){for(const x of $("profile-form").querySelectorAll("input,select,textarea,button"))x.disabled=on;if(!on)conditional();availability();}
 const scoreInputs=key=>[...document.getElementsByName('feedback_'+key)];
 const scoreValue=key=>{const value=scoreInputs(key)[0]?.value;return value===undefined||value===''?null:Number(value);};
@@ -180,10 +219,20 @@ function renderScores(legacy=false){
   }
 }
 function initialPlan(job){EBTime.initial($("initial-plan"),job.original_plan);}
-function showPair(job){renderScores(job.result.schema_version!==schema.paired_version);const d=job.result.display;const view=d.participant_view||d;EBView.render($("plan-visual"),view);$("outcome-cards").replaceChildren();EBView.outcomes($("outcome-cards"),view);$("temperature-visual").replaceChildren();EBView.temperature($("temperature-visual"),view);$("comparison-title").textContent=d.title||"原安排和 EB 建议，有什么不同？";$("decision-question").textContent=job.result.schema_version===schema.paired_version?"综合考虑您自己和家人的需要，您是否愿意采用这份调整方案？":d.question||"愿意采用这份调整吗？";$("result-panel").hidden=false;$("comparison").replaceChildren();for(const r of d.rows){const tr=el("tr");tr.classList.toggle("changed",r.changed);tr.append(el("td",r.device),el("td",r.original),el("td",r.proposal),el("td",r.change));$("comparison").append(tr);}$("baseline-note").textContent=job.result.schema_version===schema.paired_version?"上方 DR 对照，下方 EB 调整；均为情境模拟，不控制真实电器。":"这是旧版历史结果。点击“修改家庭回答 / 新案例”可使用当前版本重新生成；历史回答保持原样。";$("change-note").textContent=d.has_changes?"请结合安排变化和模拟结果，判断是否符合全家的需要。":"在本次比较时间内，展示的电器运行记录没有变化。";$("forecast-note").textContent=d.notice;$("assumptions-note").textContent=d.assumptions; if(d.selection_reason)$("change-note").append(el("span"," EB 规划时的说明（实际结果见下表）："+d.selection_reason)); if(d.execution_notice)$("forecast-note").append(el("span"," "+d.execution_notice));
+function showPair(job){renderScores(job.result.schema_version!==schema.paired_version);const d=job.result.display;const view=d.participant_view||d;EBView.render($("plan-visual"),view);$("outcome-cards").replaceChildren();EBView.outcomes($("outcome-cards"),view);$("temperature-visual").replaceChildren();EBView.temperature($("temperature-visual"),view);$("comparison-title").textContent=d.title||"原安排和 EB 建议，有什么不同？";$("decision-question").textContent=job.result.schema_version===schema.paired_version?"综合考虑您自己和家人的需要，您是否愿意采用这份调整方案？":d.question||"愿意采用这份调整吗？";$("result-panel").hidden=false;$("comparison").replaceChildren();for(const r of d.rows){const tr=el("tr");tr.classList.toggle("changed",r.changed);tr.append(el("td",r.device),el("td",r.original),el("td",r.proposal),el("td",r.change));$("comparison").append(tr);}$("baseline-note").textContent=job.result.schema_version===schema.paired_version?"上方 DR 对照，下方 EB 调整；均为情境模拟，不控制真实电器。":"这是旧版历史结果。点击“修改家庭回答 / 新案例”可使用当前版本重新生成；历史回答保持原样。";$("change-note").textContent=d.has_changes?"请结合安排变化和模拟结果，判断是否符合全家的需要。":"在本次比较时间内，展示的电器运行记录没有变化。";$("forecast-note").textContent=d.notice;$("assumptions-note").textContent=d.assumptions; if(d.selection_reason)$("change-note").append(el("span"," 复查记录："+d.selection_reason)); if(d.execution_notice)$("forecast-note").append(el("span"," "+d.execution_notice));
  $("decision-timeline").replaceChildren();if(d.timeline?.length){const details=el("details"),summary=el("summary",`查看 EB 的 ${d.timeline.length} 次调整与复查`),list=el("ol");details.append(summary);for(const step of d.timeline){const item=el("li",`${step.time} · ${step.trigger} · 当时室温 ${step.observed_temperature}`);if(step.explanation)item.append(el("p",step.explanation));list.append(item);}details.append(list);$("decision-timeline").append(details);}
- const p=d.prediction;$("metrics").replaceChildren();for(const [label,key,unit] of [["全天用电量","daily_kwh","度"],["全天电费（无补偿）","daily_cost_cny","元"],["响应时段用电量","event_kwh","度"],["响应时段平均功率","event_mean_kw","kW"]]){const tr=el("tr");tr.append(el("td",label),el("td",`${p.original[key].toFixed(2)} ${unit}`),el("td",`${p.proposal[key].toFixed(2)} ${unit}`));$("metrics").append(tr);}const tr=el("tr");tr.append(el("td","响应时段居住区域室温"));for(const side of [p.original,p.proposal])tr.append(el("td",`${side.event_temp_min_c.toFixed(1)}—${side.event_temp_max_c.toFixed(1)}℃`));$("metrics").append(tr);
- if(d.participant_view){$("metrics").replaceChildren();for(const row of d.participant_view.metrics){const tr=el("tr");tr.append(el("td",row.label),el("td",row.original),el("td",row.proposal));$("metrics").append(tr);}}
+ $("metrics").replaceChildren();
+ const metricRows=view.metrics;
+ if(Array.isArray(metricRows)){
+  for(const row of metricRows){const tr=el('tr');tr.append(el('td',row.label),el('td',row.original),el('td',row.proposal));$('metrics').append(tr);}
+ }else{
+  // Legacy records predate the frozen participant-view contract.
+  const p=d.prediction,fmt=(v,n=2)=>Number.isFinite(v)?v.toFixed(n):'未提供';
+  const normalized=p?.cost_unit==='normalized TOU cost/kWh';
+  for(const [label,key,unit] of [['全天用电量','daily_kwh','度'],[normalized?'全天费用指标（非人民币）':'全天电费（无补偿）',normalized?'daily_cost_normalized':'daily_cost_cny',normalized?'':'元'],['响应时段用电量','event_kwh','度'],['响应时段平均功率','event_mean_kw','kW']]){
+   const tr=el('tr');tr.append(el('td',label),el('td',`${fmt(p?.original?.[key])} ${unit}`),el('td',`${fmt(p?.proposal?.[key])} ${unit}`));$('metrics').append(tr);
+  }
+ }
  $("service-results").replaceChildren();if(d.service_rows?.length){const title=el("h3","任务完成情况与尚未验证的结果"),table=el("table"),head=el("tr");for(const text of ["电器","原安排","调整建议"])head.append(el("th",text));table.append(head);for(const row of d.service_rows){const tr=el("tr");tr.append(el("td",row.device),el("td",row.original),el("td",row.proposal));table.append(tr);}$("service-results").append(title,table);}
  const required=job.result.feedback_contract?.required_scores||[];for(const key of Object.keys(scoreFields))for(const input of scoreInputs(key))input.required=required.includes(key);$("score-hint").textContent="1 很不合适 · 5 很合适，可填小数"+(required.length?"":"（旧记录可留空）");
  $("decision-form").hidden=false;const saved=job.decision_saved;for(const x of $("decision-form").querySelectorAll("input,select,textarea,button"))x.disabled=saved||pendingDecisions.has(job.id)||job.result.schema_version!==schema.paired_version;if(saved){for(const x of document.getElementsByName("decision"))x.checked=x.value===job.decision.choice;$("decision-reason").value=job.decision.comment??job.decision.reason??"";for(const key of Object.keys(scoreFields)){const value=job.decision[key]??job.decision[({score:"overall_score",energy_score:"price_score",vpp_score:"control_score"})[key]];for(const input of scoreInputs(key)){input.value=value??'';input._scoreSync?.();}}}$("decision-status").textContent=saved?"选择、四项评分和原因已保存。未控制真实电器。":"";restoreDecisionDraft(job);
@@ -248,7 +297,7 @@ async function pollJob(id,token){
  }catch(e){if(token!==generation)return;$("job-status").textContent="连接暂时中断，正在重新查询已保存的任务…";}
  if(token===generation)timer=setTimeout(()=>pollJob(id,token),jobPollDelay(currentJob));
 }
-$("profile-form").addEventListener("change",e=>{if(schema.profile_questions.some(q=>q.type==="multi_choice"&&e.target.name==="p_"+q.id)){const selected=JSON.parse(e.target.value);if(e.target.checked){for(const x of document.getElementsByName(e.target.name))if(x!==e.target&&(selected==="none"||JSON.parse(x.value)==="none"))x.checked=false;}}conditional();saveDraft();});
+$("profile-form").addEventListener("change",e=>{if(e.target.id==="p_X_REGION")$("p_X_CITY")?._citiesSync?.(true);if(schema.profile_questions.some(q=>q.type==="multi_choice"&&e.target.name==="p_"+q.id)){const selected=JSON.parse(e.target.value);if(e.target.checked){for(const x of document.getElementsByName(e.target.name))if(x!==e.target&&(selected==="none"||JSON.parse(x.value)==="none"))x.checked=false;}}conditional();saveDraft();});
 $("profile-form").addEventListener("input",saveDraft);
 function submissionNonce(key,body){const fingerprint=stableJson(body);let pending=pendingRequests.get(key)||readBrowser(localStorage,key);
  if(!pending||pending.fingerprint!==fingerprint)pending={fingerprint,request_id:typeof crypto.randomUUID==='function'?crypto.randomUUID():Array.from(crypto.getRandomValues(new Uint8Array(16)),x=>x.toString(16).padStart(2,'0')).join('')};
@@ -263,6 +312,9 @@ async function saveHousehold(){
  $('draft-status').textContent='家庭资料已保存到研究服务器，您仍可以修改并另存新版本。';return savedReceipt;
 }
 async function requestSavedPlan(receipt,retrySourceId=null){
+ const environment=receipt.environment_readiness;
+ if(environment?.status==='unavailable')throw new Error('家庭资料已保存。'+environment.issues.join('；'));
+ if(environment?.status==='ready')$('draft-status').textContent='本次环境：'+environment.summary+'。模型为研究近似，具体日期将在两份方案中保持一致。';
  const body={submission_id:receipt.id,household_record_hash:receipt.household_record_hash,scenario_id:schema.paired_context.id,scenario_understood:true,questionnaire_version:receipt.questionnaire_version||schema.paired_questionnaire_version,questionnaire_hash:receipt.questionnaire_hash||schema.paired_questionnaire_hash};
  // The local attempt context creates a fresh nonce for an explicit terminal-job retry.
  // Repeated 429/network retries of that same attempt keep the nonce unchanged.
@@ -274,7 +326,7 @@ async function requestSavedPlan(receipt,retrySourceId=null){
  const j=await api('/api/paired',{...body,request_id:submissionNonce('eb:pending-plan',identity)});
  clearPending('eb:pending-plan');
  const draft=readBrowser(localStorage,draftKey());
- if(draft?.answers&&householdFingerprint({answers:draft.answers,questionnaire_version:schema.paired_questionnaire_version,questionnaire_hash:schema.paired_questionnaire_hash})===receipt.fingerprint)removeBrowser(localStorage,draftKey());
+ if(draft?.answers&&householdFingerprint({answers:draft.answers,questionnaire_version:schema.paired_questionnaire_version,questionnaire_hash:schema.paired_questionnaire_hash,questionnaire_context_hash:draft.questionnaire_context_hash})===receipt.fingerprint)removeBrowser(localStorage,draftKey());
  writeBrowser(localStorage,'eb:active-view',{mode:'job',id:j.id});
  const loaded=await loadJob(j.id);if(loaded)$(currentJob?.status==='complete'?'result-panel':'job-panel').scrollIntoView({block:'start'});
 }
@@ -290,7 +342,7 @@ async function retryStoppedJob(){
  pendingSubmit=true;availability();$('error').hidden=true;
  try{
   const record=await api('/api/households/'+job.household_submission_id);
-  saveReceipt(record,{answers:record.raw_answers,questionnaire_version:record.questionnaire_version,questionnaire_hash:record.questionnaire_hash});
+  saveReceipt(record,{answers:record.raw_answers,questionnaire_version:record.questionnaire_version,questionnaire_hash:record.questionnaire_hash,questionnaire_context_hash:record.questionnaire_context?.context_hash});
   await requestSavedPlan(savedReceipt,job.id);
  }catch(ex){error('已保存的家庭资料仍然保留。'+(ex.name==='AbortError'?'连接超时，请稍后手动重试。':ex.message));}
  finally{pendingSubmit=false;availability();}
@@ -323,11 +375,11 @@ $('decision-form').onsubmit=async e=>{
 $("cancel").onclick=async()=>{try{if(currentJob){await api(`/api/jobs/${currentJob.id}/cancel`,{});await loadJob(currentJob.id);}}catch(e){error(e.message);}};
 $('new-case').onclick=()=>{
  if(pendingSubmit||currentJob&&!terminal.has(currentJob.status)){error('请先完成或取消当前计算。');return;}
- clearTimeout(timer);generation++;const previous=currentJob?.profile,sourceVersion=currentJob?.questionnaire_version;currentJob=null;
+ clearTimeout(timer);generation++;const previous=currentJob?.profile,sourceVersion=currentJob?.questionnaire_version,previousContext=currentJob?.scenario?.questionnaire_context?.context_hash;currentJob=null;
  for(const [i,step] of [...document.querySelectorAll('.journey li')].entries())step.classList.toggle('active',i===0);
  renderQuestions(schema.paired_questions);
  const resumed=restoreDraft();
- if(!resumed&&previous)restore(answerProfile(migrateAnswers(Object.fromEntries(Object.entries(previous).map(([k,c])=>[k,c.response_status==='answered'?c.value:null])),sourceVersion)));
+ if(!resumed&&previous)restore(answerProfile(migrateAnswers(Object.fromEntries(Object.entries(previous).map(([k,c])=>[k,c.response_status==='answered'?c.value:null])),sourceVersion,previousContext)));
  freeze(false);showWizard(wizardStep,{save:false});saveDraft();
  for(const id of ['job-panel','result-panel','decision-form','error'])$(id).hidden=true;
  $('decision-form').reset();$('profile-form').scrollIntoView({block:'start'});
@@ -369,13 +421,15 @@ async function recoverReceipt(state){
  // A local receipt is only reused when the current session owns it.
  const selected=summaries.find(r=>r.id===local?.id)||summaries.at(-1);
  savedReceipt=null;savedHouseholdRecord=null;
- if(selected){try{const record=await api('/api/households/'+selected.id);savedHouseholdRecord=record;saveReceipt({...selected,...record},{answers:record.raw_answers,questionnaire_version:record.questionnaire_version,questionnaire_hash:record.questionnaire_hash});}catch{removeBrowser(localStorage,'eb:household-receipt');}}
+ if(selected){try{const record=await api('/api/households/'+selected.id);savedHouseholdRecord=record;saveReceipt({...selected,...record},{answers:record.raw_answers,questionnaire_version:record.questionnaire_version,questionnaire_hash:record.questionnaire_hash,questionnaire_context_hash:record.questionnaire_context?.context_hash});}catch{removeBrowser(localStorage,'eb:household-receipt');}}
 }
-function restoreSavedHousehold(){if(!savedHouseholdRecord)return false;restore(answerProfile(migrateAnswers(savedHouseholdRecord.raw_answers,savedHouseholdRecord.questionnaire_version)));wizardStep=wizardSteps().at(-1);$('draft-status').textContent='已从研究服务器恢复保存的家庭资料。修改后请重新保存。';return true;}
+function restoreSavedHousehold(){if(!savedHouseholdRecord)return false;restore(answerProfile(migrateAnswers(savedHouseholdRecord.raw_answers,savedHouseholdRecord.questionnaire_version,savedHouseholdRecord.questionnaire_context?.context_hash)));wizardStep=wizardSteps().at(-1);$('draft-status').textContent='已恢复家庭资料；请核对上方情境日期，补填已清空的季节习惯后重新保存。';return true;}
 async function init(){
  $('generate').disabled=true;renderScores();
  try{
   schema=await api('/api/session');renderQuestions(schema.paired_questions);
+  $('context-date').textContent='本次情境：'+schema.questionnaire_context.label;
+  $('context-instruction').textContent=schema.questionnaire_context.instruction;
   const human=schema.collection_mode==='human_pilot';
   $('admin-link').hidden=!schema.is_admin;
   $('collection-badge').textContent=schema.is_admin?'管理员测试':human?'家庭用电研究':'演示试用';

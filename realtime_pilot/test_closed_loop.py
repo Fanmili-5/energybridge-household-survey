@@ -7,6 +7,8 @@ from verify_paired_physics import answers
 from eb_execution import upstream
 from closed_loop import next_checkpoint,display_trajectory
 
+from legacy_test_support import prepare
+
 class ClosedLoopTests(unittest.TestCase):
     def test_native_checkpoints_and_model_requested_earlier_checks(self):
         runner,_=upstream();event={'trigger_h':90,'end_h':91,'id':'vpp'}
@@ -26,6 +28,8 @@ class ClosedLoopTests(unittest.TestCase):
         self.assertTrue(ac['changed']);self.assertIn('27℃',ac['proposal']);self.assertIn('25℃',ac['proposal'])
     def test_future_observation_and_nonmonotonic_history_rejected(self):
         profile=normalize_answers(answers(),list(LOOKUP),LOOKUP);original,scenario=prepare(profile,'ledger');now=72+scenario['decision_h']
+        from evaluation_window import make_window
+        scenario['evaluation_window']=make_window(original)  # historical custom-loop contract
         decision={'sim_h':now,'observed':{'end_h':now},'requested_plan':original['eb_ordinary_plan']}
         plan={'execution_mode':'eb_closed_loop','horizon_end_sim_h':scenario['evaluation_window']['end_sim_h'],'decisions':[decision]}
         self.assertEqual(validate(original,plan,scenario),plan)

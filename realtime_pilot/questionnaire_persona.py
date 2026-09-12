@@ -69,6 +69,8 @@ def components(profile, questions):
             continue
         if q.get("research_only"):
             continue
+        if q.get('environment_input'):
+            continue
         if q["type"] == "member_list":
             members = deepcopy(cell)
             continue
@@ -110,8 +112,8 @@ def visible_profile(profile, questions):
             continue
         labels = {o["value"]: o["label"] for o in q["options"]}
         value = cell["value"]
-        answer = ("、".join(labels[v] for v in value) if isinstance(value, list) else labels.get(value)) if cell["response_status"] == "answered" else None
-        key = "household_information" if q["group"] == "household_fact" else "stated_attitudes"
+        answer = (str(value) if q.get('type')=='text' else "、".join(labels[v] for v in value) if isinstance(value, list) else labels.get(value)) if cell["response_status"] == "answered" else None
+        key = "household_information" if q["group"] in ("household_fact","simulation_environment") else "stated_attitudes"
         out[key].append({"question_id": q["id"], "question": q["prompt"], "answer": answer,
                          "response_status": cell["response_status"]})
     out["interpretation"] = "These are public self-reports, not assigned persona traits. General attitudes do not authorize this event. Household type is not assigned. Do not infer numeric tolerances, scoring weights, or response probabilities."

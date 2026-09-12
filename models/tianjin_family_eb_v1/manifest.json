@@ -1,0 +1,144 @@
+{
+  "model_version": "eb.tianjin_family_all_appliances.v1",
+  "idf_file": "family_all_appliances.idf",
+  "idf_sha256": "d797b77ac4042a8074c4699ec3518a095bc2d4f6c936affcaa361ffded0ccbd2",
+  "energyplus_version": "24.1.0",
+  "upstream_repository": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge",
+  "upstream_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "sources": {
+    "template": {
+      "path": "experiments/models/family_home/family_simple.idf",
+      "sha256": "5ae863fc41c2997540eb991b2c09976f5b5c3455793151070c52a1cf9b80a6d1"
+    },
+    "thermal_reference": {
+      "path": "experiments/models/family_home/original_model.idf",
+      "sha256": "2b115a87d9fa3acb3fcd1f9ef5bc961a0d9b001a5351fec9277e107671c53993"
+    },
+    "controller": {
+      "path": "experiments/benchmark/family_runner.py",
+      "sha256": "697a955ae9a5a34132c030c8d0f3b96ef6c0f63ec2caa24a2c1def23989de1d7"
+    },
+    "date_preparation": {
+      "path": "energybridge/data/day_ahead.py",
+      "sha256": "fd099210d5240b35fd094c6672c48b50fbd381e0cba7891428d8447fb2e8a977"
+    },
+    "hvac_preparation": {
+      "path": "experiments/benchmark/run_persona_json.py",
+      "sha256": "5533efb01589eab079dda6d7be5484caf19aa911f51be8eaa11e51369069ba95"
+    },
+    "author_construction_report": {
+      "path": "Family_Model/envelope_retrofit_report.md",
+      "sha256": "fd4580d8d898d42efe0bc87b9120ff2dccd038eac34c635b177902c5ea3ba641"
+    },
+    "weather": {
+      "path": "experiments/weather/epw/CHN_TJ_Tianjin.545270_CSWD.epw",
+      "sha256": "ddea62020623b59b2807d53a273ae06fe9c3918935f6217a3235de64a42513cc"
+    }
+  },
+  "builder": {
+    "path": "scripts/build_complete_household_idf.py",
+    "sha256": "4193780e82094c7f16e9bf4e342a6c3c18932bdfdb00f3ec73b7066553618c1f"
+  },
+  "runtime_binding": {
+    "path": "realtime_pilot/native_assets.py",
+    "sha256": "e992b214c191275fa3b340ef37c8ba309331397b0eb87468b44e69a6249a00be",
+    "version": "eb.appliance_ep_binding.v1"
+  },
+  "default_run": {
+    "reference_calendar_date": "2007-07-01",
+    "days": 1,
+    "weather_type": "Tianjin CSWD typical weather; not observed 2007 weather",
+    "timestep_per_hour": 6,
+    "household_specific_occupancy": false
+  },
+  "preserved": [
+    "building_geometry",
+    "materials_and_constructions",
+    "two_thermal_zones",
+    "hvac_system",
+    "ev_charger",
+    "water_heater_and_dhw_connections",
+    "original_background_loads_and_schedules",
+    "eb_controller_and_constraints"
+  ],
+  "modified_original_objects": [
+    {
+      "type": "runperiod",
+      "name": "annual"
+    },
+    {
+      "type": "availabilitymanager:scheduled",
+      "name": "system availability"
+    }
+  ],
+  "added_object_counts": {
+    "Schedule:Constant": 5,
+    "ElectricEquipment": 4
+  },
+  "added_appliance_bindings": {
+    "washer": {
+      "schedule": "ClothesWasher_Power_Frac",
+      "equipment": "ClothesWasher_Appliance",
+      "design_w": 2000.0,
+      "heat_fractions": [
+        "0",
+        "0.8",
+        "0.2"
+      ]
+    },
+    "dishwasher": {
+      "schedule": "Dishwasher_Power_Frac",
+      "equipment": "Dishwasher_Appliance",
+      "design_w": 1500.0,
+      "heat_fractions": [
+        "0.15",
+        "0.6",
+        "0.25"
+      ]
+    },
+    "dryer": {
+      "schedule": "ClothesDryer_Power_Frac",
+      "equipment": "ClothesDryer_Appliance",
+      "design_w": 3000.0,
+      "heat_fractions": [
+        "0.05",
+        "0.15",
+        "0.8"
+      ]
+    },
+    "refrigerator": {
+      "schedule": "Refrigerator_Power_Frac",
+      "equipment": "Refrigerator_Appliance",
+      "design_w": 200.0,
+      "heat_fractions": [
+        "0",
+        "1",
+        "0"
+      ]
+    }
+  },
+  "electric_equipment_names": [
+    "EV_Charger",
+    "ClothesWasher_Appliance",
+    "Dishwasher_Appliance",
+    "ClothesDryer_Appliance",
+    "Refrigerator_Appliance"
+  ],
+  "scope": {
+    "supported_devices": [
+      "hvac",
+      "ev",
+      "water_heater",
+      "washer",
+      "dishwasher",
+      "dryer",
+      "refrigerator"
+    ],
+    "refrigerator_role": "non-shiftable base load in the EB controller",
+    "task_and_ev_states": "maintained by original EB Python models",
+    "added_ep_physics": "electrical load and inherited zone heat-gain fractions",
+    "detailed_appliance_mechanics_or_dhw_added": false,
+    "household_calibrated": false,
+    "production_template_switched_by_builder": false
+  }
+}

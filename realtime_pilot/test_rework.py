@@ -17,10 +17,16 @@ from eb_controller_adapter import native_fallback, control_context
 from closed_loop import display_trajectory
 from proposal_contract import decision_record
 
+from legacy_test_support import prepare
+
+
 class ReworkTests(unittest.TestCase):
     def request(self):
         profile=normalize_answers(answers(),list(LOOKUP),LOOKUP)
         original,scenario=prepare(profile,'rework-regression')
+        # Historical custom-loop regression; not evidence for the native entry.
+        from evaluation_window import make_window
+        scenario['evaluation_window']=make_window(original)
         return {'profile':profile,'original_plan':original,'scenario':scenario,
                 'observable_profile':visible_profile(profile,QUESTIONS)}
 
@@ -78,7 +84,7 @@ class ReworkTests(unittest.TestCase):
 
     def test_real_ep_completes_with_invalid_model_and_retains_exact_prompts(self):
         from common import write_json
-        from paired_worker import run
+        from legacy_paired_worker import run_legacy as run
         runner,_=upstream()
         from energybridge.llm.client import LLMClient
         with tempfile.TemporaryDirectory() as directory,redirect_stdout(StringIO()):
@@ -86,7 +92,8 @@ class ReworkTests(unittest.TestCase):
             with patch.object(LLMClient,'chat_with_metrics',return_value={'text':'not json','metrics':{'fixture':True}}):
                 run(folder)
             result=json.loads((folder/'outcome.json').read_text())
-            self.assertEqual(result['schema_version'],'eb.paired_ep.v2.7')
+            from paired_contract import VERSION
+            self.assertEqual(result['schema_version'],VERSION)
             for branch in ('baseline','proposal'):
                 trace=json.loads((folder/branch/'trace.json').read_text())
                 self.assertEqual(trace['evaluation_window']['end_sim_h'],104)

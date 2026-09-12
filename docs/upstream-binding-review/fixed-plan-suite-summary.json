@@ -1,0 +1,250 @@
+{
+  "scope": "original code, fixed plan, no LLM, no real EP in this probe",
+  "source_sha256": "697a955ae9a5a34132c030c8d0f3b96ef6c0f63ec2caa24a2c1def23989de1d7",
+  "source_functions": {
+    "_adaptive_v2_plan_patches": {
+      "line": 1563,
+      "end_line": 1578,
+      "sha256": "39dd44f9e104fc35b6c365195894b2a08893fd44f8a3d2b5bc3e3b0c0200e539"
+    },
+    "_shiftable_has_existing_service_plan": {
+      "line": 3009,
+      "end_line": 3022,
+      "sha256": "29801354e6b920abae2748a3c5538d1a63c0967bb5849b23b50db54a0338f107"
+    },
+    "_adaptive_v3_apply_appliance_actions": {
+      "line": 3428,
+      "end_line": 3671,
+      "sha256": "e079e49037dbe55dc7ef2e8d5888947f5b602bac5c16e35ae3e10870463d4869"
+    },
+    "_write_appliance_actuators": {
+      "line": 10759,
+      "end_line": 10825,
+      "sha256": "192ed0f4958677a8d6709181f420f378547baa1d053c6b480f96d4a889ad9170"
+    }
+  },
+  "appliance_config": {
+    "washer": {
+      "present": true,
+      "earliest_h": 16.0,
+      "latest_h": 23.0,
+      "preferred_h": 18.0,
+      "duration_h": 1.0,
+      "power_kw": 2.0,
+      "shiftable": true,
+      "dr_adjustable": true
+    },
+    "dishwasher": {
+      "present": true,
+      "earliest_h": 16.0,
+      "latest_h": 23.0,
+      "preferred_h": 18.0,
+      "duration_h": 1.0,
+      "power_kw": 1.5,
+      "shiftable": true,
+      "dr_adjustable": true
+    },
+    "dryer": {
+      "present": true,
+      "earliest_h": 16.0,
+      "latest_h": 23.0,
+      "preferred_h": 18.0,
+      "duration_h": 1.0,
+      "power_kw": 3.0,
+      "shiftable": true,
+      "dr_adjustable": true
+    },
+    "ev": {
+      "present": false
+    },
+    "water_heater": {
+      "present": false
+    },
+    "refrigerator": {
+      "present": false
+    }
+  },
+  "vpp_events": [
+    {
+      "id": "fixed_vpp",
+      "trigger_h": 18.0,
+      "end_h": 19.0
+    }
+  ],
+  "original_plan": {
+    "setpoint": 26.0,
+    "appliances": {
+      "washer_start_h": 18.0,
+      "dishwasher_start_h": 18.0,
+      "dryer_start_h": 18.0
+    }
+  },
+  "revised_plan": {
+    "setpoint": 26.0,
+    "appliances": {
+      "washer_start_h": 20.0,
+      "dishwasher_start_h": 20.0,
+      "dryer_start_h": 20.0
+    }
+  },
+  "cases": {
+    "original_18": {
+      "initial_application": {
+        "version": "energybridge.actuator_application.v3",
+        "requested_actions": {
+          "washer_start_h": 18.0,
+          "dishwasher_start_h": 18.0,
+          "dryer_start_h": 18.0
+        },
+        "applied_actions": {
+          "washer_start_h": 18.0,
+          "dishwasher_start_h": 18.0,
+          "dryer_start_h": 18.0
+        },
+        "patches": [],
+        "rejections": [],
+        "status": "applied_as_requested"
+      },
+      "final_application": {
+        "version": "energybridge.actuator_application.v3",
+        "requested_actions": {
+          "washer_start_h": 18.0,
+          "dishwasher_start_h": 18.0,
+          "dryer_start_h": 18.0
+        },
+        "applied_actions": {
+          "washer_start_h": 18.0,
+          "dishwasher_start_h": 18.0,
+          "dryer_start_h": 18.0
+        },
+        "patches": [],
+        "rejections": [],
+        "status": "applied_as_requested"
+      },
+      "device_results": {
+        "washer": {
+          "on_start_h": 18.0,
+          "on_end_h": 19.0,
+          "energy_kwh": 1.9999999999999998,
+          "result": {
+            "name": "washer",
+            "day": 0,
+            "present": true,
+            "completed": true,
+            "ran_during_vpp": true,
+            "skipped": false,
+            "scheduled_abs_h": 18.0
+          }
+        },
+        "dishwasher": {
+          "on_start_h": 18.0,
+          "on_end_h": 19.0,
+          "energy_kwh": 1.5,
+          "result": {
+            "name": "dishwasher",
+            "day": 0,
+            "present": true,
+            "completed": true,
+            "ran_during_vpp": true,
+            "skipped": false,
+            "scheduled_abs_h": 18.0
+          }
+        },
+        "dryer": {
+          "on_start_h": 18.0,
+          "on_end_h": 19.0,
+          "energy_kwh": 3.0,
+          "result": {
+            "name": "dryer",
+            "day": 0,
+            "present": true,
+            "completed": true,
+            "ran_during_vpp": true,
+            "skipped": false,
+            "scheduled_abs_h": 18.0
+          }
+        }
+      }
+    },
+    "revised_20": {
+      "initial_application": {
+        "version": "energybridge.actuator_application.v3",
+        "requested_actions": {
+          "washer_start_h": 18.0,
+          "dishwasher_start_h": 18.0,
+          "dryer_start_h": 18.0
+        },
+        "applied_actions": {
+          "washer_start_h": 18.0,
+          "dishwasher_start_h": 18.0,
+          "dryer_start_h": 18.0
+        },
+        "patches": [],
+        "rejections": [],
+        "status": "applied_as_requested"
+      },
+      "final_application": {
+        "version": "energybridge.actuator_application.v3",
+        "requested_actions": {
+          "washer_start_h": 20.0,
+          "dishwasher_start_h": 20.0,
+          "dryer_start_h": 20.0
+        },
+        "applied_actions": {
+          "washer_start_h": 20.0,
+          "dishwasher_start_h": 20.0,
+          "dryer_start_h": 20.0
+        },
+        "patches": [],
+        "rejections": [],
+        "status": "applied_as_requested"
+      },
+      "device_results": {
+        "washer": {
+          "on_start_h": 20.0,
+          "on_end_h": 21.0,
+          "energy_kwh": 1.9999999999999998,
+          "result": {
+            "name": "washer",
+            "day": 0,
+            "present": true,
+            "completed": true,
+            "ran_during_vpp": false,
+            "skipped": false,
+            "scheduled_abs_h": 20.0
+          }
+        },
+        "dishwasher": {
+          "on_start_h": 20.0,
+          "on_end_h": 21.0,
+          "energy_kwh": 1.5,
+          "result": {
+            "name": "dishwasher",
+            "day": 0,
+            "present": true,
+            "completed": true,
+            "ran_during_vpp": false,
+            "skipped": false,
+            "scheduled_abs_h": 20.0
+          }
+        },
+        "dryer": {
+          "on_start_h": 20.0,
+          "on_end_h": 21.0,
+          "energy_kwh": 3.0,
+          "result": {
+            "name": "dryer",
+            "day": 0,
+            "present": true,
+            "completed": true,
+            "ran_during_vpp": false,
+            "skipped": false,
+            "scheduled_abs_h": 20.0
+          }
+        }
+      }
+    }
+  },
+  "passed": true,
+  "paid_model_calls": 0
+}

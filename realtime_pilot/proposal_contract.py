@@ -199,6 +199,7 @@ def candidate(job, decision):
             "profile_snapshot": job["profile"], "data_origin": job["data_origin"],
             "target_source": decision["target_source"], "has_supervised_answer": True,
             "original_plan": job["original_plan"], "proposal_plan": result["proposal_plan"],
+            **({"baseline_plan":deepcopy(result["baseline_plan"]),"baseline_plan_hash":result["baseline_plan_hash"]} if result.get('baseline_plan') else {}),
             **{k: result[k] for k in ("display_hash", "original_plan_hash", "proposal_plan_hash")},
             "feedback_basis": "shown_plan_pair_and_ep_prediction" if job.get("flow")=="paired_ep_v1" else "shown_plan_pair", "assessment_stage": result.get("assessment_stage", "before_execution"),
             "assessment_cutoff_sim_h": result.get("assessment_cutoff_sim_h"),

@@ -1,0 +1,141 @@
+{
+  "upstream": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge",
+  "commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "ep_version": "24.1.0",
+  "paid_api_calls": 0,
+  "production_changed": false,
+  "runs": 24,
+  "weather": "Tianjin EPW used for all templates as a controlled electrical-binding test; not Berlin validation.",
+  "duration": "one day per run; not the template nominal duration",
+  "thermal_assumption": "Heat fractions copied from author's Tianjin original_model.idf; Berlin transfer requires author review.",
+  "cases": {
+    "family_simple_3day.idf": {
+      "original_handles": {
+        "washer": -1,
+        "dishwasher": -1,
+        "dryer": -1,
+        "refrigerator": -1
+      },
+      "original_facility_same_off_on": true,
+      "candidate_zero_input_same_meter": true,
+      "candidate_handles": {
+        "washer": 60,
+        "dishwasher": 61,
+        "dryer": 62,
+        "refrigerator": 63
+      },
+      "candidate_equipment_kwh": {
+        "CLOTHESWASHER_APPLIANCE": 0.9999999999999999,
+        "DISHWASHER_APPLIANCE": 0.75,
+        "CLOTHESDRYER_APPLIANCE": 1.5,
+        "REFRIGERATOR_APPLIANCE": 0.09999999999999999
+      },
+      "facility_kwh": {
+        "original_off": 35.41783556479067,
+        "original_on": 35.41783556479067,
+        "candidate_off": 35.41783556479067,
+        "candidate_on": 39.0671572851382,
+        "candidate_shifted": 39.0535444226017,
+        "candidate_rl_writer": 27.087115503457063
+      },
+      "native_and_rl_writer_equipment_match": true,
+      "shifted_exactly_two_hours": true
+    },
+    "family_simple_7day.idf": {
+      "original_handles": {
+        "washer": -1,
+        "dishwasher": -1,
+        "dryer": -1,
+        "refrigerator": -1
+      },
+      "original_facility_same_off_on": true,
+      "candidate_zero_input_same_meter": true,
+      "candidate_handles": {
+        "washer": 60,
+        "dishwasher": 61,
+        "dryer": 62,
+        "refrigerator": 63
+      },
+      "candidate_equipment_kwh": {
+        "CLOTHESWASHER_APPLIANCE": 0.9999999999999999,
+        "DISHWASHER_APPLIANCE": 0.75,
+        "CLOTHESDRYER_APPLIANCE": 1.5,
+        "REFRIGERATOR_APPLIANCE": 0.09999999999999999
+      },
+      "facility_kwh": {
+        "original_off": 35.41783556479067,
+        "original_on": 35.41783556479067,
+        "candidate_off": 35.41783556479067,
+        "candidate_on": 39.0671572851382,
+        "candidate_shifted": 39.0535444226017,
+        "candidate_rl_writer": 27.087115503457063
+      },
+      "native_and_rl_writer_equipment_match": true,
+      "shifted_exactly_two_hours": true
+    },
+    "family_simple_14day.idf": {
+      "original_handles": {
+        "washer": -1,
+        "dishwasher": -1,
+        "dryer": -1,
+        "refrigerator": -1
+      },
+      "original_facility_same_off_on": true,
+      "candidate_zero_input_same_meter": true,
+      "candidate_handles": {
+        "washer": 60,
+        "dishwasher": 61,
+        "dryer": 62,
+        "refrigerator": 63
+      },
+      "candidate_equipment_kwh": {
+        "CLOTHESWASHER_APPLIANCE": 0.9999999999999999,
+        "DISHWASHER_APPLIANCE": 0.75,
+        "CLOTHESDRYER_APPLIANCE": 1.5,
+        "REFRIGERATOR_APPLIANCE": 0.09999999999999999
+      },
+      "facility_kwh": {
+        "original_off": 35.41783556479067,
+        "original_on": 35.41783556479067,
+        "candidate_off": 35.41783556479067,
+        "candidate_on": 39.0671572851382,
+        "candidate_shifted": 39.0535444226017,
+        "candidate_rl_writer": 27.087115503457063
+      },
+      "native_and_rl_writer_equipment_match": true,
+      "shifted_exactly_two_hours": true
+    },
+    "berlin_family_geg_final.idf": {
+      "original_handles": {
+        "washer": -1,
+        "dishwasher": -1,
+        "dryer": -1,
+        "refrigerator": -1
+      },
+      "original_facility_same_off_on": true,
+      "candidate_zero_input_same_meter": true,
+      "candidate_handles": {
+        "washer": 60,
+        "dishwasher": 61,
+        "dryer": 62,
+        "refrigerator": 63
+      },
+      "candidate_equipment_kwh": {
+        "CLOTHESWASHER_APPLIANCE": 0.9999999999999999,
+        "DISHWASHER_APPLIANCE": 0.75,
+        "CLOTHESDRYER_APPLIANCE": 1.5,
+        "REFRIGERATOR_APPLIANCE": 0.09999999999999999
+      },
+      "facility_kwh": {
+        "original_off": 36.41570279045048,
+        "original_on": 36.41570279045048,
+        "candidate_off": 36.41570279045048,
+        "candidate_on": 39.99277285888407,
+        "candidate_shifted": 40.09704714596691,
+        "candidate_rl_writer": 31.94855474146805
+      },
+      "native_and_rl_writer_equipment_match": true,
+      "shifted_exactly_two_hours": true
+    }
+  }
+}

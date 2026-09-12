@@ -7,6 +7,7 @@ from the pinned family runner. Both branches use the same live EP adapter.
 from copy import deepcopy
 from evaluation_window import window_for,clock
 import json
+import math
 import re
 import sys
 import time
@@ -17,6 +18,7 @@ from eb_execution import upstream, replay, source_manifest
 from paired_ep import EP, TEMPLATE, WEATHER, build_idf, read_series, find
 from eb_controller_adapter import control_context, native_fallback, daily_plan_due, apply_hvac, planning_evidence
 from household_config import ensure_household_config, bind_household
+from native_planning import resolve as resolve_native_planning
 
 class EBPlanner:
     def __init__(self, request, folder, progress):
@@ -56,40 +58,51 @@ class EBPlanner:
         inputs['observable_state']['decision_trigger']=reasons
         inputs['observable_state']['horizon_end_simulation_hour']=horizon
         inputs['observable_state']['post_event_restore_context']=runner._agent_post_vpp_restore_event(sim_h,vpp_events=[absolute])
-        constraints=inputs.get('explicit_constraints',[])
-        inputs['explicit_constraints']=[c for c in constraints if 'outside_vpp_window' not in c['constraint_id']]
-        write_json(folder/'constraint_scope.json',{'not_used_as_human_quality_gates':[c for c in constraints if 'outside_vpp_window' in c['constraint_id']]})
-        system,user=runner._adaptive_v3_planning_prompts(inputs)
+        write_json(folder/'constraint_scope.json',{
+            'source':'native EB planning constraints; not household evaluation',
+            'preserved_constraint_ids':[c['constraint_id'] for c in inputs.get('explicit_constraints',[])],
+            'household_scorer_called':False})
+        system,user=runner._adaptive_v3_planning_prompts(inputs,allow_skill_request=False)
         system+='\nEach plan has numeric setpoint and nested appliances. next_check_hour is an absolute simulation hour or null, never just hour-of-day. Use Chinese household explanations. No future simulation observations are supplied.'
         clock_note=f'\n[CURRENT DECISION CLOCK] simulation_hour={sim_h:g}; current clock={at(sim_h%24)}. This is a NEW decision after the previous checks. next_check_hour must be null or in [{sim_h+.25:g},{horizon:g}]. A previous checkpoint at {sim_h:g} has already been reached and cannot be scheduled again.'
         write_json(folder/'planning_input.json',{'inputs':inputs,'system_prompt':system,'user_prompt':user+clock_note,'observed_at_sim_h':sim_h,'control_bounds':bounds,'household_config_hash':self.request['household_config_hash']})
         replies=[];call_number=0
-        def ask(extra=''):
+        def ask(extra='', *, purpose='initial_planning'):
             nonlocal call_number
             call_number+=1
-            write_json(folder/f'call_{call_number}_request.json',{'system_prompt':system,'user_prompt':user+extra+clock_note,'response_format':{'type':'json_object'},'max_retries':1})
+            write_json(folder/f'call_{call_number}_request.json',{'system_prompt':system,'user_prompt':user+extra+clock_note,'response_format':{'type':'json_object'},'max_retries':1,'purpose':purpose})
             started=time.perf_counter()
             try:
                 with api_request():
                     reply=LLMClient().chat_with_metrics(system,user+extra+clock_note,max_retries=1,response_format={'type':'json_object'})
             except Exception as exc:
-                failure={'status':'failed','error_type':type(exc).__name__,'seconds':round(time.perf_counter()-started,3)}
+                failure={'status':'failed','error_type':type(exc).__name__,'seconds':round(time.perf_counter()-started,3),'purpose':purpose}
+                # Keep the native client's credential-free counters, never provider
+                # exception text, request headers, URLs or response bodies.
+                failure_type=getattr(exc,'failure_type',None)
+                if isinstance(failure_type,str) and re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]{0,79}',failure_type):
+                    failure['failure_type']=failure_type
+                metrics=getattr(exc,'metrics',{})
+                if isinstance(metrics,dict):
+                    failure['metrics']={k:v for k in ('latency_seconds','attempts','retries',
+                        'provider_failures','validation_failures','empty_response_failures',
+                        'length_truncation_failures','exhausted_calls')
+                        if isinstance((v:=metrics.get(k)),(int,float)) and not isinstance(v,bool)
+                        and math.isfinite(v) and v>=0}
                 self.calls.append(failure);write_json(folder/f'call_{call_number}_error.json',failure)
                 raise
-            self.calls.append({'status':'returned','seconds':round(time.perf_counter()-started,3),'metrics':reply['metrics']})
+            self.calls.append({'status':'returned','seconds':round(time.perf_counter()-started,3),'metrics':reply['metrics'],'purpose':purpose})
             replies.append(reply);self.responses.append(reply)
             write_json(folder/f'response_{len(replies)}.json',reply)
             return reply['text']
-        def errors(plan):
-            return runner._adaptive_v3_plan_control_errors(plan,sim_h=sim_h,total_sim_hours=horizon,setpoint_min_c=bounds['minimum_c'],setpoint_max_c=bounds['maximum_c'])
         try:
             raw=ask()
         except Exception as exc:
             # API failure follows the same controller fallback; it is not a household rejection.
             raw=None;result={'selected_executable_plan':None,'status':'llm_unavailable','error_type':type(exc).__name__}
         else:
-            result=runner._adaptive_v3_resolve_planning_response(raw,planning_inputs=inputs,policy_error_fn=errors,
-                replan_fn=lambda feedback:ask('\n[EB FORMAT REPAIR]\n'+json.dumps(feedback,ensure_ascii=False)))
+            result=resolve_native_planning(raw,inputs=inputs,loop=loop,config=household['appliances'],
+                sim_h=sim_h,horizon=horizon,bounds=bounds,event=upcoming,ask=ask)
         write_json(folder/'planning_audit.json',result)
         selected=result['selected_executable_plan']
         self.last_audit={'controller_source':'model','fallback_used':False}
@@ -283,6 +296,33 @@ def simulate_live(folder, request, planner=None):
     write_json(folder/'trace.json',out);return out
 
 
+def execution_explanation(decision):
+    """Participant text describes actuator outcomes, not unexecuted model intent.
+
+    Original model explanations remain in decision_history for audit only.
+    Applying a command does not establish an energy saving or service completion.
+    """
+    app=decision.get('application') or {}
+    labels={'washer':'洗衣机','dishwasher':'洗碗机','dryer':'烘干机',
+            'water_heater':'电热水器','ev':'电动车充电','ev_mode':'电动车充电模式'}
+    reasons={'existing_target_window_preserved':'保留已有充电窗口',
+        'existing_service_plan_preserved':'保留已有任务安排',
+        'service_already_started_or_completed':'任务已开始或完成',
+        'runtime_past':'指令时间已过去'}
+    parts=[]
+    if decision.get('controller',{}).get('fallback_used'):
+        parts.append('本次使用 EB 回退安排。')
+    for rejection in app.get('rejections',[]):
+        label=labels.get(rejection.get('service'),'电器')
+        reason=reasons.get(rejection.get('reason'),'指令未通过执行检查')
+        parts.append(f'{label}：{reason}，未执行本次调整。')
+    if not parts:
+        parts.append('本次指令已交给模拟器；实际运行时间见时间轴。')
+    elif app.get('applied_actions'):
+        parts.append('其余已接收指令的运行情况见时间轴。')
+    return ''.join(parts)
+
+
 def display_trajectory(original, baseline, proposal, scenario, prediction):
     from proposal_contract import DEVICES
     at=clock
@@ -329,7 +369,8 @@ def display_trajectory(original, baseline, proposal, scenario, prediction):
     trigger_names={'notification':'收到通知','vpp_start':'响应开始','next_check':'复查','daily_plan':'每日规划'}
     for d in proposal['decisions']:
         timeline.append({'time':at(d['sim_h']-72),'trigger':'、'.join(trigger_names[x] for x in d['trigger']),
-                         'observed_temperature':f"{d['observed']['temperature_c']:.1f}℃",'explanation':d['explanation']})
+                         'observed_temperature':f"{d['observed']['temperature_c']:.1f}℃",
+                         'explanation':execution_explanation(d),'explanation_source':'actuator_execution_report'})
     event=scenario['event'];window=at(event['trigger_h'])+'—'+at(event['end_h'])
     return {'title':'原安排与 EB 调整后的运行结果','context':scenario,'prediction':prediction,'rows':rows,
             'schedule_chart':plan_chart(chart_rows,scenario),'temperature_chart':thermal_chart(original,baseline,proposal,scenario),
@@ -337,8 +378,8 @@ def display_trajectory(original, baseline, proposal, scenario, prediction):
             'question':'您是否同意采用 EB 的这套调整安排？',
             'notice':f"模拟通知时间 {at(scenario['decision_h'])}，响应时段 {window}。EB 根据模拟过程中的新状态持续复查和调整。表格展示实际执行轨迹，不只是最后一条指令。两份安排均统计到{window_for(scenario)['end_label']}，含这段时间内的跨日用电；原安排次日延续日常习惯，EB 调整方案次日重新规划。金额差不是自动认定的等服务总节省。未控制真实电器。",
             'assumptions':original['assumptions']['notice']+' 热水温度是控制设定，不是实测出水温度；住宅模型尚未校准到您家。',
-            'selection_reason':'以下逐次说明来自 EB 规划时的判断，实际效果请结合模拟结果。',
-            'execution_notice':'EB 未执行的指令按原有安排继续处理，已体现在执行轨迹中。' if any(d['application']['rejections'] for d in proposal['decisions']) else '',
+            'selection_reason':'复查记录说明指令是否执行，效果以两份模拟结果为准。',
+            'execution_notice':'部分调整指令未执行，原因见复查记录；时间轴展示实际运行。' if any(d['application']['rejections'] for d in proposal['decisions']) else '',
             'timeline':timeline,'service_rows':service_rows(original,baseline,proposal),
             'comparison_metrics':[{'label':label,**{side:f"{prediction[side][key]:.2f} {unit}" for side in ('original','proposal')}}
                 for label,key,unit in [('比较期总用电（至'+window_for(scenario)['end_label']+'）','comparison_kwh','度'),

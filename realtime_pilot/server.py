@@ -41,7 +41,7 @@ def stop_process(process):
 class Store:
     def __init__(self, root, workers=1, timeout=240, human_pilot=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60):
         if min(max_pending,max_session_jobs,max_daily_jobs)<1:raise ValueError('Admission limits must be positive')
-        if workers<1 or max_queue_wait<0 or estimated_job_seconds<=0:raise ValueError('Invalid queue configuration')
+        if not 1<=workers<=32 or max_queue_wait<0 or estimated_job_seconds<=0:raise ValueError('Invalid queue configuration')
         self.max_queue_wait=max_queue_wait
         self.estimated_job_seconds=estimated_job_seconds
         self.max_daily_jobs=max_daily_jobs
@@ -99,8 +99,12 @@ class Store:
     def household_public(self, row, full=True):
         keys=('id','created_at','questionnaire_version','questionnaire_hash','household_record_hash')
         out={k:row[k] for k in keys}
+        out['questionnaire_context']=row.get('questionnaire_context')
         out.update(submission_id=row['id'],saved=True,
                    case_ids=[j['id'] for j in self.jobs.summaries() if j.get('household_submission_id')==row['id']])
+        if 'profile' in row:
+            from simulation_environment import inspect_profile
+            out['environment_readiness']=inspect_profile(row['profile'])
         if full:
             out.update({k:row[k] for k in ('profile','raw_answers','questionnaire_snapshot','household_record','research_consent','research_notice_version','ui_version')})
         return out
@@ -117,6 +121,10 @@ class Store:
                 return {**self.household_public(previous,False),'duplicate':True}
             for key,expected in (('questionnaire_version',paired.QUESTIONNAIRE_VERSION),('questionnaire_hash',digest(paired.QUESTIONS))):
                 if payload.get(key)!=expected:raise ValueError('问卷版本已更新，请刷新核对后保存；已有资料保持原样')
+            from date_sampling import assigned_context
+            context=assigned_context(session)
+            if payload.get('questionnaire_context_hash')!=context['context_hash']:
+                raise ValueError('本次问卷日期已变化，请刷新并按指定月份核对后保存')
             if self.human_pilot and (payload.get('research_consent') is not True or payload.get('research_notice_version')!='eb.research_notice.v1'):
                 raise ValueError('请阅读研究说明并同意保存家庭资料')
             profile=paired.sanitize_profile(normalize_answers(payload.get('answers'),list(paired.LOOKUP),paired.LOOKUP))
@@ -132,7 +140,8 @@ class Store:
             from household_extensions import build_record
             now=time.time();sid=secrets.token_hex(16);hid='household_'+digest(session)[:20]
             record=build_record(profile,paired.QUESTIONS,household_id=hid,raw_answers=payload.get('answers'),questionnaire_version=paired.QUESTIONNAIRE_VERSION,submitted_at=now)
-            row={'id':sid,'owner':session,'request_id':nonce,'request_hash':request_hash,'created_at':now,
+            record['questionnaire_context']=deepcopy(context)
+            row={'questionnaire_context':context,'id':sid,'owner':session,'request_id':nonce,'request_hash':request_hash,'created_at':now,
                  'household_id':hid,'profile':profile,'profile_hash':digest(profile),
                  'raw_answers':deepcopy(payload.get('answers')),'questionnaire_snapshot':deepcopy(paired.QUESTIONS),
                  'questionnaire_version':paired.QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(paired.QUESTIONS),
@@ -213,7 +222,7 @@ class Store:
             documents = {}
             jid = secrets.token_hex(16)
             if paired_flow:
-                original, scenario = paired.prepare(profile, jid)
+                original, scenario = paired.prepare(profile, jid,environment_required=bool(intake) or (self.human_pilot and not admin),context=intake.get('questionnaire_context') if intake else None)
             job = {
                 "schema_version": VERSION, "id": jid, "owner": session, "admin_test":bool(admin),
                 "household_id": "household_"+digest(session)[:20],
@@ -256,13 +265,15 @@ class Store:
                                questionnaire_snapshot=paired.QUESTIONS, profile_components=job["profile_components"],
                                observable_profile=visible_profile(profile, paired.QUESTIONS))
             if paired_flow:
-                from household_config import build_household_config
-                config=build_household_config(profile,paired.QUESTIONS,original,job['household_id'])
+                from household_config import ensure_household_config
+                request['household_id']=job['household_id']
+                config=ensure_household_config(request)
                 job.update(household_config=config,household_config_hash=digest(config))
                 request.update(household_id=job['household_id'],household_config=config,household_config_hash=digest(config))
                 documents['household_config.json']=config
                 submission = {
                     "schema_version": "eb.questionnaire_submission.v1",
+                    "questionnaire_context":scenario.get("questionnaire_context"),
                     "case_id": jid, "household_id": job['household_id'],
                     "submitted_at": job['created_at'],
                     "questionnaire_version": paired.QUESTIONNAIRE_VERSION,
@@ -285,6 +296,8 @@ class Store:
                 request['household_record_hash']=job['household_record_hash']
                 documents['household_record.json']=record
             documents["request.json"]=request
+            if paired_flow and scenario.get('environment'):
+                documents['simulation_environment.json']=scenario['environment']
             if proposal:
                 documents["profile_components.json"]=job["profile_components"]
             self.persist(job,documents)
@@ -327,8 +340,14 @@ class Store:
                         raise ValueError("Original plan changed during proposal generation")
                     if job.get("flow") == "paired_ep_v1":
                         paired.validate(job["original_plan"], result["proposal_plan"], job["scenario"])
-                        if result.get("simulation_status") != "paired_energyplus_complete" or not result["prediction"]["prefix_check"]["passed"]:
+                        check=result['prediction'].get('comparison_check',{}) if result.get('execution_mode')=='eb_native_loop' else result['prediction'].get('prefix_check',{})
+                        if result.get("simulation_status") != "paired_energyplus_complete" or check.get('passed') is not True:
                             raise ValueError("Incomplete paired simulation")
+                        if result.get('execution_mode')=='eb_native_loop':
+                            if digest(result['baseline_plan'])!=result['baseline_plan_hash']:
+                                raise ValueError('Native baseline trace binding changed')
+                            if digest(result['household_config'])!=job['household_config_hash']:
+                                raise ValueError('Native household input changed')
                     else:
                         proposals.validate_offer(job["original_plan"], result["proposal_plan"])
                     if digest(result["display"]) != result["display_hash"] or digest(result["proposal_plan"]) != result["proposal_plan_hash"]:
@@ -336,6 +355,11 @@ class Store:
                 status,message='complete','两份安排已准备好，请代表家庭评价'
             else:
                 result=None
+                failure_file=folder/'failure.json'
+                if failure_file.exists():
+                    failure=json.loads(failure_file.read_text())
+                    if failure.get('error_type')=='NativeProposalUnavailable':
+                        message='本轮未获得可用的模型调用结果，暂无法展示完整比较。您的家庭回答已保存，可稍后重试。'
         except subprocess.TimeoutExpired:
             status,message='timeout',f'计算超过 {self.timeout} 秒，已停止；您的答案已保存。'
         except Exception:
@@ -577,7 +601,8 @@ class Handler(BaseHTTPRequestHandler):
             with self.server.store.lock:
                 jobs = [self.server.store.status(j) for j in sorted(self.server.store.jobs.summaries(),key=lambda j:j.get("created_at",0)) if j.get("owner") == session][-100:]
                 households=[self.server.store.household_public(r,False) for r in self.server.store.db.household_summaries(session)]
-            return self.reply(200, {"households":households,"intake_enabled":True,"research_notice_version":"eb.research_notice.v1","schema_version": VERSION, "scenario": SCENARIO,
+            from date_sampling import assigned_context
+            return self.reply(200, {"questionnaire_context":assigned_context(session),"households":households,"intake_enabled":True,"research_notice_version":"eb.research_notice.v1","schema_version": VERSION, "scenario": SCENARIO,
                                    "paired_version": paired.VERSION, "paired_context": paired.CONTEXT, "paired_questions": paired.QUESTIONS,
                                    "paired_questionnaire_version": paired.QUESTIONNAIRE_VERSION,
                                    "paired_questionnaire_hash": digest(paired.QUESTIONS),
@@ -623,12 +648,19 @@ class Handler(BaseHTTPRequestHandler):
             if not isinstance(payload, dict):
                 raise ValueError("请求格式无效")
             path = urlparse(self.path).path
+            if path=='/api/environment-preview':
+                from simulation_environment import QUESTION_IDS,inspect_profile
+                # Pure catalog lookup: no simulation, task admission or model call.
+                profile=normalize_answers(payload.get('answers'),list(QUESTION_IDS),paired.LOOKUP)
+                return self.reply(200,inspect_profile(profile))
             if path=='/api/households':
                 return self.reply(201,self.server.store.save_household(session,payload,admin=self.is_admin()))
             if self.server.store.human_pilot and path in {'/api/jobs','/api/proposals','/api/example'}:
                 return self.reply(403,{'error':'真人采集仅开放当前问卷流程'})
             if self.server.planning_disabled and path in {"/api/jobs", "/api/paired", "/api/proposals", "/api/example"}:
                 return self.reply(503, {"error": "正在进行 EnergyPlus 独立测试，模型 API 与方案生成已暂停。"})
+            if not self.server.allow_legacy_test_routes and path in {'/api/jobs','/api/proposals','/api/example'}:
+                return self.reply(403,{'error':'真人采集仅开放当前问卷流程'})
             if path == "/api/jobs":
                 job = self.server.store.create(session, payload,admin=self.is_admin())
                 return self.reply(202, self.server.store.public(job))
@@ -659,7 +691,7 @@ class Handler(BaseHTTPRequestHandler):
         except (sqlite3.Error,OSError):
             return self.reply(503,{"error":"保存暂时不可用，请保留页面并重试同一次提交。"})
 
-def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, admin_user=None):
+def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, admin_user=None, allow_legacy_test_routes=False):
     if admin_user is not None and not re.fullmatch(r"[A-Za-z0-9_-]{1,64}",admin_user):
         raise ValueError("Invalid admin username")
     if public_origin:
@@ -672,6 +704,7 @@ def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False,
         raise ValueError('Public human data collection requires an HTTPS public_origin')
     if min(max_pending,max_session_jobs,max_daily_jobs)<1:raise ValueError('Admission limits must be positive')
     server = PilotHTTPServer(("127.0.0.1", port), Handler)
+    server.allow_legacy_test_routes=bool(allow_legacy_test_routes and not public_origin)
     server.admin_user=admin_user
     server.secure_cookie=bool(public_origin and origin.scheme=='https')
     server.planning_disabled = disable_planning
@@ -688,7 +721,7 @@ def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False,
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=8766)
-    parser.add_argument("--workers", type=int, choices=range(1, 5), default=1)
+    parser.add_argument("--workers", type=int, choices=range(1, 33), default=1)
     parser.add_argument("--timeout", type=int, default=240)
     parser.add_argument("--human-pilot", action="store_true", help="Record real pilot self-reports; default is engineering test mode")
     parser.add_argument("--public-origin", help="Exact external origin served by a reverse proxy; listener remains loopback")

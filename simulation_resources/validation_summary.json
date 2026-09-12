@@ -1,0 +1,11 @@
+{
+  "weather_downloaded": 338,
+  "weather_verified": 246,
+  "models": 50,
+  "cases": 50700,
+  "passed": 36872,
+  "failed": 13828,
+  "provincial_representatives": 34,
+  "validation_sha256": "a68a7fe58ac3fefcb63ffadac3f32e2761716026ca03c48dbb1372a4a9b70473",
+  "scope": "Technical EP validity only; not calibrated household models or participant data."
+}

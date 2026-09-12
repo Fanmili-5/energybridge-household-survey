@@ -93,7 +93,9 @@ def build_idf(folder, original, plan, scenario, profile, execution, *, horizon=9
     path.write_text('\n\n'.join(',\n  '.join(o)+';' for o in obs+extra))
     return path
 
-def read_series(folder, horizon=96):
+def read_series(folder, horizon=96, start_date='2007-07-01'):
+    from datetime import date
+    start=date.fromisoformat(start_date)
     conn=sqlite3.connect(folder/'eplusout.sql')
     rows=conn.execute('''SELECT t.Month,t.Day,t.Hour,t.Minute,t.Interval,d.Name,d.KeyValue,d.Units,r.Value
       FROM ReportData r JOIN ReportDataDictionary d USING(ReportDataDictionaryIndex)
@@ -102,8 +104,8 @@ def read_series(folder, horizon=96):
       ORDER BY t.TimeIndex''').fetchall()
     conn.close(); traces={}
     for month,day,hour,minute,interval,name,key,unit,val in rows:
-        end=(day-1)*24+hour+minute/60
-        if month!=7 or not 0<end<=horizon: continue
+        end=(date(start.year,month,day)-start).days*24+hour+minute/60
+        if not 0<end<=horizon: continue
         namekey=name+'|'+(key or '')
         traces.setdefault(namekey,[]).append({'end_h':end,'start_h':end-interval/60,'value':val,'unit':unit})
     return traces

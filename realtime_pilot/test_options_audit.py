@@ -1,3 +1,4 @@
+from date_sampling import assigned_context
 """Option semantics, time input and unlabelled household export; no paid APIs."""
 import json
 import tempfile
@@ -63,13 +64,14 @@ class OptionAuditTests(unittest.TestCase):
         self.assertEqual(prepare(p,'same')[0]['devices']['ac']['use_end_h'],24)
 
     def test_export_keeps_failed_and_unevaluated_households(self):
+        from regional_test_support import answers
         with tempfile.TemporaryDirectory() as tmp:
             store=Store(tmp,human_pilot=True);store.pool=NoExecute()
             from paired_contract import CONTEXT, QUESTIONNAIRE_VERSION
             jobs=[]
             for i,status in enumerate(['queued','failed','complete']):
                 store.human_pilot=i<2
-                receipt=store.save_household('options_owner_'+str(i),{'answers':answers(),'request_id':'options_intake_request_'+str(i),'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS),'research_consent':True,'research_notice_version':'eb.research_notice.v1'})
+                receipt=store.save_household('options_owner_'+str(i),{'questionnaire_context_hash':assigned_context('options_owner_'+str(i))["context_hash"],'answers':answers(),'request_id':'options_intake_request_'+str(i),'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS),'research_consent':True,'research_notice_version':'eb.research_notice.v1'})
                 job=store.create('options_owner_'+str(i),{'submission_id':receipt['id'],'request_id':'options_audit_request_'+str(i),'scenario_id':CONTEXT['id'],'scenario_understood':True},paired_flow=True)
                 job['status']=status
                 if i==2:job['data_origin']='synthetic_engineering_test'
@@ -83,12 +85,15 @@ class OptionAuditTests(unittest.TestCase):
             store.db.close()
 
     def test_native_ep_overnight_controls_follow_custom_answers(self):
+        from legacy_test_support import prepare
         from closed_loop import simulate_live
         from contextlib import redirect_stdout
         from io import StringIO
         from common import ROOT,write_json
         raw=answers();raw.update(H_ac='custom',H_ac_start='22',H_ac_end='8',H_home_ev='19',H_ac_temp='25.5',P_EV_TARGET='0.5',P_EV_RESERVE='0.4')
         profile=self.profile(raw);original,scenario=prepare(profile,'options_native_baseline')
+        from evaluation_window import make_window
+        scenario['evaluation_window']=make_window(original)  # historical custom-loop regression
         request={'profile':profile,'original_plan':original,'scenario':scenario,'household_id':'options_engineering'}
         folder=ROOT/'ui_audit_20260911/options_audit/native_ep_baseline'
         with redirect_stdout(StringIO()):baseline=simulate_live(folder,request)
@@ -111,7 +116,7 @@ class OptionAuditTests(unittest.TestCase):
         with self.assertRaises(ValueError):prepare(self.profile(raw),'invalid_ev')
         raw=answers();raw.update(B05=['ac'],H_ac='custom',H_ac_start='22',H_ac_end='8')
         original,scenario=prepare(self.profile(raw),'only_ac')
-        self.assertEqual(scenario['evaluation_window']['end_sim_h'],104)
+        self.assertEqual(scenario['evaluation_window']['end_sim_h'],24)
         self.assertIsNone(scenario['evaluation_window']['ev_departure_sim_h'])
 
     def test_ewh_contract_acceptance_is_not_runtime_support(self):

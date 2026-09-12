@@ -13,13 +13,14 @@ window.EBView=(()=>{
   function decoration(track,c){
     for(const h of ticks(c)){const grid=n('span',undefined,'grid-mark');grid.style.left=pct(h,c)+'%';grid.setAttribute('aria-hidden','true');track.append(grid);}
     const shade=n('span',undefined,'event-shade');shade.style.left=pct(c.event_start_h,c)+'%';shade.style.width=(pct(c.event_end_h,c)-pct(c.event_start_h,c))+'%';shade.setAttribute('aria-hidden','true');track.append(shade);
-    const mark=n('span',undefined,'notification-mark');mark.style.left=pct(c.notification_h,c)+'%';mark.setAttribute('aria-hidden','true');track.append(mark);
+    if(Number.isFinite(c.notification_h)){const mark=n('span',undefined,'notification-mark');mark.style.left=pct(c.notification_h,c)+'%';mark.setAttribute('aria-hidden','true');track.append(mark);}
   }
   const deviceIds={'空调':'ac','洗衣机':'washer','洗碗机':'dishwasher','烘干机':'dryer','电热水器':'electric_water_heater','电动车充电':'home_ev','家用电动车充电':'home_ev'};
   function schedule(root,view){
     const c=view.schedule_chart;if(!c){root.append(n('p','这条历史记录没有时间轴数据，请展开文字安排。','hint'));return;}
     const context=n('div',undefined,'schedule-context');
-    for(const [label,value] of [['通知',clock(c.notification_h)],['错峰',`${clock(c.event_start_h)}—${clock(c.event_end_h)}`],['比较至',c.end_label]]){const item=n('span');item.append(document.createTextNode(label+' '),n('strong',value));context.append(item);}root.append(context);
+    const contextItems=[['错峰',`${clock(c.event_start_h)}—${clock(c.event_end_h)}`],['比较至',c.end_label]];if(Number.isFinite(c.notification_h))contextItems.unshift(['通知',clock(c.notification_h)]);
+    for(const [label,value] of contextItems){const item=n('span');item.append(document.createTextNode(label+' '),n('strong',value));context.append(item);}root.append(context);
     const board=n('div',undefined,'schedule-board'),scroll=n('div',undefined,'schedule-scroll');scroll.tabIndex=0;scroll.setAttribute('aria-label','完整用电时间轴：上方 DR 对照，下方 EB 调整；可左右滚动');
     const canvas=n('div',undefined,'shared-schedule'),axis=n('div',undefined,'shared-axis');axis.append(n('span','电器 / 时间','schedule-axis-label'));const scale=n('div',undefined,'time-axis');
     for(const h of ticks(c)){const tick=n('span',clock(h),'tick');tick.style.left=pct(h,c)+'%';if(h===c.start_h)tick.classList.add('first');if(h===c.end_h)tick.classList.add('last');scale.append(tick);}axis.append(scale);canvas.append(axis);
@@ -27,7 +28,7 @@ window.EBView=(()=>{
     const picker=n('select');picker.setAttribute('aria-label','按电器与方案选择运行片段');picker.append(n('option','选择运行片段'));picker.options[0].value='';
     function show(label,device){detail.textContent=label;for(const row of canvas.querySelectorAll('.schedule-row'))row.classList.toggle('highlighted',row.dataset.device===device);}
     for(const side of ['original','proposal']){
-      const group=n('section',undefined,'schedule-group '+side),heading=n('h3');heading.append(n('strong',side==='original'?'DR 对照':'EB 调整后'),n('span',side==='original'?'未经 EB 策略调整':'根据本次通知重新安排'));group.append(heading);
+      const group=n('section',undefined,'schedule-group '+side),heading=n('h3');heading.append(n('strong',side==='original'?'DR 对照':'EB 调整后'),n('span',side==='original'?'未经 EB 策略调整':'根据本次事件重新安排'));group.append(heading);
       for(const row of c.rows){
         const device=deviceIds[row.device]||'none',line=n('div',undefined,'schedule-row device-'+device);line.dataset.device=device;line.dataset.side=side;
         const label=n('div',undefined,'schedule-device');label.append(icon(device),n('span',row.device));const track=n('div',undefined,'schedule-track');decoration(track,c);line.append(label,track);
@@ -48,7 +49,7 @@ window.EBView=(()=>{
       const labelWidth=canvas.querySelector('.schedule-device')?.offsetWidth||0;
       scroll.scrollLeft=Math.max(0,x-(labelWidth+scroll.clientWidth)/2);
     });
-    const legend=n('div',undefined,'schedule-legend');legend.append(n('span','上下同一刻度 · 同一种颜色代表同一台电器'),n('span','浅黄色：错峰时段 · 虚线：通知时刻'));root.append(legend);
+    const legend=n('div',undefined,'schedule-legend');legend.append(n('span','上下同一刻度 · 同一种颜色代表同一台电器'),n('span','浅黄色：错峰时段'+(Number.isFinite(c.notification_h)?' · 虚线：通知时刻':'')));root.append(legend);
     const changed=c.rows.filter(r=>r.changed);root.append(n('p',changed.length?'有调整：'+changed.map(r=>r.device).join('、')+'。':'本次两份安排相同。','schedule-change-note'));
     root.append(n('p',c.note,'hint'));const more=n('details',undefined,'supporting-detail schedule-help');more.append(n('summary','全部运行片段（文字列表）'),picker);picker.onchange=()=>show(picker.value||'点选运行条，查看具体时间与设定。',picker.selectedOptions[0].dataset.device);root.append(more);
   }

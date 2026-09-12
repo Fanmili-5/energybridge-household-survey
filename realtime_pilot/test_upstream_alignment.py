@@ -21,8 +21,14 @@ def request(**changes):
     raw=answers();raw.update(changes)
     profile=normalize_answers(raw,list(LOOKUP),LOOKUP)
     original,scenario=prepare(profile,'alignment_v27')
+    # This suite records the historical v2.7 custom loop, not the new entry.
+    from evaluation_window import make_window
+    scenario['evaluation_window']=make_window(original)
     scenario.update(decision_h=17,event={'id':'alignment_v27','trigger_h':18,'end_h':19,'day':4})
     return {'profile':profile,'original_plan':original,'scenario':scenario,'household_id':'engineering_alignment_v27'}
+
+
+from legacy_test_support import prepare
 
 
 class AlignmentTests(unittest.TestCase):

@@ -1,91 +1,63 @@
-# EnergyBridge 真人家庭问卷
+# EnergyBridge 真人家庭数据采集
 
-通过问卷保存真人家庭资料，将其中的运行信息接入 EnergyBridge（EB）和 EnergyPlus（EP），展示原安排与调整方案，再收集家庭的接受／拒绝、四项评分和原因，构造家庭角色模拟器的 SFT 候选数据。
+收集真人家庭资料，通过原 EB 的 `no_dr` 与 `agent` 日内运行生成两份 EP 模拟结果，再由家庭代表给出接受／拒绝、四项评分及原因。
 
-**当前交付是研究原型，已有受邀演示部署，不等于正式采集验收完成。** 2026-09-11 已验证现有部署的 HTTPS、普通／管理员登录和 EP 工程链路；真实模型参与的端到端延迟、正式采集配置与公开分发防滥用仍需验收。仓库默认关闭方案生成；家庭资料可以独立保存。
-
-## 主要流程
+**本项目负责数据采集、保存、校验和交付。SFT 训练、独立评测、训练模型接回 EB 由下游项目负责，不是本网站的上线条件。**
 
 ```mermaid
 flowchart LR
-    A[填写家庭资料] --> B[保存不可变问卷记录]
-    B --> C[生成 EB 运行配置]
-    C --> D[原安排与 EP 仿真]
-    C --> E[VPP 事件下 EB 规划与 EP 仿真]
-    D --> F[时间轴及结果对比]
+    A[问卷：家庭事实与态度] --> B[不可变家庭记录]
+    B --> C[EB 家庭配置 + 匹配环境]
+    C --> D[no_dr 日常对照 + EP]
+    C --> E[agent 规划与连续 EP]
+    D --> F[同一天的时间轴与模拟结果]
     E --> F
-    F --> G[真人决定 四项评分 原因]
-    G --> H[SFT 候选导出]
-    B --> I[完整家庭资料导出]
+    F --> G[真人接受或拒绝 + 四项评分 + 原因]
+    B --> H[家庭资料导出]
+    G --> I[关联校验后的监督样本导出]
 ```
 
-- 成员信息由一位填答者根据了解代填，不当作成员独立投票。
-- 家庭成员、设备、日常习惯与态度原样留存；研究扩展资料不自动改变天气、建筑或设备数量。
-- 当前 EP 使用统一研究住宅与天津典型夏季天气，不是对每个真实住宅的重建。
-- 不使用模拟评分器代替真人标签；不强制归入原 EB 五类家庭。
-- 尚未生成方案或未评价的家庭资料，也可独立导出。
+- 一人代表全家填写成员资料和最终评价；不生成虚构成员投票，不强制归入五类家庭。
+- 开始填写前分配全年随机日期，刷新后保持一致。城市匹配气象站；房型、面积、楼层匹配等效研究住宅。模型与典型年天气不是用户家的实测数据。
+- 中间保留固定上游版本的原生规划、技术检查和回退；去掉模拟家庭接受检查及最终模拟评分。补齐所选设备的 EP 执行接口。
+- 保留不变、回退、负收益及拒绝样本。失败任务保留问卷和错误状态，不伪造完整方案或真人标签。
+- 四项评分沿用 EB 字段 `score / comfort_score / energy_score / vpp_score`，允许 1—5 小数。
 
-## 仓库与上游
+## 复现
 
-```text
-realtime_pilot/                 问卷、服务、EB/EP 接入及测试
-QUESTIONNAIRE_CODEBOOK.json     基础问卷定义
-scripts/                       上游获取、离线测试和发布检查
-upstream_2b17ae6/               单独获取的固定 EB 源码，不提交 Git
-deploy/                       systemd、Nginx 与环境变量模板
-docs/                         部署及数据说明
-```
-
-上游固定为 `2b17ae63e613da776c93e900f5dace50d63a88a8`，通过 `python scripts/bootstrap_upstream.py` 获取并验证。本仓库不内嵌上游源码；上游授权情况需单独核实，本仓库没有声明开源许可证。
-
-## 本地验证
-
-使用 Python 3.10+；持续集成使用 Python 3.11。Ubuntu 部署基线为 22.04、EnergyPlus 24.1。
+Python 3.10+（CI 用 3.11）、EnergyPlus **24.1**。上游固定为作者仓库提交 `2b17ae63e613da776c93e900f5dace50d63a88a8`。
 
 ```bash
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python scripts/bootstrap_upstream.py
-EPLUS_ROOT=/你的/EnergyPlus-24.1目录 EB_TEST_NATIVE_EP=1 .venv/bin/python scripts/test_offline.py
+.venv/bin/python scripts/bootstrap_resources.py
+EPLUS_ROOT=/path/to/EnergyPlus-24-1-0 EB_TEST_NATIVE_EP=1 .venv/bin/python scripts/test_offline.py
 ```
 
-离线测试脚本阻止外部网络连接，使用工程答案及模型桩。部分真实 EP 测试需先安装 EP 24.1；跳过它们不能作为 EP 验收通过。
+资源脚本下载固定来源的天气、生成住宅并校验 SHA-256，不调用模型。仓库只保存资源目录、构建脚本及验证记录，不直接再分发第三方天气／IDF 原文件。已下载的资源可以用 `--source-cache /path/to/existing-checkout` 重用。资源恢复失败时停止，不换用其他天气。
 
-仅查看问卷、验证保存流程：
+本地只看页面及保存测试问卷：
 
 ```bash
-.venv/bin/python realtime_pilot/server.py --port 8766 --disable-planning --data-dir /tmp/energybridge-survey-test
+.venv/bin/python realtime_pilot/server.py --port 8766 --disable-planning --data-dir /tmp/eb-survey-demo
 ```
 
-此命令为工程模式，保存的答案不标记为真人训练标签。更换新测试目录可隔离历史数据。浏览器打开 `http://127.0.0.1:8766/`。
+浏览器访问 `http://127.0.0.1:8766/`。默认工程模式，不能作为真人标签；正式采集使用独立数据目录及 `--human-pilot`。管理员试答始终标记为工程数据。
 
-## 部署与数据
+## 运行与交付
 
-- [Ubuntu 部署步骤](docs/DEPLOYMENT.md)
-- [资料保存、标签与导出](docs/DATA.md)
-- [部署配置](deploy/service.env.example)
+- [数据保存与导出](docs/DATA.md)
+- [本轮修复与验收](docs/DATA_COLLECTION_RELEASE_20260912.md)
+- [部署步骤](docs/DEPLOYMENT.md) / [配置模板](deploy/service.env.example)
+- [计算服务器接入](deploy/SCHOOL-COMPUTE.md) / [并发设置记录](deploy/CONCURRENCY-20260912.md)
+- [地区与全年日期](simulation_resources/README.md)
+- [第三方来源说明](THIRD_PARTY.md)
 
-50 人同时填写与保存，不等于 50 个 EP 仿真同时运行。2 vCPU / 4 GB 可先设置 2 个任务工作线程、1 个 EP 计算槽，按实测再决定是否升至 2 个 EP 槽；真实模型等待时间、排队时间、内存和磁盘都需要观察。
-# 演示数据备份
+演示入口：**https://47.85.194.154/**（需要受邀登录）。这是部署地址，不包含账号或密码，地址可能随部署调整。
 
-`scripts/scheduled_backup.py --data-dir <任务目录> --backup-dir <备份目录> --keep 24`
-使用 SQLite 一致性快照保存问卷、任务和评分，每次成功后保留最近 24 份。
-它不调用模型，也不复制 EP 原始轨迹；原始轨迹仍保留在任务目录。
-部署时可用 systemd timer 每小时执行。备份目录应仅服务账号可读写。
-同机快照用于误操作恢复，不能替代服务器故障时所需的异地备份。
+目前采用阿里云入口、学校 CPU 仿真和 Mac 反向隧道；Mac 持续运行是已接受的部署前提。并发由任务队列、EP 槽和 API 槽分别限制；50 人填写不等于同时执行 50 个仿真。容量和超时按实测设置，不能承诺任何人数都没有排队。
 
-## 管理员测试入口
+SQLite 是权威存储；家庭问卷先保存，计算或反馈失败不会撤销已保存问卷。重复提交幂等，参与者次数与队列有限额，管理员仍受资源及超时保护。可用 `scripts/scheduled_backup.py` 做一致性快照；原始 EP 轨迹需另外备份。
 
-在 HTTPS 反向代理添加独立管理员登录后，后端可配置 `--admin-user <管理员用户名>`
-（部署脚本对应 `EB_ADMIN_USER`），通过 `/admin` 查看运行状态并进入问卷测试。
-Nginx 必须认证用户并用 `$remote_user` 覆盖 `X-EB-Authenticated-User`；
-不能信任参与者发来的角色字段或身份请求头。后端仍只监听回环地址。
-
-管理员免受个人次数和参与者每日任务额度限制，但仍受队列容量、并发、
-超时、同一管理员单任务及幂等保护约束。管理员任务不消耗参与者每日任务额度，
-其问卷与任务始终标为工程测试，即使服务切换为真人采集模式也不会自动变为真人样本。
-管理员点击生成仍会产生模型费用。凭据只保存在服务器或被 Git 忽略的本地文件，
-不能随问卷链接分发。浏览器已记住普通账号时，可用无痕窗口登录管理员账号。
-
-人机验证尚未启用。应接入验证服务，后端验证通过后才允许创建新计算任务；
-不能用前端勾选框代替服务端校验。
+公开仓库不包含真人问卷、数据库、日志、密钥或服务登录凭据。历史审计文档保留当时结论，现状以本 README 和本轮修复记录为准。仓库公开可读不等于授予第三方资源或上游代码的再分发许可。

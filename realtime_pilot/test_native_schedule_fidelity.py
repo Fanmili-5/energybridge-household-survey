@@ -79,6 +79,9 @@ class NativeScheduleFidelityTests(unittest.TestCase):
     def test_live_ep_preserves_next_day_task_start_and_energy(self):
         from closed_loop import simulate_live
         profile=overnight_profile();original,scenario=prepare(profile,'overnight-live-ep')
+        # Historical custom-loop continuation, separate from native day-end collection.
+        from evaluation_window import make_window
+        scenario['evaluation_window']=make_window(original)
         request={'profile':profile,'original_plan':original,'scenario':scenario,
                  'questionnaire_snapshot':QUESTIONS,'household_id':'native-schedule-fidelity'}
         with tempfile.TemporaryDirectory(prefix='eb-schedule-fidelity-') as directory:

@@ -22,6 +22,7 @@ class PairedTests(unittest.TestCase):
         times={prepare(p,str(i))[1]['event']['trigger_h'] for i in range(30)};self.assertEqual(times,{17,18,19})
         self.assertEqual(profile_components(p)['classification'],profile_components(q)['classification'])
     def test_upstream_runtime_rejects_started_tasks_and_accepts_advancing(self):
+        from legacy_test_support import prepare
         o,s=prepare(self.profile(),'seed');s['decision_h']=19;p=executable(o)
         p['appliances']['washer_start_h']=20
         app=replay(o,validate(o,p,s),s)['applications'][-1]

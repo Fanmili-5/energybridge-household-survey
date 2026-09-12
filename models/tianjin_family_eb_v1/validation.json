@@ -1,0 +1,458 @@
+{
+  "passed": true,
+  "model_version": "eb.tianjin_family_all_appliances.v1",
+  "idf_sha256": "d797b77ac4042a8074c4699ec3518a095bc2d4f6c936affcaa361ffded0ccbd2",
+  "upstream_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "energyplus_version": "EnergyPlus, Version 24.1.0-9d7789a3ac",
+  "real_ep_cases": 17,
+  "paid_api_calls": 0,
+  "network_forbidden": true,
+  "production_changed": false,
+  "scope": "Fixed commands through original EB init/writer and real one-day EP; original thermal fractions preserved.",
+  "not_validated": [
+    "LLM planning quality",
+    "provider throughput",
+    "individual-home calibration",
+    "production deployment"
+  ],
+  "source_hashes": {
+    "scripts/verify_complete_household_idf.py": "ff61e286adbdd6b7d6e118c515001f9f23cd9fc7e9633d147820f44cd371200c",
+    "scripts/audit_device_interface_controls.py": "c0815b0db939a5663e444987d8cf88aa7307cab5c81afb89169f81470163bffa",
+    "scripts/audit_upstream_appliance_binding.py": "2765b4b6bb04f0b694cc6813ccb07638c011dc755bfffec057866590984e5a05",
+    "upstream_2b17ae6/experiments/benchmark/family_runner.py": "697a955ae9a5a34132c030c8d0f3b96ef6c0f63ec2caa24a2c1def23989de1d7",
+    "upstream_2b17ae6/energybridge/data/day_ahead.py": "fd099210d5240b35fd094c6672c48b50fbd381e0cba7891428d8447fb2e8a977",
+    "upstream_2b17ae6/experiments/benchmark/run_persona_json.py": "5533efb01589eab079dda6d7be5484caf19aa911f51be8eaa11e51369069ba95",
+    "upstream_2b17ae6/experiments/models/family_home/family_simple.idf": "5ae863fc41c2997540eb991b2c09976f5b5c3455793151070c52a1cf9b80a6d1",
+    "upstream_2b17ae6/experiments/models/family_home/original_model.idf": "2b115a87d9fa3acb3fcd1f9ef5bc961a0d9b001a5351fec9277e107671c53993",
+    "realtime_pilot/native_assets.py": "e992b214c191275fa3b340ef37c8ba309331397b0eb87468b44e69a6249a00be",
+    "models/tianjin_family_eb_v1/family_all_appliances.idf": "d797b77ac4042a8074c4699ec3518a095bc2d4f6c936affcaa361ffded0ccbd2",
+    "upstream_2b17ae6/experiments/weather/epw/CHN_TJ_Tianjin.545270_CSWD.epw": "ddea62020623b59b2807d53a273ae06fe9c3918935f6217a3235de64a42513cc"
+  },
+  "all_sources_unchanged": true,
+  "standalone_contract": {
+    "all_nine_schedules_in_standalone_file": {
+      "washer": true,
+      "dishwasher": true,
+      "dryer": true,
+      "refrigerator": true,
+      "ev": true,
+      "ewh_sp": true,
+      "cool": true,
+      "heat": true,
+      "hvac_avail": true
+    },
+    "device_bindings": {
+      "washer": {
+        "design_w": 2000.0,
+        "heat_fractions_latent_radiant_lost": [
+          0.0,
+          0.8,
+          0.2
+        ],
+        "schedule_type_limits": ""
+      },
+      "dishwasher": {
+        "design_w": 1500.0,
+        "heat_fractions_latent_radiant_lost": [
+          0.15,
+          0.6,
+          0.25
+        ],
+        "schedule_type_limits": ""
+      },
+      "dryer": {
+        "design_w": 3000.0,
+        "heat_fractions_latent_radiant_lost": [
+          0.05,
+          0.15,
+          0.8
+        ],
+        "schedule_type_limits": ""
+      },
+      "refrigerator": {
+        "design_w": 200.0,
+        "heat_fractions_latent_radiant_lost": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "schedule_type_limits": ""
+      }
+    }
+  },
+  "zero_input_vs_original": {
+    "Electricity:Facility": {
+      "rows": 144,
+      "exactly_equal": true,
+      "max_abs_difference": 0.0
+    },
+    "Zone Mean Air Temperature": {
+      "rows": 144,
+      "exactly_equal": true,
+      "max_abs_difference": 0.0
+    }
+  },
+  "standalone_vs_runtime": {
+    "fixed_off": {
+      "passed": true,
+      "output_count": 17,
+      "all_series_exactly_equal": true,
+      "maximum_abs_difference": 0.0
+    },
+    "fixed_half": {
+      "passed": true,
+      "output_count": 17,
+      "all_series_exactly_equal": true,
+      "maximum_abs_difference": 0.0
+    },
+    "fixed_shifted": {
+      "passed": true,
+      "output_count": 17,
+      "all_series_exactly_equal": true,
+      "maximum_abs_difference": 0.0
+    },
+    "fixed_full": {
+      "passed": true,
+      "output_count": 17,
+      "all_series_exactly_equal": true,
+      "maximum_abs_difference": 0.0
+    },
+    "original_ev": {
+      "passed": true,
+      "output_count": 17,
+      "all_series_exactly_equal": true,
+      "maximum_abs_difference": 0.0
+    },
+    "original_ewh": {
+      "passed": true,
+      "output_count": 17,
+      "all_series_exactly_equal": true,
+      "maximum_abs_difference": 0.0
+    },
+    "original_cool24": {
+      "passed": true,
+      "output_count": 17,
+      "all_series_exactly_equal": true,
+      "maximum_abs_difference": 0.0
+    },
+    "original_cool28": {
+      "passed": true,
+      "output_count": 17,
+      "all_series_exactly_equal": true,
+      "maximum_abs_difference": 0.0
+    }
+  },
+  "device_pulse_results": {
+    "washer": {
+      "fixed_half": {
+        "kwh": 1.0,
+        "expected_kwh": 1.0,
+        "active_end_hours": [
+          18.166666666666668,
+          18.333333333333332,
+          18.5,
+          18.666666666666668,
+          18.833333333333332,
+          19.0
+        ]
+      },
+      "fixed_shifted": {
+        "kwh": 1.0,
+        "expected_kwh": 1.0,
+        "active_end_hours": [
+          20.166666666666668,
+          20.333333333333332,
+          20.5,
+          20.666666666666668,
+          20.833333333333332,
+          21.0
+        ]
+      },
+      "fixed_full": {
+        "kwh": 2.0,
+        "expected_kwh": 2.0,
+        "active_end_hours": [
+          18.166666666666668,
+          18.333333333333332,
+          18.5,
+          18.666666666666668,
+          18.833333333333332,
+          19.0
+        ]
+      }
+    },
+    "dishwasher": {
+      "fixed_half": {
+        "kwh": 0.75,
+        "expected_kwh": 0.75,
+        "active_end_hours": [
+          18.166666666666668,
+          18.333333333333332,
+          18.5,
+          18.666666666666668,
+          18.833333333333332,
+          19.0
+        ]
+      },
+      "fixed_shifted": {
+        "kwh": 0.75,
+        "expected_kwh": 0.75,
+        "active_end_hours": [
+          20.166666666666668,
+          20.333333333333332,
+          20.5,
+          20.666666666666668,
+          20.833333333333332,
+          21.0
+        ]
+      },
+      "fixed_full": {
+        "kwh": 1.5,
+        "expected_kwh": 1.5,
+        "active_end_hours": [
+          18.166666666666668,
+          18.333333333333332,
+          18.5,
+          18.666666666666668,
+          18.833333333333332,
+          19.0
+        ]
+      }
+    },
+    "dryer": {
+      "fixed_half": {
+        "kwh": 1.5,
+        "expected_kwh": 1.5,
+        "active_end_hours": [
+          18.166666666666668,
+          18.333333333333332,
+          18.5,
+          18.666666666666668,
+          18.833333333333332,
+          19.0
+        ]
+      },
+      "fixed_shifted": {
+        "kwh": 1.5,
+        "expected_kwh": 1.5,
+        "active_end_hours": [
+          20.166666666666668,
+          20.333333333333332,
+          20.5,
+          20.666666666666668,
+          20.833333333333332,
+          21.0
+        ]
+      },
+      "fixed_full": {
+        "kwh": 3.0,
+        "expected_kwh": 3.0,
+        "active_end_hours": [
+          18.166666666666668,
+          18.333333333333332,
+          18.5,
+          18.666666666666668,
+          18.833333333333332,
+          19.0
+        ]
+      }
+    },
+    "refrigerator": {
+      "fixed_half": {
+        "kwh": 0.1,
+        "expected_kwh": 0.1,
+        "active_end_hours": [
+          18.166666666666668,
+          18.333333333333332,
+          18.5,
+          18.666666666666668,
+          18.833333333333332,
+          19.0
+        ]
+      },
+      "fixed_shifted": {
+        "kwh": 0.1,
+        "expected_kwh": 0.1,
+        "active_end_hours": [
+          20.166666666666668,
+          20.333333333333332,
+          20.5,
+          20.666666666666668,
+          20.833333333333332,
+          21.0
+        ]
+      },
+      "fixed_full": {
+        "kwh": 0.2,
+        "expected_kwh": 0.2,
+        "active_end_hours": [
+          18.166666666666668,
+          18.333333333333332,
+          18.5,
+          18.666666666666668,
+          18.833333333333332,
+          19.0
+        ]
+      }
+    }
+  },
+  "positive_controls": {
+    "ev_pulse_kwh": 3.5,
+    "ev_active_end_hours": [
+      18.166666666666668,
+      18.333333333333332,
+      18.5,
+      18.666666666666668,
+      18.833333333333332,
+      19.0
+    ],
+    "ewh_standby_kwh": 5.822836694074763,
+    "ewh_preheat_kwh": 6.885405978347298,
+    "ewh_max_tank_temperature_gain_c": 20.312054408641032,
+    "cooling_24c_kwh": 19.355870366758932,
+    "cooling_28c_kwh": 3.013163891826846,
+    "mean_zone_temperature_28_minus_24_c": 3.1700246597781936
+  },
+  "case_error_counts": {
+    "original_zero": {
+      "warning_message_count": 15,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2619,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "standalone/fixed_off": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2623,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "standalone/fixed_half": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2623,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "standalone/fixed_shifted": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2623,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "standalone/fixed_full": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2767,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "standalone/original_ev": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2623,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "standalone/original_ewh": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 1717,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "standalone/original_cool24": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2647,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "standalone/original_cool28": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2743,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "runtime/fixed_off": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2623,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "runtime/fixed_half": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2623,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "runtime/fixed_shifted": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2623,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "runtime/fixed_full": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2767,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "runtime/original_ev": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2623,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "runtime/original_ewh": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 1717,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "runtime/original_cool24": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2647,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    },
+    "runtime/original_cool28": {
+      "warning_message_count": 19,
+      "severe_message_count": 0,
+      "fatal_message_count": 0,
+      "completed_summary_warning_count": 2743,
+      "completed_summary_severe_count": 0,
+      "warning_note": "Existing modeling warnings are retained and counted; pass does not mean zero warnings."
+    }
+  },
+  "full_report": {
+    "path": "artifacts/complete_household_idf_20260912/report.json",
+    "sha256": "968794d35c806dd58c6ad9bbfd2d24c9c0c63959a74dd2575b63426926e4f46e"
+  }
+}

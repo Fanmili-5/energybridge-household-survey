@@ -30,9 +30,10 @@
 <section id="profile-details" class="profile-disclosure">
 <nav id="wizard-nav" class="wizard-nav" aria-label="问卷填写步骤"><div class="wizard-top"><h2 id="wizard-heading" tabindex="-1">填写家庭情况</h2><span id="wizard-progress" role="status" aria-live="polite">第 1 / 4 步</span></div><ol class="wizard-steps"><li><button type="button" data-wizard-step="0">家庭概况</button></li><li><button type="button" data-wizard-step="1">家庭成员</button></li><li><button type="button" data-wizard-step="2">电器安排</button></li><li><button type="button" data-wizard-step="3">用电偏好</button></li><li><button type="button" data-wizard-step="4">住房情况</button></li><li><button type="button" data-wizard-step="5">补充与提交</button></li></ol></nav>
 <form id="profile-form" novalidate>
+<aside class="notice" id="questionnaire-context" aria-label="本次问卷情境"><strong id="context-date"></strong><p id="context-instruction"></p><p>这是典型天气情境，不是今天的天气预报。室温由仿真得到；研究模型的供暖设定固定为20℃，可调整的空调温度指制冷设定。</p></aside>
 <div class="form-topline"><span>由您填写家庭情况，综合考虑后评价</span><p id="draft-status" class="draft-status" role="status" aria-live="polite"></p></div>
 <section class="panel survey-section" data-form-page="0" aria-labelledby="household-heading">
-  <div class="survey-section-head"><span class="section-index" aria-hidden="true">01</span><div><h2 id="household-heading">先认识一下您家</h2><p>按平时的情况填写就好。</p></div></div>
+  <div class="survey-section-head"><span class="section-index" aria-hidden="true">01</span><div><h2 id="household-heading">先认识一下您家</h2><p>家庭基本情况照实填写，时间安排请代入上方指定月份。</p></div></div>
   <div id="basic-questions" class="basic-grid"></div>
 </section>
 <section class="panel survey-section" data-form-page="1" hidden aria-labelledby="members-heading"><div class="survey-section-head"><span class="section-index" aria-hidden="true">02</span><div><h2 id="members-heading">每个人的习惯与偏好</h2></div></div><div id="member-questions"></div></section>
@@ -44,9 +45,9 @@
   <div class="survey-section-head"><span class="section-index" aria-hidden="true">04</span><div><h2 id="attitudes-heading">您家更在意什么？</h2><p>综合考虑家人的需要，选最接近您平时想法的一项。是否采用，等看过方案再决定。</p></div></div>
   <div id="attitude-questions"></div>
 </section>
-<section class="panel survey-section" data-form-page="4" hidden><div class="survey-section-head"><span class="section-index">05</span><div><h2>了解您家的住房情况</h2><p>以下均为选填，帮助后续研究不同家庭。无需详细地址；本次仍使用统一研究住宅和天津夏季天气。</p></div></div><div id="housing-questions" class="research-grid"></div></section>
+<section class="panel survey-section" data-form-page="4" hidden><div class="survey-section-head"><span class="section-index">05</span><div><h2>匹配您家的模拟环境</h2><p>城市、房型、面积和楼层用于选择天气与研究住宅。无需详细地址；不完整或暂未覆盖的资料也可以保存。模型材料和设备采用统一研究参数，并非您家的精确重建。</p></div></div><div id="housing-questions" class="research-grid"></div><p id="environment-preview" class="notice" aria-live="polite">填写以上住房信息后，会在这里显示可用的模拟环境。</p></section>
 <section class="panel survey-section" data-form-page="5" hidden><div class="survey-section-head"><span class="section-index">06</span><div><h2>再补充一点用电背景</h2><p>以下均为选填，不填写也可以提交。设备数量与频率用于家庭研究，本次所选设备仍按每类一个模型模拟。</p></div></div><div id="research-questions" class="research-grid"></div></section>
-<section class="panel scenario-section" data-form-page="3" hidden><div class="scenario-heading"><span class="scenario-icon" aria-hidden="true">↗</span><div><p class="eyebrow">接下来，看看一种新的安排</p><h2>在同一个夏季日，比较调整前后</h2></div></div><ul id="scenario-facts"></ul>
+<section class="panel scenario-section" data-form-page="3" hidden><div class="scenario-heading"><span class="scenario-icon" aria-hidden="true">↗</span><div><p class="eyebrow">接下来，看看一种新的安排</p><h2>在同一天，比较调整前后</h2></div></div><ul id="scenario-facts"></ul>
 <p id="research-notice" class="research-notice">您填写的家庭资料和后续方案评价将用于家庭用电研究，以及训练家庭用户模拟器。成员资料由您按日常了解代填，无需姓名或详细地址。点击保存按钮表示您同意将本次回答用于上述研究；是否采用用电方案，将另行询问。</p>
 <div class="submit-row"><small>先保存家庭资料，再生成方案；生成失败也会保留已保存资料。</small><button id="generate" type="submit" disabled>保存家庭资料</button></div>
 <section id="household-receipt" class="household-receipt" hidden aria-live="polite"><h3>家庭资料保存回执</h3><p id="receipt-status"></p><p class="hint">记录编号：<code id="receipt-id"></code></p><button id="plan-saved" class="secondary" type="button">继续生成两份安排</button></section>

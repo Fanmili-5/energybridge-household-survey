@@ -4,17 +4,19 @@ import random
 from common import PROPOSAL_PROFILE_QUESTIONS, digest
 from questionnaire_persona import question, components, visible_profile
 from proposal_contract import DEVICES, TASKS, executable, at
-from eb_execution import physical_defaults, ordinary, validate_shape
+from native_support import physical_defaults, ordinary
 from survey_time import LEGACY_STARTS, start_hour
 
-VERSION = 'eb.paired_ep.v2.7'
-QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v3.9'
+VERSION = 'eb.paired_ep.v3.2'
+QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.1'
 QUESTIONS = [deepcopy(q) for q in PROPOSAL_PROFILE_QUESTIONS if q['id'] != 'F_ROUTINES']
 for q in QUESTIONS:
     if q['id'] == 'B05':
         q['prompt'] = '请选择家中拥有、要纳入日常用电安排的设备；所选设备都会进入本次模拟。'
         for o in q['options']:
             if o['value']=='home_ev':o['label']='可在家充电的电动汽车（含插混，不含电动自行车）'
+for q in QUESTIONS:
+    if q['id']=='B04':q['prompt']='在本次指定月份，白天您家通常有人在家吗？'
 # New wording applies only to this version; saved snapshots retain their meanings.
 for q in QUESTIONS:
     if q['group']=='attitude':
@@ -39,7 +41,7 @@ for d, label in DEVICES.items():
         options = [('afternoon', '下午到睡前（14:00—23:00）'), ('evening', '傍晚到睡前（18:00—23:00）'), ('all_day', '全天使用'),('custom','自己选择使用时段（可跨午夜）')]
     else:
         options = [(next((k for k,v in LEGACY_STARTS.items() if v==i/2),f'{i/2:g}'),f'{i//2:02d}:{(i%2)*30:02d}') for i in range(48)]
-    q = question('H_'+d, f'平常一个夏季日，{label}一般什么时候用？', options, group='household_fact')
+    q = question('H_'+d, f'在本次指定月份，{label}一般什么时候用？', options, group='household_fact')
     if d=='home_ev': q['prompt']='电动汽车通常什么时候在家接入充电设备？'
     if d=='electric_water_heater': q['prompt']='电热水器通常从什么时候开始加热？（请按真实习惯填写；午夜或跨夜安排可保存，暂不能生成模拟）'
     q['device'] = d
@@ -52,7 +54,7 @@ for d, label in DEVICES.items():
         q.update(device=d, active_only=True); HABITS.append(q)
         q = question('T_'+d, f'{label}一次通常需要多久？', [(str(v),f'{v:g} 小时') for v in (.5,1.,1.5,2.,2.5,3.,4.)], group='household_fact')
         q.update(device=d, active_only=True); HABITS.append(q)
-q = question('H_ac_temp', '平时空调通常设为多少度？（本研究支持22—28℃）', [(f'{i/2:g}',f'{i/2:g}℃') for i in range(44,57)], group='household_fact')
+q = question('H_ac_temp', '空调需要制冷时，通常设为多少度？（22—28℃；此项不是供暖温度）', [(f'{i/2:g}',f'{i/2:g}℃') for i in range(44,57)], group='household_fact')
 q.update(device='ac', active_only=True); HABITS.append(q)
 q = question('D_home_ev', '接入充电后，电动汽车通常几点离家？（早于接入时刻表示次日；请勿选择相同时刻）', [(str(i),f'{i:02d}:00') for i in range(24)], group='household_fact')
 q.update(device='home_ev', active_only=True); HABITS.append(q)
@@ -70,23 +72,29 @@ from household_extensions import QUESTIONS as EXTENSION_QUESTIONS
 QUESTIONS += deepcopy(EXTENSION_QUESTIONS)
 LOOKUP = {q['id']:q for q in QUESTIONS}
 CONTEXT = {'id':'tianjin_shared_prototype_paired_v1', 'facts':[
-    '请代入一个夏季日，按您家的电器和日常习惯回答。系统会先生成原安排，再提出错峰用电建议。',
+    '请代入一个夏季日，按您家的电器和日常习惯回答。日常对照由原EB在设备时间窗口内生成，具体时间以展示为准，再与EB调整安排比较。',
     '两份安排使用同一研究住宅和天津典型夏季天气，结果是情境模拟，不是您家实际耗电预测。',
-    '电价统一为 0.60 元/度，无额外补偿。仅移动用电时间并不一定省钱。'],
-    'tariff':{'cny_per_kwh':.6,'compensation_cny':0},
-    'building':{'source':'family_simple_3day.idf','binding':'shared_research_prototype','calibrated_to_household':False},
-    'weather':{'file':'CHN_TJ_Tianjin.545270_CSWD.epw','date':'July 4','actual_household_weather':False}}
+    '采用原EB天津分时价格权重比较相对用电成本；不是人民币电价，不展示节省金额。'],
+    'tariff':{'source':'tianjin_tou_price_normalized.csv','unit':'normalized TOU cost/kWh','currency':None},
+    'building':{'source':'family_simple.idf','binding':'shared_research_prototype','calibrated_to_household':False},
+    'weather':{'file':'CHN_TJ_Tianjin.545270_CSWD.epw','date':'July 1','actual_household_weather':False}}
+LEGACY_CONTEXT=deepcopy(CONTEXT)
+CONTEXT.update(id='china_regional_prototype_paired_v1',facts=[
+    '请按上方抽定月份的习惯填写；住房信息用于匹配研究住宅和当地典型天气。',
+    '两份方案使用同一住宅、日期和天气，具体匹配结果在生成前展示。研究原型不是您家实测耗电预测。',
+    '原EB天津分时价格权重作为统一实验条件，既不是当地真实电价，也不是人民币金额。'],
+    building={'source':None,'binding':'pending_questionnaire_match','calibrated_to_household':False},
+    weather={'file':None,'date':None,'actual_household_weather':False})
 
 def value(profile, qid):
     c=profile.get(qid,{})
     return c.get('value') if c.get('response_status')=='answered' else None
 
 def sanitize_profile(profile):
-    """Only unselected devices have inapplicable habit answers."""
+    """Clear answers only where the questionnaire makes them inapplicable."""
     owned=value(profile,'B05') or []
     for q in HABITS + EXTENSION_QUESTIONS:
-        if not q.get("device"):continue
-        if q['device'] not in owned or q.get('show_when') and value(profile,q['show_when']['question_id'])!=q['show_when']['value']:
+        if (q.get('device') and q['device'] not in owned) or (q.get('show_when') and value(profile,q['show_when']['question_id'])!=q['show_when']['value']):
             profile[q['id']]={'value':None,'response_status':'not_applicable'}
     return profile
 
@@ -95,7 +103,7 @@ def required(profile,qid):
     if v is None: raise ValueError('请填写：'+LOOKUP[qid]['prompt'])
     return v
 
-def prepare(profile, seed):
+def prepare(profile, seed, *, environment_required=False, context=None):
     owned=required(profile,'B05')
     for qid in ('B02','B04','F_EVENING'): required(profile,qid)
     for q in QUESTIONS:
@@ -103,8 +111,7 @@ def prepare(profile, seed):
     validate_count(profile)
     if owned==['none']: owned=[]
     config=physical_defaults()
-    from eb_execution import upstream
-    config['ev']['charger_kw']=min(config['ev']['charger_kw'],upstream()[0]._APPL_DESIGN_W['ev']/1000)
+    from native_support import upstream
     mapping={'electric_water_heater':'water_heater','home_ev':'ev'}
     records={}
     for key in config: config[key]['present']=False
@@ -156,28 +163,52 @@ def prepare(profile, seed):
     if 'electric_water_heater' in owned:
         config['water_heater']['bath_required_h']=float(required(profile,'P_HOT_WATER'))
     p0=ordinary(config)
-    from eb_execution import upstream
-    for device in TASKS:
-        record=records.get(device)
-        if record and abs(float(p0['appliances'].get(device+'_start_h',-1))-record['start_h'])>1e-6:
-            raise ValueError(DEVICES[device]+'的原生原安排与填报时刻不一致，暂不能生成模拟。请保留真实答案，不要为提交而改填。')
-    errors=upstream()[0]._adaptive_v3_water_heater_action_errors(p0['appliances'],config)
-    if errors: raise ValueError('热水器原安排超出原EB执行支持范围，真实答案可以保存，但暂不能生成模拟。')
-    original={'devices':records, 'source':'eb_manual_no_vpp_user_plan',
+    from native_support import upstream
+    original={'devices':records, 'source':'questionnaire_routine_context_not_executed_baseline',
               'eb_appliance_config':config,'eb_ordinary_plan':p0,
               'assumptions':{'equipment_model_source':'EnergyBridge all_appliances_full.json (physical fields only)',
-                'notice':'开始时刻、可用窗口和任务时长来自您的选择。设备功率、电动汽车电池和热水器采用研究模型；充电功率按 EB/EP 接口统一为 7 kW；充电和加热窗口不表示设备始终满功率运行。洗衣、洗碗、烘干按 EB 分别执行。'}}
+                'notice':'开始时刻、可用窗口和任务时长来自您的选择。设备功率、电动汽车电池和热水器采用研究模型；设备参数沿用原 EB，电器模型与住宅电表的覆盖范围分别记录；充电和加热窗口不表示设备始终满功率运行。洗衣、洗碗、烘干按 EB 分别执行。'}}
     rng=random.Random(str(seed)); decision=rng.choice([16,17,18]); duration=rng.choice([.5,1.])
     scenario=deepcopy(CONTEXT)
-    scenario.update(decision_h=decision,event={'id':'vpp_'+digest(str(seed))[:12],'trigger_h':decision+1,'end_h':decision+1+duration,'day':4},
-                    sampling={'method':'uniform_notification_16_17_18_duration_0.5_1_v1','seed':str(seed),'conditioned_on_response':False})
-    from evaluation_window import make_window
-    scenario['evaluation_window']=make_window(original)
+    scenario.update(decision_h=decision,event={'id':'vpp_'+digest(str(seed))[:12],'trigger_h':decision+1,'end_h':decision+1+duration,'day':1},
+                    sampling={'method':'uniform_event_start_17_18_19_duration_0.5_1_v1','seed':str(seed),'conditioned_on_response':False})
+    from native_scenario import window,START_DATE
+    scenario['evaluation_window']=window(original)
+    scenario['simulation_start_date']=START_DATE
+    scenario['experiment_parameters']={'simulation_days':1,'source':'questionnaire single-day comparison; not an EB default'}
+    scenario['collection_engine']='eb_native_loop'
+    if context is not None:
+        from date_sampling import verify_context
+        scenario['questionnaire_context']=deepcopy(verify_context(context))
+    scenario['notification_semantics']='event sampling reference only; native day-ahead visibility retained'
+    from simulation_environment import QUESTION_IDS, bind_scenario
+    if environment_required or any(value(profile,k) is not None for k in QUESTION_IDS):
+        bind_scenario(scenario,profile,seed,context)
+    else:
+        # Preserve old engineering fixtures and immutable historical requests.
+        scenario.update({k:deepcopy(LEGACY_CONTEXT[k]) for k in ('facts','building','weather')})
+        scenario['environment_mode']='legacy_shared_reference_without_housing_answers'
     return original,scenario
 
 def validate(original,plan,scenario):
+    if scenario.get('collection_engine')=='eb_native_loop' and (not isinstance(plan,dict) or plan.get('execution_mode')!='eb_native_loop'):
+        raise ValueError('Legacy controller output cannot enter a native collection job')
+    if isinstance(plan,dict) and plan.get('execution_mode')=='eb_native_loop':
+        if scenario.get('collection_engine')!='eb_native_loop' or plan.get('horizon_end_sim_h')!=24:
+            raise ValueError('Native scenario/plan mismatch')
+        days=plan.get('decisions')
+        if not isinstance(days,list) or len(days)!=1 or not any(days):raise ValueError('Missing native decision history')
+        for day in days:
+            previous=-1
+            for row in day:
+                h=row.get('h')
+                if type(h) not in (int,float) or not previous<=h<=24:raise ValueError('Invalid native decision chronology')
+                previous=h
+        if not isinstance(plan.get('control_trace_hash'),str) or len(plan['control_trace_hash'])!=64:
+            raise ValueError('Missing native execution trace hash')
+        return deepcopy(plan)
     if isinstance(plan,dict) and plan.get('execution_mode')=='eb_closed_loop':
-        from eb_execution import upstream
+        from native_support import upstream
         runner,_=upstream();previous=72+scenario['decision_h']-1e-7
         from evaluation_window import window_for
         horizon=window_for(scenario)['end_sim_h']
@@ -195,6 +226,7 @@ def validate(original,plan,scenario):
     if 'eb_appliance_config' not in original:
         from legacy_paired_v1_1.paired_contract import validate as legacy_validate
         return legacy_validate(original,plan,scenario)
+    from eb_execution import validate_shape  # Archived records only; native jobs return above.
     return validate_shape(original,plan,scenario)
 
 def profile_components(profile):
@@ -237,7 +269,10 @@ def display_pair(original,plan,scenario,prediction):
 def participant_view(display):
     """Exact texts and rounding shown to the human, also used as SFT input."""
     prediction=display['prediction']; metrics=[]
-    for label,key,unit in [('当日用电量','daily_kwh','度'),('当日电费（无补偿）','daily_cost_cny','元'),('响应时段用电量','event_kwh','度'),('响应时段平均功率','event_mean_kw','kW')]:
+    if prediction.get('cost_unit')=='normalized TOU cost/kWh':
+        cost_metric=('当日相对用电成本','daily_cost_normalized','相对成本单位')
+    else:cost_metric=('当日电费（无补偿）','daily_cost_cny','元')
+    for label,key,unit in [('当日用电量','daily_kwh','度'),cost_metric,('响应时段用电量','event_kwh','度'),('响应时段平均功率','event_mean_kw','kW')]:
         metrics.append({'label':label, **{side:f"{prediction[side][key]:.2f} {unit}" for side in ('original','proposal')}})
     metrics.append({'label':'响应时段居住区域室温',**{side:f"{prediction[side]['event_temp_min_c']:.1f}—{prediction[side]['event_temp_max_c']:.1f}℃" for side in ('original','proposal')}})
     for metric in display.get('comparison_metrics',[]):metrics.append(deepcopy(metric))

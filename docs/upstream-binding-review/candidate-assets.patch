@@ -1,0 +1,106 @@
+--- a/experiments/models/family_home/family_simple_3day.idf
++++ b/experiments/models/family_home/family_simple_3day.idf
+@@ -5100,3 +5100,23 @@
+   Output:Meter,InteriorEquipment:Electricity,Timestep;
+ 
+   Output:Meter,WaterSystems:Electricity,Timestep;
++
++! Binding review candidate: washer; heat fractions from original_model.idf
++Schedule:Constant,ClothesWasher_Power_Frac,,0;
++
++ElectricEquipment,ClothesWasher_Appliance,living_unit1,ClothesWasher_Power_Frac,EquipmentLevel,2000,,,0,0.8,0.2,clotheswasher;
++
++! Binding review candidate: dishwasher; heat fractions from original_model.idf
++Schedule:Constant,Dishwasher_Power_Frac,,0;
++
++ElectricEquipment,Dishwasher_Appliance,living_unit1,Dishwasher_Power_Frac,EquipmentLevel,1500,,,0.15,0.6,0.25,dishwasher;
++
++! Binding review candidate: dryer; heat fractions from original_model.idf
++Schedule:Constant,ClothesDryer_Power_Frac,,0;
++
++ElectricEquipment,ClothesDryer_Appliance,living_unit1,ClothesDryer_Power_Frac,EquipmentLevel,3000,,,0.05,0.15,0.8,electric_dryer;
++
++! Binding review candidate: refrigerator; heat fractions from original_model.idf
++Schedule:Constant,Refrigerator_Power_Frac,,0;
++
++ElectricEquipment,Refrigerator_Appliance,living_unit1,Refrigerator_Power_Frac,EquipmentLevel,200,,,0,1,0,refrigerator;
+--- a/experiments/models/family_home/family_simple_7day.idf
++++ b/experiments/models/family_home/family_simple_7day.idf
+@@ -5099,4 +5099,23 @@
+ 
+   Output:Meter,InteriorEquipment:Electricity,Timestep;
+ 
+-  Output:Meter,WaterSystems:Electricity,Timestep;
+\ No newline at end of file
++  Output:Meter,WaterSystems:Electricity,Timestep;
++! Binding review candidate: washer; heat fractions from original_model.idf
++Schedule:Constant,ClothesWasher_Power_Frac,,0;
++
++ElectricEquipment,ClothesWasher_Appliance,living_unit1,ClothesWasher_Power_Frac,EquipmentLevel,2000,,,0,0.8,0.2,clotheswasher;
++
++! Binding review candidate: dishwasher; heat fractions from original_model.idf
++Schedule:Constant,Dishwasher_Power_Frac,,0;
++
++ElectricEquipment,Dishwasher_Appliance,living_unit1,Dishwasher_Power_Frac,EquipmentLevel,1500,,,0.15,0.6,0.25,dishwasher;
++
++! Binding review candidate: dryer; heat fractions from original_model.idf
++Schedule:Constant,ClothesDryer_Power_Frac,,0;
++
++ElectricEquipment,ClothesDryer_Appliance,living_unit1,ClothesDryer_Power_Frac,EquipmentLevel,3000,,,0.05,0.15,0.8,electric_dryer;
++
++! Binding review candidate: refrigerator; heat fractions from original_model.idf
++Schedule:Constant,Refrigerator_Power_Frac,,0;
++
++ElectricEquipment,Refrigerator_Appliance,living_unit1,Refrigerator_Power_Frac,EquipmentLevel,200,,,0,1,0,refrigerator;
+--- a/experiments/models/family_home/family_simple_14day.idf
++++ b/experiments/models/family_home/family_simple_14day.idf
+@@ -5100,3 +5100,23 @@
+   Output:Meter,InteriorEquipment:Electricity,Timestep;
+ 
+   Output:Meter,WaterSystems:Electricity,Timestep;
++
++! Binding review candidate: washer; heat fractions from original_model.idf
++Schedule:Constant,ClothesWasher_Power_Frac,,0;
++
++ElectricEquipment,ClothesWasher_Appliance,living_unit1,ClothesWasher_Power_Frac,EquipmentLevel,2000,,,0,0.8,0.2,clotheswasher;
++
++! Binding review candidate: dishwasher; heat fractions from original_model.idf
++Schedule:Constant,Dishwasher_Power_Frac,,0;
++
++ElectricEquipment,Dishwasher_Appliance,living_unit1,Dishwasher_Power_Frac,EquipmentLevel,1500,,,0.15,0.6,0.25,dishwasher;
++
++! Binding review candidate: dryer; heat fractions from original_model.idf
++Schedule:Constant,ClothesDryer_Power_Frac,,0;
++
++ElectricEquipment,ClothesDryer_Appliance,living_unit1,ClothesDryer_Power_Frac,EquipmentLevel,3000,,,0.05,0.15,0.8,electric_dryer;
++
++! Binding review candidate: refrigerator; heat fractions from original_model.idf
++Schedule:Constant,Refrigerator_Power_Frac,,0;
++
++ElectricEquipment,Refrigerator_Appliance,living_unit1,Refrigerator_Power_Frac,EquipmentLevel,200,,,0,1,0,refrigerator;
+--- a/experiments/models/family_home/berlin_family_geg_final.idf
++++ b/experiments/models/family_home/berlin_family_geg_final.idf
+@@ -5204,3 +5204,23 @@
+   ,
+   40;
+ 
++
++! Binding review candidate: washer; heat fractions from original_model.idf
++Schedule:Constant,ClothesWasher_Power_Frac,,0;
++
++ElectricEquipment,ClothesWasher_Appliance,living_unit1,ClothesWasher_Power_Frac,EquipmentLevel,2000,,,0,0.8,0.2,clotheswasher;
++
++! Binding review candidate: dishwasher; heat fractions from original_model.idf
++Schedule:Constant,Dishwasher_Power_Frac,,0;
++
++ElectricEquipment,Dishwasher_Appliance,living_unit1,Dishwasher_Power_Frac,EquipmentLevel,1500,,,0.15,0.6,0.25,dishwasher;
++
++! Binding review candidate: dryer; heat fractions from original_model.idf
++Schedule:Constant,ClothesDryer_Power_Frac,,0;
++
++ElectricEquipment,ClothesDryer_Appliance,living_unit1,ClothesDryer_Power_Frac,EquipmentLevel,3000,,,0.05,0.15,0.8,electric_dryer;
++
++! Binding review candidate: refrigerator; heat fractions from original_model.idf
++Schedule:Constant,Refrigerator_Power_Frac,,0;
++
++ElectricEquipment,Refrigerator_Appliance,living_unit1,Refrigerator_Power_Frac,EquipmentLevel,200,,,0,1,0,refrigerator;

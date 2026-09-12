@@ -7,7 +7,7 @@ from household_config import occupancy_schedule
 
 class PresentationTests(unittest.TestCase):
     def scenario(self):
-        return {'decision_h':17,'event':{'trigger_h':18,'end_h':19},'evaluation_window':{'end_sim_h':98}}
+        return {'decision_h':17,'event':{'trigger_h':18,'end_h':19},'evaluation_window':{'start_sim_h':72,'end_sim_h':98}}
 
     def test_overnight_segments_and_power_are_literal(self):
         s=segments([[23,26,.5]],'washer',{'washer':2000})[0]

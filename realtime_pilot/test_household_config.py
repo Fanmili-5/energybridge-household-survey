@@ -57,7 +57,8 @@ class HouseholdConfigTests(unittest.TestCase):
         self.assertEqual(config['tags']['control'],'confirm_required')
 
     def test_native_memory_calendar_and_device_inputs_receive_this_household(self):
-        runner,Suite=upstream();request=self.request();loop=runner._FamilyLoop();config=bind_household(loop,request)
+        from legacy_test_support import prepare
+        runner,Suite=upstream();request=self.request();request['scenario']['tariff']={'cny_per_kwh':.6};loop=runner._FamilyLoop();config=bind_household(loop,request)
         loop.appliance_suite=Suite(config['appliances'],sim_days=4,explicit_only=True)
         memory=loop.agent_preference_memory
         self.assertEqual(memory['owner']['household_id'],'respondent_a')

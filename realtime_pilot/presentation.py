@@ -3,10 +3,10 @@ from evaluation_window import clock, window_for
 
 
 def plan_chart(rows, scenario):
-    end = window_for(scenario)['end_sim_h'] - 72
+    end = window_for(scenario)['end_sim_h'] - window_for(scenario)['start_sim_h']
     rows=[{**row,'summary':change_summary(row)} for row in rows]
     return {'version': 'eb.plan_chart.v2', 'start_h': 0, 'end_h': end,
-            'notification_h': scenario['decision_h'],
+            'notification_h': None if scenario.get('collection_engine')=='eb_native_loop' else scenario['decision_h'],
             'event_start_h': scenario['event']['trigger_h'],
             'event_end_h': scenario['event']['end_h'],
             'end_label': clock(end), 'rows': rows,
@@ -29,14 +29,15 @@ def segments(spans, device, design_w):
 
 def thermal_chart(original,baseline,proposal,scenario):
     if not original['devices'].get('ac',{}).get('active'):return None
-    end=window_for(scenario)['end_sim_h']-72
+    offset=window_for(scenario)['start_sim_h']
+    end=window_for(scenario)['end_sim_h']-offset
     periods=[('响应前',0,scenario['event']['trigger_h']),
              ('响应期间',scenario['event']['trigger_h'],scenario['event']['end_h']),
              ('响应结束后',scenario['event']['end_h'],end)]
     series={};summary=[]
     for side,run in [('original',baseline),('proposal',proposal)]:
-        series[side]=[{'hour':round(r['end_h']-72,6),'c':round(r['c'],1)}
-                      for r in run.get('temperature',[]) if 72<r['end_h']<=72+end+1e-7]
+        series[side]=[{'hour':round(r['end_h']-offset,6),'c':round(r['c'],1)}
+                      for r in run.get('temperature',[]) if offset<r['end_h']<=offset+end+1e-7]
     if not all(series.values()):return None
     for label,start,stop in periods:
         row={'label':label,'time':f'{clock(start)}—{clock(stop)}'}
@@ -66,3 +67,30 @@ def change_summary(row):
     if not changes:return '存在小于当前显示精度的变化；请查看完整安排。'
     summary='；'.join(f'{clock(s)}—{clock(e)}：{a} → {b}' for s,e,a,b in changes[:2])
     return summary+('；另有'+str(len(changes)-2)+'段变化，见时间轴。' if len(changes)>2 else '。')
+
+
+def execution_explanation(decision):
+    """Participant text describes actuator outcomes, not unexecuted model intent.
+
+    Original model explanations remain in decision_history for audit only.
+    Applying a command does not establish an energy saving or service completion.
+    """
+    app=decision.get('application') or {}
+    labels={'washer':'洗衣机','dishwasher':'洗碗机','dryer':'烘干机',
+            'water_heater':'电热水器','ev':'电动车充电','ev_mode':'电动车充电模式'}
+    reasons={'existing_target_window_preserved':'保留已有充电窗口',
+        'existing_service_plan_preserved':'保留已有任务安排',
+        'service_already_started_or_completed':'任务已开始或完成',
+        'runtime_past':'指令时间已过去'}
+    parts=[]
+    if decision.get('controller',{}).get('fallback_used'):
+        parts.append('本次使用 EB 回退安排。')
+    for rejection in app.get('rejections',[]):
+        label=labels.get(rejection.get('service'),'电器')
+        reason=reasons.get(rejection.get('reason'),'指令未通过执行检查')
+        parts.append(f'{label}：{reason}，未执行本次调整。')
+    if not parts:
+        parts.append('本次指令已交给模拟器；实际运行时间见时间轴。')
+    elif app.get('applied_actions'):
+        parts.append('其余已接收指令的运行情况见时间轴。')
+    return ''.join(parts)

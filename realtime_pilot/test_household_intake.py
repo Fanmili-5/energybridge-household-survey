@@ -3,9 +3,10 @@ import copy,json,tempfile,unittest
 from unittest.mock import patch
 from server import Store,make_server
 from test_pilot import NoExecute
-from verify_paired_physics import answers
+from regional_test_support import answers
 from paired_contract import CONTEXT,QUESTIONS,QUESTIONNAIRE_VERSION
 from common import digest
+from date_sampling import assigned_context
 from export_household_records import records
 
 class HouseholdIntakeTests(unittest.TestCase):
@@ -13,8 +14,8 @@ class HouseholdIntakeTests(unittest.TestCase):
         self.tmp=tempfile.TemporaryDirectory();self.store=Store(self.tmp.name,human_pilot=True);self.store.pool=NoExecute()
     def tearDown(self):
         self.store.db.close();self.tmp.cleanup()
-    def payload(self,nonce='intake_request_00001'):
-        return {'answers':answers(),'request_id':nonce,'questionnaire_version':QUESTIONNAIRE_VERSION,
+    def payload(self,nonce='intake_request_00001',owner='owner'):
+        return {'questionnaire_context_hash':assigned_context(owner)['context_hash'],'answers':answers(),'request_id':nonce,'questionnaire_version':QUESTIONNAIRE_VERSION,
                 'questionnaire_hash':digest(QUESTIONS),'research_consent':True,
                 'research_notice_version':'eb.research_notice.v1','ui_version':'intake-test'}
     def generate(self,sid,nonce='generate_request_00001'):
@@ -65,6 +66,11 @@ class HouseholdIntakeTests(unittest.TestCase):
     def test_linked_records_export_once_and_preserve_frozen_hash(self):
         r=self.store.save_household('owner',self.payload());job=self.store.create('owner',self.generate(r['id']),paired_flow=True)
         self.assertEqual(job['household_submission_id'],r['id']);self.assertEqual(job['household_record_hash'],r['household_record_hash'])
+        from household_config import ensure_household_config
+        request=self.store.db.document(job['id'],'request.json')
+        self.assertIn('environment',request['scenario'])
+        self.assertEqual(ensure_household_config(request),job['household_config'])
+        self.assertEqual(request['household_config_hash'],job['household_config_hash'])
         self.assertEqual(self.store.db.document(job['id'],'questionnaire_submission.json')['raw_answers'],answers())
         job['status']='failed';self.store.persist(job)
         job2=self.store.create('owner',self.generate(r['id'],'generate_request_00002'),paired_flow=True)
@@ -75,7 +81,7 @@ class HouseholdIntakeTests(unittest.TestCase):
         r=self.store.save_household('owner',self.payload());payload=self.generate(r['id'])
         job=self.store.create('owner',payload,paired_flow=True)
         self.assertEqual(self.store.create('owner',payload,paired_flow=True)['id'],job['id'])
-        other=self.store.save_household('other',self.payload())
+        other=self.store.save_household('other',self.payload(owner='other'))
         with self.assertRaises(OverflowError):self.store.create('other',self.generate(other['id']),paired_flow=True)
         self.assertEqual(len(list(records(self.tmp.name))),2)
         job['status']='failed';self.store.persist(job)
@@ -92,7 +98,7 @@ class HouseholdIntakeTests(unittest.TestCase):
 
     def test_fifty_concurrent_receipts_and_duplicate_retries(self):
         import concurrent.futures
-        def save(i):return self.store.save_household('household-'+str(i),self.payload())
+        def save(i):return self.store.save_household('household-'+str(i),self.payload(owner='household-'+str(i)))
         with concurrent.futures.ThreadPoolExecutor(50) as pool:receipts=list(pool.map(save,range(50)))
         with concurrent.futures.ThreadPoolExecutor(50) as pool:duplicates=list(pool.map(save,range(50)))
         self.assertEqual(len(self.store.db.households()),50)
@@ -115,7 +121,7 @@ class HouseholdIntakeTests(unittest.TestCase):
             try:
                 code,session,cookie=call('/api/session');self.assertEqual(code,200);self.assertIn('Secure',cookie)
                 cookie=cookie.split(';')[0]
-                code,receipt,_=call('/api/households',self.payload(),cookie);self.assertEqual(code,201)
+                code,receipt,_=call('/api/households',self.payload(owner=cookie.split('=',1)[1]),cookie);self.assertEqual(code,201)
                 self.assertEqual(call('/api/households/'+receipt['id'],cookie=cookie)[0],200)
                 self.assertEqual(call('/api/households/'+receipt['id'],cookie='pilot_session='+'f'*64)[0],404)
                 code,current,_=call('/api/session',cookie=cookie);self.assertEqual(len(current['households']),1)
@@ -130,7 +136,7 @@ class HouseholdIntakeTests(unittest.TestCase):
         with patch('server.time.time',return_value=20000*86400+30):
             r=self.store.save_household('owner',self.payload());p=self.generate(r['id']);job=self.store.create('owner',p,paired_flow=True)
             job['status']='failed';self.store.persist(job)
-            r2=self.store.save_household('other',self.payload())
+            r2=self.store.save_household('other',self.payload(owner='other'))
             with self.assertRaises(OverflowError):self.store.create('other',self.generate(r2['id']),paired_flow=True)
             self.assertEqual(self.store.create('owner',p,paired_flow=True)['id'],job['id'])
             self.assertEqual(len(list(records(self.tmp.name))),2)

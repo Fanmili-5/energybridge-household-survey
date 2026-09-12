@@ -5,6 +5,7 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
  const browser=await chromium.launch({headless:true,executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE||undefined});
  try{
   const schema=JSON.parse(fs.readFileSync('ui_audit_20260911/members/schema.json'));
+ schema.questionnaire_context={context_hash:'offline-browser-fixture',label:'9月12日 · 秋季',instruction:'兼容旧记录的显示测试。'};
   for(const width of [390,1365]){
    const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];
    let status=200,writes=0;page.on('pageerror',e=>errors.push(e.message));

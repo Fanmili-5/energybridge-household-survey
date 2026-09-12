@@ -5,6 +5,7 @@ directory-wide glob; this also detects secrets mistakenly staged but ignored.
 """
 import argparse
 import json
+import lzma
 from pathlib import Path
 import re
 import subprocess
@@ -18,7 +19,7 @@ RULES={
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--json',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--json',action='store_true');parser.add_argument('--history',action='store_true');args=parser.parse_args()
     files=subprocess.check_output(['git','ls-files','-z'],cwd=ROOT).decode().split('\0')
     findings=[];count=0
     for name in filter(None,files):
@@ -28,6 +29,7 @@ def main():
             or any(part in {'data','exports','backups','upstream_2b17ae6'} for part in path.parts)):
             findings.append({'file':name,'rule':'forbidden_artifact'})
         body=subprocess.check_output(['git','show',':'+name],cwd=ROOT)
+        if name=='simulation_resources/validation.json.xz':body=lzma.decompress(body)
         for rule,pattern in RULES.items():
             for match in re.finditer(pattern,body):findings.append({'file':name,'line':body[:match.start()].count(b'\n')+1,'rule':rule})
         # Credential assignments may use non-provider-specific tokens.
@@ -36,7 +38,17 @@ def main():
                 for value in re.findall(rb'["\']([A-Za-z0-9_./+=-]{24,})["\']',line):
                     if any(c in value for c in (b'_',b'-',b'=')) and len(set(value))>14 and not re.fullmatch(rb'[0-9a-f]{32,}',value):
                         findings.append({'file':name,'line':i,'rule':'review_credential_assignment'})
-    report={'scanned_files':count,'passed':not findings,'findings':findings}
+    historical_blobs=0
+    if args.history:
+        for entry in subprocess.check_output(['git','rev-list','--objects','--all'],cwd=ROOT,text=True).splitlines():
+            oid,_,name=entry.partition(' ')
+            if subprocess.check_output(['git','cat-file','-t',oid],cwd=ROOT).strip()!=b'blob':continue
+            historical_blobs+=1
+            body=subprocess.check_output(['git','cat-file','blob',oid],cwd=ROOT)
+            if name=='simulation_resources/validation.json.xz':body=lzma.decompress(body)
+            for rule,pattern in RULES.items():
+                if re.search(pattern,body):findings.append({'file':name,'object':oid,'rule':'history_'+rule})
+    report={'historical_blobs':historical_blobs,'scanned_files':count,'passed':not findings,'findings':findings}
     print(json.dumps(report,ensure_ascii=False,indent=2));raise SystemExit(1 if findings else 0)
 
 

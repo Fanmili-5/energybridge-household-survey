@@ -1,0 +1,34 @@
+[Unit]
+Description=EnergyBridge private EB and EnergyPlus compute
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/energybridge-compute/app/realtime_pilot
+ExecStart=%h/energybridge-compute/venv/bin/python -u compute_service.py --root %h/energybridge-compute/jobs --token-file %h/energybridge-compute/compute.token --slots 32 --timeout 600
+Environment=EPLUS_ROOT=%h/energybridge-compute/EnergyPlus-24-1-0
+Environment=EB_PILOT_ENV_FILE=%h/energybridge-compute/model.env
+Environment=EB_RESOURCE_DIR=%h/energybridge-compute/limits
+Environment=EB_EP_SLOTS=32
+Environment=EB_API_SLOTS=4
+Environment=OMP_NUM_THREADS=1
+Environment=OPENBLAS_NUM_THREADS=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHON_DOTENV_DISABLED=1
+Environment=HTTPS_PROXY=http://127.0.0.1:18080
+Environment=NO_PROXY=localhost,127.0.0.1,::1
+Restart=on-failure
+RestartSec=3
+KillMode=control-group
+TimeoutStopSec=15
+UMask=0077
+Nice=10
+CPUAccounting=true
+CPUQuota=3200%
+MemoryAccounting=true
+MemoryMax=16G
+TasksMax=512
+NoNewPrivileges=true
+
+[Install]
+WantedBy=default.target

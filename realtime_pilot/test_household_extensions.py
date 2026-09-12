@@ -12,19 +12,19 @@ from proposal_contract import candidate
 
 class ExtensionTests(unittest.TestCase):
     def raw(self):
-        a=answers();a.update(X_REGION='广东',X_CITY='深圳',X_BUILDING='apartment',X_AREA='90_119',X_EXTRA_DEVICES=['refrigerator','pv'],X_INCOME='10000_19999',X_COUNT_ac='2')
+        a=answers();a.update(X_REGION='广东',X_CITY='广州',X_BUILDING='apartment',X_AREA='90_119',X_AREA_BASIS='usable',X_FLOOR='middle',X_EXTRA_DEVICES=['refrigerator','pv'],X_INCOME='10000_19999',X_COUNT_ac='2')
         a['M_MEMBERS'][0].update(age_band='older',life_roles=['retired','caregiver'],cost_importance='2',control='manual')
         return a
     def normalized(self,a):return sanitize_profile(normalize_answers(a,list(LOOKUP),LOOKUP))
     def test_optional_extensions_never_change_physics_or_planner(self):
-        a=answers();b=copy.deepcopy(a);b.update(X_REGION='广东',X_CITY='深圳',X_INCOME='ge30000',X_COUNT_ac='3_plus')
+        a=answers();b=copy.deepcopy(a);b.update(X_INCOME='ge30000',X_COUNT_ac='3_plus')
         p1,p2=self.normalized(a),self.normalized(b)
         o1,s1=prepare(p1,'same');o2,s2=prepare(p2,'same')
         self.assertEqual(o1,o2);self.assertEqual(s1,s2)
         h1=build_household_config(p1,QUESTIONS,o1,'same');h2=build_household_config(p2,QUESTIONS,o2,'same')
         self.assertEqual({k:v for k,v in h1.items() if k!="answers_hash"},{k:v for k,v in h2.items() if k!="answers_hash"})
         self.assertNotEqual(h1["answers_hash"],h2["answers_hash"]) # provenance still covers the full answer snapshot
-        self.assertNotIn('X_REGION',json.dumps(h2['observable_profile']))
+        self.assertNotIn('X_INCOME',json.dumps(h2['observable_profile']))
         self.assertEqual(p1['X_EXTRA_DEVICES']['response_status'],'skipped')
     def test_member_multiselect_and_research_absence_are_not_invented(self):
         a=self.raw();p=self.normalized(a);o,s=prepare(p,'same');h=build_household_config(p,QUESTIONS,o,'same')
@@ -47,21 +47,37 @@ class ExtensionTests(unittest.TestCase):
             record=store.db.document(job['id'],'household_record.json')
             self.assertEqual(record['raw_answers'],a)
             self.assertEqual(record['derived_facts']['reported_age_counts'],{'under18':0,'adult':0,'older':1,'unreported':2})
-            self.assertEqual(record['research_context']['X_CITY']['value'],'深圳')
+            self.assertEqual(record['normalized_answers']['X_CITY']['value'],'广州')
             self.assertEqual(job['household_record_hash'],digest(record))
             self.assertEqual(store.db.document(job['id'],'request.json')['household_record_hash'],digest(record))
-            job.update(status='complete',result={'schema_version':'eb.paired_ep.v2.7','household_config':job['household_config'],'proposal_plan':{},'display':{'participant_view':{'question':'是否接受？'}},'display_hash':'display','original_plan_hash':'original','proposal_plan_hash':'proposal'})
-            target={'target_source':'engineering_test','choice':'reject','score':3.5,'comfort_score':2.2,'energy_score':4,'vpp_score':3,'comment':'工程测试','feedback_version':'eb.binary_decision_four_scores.v2'}
-            c=candidate(job,target);store.persist(job,{'sft_candidate.json':c});store.db.close()
+            from paired_contract import VERSION
+            from proposal_contract import decision_record
+            result={'schema_version':VERSION,'household_config':job['household_config'],
+                    'original_plan':job['original_plan'],'proposal_plan':{},
+                    'display':{'participant_view':{'question':'是否接受？'}}}
+            for key in ('household_config','original_plan','proposal_plan','display'):
+                result[key+'_hash']=digest(result[key])
+            job.update(status='complete',result=result)
+            target=decision_record(job,{'choice':'reject','score':3.5,'comfort_score':2.2,'energy_score':4,'vpp_score':3,
+                'comment':'工程测试',**{k:result[k] for k in ('display_hash','original_plan_hash','proposal_plan_hash')}})
+            target.update(decision_hash=digest(target),submitted_at=1)
+            c=candidate(job,target);store.persist(job,{'sft_candidate.json':c,'decision.json':target,'outcome.json':result});store.db.close()
             restored=Store(tmp);restored.pool=NoExecute()
             self.assertEqual(restored.db.document(job['id'],'household_record.json'),record)
             self.assertEqual(restored.db.document(job['id'],'sft_candidate.json')['household_record'],record)
             prompt=json.loads(c['messages'][1]['content'])
-            self.assertNotIn('X_CITY',json.dumps(prompt));self.assertIn('age_band',json.dumps(c['household_record']))
+            self.assertIn('X_CITY',json.dumps(prompt));self.assertIn('age_band',json.dumps(c['household_record']))
             self.assertEqual(json.loads(c['messages'][2]['content'])['decision'],'reject')
             output=Path(tmp)/'export.jsonl'
             subprocess.run([sys.executable,'export_candidates.py','--include-engineering','--data-dir',tmp,'--output',str(output)],check=True,capture_output=True)
             exported=json.loads(output.read_text());self.assertEqual(exported['household_record'],record)
+            from export_candidates import verify_candidate
+            docs={n:restored.db.document(job['id'],n) for n in ('outcome.json','decision.json','household_record.json')}
+            self.assertEqual(verify_candidate(c,job,docs),c)
+            bad=copy.deepcopy(c);bad['messages'][2]['content']='{"decision":"accept","score":5}'
+            with self.assertRaises(ValueError):verify_candidate(bad,job,docs)
+            docs['outcome.json']['display']['participant_view']['question']='changed after rating'
+            with self.assertRaises(ValueError):verify_candidate(c,job,docs)
             restored.db.close()
     def test_old_member_snapshot_remains_readable_without_new_fields(self):
         schema=json.loads(Path('ui_audit_20260911/members/schema.json').read_text());qs=schema['paired_questions'];lookup={q['id']:q for q in qs}

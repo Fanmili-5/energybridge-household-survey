@@ -30,6 +30,13 @@ artifacts/
 backups/
 dist/
 
+# Reconstructed third-party simulation bytes. Publish hashes/builders instead.
+simulation_resources/weather/
+simulation_resources/models/
+simulation_resources/validation.json
+simulation_resources/versions/*/simulation_resources/
+models/**/*.idf
+
 # Historical engineering-only fixtures needed for reproducible regression.
 !realtime_pilot/ui_audit_20260911/
 realtime_pilot/ui_audit_20260911/*
@@ -45,3 +52,6 @@ realtime_pilot/ui_audit_20260911/expanded/*
 !realtime_pilot/ui_audit_20260911/options_audit/
 realtime_pilot/ui_audit_20260911/options_audit/*
 !realtime_pilot/ui_audit_20260911/options_audit/schema.json
+
+# Internal presentation captures can embed full requests/session metadata.
+docs/notion-review/

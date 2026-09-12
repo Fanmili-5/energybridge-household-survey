@@ -16,6 +16,9 @@ class ServiceOutcomeTests(unittest.TestCase):
     def test_overnight_shift_moves_energy_but_does_not_erase_it(self):
         raw=answers();raw.update(B05=['washer'],H_washer='late',E_washer='8',D_washer='2',T_washer='3.0')
         profile=sanitize_profile(normalize_answers(raw,list(LOOKUP),LOOKUP));original,scenario=prepare(profile,'overnight-test')
+        # Historical custom-loop overnight regression.
+        from evaluation_window import make_window
+        scenario['evaluation_window']=make_window(original)
         self.assertEqual(scenario['evaluation_window']['end_sim_h'],98)
         request={'profile':profile,'original_plan':original,'scenario':scenario}
         def planner(loop,now,observed,history,reasons):
