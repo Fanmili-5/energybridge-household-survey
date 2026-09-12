@@ -68,7 +68,8 @@ def run_legacy(folder):
     result['provenance']['fallback_rounds']=sum(bool(d.get('controller',{}).get('fallback_used')) for d in proposal['decisions'])
     result['household_config']=household
     result['household_config_hash']=request['household_config_hash']
-    result['feedback_contract']={'required_scores':['score','comfort_score','energy_score','vpp_score']}
+    result['feedback_contract']={'required_scores':['score','comfort_score','energy_score','vpp_score'],
+                                 'required_comment':True}
     result['assessment_stage']='after_simulated_trajectory_before_real_execution'
     result['assessment_cutoff_sim_h']=window_for(scenario)['end_sim_h']
     write_json(folder/'outcome.json',result);progress('complete')

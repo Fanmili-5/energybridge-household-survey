@@ -82,6 +82,17 @@ class ReworkTests(unittest.TestCase):
         result=decision_record(job,{**payload,**scores})
         self.assertEqual({k:result[k] for k in scores},scores)
 
+    def test_reason_is_required_only_when_declared_by_feedback_contract(self):
+        hashes={k:'same' for k in ('display_hash','original_plan_hash','proposal_plan_hash')}
+        scores={'score':3,'comfort_score':2,'energy_score':4,'vpp_score':2}
+        job={'result':{**hashes,'feedback_contract':{'required_scores':list(scores),'required_comment':True}},
+             'data_origin':'synthetic_engineering_test'}
+        with self.assertRaisesRegex(ValueError,'最主要原因'):
+            decision_record(job,{**hashes,**scores,'choice':'reject','comment':'   '})
+        result=decision_record(job,{**hashes,**scores,'choice':'reject','comment':'影响晚饭时间'})
+        self.assertEqual(result['comment'],'影响晚饭时间')
+        self.assertEqual(result['comment_status'],'answered')
+
     def test_real_ep_completes_with_invalid_model_and_retains_exact_prompts(self):
         from common import write_json
         from legacy_paired_worker import run_legacy as run

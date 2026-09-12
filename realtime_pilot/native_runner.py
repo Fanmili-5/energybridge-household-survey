@@ -227,6 +227,16 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
         'simulation_days': days, 'simulation_start_date': start_date,
     }
     asset_binding['appliance_binding_repair'] = binding
+    price_source=Path(price.source)
+    if not price_source.is_file():
+        raise ValueError('Native tariff source is missing')
+    asset_binding['tariff']={
+        'id':scenario['tariff']['id'],
+        'source':str(price_source.relative_to(UPSTREAM) if price_source.is_relative_to(UPSTREAM) else price_source),
+        'sha256':file_hash(price_source),
+        'unit':price.price_unit,
+        'geographic_scope':scenario['tariff']['geographic_scope'],
+    }
     if environment:
         asset_binding['simulation_environment']=environment
         asset_binding['regional_localization']=localization

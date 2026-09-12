@@ -132,7 +132,7 @@ def pair_display(original, proposal, baseline_source):
             "notice": "尚未执行或进行配对仿真；调整时间和设定值不代表已验证节电或舒适效果。"}
 
 SCORE_FIELDS = ("score", "comfort_score", "energy_score", "vpp_score")
-FEEDBACK_VERSION = "eb.binary_decision_four_scores.v2"
+FEEDBACK_VERSION = "eb.binary_decision_four_scores_reason.v3"
 
 def decision_record(job, payload):
     result = job["result"]
@@ -157,6 +157,8 @@ def decision_record(job, payload):
     if not isinstance(reason, str) or len(reason) > 1000:
         raise ValueError("反馈须为 1000 字以内")
     reason = reason.strip()
+    if result.get("feedback_contract", {}).get("required_comment") and not reason:
+        raise ValueError("请简要填写同意或不同意的最主要原因")
     return {"feedback_version": FEEDBACK_VERSION, "choice": choice, "comment": reason or None,
             **scores, "score_status": {k: "skipped" if v is None else "answered" for k, v in scores.items()},
             "comment_status": "answered" if reason else "skipped",

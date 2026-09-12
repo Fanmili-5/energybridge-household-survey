@@ -9,7 +9,9 @@ from questionnaire_persona import build_questions
 ROOT = Path(__file__).resolve().parent
 STUDY = ROOT.parent
 UPSTREAM = STUDY / "upstream_2b17ae6"
-CODEBOOK = json.loads((STUDY / "QUESTIONNAIRE_CODEBOOK.json").read_text())
+# The legacy planning-only routes still consume the original pilot codebook.
+# The live paired questionnaire is exported separately from paired_contract.py.
+CODEBOOK = json.loads((STUDY / "QUESTIONNAIRE_CODEBOOK_LEGACY.json").read_text())
 QUESTIONS = {q["id"]: q for q in CODEBOOK["questions"]}
 PROFILE_IDS = CODEBOOK["profile_defaults"]
 RATING_IDS = ["R01", "R02", "R03", "R04", "R05", "R06", "R07"]

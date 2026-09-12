@@ -14,7 +14,8 @@ def release_hash(*,verify_resources=True):
     from common import ROOT, UPSTREAM, file_hash
     # Every executable local module and the pinned upstream tree must agree.
     files = {p.name:file_hash(p) for p in ROOT.glob('*.py')}
-    files['codebook'] = file_hash(ROOT.parent/'QUESTIONNAIRE_CODEBOOK.json')
+    files['codebook_current'] = file_hash(ROOT.parent/'QUESTIONNAIRE_CODEBOOK.json')
+    files['codebook_legacy'] = file_hash(ROOT.parent/'QUESTIONNAIRE_CODEBOOK_LEGACY.json')
     resources=ROOT.parent/'simulation_resources'
     catalog_path=resources/'catalog.json'
     if catalog_path.exists():

@@ -7,7 +7,7 @@ from proposal_contract import DEVICES, TASKS, executable, at
 from native_support import physical_defaults, ordinary
 from survey_time import LEGACY_STARTS, start_hour
 
-VERSION = 'eb.paired_ep.v3.2'
+VERSION = 'eb.paired_ep.v3.3'
 QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.1'
 QUESTIONS = [deepcopy(q) for q in PROPOSAL_PROFILE_QUESTIONS if q['id'] != 'F_ROUTINES']
 for q in QUESTIONS:
@@ -75,7 +75,8 @@ CONTEXT = {'id':'tianjin_shared_prototype_paired_v1', 'facts':[
     '请代入一个夏季日，按您家的电器和日常习惯回答。日常对照由原EB在设备时间窗口内生成，具体时间以展示为准，再与EB调整安排比较。',
     '两份安排使用同一研究住宅和天津典型夏季天气，结果是情境模拟，不是您家实际耗电预测。',
     '采用原EB天津分时价格权重比较相对用电成本；不是人民币电价，不展示节省金额。'],
-    'tariff':{'source':'tianjin_tou_price_normalized.csv','unit':'normalized TOU cost/kWh','currency':None},
+    'tariff':{'id':'eb_tianjin_normalized_tou_v1','source':'tianjin_tou_price_normalized.csv',
+              'unit':'normalized TOU cost/kWh','currency':None,'geographic_scope':'shared_experiment'},
     'building':{'source':'family_simple.idf','binding':'shared_research_prototype','calibrated_to_household':False},
     'weather':{'file':'CHN_TJ_Tianjin.545270_CSWD.epw','date':'July 1','actual_household_weather':False}}
 LEGACY_CONTEXT=deepcopy(CONTEXT)
@@ -168,10 +169,10 @@ def prepare(profile, seed, *, environment_required=False, context=None):
               'eb_appliance_config':config,'eb_ordinary_plan':p0,
               'assumptions':{'equipment_model_source':'EnergyBridge all_appliances_full.json (physical fields only)',
                 'notice':'开始时刻、可用窗口和任务时长来自您的选择。设备功率、电动汽车电池和热水器采用研究模型；设备参数沿用原 EB，电器模型与住宅电表的覆盖范围分别记录；充电和加热窗口不表示设备始终满功率运行。洗衣、洗碗、烘干按 EB 分别执行。'}}
-    rng=random.Random(str(seed)); decision=rng.choice([16,17,18]); duration=rng.choice([.5,1.])
+    rng=random.Random(str(seed)); decision=rng.choice([16,17,18]); duration=rng.choice([1.,2.])
     scenario=deepcopy(CONTEXT)
     scenario.update(decision_h=decision,event={'id':'vpp_'+digest(str(seed))[:12],'trigger_h':decision+1,'end_h':decision+1+duration,'day':1},
-                    sampling={'method':'uniform_event_start_17_18_19_duration_0.5_1_v1','seed':str(seed),'conditioned_on_response':False})
+                    sampling={'method':'uniform_event_start_17_18_19_duration_1_2_v1','seed':str(seed),'conditioned_on_response':False})
     from native_scenario import window,START_DATE
     scenario['evaluation_window']=window(original)
     scenario['simulation_start_date']=START_DATE

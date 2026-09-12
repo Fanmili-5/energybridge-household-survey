@@ -22,6 +22,9 @@ flowchart LR
 - 中间保留固定上游版本的原生规划、技术检查和回退；去掉模拟家庭接受检查及最终模拟评分。补齐所选设备的 EP 执行接口。
 - 保留不变、回退、负收益及拒绝样本。失败任务保留问卷和错误状态，不伪造完整方案或真人标签。
 - 四项评分沿用 EB 字段 `score / comfort_score / energy_score / vpp_score`，允许 1—5 小数。
+- VPP 响应从 17:00、18:00、19:00 中抽取开始时刻，持续时间从 1 小时、2 小时中抽取；抽样在展示方案前完成，不依据用户反馈重抽。
+- 同意／不同意、四项评分和简短原因都是当前真人反馈协议的必填项；原因原文进入监督样本，不由系统补写。
+- 电价沿用原 EB 天津归一化分时价格，作为所有参与者一致的研究条件；不是当地真实电价，不展示为人民币节省金额。后续可以按版本替换电价资源，不改写已收集情境。
 
 ## 复现
 
@@ -48,6 +51,7 @@ EPLUS_ROOT=/path/to/EnergyPlus-24-1-0 EB_TEST_NATIVE_EP=1 .venv/bin/python scrip
 ## 运行与交付
 
 - [数据保存与导出](docs/DATA.md)
+- [当前问卷数据字典](QUESTIONNAIRE_CODEBOOK.json)（由运行代码生成）；`QUESTIONNAIRE_CODEBOOK_LEGACY.json` 仅供历史入口读取。
 - [本轮修复与验收](docs/DATA_COLLECTION_RELEASE_20260912.md)
 - [部署步骤](docs/DEPLOYMENT.md) / [配置模板](deploy/service.env.example)
 - [计算服务器接入](deploy/SCHOOL-COMPUTE.md) / [并发设置记录](deploy/CONCURRENCY-20260912.md)

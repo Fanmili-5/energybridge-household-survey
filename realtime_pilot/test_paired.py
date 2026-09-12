@@ -19,7 +19,10 @@ class PairedTests(unittest.TestCase):
     def test_random_event_is_reproducible_and_independent_of_attitudes(self):
         p=self.profile();o,s=prepare(p,'seed');q=copy.deepcopy(p);q['P_COMFORT']['value']='1'
         o2,s2=prepare(q,'seed');self.assertEqual(o,o2);self.assertEqual(s,s2)
-        times={prepare(p,str(i))[1]['event']['trigger_h'] for i in range(30)};self.assertEqual(times,{17,18,19})
+        scenarios=[prepare(p,str(i))[1] for i in range(60)]
+        times={s['event']['trigger_h'] for s in scenarios};self.assertEqual(times,{17,18,19})
+        durations={s['event']['end_h']-s['event']['trigger_h'] for s in scenarios};self.assertEqual(durations,{1,2})
+        self.assertTrue(all(s['sampling']['method']=='uniform_event_start_17_18_19_duration_1_2_v1' for s in scenarios))
         self.assertEqual(profile_components(p)['classification'],profile_components(q)['classification'])
     def test_upstream_runtime_rejects_started_tasks_and_accepts_advancing(self):
         from legacy_test_support import prepare

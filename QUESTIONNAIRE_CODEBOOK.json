@@ -1,207 +1,50 @@
 {
-  "schema_version": "eb.household_questionnaire.v1.3_profile_coverage",
-  "status": "draft_for_cognitive_interviews_and_pilot",
-  "target_schema_version": "household_evaluator_v3",
-  "unit": "one fixed household represented by one human",
-  "response_cell": {
-    "value": "answer value or null",
-    "response_status": [
-      "answered",
-      "dont_know",
-      "declined",
-      "skipped",
-      "not_asked",
-      "not_applicable",
-      "cannot_judge",
-      "technical_failure"
-    ]
-  },
-  "special_option_rule": "Special status options map to value=null and the matching response_status; never use 0/3 as a missing code. Numeric values only for genuine numeric answers.",
-  "counts": {
-    "basic_items": 5,
-    "attitude_items": 12,
-    "pilot_strategy_cards_per_household": 4,
-    "suggested_pilot_scenarios_per_household": 2,
-    "strategies_per_scenario": 2
-  },
-  "profile_defaults": [
-    "B01",
-    "B02",
-    "B04",
-    "B05",
-    "B06",
-    "A01",
-    "A02",
-    "A03",
-    "A04",
-    "A05",
-    "A06",
-    "A07",
-    "A08",
-    "A09",
-    "A10",
-    "A11",
-    "A12"
-  ],
-  "cluster_defaults": [
-    "A01",
-    "A02",
-    "A03",
-    "A04",
-    "A05",
-    "A06",
-    "A07",
-    "A08",
-    "A09",
-    "A10",
-    "A11",
-    "A12"
-  ],
-  "order_variants": {
-    "O1": [
-      "A01",
-      "A03",
-      "A05",
-      "A07",
-      "A09",
-      "A11",
-      "A02",
-      "A04",
-      "A06",
-      "A08",
-      "A10",
-      "A12"
+  "schema_version": "eb.persona_questionnaire.v4.1",
+  "status": "runtime_authoritative",
+  "paired_flow_version": "eb.paired_ep.v3.3",
+  "unit": "one household represented by one respondent",
+  "question_count": 66,
+  "questions_sha256": "efa93ce12697a4a5cbaa38d2e5da94a161d43f658e1f142827ffd83414624c4a",
+  "scenario_sampling": {
+    "event_start_hours": [
+      17,
+      18,
+      19
     ],
-    "O2": [
-      "A12",
-      "A10",
-      "A08",
-      "A06",
-      "A04",
-      "A02",
-      "A11",
-      "A09",
-      "A07",
-      "A05",
-      "A03",
-      "A01"
-    ]
+    "event_duration_hours": [
+      1,
+      2
+    ],
+    "conditioned_on_response": false
   },
-  "dimensions_are_content_domains_not_validated_factors": true,
-  "case_metadata_required": [
-    "household_id",
-    "respondent_id",
-    "profile_version",
-    "case_id",
-    "case_family",
-    "case_order",
-    "eligibility_rule",
-    "plan_version",
-    "display_version",
-    "questionnaire_version",
-    "target_schema_version",
-    "feedback_basis",
-    "assessment_stage",
-    "assessment_cutoff",
-    "proposal_condition_profile_id",
-    "respondent_profile_id",
-    "scenario_id",
-    "case_pair_id",
-    "form_version",
-    "assignment_rule",
-    "building_model_id",
-    "zone_mapping_id",
-    "binding_mode",
-    "declared_overrides",
-    "applicability_status"
-  ],
-  "technical_provenance": [
-    "upstream_commit",
-    "energyplus_version",
-    "idf_hash",
-    "weather_source",
-    "run_id",
-    "trajectory_ref",
-    "tariff_version",
-    "metering_window",
-    "reference_estimation_source",
-    "epw_hash",
-    "weather_kind",
-    "simulation_dates",
-    "timezone",
-    "pre_event_inputs_hash"
-  ],
-  "future_input_rule": "For static outcome_rating, include the displayed plan and outcome; no C/R target enters its own inputs or baseline clusters. Do not derive plan-only judgement training rows from C01 in this version.",
-  "sample_generation_rule": "Static survey: outcome_rating from human responses; optional C01 is informed_acceptability after seeing results, not pre-execution consent. No runtime branching or imputation.",
+  "tariff": {
+    "id": "eb_tianjin_normalized_tou_v1",
+    "source": "tianjin_tou_price_normalized.csv",
+    "unit": "normalized TOU cost/kWh",
+    "currency": null,
+    "geographic_scope": "shared_experiment"
+  },
+  "feedback_contract": {
+    "version": "eb.binary_decision_four_scores_reason.v3",
+    "decision": [
+      "accept",
+      "reject"
+    ],
+    "score_fields": [
+      "score",
+      "comfort_score",
+      "energy_score",
+      "vpp_score"
+    ],
+    "score_range": [
+      1,
+      5
+    ],
+    "decimal_scores_allowed": true,
+    "comment_required": true,
+    "comment_max_chars": 1000
+  },
   "questions": [
-    {
-      "id": "P00",
-      "prompt": "阅读研究信息后，您是否愿意参加？",
-      "type": "single_choice",
-      "allow_skip": false,
-      "default": null,
-      "required_for_participation": true,
-      "model_role": "metadata",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S7"
-      ],
-      "options": [
-        {
-          "value": "yes",
-          "label": "愿意参加"
-        },
-        {
-          "value": "no",
-          "label": "不愿意参加"
-        }
-      ],
-      "branch": {
-        "no": "end"
-      }
-    },
-    {
-      "id": "B01",
-      "prompt": "您平时对家里的用电安排了解多少？",
-      "type": "single_choice",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "descriptive_or_eligibility",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S8"
-      ],
-      "options": [
-        {
-          "value": "primary",
-          "label": "主要由我安排"
-        },
-        {
-          "value": "joint",
-          "label": "我和家里其他人一起安排"
-        },
-        {
-          "value": "familiar",
-          "label": "我不负责安排，但比较了解"
-        },
-        {
-          "value": "limited",
-          "label": "我了解得不多"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        },
-        {
-          "value": "declined",
-          "label": "不愿回答"
-        }
-      ]
-    },
     {
       "id": "B02",
       "prompt": "您家通常一起居住的有几个人，包括您自己？",
@@ -240,20 +83,13 @@
         {
           "value": "6_plus",
           "label": "6人及以上"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        },
-        {
-          "value": "declined",
-          "label": "不愿回答"
         }
-      ]
+      ],
+      "group": "household_fact"
     },
     {
       "id": "B04",
-      "prompt": "通常在工作日白天，您家有人在家吗？",
+      "prompt": "在本次指定月份，白天您家通常有人在家吗？",
       "type": "single_choice",
       "allow_skip": true,
       "default": null,
@@ -281,20 +117,13 @@
         {
           "value": "variable",
           "label": "不固定，很难概括"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        },
-        {
-          "value": "declined",
-          "label": "不愿回答"
         }
-      ]
+      ],
+      "group": "household_fact"
     },
     {
       "id": "B05",
-      "prompt": "您家平时使用哪些设备？",
+      "prompt": "请选择家中拥有、要纳入日常用电安排的设备；所选设备都会进入本次模拟。",
       "type": "multi_choice",
       "allow_skip": true,
       "default": null,
@@ -329,1219 +158,4207 @@
         },
         {
           "value": "home_ev",
-          "label": "在家充电的电动汽车"
+          "label": "可在家充电的电动汽车（含插混，不含电动自行车）"
         },
         {
           "value": "none",
           "label": "以上都没有"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
         }
       ],
       "exclusive_options": [
         "none",
         "dont_know"
-      ]
+      ],
+      "group": "household_fact"
     },
     {
-      "id": "B06",
-      "prompt": "您家用过电器定时运行或自动调整用电的功能吗？",
+      "id": "F_EVENING",
+      "prompt": "平时 18:00—22:00，您家通常有人在家吗？",
       "type": "single_choice",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "descriptive_or_eligibility",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S8"
-      ],
+      "group": "household_fact",
+      "eb_dimension": null,
       "options": [
         {
-          "value": "frequent",
-          "label": "目前经常使用"
+          "value": "mostly_home",
+          "label": "大部分时间有人"
         },
         {
-          "value": "occasional",
-          "label": "偶尔使用"
+          "value": "partly_home",
+          "label": "部分时间有人"
         },
         {
-          "value": "past",
-          "label": "以前用过，现在不用"
+          "value": "mostly_away",
+          "label": "大部分时间没人"
         },
         {
-          "value": "never",
-          "label": "没用过"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
+          "value": "varies",
+          "label": "每天不太固定"
         }
       ]
     },
     {
-      "id": "A01",
-      "prompt": "选择用电安排时，我们家很在意电费的高低。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S9"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "cost_attention",
-      "scale_validated": false
-    },
-    {
-      "id": "A02",
-      "prompt": "我们家会优先考虑电费更低的用电安排。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S9"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "cost_attention",
-      "scale_validated": false
-    },
-    {
-      "id": "A03",
-      "prompt": "即使电费稍高一些，我们家也更愿意保持舒适的室温。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S9"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "comfort_priority",
-      "scale_validated": false
-    },
-    {
-      "id": "A04",
-      "prompt": "如果节电安排让家人觉得太热或太冷，我们家希望尽快恢复原来的设置。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S9"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "comfort_priority",
-      "scale_validated": false
-    },
-    {
-      "id": "A05",
-      "prompt": "只要能在需要前完成，我们家愿意把家务电器的运行时间往后挪。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S3",
-        "S4"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "time_shift_willingness",
-      "scale_validated": false
-    },
-    {
-      "id": "A06",
-      "prompt": "我们家通常能接受家务电器比原计划晚一会儿运行。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S3",
-        "S4"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "time_shift_willingness",
-      "scale_validated": false
-    },
-    {
-      "id": "A07",
-      "prompt": "即使已开通自动调整功能，每次改变电器安排前，我们家仍希望先确认。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S2",
-        "S3"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "control_preference",
-      "scale_validated": false
-    },
-    {
-      "id": "A08",
-      "prompt": "使用自动调整功能时，我们家希望能随时取消这次调整。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S2",
-        "S3"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "control_preference",
-      "scale_validated": false
-    },
-    {
-      "id": "A09",
-      "prompt": "我们家相信自动控制系统能够把电器运行安排好。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S2",
-        "S3"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "automation_trust",
-      "scale_validated": false
-    },
-    {
-      "id": "A10",
-      "prompt": "我们家通常相信自动控制系统给出的费用说明。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S2",
-        "S3"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "automation_trust",
-      "scale_validated": false
-    },
-    {
-      "id": "A11",
-      "prompt": "减少能源浪费是我们家选择用电安排时会考虑的事。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S9"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "energy_conservation_orientation",
-      "scale_validated": false
-    },
-    {
-      "id": "A12",
-      "prompt": "即使省下的电费不多，我们家也愿意为减少能源浪费做些小调整。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "profile_input",
-      "cluster_role": "primary_candidate",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S9"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "dimension": "energy_conservation_orientation",
-      "scale_validated": false
-    },
-    {
-      "id": "X01",
-      "prompt": "即使没有额外补偿，我们家也愿意考虑在大家集中用电时少用一些电。",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "optional_profile_input",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S3",
-        "S4"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "非常不同意"
-        },
-        {
-          "value": 2,
-          "label": "比较不同意"
-        },
-        {
-          "value": 3,
-          "label": "既不赞同也不反对"
-        },
-        {
-          "value": 4,
-          "label": "比较同意"
-        },
-        {
-          "value": 5,
-          "label": "非常同意"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "enabled_by_default": false,
-      "precompiled_optional_module": true
-    },
-    {
-      "id": "X02",
-      "prompt": "作决定前，您家最想先了解哪些信息？",
-      "type": "multi_choice",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "optional_profile_input",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S3",
-        "S7"
-      ],
-      "options": [
-        {
-          "value": "cost",
-          "label": "电费会怎样变化"
-        },
-        {
-          "value": "comfort",
-          "label": "会不会影响舒适"
-        },
-        {
-          "value": "service",
-          "label": "会不会耽误电器使用"
-        },
-        {
-          "value": "control",
-          "label": "怎样取消或恢复"
-        },
-        {
-          "value": "explanation",
-          "label": "为什么提出这次调整"
-        },
-        {
-          "value": "none",
-          "label": "没有特别想了解的"
-        },
-        {
-          "value": "other",
-          "label": "其他"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        }
-      ],
-      "enabled_by_default": false,
-      "max_choices": 2,
-      "exclusive_options": [
-        "none",
-        "dont_know"
-      ],
-      "other_text_for": "other",
-      "precompiled_optional_module": true
-    },
-    {
-      "id": "C00",
-      "prompt": "这段情境是否容易理解并想象成您家的情况？",
+      "id": "F_REGULARITY",
+      "prompt": "您家成员的外出、回家和休息时间通常规律吗？",
       "type": "single_choice",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "metadata",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S7"
-      ],
+      "group": "household_fact",
+      "eb_dimension": null,
       "options": [
         {
-          "value": "clear",
-          "label": "容易理解，也能想象"
+          "value": "regular",
+          "label": "大体固定"
         },
         {
-          "value": "clarify",
-          "label": "基本能理解，但有地方想确认"
+          "value": "partly_regular",
+          "label": "部分成员或部分日期固定"
         },
         {
-          "value": "unclear",
-          "label": "难以理解"
-        },
-        {
-          "value": "not_relatable",
-          "label": "与我家情况差别太大，难以想象"
+          "value": "irregular",
+          "label": "变化较多"
         }
-      ],
-      "free_text_followup": "需要确认的内容",
-      "precompiled_placement": "first case only"
+      ]
     },
     {
-      "id": "C01",
-      "prompt": "看过上述方案及模拟结果后，您家是否接受这样的安排？",
+      "id": "F_LATE_USE",
+      "prompt": "您家是否经常有人在深夜（零点以后）仍在活动并使用电器？",
       "type": "single_choice",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "outcome_target",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S2",
-        "S4"
-      ],
+      "group": "household_fact",
+      "eb_dimension": null,
       "options": [
         {
-          "value": "accept",
-          "label": "接受当前方案"
+          "value": "often",
+          "label": "经常"
         },
         {
-          "value": "reject",
-          "label": "不接受当前方案"
+          "value": "sometimes",
+          "label": "偶尔"
         },
         {
-          "value": "request_change",
-          "label": "修改后再考虑"
-        },
-        {
-          "value": "need_information",
-          "label": "目前信息不够，无法判断"
+          "value": "rarely",
+          "label": "很少或没有"
         }
-      ],
-      "target_field": "informed_acceptability",
-      "repeated_per_case": true
+      ]
     },
     {
-      "id": "C02",
-      "prompt": "请简单说说原因。",
+      "id": "M_MEMBERS",
+      "type": "member_list",
+      "group": "member_profile",
+      "options": [],
+      "prompt": "家里每个人的日常偏好",
+      "fields": [
+        {
+          "id": "age_band",
+          "prompt": "年龄段（选填）",
+          "required": false,
+          "options": [
+            {
+              "value": "under18",
+              "label": "未满18岁"
+            },
+            {
+              "value": "adult",
+              "label": "18—59岁"
+            },
+            {
+              "value": "older",
+              "label": "60岁及以上"
+            }
+          ]
+        },
+        {
+          "id": "life_roles",
+          "prompt": "平时的生活状态（可多选，选填）",
+          "type": "multi_choice",
+          "required": false,
+          "options": [
+            {
+              "value": "student",
+              "label": "上学"
+            },
+            {
+              "value": "outside_work",
+              "label": "在外工作"
+            },
+            {
+              "value": "home_work",
+              "label": "居家工作/学习"
+            },
+            {
+              "value": "retired",
+              "label": "退休"
+            },
+            {
+              "value": "caregiver",
+              "label": "照顾家人"
+            },
+            {
+              "value": "shift",
+              "label": "轮班工作"
+            },
+            {
+              "value": "preschool",
+              "label": "尚未入学"
+            },
+            {
+              "value": "not_working",
+              "label": "暂未工作（非退休）"
+            },
+            {
+              "value": "other",
+              "label": "其他生活状态"
+            }
+          ]
+        },
+        {
+          "id": "routine",
+          "prompt": "平时主要的生活节奏（选最接近的一项）",
+          "required": true,
+          "options": [
+            {
+              "value": "out_regular",
+              "label": "通常固定时间外出工作或学习"
+            },
+            {
+              "value": "home_regular",
+              "label": "主要在家生活，包括居家工作、学习、休息或照护"
+            },
+            {
+              "value": "mixed",
+              "label": "部分时间在家，部分时间外出"
+            },
+            {
+              "value": "irregular",
+              "label": "轮班或时间经常变化"
+            }
+          ]
+        },
+        {
+          "id": "comfort",
+          "prompt": "对室温变化的感受",
+          "required": false,
+          "options": [
+            {
+              "value": "temp_tolerant",
+              "label": "不太敏感，能适应一定变化"
+            },
+            {
+              "value": "normal_comfort",
+              "label": "通常能接受小幅变化"
+            },
+            {
+              "value": "temp_sensitive",
+              "label": "比较敏感，希望温度稳定"
+            }
+          ]
+        },
+        {
+          "id": "task",
+          "prompt": "对电器运行时间调整的态度",
+          "required": false,
+          "options": [
+            {
+              "value": "flexible",
+              "label": "时间比较灵活"
+            },
+            {
+              "value": "semi_rigid",
+              "label": "可以调整，但要在可接受的时间内"
+            },
+            {
+              "value": "rigid",
+              "label": "更希望按固定时间安排"
+            }
+          ]
+        },
+        {
+          "id": "participation",
+          "prompt": "平时主要怎样参与家庭用电安排？（选最接近的一项）",
+          "required": false,
+          "options": [
+            {
+              "value": "usually_not_involved",
+              "label": "通常不参与，由其他家人安排"
+            },
+            {
+              "value": "usually_joint",
+              "label": "通常与家人共同商量决定"
+            },
+            {
+              "value": "usually_decides",
+              "label": "通常主要由这位成员决定"
+            }
+          ]
+        },
+        {
+          "id": "needs_priority",
+          "prompt": "安排用电时，家人是否通常优先考虑这位成员的需要？",
+          "required": false,
+          "options": [
+            {
+              "value": "yes",
+              "label": "通常会优先考虑"
+            },
+            {
+              "value": "no",
+              "label": "没有特别优先"
+            }
+          ]
+        },
+        {
+          "id": "cost_importance",
+          "prompt": "对节省电费的重视程度（选填）",
+          "required": false,
+          "options": [
+            {
+              "value": "1",
+              "label": "1 不重要"
+            },
+            {
+              "value": "2",
+              "label": "2 不太重要"
+            },
+            {
+              "value": "3",
+              "label": "3 一般"
+            },
+            {
+              "value": "4",
+              "label": "4 比较重要"
+            },
+            {
+              "value": "5",
+              "label": "5 非常重要"
+            }
+          ]
+        },
+        {
+          "id": "grid_importance",
+          "prompt": "不明显影响生活时，对配合错峰用电的重视程度（选填）",
+          "required": false,
+          "options": [
+            {
+              "value": "1",
+              "label": "1 不重要"
+            },
+            {
+              "value": "2",
+              "label": "2 不太重要"
+            },
+            {
+              "value": "3",
+              "label": "3 一般"
+            },
+            {
+              "value": "4",
+              "label": "4 比较重要"
+            },
+            {
+              "value": "5",
+              "label": "5 非常重要"
+            }
+          ]
+        },
+        {
+          "id": "control",
+          "prompt": "对系统调整电器的主要想法（选最接近的一项，选填）",
+          "required": false,
+          "options": [
+            {
+              "value": "auto",
+              "label": "满足条件可自动安排"
+            },
+            {
+              "value": "suggest",
+              "label": "先了解建议和理由，再决定怎样安排"
+            },
+            {
+              "value": "confirm",
+              "label": "每次改动都必须先征得明确同意"
+            },
+            {
+              "value": "manual",
+              "label": "倾向自己安排"
+            }
+          ]
+        }
+      ],
+      "max_members": 20,
+      "help": "按您平时的了解填写，无需姓名，也不用标明哪位是您。生活节奏为必填，其余了解就填；不清楚的可以直接留空。"
+    },
+    {
+      "id": "H_ac",
+      "prompt": "在本次指定月份，空调一般什么时候用？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "afternoon",
+          "label": "下午到睡前（14:00—23:00）"
+        },
+        {
+          "value": "evening",
+          "label": "傍晚到睡前（18:00—23:00）"
+        },
+        {
+          "value": "all_day",
+          "label": "全天使用"
+        },
+        {
+          "value": "custom",
+          "label": "自己选择使用时段（可跨午夜）"
+        }
+      ],
+      "device": "ac"
+    },
+    {
+      "id": "H_washer",
+      "prompt": "在本次指定月份，洗衣机一般什么时候用？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "0.5",
+          "label": "00:30"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "1.5",
+          "label": "01:30"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "2.5",
+          "label": "02:30"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "3.5",
+          "label": "03:30"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "4.5",
+          "label": "04:30"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "5.5",
+          "label": "05:30"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "6.5",
+          "label": "06:30"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "7.5",
+          "label": "07:30"
+        },
+        {
+          "value": "morning",
+          "label": "08:00"
+        },
+        {
+          "value": "8.5",
+          "label": "08:30"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "9.5",
+          "label": "09:30"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "10.5",
+          "label": "10:30"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "11.5",
+          "label": "11:30"
+        },
+        {
+          "value": "noon",
+          "label": "12:00"
+        },
+        {
+          "value": "12.5",
+          "label": "12:30"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "13.5",
+          "label": "13:30"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "14.5",
+          "label": "14:30"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "15.5",
+          "label": "15:30"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "16.5",
+          "label": "16:30"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "17.5",
+          "label": "17:30"
+        },
+        {
+          "value": "evening",
+          "label": "18:00"
+        },
+        {
+          "value": "18.5",
+          "label": "18:30"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "19.5",
+          "label": "19:30"
+        },
+        {
+          "value": "night",
+          "label": "20:00"
+        },
+        {
+          "value": "20.5",
+          "label": "20:30"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "21.5",
+          "label": "21:30"
+        },
+        {
+          "value": "late",
+          "label": "22:00"
+        },
+        {
+          "value": "22.5",
+          "label": "22:30"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        },
+        {
+          "value": "23.5",
+          "label": "23:30"
+        }
+      ],
+      "device": "washer"
+    },
+    {
+      "id": "D_washer",
+      "prompt": "洗衣机这项任务，通常最晚几点需要完成？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "8",
+          "label": "08:00"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "12",
+          "label": "12:00"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "18",
+          "label": "18:00"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "20",
+          "label": "20:00"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "22",
+          "label": "22:00"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        },
+        {
+          "value": "24",
+          "label": "24:00"
+        }
+      ],
+      "device": "washer",
+      "active_only": true
+    },
+    {
+      "id": "E_washer",
+      "prompt": "洗衣机通常从几点起就可以开始？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "8",
+          "label": "08:00"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "12",
+          "label": "12:00"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "18",
+          "label": "18:00"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "20",
+          "label": "20:00"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "22",
+          "label": "22:00"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        }
+      ],
+      "device": "washer",
+      "active_only": true
+    },
+    {
+      "id": "T_washer",
+      "prompt": "洗衣机一次通常需要多久？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0.5",
+          "label": "0.5 小时"
+        },
+        {
+          "value": "1.0",
+          "label": "1 小时"
+        },
+        {
+          "value": "1.5",
+          "label": "1.5 小时"
+        },
+        {
+          "value": "2.0",
+          "label": "2 小时"
+        },
+        {
+          "value": "2.5",
+          "label": "2.5 小时"
+        },
+        {
+          "value": "3.0",
+          "label": "3 小时"
+        },
+        {
+          "value": "4.0",
+          "label": "4 小时"
+        }
+      ],
+      "device": "washer",
+      "active_only": true
+    },
+    {
+      "id": "H_dishwasher",
+      "prompt": "在本次指定月份，洗碗机一般什么时候用？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "0.5",
+          "label": "00:30"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "1.5",
+          "label": "01:30"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "2.5",
+          "label": "02:30"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "3.5",
+          "label": "03:30"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "4.5",
+          "label": "04:30"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "5.5",
+          "label": "05:30"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "6.5",
+          "label": "06:30"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "7.5",
+          "label": "07:30"
+        },
+        {
+          "value": "morning",
+          "label": "08:00"
+        },
+        {
+          "value": "8.5",
+          "label": "08:30"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "9.5",
+          "label": "09:30"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "10.5",
+          "label": "10:30"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "11.5",
+          "label": "11:30"
+        },
+        {
+          "value": "noon",
+          "label": "12:00"
+        },
+        {
+          "value": "12.5",
+          "label": "12:30"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "13.5",
+          "label": "13:30"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "14.5",
+          "label": "14:30"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "15.5",
+          "label": "15:30"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "16.5",
+          "label": "16:30"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "17.5",
+          "label": "17:30"
+        },
+        {
+          "value": "evening",
+          "label": "18:00"
+        },
+        {
+          "value": "18.5",
+          "label": "18:30"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "19.5",
+          "label": "19:30"
+        },
+        {
+          "value": "night",
+          "label": "20:00"
+        },
+        {
+          "value": "20.5",
+          "label": "20:30"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "21.5",
+          "label": "21:30"
+        },
+        {
+          "value": "late",
+          "label": "22:00"
+        },
+        {
+          "value": "22.5",
+          "label": "22:30"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        },
+        {
+          "value": "23.5",
+          "label": "23:30"
+        }
+      ],
+      "device": "dishwasher"
+    },
+    {
+      "id": "D_dishwasher",
+      "prompt": "洗碗机这项任务，通常最晚几点需要完成？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "8",
+          "label": "08:00"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "12",
+          "label": "12:00"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "18",
+          "label": "18:00"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "20",
+          "label": "20:00"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "22",
+          "label": "22:00"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        },
+        {
+          "value": "24",
+          "label": "24:00"
+        }
+      ],
+      "device": "dishwasher",
+      "active_only": true
+    },
+    {
+      "id": "E_dishwasher",
+      "prompt": "洗碗机通常从几点起就可以开始？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "8",
+          "label": "08:00"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "12",
+          "label": "12:00"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "18",
+          "label": "18:00"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "20",
+          "label": "20:00"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "22",
+          "label": "22:00"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        }
+      ],
+      "device": "dishwasher",
+      "active_only": true
+    },
+    {
+      "id": "T_dishwasher",
+      "prompt": "洗碗机一次通常需要多久？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0.5",
+          "label": "0.5 小时"
+        },
+        {
+          "value": "1.0",
+          "label": "1 小时"
+        },
+        {
+          "value": "1.5",
+          "label": "1.5 小时"
+        },
+        {
+          "value": "2.0",
+          "label": "2 小时"
+        },
+        {
+          "value": "2.5",
+          "label": "2.5 小时"
+        },
+        {
+          "value": "3.0",
+          "label": "3 小时"
+        },
+        {
+          "value": "4.0",
+          "label": "4 小时"
+        }
+      ],
+      "device": "dishwasher",
+      "active_only": true
+    },
+    {
+      "id": "H_dryer",
+      "prompt": "在本次指定月份，烘干机一般什么时候用？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "0.5",
+          "label": "00:30"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "1.5",
+          "label": "01:30"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "2.5",
+          "label": "02:30"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "3.5",
+          "label": "03:30"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "4.5",
+          "label": "04:30"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "5.5",
+          "label": "05:30"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "6.5",
+          "label": "06:30"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "7.5",
+          "label": "07:30"
+        },
+        {
+          "value": "morning",
+          "label": "08:00"
+        },
+        {
+          "value": "8.5",
+          "label": "08:30"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "9.5",
+          "label": "09:30"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "10.5",
+          "label": "10:30"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "11.5",
+          "label": "11:30"
+        },
+        {
+          "value": "noon",
+          "label": "12:00"
+        },
+        {
+          "value": "12.5",
+          "label": "12:30"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "13.5",
+          "label": "13:30"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "14.5",
+          "label": "14:30"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "15.5",
+          "label": "15:30"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "16.5",
+          "label": "16:30"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "17.5",
+          "label": "17:30"
+        },
+        {
+          "value": "evening",
+          "label": "18:00"
+        },
+        {
+          "value": "18.5",
+          "label": "18:30"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "19.5",
+          "label": "19:30"
+        },
+        {
+          "value": "night",
+          "label": "20:00"
+        },
+        {
+          "value": "20.5",
+          "label": "20:30"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "21.5",
+          "label": "21:30"
+        },
+        {
+          "value": "late",
+          "label": "22:00"
+        },
+        {
+          "value": "22.5",
+          "label": "22:30"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        },
+        {
+          "value": "23.5",
+          "label": "23:30"
+        }
+      ],
+      "device": "dryer"
+    },
+    {
+      "id": "D_dryer",
+      "prompt": "烘干机这项任务，通常最晚几点需要完成？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "8",
+          "label": "08:00"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "12",
+          "label": "12:00"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "18",
+          "label": "18:00"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "20",
+          "label": "20:00"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "22",
+          "label": "22:00"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        },
+        {
+          "value": "24",
+          "label": "24:00"
+        }
+      ],
+      "device": "dryer",
+      "active_only": true
+    },
+    {
+      "id": "E_dryer",
+      "prompt": "烘干机通常从几点起就可以开始？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "8",
+          "label": "08:00"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "12",
+          "label": "12:00"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "18",
+          "label": "18:00"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "20",
+          "label": "20:00"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "22",
+          "label": "22:00"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        }
+      ],
+      "device": "dryer",
+      "active_only": true
+    },
+    {
+      "id": "T_dryer",
+      "prompt": "烘干机一次通常需要多久？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0.5",
+          "label": "0.5 小时"
+        },
+        {
+          "value": "1.0",
+          "label": "1 小时"
+        },
+        {
+          "value": "1.5",
+          "label": "1.5 小时"
+        },
+        {
+          "value": "2.0",
+          "label": "2 小时"
+        },
+        {
+          "value": "2.5",
+          "label": "2.5 小时"
+        },
+        {
+          "value": "3.0",
+          "label": "3 小时"
+        },
+        {
+          "value": "4.0",
+          "label": "4 小时"
+        }
+      ],
+      "device": "dryer",
+      "active_only": true
+    },
+    {
+      "id": "H_electric_water_heater",
+      "prompt": "电热水器通常从什么时候开始加热？（请按真实习惯填写；午夜或跨夜安排可保存，暂不能生成模拟）",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "0.5",
+          "label": "00:30"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "1.5",
+          "label": "01:30"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "2.5",
+          "label": "02:30"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "3.5",
+          "label": "03:30"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "4.5",
+          "label": "04:30"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "5.5",
+          "label": "05:30"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "6.5",
+          "label": "06:30"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "7.5",
+          "label": "07:30"
+        },
+        {
+          "value": "morning",
+          "label": "08:00"
+        },
+        {
+          "value": "8.5",
+          "label": "08:30"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "9.5",
+          "label": "09:30"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "10.5",
+          "label": "10:30"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "11.5",
+          "label": "11:30"
+        },
+        {
+          "value": "noon",
+          "label": "12:00"
+        },
+        {
+          "value": "12.5",
+          "label": "12:30"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "13.5",
+          "label": "13:30"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "14.5",
+          "label": "14:30"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "15.5",
+          "label": "15:30"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "16.5",
+          "label": "16:30"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "17.5",
+          "label": "17:30"
+        },
+        {
+          "value": "evening",
+          "label": "18:00"
+        },
+        {
+          "value": "18.5",
+          "label": "18:30"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "19.5",
+          "label": "19:30"
+        },
+        {
+          "value": "night",
+          "label": "20:00"
+        },
+        {
+          "value": "20.5",
+          "label": "20:30"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "21.5",
+          "label": "21:30"
+        },
+        {
+          "value": "late",
+          "label": "22:00"
+        },
+        {
+          "value": "22.5",
+          "label": "22:30"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        },
+        {
+          "value": "23.5",
+          "label": "23:30"
+        }
+      ],
+      "device": "electric_water_heater"
+    },
+    {
+      "id": "H_home_ev",
+      "prompt": "电动汽车通常什么时候在家接入充电设备？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "0.5",
+          "label": "00:30"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "1.5",
+          "label": "01:30"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "2.5",
+          "label": "02:30"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "3.5",
+          "label": "03:30"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "4.5",
+          "label": "04:30"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "5.5",
+          "label": "05:30"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "6.5",
+          "label": "06:30"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "7.5",
+          "label": "07:30"
+        },
+        {
+          "value": "morning",
+          "label": "08:00"
+        },
+        {
+          "value": "8.5",
+          "label": "08:30"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "9.5",
+          "label": "09:30"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "10.5",
+          "label": "10:30"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "11.5",
+          "label": "11:30"
+        },
+        {
+          "value": "noon",
+          "label": "12:00"
+        },
+        {
+          "value": "12.5",
+          "label": "12:30"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "13.5",
+          "label": "13:30"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "14.5",
+          "label": "14:30"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "15.5",
+          "label": "15:30"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "16.5",
+          "label": "16:30"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "17.5",
+          "label": "17:30"
+        },
+        {
+          "value": "evening",
+          "label": "18:00"
+        },
+        {
+          "value": "18.5",
+          "label": "18:30"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "19.5",
+          "label": "19:30"
+        },
+        {
+          "value": "night",
+          "label": "20:00"
+        },
+        {
+          "value": "20.5",
+          "label": "20:30"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "21.5",
+          "label": "21:30"
+        },
+        {
+          "value": "late",
+          "label": "22:00"
+        },
+        {
+          "value": "22.5",
+          "label": "22:30"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        },
+        {
+          "value": "23.5",
+          "label": "23:30"
+        }
+      ],
+      "device": "home_ev"
+    },
+    {
+      "id": "H_ac_temp",
+      "prompt": "空调需要制冷时，通常设为多少度？（22—28℃；此项不是供暖温度）",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "22",
+          "label": "22℃"
+        },
+        {
+          "value": "22.5",
+          "label": "22.5℃"
+        },
+        {
+          "value": "23",
+          "label": "23℃"
+        },
+        {
+          "value": "23.5",
+          "label": "23.5℃"
+        },
+        {
+          "value": "24",
+          "label": "24℃"
+        },
+        {
+          "value": "24.5",
+          "label": "24.5℃"
+        },
+        {
+          "value": "25",
+          "label": "25℃"
+        },
+        {
+          "value": "25.5",
+          "label": "25.5℃"
+        },
+        {
+          "value": "26",
+          "label": "26℃"
+        },
+        {
+          "value": "26.5",
+          "label": "26.5℃"
+        },
+        {
+          "value": "27",
+          "label": "27℃"
+        },
+        {
+          "value": "27.5",
+          "label": "27.5℃"
+        },
+        {
+          "value": "28",
+          "label": "28℃"
+        }
+      ],
+      "device": "ac",
+      "active_only": true
+    },
+    {
+      "id": "D_home_ev",
+      "prompt": "接入充电后，电动汽车通常几点离家？（早于接入时刻表示次日；请勿选择相同时刻）",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "8",
+          "label": "08:00"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "12",
+          "label": "12:00"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "18",
+          "label": "18:00"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "20",
+          "label": "20:00"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "22",
+          "label": "22:00"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        }
+      ],
+      "device": "home_ev",
+      "active_only": true
+    },
+    {
+      "id": "D_electric_water_heater",
+      "prompt": "电热水器通常加热到几点？（早于开始表示次日；跨夜答案可保存，暂不能生成模拟）",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "0.5",
+          "label": "00:30"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "1.5",
+          "label": "01:30"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "2.5",
+          "label": "02:30"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "3.5",
+          "label": "03:30"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "4.5",
+          "label": "04:30"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "5.5",
+          "label": "05:30"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "6.5",
+          "label": "06:30"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "7.5",
+          "label": "07:30"
+        },
+        {
+          "value": "8",
+          "label": "08:00"
+        },
+        {
+          "value": "8.5",
+          "label": "08:30"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "9.5",
+          "label": "09:30"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "10.5",
+          "label": "10:30"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "11.5",
+          "label": "11:30"
+        },
+        {
+          "value": "12",
+          "label": "12:00"
+        },
+        {
+          "value": "12.5",
+          "label": "12:30"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "13.5",
+          "label": "13:30"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "14.5",
+          "label": "14:30"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "15.5",
+          "label": "15:30"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "16.5",
+          "label": "16:30"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "17.5",
+          "label": "17:30"
+        },
+        {
+          "value": "18",
+          "label": "18:00"
+        },
+        {
+          "value": "18.5",
+          "label": "18:30"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "19.5",
+          "label": "19:30"
+        },
+        {
+          "value": "20",
+          "label": "20:00"
+        },
+        {
+          "value": "20.5",
+          "label": "20:30"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "21.5",
+          "label": "21:30"
+        },
+        {
+          "value": "22",
+          "label": "22:00"
+        },
+        {
+          "value": "22.5",
+          "label": "22:30"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        },
+        {
+          "value": "23.5",
+          "label": "23:30"
+        },
+        {
+          "value": "24",
+          "label": "24:00"
+        }
+      ],
+      "device": "electric_water_heater",
+      "active_only": true
+    },
+    {
+      "id": "H_ac_start",
+      "prompt": "空调通常几点开始使用？",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "0.5",
+          "label": "00:30"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "1.5",
+          "label": "01:30"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "2.5",
+          "label": "02:30"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "3.5",
+          "label": "03:30"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "4.5",
+          "label": "04:30"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "5.5",
+          "label": "05:30"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "6.5",
+          "label": "06:30"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "7.5",
+          "label": "07:30"
+        },
+        {
+          "value": "8",
+          "label": "08:00"
+        },
+        {
+          "value": "8.5",
+          "label": "08:30"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "9.5",
+          "label": "09:30"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "10.5",
+          "label": "10:30"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "11.5",
+          "label": "11:30"
+        },
+        {
+          "value": "12",
+          "label": "12:00"
+        },
+        {
+          "value": "12.5",
+          "label": "12:30"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "13.5",
+          "label": "13:30"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "14.5",
+          "label": "14:30"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "15.5",
+          "label": "15:30"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "16.5",
+          "label": "16:30"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "17.5",
+          "label": "17:30"
+        },
+        {
+          "value": "18",
+          "label": "18:00"
+        },
+        {
+          "value": "18.5",
+          "label": "18:30"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "19.5",
+          "label": "19:30"
+        },
+        {
+          "value": "20",
+          "label": "20:00"
+        },
+        {
+          "value": "20.5",
+          "label": "20:30"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "21.5",
+          "label": "21:30"
+        },
+        {
+          "value": "22",
+          "label": "22:00"
+        },
+        {
+          "value": "22.5",
+          "label": "22:30"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        },
+        {
+          "value": "23.5",
+          "label": "23:30"
+        }
+      ],
+      "device": "ac",
+      "required": true,
+      "show_when": {
+        "question_id": "H_ac",
+        "value": "custom"
+      }
+    },
+    {
+      "id": "H_ac_end",
+      "prompt": "空调通常几点结束使用？（早于开始时间表示次日）",
+      "type": "single_choice",
+      "group": "household_fact",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "0.5",
+          "label": "00:30"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "1.5",
+          "label": "01:30"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "2.5",
+          "label": "02:30"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "3.5",
+          "label": "03:30"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "4.5",
+          "label": "04:30"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "5.5",
+          "label": "05:30"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "6.5",
+          "label": "06:30"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "7.5",
+          "label": "07:30"
+        },
+        {
+          "value": "8",
+          "label": "08:00"
+        },
+        {
+          "value": "8.5",
+          "label": "08:30"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "9.5",
+          "label": "09:30"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "10.5",
+          "label": "10:30"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "11.5",
+          "label": "11:30"
+        },
+        {
+          "value": "12",
+          "label": "12:00"
+        },
+        {
+          "value": "12.5",
+          "label": "12:30"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "13.5",
+          "label": "13:30"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "14.5",
+          "label": "14:30"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "15.5",
+          "label": "15:30"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "16.5",
+          "label": "16:30"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "17.5",
+          "label": "17:30"
+        },
+        {
+          "value": "18",
+          "label": "18:00"
+        },
+        {
+          "value": "18.5",
+          "label": "18:30"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "19.5",
+          "label": "19:30"
+        },
+        {
+          "value": "20",
+          "label": "20:00"
+        },
+        {
+          "value": "20.5",
+          "label": "20:30"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "21.5",
+          "label": "21:30"
+        },
+        {
+          "value": "22",
+          "label": "22:00"
+        },
+        {
+          "value": "22.5",
+          "label": "22:30"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        },
+        {
+          "value": "23.5",
+          "label": "23:30"
+        },
+        {
+          "value": "24",
+          "label": "24:00"
+        }
+      ],
+      "device": "ac",
+      "required": true,
+      "show_when": {
+        "question_id": "H_ac",
+        "value": "custom"
+      }
+    },
+    {
+      "id": "P_AC_RANGE",
+      "prompt": "在本次指定月份，在家时，您家通常希望室温保持在哪个范围？（选择最接近的一项）",
+      "type": "single_choice",
+      "group": "stated_preference",
+      "eb_dimension": "preferred_room_temperature",
+      "options": [
+        {
+          "value": "18_20",
+          "label": "18—20℃"
+        },
+        {
+          "value": "20_22",
+          "label": "20—22℃"
+        },
+        {
+          "value": "22_24",
+          "label": "22—24℃"
+        },
+        {
+          "value": "23_25",
+          "label": "23—25℃"
+        },
+        {
+          "value": "24_26",
+          "label": "24—26℃"
+        },
+        {
+          "value": "25_27",
+          "label": "25—27℃"
+        },
+        {
+          "value": "26_28",
+          "label": "26—28℃"
+        },
+        {
+          "value": "28_30",
+          "label": "28—30℃"
+        }
+      ],
+      "required": true,
+      "device": "ac",
+      "active_only": true
+    },
+    {
+      "id": "P_AC_CHANGE",
+      "prompt": "为了配合错峰，您最多能接受室温比平时变化多少？（选择最接近的一项）",
+      "type": "single_choice",
+      "group": "stated_preference",
+      "eb_dimension": "temperature_change_tolerance",
+      "options": [
+        {
+          "value": "0",
+          "label": "不接受变化"
+        },
+        {
+          "value": "0.5",
+          "label": "约 0.5℃"
+        },
+        {
+          "value": "1",
+          "label": "约 1℃"
+        },
+        {
+          "value": "1.5",
+          "label": "约 1.5℃"
+        },
+        {
+          "value": "2",
+          "label": "约 2℃"
+        },
+        {
+          "value": "2.5",
+          "label": "约 2.5℃"
+        },
+        {
+          "value": "3",
+          "label": "约 3℃"
+        },
+        {
+          "value": "4",
+          "label": "约 4℃"
+        },
+        {
+          "value": "5",
+          "label": "约 5℃"
+        }
+      ],
+      "required": true,
+      "device": "ac",
+      "active_only": true
+    },
+    {
+      "id": "P_EV_TARGET",
+      "prompt": "离家出发时，希望电动汽车电量至少达到多少？（按10%档选择；含插混，不含电动自行车）",
+      "type": "single_choice",
+      "group": "stated_preference",
+      "eb_dimension": "ev_target_soc",
+      "options": [
+        {
+          "value": "0",
+          "label": "0%"
+        },
+        {
+          "value": "0.1",
+          "label": "10%"
+        },
+        {
+          "value": "0.2",
+          "label": "20%"
+        },
+        {
+          "value": "0.3",
+          "label": "30%"
+        },
+        {
+          "value": "0.4",
+          "label": "40%"
+        },
+        {
+          "value": "0.5",
+          "label": "50%"
+        },
+        {
+          "value": "0.6",
+          "label": "60%"
+        },
+        {
+          "value": "0.7",
+          "label": "70%"
+        },
+        {
+          "value": "0.8",
+          "label": "80%"
+        },
+        {
+          "value": "0.9",
+          "label": "90%"
+        },
+        {
+          "value": "1",
+          "label": "100%"
+        }
+      ],
+      "required": true,
+      "device": "home_ev",
+      "active_only": true
+    },
+    {
+      "id": "P_EV_RESERVE",
+      "prompt": "为临时出行，电动汽车平时至少希望保留多少电量？（按10%档选择）",
+      "type": "single_choice",
+      "group": "stated_preference",
+      "eb_dimension": "ev_min_soc",
+      "options": [
+        {
+          "value": "0",
+          "label": "0%"
+        },
+        {
+          "value": "0.1",
+          "label": "10%"
+        },
+        {
+          "value": "0.2",
+          "label": "20%"
+        },
+        {
+          "value": "0.3",
+          "label": "30%"
+        },
+        {
+          "value": "0.4",
+          "label": "40%"
+        },
+        {
+          "value": "0.5",
+          "label": "50%"
+        },
+        {
+          "value": "0.6",
+          "label": "60%"
+        },
+        {
+          "value": "0.7",
+          "label": "70%"
+        },
+        {
+          "value": "0.8",
+          "label": "80%"
+        },
+        {
+          "value": "0.9",
+          "label": "90%"
+        },
+        {
+          "value": "1",
+          "label": "100%"
+        }
+      ],
+      "required": true,
+      "device": "home_ev",
+      "active_only": true
+    },
+    {
+      "id": "P_HOT_WATER",
+      "prompt": "家里通常最需要热水的时间是？",
+      "type": "single_choice",
+      "group": "stated_preference",
+      "eb_dimension": "bath_required_h",
+      "options": [
+        {
+          "value": "0",
+          "label": "00:00"
+        },
+        {
+          "value": "1",
+          "label": "01:00"
+        },
+        {
+          "value": "2",
+          "label": "02:00"
+        },
+        {
+          "value": "3",
+          "label": "03:00"
+        },
+        {
+          "value": "4",
+          "label": "04:00"
+        },
+        {
+          "value": "5",
+          "label": "05:00"
+        },
+        {
+          "value": "6",
+          "label": "06:00"
+        },
+        {
+          "value": "7",
+          "label": "07:00"
+        },
+        {
+          "value": "8",
+          "label": "08:00"
+        },
+        {
+          "value": "9",
+          "label": "09:00"
+        },
+        {
+          "value": "10",
+          "label": "10:00"
+        },
+        {
+          "value": "11",
+          "label": "11:00"
+        },
+        {
+          "value": "12",
+          "label": "12:00"
+        },
+        {
+          "value": "13",
+          "label": "13:00"
+        },
+        {
+          "value": "14",
+          "label": "14:00"
+        },
+        {
+          "value": "15",
+          "label": "15:00"
+        },
+        {
+          "value": "16",
+          "label": "16:00"
+        },
+        {
+          "value": "17",
+          "label": "17:00"
+        },
+        {
+          "value": "18",
+          "label": "18:00"
+        },
+        {
+          "value": "19",
+          "label": "19:00"
+        },
+        {
+          "value": "20",
+          "label": "20:00"
+        },
+        {
+          "value": "21",
+          "label": "21:00"
+        },
+        {
+          "value": "22",
+          "label": "22:00"
+        },
+        {
+          "value": "23",
+          "label": "23:00"
+        }
+      ],
+      "required": true,
+      "device": "electric_water_heater",
+      "active_only": true
+    },
+    {
+      "id": "P_PREHEAT",
+      "prompt": "保证使用时有热水的前提下，您是否愿意提前加热？",
+      "type": "single_choice",
+      "group": "stated_preference",
+      "eb_dimension": "preheat_preference",
+      "options": [
+        {
+          "value": "yes",
+          "label": "可以提前安排"
+        },
+        {
+          "value": "confirm",
+          "label": "每次先确认"
+        },
+        {
+          "value": "no",
+          "label": "不希望提前加热"
+        }
+      ],
+      "required": true,
+      "device": "electric_water_heater",
+      "active_only": true
+    },
+    {
+      "id": "A_EB_CONTROL",
+      "prompt": "让系统安排电器时，您综合考虑家人需要后的主要要求是什么？（选最接近的一项）",
+      "type": "single_choice",
+      "group": "attitude",
+      "eb_dimension": "control",
+      "options": [
+        {
+          "value": "high_trust_auto",
+          "label": "比较信任系统，愿意让它自动安排"
+        },
+        {
+          "value": "suggestion_first",
+          "label": "先了解建议和理由，再决定怎样安排"
+        },
+        {
+          "value": "confirm_required",
+          "label": "每次改动都必须先征得我们明确同意"
+        },
+        {
+          "value": "low_auto_accept",
+          "label": "总体上不太愿意接受系统自动控制"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "P_COMFORT",
+      "prompt": "考虑用电调整时，保持家人舒适对您家有多重要？",
+      "type": "single_choice",
+      "group": "stated_preference",
+      "eb_dimension": "comfort_importance",
+      "options": [
+        {
+          "value": "1",
+          "label": "不重要"
+        },
+        {
+          "value": "2",
+          "label": "不太重要"
+        },
+        {
+          "value": "3",
+          "label": "一般"
+        },
+        {
+          "value": "4",
+          "label": "比较重要"
+        },
+        {
+          "value": "5",
+          "label": "非常重要"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "P_COST",
+      "prompt": "考虑用电调整时，节省电费对您家有多重要？",
+      "type": "single_choice",
+      "group": "stated_preference",
+      "eb_dimension": "cost_importance",
+      "options": [
+        {
+          "value": "1",
+          "label": "不重要"
+        },
+        {
+          "value": "2",
+          "label": "不太重要"
+        },
+        {
+          "value": "3",
+          "label": "一般"
+        },
+        {
+          "value": "4",
+          "label": "比较重要"
+        },
+        {
+          "value": "5",
+          "label": "非常重要"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "P_GRID",
+      "prompt": "不明显影响生活时，配合电网错峰用电对您家有多重要？",
+      "type": "single_choice",
+      "group": "stated_preference",
+      "eb_dimension": "grid_support_importance",
+      "options": [
+        {
+          "value": "1",
+          "label": "不重要"
+        },
+        {
+          "value": "2",
+          "label": "不太重要"
+        },
+        {
+          "value": "3",
+          "label": "一般"
+        },
+        {
+          "value": "4",
+          "label": "比较重要"
+        },
+        {
+          "value": "5",
+          "label": "非常重要"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "P_NOTICE",
+      "prompt": "用电调整前，希望提前多久收到通知？（选择最接近的一项）",
+      "type": "single_choice",
+      "group": "stated_preference",
+      "eb_dimension": "notice_required_h",
+      "options": [
+        {
+          "value": "0",
+          "label": "无需提前"
+        },
+        {
+          "value": "0.5",
+          "label": "半小时"
+        },
+        {
+          "value": "1",
+          "label": "1 小时"
+        },
+        {
+          "value": "3",
+          "label": "3 小时"
+        },
+        {
+          "value": "6",
+          "label": "6 小时"
+        },
+        {
+          "value": "12",
+          "label": "半天"
+        },
+        {
+          "value": "24",
+          "label": "一天"
+        },
+        {
+          "value": "48",
+          "label": "两天"
+        },
+        {
+          "value": "72",
+          "label": "三天或更早"
+        }
+      ],
+      "required": true
+    },
+    {
+      "id": "X_REGION",
+      "prompt": "您家常住在哪个省级地区？",
+      "type": "single_choice",
+      "group": "simulation_environment",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "北京",
+          "label": "北京"
+        },
+        {
+          "value": "天津",
+          "label": "天津"
+        },
+        {
+          "value": "河北",
+          "label": "河北"
+        },
+        {
+          "value": "山西",
+          "label": "山西"
+        },
+        {
+          "value": "内蒙古",
+          "label": "内蒙古"
+        },
+        {
+          "value": "辽宁",
+          "label": "辽宁"
+        },
+        {
+          "value": "吉林",
+          "label": "吉林"
+        },
+        {
+          "value": "黑龙江",
+          "label": "黑龙江"
+        },
+        {
+          "value": "上海",
+          "label": "上海"
+        },
+        {
+          "value": "江苏",
+          "label": "江苏"
+        },
+        {
+          "value": "浙江",
+          "label": "浙江"
+        },
+        {
+          "value": "安徽",
+          "label": "安徽"
+        },
+        {
+          "value": "福建",
+          "label": "福建"
+        },
+        {
+          "value": "江西",
+          "label": "江西"
+        },
+        {
+          "value": "山东",
+          "label": "山东"
+        },
+        {
+          "value": "河南",
+          "label": "河南"
+        },
+        {
+          "value": "湖北",
+          "label": "湖北"
+        },
+        {
+          "value": "湖南",
+          "label": "湖南"
+        },
+        {
+          "value": "广东",
+          "label": "广东"
+        },
+        {
+          "value": "广西",
+          "label": "广西"
+        },
+        {
+          "value": "海南",
+          "label": "海南"
+        },
+        {
+          "value": "重庆",
+          "label": "重庆"
+        },
+        {
+          "value": "四川",
+          "label": "四川"
+        },
+        {
+          "value": "贵州",
+          "label": "贵州"
+        },
+        {
+          "value": "云南",
+          "label": "云南"
+        },
+        {
+          "value": "西藏",
+          "label": "西藏"
+        },
+        {
+          "value": "陕西",
+          "label": "陕西"
+        },
+        {
+          "value": "甘肃",
+          "label": "甘肃"
+        },
+        {
+          "value": "青海",
+          "label": "青海"
+        },
+        {
+          "value": "宁夏",
+          "label": "宁夏"
+        },
+        {
+          "value": "新疆",
+          "label": "新疆"
+        },
+        {
+          "value": "香港",
+          "label": "香港"
+        },
+        {
+          "value": "澳门",
+          "label": "澳门"
+        },
+        {
+          "value": "台湾",
+          "label": "台湾"
+        },
+        {
+          "value": "outside_china",
+          "label": "中国以外"
+        }
+      ],
+      "required": false,
+      "research_only": false,
+      "research_section": "housing",
+      "environment_input": true
+    },
+    {
+      "id": "X_CITY",
+      "prompt": "常住城市（无需详细地址）",
       "type": "text",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "outcome_target",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S5",
-        "S7"
-      ],
-      "target_field": "reason_text",
-      "conditional_target_fields": {
-        "request_change": "requested_change_text",
-        "need_information": "missing_information_text"
+      "group": "simulation_environment",
+      "eb_dimension": null,
+      "options": [],
+      "required": false,
+      "research_only": false,
+      "research_section": "housing",
+      "environment_input": true,
+      "cities_by_region": {
+        "北京": [
+          "北京"
+        ],
+        "天津": [
+          "天津"
+        ],
+        "河北": [
+          "石家庄",
+          "唐山",
+          "秦皇岛",
+          "邯郸",
+          "邢台",
+          "保定",
+          "张家口",
+          "承德",
+          "沧州",
+          "廊坊",
+          "衡水"
+        ],
+        "山西": [
+          "太原",
+          "大同",
+          "阳泉",
+          "长治",
+          "晋城",
+          "朔州",
+          "晋中",
+          "运城",
+          "忻州",
+          "临汾",
+          "吕梁"
+        ],
+        "内蒙古": [
+          "呼和浩特",
+          "包头",
+          "乌海",
+          "赤峰",
+          "通辽",
+          "鄂尔多斯",
+          "呼伦贝尔",
+          "巴彦淖尔",
+          "乌兰察布",
+          "兴安盟",
+          "锡林郭勒盟",
+          "阿拉善盟"
+        ],
+        "辽宁": [
+          "沈阳",
+          "大连",
+          "鞍山",
+          "抚顺",
+          "本溪",
+          "丹东",
+          "锦州",
+          "营口",
+          "阜新",
+          "辽阳",
+          "盘锦",
+          "铁岭",
+          "朝阳",
+          "葫芦岛"
+        ],
+        "吉林": [
+          "长春",
+          "吉林",
+          "四平",
+          "辽源",
+          "通化",
+          "白山",
+          "松原",
+          "白城",
+          "延边朝鲜族自治州"
+        ],
+        "黑龙江": [
+          "哈尔滨",
+          "齐齐哈尔",
+          "鸡西",
+          "鹤岗",
+          "双鸭山",
+          "大庆",
+          "伊春",
+          "佳木斯",
+          "七台河",
+          "牡丹江",
+          "黑河",
+          "绥化",
+          "大兴安岭地区"
+        ],
+        "上海": [
+          "上海"
+        ],
+        "江苏": [
+          "南京",
+          "无锡",
+          "徐州",
+          "常州",
+          "苏州",
+          "南通",
+          "连云港",
+          "淮安",
+          "盐城",
+          "扬州",
+          "镇江",
+          "泰州",
+          "宿迁"
+        ],
+        "浙江": [
+          "杭州",
+          "宁波",
+          "温州",
+          "嘉兴",
+          "湖州",
+          "绍兴",
+          "金华",
+          "衢州",
+          "舟山",
+          "台州",
+          "丽水"
+        ],
+        "安徽": [
+          "合肥",
+          "芜湖",
+          "蚌埠",
+          "淮南",
+          "马鞍山",
+          "淮北",
+          "铜陵",
+          "安庆",
+          "黄山",
+          "滁州",
+          "阜阳",
+          "宿州",
+          "六安",
+          "亳州",
+          "池州",
+          "宣城"
+        ],
+        "福建": [
+          "福州",
+          "厦门",
+          "莆田",
+          "三明",
+          "泉州",
+          "漳州",
+          "南平",
+          "龙岩",
+          "宁德"
+        ],
+        "江西": [
+          "南昌",
+          "景德镇",
+          "萍乡",
+          "九江",
+          "新余",
+          "鹰潭",
+          "赣州",
+          "吉安",
+          "宜春",
+          "抚州",
+          "上饶"
+        ],
+        "山东": [
+          "济南",
+          "青岛",
+          "淄博",
+          "枣庄",
+          "东营",
+          "烟台",
+          "潍坊",
+          "济宁",
+          "泰安",
+          "威海",
+          "日照",
+          "临沂",
+          "德州",
+          "聊城",
+          "滨州",
+          "菏泽"
+        ],
+        "河南": [
+          "郑州",
+          "开封",
+          "洛阳",
+          "平顶山",
+          "安阳",
+          "鹤壁",
+          "新乡",
+          "焦作",
+          "濮阳",
+          "许昌",
+          "漯河",
+          "三门峡",
+          "南阳",
+          "商丘",
+          "信阳",
+          "周口",
+          "驻马店",
+          "济源"
+        ],
+        "湖北": [
+          "武汉",
+          "黄石",
+          "十堰",
+          "宜昌",
+          "襄阳",
+          "鄂州",
+          "荆门",
+          "孝感",
+          "荆州",
+          "黄冈",
+          "咸宁",
+          "随州",
+          "恩施土家族苗族自治州",
+          "仙桃",
+          "潜江",
+          "天门",
+          "神农架林区"
+        ],
+        "湖南": [
+          "长沙",
+          "株洲",
+          "湘潭",
+          "衡阳",
+          "邵阳",
+          "岳阳",
+          "常德",
+          "张家界",
+          "益阳",
+          "郴州",
+          "永州",
+          "怀化",
+          "娄底",
+          "湘西土家族苗族自治州"
+        ],
+        "广东": [
+          "广州",
+          "韶关",
+          "深圳",
+          "珠海",
+          "汕头",
+          "佛山",
+          "江门",
+          "湛江",
+          "茂名",
+          "肇庆",
+          "惠州",
+          "梅州",
+          "汕尾",
+          "河源",
+          "阳江",
+          "清远",
+          "东莞",
+          "中山",
+          "潮州",
+          "揭阳",
+          "云浮"
+        ],
+        "广西": [
+          "南宁",
+          "柳州",
+          "桂林",
+          "梧州",
+          "北海",
+          "防城港",
+          "钦州",
+          "贵港",
+          "玉林",
+          "百色",
+          "贺州",
+          "河池",
+          "来宾",
+          "崇左"
+        ],
+        "海南": [
+          "海口",
+          "三亚",
+          "三沙",
+          "儋州",
+          "五指山",
+          "琼海",
+          "文昌",
+          "万宁",
+          "东方",
+          "定安县",
+          "屯昌县",
+          "澄迈县",
+          "临高县",
+          "白沙黎族自治县",
+          "昌江黎族自治县",
+          "乐东黎族自治县",
+          "陵水黎族自治县",
+          "保亭黎族苗族自治县",
+          "琼中黎族苗族自治县"
+        ],
+        "重庆": [
+          "重庆"
+        ],
+        "四川": [
+          "成都",
+          "自贡",
+          "攀枝花",
+          "泸州",
+          "德阳",
+          "绵阳",
+          "广元",
+          "遂宁",
+          "内江",
+          "乐山",
+          "南充",
+          "眉山",
+          "宜宾",
+          "广安",
+          "达州",
+          "雅安",
+          "巴中",
+          "资阳",
+          "阿坝藏族羌族自治州",
+          "甘孜藏族自治州",
+          "凉山彝族自治州"
+        ],
+        "贵州": [
+          "贵阳",
+          "六盘水",
+          "遵义",
+          "安顺",
+          "毕节",
+          "铜仁",
+          "黔西南布依族苗族自治州",
+          "黔东南苗族侗族自治州",
+          "黔南布依族苗族自治州"
+        ],
+        "云南": [
+          "昆明",
+          "曲靖",
+          "玉溪",
+          "保山",
+          "昭通",
+          "丽江",
+          "普洱",
+          "临沧",
+          "楚雄彝族自治州",
+          "红河哈尼族彝族自治州",
+          "文山壮族苗族自治州",
+          "西双版纳傣族自治州",
+          "大理白族自治州",
+          "德宏傣族景颇族自治州",
+          "怒江傈僳族自治州",
+          "迪庆藏族自治州"
+        ],
+        "西藏": [
+          "拉萨",
+          "日喀则",
+          "昌都",
+          "林芝",
+          "山南",
+          "那曲",
+          "阿里地区"
+        ],
+        "陕西": [
+          "西安",
+          "铜川",
+          "宝鸡",
+          "咸阳",
+          "渭南",
+          "延安",
+          "汉中",
+          "榆林",
+          "安康",
+          "商洛"
+        ],
+        "甘肃": [
+          "兰州",
+          "嘉峪关",
+          "金昌",
+          "白银",
+          "天水",
+          "武威",
+          "张掖",
+          "平凉",
+          "酒泉",
+          "庆阳",
+          "定西",
+          "陇南",
+          "临夏回族自治州",
+          "甘南藏族自治州"
+        ],
+        "青海": [
+          "西宁",
+          "海东",
+          "海北藏族自治州",
+          "黄南藏族自治州",
+          "海南藏族自治州",
+          "果洛藏族自治州",
+          "玉树藏族自治州",
+          "海西蒙古族藏族自治州"
+        ],
+        "宁夏": [
+          "银川",
+          "石嘴山",
+          "吴忠",
+          "固原",
+          "中卫"
+        ],
+        "新疆": [
+          "乌鲁木齐",
+          "克拉玛依",
+          "吐鲁番",
+          "哈密",
+          "昌吉回族自治州",
+          "博尔塔拉蒙古自治州",
+          "巴音郭楞蒙古自治州",
+          "阿克苏地区",
+          "克孜勒苏柯尔克孜自治州",
+          "喀什地区",
+          "和田地区",
+          "伊犁哈萨克自治州",
+          "塔城地区",
+          "阿勒泰地区",
+          "石河子",
+          "阿拉尔",
+          "图木舒克",
+          "五家渠",
+          "北屯",
+          "铁门关",
+          "双河",
+          "可克达拉",
+          "昆玉",
+          "胡杨河",
+          "新星",
+          "白杨"
+        ],
+        "香港": [
+          "香港"
+        ],
+        "澳门": [
+          "澳门"
+        ],
+        "台湾": [
+          "台北"
+        ]
       },
-      "repeated_per_case": true
+      "help": "城市选项随省份变化。同城有气象站时优先使用；否则采用省内代表站，并在下方注明。列表以2023年地区资料为基础，可自行填写未列出的城市。"
     },
     {
-      "id": "C03",
-      "prompt": "哪些方面最影响您刚才的判断？",
-      "type": "multi_choice",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "outcome_target",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S3",
-        "S5",
-        "S7"
-      ],
+      "id": "X_BUILDING",
+      "prompt": "住房的建筑形式更接近哪一种？",
+      "type": "single_choice",
+      "group": "simulation_environment",
+      "eb_dimension": null,
       "options": [
         {
-          "value": "cost",
-          "label": "电费或补偿"
+          "value": "apartment",
+          "label": "楼房中的一套住宅"
         },
         {
-          "value": "comfort",
-          "label": "家人舒适"
+          "value": "detached",
+          "label": "独立住宅"
         },
         {
-          "value": "routine",
-          "label": "是否耽误日常安排"
-        },
-        {
-          "value": "control",
-          "label": "能否自己确认、取消或恢复"
-        },
-        {
-          "value": "trust",
-          "label": "是否相信系统的安排和说明"
-        },
-        {
-          "value": "conservation",
-          "label": "减少能源浪费"
-        },
-        {
-          "value": "grid_support",
-          "label": "支持大家集中用电时的供电需要"
-        },
-        {
-          "value": "information",
-          "label": "提供的信息是否足够"
+          "value": "rowhouse",
+          "label": "联排住宅"
         },
         {
           "value": "other",
-          "label": "其他"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
+          "label": "其他住房"
         }
       ],
-      "max_choices": 2,
-      "exclusive_options": [
-        "dont_know"
-      ],
-      "other_text_for": "other",
-      "target_field": "reason_tags",
-      "show_after": "C02",
-      "repeated_per_case": true
+      "required": false,
+      "research_only": false,
+      "research_section": "housing",
+      "environment_input": true
     },
     {
-      "id": "R01",
-      "prompt": "综合考虑您家的需要，您对这次展示的安排和结果有多满意？",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "outcome_target",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S4",
-        "S7"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "很不满意"
-        },
-        {
-          "value": 2,
-          "label": "比较不满意"
-        },
-        {
-          "value": 3,
-          "label": "一般（不偏向满意或不满意）"
-        },
-        {
-          "value": 4,
-          "label": "比较满意"
-        },
-        {
-          "value": 5,
-          "label": "很满意"
-        },
-        {
-          "value": "cannot_judge",
-          "label": "无法判断"
-        },
-        {
-          "value": "not_applicable",
-          "label": "不适用"
-        }
-      ],
-      "target_field": "score",
-      "repeated_per_case": true,
-      "enabled_by_default": true,
-      "scale_validated": false,
-      "precompile_include_if": "outcome_shown"
-    },
-    {
-      "id": "R02",
-      "prompt": "根据展示的室温变化，您预计家人对室内舒适程度会有多满意？",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "outcome_target",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S4",
-        "S7"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "很不满意"
-        },
-        {
-          "value": 2,
-          "label": "比较不满意"
-        },
-        {
-          "value": 3,
-          "label": "一般（不偏向满意或不满意）"
-        },
-        {
-          "value": 4,
-          "label": "比较满意"
-        },
-        {
-          "value": 5,
-          "label": "很满意"
-        },
-        {
-          "value": "cannot_judge",
-          "label": "无法判断"
-        },
-        {
-          "value": "not_applicable",
-          "label": "不适用"
-        }
-      ],
-      "target_field": "comfort_score",
-      "repeated_per_case": true,
-      "enabled_by_default": true,
-      "scale_validated": false,
-      "precompile_include_if": "thermal_outcome_shown"
-    },
-    {
-      "id": "R03",
-      "prompt": "对这次安排最终需要支付的费用，您有多满意？",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "outcome_target",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S4",
-        "S7"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "很不满意"
-        },
-        {
-          "value": 2,
-          "label": "比较不满意"
-        },
-        {
-          "value": 3,
-          "label": "一般（不偏向满意或不满意）"
-        },
-        {
-          "value": 4,
-          "label": "比较满意"
-        },
-        {
-          "value": 5,
-          "label": "很满意"
-        },
-        {
-          "value": "cannot_judge",
-          "label": "无法判断"
-        },
-        {
-          "value": "not_applicable",
-          "label": "不适用"
-        }
-      ],
-      "target_field": "cost_score",
-      "repeated_per_case": true,
-      "enabled_by_default": true,
-      "scale_validated": false,
-      "precompile_include_if": "net_cost_shown"
-    },
-    {
-      "id": "R04",
-      "prompt": "对电器是否在需要时完成任务，您有多满意？",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "outcome_target",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S4",
-        "S7"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "很不满意"
-        },
-        {
-          "value": 2,
-          "label": "比较不满意"
-        },
-        {
-          "value": 3,
-          "label": "一般（不偏向满意或不满意）"
-        },
-        {
-          "value": 4,
-          "label": "比较满意"
-        },
-        {
-          "value": 5,
-          "label": "很满意"
-        },
-        {
-          "value": "cannot_judge",
-          "label": "无法判断"
-        },
-        {
-          "value": "not_applicable",
-          "label": "不适用"
-        }
-      ],
-      "target_field": "service_score",
-      "repeated_per_case": true,
-      "enabled_by_default": true,
-      "scale_validated": false,
-      "precompile_include_if": "service_outcome_shown"
-    },
-    {
-      "id": "R05",
-      "prompt": "对这次安排支持集中用电时段供电的结果，您有多满意？",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "outcome_target",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S4",
-        "S7"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "很不满意"
-        },
-        {
-          "value": 2,
-          "label": "比较不满意"
-        },
-        {
-          "value": 3,
-          "label": "一般（不偏向满意或不满意）"
-        },
-        {
-          "value": 4,
-          "label": "比较满意"
-        },
-        {
-          "value": 5,
-          "label": "很满意"
-        },
-        {
-          "value": "cannot_judge",
-          "label": "无法判断"
-        },
-        {
-          "value": "not_applicable",
-          "label": "不适用"
-        }
-      ],
-      "target_field": "vpp_score",
-      "repeated_per_case": true,
-      "enabled_by_default": true,
-      "scale_validated": false,
-      "precompile_include_if": "verified_grid_outcome_shown"
-    },
-    {
-      "id": "R06",
-      "prompt": "对这次安排的用电量表现，您有多满意？",
-      "type": "ordinal_1_5",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "outcome_target",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S4",
-        "S7"
-      ],
-      "options": [
-        {
-          "value": 1,
-          "label": "很不满意"
-        },
-        {
-          "value": 2,
-          "label": "比较不满意"
-        },
-        {
-          "value": 3,
-          "label": "一般（不偏向满意或不满意）"
-        },
-        {
-          "value": 4,
-          "label": "比较满意"
-        },
-        {
-          "value": 5,
-          "label": "很满意"
-        },
-        {
-          "value": "cannot_judge",
-          "label": "无法判断"
-        },
-        {
-          "value": "not_applicable",
-          "label": "不适用"
-        }
-      ],
-      "target_field": "energy_score",
-      "repeated_per_case": true,
-      "enabled_by_default": false,
-      "scale_validated": false,
-      "precompile_include_if": "energy_module_enabled_and_comparison_shown"
-    },
-    {
-      "id": "R07",
-      "prompt": "这次最让您满意或不满意的是什么？下次希望怎样调整？",
-      "type": "text",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "outcome_target",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S5",
-        "S7"
-      ],
-      "target_field": "comment",
-      "repeated_per_case": true
-    },
-    {
-      "id": "D02",
-      "prompt": "您目前主要的工作或生活状态？",
+      "id": "X_TENURE",
+      "prompt": "目前的居住方式是？",
       "type": "single_choice",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "research_only",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S7"
-      ],
+      "group": "research_context",
+      "eb_dimension": null,
       "options": [
         {
-          "value": "full_time",
-          "label": "全职工作"
+          "value": "owned",
+          "label": "自有住房"
         },
         {
-          "value": "part_flexible",
-          "label": "兼职或灵活就业"
+          "value": "rented",
+          "label": "整套租住"
         },
         {
-          "value": "student",
-          "label": "在校学习"
-        },
-        {
-          "value": "retired",
-          "label": "退休"
-        },
-        {
-          "value": "care_home",
-          "label": "主要照顾家庭"
-        },
-        {
-          "value": "not_working",
-          "label": "暂未工作"
+          "value": "shared",
+          "label": "与他人合租"
         },
         {
           "value": "other",
-          "label": "其他"
-        },
-        {
-          "value": "declined",
-          "label": "不愿回答"
+          "label": "其他安排"
         }
       ],
-      "enabled_by_default": false,
-      "subject": "respondent"
+      "required": false,
+      "research_only": true,
+      "research_section": "housing"
     },
     {
-      "id": "D03",
-      "prompt": "您家月均总收入大约属于哪个范围？",
+      "id": "X_AREA",
+      "prompt": "您家这套住房面积大致为？（合租按整套住房）",
       "type": "single_choice",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "research_only",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S1",
-        "S7"
-      ],
+      "group": "simulation_environment",
+      "eb_dimension": null,
       "options": [
         {
-          "value": "lt_5000",
-          "label": "5000元以下"
+          "value": "lt50",
+          "label": "不足50㎡"
+        },
+        {
+          "value": "50_89",
+          "label": "50—不足90㎡"
+        },
+        {
+          "value": "90_119",
+          "label": "90—不足120㎡"
+        },
+        {
+          "value": "120_159",
+          "label": "120—不足160㎡"
+        },
+        {
+          "value": "ge160",
+          "label": "160㎡及以上"
+        }
+      ],
+      "required": false,
+      "research_only": false,
+      "research_section": "housing",
+      "environment_input": true
+    },
+    {
+      "id": "X_AREA_BASIS",
+      "prompt": "以上面积采用哪种口径？",
+      "type": "single_choice",
+      "group": "simulation_environment",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "gross",
+          "label": "建筑面积（包含公摊）"
+        },
+        {
+          "value": "usable",
+          "label": "套内可使用面积（不含公摊）"
+        }
+      ],
+      "required": false,
+      "research_only": false,
+      "research_section": "housing",
+      "environment_input": true,
+      "help": "模型按面积区间代表值生成；建筑面积暂按80%估计室内面积。这是统一研究假设。"
+    },
+    {
+      "id": "X_FLOOR",
+      "prompt": "这套住宅位于楼房的什么位置？",
+      "type": "single_choice",
+      "group": "simulation_environment",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "ground",
+          "label": "底层"
+        },
+        {
+          "value": "middle",
+          "label": "中间层"
+        },
+        {
+          "value": "top",
+          "label": "顶层"
+        }
+      ],
+      "required": false,
+      "research_only": false,
+      "research_section": "housing",
+      "environment_input": true,
+      "show_when": {
+        "question_id": "X_BUILDING",
+        "value": "apartment"
+      }
+    },
+    {
+      "id": "X_BUILDING_AGE",
+      "prompt": "住宅大致建于哪个时期？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "before2000",
+          "label": "2000年前"
+        },
+        {
+          "value": "2000_2009",
+          "label": "2000—2009年"
+        },
+        {
+          "value": "2010_2019",
+          "label": "2010—2019年"
+        },
+        {
+          "value": "since2020",
+          "label": "2020年及以后"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "housing"
+    },
+    {
+      "id": "X_INCOME",
+      "prompt": "前面填写的同住家人，月总收入大致为？（人民币；其他币种可大致折算）",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "lt5000",
+          "label": "不足5000元"
         },
         {
           "value": "5000_9999",
@@ -1556,98 +4373,561 @@
           "label": "20000—不足30000元"
         },
         {
-          "value": "ge_30000",
+          "value": "ge30000",
           "label": "30000元及以上"
-        },
-        {
-          "value": "dont_know",
-          "label": "说不清"
-        },
-        {
-          "value": "declined",
-          "label": "不愿回答"
         }
       ],
-      "enabled_by_default": false,
-      "subject": "household"
+      "required": false,
+      "research_only": true,
+      "research_section": "context"
     },
     {
-      "id": "F01",
-      "prompt": "哪道题最难理解，或者最难替您家回答？",
-      "type": "text",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "research_only",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S7"
-      ],
-      "show_if": "pilot"
-    },
-    {
-      "id": "F02",
-      "prompt": "整份问卷给您的感觉是？",
+      "id": "X_BILL",
+      "prompt": "最近一个月，这些同住家人合计承担的电费大致为？（人民币；其他币种可大致折算）",
       "type": "single_choice",
-      "allow_skip": true,
-      "default": null,
-      "required_for_participation": false,
-      "model_role": "research_only",
-      "cluster_role": "excluded",
-      "wording_origin": "project_authored",
-      "evidence_ids": [
-        "S7"
-      ],
+      "group": "research_context",
+      "eb_dimension": null,
       "options": [
         {
-          "value": "too_short",
-          "label": "太短"
+          "value": "lt100",
+          "label": "不足100元"
         },
         {
-          "value": "suitable",
-          "label": "长度合适"
+          "value": "100_299",
+          "label": "100—不足300元"
         },
         {
-          "value": "somewhat_long",
-          "label": "有点长"
+          "value": "300_599",
+          "label": "300—不足600元"
         },
         {
-          "value": "too_long",
-          "label": "太长"
+          "value": "600_999",
+          "label": "600—不足1000元"
         },
         {
-          "value": "dont_know",
-          "label": "说不清"
+          "value": "ge1000",
+          "label": "1000元及以上"
         }
       ],
-      "show_if": "pilot"
+      "required": false,
+      "research_only": true,
+      "research_section": "context"
+    },
+    {
+      "id": "X_TARIFF",
+      "prompt": "您家平时使用哪种电价？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "flat",
+          "label": "单一时段电价"
+        },
+        {
+          "value": "tou",
+          "label": "峰谷分时电价"
+        },
+        {
+          "value": "other",
+          "label": "其他计费方式"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "context"
+    },
+    {
+      "id": "X_EXTRA_DEVICES",
+      "prompt": "除前面的模拟设备外，您家还有哪些设备？（可多选）",
+      "type": "multi_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "refrigerator",
+          "label": "冰箱"
+        },
+        {
+          "value": "electric_heating",
+          "label": "电采暖 / 热泵"
+        },
+        {
+          "value": "gas_water_heater",
+          "label": "燃气热水器"
+        },
+        {
+          "value": "pv",
+          "label": "屋顶光伏"
+        },
+        {
+          "value": "battery",
+          "label": "家庭储能"
+        },
+        {
+          "value": "other",
+          "label": "其他用能设备"
+        },
+        {
+          "value": "none",
+          "label": "没有上述设备"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "context"
+    },
+    {
+      "id": "X_PROTECTED",
+      "prompt": "希望用电调整尽量不要打扰哪些活动？（可多选）",
+      "type": "multi_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "work_study",
+          "label": "居家工作 / 学习"
+        },
+        {
+          "value": "sleep",
+          "label": "睡眠休息"
+        },
+        {
+          "value": "care",
+          "label": "照顾家人"
+        },
+        {
+          "value": "meal",
+          "label": "做饭用餐"
+        },
+        {
+          "value": "hot_water",
+          "label": "洗澡用热水"
+        },
+        {
+          "value": "none",
+          "label": "没有特别要求"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "context"
+    },
+    {
+      "id": "X_SMART",
+      "prompt": "您家以前使用过定时或自动控制电器吗？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "often",
+          "label": "经常使用"
+        },
+        {
+          "value": "sometimes",
+          "label": "偶尔使用"
+        },
+        {
+          "value": "never",
+          "label": "没有使用过"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "context"
+    },
+    {
+      "id": "X_DR",
+      "prompt": "您家以前参与过错峰用电或需求响应活动吗？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "yes",
+          "label": "参加过"
+        },
+        {
+          "value": "no",
+          "label": "没有参加过"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "context"
+    },
+    {
+      "id": "X_RESTORE",
+      "prompt": "假设自动安排影响原来的生活习惯，您家更倾向怎样做？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "prefer_keep",
+          "label": "保留自动安排"
+        },
+        {
+          "value": "prefer_consider",
+          "label": "先看影响再决定"
+        },
+        {
+          "value": "prefer_restore",
+          "label": "改回原安排"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "context"
+    },
+    {
+      "id": "X_COUNT_ac",
+      "prompt": "家里有几台空调？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "1",
+          "label": "1台"
+        },
+        {
+          "value": "2",
+          "label": "2台"
+        },
+        {
+          "value": "3_plus",
+          "label": "3台及以上"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "ac"
+    },
+    {
+      "id": "X_FREQ_ac",
+      "prompt": "在本次指定月份，通常一周有几天使用空调？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "days_0",
+          "label": "0天"
+        },
+        {
+          "value": "days_1",
+          "label": "1天"
+        },
+        {
+          "value": "days_2_3",
+          "label": "2—3天"
+        },
+        {
+          "value": "days_4_6",
+          "label": "4—6天"
+        },
+        {
+          "value": "days_7",
+          "label": "每天（7天）"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "ac"
+    },
+    {
+      "id": "X_COUNT_washer",
+      "prompt": "家里有几台洗衣机？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "1",
+          "label": "1台"
+        },
+        {
+          "value": "2",
+          "label": "2台"
+        },
+        {
+          "value": "3_plus",
+          "label": "3台及以上"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "washer"
+    },
+    {
+      "id": "X_FREQ_washer",
+      "prompt": "在本次指定月份，通常一周有几天使用洗衣机？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "days_0",
+          "label": "0天"
+        },
+        {
+          "value": "days_1",
+          "label": "1天"
+        },
+        {
+          "value": "days_2_3",
+          "label": "2—3天"
+        },
+        {
+          "value": "days_4_6",
+          "label": "4—6天"
+        },
+        {
+          "value": "days_7",
+          "label": "每天（7天）"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "washer"
+    },
+    {
+      "id": "X_COUNT_dishwasher",
+      "prompt": "家里有几台洗碗机？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "1",
+          "label": "1台"
+        },
+        {
+          "value": "2",
+          "label": "2台"
+        },
+        {
+          "value": "3_plus",
+          "label": "3台及以上"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "dishwasher"
+    },
+    {
+      "id": "X_FREQ_dishwasher",
+      "prompt": "在本次指定月份，通常一周有几天使用洗碗机？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "days_0",
+          "label": "0天"
+        },
+        {
+          "value": "days_1",
+          "label": "1天"
+        },
+        {
+          "value": "days_2_3",
+          "label": "2—3天"
+        },
+        {
+          "value": "days_4_6",
+          "label": "4—6天"
+        },
+        {
+          "value": "days_7",
+          "label": "每天（7天）"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "dishwasher"
+    },
+    {
+      "id": "X_COUNT_dryer",
+      "prompt": "家里有几台烘干机？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "1",
+          "label": "1台"
+        },
+        {
+          "value": "2",
+          "label": "2台"
+        },
+        {
+          "value": "3_plus",
+          "label": "3台及以上"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "dryer"
+    },
+    {
+      "id": "X_FREQ_dryer",
+      "prompt": "在本次指定月份，通常一周有几天使用烘干机？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "days_0",
+          "label": "0天"
+        },
+        {
+          "value": "days_1",
+          "label": "1天"
+        },
+        {
+          "value": "days_2_3",
+          "label": "2—3天"
+        },
+        {
+          "value": "days_4_6",
+          "label": "4—6天"
+        },
+        {
+          "value": "days_7",
+          "label": "每天（7天）"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "dryer"
+    },
+    {
+      "id": "X_COUNT_home_ev",
+      "prompt": "家里有几辆可在家充电的电动汽车（含插混，不含电动自行车）？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "1",
+          "label": "1辆"
+        },
+        {
+          "value": "2",
+          "label": "2辆"
+        },
+        {
+          "value": "3_plus",
+          "label": "3辆及以上"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "home_ev"
+    },
+    {
+      "id": "X_FREQ_home_ev",
+      "prompt": "在本次指定月份，通常一周有几天在家为电动汽车充电？（含插混，不含电动自行车）",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "days_0",
+          "label": "0天"
+        },
+        {
+          "value": "days_1",
+          "label": "1天"
+        },
+        {
+          "value": "days_2_3",
+          "label": "2—3天"
+        },
+        {
+          "value": "days_4_6",
+          "label": "4—6天"
+        },
+        {
+          "value": "days_7",
+          "label": "每天（7天）"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "home_ev"
+    },
+    {
+      "id": "X_COUNT_electric_water_heater",
+      "prompt": "家里有几台电热水器？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "1",
+          "label": "1台"
+        },
+        {
+          "value": "2",
+          "label": "2台"
+        },
+        {
+          "value": "3_plus",
+          "label": "3台及以上"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "electric_water_heater"
+    },
+    {
+      "id": "X_FREQ_electric_water_heater",
+      "prompt": "在本次指定月份，通常一周有几天使用电热水器？",
+      "type": "single_choice",
+      "group": "research_context",
+      "eb_dimension": null,
+      "options": [
+        {
+          "value": "days_0",
+          "label": "0天"
+        },
+        {
+          "value": "days_1",
+          "label": "1天"
+        },
+        {
+          "value": "days_2_3",
+          "label": "2—3天"
+        },
+        {
+          "value": "days_4_6",
+          "label": "4—6天"
+        },
+        {
+          "value": "days_7",
+          "label": "每天（7天）"
+        }
+      ],
+      "required": false,
+      "research_only": true,
+      "research_section": "inventory",
+      "device": "electric_water_heater"
     }
-  ],
-  "retired_question_ids": {
-    "P01": "removed age eligibility question per user scope",
-    "B03": "removed household age composition per user scope",
-    "D01": "removed age-band background to keep age-free instrument"
-  },
-  "age_information_policy": "No age screening, household adult/child classification, or age-band input in this instrument; household size remains.",
-  "delivery_mode": {
-    "single_questionnaire": true,
-    "runtime_energyplus": false,
-    "runtime_personalization": false,
-    "runtime_result_branching": false,
-    "case_assignment": "fixed before distribution",
-    "material_visibility": "scenario_plan_and_simulated_outcome_shown_together",
-    "default_feedback_basis": "hypothetical_outcome",
-    "plan_judgement_data_supported": false,
-    "acceptability_semantics": "informed_acceptability_after_outcome_view"
-  },
-  "profile_matching_contract": {
-    "generation_profiles": "development or pilot household answers; record provenance, never invent empirical clusters",
-    "respondent_profiles": "collected in the same final questionnaire; primary SFT condition",
-    "generation_is_not_validation": true,
-    "assignment": "precompiled forms independent of current target answers; preserve shared paired comparisons",
-    "real_time_personalization": false,
-    "clustering_required_before_generation": false
-  },
-  "physical_context_contract_ref": "PHYSICAL_CONTEXT_CONTRACT.json"
+  ]
 }

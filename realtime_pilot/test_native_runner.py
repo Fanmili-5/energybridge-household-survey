@@ -122,6 +122,8 @@ class NativeRunnerTests(unittest.TestCase):
             self.assertTrue(any(row['native_device_power_kw'].get('washer',0)>0 for row in r['controls']))
             self.assertTrue(any(row['actuators'].get('washer',0)>0 for row in r['controls']))
             self.assertEqual(r['native']['day_ahead_price_metrics']['price_unit'],'normalized TOU cost/kWh')
+            self.assertEqual(r['asset_binding']['tariff']['id'],'eb_tianjin_normalized_tou_v1')
+            self.assertEqual(len(r['asset_binding']['tariff']['sha256']),64)
             runner,_=upstream()
             with patch('native_runner.collection_entry',return_value=(runner.run_family_agent,inspect.getsource(runner.run_family_agent))):
                 original=run_native(Path(tmp)/'original',request(),method='no_dr')
