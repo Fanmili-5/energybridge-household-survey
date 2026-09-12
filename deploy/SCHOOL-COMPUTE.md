@@ -2,7 +2,7 @@
 
 2026-09-12 后续迁移：网站与数据已迁至弗吉尼亚新实例，网站 worker 为 16，学校保持任务32 / EP32 / API4。当前入口和运维细节见 [迁移记录](VIRGINIA-MIGRATION-20260912.md)；下文旧备份及压测结果保留为历史证据。
 
-2026-09-12 已切换，采集运行版本 `eb.paired_ep.v3.2`。原 EB 源码固定在 `2b17ae63e613da776c93e900f5dace50d63a88a8`。
+2026-09-12 已切换，当前采集运行版本 `eb.paired_ep.v3.3`。原 EB 源码固定在 `2b17ae63e613da776c93e900f5dace50d63a88a8`。网站与学校计算端 release hash 均为 `6db7f09f80e92bdaf6cb3945dcebcc9c528692b60cafe46eba55ecc998a3e20c`。
 
 2026-09-12 模板选择更新：问卷明确使用 `family_simple.idf`，再由原 EB 的资产准备函数生成一天的运行文件。它与 `family_simple_3day.idf` 的非 RunPeriod 对象全部一致；基础文件本身默认全年，不能直接按默认运行。新情境保存基础文件名，仿真溯源另存模板路径、SHA、实际开始日期和天数。历史数据不改写。
 
@@ -70,13 +70,13 @@
 
 - 学校服务：`systemctl --user status energybridge-compute`，配置模板见 `compute.service.example`。
 - 学校工作目录：`~/energybridge-compute/app/realtime_pilot`；数据：`~/energybridge-compute/jobs`。
-- 阿里云代码：`/opt/energybridge/compute-v32-20260912/realtime_pilot`。
+- 阿里云代码：`/opt/energybridge/releases/v33-20260912/realtime_pilot`。
 - 阿里云数据仍为：`/var/lib/energybridge/demo_20260911/jobs`。
 - 阿里云当前配置：`/etc/systemd/system/energybridge.service`；旧实例的 `40-school-compute.conf` 保留在迁移备份中。
 - 备份：`/var/backups/energybridge/native-v32-compute-20260912-061212`。
 - Mac 服务：`org.energybridge.api-tunnel`、`org.energybridge.compute-tunnel`；plist 位于 `~/Library/LaunchAgents`。
 
-回到阿里云本机计算时，应保留修复后的 v3.2 工作目录，移除计算 URL/令牌配置，并把任务并发调回适合 2 核 4 GiB 的水平。不要仅删除整个切换文件，否则也会回到旧的 v3.1 代码。维护前先检查在途任务，数据库不应回退覆盖新提交。
+回到阿里云本机计算时，应保留当前 v3.3 工作目录，移除计算 URL/令牌配置，并把任务并发调回适合实例资源的水平。不要仅删除当前切换文件，否则会回到更早版本。维护前先检查在途任务，数据库不应回退覆盖新提交。
 
 ## 已验证与未验证
 

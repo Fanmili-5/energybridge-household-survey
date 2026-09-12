@@ -2,13 +2,15 @@
 
 2026-09-12 已完成迁移。新入口：**https://47.85.194.154/**；管理员入口：**https://47.85.194.154/admin**。普通账号和管理员密码沿用现有配置。旧入口 `https://47.76.205.32/` 对页面访问返回跳转；旧 POST 返回迁移提示，避免继续写入旧库。
 
+同日后续更新：网站与学校计算端已经切换到 `eb.paired_ep.v3.3`，代码目录分别为 `/opt/energybridge/releases/v33-20260912` 和 `~/energybridge-compute/releases/v33-20260912`。两端 release hash 均为 `6db7f09f80e92bdaf6cb3945dcebcc9c528692b60cafe46eba55ecc998a3e20c`；发布归档 SHA-256 为 `6ae78751bab361e264a6d393c8abea8ea4fc0d82b548794cec0c3af7f84bfaa5`。更新前云端没有排队或运行任务，先完成一致性备份；数据库与既有记录未迁移或改写。新协议将 VPP 时长改为 1/2 小时并要求简短反馈原因，电价仍为原 EB 天津归一化分时价格。
+
 ## 运行位置与配置
 
 | 部分 | 迁移后位置或配置 |
 |---|---|
 | 阿里云实例 | `i-0xi7wcpbicmld3a2k9f0`，Ubuntu 22.04，2 vCPU / 2 GiB |
 | 网站、登录、队列、问卷与评分数据库 | `47.85.194.154` |
-| 网站代码 | `/opt/energybridge/compute-v32-20260912` |
+| 网站代码 | `/opt/energybridge/releases/v33-20260912` |
 | 网站数据 | `/var/lib/energybridge/demo_20260911/jobs` |
 | EB / EnergyPlus | 学校 `hku_user3@100.116.9.76`，现有计算服务 |
 | 计算通道 | 新云端 `127.0.0.1:18768` → Mac `127.0.0.1:18769` → 学校 `127.0.0.1:18768` |
@@ -30,7 +32,7 @@ Mac 的 `org.energybridge.compute-tunnel` 与 `org.energybridge.api-tunnel` 两�
 - 三张 SQLite 表的内容哈希在迁移前后完全一致，完整性检查为 `ok`。
 - 完整数据目录的 157 个文件逐个校验通过，包含完成与失败任务的历史痕迹。
 - 网站和学校计算端的发布哈希一致：`743a931b0a00b900ffd3279cac7684b13cd2a3b27e5acdf0bc82dc1e768deb72`。492 个固定上游文件通过校验。
-- 运行版本为 `eb.paired_ep.v3.2`。本次使用已部署版本，未把本地其他尚未发布的改动混入迁移。
+- 迁移切换时运行版本为 `eb.paired_ep.v3.2`；同日后续发布已升级到顶部记录的 `v3.3`。
 
 旧实例最终备份位于 `/var/backups/energybridge/migration-virginia-20260912/final-cutover`。新实例迁移材料位于 `/root/energybridge-migration-20260912`。本地备份、逐项校验、切换脚本和测试报告位于 Git 忽略目录 `artifacts/migration_20260912_virginia/`，目录权限 0700。真实问卷、密钥、密码文件和归档不提交 Git。
 
