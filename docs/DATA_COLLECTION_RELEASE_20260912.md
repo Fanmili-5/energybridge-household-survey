@@ -29,4 +29,4 @@
 
 仓库公开、离线测试通过并不等于承诺真实 API 永不超时。实际招募前用小批真人试填检查等待时间和问题理解；这属于数据采集试运行，不要求先训练模型。
 
-当前 GitHub CI 验收结果：174 项后端测试全部通过（Python 3.11、EnergyPlus 24.1）；390px 与 1365px 各完成一条 HTTP→SQLite→原生 EP→小数评价与必填原因链路；展示、错误恢复和资源恢复检查通过。以上均未调用付费模型 API。CI：`https://github.com/Fanmili-5/energybridge-household-survey/actions/runs/34691879414`。
+当前 GitHub CI 验收结果：174 项后端测试全部通过（Python 3.11、EnergyPlus 24.1）；390px 与 1365px 各完成一条 HTTP→SQLite→原生 EP→小数评价与必填原因链路；展示、错误恢复和资源恢复检查通过。以上均未调用付费模型 API。CI：`https://github.com/Fanmili-5/energybridge-household-survey/actions/runs/34692755379`。

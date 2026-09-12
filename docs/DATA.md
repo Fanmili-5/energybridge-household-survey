@@ -49,3 +49,5 @@ SQLite 为权威记录；JSON 文件是可恢复的兼容导出。默认部署�
 所有导出保持 `training_release=false`：表示交付的是已核验的数据，不宣称下游已完成训练或评测。训练、独立评测、EB 评价适配器不在采集项目的工作范围内。数据交付仍包含来源、版本和会话身份范围说明，便于接收者正确使用。
 
 EB 内部请求、回复、原生决策和执行轨迹保存在私有任务文件中用于追溯，不能当作真人理由或自动加入 assistant 目标。真正的目标标签只来自最终保存的真人回答。当前脚本不自动划分训练集／测试集。
+
+完整数据形状可参考 [当前工程 SFT 候选样例](examples/engineering_sft_candidate.jsonl)；它经过真实两次 EnergyPlus，但规划与评价均为工程测试值，`target_source=engineering_test` 且 `training_release=false`，不是真人训练样本。

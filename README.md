@@ -53,6 +53,7 @@ EPLUS_ROOT=/path/to/EnergyPlus-24-1-0 EB_TEST_NATIVE_EP=1 .venv/bin/python scrip
 - [数据保存与导出](docs/DATA.md)
 - [当前问卷数据字典](QUESTIONNAIRE_CODEBOOK.json)（由运行代码生成）；`QUESTIONNAIRE_CODEBOOK_LEGACY.json` 仅供历史入口读取。
 - [本轮修复与验收](docs/DATA_COLLECTION_RELEASE_20260912.md)
+- [最终上线前审计](docs/PRELAUNCH_AUDIT_20260912.md)
 - [部署步骤](docs/DEPLOYMENT.md) / [配置模板](deploy/service.env.example)
 - [计算服务器接入](deploy/SCHOOL-COMPUTE.md) / [并发设置记录](deploy/CONCURRENCY-20260912.md)
 - [地区与全年日期](simulation_resources/README.md)
