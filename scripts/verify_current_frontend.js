@@ -10,18 +10,45 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   await page.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
   await page.goto(origin);await page.waitForFunction(()=>typeof schema!=='undefined'&&schema?.questionnaire_context&&document.getElementById('generate').disabled===false);
   await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes('第 1 /'));
-  // Populate all synthetic answers through the same restore routine used by saved drafts.
-  await page.evaluate(a=>{restore(answerProfile(a));conditional();saveDraft();showWizard(0,{save:true});},answers);
+  // Fill through visible controls, not the application's restore/collect helpers.
+  const questions=await page.evaluate(()=>schema.profile_questions);
+  const count=await page.locator('[data-wizard-step]').count();
+  for(let step=0;step<count;step++){
+   for(const q of questions){
+    const row=page.locator(`[data-question-id="${q.id}"]`),value=answers[q.id];
+    if(value==null||!await row.isVisible())continue;
+    if(q.type==='member_list'){
+     assert.strictEqual(await row.locator('.member-card:visible').count(),value.length);
+     for(let i=0;i<value.length;i++)for(const [field,v] of Object.entries(value[i])){
+      if(v==null)continue;
+      for(const option of Array.isArray(v)?v:[v])await row.locator(`input[name="p_member_${i}_${field}__choices"]`).filter({visible:true}).locator(`xpath=self::input[@value='${option}']`).check();
+     }
+    }else if(q.cities_by_region){await page.locator('#p_'+q.id+'_choices').selectOption(value);}
+    else if(q.type==='text'){await page.locator('#p_'+q.id).fill(value);}
+    else if(await row.locator('input[type=range]').count()){
+     const slider=row.locator('input[type=range]'),index=q.options.findIndex(o=>o.value===value);
+     assert(index>=0,`Missing option for ${q.id}`);
+     await slider.focus();await slider.press('End');await slider.press('Home');
+     for(let i=0;i<index;i++)await slider.press('ArrowRight');
+     assert.strictEqual(await page.locator('#p_'+q.id).inputValue(),JSON.stringify(value));
+    }else if(await row.locator('input[type=radio],input[type=checkbox]').count()){
+     for(const option of Array.isArray(value)?value:[value])await row.locator('input').filter({visible:true}).locator(`xpath=self::input[@value='${JSON.stringify(option)}']`).check();
+    }else{await page.locator('#p_'+q.id).selectOption(JSON.stringify(value));}
+   }
+   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   if(step<count-1){await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes(`第 ${step+2} /`));}
+  }
   const contextHash=await page.evaluate(()=>schema.questionnaire_context.context_hash);
   await page.reload();await page.waitForFunction(()=>typeof schema!=='undefined'&&schema?.questionnaire_context&&document.getElementById('generate').disabled===false);
   assert.strictEqual(await page.evaluate(()=>schema.questionnaire_context.context_hash),contextHash);
   assert.strictEqual(await page.evaluate(()=>collect(schema.profile_questions,'p_').H_ac_temp),answers.H_ac_temp);
   // Province changes clear a stale city, then the city list follows the selected province.
-  await page.evaluate(()=>{showWizard(4);const el=document.getElementById('p_X_REGION');el.value=JSON.stringify('北京');el.dispatchEvent(new Event('change',{bubbles:true}));});
+  await page.locator('[data-wizard-step="4"]').click();
+  await page.locator('#p_X_REGION').selectOption(JSON.stringify('北京'));
   assert.strictEqual(await page.locator('#p_X_CITY').inputValue(),'');
-  await page.evaluate(a=>{restore(answerProfile(a));conditional();saveDraft();showWizard(0);},answers);
-  const count=await page.evaluate(()=>wizardSteps().length);
-  for(let i=1;i<count;i++){await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes(`第 ${i+1} /`));}
+  await page.locator('#p_X_REGION').selectOption(JSON.stringify(answers.X_REGION));
+  await page.locator('#p_X_CITY_choices').selectOption(answers.X_CITY);
+  await page.locator('#wizard-next').click();
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await page.locator('#generate').click();
   await page.waitForFunction(()=>!document.getElementById('decision-form').hidden||!document.getElementById('error').hidden||['failed','timeout','interrupted'].includes(currentJob?.status),{},{timeout:120000});

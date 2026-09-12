@@ -21,6 +21,18 @@ class NoExecute:
         pass
 
 class ContractTests(unittest.TestCase):
+    def test_client_disconnect_does_not_hide_other_handler_errors(self):
+        from http.server import BaseHTTPRequestHandler
+        from unittest.mock import patch
+        from server import Handler
+        for exc in (BrokenPipeError(), ConnectionResetError()):
+            handler=Handler.__new__(Handler)
+            with patch.object(BaseHTTPRequestHandler,'handle',side_effect=exc):
+                handler.handle()
+            self.assertTrue(handler.close_connection)
+        with patch.object(BaseHTTPRequestHandler,'handle',side_effect=ValueError('real defect')):
+            with self.assertRaises(ValueError):Handler.__new__(Handler).handle()
+
     def test_missing_and_neutral_distinct(self):
         p = normalize_answers({"A01": 3, "A02": "dont_know"}, PROFILE_IDS)
         self.assertEqual(p["A01"], {"value": 3, "response_status": "answered"})

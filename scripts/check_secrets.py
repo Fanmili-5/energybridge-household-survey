@@ -40,6 +40,8 @@ def main():
                         findings.append({'file':name,'line':i,'rule':'review_credential_assignment'})
     historical_blobs=0
     if args.history:
+        if subprocess.check_output(['git','rev-parse','--is-shallow-repository'],cwd=ROOT,text=True).strip()=='true':
+            findings.append({'file':'.git','rule':'incomplete_history_shallow_clone'})
         for entry in subprocess.check_output(['git','rev-list','--objects','--all'],cwd=ROOT,text=True).splitlines():
             oid,_,name=entry.partition(' ')
             if subprocess.check_output(['git','cat-file','-t',oid],cwd=ROOT).strip()!=b'blob':continue

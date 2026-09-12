@@ -1,5 +1,5 @@
 """Browser -> actual HTTP/SQLite -> native EP fixture -> feedback; no model API."""
-import json, os, subprocess, sys, tempfile, threading
+import argparse, json, os, subprocess, sys, tempfile, threading
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'realtime_pilot'))
@@ -8,10 +8,13 @@ from regional_test_support import answers
 from export_candidates import verify_candidate
 
 def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--human-mode',action='store_true',help='Exercise formal-mode routing with synthetic answers in a disposable database only')
+    args=parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='eb-browser-') as tmp:
         tmp=Path(tmp)
         fixture=tmp/'answers.json';fixture.write_text(json.dumps(answers(),ensure_ascii=False))
-        server=make_server(0,tmp/'data',workers=1,disable_planning=True,timeout=300)
+        server=make_server(0,tmp/'data',workers=1,disable_planning=True,timeout=300,human_pilot=args.human_mode)
         server.store.worker_command=lambda folder:[sys.executable,str(ROOT/'realtime_pilot/deploy/ep_fixture_worker.py'),str(folder)]
         server.planning_disabled=False;server.store.pool.resume()
         threading.Thread(target=server.serve_forever,daemon=True).start()
@@ -27,7 +30,14 @@ def main():
                 intake=server.store.db.household(job['household_submission_id'])
                 verify_candidate(json.loads(payload),job,docs,intake)
                 assert docs['outcome.json']['timings']['llm']['call_count']==0
-            print('Verified two browser feedback records through authoritative SQLite export checks; paid API calls = 0.')
+                expected='household_representative_self_report' if args.human_mode else 'engineering_test'
+                assert json.loads(payload)['target_source']==expected
+            output=tmp/'review.jsonl'
+            subprocess.run([sys.executable,str(ROOT/'realtime_pilot/export_candidates.py'),'--data-dir',str(tmp/'data'),'--output',str(output)],check=True,capture_output=True,text=True)
+            exported=[json.loads(line) for line in output.read_text().splitlines()]
+            assert len(exported)==(2 if args.human_mode else 0)
+            assert all(row['training_release'] is False for row in exported)
+            print(f'Verified two browser feedback records and default export (human_mode={args.human_mode}); synthetic test data only, temporary database removed on exit; paid API calls = 0.')
         except Exception:
             for path in (tmp/'data').glob('*/attempts/*/worker.log'):
                 print(path.read_text()[-3500:],flush=True)

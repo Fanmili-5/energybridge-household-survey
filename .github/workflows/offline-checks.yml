@@ -11,6 +11,8 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -42,6 +44,7 @@ jobs:
       - name: Browser and actual collection regression (no paid API)
         run: |
           python scripts/test_frontend.py
+          python scripts/test_frontend.py --human-mode
           node realtime_pilot/deploy/verify_demo_entry.js
           node realtime_pilot/deploy/verify_frontend_recovery.js
         env:

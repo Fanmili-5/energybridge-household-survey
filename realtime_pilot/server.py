@@ -533,6 +533,14 @@ class PilotHTTPServer(ThreadingHTTPServer):
     daemon_threads=True
 
 class Handler(BaseHTTPRequestHandler):
+    def handle(self):
+        try:
+            super().handle()
+        except (BrokenPipeError, ConnectionResetError):
+            # Refreshing/closing a browser can disconnect during a response.
+            # Persisted submissions are unaffected; no second reply is possible.
+            self.close_connection = True
+
     def setup(self):
         super().setup()
         self.connection.settimeout(15)
