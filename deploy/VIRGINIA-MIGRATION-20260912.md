@@ -2,7 +2,7 @@
 
 2026-09-12 已完成迁移。新入口：**https://47.85.194.154/**；管理员入口：**https://47.85.194.154/admin**。普通账号和管理员密码沿用现有配置。旧入口 `https://47.76.205.32/` 对页面访问返回跳转；旧 POST 返回迁移提示，避免继续写入旧库。
 
-同日后续更新：网站与学校计算端已经切换到 `eb.paired_ep.v3.3`，代码目录分别为 `/opt/energybridge/releases/v33-20260912` 和 `~/energybridge-compute/releases/v33-20260912`。两端 release hash 均为 `6db7f09f80e92bdaf6cb3945dcebcc9c528692b60cafe46eba55ecc998a3e20c`；发布归档 SHA-256 为 `6ae78751bab361e264a6d393c8abea8ea4fc0d82b548794cec0c3af7f84bfaa5`。更新前云端没有排队或运行任务，先完成一致性备份；数据库与既有记录未迁移或改写。新协议将 VPP 时长改为 1/2 小时并要求简短反馈原因，电价仍为原 EB 天津归一化分时价格。
+2026-09-13 当前更新：网站与学校计算端运行 `eb.paired_ep.v3.3`，问卷为 `v4.2`，代码目录分别为 `/opt/energybridge/releases/intake-v42-20260913` 和 `~/energybridge-compute/releases/intake-v42-20260913`。两端计算 release hash 均为 `019bd4d5543dd5a272b41126dd986c22523b8fe40fff910f659dd858cbd68489`；Git 提交为 `cf23b973c741d965f89d7fd8747d0545710b41be`，发布归档 SHA-256 为 `252077fae1d6eee31c68c5684812cda96d7bbc6a8cae8b57116295afa8e3a8a9`。数据库与既有记录没有迁移或改写；线上仍为工程试填模式。
 
 ## 运行位置与配置
 
@@ -10,14 +10,14 @@
 |---|---|
 | 阿里云实例 | `i-0xi7wcpbicmld3a2k9f0`，Ubuntu 22.04，2 vCPU / 2 GiB |
 | 网站、登录、队列、问卷与评分数据库 | `47.85.194.154` |
-| 网站代码 | `/opt/energybridge/releases/v33-20260912` |
+| 网站代码 | `/opt/energybridge/releases/intake-v42-20260913` |
 | 网站数据 | `/var/lib/energybridge/demo_20260911/jobs` |
 | EB / EnergyPlus | 学校 `hku_user3@100.116.9.76`，现有计算服务 |
 | 计算通道 | 新云端 `127.0.0.1:18768` → Mac `127.0.0.1:18769` → 学校 `127.0.0.1:18768` |
 | 模型通道 | 学校 `127.0.0.1:18080` → Mac `127.0.0.1:18081` → 现有 DMX 站点 |
-| 网站 worker / 在途上限 | 16 / 64；按新实例内存从旧网站的 32 worker 调低 |
+| 网站 worker / 在途上限 | 16 / 128；worker 负责等待和回传，昂贵计算由学校端独立限流 |
 | 学校任务 / EP / API 槽数 | 32 / 32 / 4，保持原配置 |
-| 普通账号生成额度 | 每会话 2 次，UTC 每日合计 50 个新任务 |
+| 普通账号生成额度 | 每会话 2 次，UTC 每日合计 250 个新任务；排队开始期限 2400 秒 |
 | 采集模式 | `engineering`，规划开启，未改变真人标签准入方式 |
 
 Mac 的 `org.energybridge.compute-tunnel` 与 `org.energybridge.api-tunnel` 两项 LaunchAgent 均已切换到新实例并验证运行。它们会在登录后启动、断线后重连；**新计算仍需要 Mac 保持开机、联网且不休眠**。旧实例不再承担问卷后端或 API 转发目标，但暂留 HTTPS 跳转与原数据。

@@ -2,7 +2,7 @@
 
 2026-09-12 后续迁移：网站与数据已迁至弗吉尼亚新实例，网站 worker 为 16，学校保持任务32 / EP32 / API4。当前入口和运维细节见 [迁移记录](VIRGINIA-MIGRATION-20260912.md)；下文旧备份及压测结果保留为历史证据。
 
-2026-09-12 已切换，当前采集运行版本 `eb.paired_ep.v3.3`。原 EB 源码固定在 `2b17ae63e613da776c93e900f5dace50d63a88a8`。网站与学校计算端 release hash 均为 `6db7f09f80e92bdaf6cb3945dcebcc9c528692b60cafe46eba55ecc998a3e20c`。
+2026-09-13 当前采集运行版本为 `eb.paired_ep.v3.3`，问卷为 `v4.2`。原 EB 源码固定在 `2b17ae63e613da776c93e900f5dace50d63a88a8`。网站与学校计算端 release hash 均为 `019bd4d5543dd5a272b41126dd986c22523b8fe40fff910f659dd858cbd68489`。
 
 2026-09-12 模板选择更新：问卷明确使用 `family_simple.idf`，再由原 EB 的资产准备函数生成一天的运行文件。它与 `family_simple_3day.idf` 的非 RunPeriod 对象全部一致；基础文件本身默认全年，不能直接按默认运行。新情境保存基础文件名，仿真溯源另存模板路径、SHA、实际开始日期和天数。历史数据不改写。
 
@@ -43,14 +43,14 @@
 | 同时占用 EP 计算名额 | 32 |
 | 同时发起模型请求 | 4 |
 | 学校服务 CPU 上限 / 内存上限 | 32 核配额 / 16 GiB |
-| 阿里云在途任务上限，包含运行与等待 | 64 |
-| 单会话生成上限 / 普通用户每日总额度 | 2 / 50 |
+| 阿里云在途任务上限，包含运行与等待 | 128 |
+| 单会话生成上限 / 普通用户每日总额度 | 2 / 250 |
 | 失去心跳后远端停止任务 | 60 秒内，另有进程检查间隔 |
-| 学校执行期限 / 远程调用期限 / 云端进程期限 | 600 / 660 / 720 秒 |
-| 队列等待期限 / 初始耗时估计 | 600 / 60 秒 |
+| 学校执行期限 / 远程调用期限 / 云端进程期限 | 1200 / 1320 / 1200 秒 |
+| 队列等待期限 / 冷启动保守估计 | 2400 / 300 秒 |
 | Mac API relay TCP 连接上限 | 64，与模型请求并发分别控制 |
 
-等待 API 时原生 EP 状态留在同一进程，释放 CPU 名额给其他任务，因此内存预算按 32 个任务考虑。学校资源是共享资源，服务有 32 核 CPU 和 16 GiB 内存上限，没有占用整台机器。每天 50 个新任务仍是独立的费用保护额度，不代表并发上限。
+等待 API 时原生 EP 状态留在同一进程，释放 CPU 名额给其他任务，因此内存预算按 32 个任务考虑。学校资源是共享资源，服务有 32 核 CPU 和 16 GiB 内存上限，没有占用整台机器。每天 250 个新任务仍是独立的费用保护额度，不代表并发上限。
 
 满载等待在阿里云 SQLite 队列中进行，计算端不再叠加一层无持久化队列。旧的排队时长样本来自较低并发配置；页面的预计时间不是新容量下的性能保证，需由后续真实规划样本逐步校准。
 
@@ -70,7 +70,7 @@
 
 - 学校服务：`systemctl --user status energybridge-compute`，配置模板见 `compute.service.example`。
 - 学校工作目录：`~/energybridge-compute/app/realtime_pilot`；数据：`~/energybridge-compute/jobs`。
-- 阿里云代码：`/opt/energybridge/releases/v33-20260912/realtime_pilot`。
+- 阿里云代码：`/opt/energybridge/releases/intake-v42-20260913/realtime_pilot`。
 - 阿里云数据仍为：`/var/lib/energybridge/demo_20260911/jobs`。
 - 阿里云当前配置：`/etc/systemd/system/energybridge.service`；旧实例的 `40-school-compute.conf` 保留在迁移备份中。
 - 备份：`/var/backups/energybridge/native-v32-compute-20260912-061212`。
