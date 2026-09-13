@@ -11,22 +11,38 @@ from urllib.request import Request, build_opener, ProxyHandler
 from common import digest, file_hash, write_json
 from compute_protocol import PROTOCOL, MAX_ARCHIVE, release_hash, safe_unpack
 
-def run_remote(folder):
+def compute_connection():
     base=os.environ['EB_COMPUTE_URL'].rstrip('/')
     parsed=urlparse(base)
     if parsed.scheme!='http' or parsed.hostname not in ('127.0.0.1','localhost') or parsed.username or parsed.path:
         raise ValueError('Compute endpoint must be SSH-forwarded loopback')
     token=Path(os.environ['EB_COMPUTE_TOKEN_FILE']).read_text().strip()
     opener=build_opener(ProxyHandler({}))
-    def call(path,method='GET',value=None):
+    def call(path,method='GET',value=None,timeout=15):
         data=None if value is None else json.dumps(value,allow_nan=False).encode()
         req=Request(base+path,data=data,method=method,headers={'Authorization':'Bearer '+token,'Content-Type':'application/json'})
-        return opener.open(req,timeout=15)
+        return opener.open(req,timeout=timeout)
+    return call
+
+def check_remote_ready(*, expected=None, timeout=5):
+    """Verify the live transport and loaded release without creating a job."""
+    expected=expected or release_hash(verify_resources=False)
+    with compute_connection()('/health',timeout=timeout) as response:
+        health=json.load(response)
+    if health.get('protocol')!=PROTOCOL or health.get('release')!=expected:
+        raise ValueError('Compute release mismatch: deploy the same release to website and compute service, then restart compute')
+    return health
+
+def run_remote(folder):
+    call=compute_connection()
     request=json.loads((folder/'request.json').read_text())
     # The compute service verifies the entire physical library at startup;
     # each native job verifies its selected IDF/EPW/DDY. Avoid re-reading the
     # nationwide archive on the 2-core web host for every submission.
     expected=release_hash(verify_resources=False);request_sha=digest(request)
+    # A page/SSH listener being alive is insufficient. Detect a broken route or
+    # partial deployment before creating a remote task or waiting for a lease.
+    check_remote_ready(expected=expected)
     # Stable across cloud service recovery attempts for the same logical job.
     # A lost POST or a cloud restart must not start a second paid native run.
     scope=folder.parent.parent if folder.parent.name=='attempts' and folder.name.isdigit() else folder

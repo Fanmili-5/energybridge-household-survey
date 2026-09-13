@@ -14,7 +14,7 @@ import zipfile
 from common import digest, write_json
 from compute_protocol import PROTOCOL, safe_unpack
 from compute_service import ComputeStore, ComputeHTTPServer, Handler
-from remote_compute import run_remote
+from remote_compute import run_remote, check_remote_ready
 
 class ComputeTests(unittest.TestCase):
     def setUp(self):
@@ -30,6 +30,20 @@ class ComputeTests(unittest.TestCase):
     def tearDown(self):
         self.store.close();self.server.shutdown();self.server.server_close();self.thread.join();self.tmp.cleanup()
     def payload(self):return {'protocol':PROTOCOL,'release':'release','request':{'fixture':1},'request_hash':digest({'fixture':1})}
+    def test_live_readiness_is_read_only_and_rejects_partial_deployment(self):
+        token=self.root/'token';token.write_text('x'*40)
+        with patch.dict(os.environ,{'EB_COMPUTE_URL':self.base,'EB_COMPUTE_TOKEN_FILE':str(token)}):
+            self.assertEqual(check_remote_ready(expected='release')['release'],'release')
+            with self.assertRaisesRegex(ValueError,'Compute release mismatch'):
+                check_remote_ready(expected='partially-updated-cloud')
+        self.assertEqual(self.store.jobs,{})
+
+    def test_worker_preflight_rejects_mismatch_without_creating_task(self):
+        folder=self.root/'cloud';folder.mkdir();write_json(folder/'request.json',{'fixture':1})
+        token=self.root/'token';token.write_text('x'*40)
+        with patch.dict(os.environ,{'EB_COMPUTE_URL':self.base,'EB_COMPUTE_TOKEN_FILE':str(token)}),patch('remote_compute.release_hash',return_value='wrong'):
+            with self.assertRaisesRegex(ValueError,'Compute release mismatch'):run_remote(folder)
+        self.assertEqual(self.store.jobs,{})
     def test_roundtrip_and_no_duplicate_on_lost_response(self):
         folder=self.root/'cloud';folder.mkdir();write_json(folder/'request.json',{'fixture':1})
         token=self.root/'token';token.write_text('x'*40)

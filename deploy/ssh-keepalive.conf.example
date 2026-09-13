@@ -1,0 +1,7 @@
+# Install in /etc/ssh/sshd_config.d on the cloud host; validate with sshd -t
+# and reload ssh. Only the dedicated forwarding account is affected.
+# This releases a stale remote listener when the workstation disappears.
+Match User ebcompute
+    ClientAliveInterval 15
+    ClientAliveCountMax 2
+Match all
