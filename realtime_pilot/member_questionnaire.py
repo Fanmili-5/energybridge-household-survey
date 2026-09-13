@@ -34,6 +34,7 @@ FIELDS += [
 ]
 QUESTION = {'id':'M_MEMBERS','type':'member_list','group':'member_profile','options':[],
             'prompt':'家里每个人的日常偏好','fields':FIELDS,'max_members':20,
+            'required':True,'required_fields':['routine'],
             'help':'按您平时的了解填写，无需姓名，也不用标明哪位是您。生活节奏为必填，其余了解就填；不清楚的可以直接留空。'}
 
 def normalize_members(value, question):

@@ -1,7 +1,7 @@
 """Independent household receipts, admission limits and authorization; zero API calls."""
 import copy,json,tempfile,unittest
 from unittest.mock import patch
-from server import Store,make_server
+from server import Store,make_server,PARTICIPANT_UI_VERSION
 from test_pilot import NoExecute
 from regional_test_support import answers
 from paired_contract import CONTEXT,QUESTIONS,QUESTIONNAIRE_VERSION
@@ -17,7 +17,7 @@ class HouseholdIntakeTests(unittest.TestCase):
     def payload(self,nonce='intake_request_00001',owner='owner'):
         return {'questionnaire_context_hash':assigned_context(owner)['context_hash'],'answers':answers(),'request_id':nonce,'questionnaire_version':QUESTIONNAIRE_VERSION,
                 'questionnaire_hash':digest(QUESTIONS),'research_consent':True,'scenario_understood':True,
-                'research_notice_version':'eb.research_notice.v2','ui_version':'intake-test'}
+                'research_notice_version':'eb.research_notice.v2','ui_version':PARTICIPANT_UI_VERSION}
     def generate(self,sid,nonce='generate_request_00001'):
         return {'submission_id':sid,'request_id':nonce,'scenario_id':CONTEXT['id'],'scenario_understood':True,
                 'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS)}
@@ -58,6 +58,18 @@ class HouseholdIntakeTests(unittest.TestCase):
         with self.assertRaises(KeyError):self.store.create('other',self.generate(r['id']),paired_flow=True)
         p=self.payload('intake_request_00002');p['questionnaire_hash']='old'
         with self.assertRaises(ValueError):self.store.save_household('owner',p)
+
+    def test_intake_limits_preserve_idempotency_and_exempt_admin(self):
+        self.store.max_session_intakes=1
+        first=self.payload();receipt=self.store.save_household('owner',first)
+        self.assertEqual(self.store.save_household('owner',first)['id'],receipt['id'])
+        with self.assertRaises(OverflowError):
+            self.store.save_household('owner',self.payload('intake_request_00002'))
+        self.store.max_daily_intakes=1
+        with self.assertRaises(OverflowError):
+            self.store.save_household('other',self.payload('intake_request_00003','other'))
+        admin=self.store.save_household('admin',self.payload('intake_request_00004','admin'),admin=True)
+        self.assertTrue(admin['saved'])
     def test_native_unsupported_time_is_preserved_in_intake(self):
         p=self.payload();p['answers']['B05']=['electric_water_heater']
         p['answers'].update(H_electric_water_heater='0',D_electric_water_heater='8',P_HOT_WATER='8',P_PREHEAT='yes')
@@ -180,6 +192,12 @@ class HouseholdIntakeTests(unittest.TestCase):
         self.assertEqual(report['stages']['generation_attempted'],1)
         self.assertEqual(report['dropoff'],{'saved_without_generation':1,'generation_not_completed':1})
         self.assertEqual(report['case_statuses'],{'failed':1})
+        month=assigned_context('owner')['date'][5:7]
+        self.assertEqual(report['coverage']['assigned_month'],{month:1,assigned_context('other')['date'][5:7]:1} if month!=assigned_context('other')['date'][5:7] else {month:2})
         self.assertEqual(first['id'] in {r['id'] for r in self.store.db.households()},True)
+        from household_classification import intake_records
+        rows,conflicts=intake_records(self.tmp.name)
+        self.assertEqual(len(rows),2)
+        self.assertEqual(conflicts,[])
 
 if __name__=='__main__':unittest.main()

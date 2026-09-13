@@ -9,7 +9,7 @@ import unittest
 from unittest.mock import patch
 from common import digest
 from paired_contract import CONTEXT,QUESTIONNAIRE_VERSION,QUESTIONS
-from server import Store,make_server
+from server import Store,make_server,PARTICIPANT_UI_VERSION
 from test_pilot import NoExecute
 from regional_test_support import answers
 from export_household_records import records
@@ -20,7 +20,7 @@ class QueuePolicyTests(unittest.TestCase):
     def intake(self,store,owner):
         return store.save_household(owner,{'questionnaire_context_hash':assigned_context(owner)["context_hash"],'answers':answers(),'request_id':'queue_intake_00000001',
             'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS),
-            'research_consent':True,'scenario_understood':True,'research_notice_version':'eb.research_notice.v2'})
+            'research_consent':True,'scenario_understood':True,'research_notice_version':'eb.research_notice.v2','ui_version':PARTICIPANT_UI_VERSION})
     def payload(self,sid,nonce='queue_generate_00000001'):
         return {'submission_id':sid,'request_id':nonce,'scenario_id':CONTEXT['id'],'scenario_understood':True}
     def test_fifty_families_saved_but_queue_admission_is_bounded(self):
@@ -185,7 +185,7 @@ class QueuePolicyTests(unittest.TestCase):
             thread=threading.Thread(target=srv.serve_forever,daemon=True);thread.start()
             host,port=srv.server_address;owners=[f'{i:064x}' for i in range(50)]
             payload={'answers':answers(),'request_id':'queue_http_intake_000001','questionnaire_version':QUESTIONNAIRE_VERSION,
-                     'questionnaire_hash':digest(QUESTIONS),'research_consent':True,'scenario_understood':True,'research_notice_version':'eb.research_notice.v2'}
+                     'questionnaire_hash':digest(QUESTIONS),'research_consent':True,'scenario_understood':True,'research_notice_version':'eb.research_notice.v2','ui_version':PARTICIPANT_UI_VERSION}
             def call(i,path,body):
                 c=http.client.HTTPConnection(host,port,timeout=15)
                 c.request('POST',path,json.dumps(body),{'Cookie':'pilot_session='+owners[i],

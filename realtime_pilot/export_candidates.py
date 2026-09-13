@@ -3,11 +3,17 @@ import argparse
 import json
 import sqlite3
 from pathlib import Path
-from common import ROOT, write_json, digest
+from common import ROOT, write_json, digest, file_hash
 from proposal_contract import FEEDBACK_VERSION, candidate, decision_record
 from paired_contract import VERSION as PAIRED_VERSION
 
-def verify_candidate(row, job, documents, intake=None):
+REQUIRED_NATIVE_ARTIFACTS={
+    'date_validation.json',
+    *{f'{branch}/{name}' for branch in ('baseline','proposal') for name in
+      ('native_result.json','actuator_trace.json','native_boundary_manifest.json','collection_entry.py','ep_metric_series.json','eplusout.err')},
+}
+
+def verify_candidate(row, job, documents, intake=None, case_dir=None):
     """Verify the stored evidence, never recompute or improve a human answer."""
     if job.get('status') != 'complete' or row.get('case_id') != job.get('id'):
         raise ValueError('Candidate does not refer to a completed case')
@@ -18,6 +24,11 @@ def verify_candidate(row, job, documents, intake=None):
     for name in ('display','original_plan','proposal_plan','baseline_plan','household_config'):
         if name in result and digest(result[name]) != result.get(name+'_hash'):
             raise ValueError('Saved outcome hash mismatch: '+name)
+    if job.get('scenario_hash') and digest(job.get('scenario')) != job.get('scenario_hash'):
+        raise ValueError('Frozen scenario hash mismatch')
+    if (job.get('data_origin')=='local_pilot_self_reported_human' and job.get('scenario')
+            and result.get('simulation_environment') != (job.get('scenario') or {}).get('environment')):
+        raise ValueError('Outcome environment differs from frozen scenario')
     if digest(job['questionnaire_snapshot']) != job.get('questionnaire_hash'):
         raise ValueError('Questionnaire snapshot hash mismatch')
     if job.get('household_record'):
@@ -35,6 +46,45 @@ def verify_candidate(row, job, documents, intake=None):
             raise ValueError('Linked intake differs from evaluated household')
         if job['data_origin']=='local_pilot_self_reported_human' and intake.get('research_consent') is not True:
             raise ValueError('Human intake lacks participation confirmation')
+    submission=documents.get('questionnaire_submission.json')
+    if job.get('submission_hash'):
+        if not submission or digest(submission) != job['submission_hash']:
+            raise ValueError('Questionnaire submission document is missing or changed')
+        for key in ('profile_hash','household_config_hash'):
+            if job.get(key) and submission.get(key) != job[key]:
+                raise ValueError('Questionnaire submission links differ from evaluated household: '+key)
+    request=documents.get('request.json')
+    if request:
+        for key in ('submission_hash','household_record_hash','household_config_hash'):
+            if job.get(key) and request.get(key) != job[key]:
+                raise ValueError('Saved request link mismatch: '+key)
+    if case_dir is not None:
+        artifact_hashes=(result.get('provenance') or {}).get('artifact_hashes') or {}
+        if not artifact_hashes:
+            if job.get('data_origin')=='synthetic_engineering_test':
+                artifact_hashes={}
+            else:
+                raise ValueError('Outcome has no native artifact hashes')
+        if job.get('data_origin')=='local_pilot_self_reported_human':
+            missing=REQUIRED_NATIVE_ARTIFACTS-set(artifact_hashes)
+            if missing:
+                raise ValueError('Outcome lacks required native artifacts: '+','.join(sorted(missing)))
+        if not artifact_hashes:
+            case_dir=None
+    if case_dir is not None:
+        run_directory=job.get('run_directory')
+        if not run_directory:
+            raise ValueError('Completed case has no run directory')
+        run_root=(Path(case_dir)/run_directory).resolve()
+        case_root=Path(case_dir).resolve()
+        if run_root != case_root and case_root not in run_root.parents:
+            raise ValueError('Run directory escapes case directory')
+        for relative, expected in artifact_hashes.items():
+            path=(run_root/relative).resolve()
+            if run_root not in path.parents or not path.is_file():
+                raise ValueError('Native evidence artifact is missing: '+relative)
+            if file_hash(path) != expected:
+                raise ValueError('Native evidence artifact hash mismatch: '+relative)
     canonical=decision_record(job,decision)
     saved_answer={k:v for k,v in decision.items() if k not in ('decision_hash','submitted_at')}
     if canonical != saved_answer or digest(canonical) != decision.get('decision_hash'):
@@ -71,7 +121,7 @@ def main():
                 if job.get('household_submission_id'):
                     found=db.execute('SELECT payload FROM household_submissions WHERE id=?',(job['household_submission_id'],)).fetchone()
                     if found:intake=json.loads(found[0])
-                sources[jid]=(job,docs,intake)
+                sources[jid]=(job,docs,intake,args.data_dir/jid)
     else:
         candidates=[json.loads(path.read_text()) for path in sorted(args.data_dir.glob('*/sft_candidate.json'))]
         if candidates:raise ValueError('Verified candidate export requires authoritative state.sqlite3; file copies alone cannot verify intake links')
@@ -89,7 +139,14 @@ def main():
             excluded_reasons['no_supervised_answer']=excluded_reasons.get('no_supervised_answer',0)+1
             continue
         assert row["training_release"] is False
-        if args.task == 'plan_judgement':verify_candidate(row,*sources[row['case_id']])
+        if args.task == 'plan_judgement':
+            try:verify_candidate(row,*sources[row['case_id']])
+            except (ValueError, OSError):
+                if args.include_engineering and row.get('target_source')=='engineering_test':
+                    raise
+                excluded+=1
+                excluded_reasons['evidence_verification_failed']=excluded_reasons.get('evidence_verification_failed',0)+1
+                continue
         rows.append(row)
     output.write_text("".join(json.dumps(r,ensure_ascii=False,allow_nan=False)+"\n" for r in rows))
     report={"file":str(output),"task":args.task,"rows":len(rows),"excluded":excluded,"training_release":False,

@@ -11,6 +11,7 @@ Environment=EB_PILOT_ENV_FILE=%h/energybridge-compute/model.env
 Environment=EB_RESOURCE_DIR=%h/energybridge-compute/limits
 Environment=EB_EP_SLOTS=32
 Environment=EB_API_SLOTS=4
+Environment=EB_MAX_DAILY_API_CALLS=2000
 Environment=OMP_NUM_THREADS=1
 Environment=OPENBLAS_NUM_THREADS=1
 Environment=PYTHONDONTWRITEBYTECODE=1

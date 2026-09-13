@@ -2,11 +2,37 @@
 from contextlib import contextmanager
 from contextvars import ContextVar
 import fcntl
+import json
 import os
 from pathlib import Path
 import time
 
 _current_ep=ContextVar('current_ep_lease',default=None)
+
+
+class ApiDailyLimit(RuntimeError):
+    pass
+
+
+def claim_daily_api_call():
+    """Persistently bound logical model calls across worker processes (UTC)."""
+    root=os.environ.get('EB_RESOURCE_DIR')
+    limit=int(os.environ.get('EB_MAX_DAILY_API_CALLS','0'))
+    if not root or limit<=0:return
+    path=Path(root);path.mkdir(parents=True,exist_ok=True)
+    ledger=path/'api_daily_calls.json';lock=(path/'api_daily_calls.lock').open('a+')
+    try:
+        fcntl.flock(lock,fcntl.LOCK_EX)
+        try:state=json.loads(ledger.read_text()) if ledger.exists() else {}
+        except (OSError,json.JSONDecodeError):state={}
+        day=int(time.time()//86400)
+        count=int(state.get('count',0)) if state.get('utc_day')==day else 0
+        if count>=limit:raise ApiDailyLimit('Daily logical model-call budget reached')
+        state={'utc_day':day,'count':count+1,'limit':limit,'updated_at':time.time()}
+        with ledger.open('w') as target:
+            json.dump(state,target,separators=(',',':'));target.flush();os.fsync(target.fileno())
+    finally:
+        fcntl.flock(lock,fcntl.LOCK_UN);lock.close()
 class Lease:
     def __init__(self,kind,slots):
         self.root=Path(os.environ['EB_RESOURCE_DIR'])
@@ -50,6 +76,7 @@ def api_request():
     if ep:ep.release()
     try:
         if slot:slot.acquire()
+        claim_daily_api_call()
         yield
     finally:
         if slot:slot.release()

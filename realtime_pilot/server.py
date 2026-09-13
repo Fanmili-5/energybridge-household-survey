@@ -31,6 +31,7 @@ import paired_contract as paired
 
 TERMINAL = TERMINAL_STATUSES
 RESEARCH_NOTICE_VERSION = 'eb.research_notice.v2'
+PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.4'
 
 def stop_process(process):
     # The worker owns native EP descendants; kill the whole group on cancellation/timeout.
@@ -40,14 +41,16 @@ def stop_process(process):
         pass
 
 class Store:
-    def __init__(self, root, workers=1, timeout=240, human_pilot=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60):
-        if min(max_pending,max_session_jobs,max_daily_jobs)<1:raise ValueError('Admission limits must be positive')
+    def __init__(self, root, workers=1, timeout=240, human_pilot=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, max_session_intakes=5, max_daily_intakes=2000):
+        if min(max_pending,max_session_jobs,max_daily_jobs,max_session_intakes,max_daily_intakes)<1:raise ValueError('Admission limits must be positive')
         if not 1<=workers<=32 or max_queue_wait<0 or estimated_job_seconds<=0:raise ValueError('Invalid queue configuration')
         self.max_queue_wait=max_queue_wait
         self.estimated_job_seconds=estimated_job_seconds
         self.max_daily_jobs=max_daily_jobs
         self.max_pending=max_pending
         self.max_session_jobs=max_session_jobs
+        self.max_session_intakes=max_session_intakes
+        self.max_daily_intakes=max_daily_intakes
         self.human_pilot = human_pilot
         self.root = Path(root).resolve()
         self.root.mkdir(parents=True, exist_ok=True)
@@ -120,6 +123,11 @@ class Store:
             if previous:
                 if previous['request_hash']!=request_hash:raise ValueError('同一提交标识不能修改家庭资料')
                 return {**self.household_public(previous,False),'duplicate':True}
+            if not admin:
+                if self.db.household_count(owner=session)>=self.max_session_intakes:
+                    raise OverflowError('本浏览器已达到家庭资料提交上限；已有资料保持不变')
+                if self.db.household_count(utc_day=int(time.time()//86400))>=self.max_daily_intakes:
+                    raise OverflowError('今日家庭资料接收额度已满，请稍后再试')
             for key,expected in (('questionnaire_version',paired.QUESTIONNAIRE_VERSION),('questionnaire_hash',digest(paired.QUESTIONS))):
                 if payload.get(key)!=expected:raise ValueError('问卷版本已更新，请刷新核对后保存；已有资料保持原样')
             from date_sampling import assigned_context
@@ -130,6 +138,8 @@ class Store:
                 raise ValueError('请阅读研究说明并主动同意保存家庭资料')
             if self.human_pilot and payload.get('scenario_understood') is not True:
                 raise ValueError('请确认您知道本次展示是研究模拟情境')
+            if self.human_pilot and not admin and payload.get('ui_version')!=PARTICIPANT_UI_VERSION:
+                raise ValueError('页面版本已更新，请刷新后重新核对；尚未保存本次提交')
             profile=paired.sanitize_profile(normalize_answers(payload.get('answers'),list(paired.LOOKUP),paired.LOOKUP))
             owned=paired.required(profile,'B05')
             paired.validate_count(profile)
@@ -239,7 +249,9 @@ class Store:
                 "data_origin": "synthetic_engineering_test" if admin or payload.get("engineering_test", True) else "local_pilot_self_reported_human",
                 "created_at": time.time(), "status": "queued", "message": "等待计算", "rating_saved": False,
             }
-            if intake:job['household_submission_id']=intake['id']
+            if intake:
+                job['household_submission_id']=intake['id']
+                job['intake_ui_version']=intake.get('ui_version')
             if self.max_queue_wait:job['queue_deadline_at']=job['created_at']+self.max_queue_wait
             request = {"profile": profile, "data_origin": job["data_origin"]}
             if intake:request['household_submission_id']=intake['id']
@@ -314,6 +326,8 @@ class Store:
         log=None
         result=None
         status='failed'
+        failure_stage=None
+        failure_type=None
         message='计算未完成，答案已保存；请勿对失败任务填写评价。'
         try:
             with self.lock:
@@ -362,11 +376,14 @@ class Store:
                 failure_file=folder/'failure.json'
                 if failure_file.exists():
                     failure=json.loads(failure_file.read_text())
+                    failure_type=failure.get('error_type')
                     if failure.get('error_type')=='NativeProposalUnavailable':
                         message='本轮未获得可用的模型调用结果，暂无法展示完整比较。您的家庭回答已保存，可稍后重试。'
         except subprocess.TimeoutExpired:
             status,message='timeout',f'计算超过 {self.timeout} 秒，已停止；您的答案已保存。'
-        except Exception:
+            failure_type='TimeoutExpired'
+        except Exception as exc:
+            failure_type=type(exc).__name__
             logging.exception('Job %s failed',jid)
             # An expiry/storage failure before claiming this job leaves it queued.
             if job is None:return
@@ -382,6 +399,11 @@ class Store:
                     status,message="queued","服务维护中，答案已保存，稍后重新计算。"
                     result=None
                 job.update(status=status,message=message,finished_at=time.time())
+                if status not in ('complete','queued'):
+                    progress_path=self.root/jid/job.get('run_directory','')/'progress.json'
+                    try:failure_stage=json.loads(progress_path.read_text()).get('stage')
+                    except (OSError,ValueError):pass
+                    job.update(failure_stage=failure_stage or 'worker',failure_type=failure_type or 'WorkerExit')
                 job['end_to_end_seconds']=job['finished_at']-job['created_at']
                 if status=='queued':
                     for key in ('started_at','finished_at','end_to_end_seconds','queue_seconds'):
@@ -421,6 +443,7 @@ class Store:
                 job=deepcopy(self.jobs[summary['id']])
                 job.update(status='expired',queue_deadline_at=deadline,finished_at=now,
                            end_to_end_seconds=now-job['created_at'],
+                           failure_stage='queue',failure_type='QueueDeadlineExceeded',
                            message='等待计算超时，家庭资料已保存。您可以稍后重新生成，无需重新填写。')
                 self.persist(job)
 
@@ -525,7 +548,8 @@ class Store:
         with self.lock:
             job = self.owned(jid, session)
             if job["status"] not in TERMINAL:
-                job.update(status="cancelled", message="本次计算已取消", finished_at=time.time())
+                job.update(status="cancelled", message="本次计算已取消", finished_at=time.time(),
+                           failure_stage='participant',failure_type='ParticipantCancelled')
                 process = self.processes.get(jid)
                 if process:
                     stop_process(process)
@@ -708,7 +732,7 @@ class Handler(BaseHTTPRequestHandler):
         except (sqlite3.Error,OSError):
             return self.reply(503,{"error":"保存暂时不可用，请保留页面并重试同一次提交。"})
 
-def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, admin_user=None, allow_legacy_test_routes=False):
+def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, max_session_intakes=5, max_daily_intakes=2000, admin_user=None, allow_legacy_test_routes=False):
     if admin_user is not None and not re.fullmatch(r"[A-Za-z0-9_-]{1,64}",admin_user):
         raise ValueError("Invalid admin username")
     if public_origin:
@@ -719,7 +743,7 @@ def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False,
             raise ValueError("public_origin must be an exact http(s) origin without path")
     if human_pilot and public_origin and origin.scheme!='https':
         raise ValueError('Public human data collection requires an HTTPS public_origin')
-    if min(max_pending,max_session_jobs,max_daily_jobs)<1:raise ValueError('Admission limits must be positive')
+    if min(max_pending,max_session_jobs,max_daily_jobs,max_session_intakes,max_daily_intakes)<1:raise ValueError('Admission limits must be positive')
     server = PilotHTTPServer(("127.0.0.1", port), Handler)
     server.allow_legacy_test_routes=bool(allow_legacy_test_routes and not public_origin)
     server.admin_user=admin_user
@@ -731,7 +755,7 @@ def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False,
     if public_origin:
         server.allowed_hosts.add(origin.netloc)
         server.allowed_origins.add(public_origin)
-    server.store = Store(root or ROOT / "data/web", workers, timeout, human_pilot,max_pending,max_session_jobs,max_daily_jobs,max_queue_wait,estimated_job_seconds)
+    server.store = Store(root or ROOT / "data/web", workers, timeout, human_pilot,max_pending,max_session_jobs,max_daily_jobs,max_queue_wait,estimated_job_seconds,max_session_intakes,max_daily_intakes)
     if not disable_planning:server.store.pool.resume()
     return server
 
@@ -748,6 +772,8 @@ if __name__ == "__main__":
     parser.add_argument('--max-pending',type=int,default=100,help='Maximum admitted unfinished calculations')
     parser.add_argument('--max-session-jobs',type=int,default=3,help='Lifetime calculation quota per browser session')
     parser.add_argument('--max-daily-jobs',type=int,default=250,help='Global new calculation quota per UTC calendar day; failed jobs count')
+    parser.add_argument('--max-session-intakes',type=int,default=5,help='Lifetime immutable intake quota per browser session')
+    parser.add_argument('--max-daily-intakes',type=int,default=2000,help='Global new intake quota per UTC calendar day')
     parser.add_argument('--max-queue-wait',type=int,default=120,help='Queue deadline in seconds; 0 disables wait admission and expiry for capacity tests')
     parser.add_argument('--estimated-job-seconds',type=int,default=60,help='Cold-start estimate only, replaced by recent same-mode paired run durations')
     args = parser.parse_args()
@@ -756,7 +782,7 @@ if __name__ == "__main__":
     singleton=(data_root/'server.lock').open('a')
     try:fcntl.flock(singleton,fcntl.LOCK_EX|fcntl.LOCK_NB)
     except BlockingIOError:parser.error('This data directory already has an active server')
-    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs,max_queue_wait=args.max_queue_wait,estimated_job_seconds=args.estimated_job_seconds,admin_user=args.admin_user)
+    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs,max_queue_wait=args.max_queue_wait,estimated_job_seconds=args.estimated_job_seconds,max_session_intakes=args.max_session_intakes,max_daily_intakes=args.max_daily_intakes,admin_user=args.admin_user)
     print(f"Local: http://127.0.0.1:{server.server_address[1]}", flush=True)
     def terminate(signum,frame):
         threading.Thread(target=server.shutdown,daemon=True).start()

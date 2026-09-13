@@ -7,8 +7,8 @@ from proposal_contract import DEVICES, TASKS, executable, at
 from native_support import physical_defaults, ordinary
 from survey_time import LEGACY_STARTS, start_hour
 
-VERSION = 'eb.paired_ep.v3.3'
-QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.2'
+VERSION = 'eb.paired_ep.v3.4'
+QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.3'
 QUESTIONS = [deepcopy(q) for q in PROPOSAL_PROFILE_QUESTIONS if q['id'] != 'F_ROUTINES']
 for q in QUESTIONS:
     if q['id'] == 'B05':
@@ -128,7 +128,11 @@ def prepare(profile, seed, *, environment_required=False, context=None):
     for q in QUESTIONS:
         if q['group'] in ('attitude','stated_preference') and not q.get('device'):required(profile,q['id'])
     validate_count(profile)
-    if owned==['none']: owned=[]
+    if owned==['none']:
+        # The intake remains valuable and is already saved independently, but
+        # there is no household appliance for EB to reschedule.  Do not spend a
+        # model call producing an inevitable no-change comparison.
+        raise ValueError('家庭资料已保存。本次没有可纳入 EB 调整的设备，因此不生成两份方案。')
     config=physical_defaults()
     from native_support import upstream
     mapping={'electric_water_heater':'water_heater','home_ev':'ev'}
@@ -295,4 +299,9 @@ def participant_view(display):
         metrics.append({'label':label, **{side:f"{prediction[side][key]:.2f} {unit}" for side in ('original','proposal')}})
     metrics.append({'label':'响应时段居住区域室温',**{side:f"{prediction[side]['event_temp_min_c']:.1f}—{prediction[side]['event_temp_max_c']:.1f}℃" for side in ('original','proposal')}})
     for metric in display.get('comparison_metrics',[]):metrics.append(deepcopy(metric))
-    return {key:deepcopy(display[key]) for key in ('title','rows','notice','assumptions','question','selection_reason','execution_notice')} | {'scenario_facts':display['context']['facts'],'metrics':metrics,'timeline':deepcopy(display.get('timeline',[])),'service_rows':deepcopy(display.get('service_rows',[])), 'schedule_chart':deepcopy(display.get('schedule_chart')), 'temperature_chart':deepcopy(display.get('temperature_chart'))}
+    view={key:deepcopy(display[key]) for key in ('title','rows','notice','assumptions','question','selection_reason','execution_notice')}
+    view['has_changes']=bool(display.get('has_changes'))
+    return {'render_contract_version':'eb.participant_view.v1', **view,
+        'scenario_facts':display['context']['facts'],'metrics':metrics,'timeline':deepcopy(display.get('timeline',[])),
+        'service_rows':deepcopy(display.get('service_rows',[])), 'schedule_chart':deepcopy(display.get('schedule_chart')),
+        'temperature_chart':deepcopy(display.get('temperature_chart'))}

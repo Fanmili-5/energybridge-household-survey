@@ -2,6 +2,8 @@
 import json
 import math
 from pathlib import Path
+import argparse
+import sqlite3
 import numpy as np
 
 VERSION='eb.household_facts_gower_pam.v1'
@@ -106,17 +108,30 @@ def fit(records,seed=20260910):
             'medoids':[records[i] for i in medoids],
             'assignments':{r['household_id']:int(label) for r,label in zip(records,labels)}}
 
-def main():
-    from common import ROOT,write_json
+def intake_records(data_dir):
+    """Return one outcome-blind feature row per human intake household."""
+    database=Path(data_dir)/'state.sqlite3'
+    if not database.is_file():raise FileNotFoundError('Classification requires authoritative state.sqlite3 intake records')
+    with sqlite3.connect(database.resolve().as_uri()+'?mode=ro',uri=True) as db:
+        rows=[json.loads(row[0]) for row in db.execute('SELECT payload FROM household_submissions ORDER BY created,id')]
     unique={};conflicts=set()
-    for path in sorted((ROOT/'data/web').glob('*/job.json')):
-        job=json.loads(path.read_text())
-        if job.get('flow')!='paired_ep_v1' or job['data_origin']=='synthetic_engineering_test':continue
-        hid=job['household_id'];facts=feature_record(job['profile'])['features']
+    for intake in rows:
+        if intake.get('data_origin')!='local_pilot_self_reported_human':continue
+        hid=intake['household_id'];facts=feature_record(intake['profile'])['features']
         if hid in unique and unique[hid]['features']!=facts:conflicts.add(hid)
         unique.setdefault(hid,{'household_id':hid,'features':facts})
-    records=[r for hid,r in unique.items() if hid not in conflicts]
+    return [row for hid,row in unique.items() if hid not in conflicts],sorted(conflicts)
+
+def main():
+    from common import ROOT,write_json
+    parser=argparse.ArgumentParser(description='Exploratory outcome-blind clustering from authoritative intake receipts')
+    parser.add_argument('--data-dir',type=Path,default=ROOT/'data/web')
+    parser.add_argument('--output',type=Path,default=ROOT/'exports/household_classification.json')
+    args=parser.parse_args()
+    records,conflicts=intake_records(args.data_dir)
     result=fit(records);result['excluded_conflicting_households']=sorted(conflicts)
-    write_json(ROOT/'exports/household_classification.json',result)
+    result['source']='authoritative_sqlite_household_submissions_all_human_intakes'
+    result['includes_saved_without_generation']=True
+    write_json(args.output,result)
     print(json.dumps({'status':result['status'],'n':len(records),'conflicts':len(conflicts)}))
 if __name__=='__main__':main()

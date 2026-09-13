@@ -14,7 +14,7 @@ from unittest.mock import patch
 from common import normalize_answers, write_json, digest
 from paired_contract import LOOKUP, prepare, sanitize_profile, validate
 from verify_paired_physics import answers
-from native_runner import collection_entry, run_native
+from native_runner import collection_entry, run_native, _disable_sdk_retries
 from eb_execution import upstream
 
 
@@ -28,6 +28,17 @@ def request(ac_only=False):
 
 
 class NativeRunnerTests(unittest.TestCase):
+    def test_sdk_transport_retries_are_disabled_without_changing_eb_retry_loop(self):
+        class Client:
+            max_retries=2
+            def copy(self, **kwargs):
+                self.copied=kwargs
+                updated=Client();updated.max_retries=kwargs['max_retries'];return updated
+        original=Client();updated=_disable_sdk_retries(original)
+        self.assertEqual(updated.max_retries,0)
+        self.assertEqual(original.copied,{'max_retries':0})
+        self.assertIs(_disable_sdk_retries(updated),updated)
+
     def test_unavailable_native_metrics_remain_unknown_in_storage(self):
         from native_runner import storage_snapshot
         v=storage_snapshot({'metric':float('nan'),'score':None,'nested':[float('inf'),2.5]})

@@ -99,6 +99,21 @@ class Database:
                                   (owner,request_id)).fetchone()
         return json.loads(row[0]) if row else None
 
+    def household_count(self, owner=None, utc_day=None, include_admin=False):
+        """Count immutable intake receipts without decoding their JSON payloads."""
+        clauses=[];params=[]
+        if owner is not None:
+            clauses.append('owner=?');params.append(owner)
+        if utc_day is not None:
+            start=float(utc_day)*86400
+            clauses.append('created>=? AND created<?');params.extend((start,start+86400))
+        if not include_admin:
+            clauses.append("COALESCE(json_extract(payload,'$.admin_test'),0)=0")
+        sql='SELECT COUNT(*) FROM household_submissions'
+        if clauses:sql+=' WHERE '+' AND '.join(clauses)
+        with self.lock:
+            return int(self.conn.execute(sql,tuple(params)).fetchone()[0])
+
     def household_summaries(self, owner):
         fields=('id','created_at','questionnaire_version','questionnaire_hash','household_record_hash')
         columns=','.join("json_extract(payload, '$."+key+"')" for key in fields)

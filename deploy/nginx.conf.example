@@ -35,10 +35,15 @@ server {
     # Optional invited demo authentication: configure auth_basic and its password
     # file separately. Preserve the 401 challenge, but explain browser login.
     error_page 401 /_auth_required.html;
+    error_page 429 = @eb_rate_limited;
     location = /_auth_required.html {
         internal;
         auth_basic off;
         alias /opt/energybridge/realtime_pilot/static/auth-required.html;
+    }
+    location @eb_rate_limited {
+        default_type application/json;
+        return 429 '{"error":"当前提交较多，请稍后重试；已经保存成功的家庭资料不会丢失。"}';
     }
 
     # Legacy generation and engineering replay are not public collection routes.

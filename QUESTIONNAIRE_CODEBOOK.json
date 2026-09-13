@@ -1,10 +1,10 @@
 {
-  "schema_version": "eb.persona_questionnaire.v4.2",
+  "schema_version": "eb.persona_questionnaire.v4.3",
   "status": "runtime_authoritative",
-  "paired_flow_version": "eb.paired_ep.v3.3",
+  "paired_flow_version": "eb.paired_ep.v3.4",
   "unit": "one household represented by one respondent",
   "question_count": 66,
-  "questions_sha256": "870efaf7d876862c7d65ae40b550fba1f392f0cf632a0bca6db444a3a7dc9109",
+  "questions_sha256": "9a8467d85248588865b02cf21fdf0996cc42f05094b2a853f2f592b7d05d3f7d",
   "scenario_sampling": {
     "event_start_hours": [
       17,
@@ -494,9 +494,13 @@
         }
       ],
       "max_members": 20,
+      "required": true,
+      "required_fields": [
+        "routine"
+      ],
       "help": "按您平时的了解填写，无需姓名，也不用标明哪位是您。生活节奏为必填，其余了解就填；不清楚的可以直接留空。",
-      "required_for_intake": false,
-      "required_for_generation": false
+      "required_for_intake": true,
+      "required_for_generation": true
     },
     {
       "id": "H_ac",

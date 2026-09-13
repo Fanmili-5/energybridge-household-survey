@@ -20,6 +20,14 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from common import ROOT, UPSTREAM, digest, file_hash, write_json
+
+
+def _disable_sdk_retries(client):
+    """Keep retry accounting in EB's explicit loop, not inside the SDK."""
+    if getattr(client, 'max_retries', 0) == 0:
+        return client
+    copier = getattr(client, 'copy', None) or getattr(client, 'with_options', None)
+    return copier(max_retries=0) if callable(copier) else client
 from native_support import upstream
 from resource_limits import ep_compute, api_request
 
@@ -153,6 +161,7 @@ def native_boundaries(runner, household, controls, loops, progress, audit_dir=No
     # Every upstream controller/model call shares the website's API limiter.
     from energybridge.llm.client import LLMClient
     original_chat = LLMClient.chat_with_metrics
+    original_get_client = LLMClient._get_client_for_key
     call_count = 0
     callback_errors = []
     original_unraisable = sys.unraisablehook
@@ -177,7 +186,12 @@ def native_boundaries(runner, household, controls, loops, progress, audit_dir=No
             raise
         if path:write_json(path/'response.json',{'text':result.get('text'),'source':'native_model_response'})
         return result
+    def one_layer_transport(client, key):
+        sdk_client = _disable_sdk_retries(original_get_client(client, key))
+        client._client = sdk_client
+        return sdk_client
     with patch.dict(runner.__dict__, overrides), patch.object(LLMClient, 'chat_with_metrics', limited_chat), \
+         patch.object(LLMClient, '_get_client_for_key', one_layer_transport), \
          patch.object(memory_v3,'_onboarding_view',memory_input), patch.object(profile_v3,'_normalise_answers',profile_input), \
          patch.object(sys,'unraisablehook',unraisable):
         yield
@@ -323,9 +337,17 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
     physical = read_series(folder, horizon=days*24,start_date=start_date)
     energy = find(physical, 'Electricity:Facility', horizon=days*24, unit='J')
     temperature = find(physical, 'Zone Mean Air Temperature', 'living_unit1', horizon=days*24)
+    electricity=[{'end_h':r['end_h'],'kwh':r['value']/3600000} for r in energy]
+    temperatures=[{'end_h':r['end_h'],'c':r['value']} for r in temperature]
+    write_json(folder/'ep_metric_series.json',{
+        'schema_version':'eb.ep_metric_series.v1','source':'EnergyPlus SQLite output',
+        'simulation_start_date':start_date,'horizon_hours':days*24,
+        'environment_hash':scenario.get('environment',{}).get('environment_hash'),
+        'electricity_facility':{'unit':'kWh per interval','rows':electricity},
+        'living_unit1_mean_air_temperature':{'unit':'degC','rows':temperatures}})
     return {'native':data, 'controls':rows, 'seconds':time.perf_counter()-started,
-            'temperature':[{'end_h':r['end_h'],'c':r['value']} for r in temperature],
-            'electricity':[{'end_h':r['end_h'],'kwh':r['value']/3600000} for r in energy],
+            'temperature':temperatures,
+            'electricity':electricity,
             'execution':{'services':data['appliance_results']},
             'task_outcomes':{device:{'completed':app._days[days-1].completed}
                              for device,app in loop.appliance_suite._shiftable.items() if app.present},

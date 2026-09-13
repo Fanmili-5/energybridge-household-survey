@@ -36,7 +36,7 @@ def main():
             assert len(candidates)==2,len(candidates)
             for jid,payload in candidates:
                 job=server.store.jobs[jid]
-                docs={n:server.store.db.document(jid,n) for n in ('outcome.json','decision.json','household_record.json')}
+                docs={n:server.store.db.document(jid,n) for n in ('outcome.json','decision.json','household_record.json','questionnaire_submission.json','request.json')}
                 intake=server.store.db.household(job['household_submission_id'])
                 verify_candidate(json.loads(payload),job,docs,intake)
                 assert docs['outcome.json']['timings']['llm']['call_count']==0

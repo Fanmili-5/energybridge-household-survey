@@ -1,8 +1,15 @@
 import os,tempfile,unittest,fcntl
 from unittest.mock import patch
-from resource_limits import ep_compute,api_request
+from resource_limits import ep_compute,api_request,ApiDailyLimit
 from pathlib import Path
 class ResourceTests(unittest.TestCase):
+    def test_daily_api_budget_is_shared(self):
+        with tempfile.TemporaryDirectory() as tmp,patch.dict(os.environ,{'EB_RESOURCE_DIR':tmp,'EB_API_SLOTS':'1','EB_MAX_DAILY_API_CALLS':'2'}):
+            with api_request():pass
+            with api_request():pass
+            with self.assertRaises(ApiDailyLimit):
+                with api_request():pass
+
     def available(self,path):
         with path.open('a') as f:
             try:fcntl.flock(f,fcntl.LOCK_EX|fcntl.LOCK_NB)

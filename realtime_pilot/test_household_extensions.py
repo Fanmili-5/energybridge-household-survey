@@ -69,16 +69,36 @@ class ExtensionTests(unittest.TestCase):
             self.assertIn('X_CITY',json.dumps(prompt));self.assertIn('age_band',json.dumps(c['household_record']))
             self.assertEqual(json.loads(c['messages'][2]['content'])['decision'],'reject')
             output=Path(tmp)/'export.jsonl'
-            subprocess.run([sys.executable,'export_candidates.py','--include-engineering','--data-dir',tmp,'--output',str(output)],check=True,capture_output=True)
+            completed=subprocess.run([sys.executable,'export_candidates.py','--include-engineering','--data-dir',tmp,'--output',str(output)],capture_output=True,text=True)
+            self.assertEqual(completed.returncode,0,completed.stderr)
             exported=json.loads(output.read_text());self.assertEqual(exported['household_record'],record)
             from export_candidates import verify_candidate
-            docs={n:restored.db.document(job['id'],n) for n in ('outcome.json','decision.json','household_record.json')}
+            docs={n:restored.db.document(job['id'],n) for n in ('outcome.json','decision.json','household_record.json','questionnaire_submission.json','request.json')}
             self.assertEqual(verify_candidate(c,job,docs),c)
             bad=copy.deepcopy(c);bad['messages'][2]['content']='{"decision":"accept","score":5}'
             with self.assertRaises(ValueError):verify_candidate(bad,job,docs)
             docs['outcome.json']['display']['participant_view']['question']='changed after rating'
             with self.assertRaises(ValueError):verify_candidate(c,job,docs)
             restored.db.close()
+
+    def test_human_candidate_requires_hash_verified_native_artifacts(self):
+        from export_candidates import verify_candidate
+        a=self.raw();p=self.normalized(a);o,s=prepare(p,'evidence');h=build_household_config(p,QUESTIONS,o,'evidence')
+        result={'schema_version':__import__('paired_contract').VERSION,'household_config':h,'original_plan':o,
+                'proposal_plan':{},'baseline_plan':{},'display':{'participant_view':{'question':'是否接受？'}},
+                'provenance':{'artifact_hashes':{'baseline/native_result.json':'0'*64}}}
+        for key in ('household_config','original_plan','proposal_plan','baseline_plan','display'):result[key+'_hash']=digest(result[key])
+        job={'id':'human-evidence','status':'complete','result':result,'flow':'paired_ep_v1','profile':p,
+             'questionnaire_snapshot':QUESTIONS,'questionnaire_hash':digest(QUESTIONS),'data_origin':'local_pilot_self_reported_human',
+             'household_id':'h','respondent_id':'r','run_directory':'attempts/0001','original_plan':o}
+        payload={'choice':'accept','score':3,'comfort_score':3,'energy_score':3,'vpp_score':3,'comment':'可以接受',
+                 **{key:result[key] for key in ('display_hash','original_plan_hash','proposal_plan_hash')}}
+        from proposal_contract import decision_record
+        decision=decision_record(job,payload);decision.update(decision_hash=digest(decision),submitted_at=1)
+        row=candidate(job,decision);docs={'outcome.json':result,'decision.json':decision}
+        with tempfile.TemporaryDirectory() as tmp:
+            with self.assertRaisesRegex(ValueError,'required native artifacts'):
+                verify_candidate(row,job,docs,case_dir=tmp)
     def test_old_member_snapshot_remains_readable_without_new_fields(self):
         schema=json.loads(Path('ui_audit_20260911/members/schema.json').read_text());qs=schema['paired_questions'];lookup={q['id']:q for q in qs}
         a=answers();p=normalize_answers(a,list(lookup),lookup);o,s=prepare(self.normalized(a),'legacy')

@@ -192,6 +192,7 @@ def candidate(job, decision):
             "household_config": result.get("household_config",job.get("household_config")),
             "household_config_hash": result.get("household_config_hash",job.get("household_config_hash")),
             "questionnaire_hash": job.get("questionnaire_hash"),
+            "intake_ui_version": job.get("intake_ui_version"),
             "submission_hash": job.get("submission_hash"),
             "household_submission_id": job.get("household_submission_id"),
             "questionnaire_snapshot": job.get("questionnaire_snapshot"),
@@ -208,6 +209,7 @@ def candidate(job, decision):
             "feedback_completeness": "four_scores" if all(decision.get(k) is not None for k in SCORE_FIELDS) else "partial_scores",
             "training_release": False, "execution_status": "not_run",
             "split_group": job["household_id"],
+            "render_contract_version": result["display"].get("participant_view", result["display"]).get("render_contract_version"),
             "messages": [
                 {"role": "system", "content": "代表给定家庭判断是否接受本次能源安排调整。依据家庭资料、原安排和展示的建议（含已提供的模拟运行结果），返回 decision（accept/reject）、score（整体）、comfort_score（舒适）、energy_score（用电与费用满意度）、vpp_score（本次需求响应处理满意度，含安排调整和自主决定体验）及有依据的 comment。评分为 1—5，越高越适合该家庭；整体分独立评价，不从其他分数计算。缺失评分不补分；不得虚构执行结果。"},
                 {"role": "user", "content": json.dumps({"household_answers": public_answers,

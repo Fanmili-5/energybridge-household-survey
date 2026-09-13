@@ -12,6 +12,8 @@ cd "$app_root/realtime_pilot"
 : "${EB_MAX_PENDING:=100}"
 : "${EB_MAX_SESSION_JOBS:=3}"
 : "${EB_MAX_DAILY_JOBS:=250}"
+: "${EB_MAX_SESSION_INTAKES:=5}"
+: "${EB_MAX_DAILY_INTAKES:=2000}"
 : "${EB_MAX_QUEUE_WAIT:=120}"
 : "${EB_ESTIMATED_JOB_SECONDS:=60}"
 : "${EB_ADMIN_USER:=}"
@@ -21,6 +23,7 @@ args=(server.py --port 8767 --data-dir "$EB_DATA_DIR" --workers "$EB_WORKERS"
       --timeout "$EB_JOB_TIMEOUT" --public-origin "$EB_PUBLIC_ORIGIN"
       --max-pending "$EB_MAX_PENDING" --max-session-jobs "$EB_MAX_SESSION_JOBS"
       --max-daily-jobs "$EB_MAX_DAILY_JOBS" --max-queue-wait "$EB_MAX_QUEUE_WAIT"
+      --max-session-intakes "$EB_MAX_SESSION_INTAKES" --max-daily-intakes "$EB_MAX_DAILY_INTAKES"
       --estimated-job-seconds "$EB_ESTIMATED_JOB_SECONDS")
 if [ -n "$EB_ADMIN_USER" ]; then args+=(--admin-user "$EB_ADMIN_USER"); fi
 case "$EB_HUMAN_PILOT" in

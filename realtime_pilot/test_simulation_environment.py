@@ -57,7 +57,7 @@ class RegionalTests(unittest.TestCase):
                 self.assertNotIn(row['date'],c['validated_dates'].get(row['model_id']+'|'+row['weather_id'],[]))
 
     def test_unsupported_answers_save_but_do_not_queue_or_call_model(self):
-        from server import Store
+        from server import Store,PARTICIPANT_UI_VERSION
         from test_pilot import NoExecute
         with tempfile.TemporaryDirectory() as tmp:
             store=Store(tmp,human_pilot=True);store.pool.shutdown();store.pool=NoExecute()
@@ -65,7 +65,7 @@ class RegionalTests(unittest.TestCase):
                 raw=answers(X_REGION='outside_china',X_CITY='Tokyo')
                 receipt=store.save_household('owner',{'questionnaire_context_hash':assigned_context('owner')["context_hash"],'answers':raw,'request_id':'regional_intake_test_0001',
                     'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS),
-                    'research_consent':True,'scenario_understood':True,'research_notice_version':'eb.research_notice.v2'})
+                    'research_consent':True,'scenario_understood':True,'research_notice_version':'eb.research_notice.v2','ui_version':PARTICIPANT_UI_VERSION})
                 self.assertEqual(receipt['environment_readiness']['status'],'unavailable')
                 self.assertEqual(store.db.household(receipt['id'])['raw_answers'],raw)
                 with patch('server.subprocess.Popen') as launch:

@@ -1,11 +1,12 @@
 // Current source contract and actual disposable backend; EP uses the offline fixture only.
 const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert');
 (async()=>{
- const origin=process.env.EB_BROWSER_ORIGIN,answers=JSON.parse(fs.readFileSync(process.env.EB_BROWSER_ANSWERS)),intakeOnly=process.env.EB_BROWSER_INTAKE_ONLY==='1';
+ const origin=process.env.EB_BROWSER_ORIGIN,answers=JSON.parse(fs.readFileSync(process.env.EB_BROWSER_ANSWERS)),intakeOnly=process.env.EB_BROWSER_INTAKE_ONLY==='1',axePath=process.env.EB_AXE_PATH;
  if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(origin))throw Error('Only disposable loopback test server allowed');
  const browser=await chromium.launch({headless:true,executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE||undefined});
  try{for(const width of [390,1365]){
-  const ctx=await browser.newContext({viewport:{width,height:900}}),page=await ctx.newPage(),errors=[];
+  const ctx=await browser.newContext({viewport:{width,height:900}});if(axePath)await ctx.addInitScript({path:axePath});const page=await ctx.newPage(),errors=[],accessibility=[];
+  const audit=async label=>{if(!axePath)return;const violations=await page.evaluate(async()=>{const result=await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa']}});return result.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>n.target)}));});if(violations.length)accessibility.push({label,violations});};
   page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
   await page.goto(origin);await page.waitForFunction(()=>typeof schema!=='undefined'&&schema?.questionnaire_context&&document.getElementById('generate').disabled===false);
@@ -36,6 +37,7 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
     }else{await page.locator('#p_'+q.id).selectOption(JSON.stringify(value));}
    }
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   await audit(`wizard-${step}`);
    if(step<count-1){await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes(`第 ${step+2} /`));}
   }
   const contextHash=await page.evaluate(()=>schema.questionnaire_context.context_hash);
@@ -64,7 +66,7 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
    page.once('dialog',dialog=>dialog.accept());
    await page.locator('#clear-device-data').click();
    await page.waitForFunction(()=>document.getElementById('household-receipt').hidden&&localStorage.getItem('eb:household-receipt')===null);
-   assert.deepStrictEqual(errors,[]);await ctx.close();console.log(`Current ${width}px: active consent, intake receipt, shared-device reset and responsive layout passed.`);continue;
+   assert.deepStrictEqual(errors,[]);assert.deepStrictEqual(accessibility,[]);await ctx.close();console.log(`Current ${width}px: active consent, intake receipt, shared-device reset and responsive layout passed.`);continue;
   }
   await page.waitForFunction(()=>!document.getElementById('decision-form').hidden||!document.getElementById('error').hidden||['failed','timeout','interrupted'].includes(currentJob?.status),{},{timeout:120000});
   assert(await page.locator('#decision-form').isVisible(),await page.locator('body').innerText());
@@ -76,8 +78,9 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   await page.reload();await page.locator('#decision-form').waitFor({state:'visible'});
   assert.strictEqual(await page.locator('[name=feedback_score]').inputValue(),'3.75');
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await audit('result-and-feedback');
   await page.locator('#save-decision').click();await page.waitForFunction(()=>document.getElementById('decision-status').textContent.includes('已保存'));
   await page.reload();await page.waitForFunction(()=>document.getElementById('decision-status').textContent.includes('已保存'));
-  assert.deepStrictEqual(errors,[]);await ctx.close();console.log(`Current ${width}px: annual context, draft, cities, ${count} pages, native EP, timeline, decimal feedback and reload passed.`);
+  assert.deepStrictEqual(errors,[]);assert.deepStrictEqual(accessibility,[]);await ctx.close();console.log(`Current ${width}px: annual context, draft, cities, ${count} pages, native EP, timeline, decimal feedback and reload passed.`);
  }}finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exit(1);});

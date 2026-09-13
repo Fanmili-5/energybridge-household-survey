@@ -4,6 +4,7 @@ from collections import Counter, defaultdict
 import json
 from pathlib import Path
 import sqlite3
+import statistics
 
 from common import ROOT, write_json
 from simulation_environment import inspect_profile
@@ -13,6 +14,21 @@ def _counts(values):
     return dict(sorted(Counter(str(v) for v in values if v not in (None, '')).items()))
 
 
+def _score_summary(values):
+    clean=[float(value) for value in values if isinstance(value,(int,float)) and not isinstance(value,bool)]
+    if not clean:return {'n':0}
+    return {'n':len(clean),'min':min(clean),'max':max(clean),'mean':round(statistics.fmean(clean),3)}
+
+
+def _length_bucket(value):
+    n=len(value.strip()) if isinstance(value,str) else 0
+    if n==0:return 'empty'
+    if n<10:return '1_9'
+    if n<30:return '10_29'
+    if n<100:return '30_99'
+    return '100_plus'
+
+
 def build_report(data_dir, include_engineering=False):
     database=Path(data_dir)/'state.sqlite3'
     if not database.exists():raise FileNotFoundError('Collection audit requires state.sqlite3')
@@ -20,9 +36,9 @@ def build_report(data_dir, include_engineering=False):
         db.execute('BEGIN')
         intakes=[json.loads(row[0]) for row in db.execute('SELECT payload FROM household_submissions ORDER BY created,id')]
         jobs=[json.loads(row[0]) for row in db.execute('SELECT payload FROM jobs ORDER BY created,id')]
-        doc_names=defaultdict(set)
-        for jid,name in db.execute('SELECT job_id,name FROM documents'):
-            doc_names[jid].add(name)
+        documents=defaultdict(dict)
+        for jid,name,payload in db.execute('SELECT job_id,name,payload FROM documents'):
+            documents[jid][name]=json.loads(payload)
     if not include_engineering:
         intakes=[row for row in intakes if row.get('data_origin')=='local_pilot_self_reported_human']
     intake_ids={row['id'] for row in intakes}
@@ -30,6 +46,7 @@ def build_report(data_dir, include_engineering=False):
     by_intake=defaultdict(list)
     for row in jobs:by_intake[row['household_submission_id']].append(row)
     stages=Counter();dropoff=Counter();regions=[];buildings=[];months=[];devices=[]
+    decisions=[];scores=defaultdict(list);comment_lengths=[];change_states=[];fallback_states=[];failure_reasons=[];failure_stages=[];failure_types=[]
     for intake in intakes:
         stages['intake_saved']+=1
         ready=inspect_profile(intake['profile']).get('status')=='ready'
@@ -38,9 +55,9 @@ def build_report(data_dir, include_engineering=False):
         if linked:stages['generation_attempted']+=1
         complete=[j for j in linked if j.get('status')=='complete']
         if complete:stages['paired_simulation_complete']+=1
-        feedback=[j for j in linked if j.get('decision_saved') and 'decision.json' in doc_names[j['id']]]
+        feedback=[j for j in linked if j.get('decision_saved') and 'decision.json' in documents[j['id']]]
         if feedback:stages['human_feedback_saved']+=1
-        candidates=[j for j in feedback if 'sft_candidate.json' in doc_names[j['id']]]
+        candidates=[j for j in feedback if 'sft_candidate.json' in documents[j['id']]]
         if candidates:stages['candidate_saved']+=1
         if not linked:dropoff['saved_without_generation']+=1
         elif not complete:dropoff['generation_not_completed']+=1
@@ -48,11 +65,31 @@ def build_report(data_dir, include_engineering=False):
         else:dropoff['feedback_complete']+=1
         raw=intake.get('raw_answers') or {}
         regions.append(raw.get('X_REGION'));buildings.append(raw.get('X_BUILDING'))
-        month=(intake.get('questionnaire_context') or {}).get('month');months.append(month)
+        context=intake.get('questionnaire_context') or {}
+        date=context.get('date')
+        month=(date[5:7] if isinstance(date,str) and len(date)>=7 else context.get('month'))
+        months.append(month)
         devices.extend(raw.get('B05') or [])
+    for job in jobs:
+        docs=documents[job['id']]
+        decision=docs.get('decision.json')
+        if decision:
+            decisions.append(decision.get('choice'))
+            for key in ('score','comfort_score','energy_score','vpp_score'):scores[key].append(decision.get(key))
+            comment_lengths.append(_length_bucket(decision.get('comment')))
+        outcome=docs.get('outcome.json')
+        if outcome:
+            view=(outcome.get('display') or {}).get('participant_view') or outcome.get('display') or {}
+            change_states.append(bool(view.get('has_changes')))
+            native=(outcome.get('provenance') or {}).get('native_plan_outcomes') or []
+            fallback_states.append(any(row.get('fallback_used') for row in native))
+        if job.get('status') not in ('complete','queued','running'):
+            failure_reasons.append(job.get('status','unknown'))
+            failure_stages.append(job.get('failure_stage','unknown'))
+            failure_types.append(job.get('failure_type','unknown'))
     statuses=Counter(j.get('status','unknown') for j in jobs)
     report={
-        'schema_version':'eb.collection_funnel.v1',
+        'schema_version':'eb.collection_funnel.v2',
         'data_origin':'human_and_engineering' if include_engineering else 'local_pilot_self_reported_human',
         'unit':'unique_household_submission',
         'stages':dict(stages),
@@ -60,6 +97,11 @@ def build_report(data_dir, include_engineering=False):
         'case_statuses':dict(sorted(statuses.items())),
         'cases':len(jobs),
         'coverage':{'province':_counts(regions),'building_type':_counts(buildings),'assigned_month':_counts(months),'selected_device':_counts(devices)},
+        'label_quality':{'decision':_counts(decisions),'scores':{key:_score_summary(scores[key]) for key in ('score','comfort_score','energy_score','vpp_score')},
+                         'comment_length':_counts(comment_lengths)},
+        'simulation_quality':{'display_has_changes':_counts(change_states),'native_fallback_used':_counts(fallback_states),
+                              'incomplete_status_reason':_counts(failure_reasons),'failure_stage':_counts(failure_stages),
+                              'failure_type':_counts(failure_types)},
         'training_release':False,
         'notes':['A household is counted once per stage even when it has retries.',
                  'candidate_saved checks presence and linkage only; release review remains separate.']}

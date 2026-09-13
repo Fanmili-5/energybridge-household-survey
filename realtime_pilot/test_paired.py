@@ -55,10 +55,12 @@ class PairedTests(unittest.TestCase):
         e=replay(o,p,s);app=next(a for a in e['applications'] if a['kind']=='proposal')
         self.assertIs(app['applied_actions']['water_heater_preheat'],False)
         self.assertEqual(e['rows'][-1]['actuators']['water_heater'],40)
-    def test_required_habits_not_imputed_and_no_devices_valid(self):
+    def test_required_habits_not_imputed_and_no_devices_skip_generation(self):
         p=self.profile();p['H_washer']={'value':None,'response_status':'skipped'}
         with self.assertRaises(ValueError):prepare(p,'seed')
-        p['B05']['value']=['none'];o,s=prepare(p,'seed');self.assertEqual(executable(o)['appliances'],{});self.assertFalse(o['eb_appliance_config']['ac']['present'])
+        p['B05']['value']=['none']
+        with self.assertRaisesRegex(ValueError,'资料已保存.*不生成两份方案'):
+            prepare(p,'seed')
     def test_fact_distance_not_label_leakage(self):
         p=self.profile();a=feature_record(p)['features'];q=copy.deepcopy(p);q['score']={'value':5,'response_status':'answered'};q['P_COST']['value']='1'
         b=feature_record(q)['features'];self.assertEqual(a,b);self.assertEqual(distance(a,b),0)
