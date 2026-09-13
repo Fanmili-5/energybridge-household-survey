@@ -83,9 +83,16 @@ def bootstrap(root=ROOT, cache=None, workers=4):
             target = archived.parent/name
             if target.is_file() and hashlib.sha256(target.read_bytes()).hexdigest() == checksum:
                 continue
-            source = safe_asset(root, name, checksum)
             target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(source, target)
+            compressed=target.with_suffix(target.suffix+'.xz')
+            if compressed.is_file():
+                body=lzma.decompress(compressed.read_bytes())
+                if hashlib.sha256(body).hexdigest()!=checksum:
+                    raise ValueError('Archived compressed resource checksum mismatch: '+name)
+                target.write_bytes(body)
+            else:
+                source = safe_asset(root, name, checksum)
+                shutil.copyfile(source, target)
     for name, checksum in paths(catalog):
         safe_asset(root, name, checksum)
     print(json.dumps({'verified':True,'models':len(catalog['models']),

@@ -35,6 +35,9 @@ simulation_resources/weather/
 simulation_resources/models/
 simulation_resources/validation.json
 simulation_resources/versions/*/simulation_resources/
+!simulation_resources/versions/*/simulation_resources/
+simulation_resources/versions/*/simulation_resources/*
+!simulation_resources/versions/*/simulation_resources/validation.json.xz
 models/**/*.idf
 
 # Historical engineering-only fixtures needed for reproducible regression.
