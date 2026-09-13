@@ -1,11 +1,12 @@
-"""Native EP paired-run benchmark; fixed controls, no model and no networking.
+"""Production native EB/EP paired-run benchmark with a fixed model reply.
 
-Each worker owns its own EnergyPlus API state and output folders. Includes
-initialization, P0/P1 simulation and output validation; excludes model latency.
+Each worker executes the same one-day ``no_dr`` and ``agent`` entry points used
+by collection.  Network access is prohibited and the model method is replaced
+with a deterministic invalid reply, so EB's native technical fallback is
+exercised without a provider request or a simulated household judgement.
 """
 import argparse
 from contextlib import redirect_stdout
-from copy import deepcopy
 import json
 import os
 from pathlib import Path
@@ -26,32 +27,34 @@ def prohibit_network(event, args):
 
 def worker(folder):
     sys.addaudithook(prohibit_network)
-    os.environ['USE_LLM'] = 'false'
+    # Exercise the production agent branch while replacing its model transport
+    # below with an in-process fixed reply.
+    os.environ['USE_LLM'] = 'true'
     for key in list(os.environ):
         if key.startswith('LLM_'):
             del os.environ[key]
-    from common import normalize_answers, write_json
+    os.environ.update(LLM_API_KEY='offline-fixture-not-a-real-key',
+                      LLM_MODEL='offline-fixture',LLM_BASE_URL='http://127.0.0.1:9/v1')
+    from common import digest, normalize_answers, write_json
     from paired_contract import LOOKUP, prepare
     from verify_paired_physics import answers
-    from closed_loop import simulate_live, EBPlanner
-    from paired_ep import pair_metrics
-    def forbidden_model(*args, **kwargs):
-        raise AssertionError('Model planner must never run in this benchmark')
-    EBPlanner.__call__ = forbidden_model
+    from household_config import ensure_household_config
+    from native_runner import run_native
+    from native_support import upstream
+    upstream()
+    from energybridge.llm.client import LLMClient
+    from unittest.mock import patch
     folder.mkdir(parents=True, exist_ok=True)
     profile = normalize_answers(answers(), list(LOOKUP), LOOKUP)
     original, scenario = prepare(profile, 'ep_only_fixed_fixture')
-    scenario.update(decision_h=16, event={'id':'ep_only_event','trigger_h':18,'end_h':19,'day':4})
-    request = {'profile':profile,'original_plan':original,'scenario':scenario}
-    calls = []
-    def controller(loop, now, observed, history, reasons):
-        assert history[-1]['end_h'] == observed['end_h']
-        assert all(row['end_h'] <= now+1e-7 for row in history)
-        calls.append({'sim_h':now, 'temperature_c':observed['temperature_c']})
-        plan = deepcopy(original['eb_ordinary_plan'])
-        plan['setpoint'] = 27 if now < 91 else 25
-        plan['next_check_hour'] = now+.5 if len(calls) == 1 else None
-        return plan, 'Fixed engineering controller; no model call or human evaluation.'
+    request = {'profile':profile,'original_plan':original,'scenario':scenario,'data_origin':'synthetic_engineering_test',
+               'household_id':'ep_only_fixed_fixture'}
+    household=ensure_household_config(request)
+    request.update(household_config=household,household_config_hash=digest(household))
+    calls=[]
+    def fixed_model(*args, **kwargs):
+        calls.append({'fixture':True})
+        return {'text':'{}','metrics':{'fixture':True,'attempts':1,'retries':0}}
     (folder/'ready').touch()
     deadline = time.monotonic()+60
     while not (folder.parent/'start').exists():
@@ -59,26 +62,37 @@ def worker(folder):
         time.sleep(.01)
     start = time.perf_counter()
     with (folder/'console.log').open('w') as log, redirect_stdout(log):
-        baseline = simulate_live(folder/'baseline', request)
-        proposal = simulate_live(folder/'proposal', request, controller)
-        metrics = pair_metrics(baseline, proposal, scenario)
+        with patch.object(LLMClient,'chat_with_metrics',fixed_model):
+            baseline = run_native(folder/'baseline',request,method='no_dr')
+            proposal = run_native(folder/'proposal',request,method='agent')
     elapsed = time.perf_counter()-start
-    times = [c['sim_h'] for c in calls]
-    assert all(t in times for t in (88,88.5,90,91)), times
-    assert calls[0]['temperature_c'] != calls[1]['temperature_c']
+    assert scenario['evaluation_window']['simulation_days']==1
+    assert scenario['evaluation_window']['end_sim_h']==24
+    assert baseline['horizon']==proposal['horizon']==24
     assert baseline['idf_sha256'] == proposal['idf_sha256']
-    assert proposal['live_observation_sql_check']
+    assert baseline['weather_sha256'] == proposal['weather_sha256']
+    assert len(baseline['electricity'])==len(proposal['electricity'])==144
+    pending=proposal['native']['human_evaluation_pending']
+    assert pending
+    for key in ('vpp_plan_acceptance_rate','vpp_plan_acceptance_probability_avg',
+                'vpp_plan_rejected_count','accepted_effective_vpp_success_rate'):
+        assert proposal['native'].get(key) is None
+    assert calls
+    decision=scenario['decision_h']
+    prefix_energy=max(abs(a['kwh']-b['kwh']) for a,b in zip(baseline['electricity'],proposal['electricity']) if a['end_h']<=decision)
+    prefix_temp=max(abs(a['c']-b['c']) for a,b in zip(baseline['temperature'],proposal['temperature']) if a['end_h']<=decision)
     result = {'status':'passed','data_origin':'synthetic_engineering_test','api_calls':0,
-        'network_access':'blocked_by_audit_hook','controller':'fixed_engineering_fixture',
+        'network_access':'blocked_by_audit_hook','controller':'native_technical_fallback_from_fixed_invalid_reply',
+        'collection_methods':['no_dr','agent'],'simulation_days':1,
         'pair_seconds':round(elapsed,3),'baseline_seconds':baseline['seconds'],
         'proposal_seconds':proposal['seconds'],'peak_rss_mib':round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss/1024,2),
         'cpu_seconds':round(resource.getrusage(resource.RUSAGE_SELF).ru_utime+resource.getrusage(resource.RUSAGE_SELF).ru_stime,3),
-        'simulated_days':proposal['evaluation_window']['simulation_days'],
-        'evaluation_end_h':proposal['evaluation_window']['end_sim_h'],
-        'prefix_check':metrics['prefix_check'],'energy_checks':proposal['task_energy_checks'],
-        'warnings':{'baseline':baseline['warning_count'],'proposal':proposal['warning_count']},
-        'native_callback_count':len(proposal['controls']),'fixed_controller_calls':len(calls),
-        'idf_sha256':proposal['idf_sha256'],'metrics':metrics,'training_release':False}
+        'fixed_model_calls':len(calls),'human_evaluation_pending':len(pending),
+        'pre_decision_difference':{'comparison':'no_dr versus full-day agent method; equality is not required',
+                                   'until_simulation_h':decision,'max_kwh_difference':prefix_energy,
+                                   'max_temperature_difference_c':prefix_temp},
+        'idf_sha256':proposal['idf_sha256'],'weather_sha256':proposal['weather_sha256'],
+        'training_release':False}
     write_json(folder/'result.json', result)
 
 def meminfo():
@@ -87,7 +101,7 @@ def meminfo():
 
 def main(out, repeats):
     out.mkdir(parents=True, exist_ok=False)
-    report = {'api_calls':0,'mode':'ep_only_fixed_controller','pairs_per_worker':1,
+    report = {'api_calls':0,'mode':'production_native_fixed_reply','pairs_per_worker':1,
         'includes_model_latency':False,'cpu_logical_count':os.cpu_count(),'batches':[]}
     for concurrency in (1,2,4):
         for repeat in range(repeats):
