@@ -91,6 +91,17 @@ class ComputeTests(unittest.TestCase):
             with patch.dict(os.environ,{'EB_COMPUTE_URL':self.base,'EB_COMPUTE_TOKEN_FILE':str(token)}),patch('remote_compute.release_hash',return_value='release'):
                 run_remote(folder)
         self.assertEqual(len(self.store.jobs),1)
+    def test_data_root_migration_reuses_remote_job(self):
+        token=self.root/'token';token.write_text('x'*40)
+        ids=[]
+        for root in ('old_data_root','restored_data_root'):
+            folder=self.root/root/'same_logical_job'/'attempts'/'0001';folder.mkdir(parents=True)
+            write_json(folder/'request.json',{'fixture':1})
+            with patch.dict(os.environ,{'EB_COMPUTE_URL':self.base,'EB_COMPUTE_TOKEN_FILE':str(token)}),patch('remote_compute.release_hash',return_value='release'):
+                run_remote(folder)
+            ids.append(json.loads((folder/'compute_transport.json').read_text())['job_id'])
+        self.assertEqual(ids[0],ids[1])
+        self.assertEqual(len(self.store.jobs),1)
     def test_expired_lease_kills_process(self):
         self.script.write_text('import time\ntime.sleep(30)\n');self.store.lease=.1
         self.store.submit('a'*64,self.payload());process=self.store.processes['a'*64]

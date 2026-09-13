@@ -47,8 +47,8 @@
   <div id="attitude-questions"></div>
 </section>
 <section class="panel survey-section" data-form-page="4" hidden><div class="survey-section-head"><span class="section-index">05</span><div><h2>匹配您家的模拟环境</h2><p>城市、房型、面积和楼层用于选择天气与研究住宅。无需详细地址；不完整或暂未覆盖的资料也可以保存。模型材料和设备采用统一研究参数，并非您家的精确重建。</p></div></div><div id="housing-questions" class="research-grid"></div><p id="environment-preview" class="notice" aria-live="polite">填写以上住房信息后，会在这里显示可用的模拟环境。</p></section>
-<section class="panel survey-section" data-form-page="5" hidden><div class="survey-section-head"><span class="section-index">06</span><div><h2>再补充一点用电背景</h2><p>以下均为选填，不填写也可以提交。设备数量与频率用于家庭研究，本次所选设备仍按每类一个模型模拟。</p></div></div><div id="research-questions" class="research-grid"></div></section>
-<section class="panel scenario-section" data-form-page="3" hidden><div class="scenario-heading"><span class="scenario-icon" aria-hidden="true">↗</span><div><p class="eyebrow">接下来，看看一种新的安排</p><h2>在同一天，比较调整前后</h2></div></div><ul id="scenario-facts"></ul>
+<section class="panel survey-section" data-form-page="5" hidden><div class="survey-section-head"><span class="section-index">06</span><div><h2>再补充一点用电背景</h2><p>以下均为选填，不填写也可以提交。设备数量与频率用于家庭研究，本次所选设备仍按每类一个模型模拟。</p></div></div><a class="skip-optional" href="#submission-confirm">跳过选填，前往提交确认 ↓</a><div id="research-questions" class="research-grid"></div></section>
+<section id="submission-confirm" class="panel scenario-section" data-form-page="3" hidden><div class="scenario-heading"><span class="scenario-icon" aria-hidden="true">↗</span><div><p class="eyebrow">接下来，看看一种新的安排</p><h2>在同一天，比较调整前后</h2></div></div><ul id="scenario-facts"></ul>
 <p id="research-notice" class="research-notice">您填写的家庭资料和后续方案评价将用于家庭用电研究，以及构造家庭用户模拟器训练候选数据。成员资料由您按日常了解代填，无需姓名或详细地址。是否采用用电方案，将在看到两份模拟结果后另行询问。</p>
 <fieldset id="research-confirmations" class="research-confirmations"><legend>提交前确认</legend>
   <label class="check"><input id="research-consent" type="checkbox" required><span id="research-consent-label">我已阅读参与说明，自愿将本次家庭回答和后续方案评价用于上述研究。</span></label>
@@ -67,7 +67,7 @@
 <div class="feedback-score-heading"><h3>这份调整适合您家吗？</h3><p id="score-hint" class="hint">1 很不合适 · 5 很合适，可填小数</p></div>
 <div id="decision-scores" class="basic-grid"></div>
 <section class="score-help"><h3>如何评分</h3><p>1 分很不合适，2 分较不合适，3 分一般，4 分较合适，5 分很合适。可填 1—5 之间的小数。四项分别判断，整体分由您独立给出。</p><div id="score-definitions"></div></section>
-<label class="field feedback-reason">请简要说明最主要原因<textarea id="decision-reason" maxlength="1000" rows="2" placeholder="例如：调整影响晚饭时间；或室温变化可以接受"></textarea></label>
+<label class="field feedback-reason">请简要说明最主要原因（必填）<textarea id="decision-reason" maxlength="1000" rows="2" placeholder="例如：调整影响晚饭时间；或室温变化可以接受"></textarea></label>
 <button id="save-decision" type="submit">提交反馈</button><p id="decision-status" role="status" aria-live="polite"></p>
 </form>
 </div>

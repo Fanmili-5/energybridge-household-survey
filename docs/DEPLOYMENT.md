@@ -88,7 +88,7 @@ sudo systemctl status energybridge
 | `EB_EP_SLOTS` | 1 | 同时进行 EP 计算的槽数 |
 | `EB_API_SLOTS` | 1 | 同时进行模型请求的槽数 |
 | `EB_MAX_DAILY_API_CALLS` | 0 | UTC 自然日逻辑模型调用硬上限；0 表示关闭。SDK 隐藏重试已关闭，EB 显式重试仍计在同一次逻辑调用内 |
-| `EB_JOB_TIMEOUT` | 300秒 | 每个工作进程总时限，包含资源等待 |
+| `EB_JOB_TIMEOUT` | 300秒 | 每个工作进程总时限，包含资源等待；远程计算时必须大于 `EB_REMOTE_TIMEOUT` |
 | `EB_MAX_PENDING` | 100 | 全部未结束计算任务上限 |
 | `EB_MAX_SESSION_JOBS` | 3 | 单浏览器会话累计计算次数，排队过期不占次数 |
 | `EB_MAX_DAILY_JOBS` | 250 | UTC 自然日全局新任务上限，失败也计数 |
@@ -109,6 +109,7 @@ sudo systemctl status energybridge
 Nginx 允许同一公网 IP 瞬时提交 150 个生成请求，以免校园网或家庭网 NAT
 误伤真实参与者；应用层的单会话额度、全局日额度与在途上限仍是最终准入边界。
 这组设置保证突发请求先可靠保存并排队，并不承诺 128 个任务同时执行或在固定时间内完成。
+远程计算的超时必须从内向外递增：计算节点进程上限 < `EB_REMOTE_TIMEOUT` < `EB_JOB_TIMEOUT`。当前远程模板采用 1200 < 1320 < 1440 秒，避免网站进程先结束而收不到计算结果或取消回执。
 
 先验证一个真实模型案例的家庭输入、原安排、VPP、EB 决策、两份 EP 输出及最终评分保存，再逐步增加少量并行请求，测量端到端时间及峰值内存。工程桩完成的50人并发测试不能替代这一步。
 

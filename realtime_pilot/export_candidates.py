@@ -10,7 +10,7 @@ from paired_contract import VERSION as PAIRED_VERSION
 REQUIRED_NATIVE_ARTIFACTS={
     'date_validation.json',
     *{f'{branch}/{name}' for branch in ('baseline','proposal') for name in
-      ('native_result.json','actuator_trace.json','native_boundary_manifest.json','collection_entry.py','ep_metric_series.json','eplusout.err')},
+      ('native_result.json','actuator_trace.json','native_boundary_manifest.json','collection_entry.py','ep_metric_series.json','eplusout.err','eplusout.sql')},
 }
 
 def verify_candidate(row, job, documents, intake=None, case_dir=None):

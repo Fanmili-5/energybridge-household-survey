@@ -196,3 +196,6 @@ body.survey-page,body.preview-page{--muted-readable:#52665e}
 .survey-page #history .secondary{color:#334e43!important;opacity:1!important}
 .survey-page .schedule-empty{color:#52665e!important}
 .survey-page .decision-choices{border:0;padding:0;min-width:0}
+.skip-optional{display:inline-flex;margin:0 0 22px;padding:10px 13px;border:1px solid #cbdcd1;border-radius:8px;background:#f5f9f6;color:#315d4d;font-size:13px;font-weight:600;text-decoration:none}
+.skip-optional:focus-visible{outline:3px solid #b95f47;outline-offset:3px}
+@media(max-width:640px){.schedule-legend,.shared-axis .tick,.schedule-axis-label{font-size:11px}}

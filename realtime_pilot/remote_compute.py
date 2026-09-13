@@ -43,12 +43,14 @@ def run_remote(folder):
     # A page/SSH listener being alive is insufficient. Detect a broken route or
     # partial deployment before creating a remote task or waiting for a lease.
     check_remote_ready(expected=expected)
-    # Stable across cloud service recovery attempts for the same logical job.
-    # A lost POST or a cloud restart must not start a second paid native run.
+    # Stable across cloud service recovery attempts and data-root migrations for
+    # the same logical job.  A filesystem path is deployment state, not job
+    # identity; including it can duplicate a paid native run after restore.
     scope=folder.parent.parent if folder.parent.name=='attempts' and folder.name.isdigit() else folder
-    jid=digest({'job':str(scope.resolve()),'request':request_sha,'release':expected})
+    logical_job_id=scope.name
+    jid=digest({'job':logical_job_id,'request':request_sha,'release':expected})
     path='/jobs/'+jid
-    write_json(folder/'compute_transport.json',{'protocol':PROTOCOL,'job_id':jid,'release':expected,
+    write_json(folder/'compute_transport.json',{'protocol':PROTOCOL,'job_id':jid,'logical_job_id':logical_job_id,'release':expected,
                'request_hash':request_sha,'backend':'school_native_eb_ep'})
     payload={'protocol':PROTOCOL,'release':expected,'request_hash':request_sha,'request':request}
     started=time.monotonic();last_contact=started;submitted=False;finished=False

@@ -189,6 +189,8 @@ class HouseholdIntakeTests(unittest.TestCase):
         job.update(status='failed');self.store.persist(job)
         report=build_report(self.tmp.name)
         self.assertEqual(report['stages']['intake_saved'],2)
+        self.assertEqual(report['stages']['environment_ready_at_intake'],2)
+        self.assertEqual(report['stages']['environment_ready_current_catalog'],2)
         self.assertEqual(report['stages']['generation_attempted'],1)
         self.assertEqual(report['dropoff'],{'saved_without_generation':1,'generation_not_completed':1})
         self.assertEqual(report['case_statuses'],{'failed':1})

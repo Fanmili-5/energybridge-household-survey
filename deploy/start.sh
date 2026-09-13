@@ -17,6 +17,15 @@ cd "$app_root/realtime_pilot"
 : "${EB_MAX_QUEUE_WAIT:=120}"
 : "${EB_ESTIMATED_JOB_SECONDS:=60}"
 : "${EB_ADMIN_USER:=}"
+if [ -n "${EB_COMPUTE_URL:-}" ]; then
+  : "${EB_REMOTE_TIMEOUT:=660}"
+  [[ "$EB_JOB_TIMEOUT" =~ ^[0-9]+$ && "$EB_REMOTE_TIMEOUT" =~ ^[0-9]+$ ]] || {
+    echo 'EB_JOB_TIMEOUT and EB_REMOTE_TIMEOUT must be integer seconds' >&2; exit 1;
+  }
+  (( EB_JOB_TIMEOUT > EB_REMOTE_TIMEOUT )) || {
+    echo 'EB_JOB_TIMEOUT must exceed EB_REMOTE_TIMEOUT so the cloud worker can receive or cancel the remote result' >&2; exit 1;
+  }
+fi
 GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=safe.directory GIT_CONFIG_VALUE_0="$app_root/upstream_2b17ae6" \
     "$python_bin" "$app_root/scripts/bootstrap_upstream.py" --verify-only
 args=(server.py --port 8767 --data-dir "$EB_DATA_DIR" --workers "$EB_WORKERS"

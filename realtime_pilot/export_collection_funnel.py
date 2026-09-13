@@ -7,6 +7,9 @@ import sqlite3
 import statistics
 
 from common import ROOT, write_json
+from export_candidates import verify_candidate
+from paired_contract import QUESTIONNAIRE_VERSION, VERSION as PAIRED_VERSION
+from proposal_contract import FEEDBACK_VERSION
 from simulation_environment import inspect_profile
 
 
@@ -41,16 +44,18 @@ def build_report(data_dir, include_engineering=False):
             documents[jid][name]=json.loads(payload)
     if not include_engineering:
         intakes=[row for row in intakes if row.get('data_origin')=='local_pilot_self_reported_human']
-    intake_ids={row['id'] for row in intakes}
+    intake_ids={row['id'] for row in intakes};intake_by_id={row['id']:row for row in intakes}
     jobs=[row for row in jobs if row.get('household_submission_id') in intake_ids]
     by_intake=defaultdict(list)
     for row in jobs:by_intake[row['household_submission_id']].append(row)
     stages=Counter();dropoff=Counter();regions=[];buildings=[];months=[];devices=[]
-    decisions=[];scores=defaultdict(list);comment_lengths=[];change_states=[];fallback_states=[];failure_reasons=[];failure_stages=[];failure_types=[]
+    decisions=[];scores=defaultdict(list);comment_lengths=[];change_states=[];fallback_states=[];failure_reasons=[];failure_stages=[];failure_types=[];candidate_failures=[]
     for intake in intakes:
         stages['intake_saved']+=1
-        ready=inspect_profile(intake['profile']).get('status')=='ready'
-        if ready:stages['environment_ready']+=1
+        frozen_ready=((intake.get('household_record') or {}).get('environment_readiness') or {}).get('status')=='ready'
+        current_ready=inspect_profile(intake['profile']).get('status')=='ready'
+        if frozen_ready:stages['environment_ready_at_intake']+=1
+        if current_ready:stages['environment_ready_current_catalog']+=1
         linked=by_intake.get(intake['id'],[])
         if linked:stages['generation_attempted']+=1
         complete=[j for j in linked if j.get('status')=='complete']
@@ -59,6 +64,19 @@ def build_report(data_dir, include_engineering=False):
         if feedback:stages['human_feedback_saved']+=1
         candidates=[j for j in feedback if 'sft_candidate.json' in documents[j['id']]]
         if candidates:stages['candidate_saved']+=1
+        verified=[];current=[]
+        for candidate_job in candidates:
+            row=documents[candidate_job['id']]['sft_candidate.json']
+            try:
+                verify_candidate(row,candidate_job,documents[candidate_job['id']],intake_by_id.get(intake['id']),Path(data_dir)/candidate_job['id'])
+                verified.append(candidate_job)
+                if (row.get('schema_version')==PAIRED_VERSION and row.get('questionnaire_version')==QUESTIONNAIRE_VERSION
+                        and row.get('feedback_version')==FEEDBACK_VERSION):current.append(candidate_job)
+            except Exception as exc:
+                candidate_failures.append(type(exc).__name__)
+        if verified:stages['candidate_evidence_verified']+=1
+        if current:stages['current_version_eligible']+=1
+        if current and intake.get('data_origin')=='local_pilot_self_reported_human':stages['human_export_eligible']+=1
         if not linked:dropoff['saved_without_generation']+=1
         elif not complete:dropoff['generation_not_completed']+=1
         elif not feedback:dropoff['completed_awaiting_feedback']+=1
@@ -89,7 +107,7 @@ def build_report(data_dir, include_engineering=False):
             failure_types.append(job.get('failure_type','unknown'))
     statuses=Counter(j.get('status','unknown') for j in jobs)
     report={
-        'schema_version':'eb.collection_funnel.v2',
+        'schema_version':'eb.collection_funnel.v3',
         'data_origin':'human_and_engineering' if include_engineering else 'local_pilot_self_reported_human',
         'unit':'unique_household_submission',
         'stages':dict(stages),
@@ -101,10 +119,12 @@ def build_report(data_dir, include_engineering=False):
                          'comment_length':_counts(comment_lengths)},
         'simulation_quality':{'display_has_changes':_counts(change_states),'native_fallback_used':_counts(fallback_states),
                               'incomplete_status_reason':_counts(failure_reasons),'failure_stage':_counts(failure_stages),
-                              'failure_type':_counts(failure_types)},
+                              'failure_type':_counts(failure_types),'candidate_verification_failure':_counts(candidate_failures)},
         'training_release':False,
         'notes':['A household is counted once per stage even when it has retries.',
-                 'candidate_saved checks presence and linkage only; release review remains separate.']}
+                 'environment_ready_at_intake is frozen with the household; environment_ready_current_catalog is a present-day recheck.',
+                 'candidate_saved means a file exists; candidate_evidence_verified also checks source records and native artifact hashes.',
+                 'human_export_eligible is still a review candidate, not a training release.']}
     return report
 
 

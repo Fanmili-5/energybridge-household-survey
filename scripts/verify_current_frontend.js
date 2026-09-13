@@ -10,6 +10,7 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
   await page.goto(origin);await page.waitForFunction(()=>typeof schema!=='undefined'&&schema?.questionnaire_context&&document.getElementById('generate').disabled===false);
+  assert(await page.locator('.history-panel').isHidden());
   await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes('第 1 /'));
   // Fill through visible controls, not the application's restore/collect helpers.
   const questions=await page.evaluate(()=>schema.profile_questions);
@@ -51,6 +52,7 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   await page.locator('#p_X_REGION').selectOption(JSON.stringify(answers.X_REGION));
   await page.locator('#p_X_CITY_choices').selectOption(answers.X_CITY);
   await page.locator('#wizard-next').click();
+  assert(await page.locator('.skip-optional').isVisible());
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   // Consent is an active participant action and must never be inferred from
   // merely opening the final page.
@@ -70,6 +72,7 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   }
   await page.waitForFunction(()=>!document.getElementById('decision-form').hidden||!document.getElementById('error').hidden||['failed','timeout','interrupted'].includes(currentJob?.status),{},{timeout:120000});
   assert(await page.locator('#decision-form').isVisible(),await page.locator('body').innerText());
+  assert((await page.locator('.feedback-reason').innerText()).includes('必填'));
   assert(await page.locator('.schedule-board').count()>0);
   assert((await page.locator('#result-panel').innerText()).includes('制冷设定'));
   await page.locator('[name=decision][value=reject]').check();
