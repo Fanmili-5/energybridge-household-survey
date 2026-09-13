@@ -1,7 +1,7 @@
 // Current source contract and actual disposable backend; EP uses the offline fixture only.
 const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert');
 (async()=>{
- const origin=process.env.EB_BROWSER_ORIGIN,answers=JSON.parse(fs.readFileSync(process.env.EB_BROWSER_ANSWERS));
+ const origin=process.env.EB_BROWSER_ORIGIN,answers=JSON.parse(fs.readFileSync(process.env.EB_BROWSER_ANSWERS)),intakeOnly=process.env.EB_BROWSER_INTAKE_ONLY==='1';
  if(!/^http:\/\/127\.0\.0\.1:\d+$/.test(origin))throw Error('Only disposable loopback test server allowed');
  const browser=await chromium.launch({headless:true,executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE||undefined});
  try{for(const width of [390,1365]){
@@ -50,7 +50,22 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   await page.locator('#p_X_CITY_choices').selectOption(answers.X_CITY);
   await page.locator('#wizard-next').click();
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  // Consent is an active participant action and must never be inferred from
+  // merely opening the final page.
   await page.locator('#generate').click();
+  assert(await page.locator('#household-receipt').isHidden());
+  assert.strictEqual(await page.locator('#research-consent').isChecked(),false);
+  await page.locator('#research-consent').check();
+  await page.locator('#scenario-understood').check();
+  await page.locator('#generate').click();
+  if(intakeOnly){
+   await page.locator('#household-receipt').waitFor({state:'visible'});
+   assert((await page.locator('#receipt-status').innerText()).includes('已保存'));
+   page.once('dialog',dialog=>dialog.accept());
+   await page.locator('#clear-device-data').click();
+   await page.waitForFunction(()=>document.getElementById('household-receipt').hidden&&localStorage.getItem('eb:household-receipt')===null);
+   assert.deepStrictEqual(errors,[]);await ctx.close();console.log(`Current ${width}px: active consent, intake receipt, shared-device reset and responsive layout passed.`);continue;
+  }
   await page.waitForFunction(()=>!document.getElementById('decision-form').hidden||!document.getElementById('error').hidden||['failed','timeout','interrupted'].includes(currentJob?.status),{},{timeout:120000});
   assert(await page.locator('#decision-form').isVisible(),await page.locator('body').innerText());
   assert(await page.locator('.schedule-board').count()>0);

@@ -16,8 +16,8 @@ class HouseholdIntakeTests(unittest.TestCase):
         self.store.db.close();self.tmp.cleanup()
     def payload(self,nonce='intake_request_00001',owner='owner'):
         return {'questionnaire_context_hash':assigned_context(owner)['context_hash'],'answers':answers(),'request_id':nonce,'questionnaire_version':QUESTIONNAIRE_VERSION,
-                'questionnaire_hash':digest(QUESTIONS),'research_consent':True,
-                'research_notice_version':'eb.research_notice.v1','ui_version':'intake-test'}
+                'questionnaire_hash':digest(QUESTIONS),'research_consent':True,'scenario_understood':True,
+                'research_notice_version':'eb.research_notice.v2','ui_version':'intake-test'}
     def generate(self,sid,nonce='generate_request_00001'):
         return {'submission_id':sid,'request_id':nonce,'scenario_id':CONTEXT['id'],'scenario_understood':True,
                 'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS)}
@@ -47,6 +47,8 @@ class HouseholdIntakeTests(unittest.TestCase):
         self.assertEqual(self.store.household_owned(receipt['id'],'owner')['household_record_hash'],receipt['household_record_hash'])
     def test_consent_version_ownership_and_immutable_retry(self):
         p=self.payload();p['research_consent']=False
+        with self.assertRaises(ValueError):self.store.save_household('owner',p)
+        p=self.payload();p['scenario_understood']=False
         with self.assertRaises(ValueError):self.store.save_household('owner',p)
         p=self.payload();r=self.store.save_household('owner',p)
         self.assertTrue(self.store.save_household('owner',p)['duplicate'])
@@ -128,6 +130,14 @@ class HouseholdIntakeTests(unittest.TestCase):
                 self.assertEqual(call('/api/paired',self.generate(receipt['id']),cookie)[0],503)
                 self.assertEqual(call('/api/example',{},cookie)[0],403)
                 self.assertEqual(len(list(records(root))),1)
+                code,cleared,new_cookie=call('/api/session/reset',{},cookie);self.assertEqual(code,200);self.assertTrue(cleared['cleared'])
+                self.assertNotEqual(new_cookie.split(';')[0],cookie)
+                rotated=new_cookie.split(';')[0]
+                self.assertEqual(call('/api/session',cookie=rotated)[1]['households'],[])
+                self.assertEqual(call('/api/households/'+receipt['id'],cookie=rotated)[0],404)
+                # Clearing a shared browser severs browser access; immutable
+                # research records remain available to the authorized export.
+                self.assertEqual(len(list(records(root))),1)
             finally:
                 srv.shutdown();srv.server_close();srv.store.pool.shutdown();srv.store.db.close();thread.join()
 
@@ -158,5 +168,18 @@ class HouseholdIntakeTests(unittest.TestCase):
             restored=Store(destination,human_pilot=True);restored.pool=NoExecute()
             try:self.assertEqual(restored.household_owned(r['id'],'owner')['household_record_hash'],r['household_record_hash'])
             finally:restored.db.close()
+
+    def test_collection_funnel_keeps_saved_only_and_failed_households(self):
+        from export_collection_funnel import build_report
+        first=self.store.save_household('owner',self.payload())
+        second=self.store.save_household('other',self.payload('intake_request_00002','other'))
+        job=self.store.create('other',self.generate(second['id']),paired_flow=True)
+        job.update(status='failed');self.store.persist(job)
+        report=build_report(self.tmp.name)
+        self.assertEqual(report['stages']['intake_saved'],2)
+        self.assertEqual(report['stages']['generation_attempted'],1)
+        self.assertEqual(report['dropoff'],{'saved_without_generation':1,'generation_not_completed':1})
+        self.assertEqual(report['case_statuses'],{'failed':1})
+        self.assertEqual(first['id'] in {r['id'] for r in self.store.db.households()},True)
 
 if __name__=='__main__':unittest.main()

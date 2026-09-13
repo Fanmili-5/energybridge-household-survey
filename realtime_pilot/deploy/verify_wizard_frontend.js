@@ -37,6 +37,7 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
  await page.goBack();assert((await progress()).includes('第 3 / 4'));await page.goForward();assert((await progress()).includes('第 4 / 4'));
  await page.locator('#generate').click();assert.strictEqual(submits,0);
  for(const id of ['P_COMFORT','P_COST','P_GRID','P_NOTICE','A_EB_CONTROL']){const radios=page.locator('[name="p_'+id+'"]');for(let i=0;i<await radios.count();i++)if(await radios.nth(i).getAttribute('value')===JSON.stringify(answers[id]))await radios.nth(i).check();}
+ await page.locator('#research-consent').check();await page.locator('#scenario-understood').check();
  await page.locator('#wizard-nav').evaluate(e=>e.scrollIntoView({block:'start'}));await page.screenshot({path:out+'/last-step-mobile.png'});
  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
  await page.locator('#generate').click();await page.waitForFunction(()=>document.getElementById('error').textContent.includes('测试捕获提交'));

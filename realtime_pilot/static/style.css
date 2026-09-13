@@ -72,6 +72,10 @@ body.survey-page,body.preview-page{--ink:#24363c;--muted:#6b787d;--line:#e5e9e7;
 @media(max-width:640px){.outcome-card h3{font-size:11px}.compact-services .service-pair p{font-size:12px}.survey-page .score-row legend small{font-size:10px}}
 @media(min-width:1101px) and (max-height:800px){.survey-page #decision-form{position:static}}
 
+/* Formal participation and shared-device controls stay visible and readable. */
+.research-intro{margin:0 0 24px;padding:15px 17px;border:1px solid #d7e4dc;border-radius:10px;background:#f4f8f5;color:#405b50;font-size:13px;line-height:1.75}.research-intro strong{color:#244d3d}.research-intro p{margin:5px 0 0;color:#526b60}.research-confirmations{margin:18px 0 0;padding:14px 16px;border:1px solid #cfded4;border-radius:10px;background:#fff}.research-confirmations legend{padding:0 6px;font-size:13px;font-weight:700;color:#355e4c}.research-confirmations .check{margin:9px 0;color:#3f5e50}.history-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.survey-page #error:focus{outline:3px solid #b95f47;outline-offset:3px}.survey-page .question-label{font-weight:600}.survey-page footer,.preview-page footer{color:#637366}.survey-page .feedback-score-heading #score-hint,.survey-page .score-row legend small,.survey-page .score-help,.survey-page #decision-form .feedback-intro{color:#60755f}
+@media(max-width:640px){.research-intro,.research-confirmations{font-size:12px}.history-actions{width:100%;justify-content:stretch}.history-actions button{flex:1}.survey-page .section-top{flex-wrap:wrap}}
+
 .schedule-bar.short-bar span{visibility:hidden}.schedule-bar.original{color:#213e36;font-weight:600}
 /* Native keyboard and touch behavior with consistent slider styling. */
 .survey-page input[type=range]{appearance:none;-webkit-appearance:none;background:transparent}.survey-page input[type=range]::-webkit-slider-runnable-track{height:5px;border:0;border-radius:8px;background:#dce8df}.survey-page input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;border:3px solid #57967e;background:#fff;margin-top:-5px;box-shadow:0 1px 3px #28564412}.survey-page input[type=range]::-moz-range-track{height:5px;border:0;border-radius:8px;background:#dce8df}.survey-page input[type=range]::-moz-range-thumb{width:10px;height:10px;border:3px solid #57967e;border-radius:50%;background:#fff}
@@ -153,3 +157,6 @@ body.survey-page,body.preview-page{--ink:#24363c;--muted:#6b787d;--line:#e5e9e7;
 #job-timing{display:grid;gap:6px;line-height:1.7}#retry-generation{margin:8px 0 16px}#retry-generation[hidden],#queue-policy[hidden]{display:none!important}
 
 #job-panel #cancel{flex-shrink:0;white-space:nowrap}
+
+/* Final accessibility overrides must remain after the historical theme blocks. */
+.survey-page footer,.preview-page footer{color:#5f7164}.survey-page .feedback-score-heading #score-hint,.survey-page .score-row legend small,.survey-page .score-help,.survey-page #decision-form .feedback-intro{color:#566d58}.survey-page input[type=range]::-webkit-slider-thumb{width:24px;height:24px;margin-top:-9px}.survey-page input[type=range]::-moz-range-thumb{width:18px;height:18px}

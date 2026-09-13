@@ -38,6 +38,7 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
  await choose('p_X_INCOME',JSON.stringify('10000_19999'));await choose('p_X_COUNT_ac',JSON.stringify('2'));
  await page.reload();await page.locator('#p_X_CITY').waitFor({state:'attached'});assert((await page.locator('#wizard-progress').innerText()).includes('第 6 / 6'));
  assert.strictEqual(await page.locator('#p_X_CITY').inputValue(),'深圳');
+ await page.locator('#research-consent').check();await page.locator('#scenario-understood').check();
  await page.locator('#generate').click();await page.waitForFunction(()=>document.getElementById('error').textContent.includes('测试已捕获'));
  assert.strictEqual(posts,1);assert.strictEqual(payload.answers.X_CITY,'深圳');assert.strictEqual(payload.answers.X_INCOME,'10000_19999');assert.deepStrictEqual(payload.answers.M_MEMBERS[0].life_roles,['retired','caregiver']);assert.strictEqual(payload.answers.X_BILL,null);
  assert.strictEqual(payload.questionnaire_version,'eb.persona_questionnaire.v3.7');

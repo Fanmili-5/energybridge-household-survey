@@ -10,18 +10,28 @@ from export_candidates import verify_candidate
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--human-mode',action='store_true',help='Exercise formal-mode routing with synthetic answers in a disposable database only')
+    parser.add_argument('--intake-only',action='store_true',help='Verify current human intake and shared-browser reset without EnergyPlus or a model')
     args=parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='eb-browser-') as tmp:
         tmp=Path(tmp)
         fixture=tmp/'answers.json';fixture.write_text(json.dumps(answers(),ensure_ascii=False))
-        server=make_server(0,tmp/'data',workers=1,disable_planning=True,timeout=300,human_pilot=args.human_mode)
-        server.store.worker_command=lambda folder:[sys.executable,str(ROOT/'realtime_pilot/deploy/ep_fixture_worker.py'),str(folder)]
-        server.planning_disabled=False;server.store.pool.resume()
+        server=make_server(0,tmp/'data',workers=1,disable_planning=args.intake_only,timeout=300,human_pilot=args.human_mode)
+        if not args.intake_only:
+            server.store.worker_command=lambda folder:[sys.executable,str(ROOT/'realtime_pilot/deploy/ep_fixture_worker.py'),str(folder)]
+            server.planning_disabled=False;server.store.pool.resume()
         threading.Thread(target=server.serve_forever,daemon=True).start()
         try:
             host,port=server.server_address
-            env={**os.environ,'EB_BROWSER_ORIGIN':f'http://{host}:{port}','EB_BROWSER_ANSWERS':str(fixture)}
+            env={**os.environ,'EB_BROWSER_ORIGIN':f'http://{host}:{port}','EB_BROWSER_ANSWERS':str(fixture),'EB_BROWSER_INTAKE_ONLY':'1' if args.intake_only else '0'}
             subprocess.run(['node',str(ROOT/'scripts/verify_current_frontend.js')],env=env,check=True,timeout=240)
+            if args.intake_only:
+                intakes=server.store.db.households()
+                assert len(intakes)==2,len(intakes)
+                assert all(row['research_consent'] and row['scenario_understood'] for row in intakes)
+                assert all(row['research_notice_version']=='eb.research_notice.v2' for row in intakes)
+                assert len(server.store.jobs)==0
+                print('Verified current formal intake at 390px and 1365px; server records survived browser reset; EP/model calls = 0.')
+                return
             candidates=list(server.store.db.conn.execute("SELECT job_id,payload FROM documents WHERE name='sft_candidate.json'"))
             assert len(candidates)==2,len(candidates)
             for jid,payload in candidates:

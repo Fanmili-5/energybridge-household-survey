@@ -57,6 +57,7 @@ const { chromium }=require('playwright'),fs=require('fs'),assert=require('assert
   await page.reload();await page.locator('#p_H_ac').waitFor({state:'attached'});
   assert.strictEqual(await page.locator('#p_H_ac').inputValue(),JSON.stringify('custom'));
   assert.strictEqual(await page.locator('#p_H_ac_start').inputValue(),JSON.stringify('22'));
+  await page.locator('#research-consent').check();await page.locator('#scenario-understood').check();
   await page.locator('#generate').click();await page.waitForFunction(()=>document.getElementById('error').textContent.includes('隔离测试已捕获'));
   assert.strictEqual(posts,1);assert.strictEqual(payload.answers.M_MEMBERS.length,6);assert.strictEqual(payload.answers.M_MEMBERS[0].participation,null);
   assert.strictEqual(payload.answers.H_ac_start,'22');assert.strictEqual(payload.answers.H_ac_end,'8');assert.strictEqual(payload.answers.H_home_ev,'19');

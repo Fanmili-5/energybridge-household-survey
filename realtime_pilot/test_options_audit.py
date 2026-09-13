@@ -71,7 +71,7 @@ class OptionAuditTests(unittest.TestCase):
             jobs=[]
             for i,status in enumerate(['queued','failed','complete']):
                 store.human_pilot=i<2
-                receipt=store.save_household('options_owner_'+str(i),{'questionnaire_context_hash':assigned_context('options_owner_'+str(i))["context_hash"],'answers':answers(),'request_id':'options_intake_request_'+str(i),'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS),'research_consent':True,'research_notice_version':'eb.research_notice.v1'})
+                receipt=store.save_household('options_owner_'+str(i),{'questionnaire_context_hash':assigned_context('options_owner_'+str(i))["context_hash"],'answers':answers(),'request_id':'options_intake_request_'+str(i),'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS),'research_consent':True,'scenario_understood':True,'research_notice_version':'eb.research_notice.v2'})
                 job=store.create('options_owner_'+str(i),{'submission_id':receipt['id'],'request_id':'options_audit_request_'+str(i),'scenario_id':CONTEXT['id'],'scenario_understood':True},paired_flow=True)
                 job['status']=status
                 if i==2:job['data_origin']='synthetic_engineering_test'

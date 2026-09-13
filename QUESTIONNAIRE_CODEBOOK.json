@@ -1,10 +1,10 @@
 {
-  "schema_version": "eb.persona_questionnaire.v4.1",
+  "schema_version": "eb.persona_questionnaire.v4.2",
   "status": "runtime_authoritative",
   "paired_flow_version": "eb.paired_ep.v3.3",
   "unit": "one household represented by one respondent",
   "question_count": 66,
-  "questions_sha256": "efa93ce12697a4a5cbaa38d2e5da94a161d43f658e1f142827ffd83414624c4a",
+  "questions_sha256": "870efaf7d876862c7d65ae40b550fba1f392f0cf632a0bca6db444a3a7dc9109",
   "scenario_sampling": {
     "event_start_hours": [
       17,
@@ -85,7 +85,9 @@
           "label": "6人及以上"
         }
       ],
-      "group": "household_fact"
+      "group": "household_fact",
+      "required_for_intake": true,
+      "required_for_generation": true
     },
     {
       "id": "B04",
@@ -119,7 +121,9 @@
           "label": "不固定，很难概括"
         }
       ],
-      "group": "household_fact"
+      "group": "household_fact",
+      "required_for_intake": true,
+      "required_for_generation": true
     },
     {
       "id": "B05",
@@ -169,7 +173,9 @@
         "none",
         "dont_know"
       ],
-      "group": "household_fact"
+      "group": "household_fact",
+      "required_for_intake": true,
+      "required_for_generation": true
     },
     {
       "id": "F_EVENING",
@@ -194,7 +200,9 @@
           "value": "varies",
           "label": "每天不太固定"
         }
-      ]
+      ],
+      "required_for_intake": true,
+      "required_for_generation": true
     },
     {
       "id": "F_REGULARITY",
@@ -215,7 +223,9 @@
           "value": "irregular",
           "label": "变化较多"
         }
-      ]
+      ],
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "F_LATE_USE",
@@ -236,7 +246,9 @@
           "value": "rarely",
           "label": "很少或没有"
         }
-      ]
+      ],
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "M_MEMBERS",
@@ -482,7 +494,9 @@
         }
       ],
       "max_members": 20,
-      "help": "按您平时的了解填写，无需姓名，也不用标明哪位是您。生活节奏为必填，其余了解就填；不清楚的可以直接留空。"
+      "help": "按您平时的了解填写，无需姓名，也不用标明哪位是您。生活节奏为必填，其余了解就填；不清楚的可以直接留空。",
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "H_ac",
@@ -508,7 +522,12 @@
           "label": "自己选择使用时段（可跨午夜）"
         }
       ],
-      "device": "ac"
+      "device": "ac",
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac"
+      }
     },
     {
       "id": "H_washer",
@@ -710,7 +729,12 @@
           "label": "23:30"
         }
       ],
-      "device": "washer"
+      "device": "washer",
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "washer"
+      }
     },
     {
       "id": "D_washer",
@@ -817,7 +841,12 @@
         }
       ],
       "device": "washer",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "washer"
+      }
     },
     {
       "id": "E_washer",
@@ -924,7 +953,12 @@
         }
       ],
       "device": "washer",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "washer"
+      }
     },
     {
       "id": "T_washer",
@@ -963,7 +997,12 @@
         }
       ],
       "device": "washer",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "washer"
+      }
     },
     {
       "id": "H_dishwasher",
@@ -1165,7 +1204,12 @@
           "label": "23:30"
         }
       ],
-      "device": "dishwasher"
+      "device": "dishwasher",
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dishwasher"
+      }
     },
     {
       "id": "D_dishwasher",
@@ -1272,7 +1316,12 @@
         }
       ],
       "device": "dishwasher",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dishwasher"
+      }
     },
     {
       "id": "E_dishwasher",
@@ -1379,7 +1428,12 @@
         }
       ],
       "device": "dishwasher",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dishwasher"
+      }
     },
     {
       "id": "T_dishwasher",
@@ -1418,7 +1472,12 @@
         }
       ],
       "device": "dishwasher",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dishwasher"
+      }
     },
     {
       "id": "H_dryer",
@@ -1620,7 +1679,12 @@
           "label": "23:30"
         }
       ],
-      "device": "dryer"
+      "device": "dryer",
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dryer"
+      }
     },
     {
       "id": "D_dryer",
@@ -1727,7 +1791,12 @@
         }
       ],
       "device": "dryer",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dryer"
+      }
     },
     {
       "id": "E_dryer",
@@ -1834,7 +1903,12 @@
         }
       ],
       "device": "dryer",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dryer"
+      }
     },
     {
       "id": "T_dryer",
@@ -1873,7 +1947,12 @@
         }
       ],
       "device": "dryer",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dryer"
+      }
     },
     {
       "id": "H_electric_water_heater",
@@ -2075,7 +2154,12 @@
           "label": "23:30"
         }
       ],
-      "device": "electric_water_heater"
+      "device": "electric_water_heater",
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      }
     },
     {
       "id": "H_home_ev",
@@ -2277,7 +2361,12 @@
           "label": "23:30"
         }
       ],
-      "device": "home_ev"
+      "device": "home_ev",
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "home_ev"
+      }
     },
     {
       "id": "H_ac_temp",
@@ -2340,7 +2429,12 @@
         }
       ],
       "device": "ac",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac"
+      }
     },
     {
       "id": "D_home_ev",
@@ -2447,7 +2541,12 @@
         }
       ],
       "device": "home_ev",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "home_ev"
+      }
     },
     {
       "id": "D_electric_water_heater",
@@ -2654,7 +2753,12 @@
         }
       ],
       "device": "electric_water_heater",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      }
     },
     {
       "id": "H_ac_start",
@@ -2861,6 +2965,15 @@
       "show_when": {
         "question_id": "H_ac",
         "value": "custom"
+      },
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac",
+        "show_when": {
+          "question_id": "H_ac",
+          "value": "custom"
+        }
       }
     },
     {
@@ -3072,6 +3185,15 @@
       "show_when": {
         "question_id": "H_ac",
         "value": "custom"
+      },
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac",
+        "show_when": {
+          "question_id": "H_ac",
+          "value": "custom"
+        }
       }
     },
     {
@@ -3116,7 +3238,12 @@
       ],
       "required": true,
       "device": "ac",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac"
+      }
     },
     {
       "id": "P_AC_CHANGE",
@@ -3164,7 +3291,12 @@
       ],
       "required": true,
       "device": "ac",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac"
+      }
     },
     {
       "id": "P_EV_TARGET",
@@ -3220,7 +3352,12 @@
       ],
       "required": true,
       "device": "home_ev",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "home_ev"
+      }
     },
     {
       "id": "P_EV_RESERVE",
@@ -3276,7 +3413,12 @@
       ],
       "required": true,
       "device": "home_ev",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "home_ev"
+      }
     },
     {
       "id": "P_HOT_WATER",
@@ -3384,7 +3526,12 @@
       ],
       "required": true,
       "device": "electric_water_heater",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      }
     },
     {
       "id": "P_PREHEAT",
@@ -3408,7 +3555,12 @@
       ],
       "required": true,
       "device": "electric_water_heater",
-      "active_only": true
+      "active_only": true,
+      "required_for_intake": true,
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      }
     },
     {
       "id": "A_EB_CONTROL",
@@ -3434,7 +3586,9 @@
           "label": "总体上不太愿意接受系统自动控制"
         }
       ],
-      "required": true
+      "required": true,
+      "required_for_intake": true,
+      "required_for_generation": true
     },
     {
       "id": "P_COMFORT",
@@ -3464,7 +3618,9 @@
           "label": "非常重要"
         }
       ],
-      "required": true
+      "required": true,
+      "required_for_intake": true,
+      "required_for_generation": true
     },
     {
       "id": "P_COST",
@@ -3494,7 +3650,9 @@
           "label": "非常重要"
         }
       ],
-      "required": true
+      "required": true,
+      "required_for_intake": true,
+      "required_for_generation": true
     },
     {
       "id": "P_GRID",
@@ -3524,7 +3682,9 @@
           "label": "非常重要"
         }
       ],
-      "required": true
+      "required": true,
+      "required_for_intake": true,
+      "required_for_generation": true
     },
     {
       "id": "P_NOTICE",
@@ -3570,7 +3730,9 @@
           "label": "三天或更早"
         }
       ],
-      "required": true
+      "required": true,
+      "required_for_intake": true,
+      "required_for_generation": true
     },
     {
       "id": "X_REGION",
@@ -3723,7 +3885,10 @@
       "required": false,
       "research_only": false,
       "research_section": "housing",
-      "environment_input": true
+      "environment_input": true,
+      "required_for_intake": false,
+      "required_for_generation": true,
+      "saveable_when_unsupported": true
     },
     {
       "id": "X_CITY",
@@ -4178,7 +4343,10 @@
           "台北"
         ]
       },
-      "help": "城市选项随省份变化。同城有气象站时优先使用；否则采用省内代表站，并在下方注明。列表以2023年地区资料为基础，可自行填写未列出的城市。"
+      "help": "城市选项随省份变化。同城有气象站时优先使用；否则采用省内代表站，并在下方注明。列表以2023年地区资料为基础，可自行填写未列出的城市。",
+      "required_for_intake": false,
+      "required_for_generation": true,
+      "saveable_when_unsupported": true
     },
     {
       "id": "X_BUILDING",
@@ -4207,7 +4375,10 @@
       "required": false,
       "research_only": false,
       "research_section": "housing",
-      "environment_input": true
+      "environment_input": true,
+      "required_for_intake": false,
+      "required_for_generation": true,
+      "saveable_when_unsupported": true
     },
     {
       "id": "X_TENURE",
@@ -4235,7 +4406,9 @@
       ],
       "required": false,
       "research_only": true,
-      "research_section": "housing"
+      "research_section": "housing",
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "X_AREA",
@@ -4268,7 +4441,10 @@
       "required": false,
       "research_only": false,
       "research_section": "housing",
-      "environment_input": true
+      "environment_input": true,
+      "required_for_intake": false,
+      "required_for_generation": true,
+      "saveable_when_unsupported": true
     },
     {
       "id": "X_AREA_BASIS",
@@ -4290,7 +4466,10 @@
       "research_only": false,
       "research_section": "housing",
       "environment_input": true,
-      "help": "模型按面积区间代表值生成；建筑面积暂按80%估计室内面积。这是统一研究假设。"
+      "help": "模型按面积区间代表值生成；建筑面积暂按80%估计室内面积。这是统一研究假设。",
+      "required_for_intake": false,
+      "required_for_generation": true,
+      "saveable_when_unsupported": true
     },
     {
       "id": "X_FLOOR",
@@ -4319,7 +4498,16 @@
       "show_when": {
         "question_id": "X_BUILDING",
         "value": "apartment"
-      }
+      },
+      "required_for_intake": false,
+      "required_for_generation": true,
+      "required_when": {
+        "show_when": {
+          "question_id": "X_BUILDING",
+          "value": "apartment"
+        }
+      },
+      "saveable_when_unsupported": true
     },
     {
       "id": "X_BUILDING_AGE",
@@ -4347,7 +4535,9 @@
       ],
       "required": false,
       "research_only": true,
-      "research_section": "housing"
+      "research_section": "housing",
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "X_INCOME",
@@ -4379,7 +4569,9 @@
       ],
       "required": false,
       "research_only": true,
-      "research_section": "context"
+      "research_section": "context",
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "X_BILL",
@@ -4411,7 +4603,9 @@
       ],
       "required": false,
       "research_only": true,
-      "research_section": "context"
+      "research_section": "context",
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "X_TARIFF",
@@ -4435,7 +4629,9 @@
       ],
       "required": false,
       "research_only": true,
-      "research_section": "context"
+      "research_section": "context",
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "X_EXTRA_DEVICES",
@@ -4475,7 +4671,9 @@
       ],
       "required": false,
       "research_only": true,
-      "research_section": "context"
+      "research_section": "context",
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "X_PROTECTED",
@@ -4511,7 +4709,9 @@
       ],
       "required": false,
       "research_only": true,
-      "research_section": "context"
+      "research_section": "context",
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "X_SMART",
@@ -4535,7 +4735,9 @@
       ],
       "required": false,
       "research_only": true,
-      "research_section": "context"
+      "research_section": "context",
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "X_DR",
@@ -4555,7 +4757,9 @@
       ],
       "required": false,
       "research_only": true,
-      "research_section": "context"
+      "research_section": "context",
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "X_RESTORE",
@@ -4579,7 +4783,9 @@
       ],
       "required": false,
       "research_only": true,
-      "research_section": "context"
+      "research_section": "context",
+      "required_for_intake": false,
+      "required_for_generation": false
     },
     {
       "id": "X_COUNT_ac",
@@ -4604,7 +4810,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "ac"
+      "device": "ac",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "ac"
+      }
     },
     {
       "id": "X_FREQ_ac",
@@ -4637,7 +4848,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "ac"
+      "device": "ac",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "ac"
+      }
     },
     {
       "id": "X_COUNT_washer",
@@ -4662,7 +4878,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "washer"
+      "device": "washer",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "washer"
+      }
     },
     {
       "id": "X_FREQ_washer",
@@ -4695,7 +4916,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "washer"
+      "device": "washer",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "washer"
+      }
     },
     {
       "id": "X_COUNT_dishwasher",
@@ -4720,7 +4946,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "dishwasher"
+      "device": "dishwasher",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "dishwasher"
+      }
     },
     {
       "id": "X_FREQ_dishwasher",
@@ -4753,7 +4984,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "dishwasher"
+      "device": "dishwasher",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "dishwasher"
+      }
     },
     {
       "id": "X_COUNT_dryer",
@@ -4778,7 +5014,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "dryer"
+      "device": "dryer",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "dryer"
+      }
     },
     {
       "id": "X_FREQ_dryer",
@@ -4811,7 +5052,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "dryer"
+      "device": "dryer",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "dryer"
+      }
     },
     {
       "id": "X_COUNT_home_ev",
@@ -4836,7 +5082,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "home_ev"
+      "device": "home_ev",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "home_ev"
+      }
     },
     {
       "id": "X_FREQ_home_ev",
@@ -4869,7 +5120,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "home_ev"
+      "device": "home_ev",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "home_ev"
+      }
     },
     {
       "id": "X_COUNT_electric_water_heater",
@@ -4894,7 +5150,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "electric_water_heater"
+      "device": "electric_water_heater",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      }
     },
     {
       "id": "X_FREQ_electric_water_heater",
@@ -4927,7 +5188,12 @@
       "required": false,
       "research_only": true,
       "research_section": "inventory",
-      "device": "electric_water_heater"
+      "device": "electric_water_heater",
+      "required_for_intake": false,
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      }
     }
   ]
 }

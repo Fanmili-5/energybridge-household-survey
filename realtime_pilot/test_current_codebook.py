@@ -21,5 +21,17 @@ class CurrentCodebookTests(unittest.TestCase):
         self.assertTrue(data['feedback_contract']['comment_required'])
         self.assertEqual(data['scenario_sampling']['event_duration_hours'],[1,2])
 
+    def test_requiredness_distinguishes_truthful_intake_from_simulation_readiness(self):
+        lookup={q['id']:q for q in QUESTIONS}
+        for qid in ('B02','B04','B05','F_EVENING'):
+            self.assertTrue(lookup[qid]['required_for_intake'])
+            self.assertTrue(lookup[qid]['required_for_generation'])
+        for qid in ('X_REGION','X_CITY','X_BUILDING','X_AREA','X_AREA_BASIS','X_FLOOR'):
+            self.assertFalse(lookup[qid]['required_for_intake'])
+            self.assertTrue(lookup[qid]['required_for_generation'])
+        self.assertFalse(lookup['X_INCOME']['required_for_intake'])
+        self.assertFalse(lookup['X_INCOME']['required_for_generation'])
+        self.assertEqual(lookup['H_washer']['required_when'],{'selected_device':'washer'})
+
 
 if __name__=='__main__':unittest.main()

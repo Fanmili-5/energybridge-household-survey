@@ -3,7 +3,7 @@ const $ = id => document.getElementById(id);
 let schema, currentJob, timer;
 const terminal = new Set(["complete","failed","timeout","cancelled","interrupted","expired"]);
 const el = (tag, text, className) => {const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(className)n.className=className;return n;};
-function error(message){$("error").textContent=message;$("error").hidden=false;}
+function error(message){const box=$("error");box.textContent=message;box.hidden=false;box.setAttribute('tabindex','-1');box.focus({preventScroll:true});box.scrollIntoView({block:'center',behavior:'smooth'});}
 async function api(path,body){
  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),15000);
  try{
@@ -60,15 +60,23 @@ function memberQuestion(q,container,prefix){
  root.append(el('div',undefined,'member-cards'));
  const actions=el('div',undefined,'member-actions');for(const [key,text,delta] of [['add','增加一位成员',1],['remove','减少一位成员',-1]]){const b=el('button',text,'secondary');b.type='button';b.dataset[key==='add'?'memberAdd':'memberRemove']='';b.onclick=()=>{root.dataset.count=Math.min(q.max_members,Math.max(6,Number(root.dataset.count)+delta));syncMembers();saveDraft();};actions.append(b);}root.append(actions);container.append(root);
 }
+function intakeRequired(q){
+ if(Object.hasOwn(q,'required_for_intake'))return !!q.required_for_intake;
+ // Frozen pre-v4.2 snapshots can still be reviewed.  This compatibility path
+ // only controls their disabled/read-only form semantics; current submissions
+ // always use the explicit server contract.
+ return !!q.required||['B02','B04','B05','F_EVENING'].includes(q.id)||(!!q.device&&!q.show_when)||(['attitude','stated_preference'].includes(q.group)&&!q.device);
+}
 
 function question(q, container, prefix){
   if(q.type==="member_list"){memberQuestion(q,$("member-questions"),prefix);return;}
   const row=el("div",undefined,["attitude","stated_preference"].includes(q.group)&&!q.device?"attitude-row":"field");
   if(["P_COMFORT","P_COST","P_GRID"].includes(q.id))row.classList.add("importance-row");
-  const label=el("label",q.prompt+(q.research_only&&!q.prompt.includes("选填")?"（选填）":""),"question-label");label.htmlFor=prefix+q.id;row.append(label);
+  const required=intakeRequired(q),requirement=required?'（必填）':q.environment_input?'（生成方案必填，可先保存）':q.research_only&&!q.prompt.includes('选填')?'（选填）':'';
+  const label=el("label",q.prompt+requirement,"question-label");label.htmlFor=prefix+q.id;row.append(label);
   if(q.type==="multi_choice"||(["attitude","stated_preference"].includes(q.group)&&!q.device)){
     const group=el("div",undefined,["attitude","stated_preference"].includes(q.group)?"attitude-options":"options");group.id=prefix+q.id;group.setAttribute("role","group");group.setAttribute("aria-label",q.prompt);
-    for(const option of q.options){const l=el("label",undefined,"check"),input=el("input");input.type=["attitude","stated_preference"].includes(q.group)?"radio":"checkbox";input.name=prefix+q.id;if(q.required&&["attitude","stated_preference"].includes(q.group))input.required=true;input.value=JSON.stringify(option.value);l.append(input);if(q.id==="B05"){l.dataset.deviceValue=option.value;l.append(EBTime.icon(option.value));}if(row.classList.contains("importance-row"))l.append(el("strong",option.value,"importance-number"));l.append(el("span",option.label));group.append(l);}row.append(group);
+    for(const option of q.options){const l=el("label",undefined,"check"),input=el("input");input.type=["attitude","stated_preference"].includes(q.group)?"radio":"checkbox";input.name=prefix+q.id;if(required&&input.type==='radio')input.required=true;input.value=JSON.stringify(option.value);l.append(input);if(q.id==="B05"){l.dataset.deviceValue=option.value;l.append(EBTime.icon(option.value));}if(row.classList.contains("importance-row"))l.append(el("strong",option.value,"importance-number"));l.append(el("span",option.label));group.append(l);}row.append(group);
   }else if(q.type==="text"){
     const t=el(q.cities_by_region?'input':'textarea');t.id=prefix+q.id;t.maxLength=1000;t.placeholder=q.environment_input?'填写实际常住城市':'可以留空';row.append(t);
     if(q.cities_by_region){
@@ -93,8 +101,8 @@ function question(q, container, prefix){
   if(q.help)row.append(el('p',q.help,'hint'));
   const select=row.querySelector("select");if(select){
    if(q.id==="X_REGION"||q.cities_by_region){$(prefix+q.id)?._citiesSync?.();return;}
-   if(q.research_only||q.environment_input||!q.device||q.id==='H_ac'||q.group==='stated_preference'&&q.id!=='P_HOT_WATER')inlineChoices(select,q.options.map(o=>({value:JSON.stringify(o.value),label:o.label})),!!q.required||['B02','B04','F_EVENING','H_ac'].includes(q.id));
-   else{select.required=q.required!==false;EBTime.mount(q,select,row);}
+   if(q.research_only||q.environment_input||!q.device||q.id==='H_ac'||q.group==='stated_preference'&&q.id!=='P_HOT_WATER')inlineChoices(select,q.options.map(o=>({value:JSON.stringify(o.value),label:o.label})),required);
+   else{select.required=required;EBTime.mount(q,select,row);}
  }
 }
 function collect(questions,prefix){const answers={};for(const q of questions){if(q.type==="member_list"){answers[q.id]=memberValues(q);continue;}if(q.type==="multi_choice"||(["attitude","stated_preference"].includes(q.group)&&!q.device)){const values=[...document.getElementsByName(prefix+q.id)].filter(x=>x.checked).map(x=>JSON.parse(x.value));answers[q.id]=q.type==="multi_choice"?values:values[0]??null;}else{const value=$(prefix+q.id).value;answers[q.id]=q.type==="text"?value:value?JSON.parse(value):null;}}for(const q of questions){const row=document.querySelector(`[data-question-id="${q.id}"]`);if(row?.hidden)answers[q.id]=null;}return answers;}
@@ -105,8 +113,8 @@ function restore(profile){for(const q of schema.profile_questions){if(q.type==="
 const devices={ac:"空调",washer:"洗衣机",dishwasher:"洗碗机",dryer:"烘干机",electric_water_heater:"电热水器",home_ev:"家用电动汽车充电"};
 const scoreFields={score:"整体：这份方案总体适合您家吗？",comfort_score:"舒适：室温和生活安排的变化合适吗？",energy_score:"用电与费用：模拟用电量和费用符合您家期望吗？",vpp_score:"响应安排：您对本次错峰用电的处理方式满意吗？请考虑安排调整和自主决定体验。"};
 let generation=0,pendingSubmit=false;
-const UI_VERSION="eb.survey_ui.v6.2";
-const RESEARCH_NOTICE_VERSION="eb.research_notice.v1";
+const UI_VERSION="eb.survey_ui.v6.3";
+const RESEARCH_NOTICE_VERSION="eb.research_notice.v2";
 let savedReceipt=null,savedHouseholdRecord=null;
 const pendingDecisions=new Set(),pendingRequests=new Map();
 let loadFailures=0,loadingId=null;
@@ -237,7 +245,7 @@ function showPair(job){renderScores(job.result.schema_version!==schema.paired_ve
  const required=job.result.feedback_contract?.required_scores||[];for(const key of Object.keys(scoreFields))for(const input of scoreInputs(key))input.required=required.includes(key);$("decision-reason").required=!!job.result.feedback_contract?.required_comment;$("score-hint").textContent="1 很不合适 · 5 很合适，可填小数"+(required.length?"":"（旧记录可留空）");
  $("decision-form").hidden=false;const saved=job.decision_saved;for(const x of $("decision-form").querySelectorAll("input,select,textarea,button"))x.disabled=saved||pendingDecisions.has(job.id)||job.result.schema_version!==schema.paired_version;if(saved){for(const x of document.getElementsByName("decision"))x.checked=x.value===job.decision.choice;$("decision-reason").value=job.decision.comment??job.decision.reason??"";for(const key of Object.keys(scoreFields)){const value=job.decision[key]??job.decision[({score:"overall_score",energy_score:"price_score",vpp_score:"control_score"})[key]];for(const input of scoreInputs(key)){input.value=value??'';input._scoreSync?.();}}}$("decision-status").textContent=saved?"选择、四项评分和原因已保存。未控制真实电器。":"";restoreDecisionDraft(job);
 }
-function renderHistory(jobs){const records=jobs.filter(j=>j.flow==="paired_ep_v1");$("history").replaceChildren();const names={queued:"排队中",running:"计算中",complete:"等待评价",failed:"计算失败",timeout:"超时",cancelled:"已取消",interrupted:"已中断",expired:"排队已结束"};for(const j of records.slice().reverse()){const b=el("button",`${new Date(j.created_at*1000).toLocaleTimeString()} · ${j.decision_saved?"评价已保存":names[j.status]}`,"secondary");b.type="button";b.disabled=!!pendingSubmit;b.onclick=()=>{if(!pendingSubmit)loadJob(j.id);};$("history").append(b);}if(!records.length)$("history").append(el("p","还没有两份仿真方案的比较记录。","hint"));}
+function renderHistory(jobs){const records=jobs.filter(j=>j.flow==="paired_ep_v1");$("history").replaceChildren();const names={queued:"排队中",running:"计算中",complete:"等待评价",failed:"计算失败",timeout:"超时",cancelled:"已取消",interrupted:"已中断",expired:"排队已结束"};for(const j of records.slice().reverse()){const b=el("button",`${new Date(j.created_at*1000).toLocaleString()} · ${j.decision_saved?"评价已保存":names[j.status]}`,"secondary");b.type="button";b.disabled=!!pendingSubmit;b.onclick=async()=>{if(!pendingSubmit){const loaded=await loadJob(j.id);if(loaded)$(currentJob?.status==='complete'?'result-panel':'job-panel').scrollIntoView({block:'start'});}};$("history").append(b);}if(!records.length)$("history").append(el("p","还没有两份仿真方案的比较记录。","hint"));}
 const retryableJobStates=new Set(['expired','failed','timeout','cancelled','interrupted']);
 function secondsText(value){const total=Math.max(0,Math.floor(value)),hours=Math.floor(total/3600),minutes=Math.floor(total%3600/60),seconds=total%60;return hours?`${hours}小时${minutes}分`:minutes?`${minutes}分${seconds}秒`:`${seconds}秒`;}
 function finiteSeconds(value){return typeof value==='number'&&Number.isFinite(value)&&value>=0;}
@@ -275,7 +283,7 @@ async function loadJob(id){
  try{const j=await api("/api/jobs/"+id);if(token!==generation||j.flow!=="paired_ep_v1")return false;
  loadFailures=0;$("error").hidden=true;
  if(currentJob?.id!==id)$("decision-form").reset();
- currentJob=j;writeBrowser(localStorage,"eb:active-view",{mode:"job",id:j.id});$("profile-details").open=true;
+ currentJob=j;writeBrowser(localStorage,"eb:active-view",{mode:"job",id:j.id});$("profile-details").hidden=true;
  for(const [i,step] of [...document.querySelectorAll(".journey li")].entries())step.classList.toggle("active",i===(j.status==="complete"?2:1));
  renderQuestions(j.questionnaire_snapshot);restore(j.profile);conditional();freeze(true);showWizard(0,{save:false});
  $("job-panel").hidden=j.status==="complete";renderJobState(j);
@@ -306,7 +314,7 @@ function submissionNonce(key,body){const fingerprint=stableJson(body);let pendin
 function clearPending(key){pendingRequests.delete(key);removeBrowser(localStorage,key);}
 async function saveHousehold(){
  const base=householdBody();if(receiptMatches())return savedReceipt;
- const body={...base,ui_version:UI_VERSION,scenario_understood:true,research_consent:true,research_notice_version:RESEARCH_NOTICE_VERSION};
+ const body={...base,ui_version:UI_VERSION,scenario_understood:$('scenario-understood').checked,research_consent:$('research-consent').checked,research_notice_version:schema.research_notice_version||RESEARCH_NOTICE_VERSION};
  const receipt=await api('/api/households',{...body,request_id:submissionNonce('eb:pending-household',body)});
  saveReceipt(receipt,base);clearPending('eb:pending-household');
  $('draft-status').textContent='家庭资料已保存到研究服务器，您仍可以修改并另存新版本。';return savedReceipt;
@@ -315,7 +323,7 @@ async function requestSavedPlan(receipt,retrySourceId=null){
  const environment=receipt.environment_readiness;
  if(environment?.status==='unavailable')throw new Error('家庭资料已保存。'+environment.issues.join('；'));
  if(environment?.status==='ready')$('draft-status').textContent='本次环境：'+environment.summary+'。模型为研究近似，具体日期将在两份方案中保持一致。';
- const body={submission_id:receipt.id,household_record_hash:receipt.household_record_hash,scenario_id:schema.paired_context.id,scenario_understood:true,questionnaire_version:receipt.questionnaire_version||schema.paired_questionnaire_version,questionnaire_hash:receipt.questionnaire_hash||schema.paired_questionnaire_hash};
+ const body={submission_id:receipt.id,household_record_hash:receipt.household_record_hash,scenario_id:schema.paired_context.id,scenario_understood:$('scenario-understood').checked,questionnaire_version:receipt.questionnaire_version||schema.paired_questionnaire_version,questionnaire_hash:receipt.questionnaire_hash||schema.paired_questionnaire_hash};
  // The local attempt context creates a fresh nonce for an explicit terminal-job retry.
  // Repeated 429/network retries of that same attempt keep the nonce unchanged.
  let identity={...body,known_case_ids:receipt.case_ids||[],...(retrySourceId?{retry_source_job_id:retrySourceId}:{})};
@@ -333,6 +341,10 @@ async function requestSavedPlan(receipt,retrySourceId=null){
 async function planSavedHousehold(){
  if(!receiptMatches())throw new Error('回答已有改动，请先保存当前家庭资料。');
  if(schema?.planning_enabled===false)return;
+ if(savedReceipt.environment_readiness?.status==='unavailable'){
+  showWizard(4,{scroll:true,push:true});
+  throw new Error('家庭资料已经保存。若要生成两份方案，请补齐标有“生成方案必填”的住房信息：'+savedReceipt.environment_readiness.issues.join('；'));
+ }
  return requestSavedPlan(savedReceipt);
 }
 async function retryStoppedJob(){
@@ -378,11 +390,20 @@ $('new-case').onclick=()=>{
  clearTimeout(timer);generation++;const previous=currentJob?.profile,sourceVersion=currentJob?.questionnaire_version,previousContext=currentJob?.scenario?.questionnaire_context?.context_hash;currentJob=null;
  for(const [i,step] of [...document.querySelectorAll('.journey li')].entries())step.classList.toggle('active',i===0);
  renderQuestions(schema.paired_questions);
+ $('profile-details').hidden=false;$('research-consent').checked=false;$('scenario-understood').checked=false;
  const resumed=restoreDraft();
  if(!resumed&&previous)restore(answerProfile(migrateAnswers(Object.fromEntries(Object.entries(previous).map(([k,c])=>[k,c.response_status==='answered'?c.value:null])),sourceVersion,previousContext)));
  freeze(false);showWizard(wizardStep,{save:false});saveDraft();
  for(const id of ['job-panel','result-panel','decision-form','error'])$(id).hidden=true;
  $('decision-form').reset();$('profile-form').scrollIntoView({block:'start'});
+};
+$('clear-device-data').onclick=async()=>{
+ if(!confirm('将清除此浏览器保存的问卷草稿、任务入口和评价草稿。研究服务器中已提交的匿名记录不会被删除。确定继续吗？'))return;
+ try{
+  await api('/api/session/reset',{});
+  for(const store of [localStorage,sessionStorage])for(const key of Object.keys(store))if(key.startsWith('eb:'))removeBrowser(store,key);
+  location.replace('/');
+ }catch(ex){error(ex.name==='AbortError'?'连接超时，请稍后再试。':ex.message);}
 };
 let wizardStep=0;
 const wizardLabels=['家庭概况','家庭成员','电器安排','用电偏好','住房情况','补充与提交'];
@@ -434,6 +455,9 @@ async function init(){
   $('admin-link').hidden=!schema.is_admin;
   $('collection-badge').textContent=schema.is_admin?'管理员测试':human?'家庭用电研究':'演示试用';
   $('collection-footer').textContent=schema.is_admin?'管理员测试数据单独标记；个人次数与参与者每日额度不适用，并发和超时保护仍生效。':human?'展示研究情境中的模拟结果，不控制真实电器。':'演示试用，填写与评价会保存为测试数据。模拟结果不控制真实电器。';
+  $('research-intro').innerHTML=human?'<strong>参与前请先了解</strong><p>本问卷用于家庭用电研究和家庭用户模拟器数据构造。请由一位成员代表家庭填写；不收姓名或详细地址。参与完全自愿，提交前可以随时退出，未点击保存的内容只留在当前浏览器。</p>':'<strong>当前是演示试用</strong><p>本页面用于检查问卷、仿真和展示流程。填写与评价会标记为工程测试数据，不进入默认真人数据导出。</p>';
+  $('research-notice').textContent=human?'您填写的家庭资料和后续方案评价将用于家庭用电研究，以及构造家庭用户模拟器训练候选数据。成员资料由您按日常了解代填，无需姓名或详细地址。是否采用用电方案，将在看到两份模拟结果后另行询问。':'当前回答只作为工程测试数据保存，不进入默认真人数据导出。请确认您知道这是研究模拟流程。';
+  $('research-consent-label').textContent=human?'我已阅读参与说明，自愿将本次家庭回答和后续方案评价用于上述研究。':'我知道本次提交只用于演示和工程检查。';
   $('scenario-facts').replaceChildren(...schema.paired_context.facts.map(f=>el('li',f)));conditional();renderHistory(schema.jobs);
   await recoverReceipt(schema);
   const jobs=schema.jobs.filter(j=>j.flow==='paired_ep_v1'),active=readBrowser(localStorage,'eb:active-view'),pendingPlan=readBrowser(localStorage,'eb:pending-plan');
@@ -441,7 +465,7 @@ async function init(){
   if(pendingPlan){try{const request=JSON.parse(pendingPlan.fingerprint),record=(schema.households||[]).find(r=>r.id===request.submission_id);const latest=record?.case_ids?.at(-1);if(latest&&latest!==request.retry_source_job_id&&!(request.known_case_ids||[]).includes(latest))recoverJob=latest;}catch{}}
   if(recoverJob){clearPending('eb:pending-plan');await loadJob(recoverJob);}
   else if(active?.mode==='draft'&&restoreDraft()){conditional();showWizard(wizardStep,{save:false});}
-  else if(jobs.length)await loadJob(jobs.find(j=>j.id===active?.id)?.id||jobs.at(-1).id);
+  else if(jobs.length){const loaded=await loadJob(jobs.find(j=>j.id===active?.id)?.id||jobs.at(-1).id);if(loaded)setTimeout(()=>$(currentJob?.status==='complete'?'result-panel':'job-panel').scrollIntoView({block:'start'}),0);}
   else{if(!restoreDraft())restoreSavedHousehold();conditional();const hashStep=wizardHashes.indexOf(location.hash.slice(1));showWizard(hashStep>=0?hashStep:wizardStep,{save:false});}
   availability();$('error').hidden=true;
  }catch(e){error('暂时无法加载问卷，正在自动重试。'+e.message);timer=setTimeout(init,3000);}

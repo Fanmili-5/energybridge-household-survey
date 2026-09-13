@@ -41,25 +41,30 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   await page.goto('http://127.0.0.1:8766/');await page.locator('#p_B02').waitFor({state:'attached'});
   return{ctx,page,schema,households,jobs,intakes,plans,decisions,errors,decisionPosted,release:()=>releaseDecision()};
  }
+ async function confirmResearch(page){
+  await page.locator('#research-consent').check();
+  await page.locator('#scenario-understood').check();
+ }
  try{
   let x=await setup(),p=x.page;
   assert(await p.locator('#generate').isEnabled());assert.strictEqual(await p.locator('#generate').innerText(),'保存家庭资料');
+  await confirmResearch(p);
   await p.locator('#generate').click();await p.locator('#household-receipt').waitFor({state:'visible'});
-  assert.strictEqual(x.intakes.length,1);assert.strictEqual(x.plans.length,0);assert.strictEqual(x.intakes[0].research_consent,true);assert.strictEqual(x.intakes[0].research_notice_version,'eb.research_notice.v1');
+  assert.strictEqual(x.intakes.length,1);assert.strictEqual(x.plans.length,0);assert.strictEqual(x.intakes[0].research_consent,true);assert.strictEqual(x.intakes[0].scenario_understood,true);assert.strictEqual(x.intakes[0].research_notice_version,'eb.research_notice.v2');
   assert(await p.locator('#plan-saved').isDisabled());assert(await p.locator('#p_B02').isEnabled());
   const first=id(100);assert.strictEqual(await p.locator('#receipt-id').innerText(),first);
   await p.reload();await p.locator('#household-receipt').waitFor({state:'visible'});assert.strictEqual(await p.locator('#receipt-id').innerText(),first);assert.strictEqual(x.intakes.length,1);
   await p.evaluate(()=>localStorage.clear());await p.reload();await p.locator('#household-receipt').waitFor({state:'visible'});assert(await p.evaluate(()=>receiptMatches()));assert.strictEqual(x.intakes.length,1);
-  await p.locator('[data-wizard-step="4"]').click();await p.locator('#p_X_CITY').fill('资料保存后修改');await p.locator('#wizard-next').click();await p.locator('#generate').click();await p.waitForFunction(first=>document.getElementById('receipt-id').textContent!==first,first);
+  await p.locator('[data-wizard-step="4"]').click();await p.locator('#p_X_CITY').fill('资料保存后修改');await p.locator('#wizard-next').click();await confirmResearch(p);await p.locator('#generate').click();await p.waitForFunction(first=>document.getElementById('receipt-id').textContent!==first,first);
   assert.strictEqual(x.households.size,2);assert.notStrictEqual(x.households.get(first).raw_answers.X_CITY,'资料保存后修改');assert.deepStrictEqual(x.errors,[]);
   assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await p.screenshot({path:out+'/saved-mobile.png'});
   reports.push({case:'paused_intake_receipt_refresh_new_revision',passed:true,intakes:x.intakes.length,plans:x.plans.length});await x.ctx.close();
-  x=await setup({paused:false,queueFail:true});p=x.page;await p.locator('#generate').click();await p.waitForFunction(()=>document.getElementById('error').textContent.includes('排队人数'));
+  x=await setup({paused:false,queueFail:true});p=x.page;await confirmResearch(p);await p.locator('#generate').click();await p.waitForFunction(()=>document.getElementById('error').textContent.includes('排队人数'));
   assert.strictEqual(x.intakes.length,1);assert(await p.locator('#household-receipt').isVisible());await p.locator('#plan-saved').click();await p.locator('#decision-form').waitFor({state:'visible'});
   assert.strictEqual(x.intakes.length,1);assert.strictEqual(x.plans.length,2);assert.strictEqual(x.plans[0].request_id,x.plans[1].request_id);assert.strictEqual(x.plans[0].submission_id,x.plans[1].submission_id);assert(!('answers' in x.plans[1]));assert.deepStrictEqual(x.errors,[]);
   reports.push({case:'queue_failure_preserves_receipt_retry_same_plan_request',passed:true});await x.ctx.close();
-  x=await setup({intakeLost:true});p=x.page;await p.locator('#generate').click();await p.waitForFunction(()=>!document.getElementById('error').hidden);
-  assert.strictEqual(x.households.size,1);await p.locator('#generate').click();await p.locator('#household-receipt').waitFor({state:'visible'});assert.strictEqual(x.intakes.length,2);assert.strictEqual(x.intakes[0].request_id,x.intakes[1].request_id);assert.strictEqual(x.households.size,1);assert.deepStrictEqual(x.errors,[]);
+  x=await setup({intakeLost:true});p=x.page;await confirmResearch(p);await p.locator('#generate').click();await p.waitForFunction(()=>!document.getElementById('error').hidden);
+  assert.strictEqual(x.households.size,1);await confirmResearch(p);await p.locator('#generate').click();await p.locator('#household-receipt').waitFor({state:'visible'});assert.strictEqual(x.intakes.length,2);assert.strictEqual(x.intakes[0].request_id,x.intakes[1].request_id);assert.strictEqual(x.households.size,1);assert.deepStrictEqual(x.errors,[]);
   reports.push({case:'intake_response_lost_idempotent_retry',passed:true});await x.ctx.close();
   x=await setup({seed:false,history:true});p=x.page;await p.locator('#decision-form').waitFor({state:'visible'});await p.locator('#new-case').click();
   const changed=await p.evaluate(()=>{let s=document.getElementById('p_B04');s.value=[...s.options].find(o=>o.value&&o.value!==s.value).value;s.dispatchEvent(new Event('change',{bubbles:true}));return s.value;});

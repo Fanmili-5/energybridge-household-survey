@@ -30,6 +30,7 @@ import proposal_contract as proposals
 import paired_contract as paired
 
 TERMINAL = TERMINAL_STATUSES
+RESEARCH_NOTICE_VERSION = 'eb.research_notice.v2'
 
 def stop_process(process):
     # The worker owns native EP descendants; kill the whole group on cancellation/timeout.
@@ -106,7 +107,7 @@ class Store:
             from simulation_environment import inspect_profile
             out['environment_readiness']=inspect_profile(row['profile'])
         if full:
-            out.update({k:row[k] for k in ('profile','raw_answers','questionnaire_snapshot','household_record','research_consent','research_notice_version','ui_version')})
+            out.update({k:row.get(k) for k in ('profile','raw_answers','questionnaire_snapshot','household_record','research_consent','research_notice_version','scenario_understood','ui_version')})
         return out
 
     def save_household(self, session, payload, admin=False):
@@ -125,16 +126,17 @@ class Store:
             context=assigned_context(session)
             if payload.get('questionnaire_context_hash')!=context['context_hash']:
                 raise ValueError('本次问卷日期已变化，请刷新并按指定月份核对后保存')
-            if self.human_pilot and (payload.get('research_consent') is not True or payload.get('research_notice_version')!='eb.research_notice.v1'):
-                raise ValueError('请阅读研究说明并同意保存家庭资料')
+            if self.human_pilot and (payload.get('research_consent') is not True or payload.get('research_notice_version')!=RESEARCH_NOTICE_VERSION):
+                raise ValueError('请阅读研究说明并主动同意保存家庭资料')
+            if self.human_pilot and payload.get('scenario_understood') is not True:
+                raise ValueError('请确认您知道本次展示是研究模拟情境')
             profile=paired.sanitize_profile(normalize_answers(payload.get('answers'),list(paired.LOOKUP),paired.LOOKUP))
             owned=paired.required(profile,'B05')
-            for qid in ('B02','B04','F_EVENING'):paired.required(profile,qid)
             paired.validate_count(profile)
             for q in paired.QUESTIONS:
                 if q.get('research_only') or profile[q['id']]['response_status']=='not_applicable':continue
                 if q.get('device') and q['device'] not in owned:continue
-                if q.get('required') or q.get('device') or q['group'] in ('attitude','stated_preference'):
+                if q.get('required_for_intake'):
                     paired.required(profile,q['id'])
             # Deliberately no paired.prepare: truthful answers survive unsupported physics.
             from household_extensions import build_record
@@ -149,7 +151,9 @@ class Store:
                  'data_origin':'local_pilot_self_reported_human' if self.human_pilot and not admin else 'synthetic_engineering_test',
                  'admin_test':bool(admin),
                  'research_consent':payload.get('research_consent') is True,
-                 'research_notice_version':payload.get('research_notice_version'),'ui_version':payload.get('ui_version')}
+                 'research_notice_version':payload.get('research_notice_version'),
+                 'scenario_understood':payload.get('scenario_understood') is True,
+                 'ui_version':payload.get('ui_version')}
             self.db.save_household(row)
             return self.household_public(row,False)
 
@@ -610,7 +614,7 @@ class Handler(BaseHTTPRequestHandler):
                 jobs = [self.server.store.status(j) for j in sorted(self.server.store.jobs.summaries(),key=lambda j:j.get("created_at",0)) if j.get("owner") == session][-100:]
                 households=[self.server.store.household_public(r,False) for r in self.server.store.db.household_summaries(session)]
             from date_sampling import assigned_context
-            return self.reply(200, {"questionnaire_context":assigned_context(session),"households":households,"intake_enabled":True,"research_notice_version":"eb.research_notice.v1","schema_version": VERSION, "scenario": SCENARIO,
+            return self.reply(200, {"questionnaire_context":assigned_context(session),"households":households,"intake_enabled":True,"research_notice_version":RESEARCH_NOTICE_VERSION,"schema_version": VERSION, "scenario": SCENARIO,
                                    "paired_version": paired.VERSION, "paired_context": paired.CONTEXT, "paired_questions": paired.QUESTIONS,
                                    "paired_questionnaire_version": paired.QUESTIONNAIRE_VERSION,
                                    "paired_questionnaire_hash": digest(paired.QUESTIONS),
@@ -656,6 +660,11 @@ class Handler(BaseHTTPRequestHandler):
             if not isinstance(payload, dict):
                 raise ValueError("请求格式无效")
             path = urlparse(self.path).path
+            if path=='/api/session/reset':
+                if self.is_admin():raise ValueError('管理员会话不能在参与者页面重置')
+                # Submitted records remain immutable on the server.  Rotating the
+                # opaque cookie removes this shared device's access to them.
+                return self.reply(200,{'cleared':True},cookie=secrets.token_hex(32))
             if path=='/api/environment-preview':
                 from simulation_environment import QUESTION_IDS,inspect_profile
                 # Pure catalog lookup: no simulation, task admission or model call.

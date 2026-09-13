@@ -65,7 +65,7 @@ class RegionalTests(unittest.TestCase):
                 raw=answers(X_REGION='outside_china',X_CITY='Tokyo')
                 receipt=store.save_household('owner',{'questionnaire_context_hash':assigned_context('owner')["context_hash"],'answers':raw,'request_id':'regional_intake_test_0001',
                     'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS),
-                    'research_consent':True,'research_notice_version':'eb.research_notice.v1'})
+                    'research_consent':True,'scenario_understood':True,'research_notice_version':'eb.research_notice.v2'})
                 self.assertEqual(receipt['environment_readiness']['status'],'unavailable')
                 self.assertEqual(store.db.household(receipt['id'])['raw_answers'],raw)
                 with patch('server.subprocess.Popen') as launch:

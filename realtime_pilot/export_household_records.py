@@ -37,6 +37,7 @@ def records(data_dir, include_engineering=False):
                'data_origin':intake['data_origin'],'decision_saved':any(j.get('decision_saved') for j in cases),
                'created_at':intake['created_at'],'research_consent':intake.get('research_consent'),
                'research_notice_version':intake.get('research_notice_version'),
+               'scenario_understood':intake.get('scenario_understood'),'ui_version':intake.get('ui_version'),
                'household_record_hash':checksum,'household_record':record,'training_release':False}
     # Legacy engineering/direct submissions retain their original case records.
     for job,record in jobs:

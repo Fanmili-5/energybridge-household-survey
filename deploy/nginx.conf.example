@@ -6,7 +6,10 @@ map $request_method $eb_write_client {
     POST $binary_remote_addr;
 }
 limit_req_zone $eb_write_client zone=eb_general:10m rate=20r/s;
-limit_req_zone $binary_remote_addr zone=eb_generate:10m rate=10r/m;
+# Generation is still globally bounded by the application queue.  This edge
+# limit only damps abusive bursts and therefore leaves room for a whole class
+# or campus NAT to submit at once.
+limit_req_zone $binary_remote_addr zone=eb_generate:10m rate=30r/m;
 
 server {
     listen 80;
@@ -49,7 +52,7 @@ server {
 
     location = /api/paired {
         # Shared campus/home networks can burst; application quotas remain authoritative.
-        limit_req zone=eb_generate burst=60 nodelay;
+        limit_req zone=eb_generate burst=150 nodelay;
         limit_req_status 429;
         proxy_pass http://127.0.0.1:8767;
         proxy_set_header Host $host;

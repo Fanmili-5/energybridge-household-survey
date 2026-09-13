@@ -8,7 +8,7 @@ from native_support import physical_defaults, ordinary
 from survey_time import LEGACY_STARTS, start_hour
 
 VERSION = 'eb.paired_ep.v3.3'
-QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.1'
+QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.2'
 QUESTIONS = [deepcopy(q) for q in PROPOSAL_PROFILE_QUESTIONS if q['id'] != 'F_ROUTINES']
 for q in QUESTIONS:
     if q['id'] == 'B05':
@@ -70,6 +70,24 @@ for q in QUESTIONS:
     if q['group']=='attitude':q['required']=True
 from household_extensions import QUESTIONS as EXTENSION_QUESTIONS
 QUESTIONS += deepcopy(EXTENSION_QUESTIONS)
+# Keep the public codebook, browser hints, and server validation on one
+# executable contract.  An intake may be retained even when the physical
+# environment is incomplete, while a paired simulation requires all six
+# environment selectors.
+for q in QUESTIONS:
+    q['required_for_intake'] = bool(not q.get('research_only') and (
+        q['id'] in {'B02','B04','B05','F_EVENING'}
+        or q.get('required')
+        or (q.get('device') and not q.get('show_when'))
+        or (q['group'] in ('attitude','stated_preference') and not q.get('device'))
+    ))
+    q['required_for_generation'] = bool(q.get('required_for_intake') or q.get('environment_input'))
+    if q.get('device'):
+        q['required_when'] = {'selected_device':q['device'], **({'show_when':deepcopy(q['show_when'])} if q.get('show_when') else {})}
+    elif q.get('show_when'):
+        q['required_when'] = {'show_when':deepcopy(q['show_when'])}
+    if q.get('environment_input'):
+        q['saveable_when_unsupported'] = True
 LOOKUP = {q['id']:q for q in QUESTIONS}
 CONTEXT = {'id':'tianjin_shared_prototype_paired_v1', 'facts':[
     '请代入一个夏季日，按您家的电器和日常习惯回答。日常对照由原EB在设备时间窗口内生成，具体时间以展示为准，再与EB调整安排比较。',

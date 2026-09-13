@@ -34,7 +34,7 @@ def main(out):
         memberq=next(q for q in QUESTIONS if q['id']=='M_MEMBERS')
         raw['M_MEMBERS']=[{f['id']:m.get(f['id']) for f in memberq['fields']} for m in raw['M_MEMBERS']]
         payload={'request_id':secrets.token_hex(16),'answers':raw,'questionnaire_version':QUESTIONNAIRE_VERSION,
-                 'questionnaire_hash':digest(QUESTIONS),'questionnaire_context_hash':session['questionnaire_context']['context_hash'],'research_consent':True,'research_notice_version':'eb.research_notice.v1','ui_version':'engineering_complete_intake_review'}
+                 'questionnaire_hash':digest(QUESTIONS),'questionnaire_context_hash':session['questionnaire_context']['context_hash'],'research_consent':True,'scenario_understood':True,'research_notice_version':'eb.research_notice.v2','ui_version':'engineering_complete_intake_review'}
         write('01_questionnaire_http_request.json',payload)
         receipt=call('/api/households',payload);sid=receipt['id']
         intake=server.store.db.household(sid);write('02_household_submission_db.json',intake)

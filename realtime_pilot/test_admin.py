@@ -24,7 +24,7 @@ class AdminTests(unittest.TestCase):
                 conn.request('GET' if body is None else 'POST',path,None if body is None else json.dumps(body),headers)
                 r=conn.getresponse();out=(r.status,json.loads(r.read()) if path!='/admin' else None);conn.close();return out
             def intake(admin=False,cookie='a'*64):
-                return call('/api/households',{'questionnaire_context_hash':call('/api/session',admin=admin,cookie=cookie)[1]['questionnaire_context']['context_hash'],'request_id':'admin_intake_test_00001','answers':answers(),'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS),'research_consent':True,'research_notice_version':'eb.research_notice.v1'},admin,cookie)[1]['id']
+                return call('/api/households',{'questionnaire_context_hash':call('/api/session',admin=admin,cookie=cookie)[1]['questionnaire_context']['context_hash'],'request_id':'admin_intake_test_00001','answers':answers(),'questionnaire_version':QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(QUESTIONS),'research_consent':True,'scenario_understood':True,'research_notice_version':'eb.research_notice.v2'},admin,cookie)[1]['id']
             def payload(sid,i):return {'submission_id':sid,'request_id':f'admin_generate_test_{i:04d}','scenario_id':CONTEXT['id'],'scenario_understood':True,'is_admin':True}
             def finish(jid):
                 j=server.store.jobs[jid];j.update(status='failed');server.store.persist(j)
