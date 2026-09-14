@@ -148,7 +148,7 @@ function restore(profile){for(const q of schema.profile_questions){if(q.type==="
 const devices={ac:"空调",washer:"洗衣机",dishwasher:"洗碗机",dryer:"烘干机",electric_water_heater:"电热水器",home_ev:"家用电动汽车充电"};
 const scoreFields={score:"整体：这份方案总体适合您家吗？",comfort_score:"舒适：室温和生活安排的变化合适吗？",energy_score:"用电与费用：模拟用电量和费用符合您家期望吗？",vpp_score:"响应安排：您对本次错峰用电的处理方式满意吗？请考虑安排调整和自主决定体验。"};
 let generation=0,pendingSubmit=false;
-const UI_VERSION="eb.survey_ui.v6.17";
+const UI_VERSION="eb.survey_ui.v6.18";
 const RESEARCH_NOTICE_VERSION="eb.research_notice.v2";
 let savedReceipt=null,savedHouseholdRecord=null;
 const pendingDecisions=new Set(),pendingRequests=new Map();
@@ -332,7 +332,7 @@ async function loadJob(id,acceptedJob=null){
  loadFailures=0;$("error").hidden=true;
  const enterResult=j.status==="complete"&&$("result-panel").hidden;
  if(currentJob?.id!==id)$("decision-form").reset();
- currentJob=j;writeBrowser(draftStorage,"eb:active-view",{mode:"job",id:j.id});$("profile-details").hidden=true;
+ currentJob=j;writeBrowser(draftStorage,"eb:active-view",{mode:"job",id:j.id});$("profile-details").hidden=true;$('resume-panel').hidden=true;
  for(const [i,step] of [...document.querySelectorAll(".journey li")].entries())step.classList.toggle("active",i===(j.status==="complete"?2:1));
  renderQuestions(j.questionnaire_snapshot);restore(j.profile);conditional();freeze(true);showWizard(0,{save:false});
  $("job-panel").hidden=j.status==="complete";renderJobState(j);
@@ -529,8 +529,22 @@ async function init(){
   if(pendingPlan){try{const request=JSON.parse(pendingPlan.fingerprint),record=(schema.households||[]).find(r=>r.id===request.submission_id);const latest=record?.case_ids?.at(-1);if(latest&&latest!==request.retry_source_job_id&&!(request.known_case_ids||[]).includes(latest))recoverJob=latest;}catch{}}
   if(recoverJob){clearPending('eb:pending-plan');await loadJob(recoverJob);}
   else if(active?.mode==='draft'&&restoreDraft()){conditional();showWizard(wizardStep,{save:false});}
-  else if(jobs.length){const loaded=await loadJob(jobs.find(j=>j.id===active?.id)?.id||jobs.at(-1).id);if(loaded)setTimeout(()=>$(currentJob?.status==='complete'?'result-panel':'job-panel').scrollIntoView({block:'start'}),0);}
-  else{if(!restoreDraft())restoreSavedHousehold();conditional();const hashStep=wizardHashes.indexOf(location.hash.slice(1));showWizard(hashStep>=0?hashStep:wizardStep,{save:false});}
+  else{
+   const previous=jobs.find(j=>j.id===active?.id)||jobs.at(-1);
+   const running=jobs.find(j=>j.id===active?.id&&!terminal.has(j.status))||jobs.find(j=>!terminal.has(j.status));
+   if(running){await loadJob(running.id);}
+   else{
+    if(!restoreDraft())restoreSavedHousehold();conditional();
+    const hashStep=wizardHashes.indexOf(location.hash.slice(1));
+    showWizard(previous?0:hashStep>=0?hashStep:wizardStep,{save:false});
+    if(previous){
+     $('resume-panel').hidden=false;
+     $('resume-message').textContent=previous.decision_saved?'您上次的评价已保存。可以查看记录，也可以继续填写家庭资料。':previous.status==='complete'?'您上次的用电安排已生成，还没有提交评价。可以继续查看并评价。':'您有一份生成记录，可以查看进度或重新尝试。';
+     $('resume-result').textContent=previous.decision_saved?'查看已保存的评价':previous.status==='complete'?'查看上次结果并评价':'查看上次记录';
+     $('resume-result').onclick=()=>{if(!pendingSubmit)loadJob(previous.id);};
+    }
+   }
+  }
   availability();$('error').hidden=true;
  }catch(e){error('暂时无法加载问卷，正在自动重试。'+e.message);timer=setTimeout(init,3000);}
 }init();

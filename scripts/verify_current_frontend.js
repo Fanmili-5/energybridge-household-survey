@@ -149,11 +149,13 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   const view=await page.evaluate(()=>currentJob.result.display.participant_view);
   assert.strictEqual(view.render_contract_version,'eb.participant_view.v2');
   assert(view.schedule_chart.end_h>24,'Actual comparison must include next-day simulation');
-  assert(view.notice.includes('次日'));
+  assert.strictEqual(view.statistics_window.duration_h,24);
+  assert.strictEqual(view.statistics_window.end_sim_h-view.statistics_window.start_sim_h,24);
+  assert((await page.locator('#plan-visual').innerText()).includes('统计24小时'));
   const pairs=await page.locator('.device-pair').evaluateAll(nodes=>nodes.map(n=>({device:n.dataset.device,rows:[...n.querySelectorAll('.schedule-row')].map(r=>({device:r.dataset.device,side:r.dataset.side}))})));
   assert.strictEqual(pairs.length,view.schedule_chart.rows.length);
   for(const pair of pairs)assert.deepStrictEqual(pair.rows,[{device:pair.device,side:'original'},{device:pair.device,side:'proposal'}]);
-  assert(view.metrics.some(m=>m.label==='比较时段用电量'));
+  assert(view.metrics.some(m=>m.label==='24小时用电量'));
   assert(await page.locator('.schedule-scroll').evaluate(e=>e.scrollWidth<=e.clientWidth+1),'Full timeline including next day fits by default');
   await page.getByRole('button',{name:'放大查看',exact:true}).click();
   assert.strictEqual(await page.getByRole('button',{name:'放大查看',exact:true}).getAttribute('aria-pressed'),'true');
@@ -193,14 +195,20 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   await page.locator('[name=decision][value=reject]').check();
   for(const [key,value] of Object.entries({score:'3.75',comfort_score:'2.5',energy_score:'4.1',vpp_score:'2.25'}))await page.locator(`[name=feedback_${key}]`).fill(value);
   await page.locator('#decision-reason').fill('Synthetic browser audit, not a human response.');
-  await page.reload();await page.locator('#decision-form').waitFor({state:'visible'});
+  await page.reload();await page.locator('#resume-result').waitFor({state:'visible'});
+  assert(await page.locator('#profile-details').isVisible());assert(await page.locator('#result-panel').isHidden());
+  assert((await page.locator('#wizard-progress').innerText()).includes('第 1 /'));
+  await page.locator('#resume-result').click();await page.locator('#decision-form').waitFor({state:'visible'});
   assert.strictEqual(await page.locator('[name=feedback_score]').inputValue(),'3.75');
   assert((await page.locator('#score-meaning-score').innerText()).includes('3.75 分 · 一般与较合适之间'));
   if(process.env.EB_BROWSER_SCREENSHOTS)await page.locator('#decision-form').screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/score-'+width+'.png'});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await audit('result-and-feedback');
   await page.locator('#save-decision').click();await page.waitForFunction(()=>document.getElementById('decision-status').textContent.includes('已保存'));
-  await page.reload();await page.waitForFunction(()=>document.getElementById('decision-status').textContent.includes('已保存'));
+  await page.reload();await page.locator('#resume-result').waitFor({state:'visible'});
+  assert(await page.locator('#result-panel').isHidden());
+  assert.strictEqual(await page.locator('#resume-result').innerText(),'查看已保存的评价');
+  await page.locator('#resume-result').click();await page.waitForFunction(()=>document.getElementById('decision-status').textContent.includes('已保存'));
   assert.deepStrictEqual(errors,[]);assert.deepStrictEqual(accessibility,[]);await ctx.close();console.log(`Current ${width}px: annual context, draft, cities, ${count} pages, native EP, timeline, decimal feedback and reload passed.`);
  }}finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exit(1);});
