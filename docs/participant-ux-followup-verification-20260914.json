@@ -1,0 +1,150 @@
+{
+  "runtime_commit": "b4e2362a68f8cc2aecd6194ff3db1af2e3d4d327",
+  "questionnaire_version": "eb.persona_questionnaire.v4.5",
+  "ui_version": "eb.survey_ui.v6.10",
+  "paid_api_calls": 0,
+  "offline_tests": {
+    "passed": 200,
+    "skipped": 0,
+    "seconds": 46.409
+  },
+  "school_native_checks": {
+    "passed": 6,
+    "seconds": 2.514
+  },
+  "browser": {
+    "viewports": [
+      390,
+      1365
+    ],
+    "temporary_data": true,
+    "fixed_model_fixture": true,
+    "full_feedback_export": true,
+    "no_research_verification_copy": true
+  },
+  "public_http": {
+    "origin": "https://47.85.194.154",
+    "checks": [
+      {
+        "path": "/",
+        "status": 200
+      },
+      {
+        "path": "/api/session",
+        "status": 200
+      },
+      {
+        "path": "/app.js",
+        "status": 200
+      },
+      {
+        "path": "/captcha.js",
+        "status": 200
+      },
+      {
+        "path": "/style.css",
+        "status": 200
+      },
+      {
+        "path": "/time-input.js",
+        "status": 200
+      },
+      {
+        "path": "/admin/",
+        "status": 401
+      },
+      {
+        "path": "/admin/survey",
+        "status": 401
+      },
+      {
+        "path": "/admin/api/session",
+        "status": 401
+      },
+      {
+        "path": "/admin/admin.js",
+        "status": 401
+      },
+      {
+        "path": "/api/admin/status",
+        "status": 403
+      },
+      {
+        "path": "/api/session",
+        "status": 200
+      },
+      {
+        "path": "/api/paired",
+        "status": 400
+      },
+      {
+        "path": "/api/captcha",
+        "status": 200
+      },
+      {
+        "path": "/api/paired",
+        "status": 400
+      },
+      {
+        "path": "/api/paired",
+        "status": 400
+      },
+      {
+        "path": "/.env",
+        "status": 404
+      },
+      {
+        "path": "/.git/config",
+        "status": 404
+      },
+      {
+        "path": "/state.sqlite3",
+        "status": 404
+      },
+      {
+        "path": "/admin/",
+        "status": 200
+      },
+      {
+        "path": "/admin/survey",
+        "status": 200
+      },
+      {
+        "path": "/admin/admin.js",
+        "status": 200
+      },
+      {
+        "path": "/admin/api/session",
+        "status": 200
+      },
+      {
+        "path": "/admin/api/admin/status",
+        "status": 200
+      },
+      {
+        "path": "/api/session",
+        "status": 200
+      }
+    ],
+    "paid_api_calls": 0,
+    "mode": "engineering",
+    "passed": true
+  },
+  "deployment": {
+    "code_release_match": true,
+    "release": "7c100add4807fe807ea14b48de97019ad3a197930cd1f93e7a3e1e156f9c874f",
+    "ui_version": "eb.survey_ui.v6.10",
+    "compute_active": 0,
+    "existing_data_unchanged": {
+      "jobs": 3,
+      "documents": 21,
+      "household_submissions": 2
+    },
+    "website_active": "active"
+  },
+  "assets": {
+    "view_assets_match": true,
+    "questionnaire": "eb.persona_questionnaire.v4.5",
+    "control_options": 3
+  }
+}
