@@ -3,8 +3,8 @@
 2026-09-14，项目本人在线填写并提交反馈，已授权公开。
 
 - [用户填写后的问卷 JSON](questionnaire-answers.json)：仅含该用户实际提交的答案、提交时间和问卷版本，不含备选项、问卷模板或提示词。
-- [问卷＋运行结果＋反馈 JSON](full-collected-record.json)：增加该户 EB 配置、仿真情境、两份方案、实际展示结果和真人反馈。
-- [第一步清洗后的监督数据 JSON](cleaned-supervision.json)：输入只含家庭画像、事件条件、No-DR 计划和 EB Agent 计划；输出是真人选择、四项评分与原文原因。另存补充信息，不含 EP 结果、SFT 提示词或训练对话。
+- [初步合并后的完整案例 JSON](full-collected-record.json)：从服务器多份原始记录中合并该户 EB 配置、仿真情境、两份方案、实际展示结果和真人反馈；不是整库转储。
+- [初步监督字段清洗 JSON](cleaned-supervision.json)：输入只含家庭画像、事件条件、No-DR 计划和 EB Agent 计划；输出是真人选择、四项评分与原文原因。另存补充信息，不含 EP 结果、SFT 提示词或训练对话；不是最终 SFT 数据集。
 - [来源校验与文件哈希](verification.json)。
 
 真实反馈为同意；四项评分为 4.2、4.3、2.9、4.2，原因保留原文。EB 实际调用 gpt-4o-mini，EP 实际运行。
