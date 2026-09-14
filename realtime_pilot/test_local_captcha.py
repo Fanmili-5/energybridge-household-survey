@@ -32,6 +32,19 @@ class CaptchaTests(unittest.TestCase):
             c.consume('owner','request_captcha_0001',{'id':issued['id'],'answer':' ac2346 '})
             with self.assertRaises(CaptchaError):c.consume('owner','request_captcha_0001',{'id':issued['id'],'answer':'AC2346'})
 
+    def test_refresh_signal_only_when_challenge_is_unusable(self):
+        c=LocalCaptcha();c._new_code=lambda:'AC2346'
+        with patch('local_captcha.time.monotonic',return_value=100):
+            proof=c.issue('owner','request_captcha_0001')
+            for attempt in range(3):
+                with self.assertRaises(CaptchaError) as caught:c.consume('owner','request_captcha_0001',{'id':proof['id'],'answer':'AAAAAA'})
+                self.assertEqual(caught.exception.refresh,attempt==2)
+            self.assertNotIn(proof['id'],c.entries)
+            proof=c.issue('owner','request_captcha_0001')
+        with patch('local_captcha.time.monotonic',return_value=281):
+            with self.assertRaises(CaptchaError) as caught:c.consume('owner','request_captcha_0001',{'id':proof['id'],'answer':'AC2346'})
+            self.assertTrue(caught.exception.refresh)
+
     def test_http_gate_idempotency_and_admin_namespace(self):
         with tempfile.TemporaryDirectory() as root:
             s=make_server(0,root,disable_planning=True,local_captcha=True,admin_user='admin')

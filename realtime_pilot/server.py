@@ -32,7 +32,7 @@ import paired_contract as paired
 
 TERMINAL = TERMINAL_STATUSES
 RESEARCH_NOTICE_VERSION = 'eb.research_notice.v2'
-PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.7'
+PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.8'
 
 def stop_process(process):
     # The worker owns native EP descendants; kill the whole group on cancellation/timeout.
@@ -739,7 +739,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self.reply(200, data)
             return self.reply(404, {"error": "接口不存在"})
         except CaptchaError as exc:
-            return self.reply(400,{'error':str(exc),'code':'captcha_invalid'})
+            return self.reply(400,{'error':str(exc),'code':'captcha_invalid','refresh_captcha':exc.refresh})
         except ValueError as exc:
             return self.reply(400, {"error": str(exc) if not isinstance(exc, json.JSONDecodeError) else "请求 JSON 无效"})
         except TypeError:

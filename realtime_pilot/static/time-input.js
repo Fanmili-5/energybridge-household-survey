@@ -6,11 +6,26 @@ window.EBTime = (() => {
   const node=(tag,text,cls)=>{const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e;};
   const icon=device=>EBView.icon(device);
   function clock(h){const m=Math.round(h*60);return `${m>1440?'次日 ':''}${String(Math.floor(m/60)%24).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`.replace(/^00:00$/,h===24?'24:00':'00:00');}
+  function answerHint(q){
+    if(q.id==='H_ac_temp')return '填写空调遥控器上通常设置的温度。';
+    if(q.id==='P_AC_CHANGE')return '填写最多能接受的室温变化幅度，例如 0.5℃；不是空调设定温度。';
+    if(q.id==='P_AC_RANGE')return '填写希望保持的室内温度范围，不是室外天气的最低、最高温度。';
+    if(q.id==='P_EV_TARGET')return '这是离家时希望达到的电量百分比。';
+    if(q.id==='P_EV_RESERVE')return '这是为临时出行希望保留的电量，与离家时的目标电量分别填写。';
+    if(['washer','dishwasher','dryer'].includes(q.device)){
+      if(q.id.startsWith('H_'))return '按平时习惯，通常几点启动这项任务。';
+      if(q.id.startsWith('T_'))return '填写从启动到完成需要的分钟数，不是结束时刻。';
+      if(q.id.startsWith('E_'))return '允许调整时，最早从几点开始也可以；可以早于平时的启动时间。';
+      if(q.id.startsWith('D_'))return '填写最晚必须完成的时刻，不是最晚开始的时刻。';
+    }
+    return '';
+  }
   function mount(q,select,row){
     if(!q.device)return;
     if(q.group==='stated_preference'&&!['P_HOT_WATER','P_AC_CHANGE'].includes(q.id))return;
     if(q.id==='H_ac'){select.classList.add('ac-schedule-select');return;}
     if(q.options.some(o=>o.value==='off'))return; // Historical snapshots retain their original form.
+    const empty=select.querySelector('option[value=""]');if(empty)empty.textContent=q.id==='H_ac_temp'?'尚未选择温度':q.id==='P_AC_CHANGE'?'尚未选择变化幅度':q.id.startsWith('T_')?'尚未选择时长':'尚未选择时间';
     const wrap=node('div',undefined,'time-control'),top=node('div',undefined,'time-readout');
     const output=node('output','尚未选择');output.htmlFor=select.id+'_slider';
     output.className='sr-only';top.append(output);wrap.append(top);
@@ -28,7 +43,7 @@ window.EBTime = (() => {
     const answer=node('input');answer.type='hidden';answer.id=prefix+q.id;answer.dataset.temperatureAnswer='true';row.append(answer);
     const group=node('div',undefined,'temperature-range-input');group.setAttribute('role','group');group.setAttribute('aria-label',q.prompt);
     const fields=[];
-    for(const [key,title] of [['low','最低温度'],['high','最高温度']]){
+    for(const [key,title] of [['low','希望不低于'],['high','希望不高于']]){
       const cell=node('div',undefined,'temperature-endpoint'),label=node('label',title+'（℃）');
       const number=node('input');number.type='number';number.min=q.minimum;number.max=q.maximum;number.step=q.step;number.required=required;number.id=answer.id+'_'+key;number.placeholder='请选择';label.htmlFor=number.id;
       const slider=node('input');slider.type='range';slider.min=q.minimum;slider.max=q.maximum;slider.step=q.step;slider.value=(q.minimum+q.maximum)/2;slider.setAttribute('aria-label',title+'（℃）');
@@ -79,12 +94,12 @@ window.EBTime = (() => {
         if(['washer','dishwasher','dryer'].includes(d)){
           const e=read('E_'+d),l=read('D_'+d),t=read('T_'+d);
           if(e!=null&&l!=null){earliest=Number(e);deadline=Number(l)+(Number(l)<earliest?24:0);if(start!=null&&Number(l)<earliest&&start<earliest)start+=24;}
-          if(start!=null&&t!=null){end=start+Number(t);text=`通常 ${clock(start)}—${clock(end)} · ${Math.round(Number(t)*60)} 分钟`;if(deadline!=null)text+=`；可安排窗口 ${clock(earliest)}—${clock(deadline)}`;
-            if(deadline!=null&&(start<earliest-1e-9||end>deadline+1e-9))text+='。当前常用安排超出窗口，请调整时间。';}
+          if(start!=null&&t!=null){end=start+Number(t);text=`通常 ${clock(start)}—${clock(end)} · ${Math.round(Number(t)*60)} 分钟`;if(deadline!=null)text+=`；允许调整范围 ${clock(earliest)}—${clock(deadline)}`;
+            if(deadline!=null&&(start<earliest-1e-9||end>deadline+1e-9))text+='。当前常用安排不在允许范围内，请核对时间。';}
         }else{const last=read('D_'+d);if(start!=null&&last!=null){end=Number(last);const overnight=end<start;if(overnight)end+=24;text=`${d==='home_ev'?'接入充电':'加热'} ${clock(start)} → ${d==='home_ev'?'离家':'结束'} ${clock(end)}`;if(d==='electric_water_heater'&&(start===0||overnight||end<=start||end-start>8))text+='；真实安排可保存，当前原生模型暂不能生成此安排的模拟，请勿为生成而改填。';else if(end<=start)text+='；接入与离家时刻不能相同。';}}
       }
       timeline(preview,{start,end,earliest,deadline,text});
-      if(earliest!=null&&deadline!=null&&end!=null)preview.append(node('small','浅色为可安排窗口，深色为常用运行时段。'));
+      if(earliest!=null&&deadline!=null&&end!=null)preview.append(node('small','浅色：允许调整的时间范围；深色：平时的运行时段。'));
     }
     const empty=document.querySelector('.device-empty');if(empty){const selected=[...document.getElementsByName('p_B05')].filter(x=>x.checked);empty.hidden=selected.some(x=>JSON.parse(x.value)!=='none');empty.textContent=selected.length?'您选择了以上都没有，可以继续填写下方的用电取舍。':'选好上面的电器，这里就会展开对应的时间安排。';}
   }
@@ -95,5 +110,5 @@ window.EBTime = (() => {
       timeline(chart,{start,end,text:`${clock(start)}—${clock(end)}${d==='ac'?' · '+r.setpoint+'℃':''}`});card.append(chart);root.append(card);}
     root.append(node('p','下面是依据已提交答案生成的安排，正在计算调整方案。','hint'));
   }
-  return {mount,group,sync,initial,icon,temperatureRange};
+  return {mount,group,sync,initial,icon,temperatureRange,answerHint};
 })();

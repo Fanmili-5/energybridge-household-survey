@@ -41,7 +41,9 @@ GLYPHS={
 }
 
 class CaptchaError(ValueError):
-    pass
+    def __init__(self,message,*,refresh=False):
+        super().__init__(message)
+        self.refresh=refresh
 
 
 def raster_png(code):
@@ -97,13 +99,15 @@ class LocalCaptcha:
     def consume(self,owner,request_id,proof):
         if not isinstance(proof,dict):raise CaptchaError('请完成图片验证码后再生成')
         cid=proof.get('id');answer=proof.get('answer')
-        if not isinstance(cid,str) or not isinstance(answer,str) or len(answer)>32:raise CaptchaError('验证码格式无效，请换一张重试')
+        if not isinstance(cid,str) or not isinstance(answer,str) or len(answer)>32:raise CaptchaError('验证码格式无效，需要更换图片',refresh=True)
         with self.lock:
             row=self.entries.get(cid)
             if not row or row['expires']<=time.monotonic():
-                self.entries.pop(cid,None);raise CaptchaError('验证码已过期或已使用，请换一张')
-            if row['owner']!=owner or row['request_id']!=request_id:raise CaptchaError('验证码与本次提交不匹配，请换一张')
+                self.entries.pop(cid,None);raise CaptchaError('验证码已过期或已使用',refresh=True)
+            if row['owner']!=owner or row['request_id']!=request_id:raise CaptchaError('验证码与本次提交不匹配',refresh=True)
             row['attempts']+=1
             valid=hmac.compare_digest(row['digest'],self._digest(cid,answer.strip().upper()))
             if valid or row['attempts']>=self.max_attempts:self.entries.pop(cid,None)
-            if not valid:raise CaptchaError('验证码不正确，请重试；连续错误三次后需换一张')
+            if not valid:
+                remaining=self.max_attempts-row['attempts']
+                raise CaptchaError(f'验证码不正确，还可以尝试 {remaining} 次' if remaining else '这张验证码已连续输错三次',refresh=remaining==0)

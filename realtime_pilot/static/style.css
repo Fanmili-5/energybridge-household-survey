@@ -214,3 +214,11 @@ body.survey-page,body.preview-page{--muted-readable:#52665e}
 @keyframes waiting-motion{to{background-position:200% 0}}
 @media(prefers-reduced-motion:reduce){.waiting-indicator{animation:none}}
 @media(max-width:600px){#job-panel.is-generating{padding:24px 20px}}
+
+.answer-hint,.member-answer-guide,.selection-guide{color:#5e7265;font-size:12px;line-height:1.65;margin:4px 0 8px}
+.member-answer-guide{margin:0 0 16px}.score-meaning{margin:5px 0 0;font-size:11px;color:#526e5a;line-height:1.5}
+.survey-page .member-field .inline-choice{align-items:flex-start;line-height:1.65}
+
+.survey-page .choice-clear{display:block;justify-self:start;align-self:start;margin:5px 0 0;padding:2px 0;min-height:0;text-decoration:underline;text-underline-offset:3px}
+.survey-page .member-field>.choice-clear{grid-column:2}
+.choice-clear[hidden]{display:none!important}

@@ -13,7 +13,7 @@ async function api(path,body){
   let data;try{data=await response.json();}catch{}
   if(!response.ok){
    const messages={401:adminView?'管理员登录已失效，请刷新后重新登录。':'页面会话已失效，请刷新后重试。',429:'当前请求较多，请稍后再试。',502:'计算服务暂时不可用，请稍后再试。',503:'服务暂时不可用，请稍后再试。',504:'服务器响应超时，请稍后再试。'};
-   const failure=new Error(data?.error||messages[response.status]||'请求失败，请稍后再试。');failure.code=data?.code;failure.status=response.status;throw failure;
+   const failure=new Error(data?.error||messages[response.status]||'请求失败，请稍后再试。');failure.code=data?.code;failure.refreshCaptcha=data?.refresh_captcha===true;failure.status=response.status;throw failure;
   }
   if(!data||typeof data!=='object')throw new Error('服务器返回异常，请稍后再试。');
   return data;
@@ -21,7 +21,7 @@ async function api(path,body){
 }
 // Keep canonical select values for saved snapshots; present short option lists directly.
 function inlineChoices(select,options,required=false){
- const group=el('div',undefined,'inline-choices');group.setAttribute('role','group');
+ const group=el('div',undefined,'inline-choices');group.setAttribute('role','group');group.dataset.selectionMode=select.multiple?'multi':'single';
  const prompt=select.closest('.field,.member-field')?.querySelector('.question-label,span')?.textContent||'选择一项';group.setAttribute('aria-label',prompt);
  select.hidden=true;select.required=false;
  for(const o of options){const label=el('label',undefined,'inline-choice'),input=el('input');input.type=select.multiple?'checkbox':'radio';input.name=select.id+'__choices';input.value=o.value;input.required=required;
@@ -29,12 +29,11 @@ function inlineChoices(select,options,required=false){
   label.append(input,el('span',o.label));group.append(label);
  }
  select.after(group);
- let clear;if(!required){clear=el('button','清空','choice-clear');clear.type='button';clear.setAttribute('aria-label','清空：'+prompt);clear.onclick=()=>{if(select.multiple){for(const opt of select.options)opt.selected=false;}else select.value='';select.dispatchEvent(new Event('change',{bubbles:true}));};group.append(clear);}
- select._choiceSync=()=>{for(const input of group.querySelectorAll('input')){input.checked=select.multiple?[...select.selectedOptions].some(o=>o.value===input.value):input.value===select.value;input.disabled=select.disabled;}if(clear)clear.disabled=select.disabled||!select.value;};select._choiceSync();
+ let clear;if(!required){clear=el('button','清除此题选择','choice-clear');clear.type='button';clear.setAttribute('aria-label','清空：'+prompt);clear.onclick=()=>{if(select.multiple){for(const opt of select.options)opt.selected=false;}else select.value='';select.dispatchEvent(new Event('change',{bubbles:true}));};group.after(clear);}
+ select._choiceSync=()=>{for(const input of group.querySelectorAll('input')){input.checked=select.multiple?[...select.selectedOptions].some(o=>o.value===input.value):input.value===select.value;input.disabled=select.disabled;}if(clear){clear.disabled=select.disabled||!select.value;clear.hidden=clear.disabled;}};select._choiceSync();
 }
 
 function memberFieldValue(select){return select.multiple?[...select.selectedOptions].map(o=>o.value):select.value||null;}
-const memberChoiceLabels={routine:{out_regular:'规律外出工作/学习',home_regular:'主要在家',mixed:'在家、外出交替',irregular:'轮班或时间不固定'},comfort:{temp_tolerant:'不太敏感',normal_comfort:'接受小幅变化',temp_sensitive:'敏感，希望稳定'},task:{flexible:'时间灵活',semi_rigid:'限定范围内调整',rigid:'希望按固定时间'},participation:{rarely:'较少参与',shared:'共同商量',important:'家人会特别考虑',final:'通常作最后决定'}};
 const memberSupplemental=new Set(['life_roles','needs_priority','cost_importance','grid_importance']);
 function memberValues(q){const root=$('p_'+q.id);return [...root.querySelectorAll('.member-card:not([hidden])')].map(card=>Object.fromEntries(q.fields.map(f=>[f.id,memberFieldValue(card.querySelector(`[data-member-field="${f.id}"]`))])));}
 function syncMembers(){
@@ -43,11 +42,11 @@ function syncMembers(){
  const count=size==='6_plus'?Math.max(6,Number(root.dataset.count)||6):Number(size)||0;
  root.dataset.count=count;
  const list=root.querySelector('.member-cards');
- while(list.children.length<count){const i=list.children.length,card=el('fieldset',undefined,'member-card'),core=el('div',undefined,'member-core'),extra=el('details',undefined,'member-extra'),extraBody=el('div',undefined,'member-extra-fields');card.append(el('legend',`成员 ${i+1}`),core);extra.append(el('summary','补充了解（均可选填）'),extraBody);
+ while(list.children.length<count){const i=list.children.length,card=el('fieldset',undefined,'member-card'),core=el('div',undefined,'member-core'),extra=el('details',undefined,'member-extra'),extraBody=el('div',undefined,'member-extra-fields');card.append(el('legend',`成员 ${i+1}`),el('p','以下回答均描述这位成员；不了解的选填项可留空。','member-answer-guide'),core);extra.append(el('summary','补充了解（均可选填）'),extraBody);
   for(const f of q.fields){const label=el('div',undefined,'member-field'),select=el('select');select.multiple=f.type==='multi_choice';select.dataset.memberField=f.id;select.id=`p_member_${i}_${f.id}`;
    const empty=el('option',f.required?'请选择':'选填');empty.value='';if(!select.multiple)select.append(empty);
    for(const o of f.options){const option=el('option',o.label);option.value=o.value;select.append(option);}select.required=!!f.required;
-   label.append(el('span',f.prompt+(f.required||f.prompt.includes('选填')?'':'（选填）')),select);(memberSupplemental.has(f.id)?extraBody:core).append(label);inlineChoices(select,f.options.map(o=>({...o,label:memberChoiceLabels[f.id]?.[o.value]||o.label})),!!f.required);
+   label.append(el('span',f.prompt+(f.required||f.prompt.includes('选填')?'':'（选填）')),select);(memberSupplemental.has(f.id)?extraBody:core).append(label);inlineChoices(select,f.options,!!f.required);
   }card.append(extra);list.append(card);
  }
  [...list.children].forEach((card,i)=>{card.hidden=i>=count;for(const s of card.querySelectorAll('select')){s.disabled=card.hidden||!!currentJob;s._choiceSync?.();}});
@@ -103,6 +102,9 @@ function question(q, container, prefix){
   }else{const s=el("select");s.id=prefix+q.id;const empty=el("option","请选择");empty.value="";s.append(empty);for(const o of q.options){const option=el("option",o.label);option.value=JSON.stringify(o.value);s.append(option);}row.append(s);}
   row.dataset.questionId=q.id; if(q.device)row.dataset.device=q.device;
   container.append(row);
+  const answerHint=EBTime.answerHint(q);
+  if(answerHint)row.append(el('p',answerHint,'answer-hint'));
+  if(q.type==='multi_choice')row.insertBefore(el('small','可多选','selection-guide'),row.children[1]);
   if(q.help)row.append(el('p',q.help,'hint'));
   const select=row.querySelector("select");if(select){
    if(q.id==="X_REGION"||q.cities_by_region){$(prefix+q.id)?._citiesSync?.();return;}
@@ -119,7 +121,7 @@ function restore(profile){for(const q of schema.profile_questions){if(q.type==="
 const devices={ac:"空调",washer:"洗衣机",dishwasher:"洗碗机",dryer:"烘干机",electric_water_heater:"电热水器",home_ev:"家用电动汽车充电"};
 const scoreFields={score:"整体：这份方案总体适合您家吗？",comfort_score:"舒适：室温和生活安排的变化合适吗？",energy_score:"用电与费用：模拟用电量和费用符合您家期望吗？",vpp_score:"响应安排：您对本次错峰用电的处理方式满意吗？请考虑安排调整和自主决定体验。"};
 let generation=0,pendingSubmit=false;
-const UI_VERSION="eb.survey_ui.v6.7";
+const UI_VERSION="eb.survey_ui.v6.8";
 const RESEARCH_NOTICE_VERSION="eb.research_notice.v2";
 let savedReceipt=null,savedHouseholdRecord=null;
 const pendingDecisions=new Set(),pendingRequests=new Map();
@@ -226,12 +228,12 @@ function renderScores(legacy=false){
   for(const [key,description] of Object.entries(scoreFields)){
     const row=el('fieldset',undefined,'score-row');row.id=key;
     const legend=el('legend');legend.append(el('strong',labels[key][0]),el('small',labels[key][1]));row.append(legend);
-    const choices=el('div',undefined,'score-continuous'),range=el('input'),number=el('input');
+    const choices=el('div',undefined,'score-continuous'),range=el('input'),number=el('input'),meaning=el('p','尚未评分','score-meaning');meaning.id='score-meaning-'+key;number.setAttribute('aria-describedby',meaning.id);
     range.type='range';range.min=1;range.max=5;range.step=0.1;range.value=3;range.setAttribute('aria-label',labels[key][0]+'评分滑块');
     number.type='number';number.min=1;number.max=5;number.step='any';number.inputMode='decimal';number.name='feedback_'+key;number.placeholder='未评分';number.setAttribute('aria-label',labels[key][0]+'评分，可填小数');
-    const sync=()=>{choices.classList.toggle('unanswered',number.value==='');if(number.value!==''&&number.validity.valid)range.value=number.value;range.setAttribute('aria-valuetext',number.value===''?'尚未评分':number.value+' 分');};
+    const sync=()=>{const n=Number(number.value);meaning.textContent=number.value===''?'尚未评分':!number.validity.valid?'请填写 1—5 之间的分数':Number.isInteger(n)?`${n} 分 · ${anchors[n-1]}`:`${number.value} 分 · ${anchors[Math.floor(n)-1]}与${anchors[Math.ceil(n)-1]}之间`;choices.classList.toggle('unanswered',number.value==='');if(number.value!==''&&number.validity.valid)range.value=number.value;range.setAttribute('aria-valuetext',number.value===''?'尚未评分':number.value+' 分');};
     number.oninput=sync;number._scoreSync=sync;range.oninput=()=>{number.value=range.value;sync();};
-    choices.append(range,number);row.append(choices);$("decision-scores").append(row);sync();
+    choices.append(range,number);row.append(choices,meaning);$("decision-scores").append(row);sync();
     $("score-definitions").append(el('p',legacy&&key==='vpp_score'?'控制体验：调整方式和自主决定程度符合您家期望吗？':legacy&&key==='energy_score'?'费用：预测用电费用符合您家期望吗？':description));
   }
 }

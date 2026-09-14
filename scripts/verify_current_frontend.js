@@ -42,7 +42,12 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
     }else{await page.locator('#p_'+q.id).selectOption(JSON.stringify(value));}
    }
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
-   if(process.env.EB_BROWSER_SCREENSHOTS&&step===2){fs.mkdirSync(process.env.EB_BROWSER_SCREENSHOTS,{recursive:true});await page.screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/precision-'+width+'.png',fullPage:true});}
+   if(step===1){
+    const field=page.locator('.member-card').first().locator('[data-member-field="comfort"]').locator('..');
+    const previous=await field.locator('select').inputValue();
+    if(previous){await field.locator('.choice-clear').click();assert.strictEqual(await field.locator('select').inputValue(),'');assert(await field.locator('.choice-clear').isHidden());await field.locator(`input[value="${previous}"]`).check();}
+   }
+   if(process.env.EB_BROWSER_SCREENSHOTS&&[1,2].includes(step)){fs.mkdirSync(process.env.EB_BROWSER_SCREENSHOTS,{recursive:true});await page.screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/answers-step-'+step+'-'+width+'.png',fullPage:true});}
    await audit(`wizard-${step}`);
    if(step<count-1){await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes(`第 ${step+2} /`));}
   }
@@ -85,6 +90,14 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
    await page.waitForFunction(()=>document.getElementById('captcha-message').textContent.includes('不正确'));
    assert(await page.evaluate(()=>!currentJob));
    if(process.env.EB_BROWSER_SCREENSHOTS){fs.mkdirSync(process.env.EB_BROWSER_SCREENSHOTS,{recursive:true});await page.locator('#captcha-dialog').screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/captcha-'+width+'.png'});}
+   // Exhaust the old image. The user must receive a fresh image automatically.
+   await page.locator('#captcha-answer').fill('AAAAAA');await page.locator('#captcha-confirm').click();
+   await page.waitForFunction(()=>document.getElementById('captcha-message').textContent.includes('还可以尝试 1 次'));
+   const nextImage=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/captcha'&&r.status()===200);
+   await page.locator('#captcha-answer').fill('AAAAAA');await page.locator('#captcha-confirm').click();
+   await nextImage;await page.waitForFunction(()=>document.getElementById('captcha-message').textContent.includes('已换好新图片')&&!document.getElementById('captcha-answer').disabled);
+   assert.strictEqual(await page.locator('#captcha-answer').inputValue(),'');
+   assert(await page.evaluate(()=>!currentJob));
    await page.locator('#captcha-answer').fill('ac2346');await page.locator('#captcha-confirm').click();
    await page.locator('#captcha-dialog').waitFor({state:'hidden'});
    await page.locator('#job-panel').waitFor({state:'visible'});
@@ -116,6 +129,8 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   await page.locator('#decision-reason').fill('Synthetic browser audit, not a human response.');
   await page.reload();await page.locator('#decision-form').waitFor({state:'visible'});
   assert.strictEqual(await page.locator('[name=feedback_score]').inputValue(),'3.75');
+  assert((await page.locator('#score-meaning-score').innerText()).includes('3.75 分 · 一般与较合适之间'));
+  if(process.env.EB_BROWSER_SCREENSHOTS)await page.locator('#decision-form').screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/score-'+width+'.png'});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await audit('result-and-feedback');
   await page.locator('#save-decision').click();await page.waitForFunction(()=>document.getElementById('decision-status').textContent.includes('已保存'));
