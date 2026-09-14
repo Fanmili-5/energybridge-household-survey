@@ -128,7 +128,7 @@ class OptionAuditTests(unittest.TestCase):
         with self.assertRaises(ValueError):prepare(self.profile(raw),'invalid_ev')
         raw=answers();raw.update(B05=['ac'],H_ac='custom',H_ac_start='22',H_ac_end='8')
         original,scenario=prepare(self.profile(raw),'only_ac')
-        self.assertEqual(scenario['evaluation_window']['end_sim_h'],24)
+        self.assertEqual(scenario['evaluation_window']['end_sim_h'],32)
         self.assertIsNone(scenario['evaluation_window']['ev_departure_sim_h'])
 
     def test_ewh_contract_acceptance_is_not_runtime_support(self):

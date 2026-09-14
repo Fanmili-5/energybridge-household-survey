@@ -86,7 +86,7 @@ class AnnualDatesTests(unittest.TestCase):
                 r=annual_request(month,X_REGION='北京',X_CITY='北京',X_BUILDING='detached',X_FLOOR=None)
                 out=run_native(Path(tmp)/'baseline',r,method='no_dr')
                 self.assertEqual(out['native']['llm_call_count'],0)
-                self.assertEqual(len(out['electricity']),144)
+                self.assertEqual(len(out['electricity']),round(r['scenario']['evaluation_window']['end_sim_h']*6))
                 self.assertEqual(out['asset_binding']['simulation_environment'],r['scenario']['environment'])
 
     @unittest.skipUnless(os.environ.get('EB_TEST_NATIVE_EP')=='1','requires installed EnergyPlus')

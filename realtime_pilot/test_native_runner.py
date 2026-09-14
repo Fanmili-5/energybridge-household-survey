@@ -18,11 +18,12 @@ from native_runner import collection_entry, run_native, _disable_sdk_retries
 from eb_execution import upstream
 
 
-def request(ac_only=False):
+def request(ac_only=False, legacy=False):
     raw=answers()
     if ac_only:raw['B05']=['ac']
     profile=sanitize_profile(normalize_answers(raw,list(LOOKUP),LOOKUP))
     original,scenario=prepare(profile,'native-regression')
+    if legacy:scenario['evaluation_window'].update(end_sim_h=24,simulation_days=1,end_label='24:00')
     return {'profile':profile,'original_plan':original,'scenario':scenario,
             'household_id':'native-regression-household'}
 
@@ -74,7 +75,7 @@ class NativeRunnerTests(unittest.TestCase):
 
     def test_native_callback_is_identical_to_upstream(self):
         runner,_=upstream()
-        _,source=collection_entry(runner)
+        _,source=collection_entry(runner,horizon=32)
         original=ast.parse(inspect.getsource(runner.run_family_agent))
         derived=ast.parse(source)
         a=next(n for n in ast.walk(original) if isinstance(n,ast.FunctionDef) and n.name=='cb')
@@ -83,16 +84,50 @@ class NativeRunnerTests(unittest.TestCase):
 
     def test_native_deadline_and_binding_contract(self):
         r=request()
-        self.assertEqual(r['scenario']['evaluation_window']['end_sim_h'],24)
+        self.assertEqual(r['scenario']['evaluation_window']['end_sim_h'],32)
         self.assertEqual(r['scenario']['evaluation_window']['ev_departure_sim_h'],32)
         from household_config import ensure_household_config
         h=ensure_household_config(r)
-        self.assertEqual(len(h['calendar']['days']),1)
-        self.assertEqual(len(h['calendar']['household_occupancy_hourly']),1)
+        self.assertEqual(len(h['calendar']['days']),2)
+        self.assertEqual(len(h['calendar']['household_occupancy_hourly']),2)
         self.assertEqual(r['scenario']['event']['day'],1)
         with self.assertRaises(ValueError):validate(r['original_plan'],{'execution_mode':'eb_closed_loop'},r['scenario'])
         self.assertEqual(r['scenario']['evaluation_window']['start_sim_h'],0)
         with self.assertRaises(ValueError):validate(r['original_plan'],{'execution_mode':'eb_native_loop','decisions':[]},r['scenario'])
+
+    @unittest.skipUnless(os.environ.get('EB_TEST_NATIVE_EP')=='1','requires installed EnergyPlus')
+    def test_overnight_cross_year_meter_and_departure_cutoff(self):
+        from native_presentation import metrics,display
+        from paired_contract import participant_view
+        for date,departure in [('2007-07-01',8),('2007-12-31',8),('2007-07-01',8+1/6)]:
+            with self.subTest(date=date),tempfile.TemporaryDirectory() as tmp,redirect_stdout(StringIO()):
+                r=request()
+                if departure!=8:
+                    raw=answers();raw['D_home_ev']=next(o['value'] for o in LOOKUP['D_home_ev']['options'] if abs(float(o['value'])-departure)<1e-6)
+                    r['profile']=sanitize_profile(normalize_answers(raw,list(LOOKUP),LOOKUP))
+                    r['original_plan'],r['scenario']=prepare(r['profile'],'fractional-cutoff')
+                horizon=24+departure
+                r['scenario']['simulation_start_date']=date
+                result=run_native(Path(tmp)/'baseline',r,method='no_dr')
+                self.assertEqual(result['horizon'],horizon)
+                self.assertEqual(len(result['electricity']),round(horizon*6))
+                self.assertAlmostEqual(result['electricity'][-1]['end_h'],horizon)
+                self.assertAlmostEqual(result['native']['daily_trace_rows'][-1]['sim_h'],horizon,delta=1e-4)  # upstream dashboard rounds hours to four decimals
+                self.assertGreater(sum(t['kwh'] for t in result['electricity'] if t['end_h']>24),0)
+                energy=sum(t['kwh'] for t in result['electricity'])
+                self.assertAlmostEqual(energy,result['native']['day_ahead_price_metrics']['priced_energy_kwh'],5)
+                ev=result['service_evidence']['ev']
+                self.assertTrue(ev['departure_after_arrival_observed'])
+                self.assertAlmostEqual(ev['departures'][-1]['time_h'],horizon)
+                self.assertAlmostEqual(ev['day_end_soc'],ev['departures'][-1]['soc_before_drive'])
+                self.assertTrue(result['task_outcomes']['washer']['completed'])
+                prediction=metrics(result,result,r['scenario'])
+                self.assertAlmostEqual(prediction['original']['comparison_kwh'],energy)
+                view=participant_view(display(r['original_plan'],result,result,r['scenario'],prediction))
+                self.assertIn(r['scenario']['evaluation_window']['end_label'],view['notice'])
+                self.assertTrue(any(span['end_h']>24 for row in view['schedule_chart']['rows'] for span in row['original']))
+                broken={**result,'horizon':24}
+                with self.assertRaises(ValueError):metrics(result,broken,r['scenario'])
 
     @unittest.skipUnless(os.environ.get('EB_TEST_NATIVE_EP')=='1','requires installed EnergyPlus')
     def test_base_template_preserves_single_day_simulation(self):
@@ -106,7 +141,7 @@ class NativeRunnerTests(unittest.TestCase):
             args.idf = UPSTREAM/'experiments/models/family_home/family_simple_3day.idf'
             return old_prepare(args, *a, **kw)
         with tempfile.TemporaryDirectory() as tmp, redirect_stdout(StringIO()):
-            r = request()
+            r = request(legacy=True)
             current = run_native(Path(tmp)/'current', r, method='no_dr')
             with patch.object(run_persona_json, '_prepare_run_assets', side_effect=legacy_template):
                 previous = run_native(Path(tmp)/'previous', r, method='no_dr')
@@ -130,7 +165,7 @@ class NativeRunnerTests(unittest.TestCase):
     @unittest.skipUnless(os.environ.get('EB_TEST_NATIVE_EP')=='1','requires installed EnergyPlus')
     def test_repaired_assets_bind_native_ports_without_changing_controller(self):
         with tempfile.TemporaryDirectory() as tmp,redirect_stdout(StringIO()):
-            r=run_native(Path(tmp)/'baseline',request(),method='no_dr')
+            r=run_native(Path(tmp)/'baseline',request(legacy=True),method='no_dr')
             self.assertEqual(r['native']['llm_call_count'],0)
             self.assertEqual(len(r['electricity']),144)
             self.assertEqual(r['service_evidence']['ev']['status'],'observed')
@@ -147,7 +182,7 @@ class NativeRunnerTests(unittest.TestCase):
             self.assertEqual(len(r['asset_binding']['tariff']['sha256']),64)
             runner,_=upstream()
             with patch('native_runner.collection_entry',return_value=(runner.run_family_agent,inspect.getsource(runner.run_family_agent))):
-                original=run_native(Path(tmp)/'original',request(),method='no_dr')
+                original=run_native(Path(tmp)/'original',request(legacy=True),method='no_dr')
             self.assertEqual(r['electricity'],original['electricity'])
             self.assertEqual(r['temperature'],original['temperature'])
             self.assertEqual(r['native']['no_dr_routine_actions'],original['native']['no_dr_routine_actions'])
@@ -173,7 +208,7 @@ class NativeRunnerTests(unittest.TestCase):
             return {'text':text,'metrics':{'fixture':True}}
         for force_fallback in (False,True):
             with tempfile.TemporaryDirectory() as tmp,redirect_stdout(StringIO()):
-                folder=Path(tmp);r=request(ac_only=True);write_json(folder/'request.json',r)
+                folder=Path(tmp);r=request();write_json(folder/'request.json',r)
                 with patch.object(LLMClient,'chat_with_metrics',new=model), \
                      patch.object(runner,'_evaluate_vpp_plan_acceptance_gate',side_effect=AssertionError('synthetic consent gate called')), \
                      patch.object(runner,'_fallback_plan_after_vpp_rejection',side_effect=AssertionError('extra acceptance fallback called')), \
@@ -187,6 +222,9 @@ class NativeRunnerTests(unittest.TestCase):
                 if force_fallback:
                     self.assertTrue(any(x['fallback_used'] for x in result['provenance']['native_plan_outcomes']))
                     self.assertIn('回退安排',result['display']['execution_notice'])
+                self.assertEqual(result['assessment_cutoff_sim_h'],32)
+                self.assertEqual(result['display']['schedule_chart']['end_h'],32)
+                self.assertTrue(all(m['label']!='当日用电量' for m in result['display']['participant_view']['metrics']))
                 self.assertTrue(result['prediction']['comparison_check']['passed'])
                 self.assertIsNone(result['prediction']['prefix_check']['passed'])
                 self.assertEqual(native['vpp_plan_gate_events'],[])

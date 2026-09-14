@@ -86,7 +86,9 @@ def read_series(folder, *, horizon, start_date):
       ORDER BY t.TimeIndex''').fetchall()
     conn.close(); traces={}
     for month,day,hour,minute,interval,name,key,unit,val in rows:
-        end=(date(start.year,month,day)-start).days*24+hour+minute/60
+        sample_date=date(start.year,month,day)
+        if sample_date<start:sample_date=date(start.year+1,month,day)
+        end=(sample_date-start).days*24+hour+minute/60
         if not 0<end<=horizon: continue
         namekey=name+'|'+(key or '')
         traces.setdefault(namekey,[]).append({'end_h':end,'start_h':end-interval/60,'value':val,'unit':unit})

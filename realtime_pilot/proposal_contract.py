@@ -137,8 +137,8 @@ FEEDBACK_VERSION = "eb.binary_decision_four_scores_reason.v3"
 def decision_record(job, payload):
     result = job["result"]
     if job.get("flow") == "paired_ep_v1":
-        from paired_contract import VERSION as paired_version
-        if result.get("schema_version") != paired_version:
+        from paired_contract import FEEDBACK_COMPATIBLE_VERSIONS
+        if result.get("schema_version") not in FEEDBACK_COMPATIBLE_VERSIONS:
             raise ValueError("这是旧版评价情境，请新建案例使用当前评分题目；历史回答保持原样")
     for k in ("display_hash", "original_plan_hash", "proposal_plan_hash"):
         if payload.get(k) != result[k]:

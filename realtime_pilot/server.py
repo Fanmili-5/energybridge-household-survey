@@ -32,7 +32,7 @@ import paired_contract as paired
 
 TERMINAL = TERMINAL_STATUSES
 RESEARCH_NOTICE_VERSION = 'eb.research_notice.v2'
-PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.10'
+PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.11'
 
 def stop_process(process):
     # The worker owns native EP descendants; kill the whole group on cancellation/timeout.
@@ -645,7 +645,7 @@ class Handler(BaseHTTPRequestHandler):
                 households=[self.server.store.household_public(r,False) for r in self.server.store.db.household_summaries(session)]
             from date_sampling import assigned_context
             return self.reply(200, {"questionnaire_context":assigned_context(session),"households":households,"intake_enabled":True,"research_notice_version":RESEARCH_NOTICE_VERSION,"schema_version": VERSION, "scenario": SCENARIO,
-                                   "paired_version": paired.VERSION, "paired_context": paired.CONTEXT, "paired_questions": paired.QUESTIONS,
+                                   "paired_version": paired.VERSION, "feedback_compatible_versions":paired.FEEDBACK_COMPATIBLE_VERSIONS, "paired_context": paired.CONTEXT, "paired_questions": paired.QUESTIONS,
                                    "paired_questionnaire_version": paired.QUESTIONNAIRE_VERSION,
                                    "paired_questionnaire_hash": digest(paired.QUESTIONS),
                                    "collection_mode": "human_pilot" if self.server.store.human_pilot and not self.is_admin() else "engineering",

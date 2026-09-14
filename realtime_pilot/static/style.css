@@ -257,3 +257,34 @@ body.survey-page,body.preview-page{--muted-readable:#52665e}
 .survey-page .member-card[hidden]{display:none!important}
 .survey-page .member-extra h4{font-size:13px;color:#426457;margin:8px 0}
 #connection-status{color:#785719;font-size:14px;line-height:1.6}
+
+/* Adjacent before/after rows for each appliance share the same time axis. */
+.device-pair>h3{display:flex;align-items:center;gap:8px;background:#f0f4ef!important;color:#345447!important;margin:0;padding:10px 12px}
+.device-pair>h3 .appliance-icon{width:20px;height:20px;flex:none}
+.device-pair .schedule-row[data-side=original]{background:#f7f9fa}
+.device-pair .schedule-row[data-side=proposal]{background:#f4faf5}
+.device-pair .schedule-device>strong{font-size:12px}
+.device-pair .schedule-row{min-height:54px}
+
+/* Adjacent before/after tracks share one appliance heading and one time axis. */
+.device-pair-name{display:flex;align-items:center;gap:8px;position:sticky;left:10px;background:inherit}
+.device-pair .schedule-device{display:flex;align-items:center;height:100%;min-height:54px;padding:8px 12px}
+.device-pair .schedule-track{min-height:54px}
+.shared-axis,.device-pair .schedule-row{grid-template-columns:90px minmax(0,1fr)}
+.device-pair .schedule-row[data-side=original] .schedule-device{background:#f7f9fa}
+.device-pair .schedule-row[data-side=proposal] .schedule-device{background:#f4faf5}
+.device-pair+.device-pair{border-top:1px solid #dce4d7}
+
+.fit-timeline .shared-schedule{min-width:0}
+.timeline-zoom{display:flex;gap:6px;margin:0 0 8px}
+.timeline-zoom button{font-size:12px;padding:6px 10px;border:1px solid #d4dfd5;background:white;color:#496256;border-radius:6px}
+.timeline-zoom button[aria-pressed=true]{background:#e7f0e6;border-color:#a4bba7;color:#285c3f}
+@media(max-width:640px){
+ .fit-timeline .shared-axis,.fit-timeline .device-pair .schedule-row{grid-template-columns:60px minmax(0,1fr)}
+ .fit-timeline .schedule-device{padding-inline:6px}
+ .fit-timeline .time-axis .tick{font-size:9px}
+ .fit-timeline .schedule-bar{font-size:9px}
+ .fit-timeline .schedule-bar.short-bar>span{visibility:hidden}
+}
+
+.fit-timeline.schedule-scroll::after{display:none}

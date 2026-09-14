@@ -96,6 +96,10 @@ def verify(environment):
     body={k:v for k,v in environment.items() if k!='environment_hash'}
     if environment.get('version')!=VERSION or environment.get('environment_hash')!=digest(body):
         raise ValueError('本次模拟环境记录已变化')
+    import math
+    end=environment.get('comparison_end_sim_h',24)
+    if not 24<=end<=48 or abs(end*6-round(end*6))>1e-6 or environment.get('simulation_days')!=math.ceil(end/24):
+        raise ValueError('模拟环境比较范围不一致')
     from resource_versions import resolve_catalog,safe_asset
     catalog_path,base=resolve_catalog(CATALOG,environment['resource_catalog_sha256'])
     c=json.loads(catalog_path.read_text())
@@ -110,7 +114,7 @@ def verify(environment):
         if not c.get('validated_dates',{}).get(model['id']+'|'+weather['id']):
             raise ValueError('此住宅与天气组合缺少基础验证')
         selected,expected=annual_sample(safe_asset(base,weather['epw'],weather['epw_sha256']),sampling.get('questionnaire_context'))
-        if selected!=environment['simulation_start_date'] or expected!=sampling or environment.get('simulation_days')!=1:
+        if selected!=environment['simulation_start_date'] or expected!=sampling or environment.get('simulation_days') not in (1,2):
             raise ValueError('全年日期抽样记录不一致')
     elif environment['simulation_start_date'] not in c.get('validated_dates',{}).get(model['id']+'|'+weather['id'],[]):
         raise ValueError('此日期未通过该住宅与天气组合的验证')
@@ -147,6 +151,9 @@ def localize_idf(idf,epw,ddy):
 
 def bind_scenario(scenario,profile,seed,context=None):
     env=resolve(profile,seed,context)
+    env['simulation_days']=scenario['evaluation_window']['simulation_days']
+    env['comparison_end_sim_h']=scenario['evaluation_window']['end_sim_h']
+    env['environment_hash']=digest({k:v for k,v in env.items() if k!='environment_hash'})
     scenario['environment']=env
     scenario['simulation_start_date']=env['simulation_start_date']
     scenario['building']={'source':env['building']['id'],'binding':'questionnaire_matched_research_prototype',

@@ -7,7 +7,8 @@ from proposal_contract import DEVICES, TASKS, executable, at
 from native_support import physical_defaults, ordinary
 from survey_time import LEGACY_STARTS, start_hour, clock_options, duration_options
 
-VERSION = 'eb.paired_ep.v3.5'
+VERSION = 'eb.paired_ep.v3.6'
+FEEDBACK_COMPATIBLE_VERSIONS = (VERSION, 'eb.paired_ep.v3.5')
 QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.5'
 QUESTIONS = [deepcopy(q) for q in PROPOSAL_PROFILE_QUESTIONS if q['id'] != 'F_ROUTINES']
 for q in QUESTIONS:
@@ -199,7 +200,7 @@ def prepare(profile, seed, *, environment_required=False, context=None):
     from native_scenario import window,START_DATE
     scenario['evaluation_window']=window(original)
     scenario['simulation_start_date']=START_DATE
-    scenario['experiment_parameters']={'simulation_days':1,'source':'questionnaire single-day comparison; not an EB default'}
+    scenario['experiment_parameters']={'simulation_days':scenario['evaluation_window']['simulation_days'],'source':'questionnaire shared overnight comparison; not an EB default'}
     scenario['collection_engine']='eb_native_loop'
     if context is not None:
         from date_sampling import verify_context
@@ -218,15 +219,16 @@ def validate(original,plan,scenario):
     if scenario.get('collection_engine')=='eb_native_loop' and (not isinstance(plan,dict) or plan.get('execution_mode')!='eb_native_loop'):
         raise ValueError('Legacy controller output cannot enter a native collection job')
     if isinstance(plan,dict) and plan.get('execution_mode')=='eb_native_loop':
-        if scenario.get('collection_engine')!='eb_native_loop' or plan.get('horizon_end_sim_h')!=24:
+        horizon=scenario['evaluation_window']['end_sim_h']
+        if scenario.get('collection_engine')!='eb_native_loop' or plan.get('horizon_end_sim_h')!=horizon:
             raise ValueError('Native scenario/plan mismatch')
         days=plan.get('decisions')
-        if not isinstance(days,list) or len(days)!=1 or not any(days):raise ValueError('Missing native decision history')
+        if not isinstance(days,list) or len(days)!=scenario['evaluation_window']['simulation_days'] or not any(days):raise ValueError('Missing native decision history')
         for day in days:
             previous=-1
             for row in day:
                 h=row.get('h')
-                if type(h) not in (int,float) or not previous<=h<=24:raise ValueError('Invalid native decision chronology')
+                if type(h) not in (int,float) or not previous<=h<=horizon:raise ValueError('Invalid native decision chronology')
                 previous=h
         if not isinstance(plan.get('control_trace_hash'),str) or len(plan['control_trace_hash'])!=64:
             raise ValueError('Missing native execution trace hash')
@@ -293,10 +295,13 @@ def display_pair(original,plan,scenario,prediction):
 def participant_view(display):
     """Exact texts and rounding shown to the human, also used as SFT input."""
     prediction=display['prediction']; metrics=[]
+    window=prediction.get('comparison_window',{})
+    extended=window.get('end_sim_h',24)>24 and window.get('start_sim_h',0)==0
+    period='比较时段' if extended else '当日'
     if prediction.get('cost_unit')=='normalized TOU cost/kWh':
-        cost_metric=('当日相对用电成本','daily_cost_normalized','相对成本单位')
-    else:cost_metric=('当日电费（无补偿）','daily_cost_cny','元')
-    for label,key,unit in [('当日用电量','daily_kwh','度'),cost_metric,('响应时段用电量','event_kwh','度'),('响应时段平均功率','event_mean_kw','kW')]:
+        cost_metric=(period+'相对用电成本','daily_cost_normalized','相对成本单位')
+    else:cost_metric=(period+'电费（无补偿）','daily_cost_cny','元')
+    for label,key,unit in [(period+'用电量','daily_kwh','度'),cost_metric,('响应时段用电量','event_kwh','度'),('响应时段平均功率','event_mean_kw','kW')]:
         metrics.append({'label':label, **{side:f"{prediction[side][key]:.2f} {unit}" for side in ('original','proposal')}})
     metrics.append({'label':'响应时段居住区域室温',**{side:f"{prediction[side]['event_temp_min_c']:.1f}—{prediction[side]['event_temp_max_c']:.1f}℃" for side in ('original','proposal')}})
     for metric in display.get('comparison_metrics',[]):metrics.append(deepcopy(metric))
@@ -310,7 +315,8 @@ def participant_view(display):
     normalized=prediction.get('cost_unit')=='normalized TOU cost/kWh'
     notes=['以下为模拟结果，不是您家的实测用电。']
     if normalized:notes.append('相对用电成本越低，表示按本次分时价格计算的成本越低；不是人民币金额。')
-    notes.append('只统计图中比较时段，跨夜任务的后续用电未计入。')
+    if extended:notes.append('电量与成本统计至'+window['end_label']+'，包含图中次日时段。')
+    else:notes.append('只统计图中比较时段，跨夜任务的后续用电未计入。')
     if '缺少部分电器动态接口' in display.get('execution_notice',''):
         notes.append('部分电器的调整尚未计入用电量，不能据此判断整体节电效果。')
     view={'render_contract_version':'eb.participant_view.v2',

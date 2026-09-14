@@ -2,7 +2,7 @@
 from math import isfinite
 from evaluation_window import clock
 
-VERSION='eb.native_service_evidence.v1'
+VERSION='eb.native_service_evidence.v2'
 
 
 def evidence(clock_audit, physical, household, horizon=24):
@@ -19,14 +19,15 @@ def evidence(clock_audit, physical, household, horizon=24):
         result['ev']={'source':'native EVCharger state at zone boundaries; not measured battery data',
                       'status':'observed' if complete else 'unavailable'}
         if complete:
+            observed=[r for r in clock_audit.get('ev_state_trace',[]) if 0<=r['start_h']<=horizon+1e-8]
             departure=rows[-1]['departure_h'];arrival=rows[-1]['arrival_h']
             next_departure=departure+(24 if departure<=arrival else 0)
             result['ev'].update(observed_start_h=rows[0]['start_h'],day_end_soc=rows[-1]['soc_after'],target_soc=rows[-1]['target_soc'],
                 departure_after_arrival_h=next_departure,
-                departure_after_arrival_observed=any(abs(r['start_h']-next_departure)<1e-6 and r['departure_occurred'] for r in rows),
+                departure_after_arrival_observed=any(abs(r['start_h']-next_departure)<1e-6 and r['departure_occurred'] for r in observed),
                 departures=[{'time_h':r['start_h'],'soc_before_drive':r['soc_before'],
                              'target_soc':r['target_soc'],'target_met':r['soc_before']>=r['target_soc']-1e-6}
-                            for r in rows if r['departure_occurred']])
+                            for r in observed if r['departure_occurred']])
     water=household['appliances'].get('water_heater',{})
     if water.get('present'):
         bath=float(water.get('bath_required_h',21))
@@ -49,10 +50,19 @@ def service_text(device, run):
     if device=='home_ev':
         ev=data.get('ev',{})
         if ev.get('status')!='observed':return None
-        pieces=[f"{clock(d['time_h'])}离家前电量 {d['soc_before_drive']:.1%}（目标 {d['target_soc']:.0%}，{'达到' if d['target_met'] else '未达到'}）" for d in ev['departures']]
-        pieces.append(f"24:00电量 {ev['day_end_soc']:.1%}")
+        pieces=[f"{clock(d['time_h'])}离家前电量 {d['soc_before_drive']:.1%}（目标 {d['target_soc']:.0%}，{'达到' if d['target_met'] else '未达到'}）" for d in ev['departures'] if abs(d['time_h']-ev['departure_after_arrival_h'])<1e-6 or not ev['departure_after_arrival_observed']]
+        if not any(abs(d['time_h']-data.get('horizon_h',24))<1e-6 for d in ev['departures']):
+            pieces.append(f"{clock(data.get('horizon_h',24))}电量 {ev['day_end_soc']:.1%}")
         return '；'.join(pieces)
     water=data.get('water_heater',{})
     if water.get('status')!='observed':return None
     r=water['tank_interval']
     return f"{clock(r['start_h'])}—{clock(r['end_h'])}水箱温度 {r['mean_c']:.1f}℃（平均）"
+
+
+def task_outcomes(clock_audit, horizon):
+    """Exclude a terminal callback's prospective interval from completion claims."""
+    rows=[r for r in clock_audit.get('task_state_trace',[]) if r['start_h']<horizon-1e-8 and r['end_h']<=horizon+1e-8]
+    if not rows:return {}
+    if abs(rows[-1]['end_h']-horizon)>1e-6:raise ValueError('Task observation does not cover comparison cutoff')
+    return rows[-1]['first_day_tasks']

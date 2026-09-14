@@ -27,7 +27,7 @@ def occupancy_schedule(profile):
             'interpretation':'study occupancy mapping; variable/partial maps to 0.5, unasked 22:00-08:00 uses study default 1, 6_plus to 6; not observed occupancy'}
 
 
-def build_household_config(profile, questions, original, household_id):
+def build_household_config(profile, questions, original, household_id, simulation_days=None):
     public=visible_profile(profile,questions)
     facts={};tags={};onboarding=[];sources={};reported_preferences={}
     # Attitudes first to keep all four even if a native memory view limits length.
@@ -71,8 +71,9 @@ def build_household_config(profile, questions, original, household_id):
         if record.get('active'):
             day='次日' if record['deadline_h']<record['earliest_h'] else '当日'
             deadlines[device]=f"{day}{clock_label(record['deadline_h'])} 前完成；可开始时刻 {clock_label(record['earliest_h'])}；时长 {round(record['duration_h']*60)} 分钟"
-    from native_scenario import SIMULATION_DAYS
-    simulation_days=SIMULATION_DAYS
+    if simulation_days is None:
+        from native_scenario import window
+        simulation_days=window(original)['simulation_days']
     constraints={'appliance_deadlines':deadlines}
     if appliances['ev'].get('present'):constraints['next_departure_h']=appliances['ev']['departure_h']
     schedule=occupancy_schedule(profile)
@@ -126,7 +127,8 @@ def build_household_config(profile, questions, original, household_id):
 def ensure_household_config(request):
     from paired_contract import QUESTIONS
     household_id=request.get('household_id') or request.get('household_config',{}).get('id') or 'unidentified_local_fixture'
-    expected=build_household_config(request['profile'],request.get('questionnaire_snapshot',QUESTIONS),request['original_plan'],household_id)
+    expected=build_household_config(request['profile'],request.get('questionnaire_snapshot',QUESTIONS),request['original_plan'],household_id,
+        simulation_days=request.get('scenario',{}).get('evaluation_window',{}).get('simulation_days',1))
     environment=request.get('scenario',{}).get('environment')
     if environment:
         expected['simulation_environment']=deepcopy(environment)

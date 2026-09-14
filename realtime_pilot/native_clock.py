@@ -22,7 +22,7 @@ def synchronized_appliances(runner, suite_class, loops):
              'substep_policy': 'hold_last_device_power_and_actuator_values',
              'comparison_tolerance_h': TIME_TOLERANCE_H,
              'zone_step_hours': [], 'model_steps': 0, 'held_substeps': 0,
-             'power_transitions': [], 'ev_state_trace': []}
+             'power_transitions': [], 'ev_state_trace': [], 'task_state_trace': []}
 
     def step(suite, sim_h, dt_h):
         if not any(getattr(loop, 'appliance_suite', None) is suite for loop in loops):
@@ -42,6 +42,8 @@ def synchronized_appliances(runner, suite_class, loops):
             before_soc=ev._soc
             departed_before=set(ev._departed)
         powers = original_step(suite, tick * dt_h + TIME_TOLERANCE_H, dt_h)
+        tasks={name:{'completed':app._days[0].completed} for name,app in getattr(suite,'_shiftable',{}).items() if app.present}
+        if tasks:audit['task_state_trace'].append({'start_h':tick*dt_h,'end_h':(tick+1)*dt_h,'first_day_tasks':tasks})
         if observe_ev:
             audit['ev_state_trace'].append({
                 'start_h':tick*dt_h,'end_h':(tick+1)*dt_h,

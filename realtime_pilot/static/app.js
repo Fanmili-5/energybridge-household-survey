@@ -1,4 +1,5 @@
 "use strict";
+function feedbackCompatible(job){return (schema.feedback_compatible_versions||[schema.paired_version]).includes(job.result.schema_version);}
 const $ = id => document.getElementById(id);
 let schema, currentJob, timer;
 const adminView=location.pathname==='/admin/survey';
@@ -142,7 +143,7 @@ function restore(profile){for(const q of schema.profile_questions){if(q.type==="
 const devices={ac:"空调",washer:"洗衣机",dishwasher:"洗碗机",dryer:"烘干机",electric_water_heater:"电热水器",home_ev:"家用电动汽车充电"};
 const scoreFields={score:"整体：这份方案总体适合您家吗？",comfort_score:"舒适：室温和生活安排的变化合适吗？",energy_score:"用电与费用：模拟用电量和费用符合您家期望吗？",vpp_score:"响应安排：您对本次错峰用电的处理方式满意吗？请考虑安排调整和自主决定体验。"};
 let generation=0,pendingSubmit=false;
-const UI_VERSION="eb.survey_ui.v6.10";
+const UI_VERSION="eb.survey_ui.v6.11";
 const RESEARCH_NOTICE_VERSION="eb.research_notice.v2";
 let savedReceipt=null,savedHouseholdRecord=null;
 const pendingDecisions=new Set(),pendingRequests=new Map();
@@ -175,13 +176,13 @@ function availability(){
 }
 function decisionDraftKey(job){return 'eb:decision-draft:'+job.id+':'+job.result.display_hash;}
 function saveDecisionDraft(){
- const j=currentJob;if(!j||j.status!=='complete'||j.decision_saved||j.result.schema_version!==schema.paired_version)return;
+ const j=currentJob;if(!j||j.status!=='complete'||j.decision_saved||!feedbackCompatible(j))return;
  const draft={choice:document.querySelector('input[name="decision"]:checked')?.value||null,scores:Object.fromEntries(Object.keys(scoreFields).map(k=>[k,scoreInputs(k)[0]?.value||''])),comment:$("decision-reason").value};
  try{draftStorage.setItem(decisionDraftKey(j),JSON.stringify(draft));$("decision-status").textContent="评价草稿已保存在此浏览器，尚未提交。";}catch{$("decision-status").textContent="此浏览器无法保存评价草稿，请保持页面打开并提交。";}
 }
 function restoreDecisionDraft(job){
  if(job.decision_saved){try{draftStorage.removeItem(decisionDraftKey(job));}catch{}return;}
- if(job.result.schema_version!==schema.paired_version)return;
+ if(!feedbackCompatible(job))return;
  try{const d=JSON.parse(draftStorage.getItem(decisionDraftKey(job))||'null');if(!d)return;
  for(const x of document.getElementsByName('decision'))x.checked=x.value===d.choice;
  $("decision-reason").value=typeof d.comment==='string'?d.comment:'';
@@ -262,7 +263,7 @@ function renderScores(legacy=false){
 }
 function initialPlan(job){EBTime.initial($("initial-plan"),job.original_plan);}
 function showPair(job){
- renderScores(job.result.schema_version!==schema.paired_version);
+ renderScores(!feedbackCompatible(job));
  const d=job.result.display,view=d.participant_view||d;
  EBView.render($("plan-visual"),view);
  $("outcome-cards").replaceChildren();EBView.outcomes($("outcome-cards"),view);
@@ -280,7 +281,7 @@ function showPair(job){
    EBView.temperature(legacy,view);
  }
  const required=job.result.feedback_contract?.required_scores||[];for(const key of Object.keys(scoreFields))for(const input of scoreInputs(key))input.required=required.includes(key);$("decision-reason").required=!!job.result.feedback_contract?.required_comment;$("score-hint").textContent="1 很不合适 · 5 很合适，可填小数"+(required.length?"":"（旧记录可留空）");
- $("decision-form").hidden=false;const saved=job.decision_saved;for(const x of $("decision-form").querySelectorAll("input,select,textarea,button"))x.disabled=saved||pendingDecisions.has(job.id)||job.result.schema_version!==schema.paired_version;if(saved){for(const x of document.getElementsByName("decision"))x.checked=x.value===job.decision.choice;$("decision-reason").value=job.decision.comment??job.decision.reason??"";for(const key of Object.keys(scoreFields)){const value=job.decision[key]??job.decision[({score:"overall_score",energy_score:"price_score",vpp_score:"control_score"})[key]];for(const input of scoreInputs(key)){input.value=value??'';input._scoreSync?.();}}}$("decision-status").textContent=saved?"选择、四项评分和原因已保存。未控制真实电器。":"";restoreDecisionDraft(job);
+ $("decision-form").hidden=false;const saved=job.decision_saved;for(const x of $("decision-form").querySelectorAll("input,select,textarea,button"))x.disabled=saved||pendingDecisions.has(job.id)||!feedbackCompatible(job);if(saved){for(const x of document.getElementsByName("decision"))x.checked=x.value===job.decision.choice;$("decision-reason").value=job.decision.comment??job.decision.reason??"";for(const key of Object.keys(scoreFields)){const value=job.decision[key]??job.decision[({score:"overall_score",energy_score:"price_score",vpp_score:"control_score"})[key]];for(const input of scoreInputs(key)){input.value=value??'';input._scoreSync?.();}}}$("decision-status").textContent=saved?"选择、四项评分和原因已保存。未控制真实电器。":"";restoreDecisionDraft(job);
 }
 function syncHistoryVisibility(){const panel=document.querySelector('.history-panel');if(panel)panel.hidden=!(savedReceipt||panel.dataset.hasRecords==='true');}
 function renderHistory(jobs){const records=jobs.filter(j=>j.flow==="paired_ep_v1"),panel=document.querySelector('.history-panel');$("history").replaceChildren();if(panel)panel.dataset.hasRecords=String(!!records.length);syncHistoryVisibility();const names={queued:"排队中",running:"计算中",complete:"等待评价",failed:"计算失败",timeout:"超时",cancelled:"已取消",interrupted:"已中断",expired:"排队已结束"};for(const j of records.slice().reverse()){const b=el("button",`${new Date(j.created_at*1000).toLocaleString()} · ${j.decision_saved?"评价已保存":names[j.status]}`,"secondary");b.type="button";b.disabled=!!pendingSubmit;b.onclick=async()=>{if(!pendingSubmit){const loaded=await loadJob(j.id);if(loaded)$(currentJob?.status==='complete'?'result-panel':'job-panel').scrollIntoView({block:'start'});}};$("history").append(b);}}

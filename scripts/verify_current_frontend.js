@@ -148,6 +148,18 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   assert(await page.locator('.schedule-board').count()>0);
   const view=await page.evaluate(()=>currentJob.result.display.participant_view);
   assert.strictEqual(view.render_contract_version,'eb.participant_view.v2');
+  assert(view.schedule_chart.end_h>24,'Actual comparison must include next-day simulation');
+  assert(view.notice.includes('次日'));
+  const pairs=await page.locator('.device-pair').evaluateAll(nodes=>nodes.map(n=>({device:n.dataset.device,rows:[...n.querySelectorAll('.schedule-row')].map(r=>({device:r.dataset.device,side:r.dataset.side}))})));
+  assert.strictEqual(pairs.length,view.schedule_chart.rows.length);
+  for(const pair of pairs)assert.deepStrictEqual(pair.rows,[{device:pair.device,side:'original'},{device:pair.device,side:'proposal'}]);
+  assert(view.metrics.some(m=>m.label==='比较时段用电量'));
+  assert(await page.locator('.schedule-scroll').evaluate(e=>e.scrollWidth<=e.clientWidth+1),'Full timeline including next day fits by default');
+  await page.getByRole('button',{name:'放大查看',exact:true}).click();
+  assert.strictEqual(await page.getByRole('button',{name:'放大查看',exact:true}).getAttribute('aria-pressed'),'true');
+  await page.getByRole('button',{name:'完整时段',exact:true}).click();
+
+
   assert(await page.locator('#legacy-evidence').isHidden());
   assert.strictEqual(await page.locator('#result-panel details').count(),0);
   for(const metric of view.metrics){

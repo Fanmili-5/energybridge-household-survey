@@ -21,32 +21,42 @@ window.EBView=(()=>{
     const context=n('div',undefined,'schedule-context');
     const contextItems=[['错峰',`${clock(c.event_start_h)}—${clock(c.event_end_h)}`],['比较至',c.end_label]];if(Number.isFinite(c.notification_h))contextItems.unshift(['通知',clock(c.notification_h)]);
     for(const [label,value] of contextItems){const item=n('span');item.append(document.createTextNode(label+' '),n('strong',value));context.append(item);}root.append(context);
-    const board=n('div',undefined,'schedule-board'),scroll=n('div',undefined,'schedule-scroll');scroll.tabIndex=0;scroll.setAttribute('aria-label','电器运行时间：上方调整前，下方调整后；可左右滑动');
+    const board=n('div',undefined,'schedule-board'),scroll=n('div',undefined,'schedule-scroll');scroll.tabIndex=0;scroll.setAttribute('aria-label','完整电器时间轴：每个电器上方调整前，下方调整后');scroll.classList.add('fit-timeline');
     const canvas=n('div',undefined,'shared-schedule'),axis=n('div',undefined,'shared-axis');axis.append(n('span','电器 / 时间','schedule-axis-label'));const scale=n('div',undefined,'time-axis');
     for(const h of ticks(c)){const tick=n('span',clock(h),'tick');tick.style.left=pct(h,c)+'%';if(h===c.start_h)tick.classList.add('first');if(h===c.end_h)tick.classList.add('last');scale.append(tick);}axis.append(scale);canvas.append(axis);
     const detail=n('p','点选运行条，查看具体时间与设定。','schedule-detail');detail.setAttribute('aria-live','polite');
     function show(label,device){detail.textContent=label;for(const row of canvas.querySelectorAll('.schedule-row'))row.classList.toggle('highlighted',row.dataset.device===device);}
-    for(const side of ['original','proposal']){
-      const group=n('section',undefined,'schedule-group '+side),heading=n('h3');heading.append(n('strong',side==='original'?'调整前':'调整后'));group.append(heading);
-      for(const row of c.rows){
-        const device=deviceIds[row.device]||'none',line=n('div',undefined,'schedule-row device-'+device);line.dataset.device=device;line.dataset.side=side;
-        const label=n('div',undefined,'schedule-device');label.append(icon(device),n('span',row.device));const times=n('small',undefined,'schedule-times');for(const span of row[side]||[])times.append(n('span',`${clock(Math.max(c.start_h,span.start_h))}—${clock(Math.min(c.end_h,span.end_h))} · ${span.label}`));if(!times.childNodes.length)times.append(n('span',row.active?'没有运行记录':'本情境不使用'));label.append(times);const track=n('div',undefined,'schedule-track');decoration(track,c);line.append(label,track);
+    for(const row of c.rows){
+      const device=deviceIds[row.device]||'none',group=n('section',undefined,'schedule-group device-pair');group.dataset.device=device;
+      const heading=n('h3'),name=n('strong',undefined,'device-pair-name');name.append(icon(device),document.createTextNode(row.device));heading.append(name);group.append(heading);
+      for(const side of ['original','proposal']){
+        const line=n('div',undefined,'schedule-row device-'+device);line.dataset.device=device;line.dataset.side=side;
+        const label=n('div',undefined,'schedule-device');label.append(n('strong',side==='original'?'调整前':'调整后'));
+        const track=n('div',undefined,'schedule-track');decoration(track,c);line.append(label,track);
         let count=0;for(const span of row[side]||[]){const start=Math.max(c.start_h,span.start_h),end=Math.min(c.end_h,span.end_h);if(end<=start)continue;count++;
           const text=`${side==='original'?'调整前':'调整后'} · ${row.device} · ${span.description}`,bar=n('button',undefined,'schedule-bar '+side);bar.type='button';bar.style.left=pct(start,c)+'%';bar.style.width=(pct(end,c)-pct(start,c))+'%';if((end-start)/(c.end_h-c.start_h)<.07)bar.classList.add('short-bar');bar.append(n('span',span.label));bar.title=text;bar.setAttribute('aria-label',text);bar.onfocus=bar.onclick=()=>show(text,device);track.append(bar);
         }
-        if(!count)track.append(n('span',row.active?'没有运行记录':'本情境不使用','schedule-empty'));group.append(line);
+        if(!count)track.append(n('span',row.active?'未运行':'本情境不使用','schedule-empty'));group.append(line);
       }
       canvas.append(group);
     }
-    scroll.append(canvas);board.append(scroll,detail);root.append(board);root.append(n('p','左右滑动时间轴可查看全天。','schedule-mobile-hint'));
-    requestAnimationFrame(()=>{
-      if(!scroll.isConnected||scroll.scrollWidth<=scroll.clientWidth)return;
-      const track=canvas.querySelector('.schedule-track');if(!track)return;
-      const middle=(c.event_start_h+c.event_end_h)/2;
-      const x=track.getBoundingClientRect().left-scroll.getBoundingClientRect().left+scroll.scrollLeft+pct(middle,c)/100*track.clientWidth;
-      const labelWidth=canvas.querySelector('.schedule-device')?.offsetWidth||0;
-      scroll.scrollLeft=Math.max(0,x-(labelWidth+scroll.clientWidth)/2);
-    });
+    scroll.append(canvas);board.append(scroll,detail);
+    const zoom=n('div',undefined,'timeline-zoom'),fit=n('button','完整时段'),expand=n('button','放大查看');
+    for(const b of [fit,expand])b.type='button';
+    function setZoom(large){
+      scroll.classList.toggle('fit-timeline',!large);fit.setAttribute('aria-pressed',String(!large));expand.setAttribute('aria-pressed',String(large));
+      scroll.setAttribute('aria-label',large?'电器时间轴已放大，可左右滑动查看当日与次日':'完整电器时间轴：每个电器上方调整前，下方调整后');
+      requestAnimationFrame(()=>{
+        if(!large){scroll.scrollLeft=0;return;}
+        const track=canvas.querySelector('.schedule-track');if(!track)return;
+        const middle=(c.event_start_h+c.event_end_h)/2;
+        const x=track.getBoundingClientRect().left-scroll.getBoundingClientRect().left+scroll.scrollLeft+pct(middle,c)/100*track.clientWidth;
+        const labelWidth=canvas.querySelector('.schedule-device')?.offsetWidth||0;
+        scroll.scrollLeft=Math.max(0,x-(labelWidth+scroll.clientWidth)/2);
+      });
+    }
+    fit.onclick=()=>setZoom(false);expand.onclick=()=>setZoom(true);zoom.append(fit,expand);root.append(zoom,board);setZoom(false);
+    const hint=n('p','放大后可左右滑动；点选运行条查看具体时间。','schedule-mobile-hint');root.append(hint);
     const legend=n('div',undefined,'schedule-legend');legend.append(n('span','浅黄色：错峰时段'+(Number.isFinite(c.notification_h)?' · 虚线：通知时刻':'')));root.append(legend);
     if(c.note)root.append(n('p',c.note,'hint schedule-note'));
   }

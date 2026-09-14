@@ -31,7 +31,7 @@ class MechanismTests(unittest.TestCase):
             c={'models':[m],'weather':[w],'validated_dates':{'m|w':['2007-07-01']}}
             path=resources/'catalog.json';path.write_text(json.dumps(c));version=freeze(path)
             self.assertEqual(freeze(path),version)
-            e={'version':env.VERSION,'resource_catalog_sha256':version,'building':m,'weather':w,'simulation_start_date':'2007-07-01'};e['environment_hash']=digest(e)
+            e={'version':env.VERSION,'resource_catalog_sha256':version,'building':m,'weather':w,'simulation_start_date':'2007-07-01','simulation_days':1};e['environment_hash']=digest(e)
             path.write_text(json.dumps({**c,'new_metadata':True}));(resources/'weather.epw').write_text('new weather')
             with patch.object(env,'CATALOG',path):
                 files=env.verify(e);self.assertEqual(files[1].read_text(),'weather.epw')

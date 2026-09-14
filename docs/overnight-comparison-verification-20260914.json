@@ -1,0 +1,47 @@
+{
+  "date": "2026-09-14",
+  "paired_version": "eb.paired_ep.v3.6",
+  "ui_version": "eb.survey_ui.v6.11",
+  "upstream_modified": false,
+  "paid_model_calls": 0,
+  "backend": {
+    "tests": 202,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "seconds": 47.742,
+    "energyplus": "24.1",
+    "command": "EB_TEST_NATIVE_EP=1 EPLUS_ROOT=/Applications/EnergyPlus-24-1-0 .venv/bin/python scripts/test_offline.py"
+  },
+  "native_coverage": [
+    "original planning callback AST equality",
+    "legacy single-day baseline versus unmodified upstream entry",
+    "summer and winter paired EP with fixed model replies",
+    "three regional baselines",
+    "Dec31-Jan1 clock and SQLite rollover",
+    "32-hour meter versus native tariff energy sum",
+    "32:10 cutoff on ten-minute grid",
+    "EV departure at exact cutoff before driving",
+    "task completion after cutoff excluded",
+    "incomplete or mismatched horizon rejected"
+  ],
+  "browser": {
+    "viewports": [
+      390,
+      1365
+    ],
+    "passed": true,
+    "steps": [
+      "questionnaire and member drafts",
+      "CAPTCHA rejection and submission",
+      "waiting to result navigation",
+      "same-appliance adjacent rows",
+      "whole next-day axis fits by default",
+      "zoom toggles",
+      "decimal feedback and reason",
+      "reload and verified SFT candidate export"
+    ],
+    "source": "disposable local HTTP/SQLite with native EP and fixed model replies; synthetic answers"
+  },
+  "live_deployment": "pending"
+}

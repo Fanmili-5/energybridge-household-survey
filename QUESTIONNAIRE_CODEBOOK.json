@@ -1,7 +1,7 @@
 {
   "schema_version": "eb.persona_questionnaire.v4.5",
   "status": "runtime_authoritative",
-  "paired_flow_version": "eb.paired_ep.v3.5",
+  "paired_flow_version": "eb.paired_ep.v3.6",
   "unit": "one household represented by one respondent",
   "question_count": 66,
   "questions_sha256": "1bc982efe9c23fcd3ce7a44d327663021dcf0a829a8a5fc661a50b772fe18414",

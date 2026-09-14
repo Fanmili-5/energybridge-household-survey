@@ -76,3 +76,16 @@ class ServiceEvidenceTests(unittest.TestCase):
         rows=service_rows(original,empty,empty)
         self.assertEqual([r['device_id'] for r in rows],['washer'])
         self.assertEqual(rows[0]['proposal'],'截至24:00未完成')
+
+    def test_task_finishing_after_cutoff_is_not_already_complete(self):
+        from native_service_evidence import task_outcomes
+        from energybridge.simulation.appliance_sim import ApplianceSuite
+        cfg={'washer':{'present':True,'earliest_h':23,'latest_h':8,'preferred_h':7+50/60,'duration_h':20/60},
+             'dishwasher':{'present':False},'dryer':{'present':False}}
+        live=ApplianceSuite(cfg,sim_days=2);loop=SimpleNamespace(appliance_suite=live)
+        runner=SimpleNamespace(_write_appliance_actuators=lambda *a:None)
+        with synchronized_appliances(runner,ApplianceSuite,[loop]) as audit:
+            for i in range(1,193):live.step(i/6,1/6)
+        self.assertTrue(live._shiftable['washer']._days[0].completed)  # terminal 08:00--08:10 step
+        self.assertFalse(task_outcomes(audit,32)['washer']['completed'])
+        self.assertTrue(task_outcomes(audit,32+1/6)['washer']['completed'])

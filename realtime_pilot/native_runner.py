@@ -31,7 +31,7 @@ def _disable_sdk_retries(client):
 from native_support import upstream
 from resource_limits import ep_compute, api_request
 
-BOUNDARY_VERSION = 'eb.native_questionnaire_boundaries.v3'
+BOUNDARY_VERSION = 'eb.native_questionnaire_boundaries.v4'
 PINNED_RUNNER_SHA256 = '697a955ae9a5a34132c030c8d0f3b96ef6c0f63ec2caa24a2c1def23989de1d7'
 
 
@@ -50,12 +50,32 @@ def storage_snapshot(value):
     return result
 
 
-def collection_entry(runner):
+class ContinuousCalendarExchange:
+    """Keep EB's elapsed-day clock continuous when EP wraps Dec 31 to Jan 1."""
+    def __init__(self, exchange, start_date):
+        from datetime import date
+        self.exchange=exchange;self.year=date.fromisoformat(start_date).year
+        self.previous=None;self.offset=0
+    def __getattr__(self, name):return getattr(self.exchange,name)
+    def day_of_year(self, state):
+        import calendar
+        day=self.exchange.day_of_year(state)
+        if not self.exchange.warmup_flag(state) and self.exchange.kind_of_sim(state)==3:
+            if self.previous is not None and day<self.previous:
+                self.offset+=366 if calendar.isleap(self.year) else 365
+                self.year+=1
+            self.previous=day
+            return day+self.offset
+        return day
+
+
+def collection_entry(runner, horizon=None):
     """Compile the upstream entry with narrowly checked evaluation edits.
 
     No dummy scores and no fake roleplay source. A pending score cannot update
-    preference memory. Collection is restricted to one event on the last day,
-    so no subsequent control decision depends on unavailable human feedback.
+    preference memory. Later callbacks retain the existing preferences until a
+    real response exists. The optional cutoff is a collection boundary, not
+    another planning algorithm; the upstream planning callback stays intact.
     """
     if file_hash(Path(runner.__file__)) != PINNED_RUNNER_SHA256:
         raise RuntimeError('Pinned EB runner changed; source alignment must be re-audited')
@@ -76,8 +96,28 @@ def collection_entry(runner):
         if source.count(old) != 1:
             raise RuntimeError('Upstream scoring boundary changed; re-audit before running')
         source = source.replace(old, new)
+    if horizon is not None:
+        if not 0<horizon<=48 or abs(horizon*6-round(horizon*6))>1e-6:
+            raise ValueError('Invalid native comparison cutoff')
+        old='    ex = api.exchange'
+        if source.count(old)!=1:raise RuntimeError('Upstream exchange boundary changed')
+        source=source.replace(old, '    ex = _eb_calendar_exchange(api.exchange, start_date)')
+        old='    total_sim_hours = float(sim_days * 24)'
+        if source.count(old)!=1:raise RuntimeError('Upstream horizon boundary changed')
+        source=source.replace(old, f'    total_sim_hours = {float(horizon)!r}')
+        old='    api.runtime.callback_end_system_timestep_after_hvac_reporting(state, cb)'
+        if source.count(old)!=1:raise RuntimeError('Upstream callback registration changed')
+        source=source.replace(old,old+"\n"+"\n".join([
+            '    def stop_at_collection_cutoff(s):',
+            '        if not ex.warmup_flag(s) and ex.kind_of_sim(s)==3 and loop.start_day is not None:',
+            '            h=(ex.day_of_year(s)-loop.start_day)*24+ex.current_time(s)',
+            '            if h>=total_sim_hours-1e-6:',
+            '                api.runtime.stop_simulation(s)',
+            '    api.runtime.callback_end_zone_timestep_after_zone_reporting(state, stop_at_collection_cutoff)',
+        ]))
     # Store an inspectable derived function, not another hand-written controller.
     namespace = dict(runner.__dict__)
+    namespace['_eb_calendar_exchange']=ContinuousCalendarExchange
     exec(compile(source, str(UPSTREAM / 'questionnaire_score_boundary.py'), 'exec'), namespace)
     return namespace['run_family_agent'], source
 
@@ -206,10 +246,10 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
     window = scenario['evaluation_window']
     days = int(window['simulation_days'])
     event = deepcopy(scenario['event'])
-    # This restriction prevents a missing human score influencing later days.
-    if event['day'] != days or window['end_sim_h'] != days*24:
-        raise ValueError('Native collection requires the event on the final simulation day')
-    offset = (days-1)*24
+    horizon=float(window['end_sim_h'])
+    if window['start_sim_h']!=0 or event['day']!=1 or days!=math.ceil(horizon/24) or not 24<=horizon<=48:
+        raise ValueError('Invalid native comparison window')
+    offset = (event['day']-1)*24
     event.update(trigger_h=offset+event['trigger_h'], end_h=offset+event['end_h'])
     runner, _ = upstream()
     sys.modules.setdefault('family_runner', runner)
@@ -226,7 +266,7 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
         args.idf=template;args.epw=epw_source
         # city=tianjin deliberately retains the original normalized TOU experiment.
         # Weather is explicit and never resolved through that tariff key.
-        if scenario['simulation_start_date']!=environment['simulation_start_date'] or days!=environment['simulation_days']:
+        if scenario['simulation_start_date']!=environment['simulation_start_date'] or days!=environment['simulation_days'] or horizon!=environment.get('comparison_end_sim_h',24):
             raise ValueError('Scenario and resolved environment disagree')
     start_date=scenario.get('simulation_start_date','2007-07-01')
     idf, epw, price = _prepare_run_assets(args, folder, days, start_date, household)
@@ -275,14 +315,14 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
     _, suite_class = upstream()
     with patch.dict(os.environ, environment), synchronized_appliances(runner, suite_class, loops) as clock_audit, \
          native_boundaries(runner, household, controls, loops, progress, folder):
-        entry, derived_source = collection_entry(runner)
+        entry, derived_source = collection_entry(runner, horizon=horizon)
         with ep_compute():
             result = entry(idf_path=idf, epw_path=epw, output_dir=folder,
                            weather_label=scenario.get('environment',{}).get('weather',{}).get('city','Tianjin'), user_pref='', persona_config=household,
                            appliance_config=household['appliances'], method=method,
                            sim_days=days, start_date=start_date,
                            day_ahead_price_profile=price, vpp_events_config=[event],
-                           vpp_schedule_source='questionnaire_randomized_final_day_event',
+                           vpp_schedule_source='questionnaire_randomized_day_one_event',
                            pre_event_preference_callback=preferences,
                            post_event_score_callback=human_pending)
     # The original runner recreates its output directory at entry.
@@ -325,31 +365,32 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
         'version':BOUNDARY_VERSION, 'upstream_entry':'family_runner.run_family_agent',
         'upstream_sha256':file_hash(Path(runner.__file__)),
         'derived_entry_sha256':file_hash(folder/'collection_entry.py'),
-        'scope':'questionnaire input; native consent bypass; deferred human score; tracing; API admission; zone-synchronized appliance execution',
+        'comparison_window':deepcopy(window),
+        'scope':'shared simulation cutoff; questionnaire input; native consent bypass; deferred human score; tracing; API admission; zone-synchronized appliance execution',
         'execution_clock': clock_audit['version'],
         'method':method,'settings':environment, 'human_labels_generated':False,
         'physical_asset_binding':asset_binding})
     # Commands are effective from their native write time until the next write.
-    unique = {r['start_h']:r for r in controls if 0 <= r['start_h'] < days*24}
+    unique = {r['start_h']:r for r in controls if 0 <= r['start_h'] < horizon}
     rows = [unique[h] for h in sorted(unique)]
     for i, row in enumerate(rows):
-        row['end_h'] = rows[i+1]['start_h'] if i+1<len(rows) else days*24
+        row['end_h'] = rows[i+1]['start_h'] if i+1<len(rows) else horizon
     write_json(folder/'actuator_trace.json', rows)
     trace = result.daily_trace_rows
-    if not trace or max(r['sim_h'] for r in trace) < days*24-.25:
+    if not trace or max(r['sim_h'] for r in trace) < horizon-.25:
         raise RuntimeError('Incomplete native simulation timeline')
     from native_assets import read_series, find
-    physical = read_series(folder, horizon=days*24,start_date=start_date)
-    from native_service_evidence import evidence
-    services=evidence(clock_audit,physical,household,horizon=days*24)
+    physical = read_series(folder, horizon=horizon,start_date=start_date)
+    from native_service_evidence import evidence, task_outcomes
+    services=evidence(clock_audit,physical,household,horizon=horizon)
     write_json(folder/'service_evidence.json',services)
-    energy = find(physical, 'Electricity:Facility', horizon=days*24, unit='J')
-    temperature = find(physical, 'Zone Mean Air Temperature', 'living_unit1', horizon=days*24)
+    energy = find(physical, 'Electricity:Facility', horizon=horizon, unit='J')
+    temperature = find(physical, 'Zone Mean Air Temperature', 'living_unit1', horizon=horizon)
     electricity=[{'end_h':r['end_h'],'kwh':r['value']/3600000} for r in energy]
     temperatures=[{'end_h':r['end_h'],'c':r['value']} for r in temperature]
     write_json(folder/'ep_metric_series.json',{
         'schema_version':'eb.ep_metric_series.v1','source':'EnergyPlus SQLite output',
-        'simulation_start_date':start_date,'horizon_hours':days*24,
+        'simulation_start_date':start_date,'horizon_hours':horizon,
         'environment_hash':scenario.get('environment',{}).get('environment_hash'),
         'electricity_facility':{'unit':'kWh per interval','rows':electricity},
         'living_unit1_mean_air_temperature':{'unit':'degC','rows':temperatures}})
@@ -357,8 +398,7 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
             'temperature':temperatures, 'service_evidence':services,
             'electricity':electricity,
             'execution':{'services':data['appliance_results']},
-            'task_outcomes':{device:{'completed':app._days[days-1].completed}
-                             for device,app in loop.appliance_suite._shiftable.items() if app.present},
+            'task_outcomes':task_outcomes(clock_audit,horizon),
             'asset_binding':asset_binding,
             'idf_sha256':file_hash(idf), 'weather_sha256':file_hash(epw),
-            'decisions':[], 'horizon':days*24}
+            'decisions':[], 'horizon':horizon}

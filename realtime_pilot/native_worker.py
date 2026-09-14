@@ -61,9 +61,9 @@ def run(folder):
     decisions=[[{key:row[key] for key in decision_keys if key in row} for row in day]
                for day in proposal['native']['all_day_decisions']]
     plan={'execution_mode':'eb_native_loop','decisions':decisions,
-          'control_trace_hash':digest(proposal['controls']),'horizon_end_sim_h':24}
+          'control_trace_hash':digest(proposal['controls']),'horizon_end_sim_h':request['scenario']['evaluation_window']['end_sim_h']}
     baseline_plan={'execution_mode':'native_no_dr','routine_actions':baseline['native']['no_dr_routine_actions'],
-                   'control_trace_hash':digest(baseline['controls']),'horizon_end_sim_h':24}
+                   'control_trace_hash':digest(baseline['controls']),'horizon_end_sim_h':request['scenario']['evaluation_window']['end_sim_h']}
     artifacts={'date_validation.json':file_hash(folder/'date_validation.json')}
     for branch in ('baseline','proposal'):
         if request['scenario'].get('environment'):
@@ -81,7 +81,7 @@ def run(folder):
         'date_validation':validation,
         'feedback_contract':{'required_scores':['score','comfort_score','energy_score','vpp_score'],
                              'required_comment':True},
-        'assessment_stage':'after_simulated_trajectory_before_real_execution','assessment_cutoff_sim_h':24,
+        'assessment_stage':'after_simulated_trajectory_before_real_execution','assessment_cutoff_sim_h':request['scenario']['evaluation_window']['end_sim_h'],
         'human_evaluation_context':{'artifact':'proposal/native_result.json',
             'sha256':artifacts['proposal/native_result.json'],'field':'human_evaluation_pending',
             'count':len(proposal['native']['human_evaluation_pending'])},

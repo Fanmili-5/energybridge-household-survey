@@ -118,7 +118,7 @@ class RegionalTests(unittest.TestCase):
                 r=request(X_REGION=region,X_CITY=city,X_BUILDING=kind,X_FLOOR=floor)
                 result=run_native(Path(tmp)/'baseline',r,method='no_dr')
                 self.assertEqual(result['native']['llm_call_count'],0)
-                self.assertEqual(len(result['electricity']),144)
+                self.assertEqual(len(result['electricity']),round(r['scenario']['evaluation_window']['end_sim_h']*6))
                 self.assertEqual(result['asset_binding']['unbound_native_device_ports'],[])
                 self.assertEqual(result['asset_binding']['simulation_environment'],r['scenario']['environment'])
                 self.assertEqual(json.loads((Path(tmp)/'baseline/simulation_environment.json').read_text()),r['scenario']['environment'])
