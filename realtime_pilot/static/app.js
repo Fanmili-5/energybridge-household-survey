@@ -119,7 +119,7 @@ function restore(profile){for(const q of schema.profile_questions){if(q.type==="
 const devices={ac:"空调",washer:"洗衣机",dishwasher:"洗碗机",dryer:"烘干机",electric_water_heater:"电热水器",home_ev:"家用电动汽车充电"};
 const scoreFields={score:"整体：这份方案总体适合您家吗？",comfort_score:"舒适：室温和生活安排的变化合适吗？",energy_score:"用电与费用：模拟用电量和费用符合您家期望吗？",vpp_score:"响应安排：您对本次错峰用电的处理方式满意吗？请考虑安排调整和自主决定体验。"};
 let generation=0,pendingSubmit=false;
-const UI_VERSION="eb.survey_ui.v6.6";
+const UI_VERSION="eb.survey_ui.v6.7";
 const RESEARCH_NOTICE_VERSION="eb.research_notice.v2";
 let savedReceipt=null,savedHouseholdRecord=null;
 const pendingDecisions=new Set(),pendingRequests=new Map();
@@ -236,7 +236,7 @@ function renderScores(legacy=false){
   }
 }
 function initialPlan(job){EBTime.initial($("initial-plan"),job.original_plan);}
-function showPair(job){renderScores(job.result.schema_version!==schema.paired_version);const d=job.result.display;const view=d.participant_view||d;EBView.render($("plan-visual"),view);$("outcome-cards").replaceChildren();EBView.outcomes($("outcome-cards"),view);$("temperature-visual").replaceChildren();EBView.temperature($("temperature-visual"),view);$("comparison-title").textContent=view.title||"原安排和 EB 建议，有什么不同？";$("decision-question").textContent=view.question||"愿意采用这份调整吗？";$("result-panel").hidden=false;$("comparison").replaceChildren();for(const r of view.rows||[]){const tr=el("tr");tr.classList.toggle("changed",r.changed);tr.append(el("td",r.device),el("td",r.original),el("td",r.proposal),el("td",r.change));$("comparison").append(tr);}$("baseline-note").textContent=job.result.schema_version===schema.paired_version?"上方 DR 对照，下方 EB 调整；均为情境模拟，不控制真实电器。":"这是旧版历史结果。点击“修改家庭回答 / 新案例”可使用当前版本重新生成；历史回答保持原样。";$("change-note").textContent=view.has_changes?"请结合安排变化和模拟结果，判断是否符合全家的需要。":"在本次比较时间内，展示的电器运行记录没有变化。";$("forecast-note").textContent=view.notice||"";$("assumptions-note").textContent=view.assumptions||""; if(view.selection_reason)$("change-note").append(el("span"," 复查记录："+view.selection_reason)); if(view.execution_notice)$("forecast-note").append(el("span"," "+view.execution_notice));
+function showPair(job){renderScores(job.result.schema_version!==schema.paired_version);const d=job.result.display;const view=d.participant_view||d;EBView.render($("plan-visual"),view);$("outcome-cards").replaceChildren();EBView.outcomes($("outcome-cards"),view);$("temperature-visual").replaceChildren();EBView.temperature($("temperature-visual"),view);$("comparison-title").textContent=view.title||"原安排和 EB 建议，有什么不同？";$("decision-question").textContent=view.question||"愿意采用这份调整吗？";$("result-panel").hidden=false;$("unchanged-notice").hidden=view.has_changes!==false;$("comparison").replaceChildren();for(const r of view.rows||[]){const tr=el("tr");tr.classList.toggle("changed",r.changed);tr.append(el("td",r.device),el("td",r.original),el("td",r.proposal),el("td",r.change));$("comparison").append(tr);}$("baseline-note").textContent=job.result.schema_version===schema.paired_version?"上方 DR 对照，下方 EB 调整；均为情境模拟，不控制真实电器。":"这是旧版历史结果。点击“修改家庭回答 / 新案例”可使用当前版本重新生成；历史回答保持原样。";$("change-note").textContent=view.has_changes?"请结合安排变化和模拟结果，判断是否符合全家的需要。":"在本次比较时间内，展示的电器运行记录没有变化。";$("forecast-note").textContent=view.notice||"";$("assumptions-note").textContent=view.assumptions||""; if(view.selection_reason)$("change-note").append(el("span"," 复查记录："+view.selection_reason)); if(view.execution_notice)$("forecast-note").append(el("span"," "+view.execution_notice));
  $("decision-timeline").replaceChildren();if(view.timeline?.length){const details=el("details"),summary=el("summary",`查看 EB 的 ${view.timeline.length} 次调整与复查`),list=el("ol");details.append(summary);for(const step of view.timeline){const item=el("li",`${step.time} · ${step.trigger} · 当时室温 ${step.observed_temperature}`);if(step.explanation)item.append(el("p",step.explanation));list.append(item);}details.append(list);$("decision-timeline").append(details);}
  $("metrics").replaceChildren();
  const metricRows=view.metrics;
@@ -286,12 +286,16 @@ function renderJobState(job){
  const policy=$('queue-policy');policy.hidden=job.status!=='queued'||!finiteSeconds(job.queue_wait_limit_seconds)||job.queue_wait_limit_seconds===0;
  policy.textContent=policy.hidden?'':`本次排队等待上限 ${secondsText(job.queue_wait_limit_seconds)}；超时仅结束排队，已保存的家庭资料仍会保留。`;
  $('cancel').hidden=stopped;renderRetryControl(job);
+ $('job-panel').classList.toggle('is-generating',!stopped);
+ $('waiting-guidance').hidden=stopped;
+ $('waiting-guidance').textContent='家庭资料已保存，无需再次提交。完成后会自动进入方案对比和评分。';
 }
-async function loadJob(id){
+async function loadJob(id,acceptedJob=null){
  clearTimeout(timer);const token=++generation;
  if(loadingId!==id){loadingId=id;loadFailures=0;}
- try{const j=await api("/api/jobs/"+id);if(token!==generation||j.flow!=="paired_ep_v1")return false;
+ try{const j=acceptedJob||await api("/api/jobs/"+id);if(token!==generation||j.flow!=="paired_ep_v1")return false;
  loadFailures=0;$("error").hidden=true;
+ const enterResult=j.status==="complete"&&$("result-panel").hidden;
  if(currentJob?.id!==id)$("decision-form").reset();
  currentJob=j;writeBrowser(draftStorage,"eb:active-view",{mode:"job",id:j.id});$("profile-details").hidden=true;
  for(const [i,step] of [...document.querySelectorAll(".journey li")].entries())step.classList.toggle("active",i===(j.status==="complete"?2:1));
@@ -299,6 +303,7 @@ async function loadJob(id){
  $("job-panel").hidden=j.status==="complete";renderJobState(j);
  initialPlan(j);$("cancel").hidden=terminal.has(j.status);$("result-panel").hidden=true;$("decision-form").hidden=true;
  if(j.status==="complete")showPair(j);
+ if(acceptedJob||enterResult){const panel=$(j.status==="complete"?"result-panel":"job-panel");panel.scrollIntoView({block:"start"});panel.querySelector("h2").focus({preventScroll:true});}
  if(!terminal.has(j.status))timer=setTimeout(()=>pollJob(id,token),jobPollDelay(currentJob));
  else{try{const state=await api("/api/session");if(token===generation){schema.planning_enabled=state.planning_enabled;availability();renderHistory(state.jobs);}}catch{/* A history refresh must not erase the loaded result or draft. */}}
  return true;
@@ -346,7 +351,7 @@ async function requestSavedPlan(receipt,retrySourceId=null){
  const draft=readBrowser(draftStorage,draftKey());
  if(draft?.answers&&householdFingerprint({answers:draft.answers,questionnaire_version:schema.paired_questionnaire_version,questionnaire_hash:schema.paired_questionnaire_hash,questionnaire_context_hash:draft.questionnaire_context_hash})===receipt.fingerprint)removeBrowser(draftStorage,draftKey());
  writeBrowser(draftStorage,'eb:active-view',{mode:'job',id:j.id});
- const loaded=await loadJob(j.id);if(loaded)$(currentJob?.status==='complete'?'result-panel':'job-panel').scrollIntoView({block:'start'});
+ await loadJob(j.id,j);
 }
 async function planSavedHousehold(){
  if(!receiptMatches())throw new Error('回答已有改动，请先保存当前家庭资料。');
@@ -429,7 +434,7 @@ function showWizard(step,{scroll=false,push=false,save=true}={}){
  $('wizard-prev').disabled=$('wizard-next').disabled=!!pendingSubmit;
  $('wizard-next').textContent='下一步：'+(wizardLabels[steps[index+1]]||'');
  $('wizard-current-note').textContent=currentJob?'已提交的回答可分步查看；修改请新建案例。':'切换页面不会丢失已填内容，最后一步再统一提交。';
- document.querySelector('.survey-hero').hidden=wizardStep!==0;
+ document.querySelector('.survey-hero').hidden=!!currentJob||wizardStep!==0;
  if(push)window.history.pushState(null,'','#'+wizardHashes[wizardStep]);
  if(save&&!currentJob)saveDraft();
  if(scroll){$('wizard-heading').focus({preventScroll:true});$('wizard-nav').scrollIntoView({block:'start'});}
@@ -446,7 +451,7 @@ function validateWholeQuestionnaire(){for(const step of wizardSteps())if(!valida
 $('wizard-next').onclick=nextWizard;
 $('wizard-prev').onclick=()=>{if(pendingSubmit)return;const steps=wizardSteps();$('error').hidden=true;showWizard(steps[Math.max(0,steps.indexOf(wizardStep)-1)],{scroll:true,push:true});};
 for(const b of document.querySelectorAll('[data-wizard-step]'))b.onclick=()=>{if(!schema||pendingSubmit)return;const target=Number(b.dataset.wizardStep);if(target>wizardStep)for(const step of wizardSteps().filter(s=>s>=wizardStep&&s<target))if(!validateWizardStep(step))return;$('error').hidden=true;showWizard(target,{scroll:true,push:true});};
-window.addEventListener('popstate',()=>{if(!schema||pendingSubmit)return;const step=wizardHashes.indexOf(location.hash.slice(1));showWizard(step<0?0:step,{scroll:true});});
+window.addEventListener('popstate',()=>{if(!schema||pendingSubmit||currentJob)return;const step=wizardHashes.indexOf(location.hash.slice(1));showWizard(step<0?0:step,{scroll:true});});
 
 async function recoverReceipt(state){
  const local=readBrowser(draftStorage,'eb:household-receipt'),summaries=state.households||[];

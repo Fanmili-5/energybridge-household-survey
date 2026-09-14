@@ -203,3 +203,14 @@ body.survey-page,body.preview-page{--muted-readable:#52665e}
 .temperature-range-input{display:grid;grid-template-columns:1fr 1fr;gap:16px}.temperature-endpoint{display:grid;gap:8px;min-width:0}.temperature-endpoint label{font-size:12px}.temperature-endpoint input[type=number]{width:100%;min-width:0;padding:10px;border:1px solid #ccd6ce;border-radius:6px;font:inherit;background:#fff;color:#20332e}.temperature-endpoint input[type=range]{width:100%;accent-color:#488b76}.temperature-endpoint.unanswered input[type=range]{opacity:.45}
 
 #captcha-dialog{width:min(440px,calc(100vw - 32px));padding:24px;border:1px solid #ccd6ce;border-radius:14px;color:#20332e}#captcha-dialog::backdrop{background:rgba(17,38,31,.45)}#captcha-dialog h2{font-size:19px;margin:0 0 12px}.captcha-picture{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0}.captcha-picture img{max-width:100%;object-fit:contain;border-radius:6px}#captcha-answer{display:block;width:100%;padding:10px;margin:8px 0 18px;border:1px solid #afc7ba;border-radius:6px;font:600 22px monospace;letter-spacing:.2em;text-transform:uppercase}.captcha-actions{display:flex;justify-content:flex-end;gap:12px}#captcha-message{font-size:14px;min-height:3em}
+
+/* A submitted case is a separate waiting/result step, not another form page. */
+#profile-details[hidden],#unchanged-notice[hidden],#waiting-guidance[hidden]{display:none!important}
+#job-panel.is-generating{max-width:720px;margin:28px auto;padding:36px}
+#job-panel.is-generating #initial-plan{display:none}
+.waiting-guidance{font-size:16px;line-height:1.8}
+.waiting-indicator{display:none;height:5px;border-radius:4px;background:linear-gradient(90deg,#dbe8df,#589479,#dbe8df);background-size:200% 100%;margin:26px 0;animation:waiting-motion 2s linear infinite}
+.is-generating .waiting-indicator{display:block}
+@keyframes waiting-motion{to{background-position:200% 0}}
+@media(prefers-reduced-motion:reduce){.waiting-indicator{animation:none}}
+@media(max-width:600px){#job-panel.is-generating{padding:24px 20px}}

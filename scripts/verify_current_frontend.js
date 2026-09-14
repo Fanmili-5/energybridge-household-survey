@@ -9,6 +9,9 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   const audit=async label=>{if(!axePath)return;const violations=await page.evaluate(async()=>{const result=await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa']}});return result.violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>n.target)}));});if(violations.length)accessibility.push({label,violations});};
   page.on('pageerror',e=>errors.push(e.message));
   await page.route('**/*',r=>new URL(r.request().url()).origin===origin?r.continue():r.abort());
+  // Hold full-record GETs: admission must show waiting directly from POST.
+  let recordReads=0;
+  await page.route('**/api/jobs/*',async r=>{if(r.request().method()==='GET'&&/\/api\/jobs\/[^/]+$/.test(new URL(r.request().url()).pathname)){recordReads++;await new Promise(resolve=>setTimeout(resolve,1800));}await r.continue();});
   await page.goto(origin);await page.waitForFunction(()=>typeof schema!=='undefined'&&schema?.questionnaire_context&&document.getElementById('generate').disabled===false);
   assert(await page.locator('.history-panel').isHidden());
   await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes('第 1 /'));
@@ -84,6 +87,13 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
    if(process.env.EB_BROWSER_SCREENSHOTS){fs.mkdirSync(process.env.EB_BROWSER_SCREENSHOTS,{recursive:true});await page.locator('#captcha-dialog').screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/captcha-'+width+'.png'});}
    await page.locator('#captcha-answer').fill('ac2346');await page.locator('#captcha-confirm').click();
    await page.locator('#captcha-dialog').waitFor({state:'hidden'});
+   await page.locator('#job-panel').waitFor({state:'visible'});
+   assert(await page.locator('#profile-details').isHidden());
+   assert(await page.locator('.survey-hero').isHidden());
+   assert.strictEqual(recordReads,0,'Waiting view must not wait on a second full-record GET');
+   assert(await page.locator('#waiting-guidance').isVisible());
+   assert(await page.locator('#job-heading').evaluate(e=>e.getBoundingClientRect().top>=0&&e.getBoundingClientRect().top<innerHeight));
+   if(process.env.EB_BROWSER_SCREENSHOTS)await page.screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/waiting-'+width+'.png'});
   }
   if(intakeOnly){
    await page.locator('#household-receipt').waitFor({state:'visible'});
@@ -95,6 +105,9 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   }
   await page.waitForFunction(()=>!document.getElementById('decision-form').hidden||!document.getElementById('error').hidden||['failed','timeout','interrupted'].includes(currentJob?.status),{},{timeout:120000});
   assert(await page.locator('#decision-form').isVisible(),await page.locator('body').innerText());
+  assert(await page.locator('#job-panel').isHidden());
+  assert(await page.locator('.survey-hero').isHidden());
+  assert(await page.locator('#comparison-title').evaluate(e=>e.getBoundingClientRect().top>=0&&e.getBoundingClientRect().top<innerHeight),'Completion must navigate to results');
   assert((await page.locator('.feedback-reason').innerText()).includes('必填'));
   assert(await page.locator('.schedule-board').count()>0);
   assert((await page.locator('#result-panel').innerText()).includes('制冷设定'));

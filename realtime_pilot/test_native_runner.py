@@ -28,6 +28,12 @@ def request(ac_only=False):
 
 
 class NativeRunnerTests(unittest.TestCase):
+    def test_disabled_acceptance_gate_is_not_a_fallback(self):
+        from native_worker import native_plan_outcomes
+        for status,expected in [('acceptance_fallback_disabled',False),('executed',False),('fallback',True),('fallback_after_rejection',True)]:
+            native={'all_day_decisions':[[{'h':19,'adaptive_decision_audit':{'plan_lifecycle':{'stages':{'consented_plan':{'status':status}}}}}]]}
+            self.assertEqual(native_plan_outcomes(native)[0]['fallback_used'],expected,status)
+
     def test_sdk_transport_retries_are_disabled_without_changing_eb_retry_loop(self):
         class Client:
             max_retries=2

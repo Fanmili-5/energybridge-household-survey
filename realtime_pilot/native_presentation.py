@@ -72,7 +72,7 @@ def display(original, baseline, proposal, scenario, prediction):
             if not 0<=decision['h']<24:continue
             app=decision.get('actuator_application',{})
             lifecycle=decision.get('adaptive_decision_audit',{}).get('plan_lifecycle',{})
-            fallback=any(s.get('status')=='fallback' for s in lifecycle.get('stages',{}).values())
+            fallback=any(s.get('status') in {'fallback','fallback_after_rejection'} for s in lifecycle.get('stages',{}).values())
             timeline.append({'time':clock(decision['h']),'trigger':'EB 复查',
                 'observed_temperature':f"{decision['room_temp_c']:.1f}℃",
                 'explanation':execution_explanation({'application':app,'controller':{'fallback_used':fallback}}),

@@ -19,7 +19,7 @@ def native_plan_outcomes(native):
         for row in day:
             stages=row.get('adaptive_decision_audit',{}).get('plan_lifecycle',{}).get('stages',{})
             outcomes.append({'h':row['h'],'stages':{k:v.get('status') for k,v in stages.items()},
-                'fallback_used':any('fallback' in str(v.get('status','')) for v in stages.values())})
+                'fallback_used':any(v.get('status') in {'fallback','fallback_after_rejection'} for v in stages.values())})
     return outcomes
 
 
