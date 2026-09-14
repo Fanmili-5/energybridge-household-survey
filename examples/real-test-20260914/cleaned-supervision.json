@@ -4,7 +4,14 @@
       "household_facts_and_preferences": {
         "household_size": "3 people",
         "daytime_occupancy": "Occupied some of the time",
-        "included_appliances": "Air conditioner; Washing machine; Dishwasher; Dryer; Electric water heater; Electric car chargeable at home (including plug-in hybrids, excluding electric bicycles)",
+        "included_appliances": [
+          "Air conditioner",
+          "Washing machine",
+          "Dishwasher",
+          "Dryer",
+          "Electric water heater",
+          "Electric car chargeable at home (including plug-in hybrids, excluding electric bicycles)"
+        ],
         "evening_occupancy": "Occupied most of the time",
         "routine_regularity": "Generally regular",
         "late_night_appliance_use": "Often",
@@ -47,93 +54,71 @@
       "members": [
         {
           "member_id": "member_1",
-          "values": {
-            "age_band": "18-59",
-            "life_roles": [
-              "Student"
-            ],
-            "routine": "Usually leaves at regular times for work or study",
-            "comfort": "Not very sensitive; usually adapts even to large temperature changes",
-            "task": "Only small advances or delays are acceptable",
-            "participation": "Usually decides jointly with the household",
-            "needs_priority": "Usually given priority",
-            "cost_importance": "2 Slightly important",
-            "grid_importance": "2 Slightly important",
-            "control": "Ask first and adjust only after explicit agreement each time"
-          }
+          "age_band": "18-59",
+          "life_roles": [
+            "Student"
+          ],
+          "routine": "Usually leaves at regular times for work or study",
+          "comfort": "Not very sensitive; usually adapts even to large temperature changes",
+          "task": "Only small advances or delays are acceptable",
+          "participation": "Usually decides jointly with the household",
+          "needs_priority": "Usually given priority",
+          "cost_importance": "2 Slightly important",
+          "grid_importance": "2 Slightly important",
+          "control": "Ask first and adjust only after explicit agreement each time"
         },
         {
           "member_id": "member_2",
-          "values": {
-            "age_band": "18-59",
-            "life_roles": [
-              "Works outside the home"
-            ],
-            "routine": "Usually leaves at regular times for work or study",
-            "comfort": "Accepts small changes; larger changes cause discomfort",
-            "task": "Any operating time is acceptable if completed by the deadline",
-            "participation": "Usually decides jointly with the household",
-            "needs_priority": "Usually given priority",
-            "cost_importance": "4 Important",
-            "grid_importance": "4 Important",
-            "control": "Ask first and adjust only after explicit agreement each time"
-          }
+          "age_band": "18-59",
+          "life_roles": [
+            "Works outside the home"
+          ],
+          "routine": "Usually leaves at regular times for work or study",
+          "comfort": "Accepts small changes; larger changes cause discomfort",
+          "task": "Any operating time is acceptable if completed by the deadline",
+          "participation": "Usually decides jointly with the household",
+          "needs_priority": "Usually given priority",
+          "cost_importance": "4 Important",
+          "grid_importance": "4 Important",
+          "control": "Ask first and adjust only after explicit agreement each time"
         },
         {
           "member_id": "member_3",
-          "values": {
-            "age_band": "18-59",
-            "life_roles": [
-              "Works outside the home"
-            ],
-            "routine": "Mostly at home, including work, study, rest or caregiving",
-            "comfort": "Not very sensitive; usually adapts even to large temperature changes",
-            "task": "Any operating time is acceptable if completed by the deadline",
-            "participation": "Usually not involved; other household members arrange it",
-            "needs_priority": "No special priority",
-            "cost_importance": "2 Slightly important",
-            "grid_importance": "4 Important",
-            "control": "Automatic adjustments within the agreed bounds are acceptable"
-          }
+          "age_band": "18-59",
+          "life_roles": [
+            "Works outside the home"
+          ],
+          "routine": "Mostly at home, including work, study, rest or caregiving",
+          "comfort": "Not very sensitive; usually adapts even to large temperature changes",
+          "task": "Any operating time is acceptable if completed by the deadline",
+          "participation": "Usually not involved; other household members arrange it",
+          "needs_priority": "No special priority",
+          "cost_importance": "2 Slightly important",
+          "grid_importance": "4 Important",
+          "control": "Automatic adjustments within the agreed bounds are acceptable"
         }
-      ],
-      "unanswered_fields": {
-        "air_conditioner_start_time": "not_applicable",
-        "air_conditioner_end_time": "not_applicable"
-      }
+      ]
     },
     "event_condition": {
       "simulation_date": "2007-05-31",
       "season": "spring",
-      "event": {
-        "id": "vpp_3bb69418568f",
-        "trigger_h": 17,
-        "end_h": 18.0,
-        "day": 1
+      "event_window": {
+        "start_time": "day_1 17:00",
+        "end_time": "day_1 18:00"
       },
       "tariff": {
-        "id": "eb_tianjin_normalized_tou_v1",
-        "source": "tianjin_tou_price_normalized.csv",
-        "unit": "normalized TOU cost/kWh",
-        "currency": null,
-        "geographic_scope": "shared_experiment"
+        "type": "time_of_use",
+        "cost_unit": "relative_cost_units_per_kwh"
       }
     },
     "no_dr_plan": {
-      "schedule_window": {
-        "start_h": 0,
-        "end_h": 31.5,
-        "event_start_h": 17,
-        "event_end_h": 18.0
-      },
       "devices": [
         {
           "device_id": "ac",
           "schedule": [
             {
-              "start_h": 0.166667,
-              "end_h": 31.5,
-              "end_status": "observation_cutoff",
+              "start_time": "day_1 00:10",
+              "end_time": "day_2 07:30",
               "setpoint_c": 26.0
             }
           ]
@@ -142,8 +127,8 @@
           "device_id": "washer",
           "schedule": [
             {
-              "start_h": 19.666667,
-              "end_h": 20.333333,
+              "start_time": "day_1 19:40",
+              "end_time": "day_1 20:20",
               "power_kw": 1.5
             }
           ]
@@ -152,8 +137,8 @@
           "device_id": "dishwasher",
           "schedule": [
             {
-              "start_h": 17.0,
-              "end_h": 17.5,
+              "start_time": "day_1 17:00",
+              "end_time": "day_1 17:30",
               "power_kw": 1.2
             }
           ]
@@ -162,8 +147,8 @@
           "device_id": "dryer",
           "schedule": [
             {
-              "start_h": 18.5,
-              "end_h": 19.0,
+              "start_time": "day_1 18:30",
+              "end_time": "day_1 19:00",
               "power_kw": 2.5
             }
           ]
@@ -172,20 +157,19 @@
           "device_id": "electric_water_heater",
           "schedule": [
             {
-              "start_h": 0.166667,
-              "end_h": 19.333333,
+              "start_time": "day_1 00:10",
+              "end_time": "day_1 19:20",
               "setpoint_c": 40.0,
               "mode": "standby"
             },
             {
-              "start_h": 19.333333,
-              "end_h": 23.5,
+              "start_time": "day_1 19:20",
+              "end_time": "day_1 23:30",
               "setpoint_c": 60.0
             },
             {
-              "start_h": 23.5,
-              "end_h": 31.5,
-              "end_status": "observation_cutoff",
+              "start_time": "day_1 23:30",
+              "end_time": "day_2 07:30",
               "setpoint_c": 40.0,
               "mode": "standby"
             }
@@ -195,23 +179,23 @@
           "device_id": "home_ev",
           "schedule": [
             {
-              "start_h": 0.166667,
-              "end_h": 2.666667,
+              "start_time": "day_1 00:10",
+              "end_time": "day_1 02:40",
               "power_kw": 7.4
             },
             {
-              "start_h": 2.666667,
-              "end_h": 2.833333,
+              "start_time": "day_1 02:40",
+              "end_time": "day_1 02:50",
               "power_kw": 6.391
             },
             {
-              "start_h": 19.5,
-              "end_h": 22.0,
+              "start_time": "day_1 19:30",
+              "end_time": "day_1 22:00",
               "power_kw": 7.4
             },
             {
-              "start_h": 22.0,
-              "end_h": 22.166667,
+              "start_time": "day_1 22:00",
+              "end_time": "day_1 22:10",
               "power_kw": 6.391
             }
           ]
@@ -219,40 +203,33 @@
       ]
     },
     "agent_plan": {
-      "schedule_window": {
-        "start_h": 0,
-        "end_h": 31.5,
-        "event_start_h": 17,
-        "event_end_h": 18.0
-      },
       "devices": [
         {
           "device_id": "ac",
           "schedule": [
             {
-              "start_h": 0.166667,
-              "end_h": 15.5,
+              "start_time": "day_1 00:10",
+              "end_time": "day_1 15:30",
               "setpoint_c": 25.5
             },
             {
-              "start_h": 15.5,
-              "end_h": 17.0,
+              "start_time": "day_1 15:30",
+              "end_time": "day_1 17:00",
               "setpoint_c": 25.1
             },
             {
-              "start_h": 17.0,
-              "end_h": 18.0,
+              "start_time": "day_1 17:00",
+              "end_time": "day_1 18:00",
               "setpoint_c": 26.5
             },
             {
-              "start_h": 18.0,
-              "end_h": 24.0,
+              "start_time": "day_1 18:00",
+              "end_time": "day_2 00:00",
               "setpoint_c": 25.0
             },
             {
-              "start_h": 24.0,
-              "end_h": 31.5,
-              "end_status": "observation_cutoff",
+              "start_time": "day_2 00:00",
+              "end_time": "day_2 07:30",
               "setpoint_c": 24.5
             }
           ]
@@ -261,8 +238,8 @@
           "device_id": "washer",
           "schedule": [
             {
-              "start_h": 18.0,
-              "end_h": 18.666667,
+              "start_time": "day_1 18:00",
+              "end_time": "day_1 18:40",
               "power_kw": 1.5
             }
           ]
@@ -271,8 +248,8 @@
           "device_id": "dishwasher",
           "schedule": [
             {
-              "start_h": 18.0,
-              "end_h": 18.5,
+              "start_time": "day_1 18:00",
+              "end_time": "day_1 18:30",
               "power_kw": 1.2
             }
           ]
@@ -281,8 +258,8 @@
           "device_id": "dryer",
           "schedule": [
             {
-              "start_h": 20.0,
-              "end_h": 20.5,
+              "start_time": "day_1 20:00",
+              "end_time": "day_1 20:30",
               "power_kw": 2.5
             }
           ]
@@ -291,20 +268,19 @@
           "device_id": "electric_water_heater",
           "schedule": [
             {
-              "start_h": 0.166667,
-              "end_h": 18.5,
+              "start_time": "day_1 00:10",
+              "end_time": "day_1 18:30",
               "setpoint_c": 40.0,
               "mode": "standby"
             },
             {
-              "start_h": 18.5,
-              "end_h": 23.5,
+              "start_time": "day_1 18:30",
+              "end_time": "day_1 23:30",
               "setpoint_c": 60.0
             },
             {
-              "start_h": 23.5,
-              "end_h": 31.5,
-              "end_status": "observation_cutoff",
+              "start_time": "day_1 23:30",
+              "end_time": "day_2 07:30",
               "setpoint_c": 40.0,
               "mode": "standby"
             }
@@ -314,16 +290,183 @@
           "device_id": "home_ev",
           "schedule": [
             {
-              "start_h": 19.5,
-              "end_h": 22.0,
+              "start_time": "day_1 19:30",
+              "end_time": "day_1 22:00",
               "power_kw": 7.4
             },
             {
-              "start_h": 22.0,
-              "end_h": 22.166667,
+              "start_time": "day_1 22:00",
+              "end_time": "day_1 22:10",
               "power_kw": 6.391
             }
           ]
+        }
+      ]
+    },
+    "displayed_results": {
+      "comparison_window": {
+        "start_time": "day_1 07:30",
+        "end_time": "day_2 07:30",
+        "duration_hours": 24
+      },
+      "energy_use_kwh": {
+        "no_dr": 41.3,
+        "agent": 43.15
+      },
+      "event_energy_use_kwh": {
+        "no_dr": 1.89,
+        "agent": 0.92
+      },
+      "event_average_power_kw": {
+        "no_dr": 1.89,
+        "agent": 0.92
+      },
+      "event_indoor_temperature_c": {
+        "no_dr": {
+          "min": 26.1,
+          "max": 26.1
+        },
+        "agent": {
+          "min": 26.0,
+          "max": 26.6
+        }
+      },
+      "electricity_cost": {
+        "unit": "relative_cost_units",
+        "no_dr": 58.68,
+        "agent": 60.63
+      },
+      "additional_indoor_temperature_periods_c": [
+        {
+          "period": "before_event",
+          "start_time": "day_1 00:00",
+          "end_time": "day_1 17:00",
+          "no_dr": {
+            "min": 26.0,
+            "max": 26.1
+          },
+          "agent": {
+            "min": 25.2,
+            "max": 26.0
+          }
+        },
+        {
+          "period": "after_event",
+          "start_time": "day_1 18:00",
+          "end_time": "day_2 07:30",
+          "no_dr": {
+            "min": 26.0,
+            "max": 26.1
+          },
+          "agent": {
+            "min": 24.5,
+            "max": 25.1
+          }
+        }
+      ],
+      "service_results": [
+        {
+          "device_id": "washer",
+          "no_dr": {
+            "observed_until": "day_2 07:30",
+            "tasks": [
+              {
+                "task_day": 1,
+                "status": "completed"
+              }
+            ]
+          },
+          "agent": {
+            "observed_until": "day_2 07:30",
+            "tasks": [
+              {
+                "task_day": 1,
+                "status": "completed"
+              }
+            ]
+          }
+        },
+        {
+          "device_id": "dishwasher",
+          "no_dr": {
+            "observed_until": "day_2 07:30",
+            "tasks": [
+              {
+                "task_day": 1,
+                "status": "completed"
+              }
+            ]
+          },
+          "agent": {
+            "observed_until": "day_2 07:30",
+            "tasks": [
+              {
+                "task_day": 1,
+                "status": "completed"
+              }
+            ]
+          }
+        },
+        {
+          "device_id": "dryer",
+          "no_dr": {
+            "observed_until": "day_2 07:30",
+            "tasks": [
+              {
+                "task_day": 1,
+                "status": "completed"
+              }
+            ]
+          },
+          "agent": {
+            "observed_until": "day_2 07:30",
+            "tasks": [
+              {
+                "task_day": 1,
+                "status": "completed"
+              }
+            ]
+          }
+        },
+        {
+          "device_id": "electric_water_heater",
+          "no_dr": {
+            "interval": {
+              "start": "day_1 21:10",
+              "end": "day_1 21:20"
+            },
+            "average_tank_temperature_c": 57.2
+          },
+          "agent": {
+            "interval": {
+              "start": "day_1 21:10",
+              "end": "day_1 21:20"
+            },
+            "average_tank_temperature_c": 59.2
+          }
+        },
+        {
+          "device_id": "home_ev",
+          "no_dr": {
+            "departures": [
+              {
+                "departure_time": "day_2 07:30",
+                "charge_percent": 80.0,
+                "target_percent": 80.0,
+                "target_met": true
+              }
+            ]
+          },
+          "agent": {
+            "departures": [
+              {
+                "departure_time": "day_2 07:30",
+                "charge_percent": 80.0,
+                "target_percent": 80.0,
+                "target_met": true
+              }
+            ]
+          }
         }
       ]
     }
