@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "origin": "synthetic_engineering_test",
+  "real_human_record": false,
+  "actual_http_intake": true,
+  "actual_energyplus": true,
+  "planner": "fixed_engineering_fixture_no_api",
+  "model_calls": 0,
+  "case_id": "0b0d648a806a57f95878f7ee7ef69e0c",
+  "submission_id": "7ffa92dd63abbc64b50720c613dda6ab",
+  "question_fields": 66,
+  "source_equal_to_saved_intake": true,
+  "export_equal_to_saved_candidate": true,
+  "default_human_export_rows": 0,
+  "training_release": false
+}
