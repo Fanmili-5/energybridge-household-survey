@@ -7,10 +7,43 @@ window.EBView=(()=>{
     const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('class','appliance-icon');svg.setAttribute('aria-hidden','true');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.5');svg.setAttribute('stroke-linecap','round');svg.setAttribute('stroke-linejoin','round');
     const path=document.createElementNS(svg.namespaceURI,'path');path.setAttribute('d',paths[device]||paths.none);svg.append(path);return svg;
   }
-  const clock=h=>{let m=Math.round(h*60);const day=Math.floor(m/1440);m%=1440;return h===24?'24:00':`${day?'次日':''}${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;};
+  const dayName=day=>day===0?'当天':day===1?'次日':`第${day+1}天`;
+  const clock=(h,withDay=false)=>{const m=Math.round(h*60),day=Math.floor(m/1440),time=`${String(Math.floor(m%1440/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;return (withDay||day?dayName(day)+' ':'')+time;};
+  // All positions use elapsed hours, never hour-of-day modulo 24.
+  function visibleSpans(spans,c){return (spans||[]).map(s=>({...s,start_h:Math.max(c.start_h,s.start_h),end_h:Math.min(c.end_h,s.end_h)})).filter(s=>s.end_h>s.start_h).sort((a,b)=>a.start_h-b.start_h||a.end_h-b.end_h);}
+  function periods(spans,device,c){
+    const out=[],thermal=['ac','electric_water_heater'].includes(device);
+    for(const s of visibleSpans(spans,c)){
+      const label=thermal?s.label:device==='home_ev'?'充电':'运行',previous=out.at(-1);
+      // A power change does not start a new appliance task; temperature changes do.
+      if(previous&&Math.abs(previous.end_h-s.start_h)<1e-5&&previous.label===label)previous.end_h=s.end_h;
+      else out.push({...s,label});
+    }
+    return out;
+  }
+  function comparePeriods(row,device,c){
+    const a=periods(row.original,device,c),b=periods(row.proposal,device,c),out=[];
+    const times=[...new Set([...a,...b].flatMap(s=>[s.start_h,s.end_h]))].sort((x,y)=>x-y);
+    for(let i=0;i<times.length-1;i++){
+      const start_h=times[i],end_h=times[i+1],mid=(start_h+end_h)/2;
+      const original=a.find(s=>s.start_h<=mid&&mid<s.end_h)?.label||'未运行',proposal=b.find(s=>s.start_h<=mid&&mid<s.end_h)?.label||'未运行';
+      if(original==='未运行'&&proposal==='未运行')continue;
+      const previous=out.at(-1);
+      if(previous&&Math.abs(previous.end_h-start_h)<1e-5&&previous.original===original&&previous.proposal===proposal)previous.end_h=end_h;
+      else out.push({start_h,end_h,original,proposal});
+    }
+    return out;
+  }
   const pct=(h,c)=>100*(h-c.start_h)/(c.end_h-c.start_h);
-  const ticks=c=>{const out=[],step=Math.max(4,Math.ceil((c.end_h-c.start_h)/10)*2);for(let h=c.start_h;h<c.end_h;h+=step)out.push(h);if(out.length>1&&c.end_h-out[out.length-1]<step*.75)out.pop();out.push(c.end_h);return out;};
+  const ticks=c=>{
+    const step=Math.max(4,Math.ceil((c.end_h-c.start_h)/10)*2),out=[c.start_h,c.end_h];
+    for(let h=Math.ceil(c.start_h/24)*24;h<c.end_h;h+=24)if(h>c.start_h)out.push(h);
+    for(let h=Math.ceil(c.start_h/step)*step;h<c.end_h;h+=step)if(out.every(v=>Math.abs(v-h)>=step*.7))out.push(h);
+    return out.sort((a,b)=>a-b);
+  };
+  function days(c){const out=[];for(let d=Math.floor(c.start_h/24);d*24<c.end_h;d++)out.push({day:d,start:Math.max(c.start_h,d*24),end:Math.min(c.end_h,(d+1)*24)});return out;}
   function decoration(track,c){
+    for(const d of days(c)){const band=n('span',undefined,'day-background day-'+d.day);band.style.left=pct(d.start,c)+'%';band.style.width=(pct(d.end,c)-pct(d.start,c))+'%';band.setAttribute('aria-hidden','true');track.append(band);if(d.start>c.start_h){const boundary=n('span',undefined,'day-boundary');boundary.style.left=pct(d.start,c)+'%';boundary.setAttribute('aria-hidden','true');track.append(boundary);}}
     for(const h of ticks(c)){const grid=n('span',undefined,'grid-mark');grid.style.left=pct(h,c)+'%';grid.setAttribute('aria-hidden','true');track.append(grid);}
     const shade=n('span',undefined,'event-shade');shade.style.left=pct(c.event_start_h,c)+'%';shade.style.width=(pct(c.event_end_h,c)-pct(c.event_start_h,c))+'%';shade.setAttribute('aria-hidden','true');track.append(shade);
     if(Number.isFinite(c.notification_h)){const mark=n('span',undefined,'notification-mark');mark.style.left=pct(c.notification_h,c)+'%';mark.setAttribute('aria-hidden','true');track.append(mark);}
@@ -19,26 +52,38 @@ window.EBView=(()=>{
   function schedule(root,view){
     const c=view.schedule_chart;if(!c){for(const row of view.rows||[])root.append(n('p',`${row.device}：调整前 ${row.original}；调整后 ${row.proposal}`));return;}
     const context=n('div',undefined,'schedule-context');
-    const contextItems=[['错峰',`${clock(c.event_start_h)}—${clock(c.event_end_h)}`],['比较至',c.end_label]];if(Number.isFinite(c.notification_h))contextItems.unshift(['通知',clock(c.notification_h)]);
-    for(const [label,value] of contextItems){const item=n('span');item.append(document.createTextNode(label+' '),n('strong',value));context.append(item);}root.append(context);
+    const contextItems=[['错峰',`${clock(c.event_start_h)}—${clock(c.event_end_h)}`],['比较时段',`${clock(c.start_h,true)}—${clock(c.end_h,true)}`]];if(Number.isFinite(c.notification_h))contextItems.unshift(['通知',clock(c.notification_h)]);
+    for(const [label,value] of contextItems){const item=n('span');item.append(document.createTextNode(label+' '),n('strong',value));context.append(item);}root.append(context,n('p',(days(c).length>1?'从左到右：当天 → 次日。':'从左到右按时间排列。')+'每段的开始、结束时间列在电器下方。','timeline-reading-guide'));
     const board=n('div',undefined,'schedule-board'),scroll=n('div',undefined,'schedule-scroll');scroll.tabIndex=0;scroll.setAttribute('aria-label','完整电器时间轴：每个电器上方调整前，下方调整后');scroll.classList.add('fit-timeline');
-    const canvas=n('div',undefined,'shared-schedule'),axis=n('div',undefined,'shared-axis');axis.append(n('span','电器 / 时间','schedule-axis-label'));const scale=n('div',undefined,'time-axis');
-    for(const h of ticks(c)){const tick=n('span',clock(h),'tick');tick.style.left=pct(h,c)+'%';if(h===c.start_h)tick.classList.add('first');if(h===c.end_h)tick.classList.add('last');scale.append(tick);}axis.append(scale);canvas.append(axis);
-    const detail=n('p','点选运行条，查看具体时间与设定。','schedule-detail');detail.setAttribute('aria-live','polite');
-    function show(label,device){detail.textContent=label;for(const row of canvas.querySelectorAll('.schedule-row'))row.classList.toggle('highlighted',row.dataset.device===device);}
+    const canvas=n('div',undefined,'shared-schedule'),axis=n('div',undefined,'shared-axis');axis.append(n('span','时间','schedule-axis-label'));const scale=n('div',undefined,'time-axis'),dayScale=n('div',undefined,'day-axis');for(const d of days(c)){const band=n('span',dayName(d.day),'day-label day-'+d.day);band.style.left=pct(d.start,c)+'%';band.style.width=(pct(d.end,c)-pct(d.start,c))+'%';dayScale.append(band);}scale.append(dayScale);
+    for(const h of ticks(c)){const tick=n('span',clock(h).replace(/^(次日|第\d+天) /,''),'tick');tick.style.left=pct(h,c)+'%';if(h===c.start_h)tick.classList.add('first');if(h===c.end_h)tick.classList.add('last');scale.append(tick);}axis.append(scale);canvas.append(axis);
+    const detail=n('p',undefined,'schedule-detail');detail.hidden=true;detail.setAttribute('aria-live','polite');
+    function show(label,device){detail.hidden=false;detail.textContent=label;for(const row of canvas.querySelectorAll('.schedule-row'))row.classList.toggle('highlighted',row.dataset.device===device);}
     for(const row of c.rows){
-      const device=deviceIds[row.device]||'none',group=n('section',undefined,'schedule-group device-pair');group.dataset.device=device;
-      const heading=n('h3'),name=n('strong',undefined,'device-pair-name');name.append(icon(device),document.createTextNode(row.device));heading.append(name);group.append(heading);
+      const device=row.device_id||deviceIds[row.device]||'none',group=n('section',undefined,'schedule-group device-pair');group.dataset.device=device;
+      const heading=n('h3'),name=n('strong',undefined,'device-pair-name');name.append(icon(device),document.createTextNode(row.device));heading.append(name);group.append(heading);if(canvas.querySelector('.device-pair')){const ruler=axis.cloneNode(true);ruler.classList.add('device-ruler');group.append(ruler);}
       for(const side of ['original','proposal']){
         const line=n('div',undefined,'schedule-row device-'+device);line.dataset.device=device;line.dataset.side=side;
         const label=n('div',undefined,'schedule-device');label.append(n('strong',side==='original'?'调整前':'调整后'));
         const track=n('div',undefined,'schedule-track');decoration(track,c);line.append(label,track);
-        let count=0;for(const span of row[side]||[]){const start=Math.max(c.start_h,span.start_h),end=Math.min(c.end_h,span.end_h);if(end<=start)continue;count++;
-          const text=`${side==='original'?'调整前':'调整后'} · ${row.device} · ${span.description}`,bar=n('button',undefined,'schedule-bar '+side);bar.type='button';bar.style.left=pct(start,c)+'%';bar.style.width=(pct(end,c)-pct(start,c))+'%';if((end-start)/(c.end_h-c.start_h)<.07)bar.classList.add('short-bar');bar.append(n('span',span.label));bar.title=text;bar.setAttribute('aria-label',text);bar.onfocus=bar.onclick=()=>show(text,device);track.append(bar);
+        let count=0;for(const span of visibleSpans(row[side],c)){const start=span.start_h,end=span.end_h;count++;
+          const text=`${side==='original'?'调整前':'调整后'} · ${row.device} · ${clock(start,true)} 开始 → ${clock(end,true)} 结束 · ${span.label}`,bar=n('button',undefined,'schedule-bar '+side);bar.type='button';bar.dataset.startH=String(start);bar.dataset.endH=String(end);bar.style.left=pct(start,c)+'%';bar.style.width=(pct(end,c)-pct(start,c))+'%';if((end-start)/(c.end_h-c.start_h)<.07)bar.classList.add('short-bar');bar.append(n('span',['ac','electric_water_heater'].includes(device)?span.label:device==='home_ev'?'充电':'运行')); bar.title=text;bar.setAttribute('aria-label',text);bar.onfocus=bar.onclick=()=>show(text,device);track.append(bar);
         }
         if(!count)track.append(n('span',row.active?'未运行':'本情境不使用','schedule-empty'));group.append(line);
       }
-      canvas.append(group);
+      const comparison=n('div',undefined,'interval-comparison'),table=n('table',undefined,'interval-table'),head=n('thead'),titles=n('tr');
+      for(const title of ['时段 · 开始 → 结束','调整前','调整后']){const th=n('th',title);th.scope='col';titles.append(th);}head.append(titles);table.append(head);
+      const body=n('tbody'),runs=comparePeriods(row,device,c);
+      for(const run of runs){
+        const item=n('tr',undefined,'interval-entry');item.dataset.startH=String(run.start_h);item.dataset.endH=String(run.end_h);
+        const time=n('th');time.scope='row';const range=n('div',undefined,'interval-range');
+        range.append(n('strong',clock(run.start_h,true)),n('span','→','interval-arrow'),n('strong',clock(run.end_h,true)));time.append(range);item.append(time);
+        for(const side of ['original','proposal'])item.append(n('td',run[side],side+(run[side]==='未运行'?' interval-empty':'')));
+        body.append(item);
+      }
+      if(!runs.length){const item=n('tr');item.append(n('th','整个比较时段'),n('td',row.active?'未运行':'本情境不使用'),n('td',row.active?'未运行':'本情境不使用'));body.append(item);}
+      table.append(body);comparison.append(table);
+      group.append(comparison);canvas.append(group);
     }
     scroll.append(canvas);board.append(scroll,detail);
     const zoom=n('div',undefined,'timeline-zoom'),fit=n('button','完整时段'),expand=n('button','放大查看');
@@ -56,9 +101,9 @@ window.EBView=(()=>{
       });
     }
     fit.onclick=()=>setZoom(false);expand.onclick=()=>setZoom(true);zoom.append(fit,expand);root.append(zoom,board);setZoom(false);
-    const hint=n('p','放大后可左右滑动；点选运行条查看具体时间。','schedule-mobile-hint');root.append(hint);
+
     const legend=n('div',undefined,'schedule-legend');legend.append(n('span','浅黄色：错峰时段'+(Number.isFinite(c.notification_h)?' · 虚线：通知时刻':'')));root.append(legend);
-    if(c.note)root.append(n('p',c.note,'hint schedule-note'));
+    root.append(n('p','空调和热水器色条表示温度设定，实际室温和用电量见下方对比。','hint schedule-note'));
   }
   function outcomes(root,view){
     const wrap=n('div',undefined,'outcomes-table-wrap'),table=n('table',undefined,'outcomes-table');
@@ -96,5 +141,5 @@ window.EBView=(()=>{
     const cards=n('div',undefined,'temperature-periods');for(const p of t.periods){const card=n('div');card.append(n('strong',p.label),n('small',p.time),n('p',`原安排 ${p.original}`),n('p',`EB 调整 ${p.proposal}`));cards.append(card);}root.append(cards);const more=n('section',undefined,'supporting-detail temperature-chart');more.append(wrap,legend,n('p',t.note,'hint'));root.append(more);
   }
   function render(root,view){root.replaceChildren();schedule(root,view);}
-  return {render,outcomes,temperature,icon};
+  return {render,outcomes,temperature,icon,timeline:{clock,ticks,days,visibleSpans,periods,comparePeriods}};
 })();

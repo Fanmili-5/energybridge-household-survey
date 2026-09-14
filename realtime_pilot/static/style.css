@@ -288,3 +288,44 @@ body.survey-page,body.preview-page{--muted-readable:#52665e}
 }
 
 .fit-timeline.schedule-scroll::after{display:none}
+
+/* Readable dates and always-visible start/end times beside each appliance pair. */
+.timeline-reading-guide{font-size:13px;color:#52665a;margin:0 0 14px}
+.schedule-board{container-type:inline-size}
+.shared-axis{height:68px;align-items:stretch}
+.shared-axis .time-axis{height:68px}
+.shared-axis .tick{top:41px;color:#3e554a;font-size:12px}
+.day-axis{position:absolute;inset:0 0 auto;height:31px}
+.day-label{position:absolute;top:0;height:31px;display:flex;justify-content:center;align-items:center;font-size:13px;font-weight:650;letter-spacing:.08em;background:#eaf0e8;color:#3d5844;border-bottom:1px solid #cfdbcc}
+.day-label:not(.day-0){background:#e8eff8;color:#385771;border-left:2px solid #7191ad}
+.day-background{position:absolute;inset-block:0;background:#f5f8f1;pointer-events:none}
+.day-background:not(.day-0){background:#edf3fa}
+.day-boundary{position:absolute;inset-block:0;border-left:2px dashed #7191ad;z-index:1;pointer-events:none}
+.schedule-bar{border-radius:2px!important;box-shadow:inset 2px 0 #18392e55,inset -2px 0 #18392e55}
+.interval-comparison{position:sticky;left:0;width:100%;width:100cqw;box-sizing:border-box;background:#fff;border-top:1px solid #e2e9de;padding:8px 12px 12px}
+.interval-table{width:100%;table-layout:fixed;border-collapse:collapse;margin:0;font-size:13px}
+.interval-table th,.interval-table td{padding:8px 6px;border:0;border-bottom:1px solid #edf0e9;text-align:left;vertical-align:middle;line-height:1.5}
+.interval-table th:first-child{width:57%}
+.interval-table thead th{font-size:11px;font-weight:500;color:#647469;background:transparent;padding-top:2px;padding-bottom:6px}
+.interval-table thead th:last-child{color:#246850}
+.interval-table td.original{color:#526575}.interval-table td.proposal{color:#246850;font-weight:600}
+.interval-table td.interval-empty{font-weight:400;color:#718174}
+.interval-range{display:flex;flex-wrap:wrap;gap:0 5px;align-items:baseline;color:#334c42;font-variant-numeric:tabular-nums}
+.interval-range strong{font-size:13px;font-weight:500;white-space:nowrap}
+.interval-arrow{color:#789286;font-size:13px}
+.schedule-axis-label{font-size:12px}
+@media(max-width:640px){
+ .interval-comparison{padding:8px 6px 10px}
+ .interval-table th,.interval-table td{font-size:12px;padding:7px 4px}
+ .interval-table th:first-child{width:48%}
+ .interval-table thead th{font-size:10px}
+ .interval-range{display:grid;grid-template-columns:auto 1fr;gap:0 4px}
+ .interval-range strong:first-child{grid-column:1/-1}
+ .interval-range strong{font-size:12px}
+ .interval-arrow{grid-column:1}
+ .fit-timeline .time-axis .tick{font-size:10px}
+ .timeline-reading-guide{font-size:12px}
+ .day-label{font-size:12px;letter-spacing:0}
+}
+.device-ruler{height:56px}.device-ruler .time-axis{height:56px}.device-ruler .tick{top:34px}.device-ruler .day-axis,.device-ruler .day-label{height:27px}
+.schedule-bar span{padding-inline:2px}
