@@ -25,7 +25,11 @@ assert.deepEqual(plain(t.periods([],'washer',c)),[]);
 assert.deepEqual(plain(t.days({start_h:0,end_h:24})),[{day:0,start:0,end:24}]);
 console.log('Timeline: absolute date order, midnight, clipping, immutable source, continuous tasks, temperature changes and legacy horizon passed.');
 
-const comparison=plain(t.comparePeriods({original:spans,proposal:[]},'home_ev',c));
-assert.deepEqual(comparison.map(s=>[s.start_h,s.end_h,s.original,s.proposal]),[[.166667,4,'充电','未运行'],[22,25.833333,'充电','未运行']]);
-assert.deepEqual(plain(t.comparePeriods({original:[{start_h:18,end_h:20,label:'1 kW'}],proposal:[{start_h:19,end_h:21,label:'1 kW'}]},'washer',c)),[{start_h:18,end_h:19,original:'运行',proposal:'未运行'},{start_h:19,end_h:20,original:'运行',proposal:'运行'},{start_h:20,end_h:21,original:'未运行',proposal:'运行'}]);
-console.log('Side-by-side time partitions retain overlapping, moved and missing runs.');
+
+
+const placed=plain(t.labelLayout([{x:0,width:38},{x:145,width:38},{x:151,width:38},{x:250,width:68}],250));
+assert.notEqual(placed[1].lane,placed[2].lane,'Adjacent boundary labels need separate tiers');
+for(const p of placed){assert(p.left>=0);assert(p.left+p.width<=250);}
+assert.equal(placed[0].x,0);assert.equal(placed.at(-1).x,250);
+for(let i=0;i<placed.length;i++)for(let j=i+1;j<placed.length;j++)if(placed[i].lane===placed[j].lane)assert(placed[i].left+placed[i].width+6<=placed[j].left);
+console.log('Endpoint labels: adjacent boundaries, midnight edges, no coordinate shifts passed.');
