@@ -242,7 +242,9 @@ def native_boundaries(runner, household, controls, loops, progress, audit_dir=No
 def run_native(folder, request, *, method, progress=lambda *args: None):
     if method not in ('agent', 'no_dr'): raise ValueError('Unsupported collection method')
     from household_config import ensure_household_config
-    household = ensure_household_config(request)
+    source_household = ensure_household_config(request)
+    from planner_language import planner_household
+    household = planner_household(source_household, request)
     scenario = request['scenario']
     window = scenario['evaluation_window']
     days = int(window['simulation_days'])
@@ -325,7 +327,7 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
         entry, derived_source = collection_entry(runner, horizon=horizon)
         with ep_compute():
             result = entry(idf_path=idf, epw_path=epw, output_dir=folder,
-                           weather_label=scenario.get('environment',{}).get('weather',{}).get('city','Tianjin'), user_pref='', persona_config=household,
+                           weather_label=scenario.get('environment',{}).get('weather',{}).get('station_name','Tianjin'), user_pref='', persona_config=household,
                            appliance_config=household['appliances'], method=method,
                            sim_days=days, start_date=start_date,
                            day_ahead_price_profile=price, vpp_events_config=[event],
@@ -333,6 +335,7 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
                            pre_event_preference_callback=preferences,
                            post_event_score_callback=human_pending)
     # The original runner recreates its output directory at entry.
+    write_json(folder/'planner_household_en.json', household)
     if scenario.get('environment'):
         write_json(folder/'simulation_environment.json',scenario['environment'])
     if result.exit_code != 0: raise RuntimeError('Native EnergyPlus simulation failed')
@@ -360,7 +363,8 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
         data[key] = None
     data['all_day_decisions'] = deepcopy(loop.day_agent_decisions)
     data['human_evaluation_pending'] = pending
-    data['household_binding'] = {'household_config_hash':digest(household),
+    data['household_binding'] = {'household_config_hash':digest(source_household),
+        'planner_household_hash':digest(household), 'planner_language':deepcopy(household['planner_language']),
         'questionnaire_answer_ids':[a['id'] for a in household['onboarding']['answers']],
         'memory_onboarding':deepcopy(getattr(loop,'agent_preference_memory',{}).get('onboarding')),
         'profile_evidence':deepcopy(getattr(loop,'agent_household_model',{}).get('evidence_index',[]))}
