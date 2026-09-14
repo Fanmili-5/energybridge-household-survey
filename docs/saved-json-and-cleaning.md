@@ -17,7 +17,7 @@
 从这些服务器原始记录中生成两份**初步整理／清洗结果**，供检查字段和交给后续数据处理：
 
 1. `full-collected-record.json`：第一步是合并整理。从服务器多份原始记录中提取业务字段，合成一条完整案例，包含实际答案、该户配置、情境、两份方案与结果、冻结展示和真人反馈。它不是服务器原文件或整库转储；逐时 EP、模型调用和诊断文件通过哈希关联，不全部嵌入。
-2. `cleaned-supervision.json`：第二步是初步监督字段清洗。`input` 只放家庭画像、事件条件、No-DR 计划和 EB Agent 计划；`output` 保留真人选择、四项评分及原因。家庭画像使用英文语义字段名和用户回答结果，例如 `"household_size": "3 people"`，不再放问卷题干、展示标签或 `response_status: answered`。原始题目、选项和值仍留在完整记录中，并通过 `auxiliary.source_question_ids` 追溯。EP 指标、逐时序列和服务结果留在完整采集记录，不进入这一步输入。`auxiliary` 保存补充调查信息、仿真情境和字段来源，`provenance` 保存清洗信息。这仍不是最终 SFT 数据集，不制作 system prompt 或训练 messages。
+2. `cleaned-supervision.json`：第二步是初步监督字段清洗，文件顶层只保留 `input` 和 `output`。`input` 只放家庭画像、事件条件、No-DR 计划和 EB Agent 计划；`output` 保留真人选择、四项评分及原因。家庭画像使用英文语义字段名和用户回答结果，例如 `"household_size": "3 people"`，不放问卷题干、展示标签、`selected_value`、`response_status`、来源编号或审计元数据。原始题目、选项、作答状态、EP 指标和服务记录均留在完整采集记录；文件哈希与导出校验留在单独的 `verification.json`。这一步不制作 system prompt 或训练 messages。
 
 清洗核对来源、保留未知值和小数评分、去掉问卷题干、问卷模板与重复展示文案。计划中的跨日时刻仍可大于 24。英文结果值是当前确定性转换结果，真人原因保留原文。
 

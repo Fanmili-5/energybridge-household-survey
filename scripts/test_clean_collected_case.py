@@ -9,6 +9,7 @@ class FirstStageCleaningTests(unittest.TestCase):
     def setUp(self):self.raw=json.loads((BASE/'full-collected-record.json').read_text());self.clean=json.loads((BASE/'cleaned-supervision.json').read_text())
     def test_saved_schedule_reproduces_two_cleaned_plans(self):
         original=deepcopy(self.raw['shown_to_participant'])
+        self.assertEqual(set(self.clean),{'input','output'})
         self.assertEqual(set(self.clean['input']),{
             'household_profile','event_condition','no_dr_plan','agent_plan'
         })
@@ -22,14 +23,18 @@ class FirstStageCleaningTests(unittest.TestCase):
         self.assertEqual(set(self.clean['output']),{
             'decision','score','comfort_score','energy_score','vpp_score','comment'
         })
-    def test_no_source_answer_or_feedback_is_lost_or_relabelled(self):
-        i=self.clean['input'];profile=i['household_profile'];aux=self.clean['auxiliary']
-        self.assertEqual(self.clean['schema_version'],'eb.first_stage_supervision.v3')
-        covered=set(aux['source_question_ids'].values())|set(aux['supplementary_answers'])|{aux['member_source_question_id']}
-        self.assertEqual(covered,set(self.raw['questionnaire']['answers']))
-        rendered=json.dumps(i,ensure_ascii=False)
+    def test_no_training_answer_or_feedback_is_lost_or_relabelled(self):
+        i=self.clean['input'];profile=i['household_profile']
+        def keys(value):
+            if isinstance(value,dict):
+                for key,child in value.items():
+                    yield key
+                    yield from keys(child)
+            elif isinstance(value,list):
+                for child in value:yield from keys(child)
+        all_keys=set(keys(self.clean))
         for forbidden in ('question','selected_value','response_status','reported_fields'):
-            self.assertNotIn(forbidden,rendered)
+            self.assertNotIn(forbidden,all_keys)
         self.assertEqual(profile['household_facts_and_preferences']['household_size'],'3 people')
         self.assertEqual(profile['household_facts_and_preferences']['washing_machine_usual_start_time'],'19:40')
         self.assertEqual(profile['members'][0]['values']['age_band'],'18-59')
@@ -37,9 +42,9 @@ class FirstStageCleaningTests(unittest.TestCase):
         for key in ('score','comfort_score','energy_score','vpp_score','comment'):
             self.assertEqual(self.clean['output'][key],self.raw['feedback'][key])
         self.assertEqual(self.clean['output']['decision'],self.raw['feedback']['choice'])
-        self.assertEqual(self.clean['provenance']['stored_data_origin'],'synthetic_engineering_test')
-        self.assertFalse(self.clean['provenance']['training_release'])
         self.assertNotIn('messages',self.clean)
+        self.assertNotIn('auxiliary',self.clean)
+        self.assertNotIn('provenance',self.clean)
         self.assertNotIn('comment',i)
     def test_event_and_cross_day_plan_survive_cleaning(self):
         condition=self.clean['input']['event_condition']

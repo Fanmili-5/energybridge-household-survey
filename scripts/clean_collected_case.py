@@ -10,8 +10,7 @@ from pathlib import Path
 import re
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'realtime_pilot'))
-from common import digest, file_hash
-from planner_language import planner_household, VERSION as LANGUAGE_VERSION
+from planner_language import planner_household
 
 
 # Stable, semantic feature names for the supervised model input.  Questionnaire
@@ -117,30 +116,23 @@ def clean_case(records, collected):
     # This English copy is a new rendering, never represented as the actual
     # planner input of historical cases collected before English ingress.
     english=planner_household(source,request)
-    answers={};unanswered={};field_sources={}
+    answers={};unanswered={}
     for group in ('household_information','stated_attitudes'):
         for row in english['observable_profile'][group]:
             qid=row['question_id']
             if qid=='M_MEMBERS':continue
             name=HOUSEHOLD_FIELDS.get(qid)
             if name is None:raise ValueError('Missing supervised feature name for '+qid)
-            field_sources[name]=qid
             if row['response_status']=='answered':
                 answers[name]=row['answer']
             else:unanswered[name]=row['response_status']
-    supplemental={q['id']:deepcopy(docs['questionnaire_submission.json']['normalized_answers'][q['id']])
-                  for q in request['questionnaire_snapshot'] if q.get('research_only') and q['id'] in docs['questionnaire_submission.json']['normalized_answers']}
     decision=docs['decision.json'];names=('score','comfort_score','energy_score','vpp_score')
     if decision['choice'] not in ('accept','reject'):raise ValueError('Missing human decision')
     if any(type(decision.get(k)) not in (int,float) or not math.isfinite(decision[k]) or not 1<=decision[k]<=5 for k in names):raise ValueError('Invalid or missing human score; do not fill it')
     if not isinstance(decision.get('comment'),str) or not decision['comment'].strip():raise ValueError('Missing human reason; do not invent it')
     if docs['outcome.json']['simulation_status']!='paired_energyplus_complete':raise ValueError('Incomplete paired simulation')
     target={'decision':decision['choice'],**{k:decision[k] for k in names},'comment':decision['comment']}
-    s=request['scenario'];environment=s.get('environment') or {}
-    context={'simulation_date':s['simulation_start_date'],'event':deepcopy(s['event']),
-             'weather_station':{k:environment.get('weather',{}).get(k) for k in ('id','station_name','wmo')},
-             'building':{k:environment.get('building',{}).get(k) for k in ('id','kind','floor','indoor_area_m2')},
-             'tariff':deepcopy(s['tariff']), 'is_household_measurement':False}
+    s=request['scenario']
     event_condition={
         'simulation_date':s['simulation_start_date'],
         'season':deepcopy((s.get('questionnaire_context') or {}).get('season')),
@@ -149,8 +141,6 @@ def clean_case(records, collected):
     }
     plans=plan_pair(collected['shown_to_participant'])
     return {
-        'schema_version':'eb.first_stage_supervision.v3','case_id':collected['questionnaire']['case_id'],
-        'household_id':collected['questionnaire']['household_id'],
         'input':{
             'household_profile':{
                 'household_facts_and_preferences':answers,
@@ -161,24 +151,4 @@ def clean_case(records, collected):
             **plans,
         },
         'output':target,
-        'auxiliary':{'supplementary_answers':supplemental,'simulation_context':context,
-                     'source_question_ids':field_sources,'member_source_question_id':'M_MEMBERS'},
-        'provenance':{
-            'source_collected_record_hash':digest(collected),
-            'source_document_hashes':deepcopy(collected['provenance']['source_document_hashes']),
-            'cleaner_sha256':file_hash(Path(__file__)), 'language_mapping_version':LANGUAGE_VERSION,
-            'input_language':'English; city proper nouns retained in their original form',
-            'target_comment_language':'zh','historical_source_rewritten':False,
-            'questionnaire_version':collected['questionnaire']['questionnaire_version'],
-            'questionnaire_hash':collected['questionnaire']['questionnaire_hash'],
-            'target_source':decision['target_source'], 'stored_data_origin':collected['questionnaire']['data_origin'],
-            'training_release':False, 'split_group':collected['questionnaire']['household_id'],
-            'stage':'first_stage_data_handoff_not_training_messages',
-            'input_projection':'semantic English result values only; questionnaire prompts and display labels excluded',
-            'plan_source':'saved participant_view schedule only; EP metrics and service outcomes excluded',
-            'supplementary_policy':'Kept separately for later analysis; not automatically added to model input.',
-            'selection_policy':'No filter on acceptance, savings, score or technical fallback.',
-            'time_unit':'hours from simulation day 1 at 00:00; values above 24 refer to the following day',
-            'quality_checks':{'source_links_verified':True,'human_target_complete':True,'paired_simulation_complete':True},
-        },
     }
