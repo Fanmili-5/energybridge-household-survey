@@ -1,32 +1,18 @@
 {
   "case_id": "f5e211505dfa1f1c4822cee8285f12c0",
-  "saved_documents": [
-    "decision.json",
-    "household_config.json",
-    "household_record.json",
-    "job.json",
-    "outcome.json",
-    "profile_components.json",
-    "questionnaire_submission.json",
-    "request.json",
-    "sft_candidate.json",
-    "simulation_environment.json"
-  ],
-  "candidate_matches_saved_sources": true,
-  "input_fields": 66,
-  "source_file_sha256": "66716b707b1d639c111f40e799e66483782266f1edfeca44a280425fd6969ffb",
-  "choice": "accept",
-  "scores": {
-    "score": 4.2,
-    "comfort_score": 4.3,
-    "energy_score": 2.9,
-    "vpp_score": 4.2
-  },
-  "training_release": false,
-  "export_scope": "All saved SQLite job/intake/document JSON; no raw HTTP capture was recorded; native file contents referenced by provenance hashes are not bundled.",
-  "files_sha256": {
-    "full-collected-record.json": "66716b707b1d639c111f40e799e66483782266f1edfeca44a280425fd6969ffb",
-    "sft-candidate.json": "9e8b732cbb820ca76dde3cf7c5e12acdd0faa5dd46a7147b9930a324a7008031",
-    "sft-messages.json": "4b1f240b609a8f0159a822e8b11c5948db9ad3b81781dc099241152d717a3963"
+  "answers_match_saved_submission": true,
+  "feedback_matches_saved_decision": true,
+  "source_links_verified": true,
+  "questionnaire_definitions_included": false,
+  "sft_messages_included": false,
+  "files": {
+    "questionnaire-answers.json": {
+      "sha256": "a0d785dca437a660a1d6cc75af96f7f5b113baeba1259268439fac959104fc28",
+      "bytes": 3821
+    },
+    "full-collected-record.json": {
+      "sha256": "cd18c8ee09fddad496239fb28f73f7bcec828f82801e262e6d9d1ef00232c5c0",
+      "bytes": 70158
+    }
   }
 }

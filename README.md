@@ -29,7 +29,7 @@ flowchart LR
 
 ## 实际样本与语言转换
 
-- [本人授权公开的真实试填数据及 SFT JSON](examples/real-test-20260914/README.md)
+- [本人授权公开的真实答卷与运行结果](examples/real-test-20260914/README.md)
 - [中文问卷如何转换为英文 EB 输入](docs/planner-language.md)
 
 ## 复现

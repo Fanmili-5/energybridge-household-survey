@@ -1,16 +1,22 @@
-# 一份真实试填记录
+# 一份真实提交的数据
 
-2026-09-14，项目本人在线填写并提交反馈，已明确授权公开。EB 实际调用 gpt-4o-mini，EnergyPlus 实际运行；这不是固定答案演示。
+2026-09-14，项目本人在线填写并提交反馈，已授权公开。
 
-- [完整保存记录 JSON](full-collected-record.json)：问卷原始答案、家庭配置、环境、两份方案、展示内容、真人反馈及来源关联。
-- [保存的 SFT 候选记录](sft-candidate.json)：保留元数据与校验信息。
-- [SFT messages JSON](sft-messages.json)：该记录实际构造的输入与真人回答。
-- [校验信息及文件 SHA-256](verification.json)。
+- [用户填写后的问卷 JSON](questionnaire-answers.json)：仅含该用户实际提交的答案、提交时间和问卷版本，不含备选项、问卷模板或提示词。
+- [问卷＋运行结果＋反馈 JSON](full-collected-record.json)：增加该户 EB 配置、仿真情境、两份方案、实际展示结果和真人反馈。
+- [来源校验与文件哈希](verification.json)。
 
-反馈：同意；`score=4.2`、`comfort_score=4.3`、`energy_score=2.9`、`vpp_score=4.2`，原因见 JSON 原文。
+真实反馈为同意；四项评分为 4.2、4.3、2.9、4.2，原因保留原文。EB 实际调用 gpt-4o-mini，EP 实际运行。
 
-当时网站处于工程模式，因此原记录的 `synthetic_engineering_test` 标记及 `training_release=false` 均保留。这里的填写、评价和仿真是真实发生的，但不冒充正式采集样本。
+历史记录的 `synthetic_engineering_test` 标记保留；这是真人试填，但当时系统按工程测试保存，不冒充正式采集数据。此记录产生于英文 EB 输入转换上线前，其历史输入未事后改写。
 
-仅移除了会话身份/凭据字段，移除范围见 `example_notice.omitted_transport_fields`。此处包含保存于数据库的完整 JSON 文档；不包含未留存的浏览器 HTTP 抓包，也不包含通过路径和哈希引用的 EP SQL、模型调用原文件等运行附件。JSON 中的路径是历史来源，不是访问令牌。
+这里是从已保存记录中提取的交付数据，不是整个数据库的转储。问卷定义及后台校验快照独立保留，使用版本和哈希追溯；EP 原文件通过来源哈希关联，不嵌入 JSON。SFT 提示词及训练对话由后续负责训练的同学构造。
 
-该测试发生在英文输入转换上线前，原始中文输入不做事后改写。新版本的英文 EB 输入说明见[中英文边界](../../docs/planner-language.md)。
+从数据库导出一份已完成且有反馈的答卷：
+
+```bash
+.venv/bin/python scripts/export_submitted_case.py \
+  --data-dir /path/to/jobs \
+  --case-id CASE_ID \
+  --output-dir /path/to/case-export
+```

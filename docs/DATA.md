@@ -1,3 +1,11 @@
+# 数据交付口径
+
+用户填写后的问卷 JSON 只包含实际提交答案及身份关联、时间、问卷版本；不嵌入整份问卷定义或全部选项。原始值保持不变，未填写项不补答案。
+
+完整案例另附该户配置、仿真情境、两份结果、实际展示和真人反馈，不生成 SFT 提示词或训练对话。
+
+[查看真实答卷和运行结果](../examples/real-test-20260914/README.md)。使用 `scripts/export_submitted_case.py` 导出；以下旧 `export_household_records.py` / `export_candidates.py` 是后台完整审计及历史候选工具，不是当前对外交付格式。后台不可变记录及快照继续用于来源校验。
+
 # 数据保存与研究用途
 
 SQLite 为权威记录；JSON 文件是可恢复的兼容导出。默认部署位置为 `/var/lib/energybridge/jobs/state.sqlite3`，不同研究或工程试验应使用独立目录。
