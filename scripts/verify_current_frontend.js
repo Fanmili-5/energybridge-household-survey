@@ -74,6 +74,17 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   await page.locator('#research-consent').check();
   await page.locator('#scenario-understood').check();
   await page.locator('#generate').click();
+  if(!intakeOnly&&process.env.EB_BROWSER_CAPTCHA==='1'){
+   await page.locator('#captcha-dialog').waitFor({state:'visible'});
+   await page.waitForFunction(()=>!document.getElementById('captcha-answer').disabled);
+   assert(await page.evaluate(()=>!currentJob));
+   await page.locator('#captcha-answer').fill('AAAAAA');await page.locator('#captcha-confirm').click();
+   await page.waitForFunction(()=>document.getElementById('captcha-message').textContent.includes('不正确'));
+   assert(await page.evaluate(()=>!currentJob));
+   if(process.env.EB_BROWSER_SCREENSHOTS){fs.mkdirSync(process.env.EB_BROWSER_SCREENSHOTS,{recursive:true});await page.locator('#captcha-dialog').screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/captcha-'+width+'.png'});}
+   await page.locator('#captcha-answer').fill('ac2346');await page.locator('#captcha-confirm').click();
+   await page.locator('#captcha-dialog').waitFor({state:'hidden'});
+  }
   if(intakeOnly){
    await page.locator('#household-receipt').waitFor({state:'visible'});
    assert((await page.locator('#receipt-status').innerText()).includes('已保存'));

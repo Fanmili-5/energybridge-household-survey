@@ -1,17 +1,19 @@
 "use strict";
 const $ = id => document.getElementById(id);
 let schema, currentJob, timer;
+const adminView=location.pathname==='/admin/survey';
+const draftStorage=adminView?{getItem:key=>window.localStorage.getItem('eb:admin:'+key),setItem:(key,value)=>window.localStorage.setItem('eb:admin:'+key,value),removeItem:key=>window.localStorage.removeItem('eb:admin:'+key)}:window.localStorage;
 const terminal = new Set(["complete","failed","timeout","cancelled","interrupted","expired"]);
 const el = (tag, text, className) => {const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(className)n.className=className;return n;};
 function error(message){const box=$("error");box.textContent=message;box.hidden=false;box.setAttribute('tabindex','-1');box.focus({preventScroll:true});box.scrollIntoView({block:'center',behavior:'smooth'});}
 async function api(path,body){
  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),15000);
  try{
-  const response=await fetch(path,{signal:controller.signal,credentials:"same-origin",...(body===undefined?{}:{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})});
+  const response=await fetch((adminView&&path.startsWith('/api/')?'/admin':'')+path,{signal:controller.signal,credentials:"same-origin",...(body===undefined?{}:{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})});
   let data;try{data=await response.json();}catch{}
   if(!response.ok){
-   const messages={401:'登录已失效，请刷新页面并重新登录。',429:'当前请求较多，请稍后再试。',502:'计算服务暂时不可用，请稍后再试。',503:'服务暂时不可用，请稍后再试。',504:'服务器响应超时，请稍后再试。'};
-   throw new Error(data?.error||messages[response.status]||'请求失败，请稍后再试。');
+   const messages={401:adminView?'管理员登录已失效，请刷新后重新登录。':'页面会话已失效，请刷新后重试。',429:'当前请求较多，请稍后再试。',502:'计算服务暂时不可用，请稍后再试。',503:'服务暂时不可用，请稍后再试。',504:'服务器响应超时，请稍后再试。'};
+   const failure=new Error(data?.error||messages[response.status]||'请求失败，请稍后再试。');failure.code=data?.code;failure.status=response.status;throw failure;
   }
   if(!data||typeof data!=='object')throw new Error('服务器返回异常，请稍后再试。');
   return data;
@@ -117,7 +119,7 @@ function restore(profile){for(const q of schema.profile_questions){if(q.type==="
 const devices={ac:"空调",washer:"洗衣机",dishwasher:"洗碗机",dryer:"烘干机",electric_water_heater:"电热水器",home_ev:"家用电动汽车充电"};
 const scoreFields={score:"整体：这份方案总体适合您家吗？",comfort_score:"舒适：室温和生活安排的变化合适吗？",energy_score:"用电与费用：模拟用电量和费用符合您家期望吗？",vpp_score:"响应安排：您对本次错峰用电的处理方式满意吗？请考虑安排调整和自主决定体验。"};
 let generation=0,pendingSubmit=false;
-const UI_VERSION="eb.survey_ui.v6.5";
+const UI_VERSION="eb.survey_ui.v6.6";
 const RESEARCH_NOTICE_VERSION="eb.research_notice.v2";
 let savedReceipt=null,savedHouseholdRecord=null;
 const pendingDecisions=new Set(),pendingRequests=new Map();
@@ -129,7 +131,7 @@ function stableJson(value){return JSON.stringify(value,(_,v)=>v&&typeof v==='obj
 function householdBody(){return {answers:collect(schema.profile_questions,'p_'),questionnaire_version:schema.paired_questionnaire_version,questionnaire_hash:schema.paired_questionnaire_hash,questionnaire_context_hash:schema.questionnaire_context.context_hash};}
 function householdFingerprint(body=householdBody()){return stableJson({answers:body.answers,questionnaire_version:body.questionnaire_version,questionnaire_hash:body.questionnaire_hash,questionnaire_context_hash:body.questionnaire_context_hash});}
 function receiptMatches(){try{return !!savedReceipt&&savedReceipt.fingerprint===householdFingerprint();}catch{return false;}}
-function saveReceipt(receipt,body){savedReceipt={id:receipt.id||receipt.submission_id,household_record_hash:receipt.household_record_hash,questionnaire_version:receipt.questionnaire_version||body.questionnaire_version,questionnaire_hash:receipt.questionnaire_hash||body.questionnaire_hash,created_at:receipt.created_at,environment_readiness:receipt.environment_readiness,case_ids:receipt.case_ids||[],fingerprint:householdFingerprint(body)};writeBrowser(localStorage,'eb:household-receipt',savedReceipt);renderReceipt();}
+function saveReceipt(receipt,body){savedReceipt={id:receipt.id||receipt.submission_id,household_record_hash:receipt.household_record_hash,questionnaire_version:receipt.questionnaire_version||body.questionnaire_version,questionnaire_hash:receipt.questionnaire_hash||body.questionnaire_hash,created_at:receipt.created_at,environment_readiness:receipt.environment_readiness,case_ids:receipt.case_ids||[],fingerprint:householdFingerprint(body)};writeBrowser(draftStorage,'eb:household-receipt',savedReceipt);renderReceipt();}
 function renderReceipt(){
  const panel=$('household-receipt');if(!panel)return;panel.hidden=!savedReceipt;
  syncHistoryVisibility();
@@ -152,12 +154,12 @@ function decisionDraftKey(job){return 'eb:decision-draft:'+job.id+':'+job.result
 function saveDecisionDraft(){
  const j=currentJob;if(!j||j.status!=='complete'||j.decision_saved||j.result.schema_version!==schema.paired_version)return;
  const draft={choice:document.querySelector('input[name="decision"]:checked')?.value||null,scores:Object.fromEntries(Object.keys(scoreFields).map(k=>[k,scoreInputs(k)[0]?.value||''])),comment:$("decision-reason").value};
- try{localStorage.setItem(decisionDraftKey(j),JSON.stringify(draft));$("decision-status").textContent="评价草稿已保存在此浏览器，尚未提交。";}catch{$("decision-status").textContent="此浏览器无法保存评价草稿，请保持页面打开并提交。";}
+ try{draftStorage.setItem(decisionDraftKey(j),JSON.stringify(draft));$("decision-status").textContent="评价草稿已保存在此浏览器，尚未提交。";}catch{$("decision-status").textContent="此浏览器无法保存评价草稿，请保持页面打开并提交。";}
 }
 function restoreDecisionDraft(job){
- if(job.decision_saved){try{localStorage.removeItem(decisionDraftKey(job));}catch{}return;}
+ if(job.decision_saved){try{draftStorage.removeItem(decisionDraftKey(job));}catch{}return;}
  if(job.result.schema_version!==schema.paired_version)return;
- try{const d=JSON.parse(localStorage.getItem(decisionDraftKey(job))||'null');if(!d)return;
+ try{const d=JSON.parse(draftStorage.getItem(decisionDraftKey(job))||'null');if(!d)return;
  for(const x of document.getElementsByName('decision'))x.checked=x.value===d.choice;
  $("decision-reason").value=typeof d.comment==='string'?d.comment:'';
  for(const k of Object.keys(scoreFields))for(const x of scoreInputs(k)){x.value=d.scores?.[k]??'';x._scoreSync?.();}
@@ -179,8 +181,8 @@ function scheduleEnvironmentPreview(){
 }
 function saveDraft(){if(!schema||currentJob||pendingSubmit)return;
  scheduleEnvironmentPreview();
- const saved=writeBrowser(localStorage,draftKey(),{answers:collect(schema.profile_questions,'p_'),wizard_step:wizardStep,questionnaire_context_hash:schema.questionnaire_context.context_hash,saved_at:Date.now()});
- writeBrowser(localStorage,'eb:active-view',{mode:'draft',questionnaire_version:schema.paired_questionnaire_version});
+ const saved=writeBrowser(draftStorage,draftKey(),{answers:collect(schema.profile_questions,'p_'),wizard_step:wizardStep,questionnaire_context_hash:schema.questionnaire_context.context_hash,saved_at:Date.now()});
+ writeBrowser(draftStorage,'eb:active-view',{mode:'draft',questionnaire_version:schema.paired_questionnaire_version});
  $('draft-status').textContent=saved?'草稿已保存在此浏览器；点击最后一步的保存按钮后，才会提交到研究服务器。':'此浏览器无法保存草稿，请保持页面打开并完成最后的保存。';
  renderReceipt();
 }
@@ -205,7 +207,7 @@ function answerProfile(answers){return Object.fromEntries(Object.entries(answers
 function restoreDraft(){try{
  const version=schema.paired_questionnaire_version;
  const versions=[version,...(version==='eb.persona_questionnaire.v4.4'?['eb.persona_questionnaire.v4.3','eb.persona_questionnaire.v4.2','eb.persona_questionnaire.v4.1','eb.persona_questionnaire.v4.0','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8']:version==='eb.persona_questionnaire.v4.3'?['eb.persona_questionnaire.v4.2','eb.persona_questionnaire.v4.1','eb.persona_questionnaire.v4.0','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8']:version==='eb.persona_questionnaire.v4.2'?['eb.persona_questionnaire.v4.1','eb.persona_questionnaire.v4.0','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8']:version==='eb.persona_questionnaire.v4.1'?['eb.persona_questionnaire.v4.0','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8']:version==='eb.persona_questionnaire.v4.0'?['eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.7','eb.persona_questionnaire.v3.6']:version==='eb.persona_questionnaire.v3.9'?['eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.7','eb.persona_questionnaire.v3.6']:version==='eb.persona_questionnaire.v3.8'?['eb.persona_questionnaire.v3.7','eb.persona_questionnaire.v3.6']:version==='eb.persona_questionnaire.v3.7'?['eb.persona_questionnaire.v3.6']:[])];
- for(const source of versions){const d=JSON.parse(localStorage.getItem('eb:questionnaire-draft:'+source)||'null');if(!d?.answers)continue;
+ for(const source of versions){const d=JSON.parse(draftStorage.getItem('eb:questionnaire-draft:'+source)||'null');if(!d?.answers)continue;
   wizardStep=Number.isInteger(d.wizard_step)?d.wizard_step:0;restore(answerProfile(migrateAnswers(d.answers,source,d.questionnaire_context_hash)));
   if(source==='eb.persona_questionnaire.v4.3'&&version==='eb.persona_questionnaire.v4.4'&&d.questionnaire_context_hash===schema.questionnaire_context.context_hash){$('draft-status').textContent='已恢复上次填写内容；时间和温度选项已细化，原答案保留。';return true;}
   $('draft-status').textContent=(source!==version||d.questionnaire_context_hash!==schema.questionnaire_context.context_hash)?'已恢复家庭基本资料；情境日期或问卷已更新，请按指定月份重新填写习惯和偏好。原记录保留。':['eb.persona_questionnaire.v3.6','eb.persona_questionnaire.v3.7'].includes(source)&&['eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v4.0'].includes(version)?'已恢复原草稿；使用频率、成员参与方式等选项已更新，请重新选择。原草稿保留。':'已恢复上次未提交的填写内容。';return true;
@@ -291,7 +293,7 @@ async function loadJob(id){
  try{const j=await api("/api/jobs/"+id);if(token!==generation||j.flow!=="paired_ep_v1")return false;
  loadFailures=0;$("error").hidden=true;
  if(currentJob?.id!==id)$("decision-form").reset();
- currentJob=j;writeBrowser(localStorage,"eb:active-view",{mode:"job",id:j.id});$("profile-details").hidden=true;
+ currentJob=j;writeBrowser(draftStorage,"eb:active-view",{mode:"job",id:j.id});$("profile-details").hidden=true;
  for(const [i,step] of [...document.querySelectorAll(".journey li")].entries())step.classList.toggle("active",i===(j.status==="complete"?2:1));
  renderQuestions(j.questionnaire_snapshot);restore(j.profile);conditional();freeze(true);showWizard(0,{save:false});
  $("job-panel").hidden=j.status==="complete";renderJobState(j);
@@ -315,11 +317,11 @@ async function pollJob(id,token){
 }
 $("profile-form").addEventListener("change",e=>{if(e.target.id==="p_X_REGION")$("p_X_CITY")?._citiesSync?.(true);if(schema.profile_questions.some(q=>q.type==="multi_choice"&&e.target.name==="p_"+q.id)){const selected=JSON.parse(e.target.value);if(e.target.checked){for(const x of document.getElementsByName(e.target.name))if(x!==e.target&&(selected==="none"||JSON.parse(x.value)==="none"))x.checked=false;}}conditional();saveDraft();});
 $("profile-form").addEventListener("input",saveDraft);
-function submissionNonce(key,body){const fingerprint=stableJson(body);let pending=pendingRequests.get(key)||readBrowser(localStorage,key);
+function submissionNonce(key,body){const fingerprint=stableJson(body);let pending=pendingRequests.get(key)||readBrowser(draftStorage,key);
  if(!pending||pending.fingerprint!==fingerprint)pending={fingerprint,request_id:typeof crypto.randomUUID==='function'?crypto.randomUUID():Array.from(crypto.getRandomValues(new Uint8Array(16)),x=>x.toString(16).padStart(2,'0')).join('')};
- pendingRequests.set(key,pending);writeBrowser(localStorage,key,pending);return pending.request_id;
+ pendingRequests.set(key,pending);writeBrowser(draftStorage,key,pending);return pending.request_id;
 }
-function clearPending(key){pendingRequests.delete(key);removeBrowser(localStorage,key);}
+function clearPending(key){pendingRequests.delete(key);removeBrowser(draftStorage,key);}
 async function saveHousehold(){
  const base=householdBody();if(receiptMatches())return savedReceipt;
  const body={...base,ui_version:UI_VERSION,scenario_understood:$('scenario-understood').checked,research_consent:$('research-consent').checked,research_notice_version:schema.research_notice_version||RESEARCH_NOTICE_VERSION};
@@ -335,15 +337,15 @@ async function requestSavedPlan(receipt,retrySourceId=null){
  // The local attempt context creates a fresh nonce for an explicit terminal-job retry.
  // Repeated 429/network retries of that same attempt keep the nonce unchanged.
  let identity={...body,known_case_ids:receipt.case_ids||[],...(retrySourceId?{retry_source_job_id:retrySourceId}:{})};
- const pending=pendingRequests.get('eb:pending-plan')||readBrowser(localStorage,'eb:pending-plan');
+ const pending=pendingRequests.get('eb:pending-plan')||readBrowser(draftStorage,'eb:pending-plan');
  if(pending){try{const previous=JSON.parse(pending.fingerprint),{known_case_ids,retry_source_job_id,...priorBody}=previous;
   if((retry_source_job_id||null)===retrySourceId&&stableJson(priorBody)===stableJson(body))identity=previous;
  }catch{}}
- const j=await api('/api/paired',{...body,request_id:submissionNonce('eb:pending-plan',identity)});
+ const j=await EBCaptcha.submit(api,{...body,request_id:submissionNonce('eb:pending-plan',identity)},schema.captcha_enabled&&!schema.is_admin);
  clearPending('eb:pending-plan');
- const draft=readBrowser(localStorage,draftKey());
- if(draft?.answers&&householdFingerprint({answers:draft.answers,questionnaire_version:schema.paired_questionnaire_version,questionnaire_hash:schema.paired_questionnaire_hash,questionnaire_context_hash:draft.questionnaire_context_hash})===receipt.fingerprint)removeBrowser(localStorage,draftKey());
- writeBrowser(localStorage,'eb:active-view',{mode:'job',id:j.id});
+ const draft=readBrowser(draftStorage,draftKey());
+ if(draft?.answers&&householdFingerprint({answers:draft.answers,questionnaire_version:schema.paired_questionnaire_version,questionnaire_hash:schema.paired_questionnaire_hash,questionnaire_context_hash:draft.questionnaire_context_hash})===receipt.fingerprint)removeBrowser(draftStorage,draftKey());
+ writeBrowser(draftStorage,'eb:active-view',{mode:'job',id:j.id});
  const loaded=await loadJob(j.id);if(loaded)$(currentJob?.status==='complete'?'result-panel':'job-panel').scrollIntoView({block:'start'});
 }
 async function planSavedHousehold(){
@@ -388,7 +390,7 @@ $('decision-form').onsubmit=async e=>{
  const payload={choice:selected.value,comment:$('decision-reason').value,...Object.fromEntries(Object.keys(scoreFields).map(k=>[k,scoreValue(k)])),display_hash:r.display_hash,original_plan_hash:r.original_plan_hash,proposal_plan_hash:r.proposal_plan_hash};
  pendingDecisions.add(id);$('error').hidden=true;
  for(const input of $('decision-form').querySelectorAll('input,textarea,button'))input.disabled=true;
- try{await api(`/api/jobs/${id}/decision`,payload);job.decision_saved=true;removeBrowser(localStorage,draft);
+ try{await api(`/api/jobs/${id}/decision`,payload);job.decision_saved=true;removeBrowser(draftStorage,draft);
   if(currentJob?.id===id){$('decision-status').textContent='反馈已保存，正在更新显示。';await loadJob(id);}
  }catch(ex){if(currentJob?.id===id){error(ex.message);for(const input of $('decision-form').querySelectorAll('input,textarea,button'))input.disabled=false;}}
  finally{pendingDecisions.delete(id);}
@@ -410,7 +412,7 @@ $('clear-device-data').onclick=async()=>{
  if(!confirm('将清除此浏览器保存的问卷草稿、任务入口和评价草稿。研究服务器中已提交的匿名记录不会被删除。确定继续吗？'))return;
  try{
   await api('/api/session/reset',{});
-  for(const store of [localStorage,sessionStorage])for(const key of Object.keys(store))if(key.startsWith('eb:'))removeBrowser(store,key);
+  for(const store of [draftStorage,sessionStorage])for(const key of Object.keys(store))if(key.startsWith('eb:'))removeBrowser(store,key);
   location.replace('/');
  }catch(ex){error(ex.name==='AbortError'?'连接超时，请稍后再试。':ex.message);}
 };
@@ -447,11 +449,11 @@ for(const b of document.querySelectorAll('[data-wizard-step]'))b.onclick=()=>{if
 window.addEventListener('popstate',()=>{if(!schema||pendingSubmit)return;const step=wizardHashes.indexOf(location.hash.slice(1));showWizard(step<0?0:step,{scroll:true});});
 
 async function recoverReceipt(state){
- const local=readBrowser(localStorage,'eb:household-receipt'),summaries=state.households||[];
+ const local=readBrowser(draftStorage,'eb:household-receipt'),summaries=state.households||[];
  // A local receipt is only reused when the current session owns it.
  const selected=summaries.find(r=>r.id===local?.id)||summaries.at(-1);
  savedReceipt=null;savedHouseholdRecord=null;
- if(selected){try{const record=await api('/api/households/'+selected.id);savedHouseholdRecord=record;saveReceipt({...selected,...record},{answers:record.raw_answers,questionnaire_version:record.questionnaire_version,questionnaire_hash:record.questionnaire_hash,questionnaire_context_hash:record.questionnaire_context?.context_hash});}catch{removeBrowser(localStorage,'eb:household-receipt');}}
+ if(selected){try{const record=await api('/api/households/'+selected.id);savedHouseholdRecord=record;saveReceipt({...selected,...record},{answers:record.raw_answers,questionnaire_version:record.questionnaire_version,questionnaire_hash:record.questionnaire_hash,questionnaire_context_hash:record.questionnaire_context?.context_hash});}catch{removeBrowser(draftStorage,'eb:household-receipt');}}
 }
 function restoreSavedHousehold(){if(!savedHouseholdRecord)return false;restore(answerProfile(migrateAnswers(savedHouseholdRecord.raw_answers,savedHouseholdRecord.questionnaire_version,savedHouseholdRecord.questionnaire_context?.context_hash)));wizardStep=wizardSteps().at(-1);$('draft-status').textContent='已恢复家庭资料；请核对上方情境日期，补填已清空的季节习惯后重新保存。';return true;}
 async function init(){
@@ -469,7 +471,7 @@ async function init(){
   $('research-consent-label').textContent=human?'我已阅读参与说明，自愿将本次家庭回答和后续方案评价用于上述研究。':'我知道本次提交只用于演示和工程检查。';
   $('scenario-facts').replaceChildren(...schema.paired_context.facts.map(f=>el('li',f)));conditional();renderHistory(schema.jobs);
   await recoverReceipt(schema);
-  const jobs=schema.jobs.filter(j=>j.flow==='paired_ep_v1'),active=readBrowser(localStorage,'eb:active-view'),pendingPlan=readBrowser(localStorage,'eb:pending-plan');
+  const jobs=schema.jobs.filter(j=>j.flow==='paired_ep_v1'),active=readBrowser(draftStorage,'eb:active-view'),pendingPlan=readBrowser(draftStorage,'eb:pending-plan');
   let recoverJob;
   if(pendingPlan){try{const request=JSON.parse(pendingPlan.fingerprint),record=(schema.households||[]).find(r=>r.id===request.submission_id);const latest=record?.case_ids?.at(-1);if(latest&&latest!==request.retry_source_job_id&&!(request.known_case_ids||[]).includes(latest))recoverJob=latest;}catch{}}
   if(recoverJob){clearPending('eb:pending-plan');await loadJob(recoverJob);}

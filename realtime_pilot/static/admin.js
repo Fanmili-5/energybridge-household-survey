@@ -3,7 +3,7 @@ async function refreshAdmin(){
  const status=document.getElementById('admin-status'),button=document.getElementById('admin-refresh');button.disabled=true;
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
  try{
-  const response=await fetch('/api/admin/status',{credentials:'same-origin',signal:controller.signal});
+  const response=await fetch('/admin/api/admin/status',{credentials:'same-origin',signal:controller.signal});
   if(!response.ok)throw new Error(response.status===403||response.status===401?'请使用管理员账号登录。':'暂时无法读取状态，请稍后刷新。');
   const data=await response.json(),limits=data.limits;
   status.textContent=data.planning_enabled?'方案生成已开启':'方案生成已暂停';

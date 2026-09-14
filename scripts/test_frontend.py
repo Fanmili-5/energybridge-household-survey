@@ -11,19 +11,21 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--human-mode',action='store_true',help='Exercise formal-mode routing with synthetic answers in a disposable database only')
     parser.add_argument('--intake-only',action='store_true',help='Verify current human intake and shared-browser reset without EnergyPlus or a model')
+    parser.add_argument('--captcha',action='store_true',help='Test local image challenge using a fixed code in this disposable server only')
     args=parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='eb-browser-') as tmp:
         tmp=Path(tmp)
         fixture_answers=answers();fixture_answers.update(H_ac_temp='26.3',P_AC_CHANGE='0.3',P_AC_RANGE='24.3_26.7',H_washer='18.1666666667',T_washer=str(70/60))
         fixture=tmp/'answers.json';fixture.write_text(json.dumps(fixture_answers,ensure_ascii=False))
-        server=make_server(0,tmp/'data',workers=1,disable_planning=args.intake_only,timeout=300,human_pilot=args.human_mode)
+        server=make_server(0,tmp/'data',workers=1,disable_planning=args.intake_only,timeout=300,human_pilot=args.human_mode,local_captcha=args.captcha)
+        if args.captcha:server.captcha._new_code=lambda:'AC2346'
         if not args.intake_only:
             server.store.worker_command=lambda folder:[sys.executable,str(ROOT/'realtime_pilot/deploy/ep_fixture_worker.py'),str(folder)]
             server.planning_disabled=False;server.store.pool.resume()
         threading.Thread(target=server.serve_forever,daemon=True).start()
         try:
             host,port=server.server_address
-            env={**os.environ,'EB_BROWSER_ORIGIN':f'http://{host}:{port}','EB_BROWSER_ANSWERS':str(fixture),'EB_BROWSER_INTAKE_ONLY':'1' if args.intake_only else '0'}
+            env={**os.environ,'EB_BROWSER_ORIGIN':f'http://{host}:{port}','EB_BROWSER_ANSWERS':str(fixture),'EB_BROWSER_INTAKE_ONLY':'1' if args.intake_only else '0','EB_BROWSER_CAPTCHA':'1' if args.captcha else '0'}
             subprocess.run(['node',str(ROOT/'scripts/verify_current_frontend.js')],env=env,check=True,timeout=240)
             if args.intake_only:
                 intakes=server.store.db.households()

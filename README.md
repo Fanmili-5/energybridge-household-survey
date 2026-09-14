@@ -61,7 +61,7 @@ EPLUS_ROOT=/path/to/EnergyPlus-24-1-0 EB_TEST_NATIVE_EP=1 .venv/bin/python scrip
 - [地区与全年日期](simulation_resources/README.md)
 - [第三方来源说明](THIRD_PARTY.md)
 
-演示入口：**https://47.85.194.154/**（需要受邀登录）。这是部署地址，不包含账号或密码，地址可能随部署调整。
+演示入口：**https://47.85.194.154/**（参与者免登录，生成前完成本地图片验证码）。管理员从 `/admin/` 登录并进入 `/admin/survey` 测试。当前仍为工程试填模式。入口与验证机制见 [免登录与验证码说明](docs/public-access-local-captcha.md)。
 
 目前采用阿里云入口、学校 CPU 仿真和 Mac 反向隧道；Mac 持续运行是已接受的部署前提。并发由任务队列、EP 槽和 API 槽分别限制；50 人填写不等于同时执行 50 个仿真。容量和超时按实测设置，不能承诺任何人数都没有排队。
 

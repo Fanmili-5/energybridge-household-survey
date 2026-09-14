@@ -10,6 +10,8 @@ limit_req_zone $eb_write_client zone=eb_general:10m rate=20r/s;
 # limit only damps abusive bursts and therefore leaves room for a whole class
 # or campus NAT to submit at once.
 limit_req_zone $binary_remote_addr zone=eb_generate:10m rate=30r/m;
+limit_req_zone $binary_remote_addr zone=eb_captcha:10m rate=60r/m;
+limit_req_zone $binary_remote_addr zone=eb_session:10m rate=120r/m;
 
 server {
     listen 80;
@@ -32,8 +34,10 @@ server {
     client_body_timeout 15s;
     add_header Strict-Transport-Security "max-age=86400" always;
 
-    # Optional invited demo authentication: configure auth_basic and its password
-    # file separately. Preserve the 401 challenge, but explain browser login.
+    # Participants are anonymous. Only /admin/... authenticates.
+    # Run the backend with --local-captcha before opening generation publicly.
+    auth_basic off;
+    auth_basic_user_file /etc/nginx/eb-demo.htpasswd;
     error_page 401 /_auth_required.html;
     error_page 429 = @eb_rate_limited;
     location = /_auth_required.html {
@@ -55,6 +59,42 @@ server {
     # The read-only timeline example is linked from the questionnaire.
     # It serves bundled example data and never creates a calculation.
 
+    location = /admin { return 302 /admin/; }
+    location = /admin.js { return 404; }
+    location ^~ /admin/ {
+        auth_basic "EnergyBridge administrator";
+        limit_req zone=eb_general burst=300 nodelay;
+        limit_req_status 429;
+        proxy_pass http://127.0.0.1:8767;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-EB-Authenticated-User $remote_user;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 30s;
+    }
+    location = /api/session {
+        limit_req zone=eb_session burst=150 nodelay;
+        limit_req_status 429;
+        proxy_pass http://127.0.0.1:8767;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-EB-Authenticated-User "";
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 30s;
+    }
+    location = /api/captcha {
+        limit_req zone=eb_captcha burst=100 nodelay;
+        limit_req_status 429;
+        proxy_pass http://127.0.0.1:8767;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-EB-Authenticated-User "";
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 30s;
+    }
     location = /api/paired {
         # Shared campus/home networks can burst; application quotas remain authoritative.
         limit_req zone=eb_generate burst=150 nodelay;
@@ -63,9 +103,8 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Real-IP $remote_addr;
-        # For --admin-user, enable HTTPS Basic Auth and overwrite this identity.
-        # Never forward a client-provided admin flag or identity header.
-        proxy_set_header X-EB-Authenticated-User $remote_user;
+        # Public requests never carry authenticated administrator identity.
+        proxy_set_header X-EB-Authenticated-User "";
         proxy_connect_timeout 5s;
         proxy_read_timeout 30s;
     }
@@ -76,7 +115,7 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-EB-Authenticated-User $remote_user;
+        proxy_set_header X-EB-Authenticated-User "";
         proxy_connect_timeout 5s;
         proxy_read_timeout 30s;
     }

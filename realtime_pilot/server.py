@@ -10,6 +10,7 @@ import sqlite3
 import logging
 import fcntl
 from http.cookies import SimpleCookie
+from local_captcha import LocalCaptcha, CaptchaError
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import os
@@ -31,7 +32,7 @@ import paired_contract as paired
 
 TERMINAL = TERMINAL_STATUSES
 RESEARCH_NOTICE_VERSION = 'eb.research_notice.v2'
-PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.5'
+PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.6'
 
 def stop_process(process):
     # The worker owns native EP descendants; kill the whole group on cancellation/timeout.
@@ -609,6 +610,10 @@ class Handler(BaseHTTPRequestHandler):
         path = urlparse(self.path).path
         if self.headers.get("Host") not in self.server.allowed_hosts:
             return self.reply(403, {"error": "请求地址不匹配"})
+        if path.startswith('/admin/'):
+            if not self.is_admin():return self.reply(403,{'error':'此入口仅供管理员使用'})
+            if path=='/admin/survey':return self.reply(200,(ROOT/'static/index.html').read_bytes(),content_type='text/html; charset=utf-8')
+            path={'/admin/':'/admin','/admin/admin.js':'/admin.js'}.get(path,path[6:] if path.startswith('/admin/api/') else path)
         if path in {'/admin', '/admin.js', '/api/admin/status'}:
             if not self.is_admin():
                 return self.reply(403, {'error':'此入口仅供管理员使用'})
@@ -617,7 +622,8 @@ class Handler(BaseHTTPRequestHandler):
                     rows=list(self.server.store.jobs.summaries())
                 return self.reply(200, {
                     'planning_enabled':not self.server.planning_disabled,
-                    'captcha_enabled':False,
+                    'captcha_enabled':self.server.captcha is not None,
+                    'captcha_provider':'local_image' if self.server.captcha else None,
                     'limits':{'personal_quota_exempt':True,'public_daily_quota_exempt':True,
                               'workers':self.server.store.workers,'pending_limit':self.server.store.max_pending,
                               'timeout_seconds':self.server.store.timeout,
@@ -628,8 +634,8 @@ class Handler(BaseHTTPRequestHandler):
                     'test_data_only':True})
             name='admin.html' if path=='/admin' else 'admin.js'
             return self.reply(200,(ROOT/'static'/name).read_bytes(),content_type=('text/html' if path=='/admin' else 'application/javascript')+'; charset=utf-8')
-        if path in {"/", "/app.js", "/time-input.js", "/preview.js", "/plan-view.js", "/plan-preview.html", "/style.css", "/legacy", "/legacy.js"}:
-            name = {"/": "index.html", "/app.js": "app.js", "/time-input.js": "time-input.js", "/preview.js": "preview.js", "/plan-view.js": "plan-view.js", "/plan-preview.html": "plan-preview.html", "/style.css": "style.css", "/legacy": "legacy.html", "/legacy.js": "legacy.js"}[path]
+        if path in {"/", "/app.js", "/captcha.js", "/time-input.js", "/preview.js", "/plan-view.js", "/plan-preview.html", "/style.css", "/legacy", "/legacy.js"}:
+            name = {"/": "index.html", "/app.js": "app.js", "/captcha.js":"captcha.js", "/time-input.js": "time-input.js", "/preview.js": "preview.js", "/plan-view.js": "plan-view.js", "/plan-preview.html": "plan-preview.html", "/style.css": "style.css", "/legacy": "legacy.html", "/legacy.js": "legacy.js"}[path]
             mime = "text/html" if name.endswith("html") else "application/javascript" if name.endswith("js") else "text/css"
             return self.reply(200, (ROOT / "static" / name).read_bytes(), content_type=mime+"; charset=utf-8")
         if path == "/api/session":
@@ -643,7 +649,7 @@ class Handler(BaseHTTPRequestHandler):
                                    "paired_questionnaire_version": paired.QUESTIONNAIRE_VERSION,
                                    "paired_questionnaire_hash": digest(paired.QUESTIONS),
                                    "collection_mode": "human_pilot" if self.server.store.human_pilot and not self.is_admin() else "engineering",
-                                   "is_admin":self.is_admin(),
+                                   "is_admin":self.is_admin(),"captcha_enabled":bool(self.server.captcha and not self.is_admin()),
                                    "planning_enabled": not self.server.planning_disabled,
                                    "proposal_context": proposals.CONTEXT, "proposal_version": proposals.VERSION,
                                    "proposal_profile_questions": PROPOSAL_PROFILE_QUESTIONS,
@@ -684,6 +690,12 @@ class Handler(BaseHTTPRequestHandler):
             if not isinstance(payload, dict):
                 raise ValueError("请求格式无效")
             path = urlparse(self.path).path
+            if path.startswith('/admin/'):
+                if not self.is_admin():return self.reply(403,{'error':'此入口仅供管理员使用'})
+                if path.startswith('/admin/api/'):path=path[6:]
+            if path=='/api/captcha':
+                if not self.server.captcha or self.is_admin():return self.reply(400,{'error':'当前入口无需验证码'})
+                return self.reply(200,self.server.captcha.issue(session,payload.get('request_id')))
             if path=='/api/session/reset':
                 if self.is_admin():raise ValueError('管理员会话不能在参与者页面重置')
                 # Submitted records remain immutable on the server.  Rotating the
@@ -706,7 +718,12 @@ class Handler(BaseHTTPRequestHandler):
                 job = self.server.store.create(session, payload,admin=self.is_admin())
                 return self.reply(202, self.server.store.public(job))
             if path == "/api/paired":
-                job = self.server.store.create(session, payload, paired_flow=True,admin=self.is_admin())
+                proof=payload.pop('captcha',None)
+                with self.server.store.lock:
+                    existing=any(j['owner']==session and j['request_id']==payload.get('request_id') for j in self.server.store.jobs.summaries())
+                    if self.server.captcha and not self.is_admin() and not existing:
+                        self.server.captcha.consume(session,payload.get('request_id'),proof)
+                    job = self.server.store.create(session, payload, paired_flow=True,admin=self.is_admin())
                 return self.reply(202, self.server.store.public(job))
             if path == "/api/proposals":
                 job = self.server.store.create(session, payload, proposal=True,admin=self.is_admin())
@@ -721,6 +738,8 @@ class Handler(BaseHTTPRequestHandler):
                     data = self.server.store.rate(match[1], session, payload) if match[2] == "rating" else self.server.store.cancel(match[1], session)
                 return self.reply(200, data)
             return self.reply(404, {"error": "接口不存在"})
+        except CaptchaError as exc:
+            return self.reply(400,{'error':str(exc),'code':'captcha_invalid'})
         except ValueError as exc:
             return self.reply(400, {"error": str(exc) if not isinstance(exc, json.JSONDecodeError) else "请求 JSON 无效"})
         except TypeError:
@@ -732,7 +751,7 @@ class Handler(BaseHTTPRequestHandler):
         except (sqlite3.Error,OSError):
             return self.reply(503,{"error":"保存暂时不可用，请保留页面并重试同一次提交。"})
 
-def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, max_session_intakes=5, max_daily_intakes=2000, admin_user=None, allow_legacy_test_routes=False):
+def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, max_session_intakes=5, max_daily_intakes=2000, admin_user=None, allow_legacy_test_routes=False, local_captcha=False):
     if admin_user is not None and not re.fullmatch(r"[A-Za-z0-9_-]{1,64}",admin_user):
         raise ValueError("Invalid admin username")
     if public_origin:
@@ -747,6 +766,7 @@ def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False,
     server = PilotHTTPServer(("127.0.0.1", port), Handler)
     server.allow_legacy_test_routes=bool(allow_legacy_test_routes and not public_origin)
     server.admin_user=admin_user
+    server.captcha=LocalCaptcha() if local_captcha else None
     server.secure_cookie=bool(public_origin and origin.scheme=='https')
     server.planning_disabled = disable_planning
     port = server.server_address[1]
@@ -761,6 +781,7 @@ def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument('--local-captcha',action='store_true',help='Require a local raster challenge for each new participant calculation')
     parser.add_argument("--port", type=int, default=8766)
     parser.add_argument("--workers", type=int, choices=range(1, 33), default=1)
     parser.add_argument("--timeout", type=int, default=240)
@@ -782,7 +803,7 @@ if __name__ == "__main__":
     singleton=(data_root/'server.lock').open('a')
     try:fcntl.flock(singleton,fcntl.LOCK_EX|fcntl.LOCK_NB)
     except BlockingIOError:parser.error('This data directory already has an active server')
-    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs,max_queue_wait=args.max_queue_wait,estimated_job_seconds=args.estimated_job_seconds,max_session_intakes=args.max_session_intakes,max_daily_intakes=args.max_daily_intakes,admin_user=args.admin_user)
+    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs,max_queue_wait=args.max_queue_wait,estimated_job_seconds=args.estimated_job_seconds,max_session_intakes=args.max_session_intakes,max_daily_intakes=args.max_daily_intakes,admin_user=args.admin_user,local_captcha=args.local_captcha)
     print(f"Local: http://127.0.0.1:{server.server_address[1]}", flush=True)
     def terminate(signum,frame):
         threading.Thread(target=server.shutdown,daemon=True).start()

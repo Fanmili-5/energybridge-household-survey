@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>原安排与 EB 建议 · 家庭用电</title><meta name="description" content="根据家庭习惯生成原安排，对比 EnergyPlus 模拟的 EB 调整方案，记录家庭的选择与评分。"><link rel="stylesheet" href="/style.css"><script src="/plan-view.js" defer></script><script src="/time-input.js" defer></script><script src="/app.js" defer></script></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>原安排与 EB 建议 · 家庭用电</title><meta name="description" content="根据家庭习惯生成原安排，对比 EnergyPlus 模拟的 EB 调整方案，记录家庭的选择与评分。"><link rel="stylesheet" href="/style.css"><script src="/plan-view.js" defer></script><script src="/time-input.js" defer></script><script src="/captcha.js" defer></script><script src="/app.js" defer></script></head>
 <body class="survey-page">
 <header><a href="/" class="brand" aria-label="EnergyBridge 家庭用电研究">EnergyBridge <span class="brand-caption">家庭用电研究</span></a><a id="admin-link" href="/admin" hidden>管理概览</a><span class="badge" id="collection-badge">家庭用电研究</span></header>
 <main>
@@ -73,4 +73,10 @@
 </div>
 <section class="panel history-panel"><div class="section-top"><h2>本浏览器的方案比较记录</h2><div class="history-actions"><button id="new-case" class="secondary" type="button">修改家庭回答 / 新案例</button><button id="clear-device-data" class="secondary" type="button">结束并清除此设备数据</button></div></div><div id="history"></div><p class="hint">每条记录绑定当时的原安排、EB 建议、同意或不同意的选择、四项评分及原因。在共用设备上完成后，请清除此设备保存的草稿和记录入口。</p><a href="/plan-preview.html" target="_blank" rel="noopener">查看时间轴展示示例</a></section>
 </main><footer id="collection-footer">展示研究情境中的模拟结果，不控制真实电器。</footer>
+<dialog id="captcha-dialog" aria-labelledby="captcha-title" aria-describedby="captcha-message">
+<form id="captcha-form"><h2 id="captcha-title">生成前，请完成图片验证</h2><p id="captcha-message" role="status"></p>
+<div class="captcha-picture"><img id="captcha-image" width="216" height="64" alt="六位图片验证码；看不清可换一张"><button id="captcha-refresh" type="button" class="secondary">换一张</button></div>
+<label for="captcha-answer">图中的字符</label><input id="captcha-answer" type="text" required minlength="6" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false">
+<div class="captcha-actions"><button id="captcha-cancel" type="button" class="secondary">暂不生成</button><button id="captcha-confirm" type="submit">验证并生成</button></div>
+<p class="hint">家庭资料已保存；验证通过后才开始计算。</p></form></dialog>
 </body></html>
