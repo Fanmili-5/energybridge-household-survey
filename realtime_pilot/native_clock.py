@@ -22,7 +22,7 @@ def synchronized_appliances(runner, suite_class, loops):
              'substep_policy': 'hold_last_device_power_and_actuator_values',
              'comparison_tolerance_h': TIME_TOLERANCE_H,
              'zone_step_hours': [], 'model_steps': 0, 'held_substeps': 0,
-             'power_transitions': []}
+             'power_transitions': [], 'ev_state_trace': []}
 
     def step(suite, sim_h, dt_h):
         if not any(getattr(loop, 'appliance_suite', None) is suite for loop in loops):
@@ -36,7 +36,18 @@ def synchronized_appliances(runner, suite_class, loops):
             audit['zone_step_hours'].append(dt_h)
         # Avoid losing an entire step to e.g. 18:10 represented just below
         # 18.166666666666668. This is 3.6 microseconds, not a schedule edit.
+        ev=getattr(suite,'_ev',None)
+        observe_ev=ev is not None and ev.present
+        if observe_ev:
+            before_soc=ev._soc
+            departed_before=set(ev._departed)
         powers = original_step(suite, tick * dt_h + TIME_TOLERANCE_H, dt_h)
+        if observe_ev:
+            audit['ev_state_trace'].append({
+                'start_h':tick*dt_h,'end_h':(tick+1)*dt_h,
+                'soc_before':before_soc,'soc_after':ev._soc,
+                'departure_occurred':bool(set(ev._departed)-departed_before),
+                'target_soc':ev.target_soc,'arrival_h':ev.arrival_h,'departure_h':ev.departure_h})
         if powers != getattr(suite, '_eb_zone_power', {}):
             audit['power_transitions'].append({'sim_h': tick * dt_h, 'power_kw': deepcopy(powers)})
         suite._eb_zone_power = deepcopy(powers)

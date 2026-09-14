@@ -249,3 +249,11 @@ body.survey-page,body.preview-page{--muted-readable:#52665e}
 
 .metric-unit{display:block;font-size:11px;font-weight:400;line-height:1.5;color:#52675b}.schedule-mobile-hint{display:none}.schedule-times{font-size:11px}
 @media(max-width:640px){.schedule-mobile-hint{display:block;font-size:12px;color:#52675b;margin:8px 0}.outcome-metric td strong{font-size:15px}}
+
+/* One household member at a time; optional questions stay visible. */
+.survey-page .member-navigation{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 16px}
+.survey-page .member-navigation button{padding:8px 12px;font-size:13px;min-height:40px}
+.survey-page .member-navigation button[aria-current=step]{background:#e9f4ed;border-color:#33836d;color:#175941}
+.survey-page .member-card[hidden]{display:none!important}
+.survey-page .member-extra h4{font-size:13px;color:#426457;margin:8px 0}
+#connection-status{color:#785719;font-size:14px;line-height:1.6}

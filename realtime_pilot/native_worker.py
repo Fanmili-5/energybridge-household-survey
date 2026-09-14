@@ -68,7 +68,7 @@ def run(folder):
     for branch in ('baseline','proposal'):
         if request['scenario'].get('environment'):
             artifacts[f'{branch}/simulation_environment.json']=file_hash(folder/branch/'simulation_environment.json')
-        for name in ('native_result.json','actuator_trace.json','appliance_clock.json','native_boundary_manifest.json','collection_entry.py','ep_metric_series.json','eplusout.err','eplusout.sql'):
+        for name in ('native_result.json','actuator_trace.json','appliance_clock.json','service_evidence.json','native_boundary_manifest.json','collection_entry.py','ep_metric_series.json','eplusout.err','eplusout.sql'):
             artifacts[f'{branch}/{name}']=file_hash(folder/branch/name)
     result={'schema_version':VERSION,'flow':'paired_ep_v1','task':'plan_judgement',
         'original_plan':request['original_plan'],'original_plan_hash':digest(request['original_plan']),

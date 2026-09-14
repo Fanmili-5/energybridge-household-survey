@@ -16,6 +16,9 @@ def main():
     with tempfile.TemporaryDirectory(prefix='eb-browser-') as tmp:
         tmp=Path(tmp)
         fixture_answers=answers();fixture_answers.update(H_ac_temp='26.3',P_AC_CHANGE='0.3',P_AC_RANGE='24.3_26.7',H_washer='18.1666666667',T_washer=str(70/60))
+        fixture_answers['M_MEMBERS'][0].update(age_band='older',life_roles=['retired','caregiver'],control='confirm')
+        fixture_answers['M_MEMBERS'][1].update(age_band='adult',task='flexible')
+        fixture_answers['M_MEMBERS'][2].update(age_band='under18',comfort=None)
         fixture=tmp/'answers.json';fixture.write_text(json.dumps(fixture_answers,ensure_ascii=False))
         server=make_server(0,tmp/'data',workers=1,disable_planning=args.intake_only,timeout=300,human_pilot=args.human_mode,local_captcha=args.captcha)
         if args.captcha:server.captcha._new_code=lambda:'AC2346'

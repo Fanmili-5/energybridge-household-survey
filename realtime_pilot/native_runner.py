@@ -340,6 +340,9 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
         raise RuntimeError('Incomplete native simulation timeline')
     from native_assets import read_series, find
     physical = read_series(folder, horizon=days*24,start_date=start_date)
+    from native_service_evidence import evidence
+    services=evidence(clock_audit,physical,household,horizon=days*24)
+    write_json(folder/'service_evidence.json',services)
     energy = find(physical, 'Electricity:Facility', horizon=days*24, unit='J')
     temperature = find(physical, 'Zone Mean Air Temperature', 'living_unit1', horizon=days*24)
     electricity=[{'end_h':r['end_h'],'kwh':r['value']/3600000} for r in energy]
@@ -351,7 +354,7 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
         'electricity_facility':{'unit':'kWh per interval','rows':electricity},
         'living_unit1_mean_air_temperature':{'unit':'degC','rows':temperatures}})
     return {'native':data, 'controls':rows, 'execution_clock':clock_audit, 'seconds':time.perf_counter()-started,
-            'temperature':temperatures,
+            'temperature':temperatures, 'service_evidence':services,
             'electricity':electricity,
             'execution':{'services':data['appliance_results']},
             'task_outcomes':{device:{'completed':app._days[days-1].completed}

@@ -29,11 +29,26 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
     const row=page.locator(`[data-question-id="${q.id}"]`),value=answers[q.id];
     if(value==null||!await row.isVisible())continue;
     if(q.type==='member_list'){
-     assert.strictEqual(await row.locator('.member-card:visible').count(),value.length);
-     for(let i=0;i<value.length;i++)for(const [field,v] of Object.entries(value[i])){
-      if(v==null)continue;
-      for(const option of Array.isArray(v)?v:[v])await row.locator(`input[name="p_member_${i}_${field}__choices"]`).filter({visible:true}).locator(`xpath=self::input[@value='${option}']`).check();
+     assert.strictEqual(await row.locator('.member-card:visible').count(),1);
+     // Empty required answers cannot be bypassed by switching member tabs.
+     await row.locator('.member-navigation button').last().click();
+     await page.locator('[data-wizard-step="2"]').click();
+     assert.strictEqual(await page.locator('#p_M_MEMBERS').getAttribute('data-active-member'),'0');
+     for(let i=0;i<value.length;i++){
+      assert.strictEqual(await row.locator('.member-card:visible').count(),1);
+      assert.strictEqual(await row.getAttribute('data-active-member'),String(i));
+      for(const [field,v] of Object.entries(value[i])){
+       if(v==null)continue;
+       for(const option of Array.isArray(v)?v:[v])await row.locator(`input[name="p_member_${i}_${field}__choices"]`).filter({visible:true}).locator(`xpath=self::input[@value='${option}']`).check();
+      }
+      if(i<value.length-1)await page.locator('#wizard-next').click();
      }
+     const members=await page.evaluate(()=>collect(schema.profile_questions,'p_').M_MEMBERS);
+     assert.strictEqual(members.length,value.length);
+     for(let i=0;i<value.length;i++)for(const [field,v] of Object.entries(value[i]))assert.deepStrictEqual(members[i][field],v);
+     await page.reload();await page.waitForFunction(()=>typeof schema!=='undefined'&&schema?.questionnaire_context&&document.getElementById('generate').disabled===false);
+     assert.strictEqual(await row.getAttribute('data-active-member'),String(value.length-1));
+     assert.deepStrictEqual(await page.evaluate(()=>collect(schema.profile_questions,'p_').M_MEMBERS),members);
     }else if(q.type==='temperature_range'){const parts=value.split('_');await page.locator('#p_'+q.id+'_low').fill(parts[0]);await page.locator('#p_'+q.id+'_high').fill(parts[1]);
     }else if(q.cities_by_region){await page.locator('#p_'+q.id+'_choices').selectOption(value);}
     else if(q.type==='text'){await page.locator('#p_'+q.id).fill(value);}
@@ -49,12 +64,14 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
    }
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
    if(step===1){
+    await page.locator('.member-navigation button').first().click();
     const field=page.locator('.member-card').first().locator('[data-member-field="comfort"]').locator('..');
     const previous=await field.locator('select').inputValue();
     if(previous){await field.locator('.choice-clear').click();assert.strictEqual(await field.locator('select').inputValue(),'');assert(await field.locator('.choice-clear').isHidden());await field.locator(`input[value="${previous}"]`).check();}
    }
    if(process.env.EB_BROWSER_SCREENSHOTS&&[1,2].includes(step)){fs.mkdirSync(process.env.EB_BROWSER_SCREENSHOTS,{recursive:true});await page.screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/answers-step-'+step+'-'+width+'.png',fullPage:true});}
    await audit(`wizard-${step}`);
+   if(step===1)await page.locator('.member-navigation button').last().click();
    if(step<count-1){await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes(`第 ${step+2} /`));}
   }
   const contextHash=await page.evaluate(()=>schema.questionnaire_context.context_hash);
@@ -139,7 +156,28 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
    assert((await row.textContent()).replace(/\s/g,'').includes(metric.original.replace(/\s/g,'')));assert((await row.textContent()).replace(/\s/g,'').includes(metric.proposal.replace(/\s/g,'')));
   }
   assert(!(await page.locator('#result-panel').innerText()).includes('同一个家庭 · 同一个情境'));
+  assert(!(await page.locator('#result-panel').innerText()).includes('未验证'));
+  const waterRow=page.locator('.outcome-service').filter({hasText:'电热水器'});
+  assert((await waterRow.textContent()).includes('水箱温度'));
+  assert(!(await waterRow.textContent()).includes('出水'));
   if(process.env.EB_BROWSER_SCREENSHOTS)await page.locator('#result-panel').screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/comparison-'+width+'.png'});
+  const recovery=await page.evaluate(async()=>{
+   const savedApi=api,out=[];clearTimeout(timer);timer=null;
+   try{
+    for(const status of [503,404]){
+     api=async()=>{throw Object.assign(new Error('fixture transport failure'),{status});};
+     await pollJob(currentJob.id,generation);
+     out.push({status,retry:timer!==null,message:$('connection-status').textContent});
+     clearTimeout(timer);timer=null;
+    }
+    renderJobState({...currentJob,status:'failed'});
+    out.push({failedGuidance:$('waiting-guidance').textContent,retryVisible:!$('retry-generation').hidden});
+   }finally{api=savedApi;renderJobState(currentJob);}
+   return out;
+  });
+  assert.strictEqual(recovery[0].retry,true);assert(recovery[0].message.includes('无需再次生成'));
+  assert.strictEqual(recovery[1].retry,false);assert(recovery[1].message.includes('已停止查询'));
+  assert(recovery[2].failedGuidance.includes('无需重新填写'));assert(recovery[2].retryVisible);
   await page.locator('[name=decision][value=reject]').check();
   for(const [key,value] of Object.entries({score:'3.75',comfort_score:'2.5',energy_score:'4.1',vpp_score:'2.25'}))await page.locator(`[name=feedback_${key}]`).fill(value);
   await page.locator('#decision-reason').fill('Synthetic browser audit, not a human response.');

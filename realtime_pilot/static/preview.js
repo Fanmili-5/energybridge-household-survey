@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded',()=>{
  const v=JSON.parse(document.getElementById('preview-data').textContent);
- // Historic example: make its missing cost explicit, never invent a value.
- if(!v.metrics.some(m=>/成本|费用|电费/.test(m.label)))v.metrics.splice(1,0,{label:'相对用电成本（非人民币）',original:'此示例未记录',proposal:'此示例未记录'});
+ // This saved example has no cost or EV/tank observations; show its available outcomes only.
+ v.service_rows=(v.service_rows||[]).filter(r=>!['original','proposal'].some(side=>/不据此判断|按原 EB 模型/.test(r[side])));
  for(const p of v.temperature_chart?.periods||[])if(p.label!=='响应期间')v.metrics.push({label:p.label+'室温（'+p.time+'）',original:p.original,proposal:p.proposal});
  EBView.render(document.getElementById('preview-plan'),v);
  EBView.outcomes(document.getElementById('preview-outcomes'),v);

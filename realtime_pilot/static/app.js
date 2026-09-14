@@ -35,31 +35,52 @@ function inlineChoices(select,options,required=false){
 
 function memberFieldValue(select){return select.multiple?[...select.selectedOptions].map(o=>o.value):select.value||null;}
 const memberSupplemental=new Set(['life_roles','needs_priority','cost_importance','grid_importance']);
-function memberValues(q){const root=$('p_'+q.id);return [...root.querySelectorAll('.member-card:not([hidden])')].map(card=>Object.fromEntries(q.fields.map(f=>[f.id,memberFieldValue(card.querySelector(`[data-member-field="${f.id}"]`))])));}
+// Page visibility is independent of membership: every current member is saved.
+function memberValues(q){const root=$('p_'+q.id);return [...root.querySelectorAll('.member-card')].slice(0,Number(root.dataset.count)||0).map(card=>Object.fromEntries(q.fields.map(f=>[f.id,memberFieldValue(card.querySelector(`[data-member-field="${f.id}"]`))])));}
+function memberRoot(){return document.querySelector('.member-section');}
+function showMember(index,{scroll=false,save=true}={}){
+ const root=memberRoot();if(!root)return;
+ const count=Number(root.dataset.count)||0;
+ root.dataset.activeMember=Math.max(0,Math.min(index,count-1));
+ for(const [i,card] of [...root.querySelectorAll('.member-card')].entries())card.hidden=i!==Number(root.dataset.activeMember)||i>=count;
+ const nav=root.querySelector('.member-navigation');nav.replaceChildren();nav.hidden=count<2;
+ for(let i=0;i<count;i++){const b=el('button',`成员 ${i+1}`,'secondary');b.type='button';b.setAttribute('aria-current',i===Number(root.dataset.activeMember)?'step':'false');b.disabled=!!pendingSubmit;b.onclick=()=>showMember(i,{scroll:true});nav.append(b);}
+ root.querySelector('.member-count').textContent=count?`正在填写第 ${Number(root.dataset.activeMember)+1} / ${count} 位成员`:'';
+ syncMemberNavigation();
+ if(save)saveDraft();
+ if(scroll){root.scrollIntoView({block:'start'});root.querySelector('.member-count').focus({preventScroll:true});}
+}
+function syncMemberNavigation(){
+ if(wizardStep!==1)return;const root=memberRoot();if(!root)return;
+ const index=Number(root.dataset.activeMember)||0,count=Number(root.dataset.count)||0;
+ $('wizard-prev').textContent=index?'上一位成员':'上一步';
+ $('wizard-next').textContent=index<count-1?'下一位成员':'下一步：电器安排';
+}
 function syncMembers(){
  const q=schema.profile_questions.find(q=>q.type==='member_list');if(!q)return;
  const root=$('p_'+q.id),size=$('p_B02')?.value?JSON.parse($('p_B02').value):null;
  const count=size==='6_plus'?Math.max(6,Number(root.dataset.count)||6):Number(size)||0;
  root.dataset.count=count;
  const list=root.querySelector('.member-cards');
- while(list.children.length<count){const i=list.children.length,card=el('fieldset',undefined,'member-card'),core=el('div',undefined,'member-core'),extra=el('details',undefined,'member-extra'),extraBody=el('div',undefined,'member-extra-fields');card.append(el('legend',`成员 ${i+1}`),el('p','以下回答均描述这位成员；不了解的选填项可留空。','member-answer-guide'),core);extra.append(el('summary','补充了解（均可选填）'),extraBody);
+ while(list.children.length<count){const i=list.children.length,card=el('fieldset',undefined,'member-card'),core=el('div',undefined,'member-core'),extra=el('section',undefined,'member-extra'),extraBody=el('div',undefined,'member-extra-fields');card.append(el('legend',`成员 ${i+1}`),core);extra.append(el('h4','补充了解（均可选填）'),extraBody);
   for(const f of q.fields){const label=el('div',undefined,'member-field'),select=el('select');select.multiple=f.type==='multi_choice';select.dataset.memberField=f.id;select.id=`p_member_${i}_${f.id}`;
    const empty=el('option',f.required?'请选择':'选填');empty.value='';if(!select.multiple)select.append(empty);
    for(const o of f.options){const option=el('option',o.label);option.value=o.value;select.append(option);}select.required=!!f.required;
    label.append(el('span',f.prompt+(f.required||f.prompt.includes('选填')?'':'（选填）')),select);(memberSupplemental.has(f.id)?extraBody:core).append(label);inlineChoices(select,f.options,!!f.required);
   }card.append(extra);list.append(card);
  }
- [...list.children].forEach((card,i)=>{card.hidden=i>=count;for(const s of card.querySelectorAll('select')){s.disabled=card.hidden||!!currentJob;s._choiceSync?.();}});
+ [...list.children].forEach((card,i)=>{for(const s of card.querySelectorAll('select')){s.disabled=i>=count||!!currentJob;s._choiceSync?.();}});
  root.querySelector('.member-empty').hidden=!!count;
- root.querySelector('.member-count').textContent=count?`共 ${count} 位成员 · 无需姓名`:'';
  root.querySelector('.member-actions').hidden=size!=='6_plus';
  root.querySelector('[data-member-add]').disabled=!!currentJob||count>=q.max_members;
  root.querySelector('[data-member-remove]').disabled=!!currentJob||count<=6;
+ showMember(Number(root.dataset.activeMember)||0,{save:false});
 }
 function memberQuestion(q,container,prefix){
  const root=el('section',undefined,'member-section');root.id=prefix+q.id;root.dataset.questionId=q.id;
  root.append(el('h3',q.prompt),el('p',q.help,'hint'),el('p','先选择家庭人数，即可填写成员卡片。','member-empty'),el('p','','member-count'));
- root.append(el('div',undefined,'member-cards'));
+ root.querySelector('.member-count').tabIndex=-1;
+ const nav=el('nav',undefined,'member-navigation');nav.setAttribute('aria-label','选择家庭成员');root.append(nav,el('div',undefined,'member-cards'));
  const actions=el('div',undefined,'member-actions');for(const [key,text,delta] of [['add','增加一位成员',1],['remove','减少一位成员',-1]]){const b=el('button',text,'secondary');b.type='button';b.dataset[key==='add'?'memberAdd':'memberRemove']='';b.onclick=()=>{root.dataset.count=Math.min(q.max_members,Math.max(6,Number(root.dataset.count)+delta));syncMembers();saveDraft();};actions.append(b);}root.append(actions);container.append(root);
 }
 function intakeRequired(q){
@@ -121,7 +142,7 @@ function restore(profile){for(const q of schema.profile_questions){if(q.type==="
 const devices={ac:"空调",washer:"洗衣机",dishwasher:"洗碗机",dryer:"烘干机",electric_water_heater:"电热水器",home_ev:"家用电动汽车充电"};
 const scoreFields={score:"整体：这份方案总体适合您家吗？",comfort_score:"舒适：室温和生活安排的变化合适吗？",energy_score:"用电与费用：模拟用电量和费用符合您家期望吗？",vpp_score:"响应安排：您对本次错峰用电的处理方式满意吗？请考虑安排调整和自主决定体验。"};
 let generation=0,pendingSubmit=false;
-const UI_VERSION="eb.survey_ui.v6.9";
+const UI_VERSION="eb.survey_ui.v6.10";
 const RESEARCH_NOTICE_VERSION="eb.research_notice.v2";
 let savedReceipt=null,savedHouseholdRecord=null;
 const pendingDecisions=new Set(),pendingRequests=new Map();
@@ -183,7 +204,7 @@ function scheduleEnvironmentPreview(){
 }
 function saveDraft(){if(!schema||currentJob||pendingSubmit)return;
  scheduleEnvironmentPreview();
- const saved=writeBrowser(draftStorage,draftKey(),{answers:collect(schema.profile_questions,'p_'),wizard_step:wizardStep,questionnaire_context_hash:schema.questionnaire_context.context_hash,saved_at:Date.now()});
+ const saved=writeBrowser(draftStorage,draftKey(),{answers:collect(schema.profile_questions,'p_'),wizard_step:wizardStep,member_index:Number(memberRoot()?.dataset.activeMember)||0,questionnaire_context_hash:schema.questionnaire_context.context_hash,saved_at:Date.now()});
  writeBrowser(draftStorage,'eb:active-view',{mode:'draft',questionnaire_version:schema.paired_questionnaire_version});
  $('draft-status').textContent=saved?'草稿已保存在此浏览器；点击最后一步的保存按钮后，才会提交到研究服务器。':'此浏览器无法保存草稿，请保持页面打开并完成最后的保存。';
  renderReceipt();
@@ -211,7 +232,7 @@ function restoreDraft(){try{
  const version=schema.paired_questionnaire_version;
  const versions=[version,...(version==='eb.persona_questionnaire.v4.5'?['eb.persona_questionnaire.v4.4','eb.persona_questionnaire.v4.3','eb.persona_questionnaire.v4.2','eb.persona_questionnaire.v4.1','eb.persona_questionnaire.v4.0','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8']:version==='eb.persona_questionnaire.v4.4'?['eb.persona_questionnaire.v4.3','eb.persona_questionnaire.v4.2','eb.persona_questionnaire.v4.1','eb.persona_questionnaire.v4.0','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8']:version==='eb.persona_questionnaire.v4.3'?['eb.persona_questionnaire.v4.2','eb.persona_questionnaire.v4.1','eb.persona_questionnaire.v4.0','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8']:version==='eb.persona_questionnaire.v4.2'?['eb.persona_questionnaire.v4.1','eb.persona_questionnaire.v4.0','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8']:version==='eb.persona_questionnaire.v4.1'?['eb.persona_questionnaire.v4.0','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8']:version==='eb.persona_questionnaire.v4.0'?['eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.7','eb.persona_questionnaire.v3.6']:version==='eb.persona_questionnaire.v3.9'?['eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.7','eb.persona_questionnaire.v3.6']:version==='eb.persona_questionnaire.v3.8'?['eb.persona_questionnaire.v3.7','eb.persona_questionnaire.v3.6']:version==='eb.persona_questionnaire.v3.7'?['eb.persona_questionnaire.v3.6']:[])];
  for(const source of versions){const d=JSON.parse(draftStorage.getItem('eb:questionnaire-draft:'+source)||'null');if(!d?.answers)continue;
-  wizardStep=Number.isInteger(d.wizard_step)?d.wizard_step:0;restore(answerProfile(migrateAnswers(d.answers,source,d.questionnaire_context_hash)));
+  wizardStep=Number.isInteger(d.wizard_step)?d.wizard_step:0;restore(answerProfile(migrateAnswers(d.answers,source,d.questionnaire_context_hash)));showMember(Number(d.member_index)||0,{save:false});
   if(version==='eb.persona_questionnaire.v4.5'&&source!==version&&d.questionnaire_context_hash===schema.questionnaire_context.context_hash){$('draft-status').textContent='已恢复家庭资料；系统调整、室温感受和时间调整的选项已更新，请重新选择这几项。';return true;}
   if(source==='eb.persona_questionnaire.v4.3'&&version==='eb.persona_questionnaire.v4.4'&&d.questionnaire_context_hash===schema.questionnaire_context.context_hash){$('draft-status').textContent='已恢复上次填写内容；时间和温度选项已细化，原答案保留。';return true;}
   $('draft-status').textContent=(source!==version||d.questionnaire_context_hash!==schema.questionnaire_context.context_hash)?'已恢复家庭基本资料；情境日期或问卷已更新，请按指定月份重新填写习惯和偏好。原记录保留。':['eb.persona_questionnaire.v3.6','eb.persona_questionnaire.v3.7'].includes(source)&&['eb.persona_questionnaire.v3.8','eb.persona_questionnaire.v3.9','eb.persona_questionnaire.v4.0'].includes(version)?'已恢复原草稿；使用频率、成员参与方式等选项已更新，请重新选择。原草稿保留。':'已恢复上次未提交的填写内容。';return true;
@@ -280,7 +301,8 @@ function renderJobState(job){
  const queueSeconds=finiteSeconds(job.queue_seconds)?job.queue_seconds:Math.max(0,(start??(stopped?ended:now))-created);
  const headings={queued:'家庭资料已保存，正在排队',running:'正在计算两份方案',expired:'本次排队已结束',failed:'本次生成未完成',timeout:'本次计算已超时',cancelled:'本次生成已取消',interrupted:'本次计算已中断'};
  $('job-heading').textContent=headings[job.status]||'两份方案';
- $('job-status').textContent=stopped?job.message||'本次生成已结束。':job.progress?.message||job.message||'正在查询任务状态。';
+ const stages={baseline:'正在模拟您家的日常用电安排。',proposal:'正在生成调整安排，并模拟调整后的用电情况。',planning:'正在根据您家的资料规划调整安排，随后核算模拟结果。',queued:'计算位置暂时已满，正在等待空闲位置。'};
+ $('job-status').textContent=stopped?job.message||'本次生成已结束。':stages[job.progress?.stage]||job.progress?.message||job.message||'正在查询任务状态。';
  const timing=$('job-timing');timing.replaceChildren();
  if(job.status==='queued'){
   timing.append(el('span',`已排队 ${secondsText(queueSeconds)}`));
@@ -294,8 +316,9 @@ function renderJobState(job){
  policy.textContent=policy.hidden?'':`本次排队等待上限 ${secondsText(job.queue_wait_limit_seconds)}；超时仅结束排队，已保存的家庭资料仍会保留。`;
  $('cancel').hidden=stopped;renderRetryControl(job);
  $('job-panel').classList.toggle('is-generating',!stopped);
- $('waiting-guidance').hidden=stopped;
- $('waiting-guidance').textContent='家庭资料已保存，无需再次提交。完成后会自动进入方案对比和评分。';
+ $('waiting-guidance').hidden=false;
+ $('connection-status').hidden=true;
+ $('waiting-guidance').textContent=stopped?'家庭资料仍然保留，无需重新填写。可以点击下方按钮重试；重试成功后再评价。':'家庭资料已保存，无需再次提交。完成后会自动进入方案对比和评分；也可稍后用同一浏览器回来查看。';
 }
 async function loadJob(id,acceptedJob=null){
  clearTimeout(timer);const token=++generation;
@@ -315,6 +338,7 @@ async function loadJob(id,acceptedJob=null){
  else{try{const state=await api("/api/session");if(token===generation){schema.planning_enabled=state.planning_enabled;availability();renderHistory(state.jobs);}}catch{/* A history refresh must not erase the loaded result or draft. */}}
  return true;
  }catch(e){if(token!==generation)return false;
+ if([401,403,404,410].includes(e.status)){error('无法读取这条记录，请刷新页面查看“我的记录”。'+e.message);$('connection-status').textContent='记录当前不可访问，已停止自动重试。';$('connection-status').hidden=false;return false;}
  loadFailures++;error("暂时无法读取记录，正在自动重试。"+(e.name==='AbortError'?"请求超时。":e.message));
  timer=setTimeout(()=>{if(token===generation)loadJob(id);},Math.min(8000,1000*2**Math.min(loadFailures,3)));
  return false;}
@@ -324,7 +348,9 @@ async function pollJob(id,token){
  try{const state=await api(`/api/jobs/${id}/status`);if(token!==generation)return;
   Object.assign(currentJob,state);renderJobState(currentJob);
   if(terminal.has(state.status)){await loadJob(id);return;}
- }catch(e){if(token!==generation)return;$("job-status").textContent="连接暂时中断，正在重新查询已保存的任务…";}
+ }catch(e){if(token!==generation)return;$('connection-status').hidden=false;
+  if([401,403,404,410].includes(e.status)){$('connection-status').textContent='记录当前不可访问，已停止查询。请刷新页面查看“我的记录”。';$('job-panel').classList.remove('is-generating');$('job-status').textContent='暂时无法确认计算状态。';$('waiting-guidance').textContent='请刷新后查看“我的记录”，无需重新填写或重复生成。';return;}
+  $('connection-status').textContent='连接暂时中断，正在自动重新查询；无需再次生成。';}
  if(token===generation)timer=setTimeout(()=>pollJob(id,token),jobPollDelay(currentJob));
 }
 $("profile-form").addEventListener("change",e=>{if(e.target.id==="p_X_REGION")$("p_X_CITY")?._citiesSync?.(true);if(schema.profile_questions.some(q=>q.type==="multi_choice"&&e.target.name==="p_"+q.id)){const selected=JSON.parse(e.target.value);if(e.target.checked){for(const x of document.getElementsByName(e.target.name))if(x!==e.target&&(selected==="none"||JSON.parse(x.value)==="none"))x.checked=false;}}conditional();saveDraft();});
@@ -440,6 +466,7 @@ function showWizard(step,{scroll=false,push=false,save=true}={}){
  $('wizard-prev').hidden=index===0;$('wizard-next').hidden=index===steps.length-1;
  $('wizard-prev').disabled=$('wizard-next').disabled=!!pendingSubmit;
  $('wizard-next').textContent='下一步：'+(wizardLabels[steps[index+1]]||'');
+ $('wizard-prev').textContent='上一步';syncMemberNavigation();
  $('wizard-current-note').textContent=currentJob?'已提交的回答可分步查看；修改请新建案例。':'切换页面不会丢失已填内容，最后一步再统一提交。';
  document.querySelector('.survey-hero').hidden=!!currentJob||wizardStep!==0;
  if(push)window.history.pushState(null,'','#'+wizardHashes[wizardStep]);
@@ -450,13 +477,21 @@ function validateWizardStep(step){
  if(currentJob)return true;
  if(step===2&&!selectedDevices().length){showWizard(step,{scroll:true});error('请先选择本次纳入的电器；没有对应设备可选“以上都没有”。');document.querySelector('[name=p_B05]')?.focus();return false;}
  const invalid=[...document.querySelectorAll(`[data-form-page="${step}"] input,[data-form-page="${step}"] select`)].find(input=>input.willValidate&&!input.validity.valid);
- if(invalid){showWizard(step,{scroll:true});error('这一部分还有未完成的必填项，请先补充。');invalid.reportValidity();return false;}
+ if(invalid){showWizard(step,{scroll:true});const card=invalid.closest('.member-card');if(card)showMember([...card.parentElement.children].indexOf(card),{scroll:true});error('这一部分还有未完成的必填项，请先补充。');invalid.reportValidity();return false;}
  return true;
 }
-function nextWizard(){if(!schema||pendingSubmit)return;if(!validateWizardStep(wizardStep))return;$('error').hidden=true;const steps=wizardSteps();showWizard(steps[Math.min(steps.indexOf(wizardStep)+1,steps.length-1)],{scroll:true,push:true});}
+function nextWizard(){
+ if(!schema||pendingSubmit)return;
+ if(wizardStep===1){const root=memberRoot(),index=Number(root?.dataset.activeMember)||0;
+  const invalid=[...root.querySelectorAll('.member-card:not([hidden]) input')].find(x=>x.willValidate&&!x.validity.valid);
+  if(invalid){error('请填写这位成员的生活节奏，其余问题可以留空。');invalid.reportValidity();return;}
+  if(index<Number(root.dataset.count)-1){$('error').hidden=true;showMember(index+1,{scroll:true});return;}
+ }
+ if(!validateWizardStep(wizardStep))return;$('error').hidden=true;const steps=wizardSteps();showWizard(steps[Math.min(steps.indexOf(wizardStep)+1,steps.length-1)],{scroll:true,push:true});
+}
 function validateWholeQuestionnaire(){for(const step of wizardSteps())if(!validateWizardStep(step))return false;return true;}
 $('wizard-next').onclick=nextWizard;
-$('wizard-prev').onclick=()=>{if(pendingSubmit)return;const steps=wizardSteps();$('error').hidden=true;showWizard(steps[Math.max(0,steps.indexOf(wizardStep)-1)],{scroll:true,push:true});};
+$('wizard-prev').onclick=()=>{if(pendingSubmit)return;$('error').hidden=true;const index=Number(memberRoot()?.dataset.activeMember)||0;if(wizardStep===1&&index>0){showMember(index-1,{scroll:true});return;}const steps=wizardSteps();showWizard(steps[Math.max(0,steps.indexOf(wizardStep)-1)],{scroll:true,push:true});};
 for(const b of document.querySelectorAll('[data-wizard-step]'))b.onclick=()=>{if(!schema||pendingSubmit)return;const target=Number(b.dataset.wizardStep);if(target>wizardStep)for(const step of wizardSteps().filter(s=>s>=wizardStep&&s<target))if(!validateWizardStep(step))return;$('error').hidden=true;showWizard(target,{scroll:true,push:true});};
 window.addEventListener('popstate',()=>{if(!schema||pendingSubmit||currentJob)return;const step=wizardHashes.indexOf(location.hash.slice(1));showWizard(step<0?0:step,{scroll:true});});
 

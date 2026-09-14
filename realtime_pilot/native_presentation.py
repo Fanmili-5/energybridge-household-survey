@@ -98,6 +98,7 @@ def display(original, baseline, proposal, scenario, prediction):
 
 
 def service_rows(original,baseline,proposal):
+    from native_service_evidence import service_text
     rows=[]
     for device in original['devices']:
         if device=='ac':continue
@@ -105,8 +106,8 @@ def service_rows(original,baseline,proposal):
         for side,run in [('original',baseline),('proposal',proposal)]:
             if device in ('washer','dishwasher','dryer'):
                 task=run['task_outcomes'].get(device,{})
-                row[side]='截至24:00已完成' if task.get('completed') else '截至24:00未完成；跨夜任务需后续观察'
-            elif device=='home_ev':row[side]='按原 EB 模型安排充电；本比较截至24:00，不据时间条判断离家电量是否达标'
-            else:row[side]='时间轴展示热水设定；未据此判断实际出水是否满足需求'
-        rows.append(row)
+                row[side]='截至24:00已完成' if task.get('completed') else '截至24:00未完成'
+            else:row[side]=service_text(device,run)
+        # Missing observations stay in the audit artifacts, not participant copy.
+        if row['original'] is not None and row['proposal'] is not None:rows.append(row)
     return rows
