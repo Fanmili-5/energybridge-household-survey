@@ -29,7 +29,7 @@
 <div id="error" class="error" role="alert" hidden></div>
 <section id="resume-panel" class="panel" hidden aria-labelledby="resume-heading"><h2 id="resume-heading">上次的填写记录</h2><p id="resume-message"></p><button id="resume-result" type="button" class="secondary">查看上次结果</button></section>
 <section id="profile-details" class="profile-disclosure">
-<nav id="wizard-nav" class="wizard-nav" aria-label="问卷填写步骤"><div class="wizard-top"><h2 id="wizard-heading" tabindex="-1">填写家庭情况</h2><span id="wizard-progress" role="status" aria-live="polite">第 1 / 4 步</span></div><ol class="wizard-steps"><li><button type="button" data-wizard-step="0">家庭概况</button></li><li><button type="button" data-wizard-step="1">家庭成员</button></li><li><button type="button" data-wizard-step="2">电器安排</button></li><li><button type="button" data-wizard-step="3">用电偏好</button></li><li><button type="button" data-wizard-step="4">住房情况</button></li><li><button type="button" data-wizard-step="5">补充与提交</button></li></ol></nav>
+<nav id="wizard-nav" class="wizard-nav" aria-label="问卷填写步骤"><div class="wizard-top"><h2 id="wizard-heading" tabindex="-1">填写家庭情况</h2><span id="wizard-progress" role="status" aria-live="polite">第 1 / 4 步</span></div><ol class="wizard-steps"><li><button type="button" data-wizard-step="0">家庭概况</button></li><li><button type="button" data-wizard-step="1">家庭成员</button></li><li><button type="button" data-wizard-step="2">电器安排</button></li><li><button type="button" data-wizard-step="3">用电偏好</button></li><li><button type="button" data-wizard-step="4">住房情况</button></li><li><button type="button" data-wizard-step="5">补充信息</button></li><li><button type="button" data-wizard-step="6">确认提交</button></li></ol></nav>
 <form id="profile-form" novalidate>
 <aside class="notice" id="questionnaire-context" aria-label="本次问卷情境"><strong id="context-date"></strong><p id="context-instruction"></p></aside>
 <div class="form-topline"><span>由您填写家庭情况，综合考虑后评价</span><p id="draft-status" class="draft-status" role="status" aria-live="polite"></p></div>
@@ -48,14 +48,14 @@
   <div id="attitude-questions"></div>
 </section>
 <section class="panel survey-section" data-form-page="4" hidden><div class="survey-section-head"><span class="section-index">05</span><div><h2>您家的住房情况</h2><p>请填写所在城市和住房概况，不需要小区名或详细地址。</p></div></div><div id="housing-questions" class="research-grid"></div><p id="environment-preview" class="notice" aria-live="polite">请先填写以上住房信息。</p></section>
-<section class="panel survey-section" data-form-page="5" hidden><div class="survey-section-head"><span class="section-index">06</span><div><h2>再补充一点用电背景</h2><p>以下均为选填，您可以补充，也可以直接前往提交。</p></div></div><a class="skip-optional" href="#submission-confirm">跳过选填，前往提交确认 ↓</a><div id="research-questions" class="research-grid"></div></section>
-<section id="submission-confirm" class="panel scenario-section" data-form-page="3" hidden><div class="scenario-heading"><span class="scenario-icon" aria-hidden="true">↗</span><div><p class="eyebrow">接下来，看看一种新的安排</p><h2>准备好看看两份安排了吗？</h2></div></div><ul id="scenario-facts"></ul>
+<section class="panel survey-section" data-form-page="5" hidden><div class="survey-section-head"><span class="section-index">06</span><div><h2>再补充一点用电背景</h2><p>以下均为选填，您可以补充，也可以直接前往提交。</p></div></div><button class="skip-optional secondary" id="skip-optional" type="button">跳过选填，前往确认提交</button><div id="research-questions" class="research-grid"></div></section>
+<section id="submission-confirm" class="panel scenario-section" data-form-page="6" hidden><div class="scenario-heading"><div><p class="eyebrow">最后一步</p><h2>确认提交家庭资料</h2></div></div><ul id="scenario-facts"></ul>
 <p id="research-notice" class="research-notice">您的回答将用于研究家庭用电选择，并帮助训练理解家庭偏好的人工智能模型。是否参与由您决定。</p>
 <fieldset id="research-confirmations" class="research-confirmations"><legend>提交前确认</legend>
   <label class="check"><input id="research-consent" type="checkbox" required><span id="research-consent-label">我已阅读参与说明，自愿将本次家庭回答和后续方案评价用于上述研究。</span></label>
   <label class="check"><input id="scenario-understood" type="checkbox" required><span>我知道展示的是模拟安排和结果，不会改变家中电器的设置。</span></label>
 </fieldset>
-<div class="submit-row"><small>先保存家庭资料，再生成方案；生成失败也会保留已保存资料。</small><button id="generate" type="submit" disabled>保存家庭资料</button></div>
+<div class="submit-row"><small>提交后完成图片验证，即可开始生成。等待期间无需重复提交。</small><button id="generate" type="submit" disabled>保存家庭资料</button></div>
 <section id="household-receipt" class="household-receipt" hidden aria-live="polite"><h3>家庭资料已保存</h3><p id="receipt-status"></p><p class="hint">记录编号：<code id="receipt-id"></code></p><button id="plan-saved" class="secondary" type="button">继续生成两份安排</button></section>
 </section>
 </form><div class="wizard-actions"><button id="wizard-prev" class="secondary" type="button" hidden>← 上一步</button><p id="wizard-current-note">切换页面不会丢失已填内容，最后一步再统一提交。</p><button id="wizard-next" type="button">下一步：家庭成员</button></div></section>
@@ -79,6 +79,7 @@
 <button id="save-decision" type="submit">提交反馈</button><p id="decision-status" role="status" aria-live="polite"></p>
 </form>
 </div>
+<section id="feedback-complete" class="panel feedback-complete" hidden aria-labelledby="feedback-complete-heading"><p class="eyebrow">填写完成</p><h2 id="feedback-complete-heading" tabindex="-1">提交成功，感谢您的参与</h2><p>您的选择、评分和原因已保存。您可以关闭此页面。</p><button id="view-saved-feedback" type="button" class="secondary">查看已提交的反馈</button></section>
 <section class="panel history-panel"><div class="section-top"><h2>我的记录</h2><div class="history-actions"><button id="new-case" class="secondary" type="button">修改家庭回答 / 新案例</button><button id="clear-device-data" class="secondary" type="button">结束并清除此设备数据</button></div></div><div id="history"></div><p class="hint">在共用设备上完成后，请清除此设备保存的草稿和记录入口。</p><a href="/plan-preview.html" target="_blank" rel="noopener">查看时间轴展示示例</a></section>
 </main><footer id="collection-footer">方案为模拟结果，不会改变家中电器的设置。</footer>
 <dialog id="captcha-dialog" aria-labelledby="captcha-title" aria-describedby="captcha-message">

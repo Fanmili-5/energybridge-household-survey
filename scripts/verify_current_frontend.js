@@ -96,6 +96,14 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   await page.locator('#p_X_CITY_choices').selectOption(answers.X_CITY);
   await page.locator('#wizard-next').click();
   assert(await page.locator('.skip-optional').isVisible());
+  assert(await page.locator('#submission-confirm').isHidden());
+  await page.locator('#skip-optional').click();
+  assert(await page.locator('#submission-confirm').isVisible());
+  assert(await page.locator('[data-form-page="5"]').isHidden());
+  assert(await page.locator('#questionnaire-context').isHidden());
+  await page.locator('#wizard-prev').click();assert(await page.locator('#submission-confirm').isHidden());
+  await page.locator('#wizard-next').click();
+  if(process.env.EB_BROWSER_SCREENSHOTS)await page.screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/submit-'+width+'.png',fullPage:true});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   // Consent is an active participant action and must never be inferred from
   // merely opening the final page.
@@ -204,7 +212,23 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   if(process.env.EB_BROWSER_SCREENSHOTS)await page.locator('#decision-form').screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/score-'+width+'.png'});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await audit('result-and-feedback');
-  await page.locator('#save-decision').click();await page.waitForFunction(()=>document.getElementById('decision-status').textContent.includes('已保存'));
+  // Failed feedback saves must keep the answers and must never show success.
+  let rejectSave=true;
+  await page.route('**/api/jobs/*/decision',async r=>{if(rejectSave){rejectSave=false;await r.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'Synthetic temporary save failure'})});}else await r.continue();});
+  await page.locator('#save-decision').click();await page.waitForFunction(()=>!document.getElementById('save-decision').disabled);
+  assert(await page.locator('#feedback-complete').isHidden());
+  assert.strictEqual(await page.locator('[name=feedback_score]').inputValue(),'3.75');
+  // After a successful POST, no result GET is needed for the completion screen.
+  const readsBeforeSave=recordReads;
+  await page.locator('#save-decision').click();await page.locator('#feedback-complete').waitFor({state:'visible'});
+  assert.strictEqual(recordReads,readsBeforeSave);
+  assert(await page.locator('#result-panel').isHidden());assert(await page.locator('#decision-form').isHidden());
+  assert.strictEqual(await page.evaluate(()=>document.activeElement.id),'feedback-complete-heading');
+  assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+  await audit('feedback-complete');
+  if(process.env.EB_BROWSER_SCREENSHOTS)await page.screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/complete-'+width+'.png',fullPage:true});
+  await page.locator('#view-saved-feedback').click();assert(await page.locator('#feedback-complete').isHidden());
+  assert.strictEqual(await page.locator('[name=feedback_score]').inputValue(),'3.75');assert(await page.locator('#save-decision').isDisabled());
   await page.reload();await page.locator('#resume-result').waitFor({state:'visible'});
   assert(await page.locator('#result-panel').isHidden());
   assert.strictEqual(await page.locator('#resume-result').innerText(),'查看已保存的评价');

@@ -320,3 +320,11 @@ body.survey-page,body.preview-page{--muted-readable:#52665e}
 
 /* Explicit accounting window; retain context without counting it twice. */
 .outside-statistics{position:absolute;inset-block:0;background:rgba(255,255,255,.65);z-index:5;pointer-events:none}.statistics-boundary{position:absolute;inset-block:0;border-left:2px dashed #256c60;z-index:6;pointer-events:none}.statistics-caption{font-weight:600;color:#285e55;margin:4px 0 12px}.endpoint-label{z-index:7}
+
+/* Dedicated confirmation and successful feedback screens. */
+#submission-confirm{max-width:760px;margin:24px auto 32px}
+.feedback-complete{max-width:760px;margin:32px auto;padding:40px;scroll-margin-top:24px;border-top:4px solid #2c7770}
+.feedback-complete h2{font-size:26px;line-height:1.4;margin:10px 0 16px}
+.feedback-complete p:not(.eyebrow){line-height:1.8;color:#52665e}
+.feedback-complete button{margin-top:16px}
+@media(max-width:640px){.feedback-complete{padding:26px 20px;margin:24px 0}.feedback-complete h2{font-size:22px}.feedback-complete button{width:100%}}

@@ -148,7 +148,7 @@ function restore(profile){for(const q of schema.profile_questions){if(q.type==="
 const devices={ac:"空调",washer:"洗衣机",dishwasher:"洗碗机",dryer:"烘干机",electric_water_heater:"电热水器",home_ev:"家用电动汽车充电"};
 const scoreFields={score:"整体：这份方案总体适合您家吗？",comfort_score:"舒适：室温和生活安排的变化合适吗？",energy_score:"用电与费用：模拟用电量和费用符合您家期望吗？",vpp_score:"响应安排：您对本次错峰用电的处理方式满意吗？请考虑安排调整和自主决定体验。"};
 let generation=0,pendingSubmit=false;
-const UI_VERSION="eb.survey_ui.v6.18";
+const UI_VERSION="eb.survey_ui.v6.19";
 const RESEARCH_NOTICE_VERSION="eb.research_notice.v2";
 let savedReceipt=null,savedHouseholdRecord=null;
 const pendingDecisions=new Set(),pendingRequests=new Map();
@@ -332,7 +332,7 @@ async function loadJob(id,acceptedJob=null){
  loadFailures=0;$("error").hidden=true;
  const enterResult=j.status==="complete"&&$("result-panel").hidden;
  if(currentJob?.id!==id)$("decision-form").reset();
- currentJob=j;writeBrowser(draftStorage,"eb:active-view",{mode:"job",id:j.id});$("profile-details").hidden=true;$('resume-panel').hidden=true;
+ $('feedback-complete').hidden=true;currentJob=j;writeBrowser(draftStorage,"eb:active-view",{mode:"job",id:j.id});$("profile-details").hidden=true;$('resume-panel').hidden=true;
  for(const [i,step] of [...document.querySelectorAll(".journey li")].entries())step.classList.toggle("active",i===(j.status==="complete"?2:1));
  renderQuestions(j.questionnaire_snapshot);restore(j.profile);conditional();freeze(true);showWizard(0,{save:false});
  $("job-panel").hidden=j.status==="complete";renderJobState(j);
@@ -426,17 +426,38 @@ $('profile-form').onsubmit=async e=>{e.preventDefault();if(pendingSubmit)return;
 $('plan-saved').onclick=()=>submitHousehold(true);
 $("decision-form").addEventListener('input',saveDecisionDraft);
 $("decision-form").addEventListener('change',saveDecisionDraft);
+function showFeedbackComplete(){
+ $('result-panel').hidden=true;$('decision-form').hidden=true;$('job-panel').hidden=true;
+ $('feedback-complete').hidden=false;$('feedback-complete').scrollIntoView({block:'start'});
+ $('feedback-complete-heading').focus({preventScroll:true});
+}
+$('view-saved-feedback').onclick=()=>{
+ if(!currentJob?.decision_saved)return;
+ $('feedback-complete').hidden=true;showPair(currentJob);
+ $('decision-form').scrollIntoView({block:'start'});$('decision-question').setAttribute('tabindex','-1');$('decision-question').focus({preventScroll:true});
+};
 $('decision-form').onsubmit=async e=>{
  e.preventDefault();const job=currentJob,selected=document.querySelector('input[name="decision"]:checked');
- if(!job||!selected||pendingDecisions.has(job.id))return;
+ if(!job||!selected||job.decision_saved||pendingDecisions.has(job.id))return;
  const id=job.id,draft=decisionDraftKey(job),r=job.result;
  const payload={choice:selected.value,comment:$('decision-reason').value,...Object.fromEntries(Object.keys(scoreFields).map(k=>[k,scoreValue(k)])),display_hash:r.display_hash,original_plan_hash:r.original_plan_hash,proposal_plan_hash:r.proposal_plan_hash};
  pendingDecisions.add(id);$('error').hidden=true;
+ $('save-decision').textContent='正在提交…';$('decision-status').textContent='正在保存您的反馈，请稍候。';
  for(const input of $('decision-form').querySelectorAll('input,textarea,button'))input.disabled=true;
- try{await api(`/api/jobs/${id}/decision`,payload);job.decision_saved=true;removeBrowser(draftStorage,draft);
-  if(currentJob?.id===id){$('decision-status').textContent='反馈已保存，正在更新显示。';await loadJob(id);}
- }catch(ex){if(currentJob?.id===id){error(ex.message);for(const input of $('decision-form').querySelectorAll('input,textarea,button'))input.disabled=false;}}
- finally{pendingDecisions.delete(id);}
+ try{
+  const receipt=await api(`/api/jobs/${id}/decision`,payload);
+  if(receipt.saved!==true)throw new Error('尚未确认保存成功，请重试。');
+  job.decision_saved=true;job.decision={...payload};removeBrowser(draftStorage,draft);
+  // The save receipt is authoritative. Showing success must not depend on
+  // downloading the full simulation result or refreshing the history list.
+  if(currentJob?.id===id){$('decision-status').textContent='您的反馈已保存。';showFeedbackComplete();}
+  const summary=schema.jobs?.find(j=>j.id===id);if(summary)summary.decision_saved=true;
+  if(schema.jobs)renderHistory(schema.jobs);
+ }catch(ex){if(currentJob?.id===id){
+  $('decision-status').textContent=ex.name==='AbortError'?'暂时未收到保存确认。您的填写仍在，可再次提交确认。':'提交未完成，您的填写仍在。';
+  error(ex.name==='AbortError'?'连接超时，请再次提交确认；同一份反馈不会重复保存。':ex.message);
+  for(const input of $('decision-form').querySelectorAll('input,textarea,button'))input.disabled=false;
+ }}finally{pendingDecisions.delete(id);$('save-decision').textContent=job.decision_saved?'反馈已提交':'提交反馈';}
 };
 $("cancel").onclick=async()=>{try{if(currentJob){await api(`/api/jobs/${currentJob.id}/cancel`,{});await loadJob(currentJob.id);}}catch(e){error(e.message);}};
 $('new-case').onclick=()=>{
@@ -448,7 +469,7 @@ $('new-case').onclick=()=>{
  const resumed=restoreDraft();
  if(!resumed&&previous)restore(answerProfile(migrateAnswers(Object.fromEntries(Object.entries(previous).map(([k,c])=>[k,c.response_status==='answered'?c.value:null])),sourceVersion,previousContext)));
  freeze(false);showWizard(wizardStep,{save:false});saveDraft();
- for(const id of ['job-panel','result-panel','decision-form','error'])$(id).hidden=true;
+ for(const id of ['job-panel','result-panel','decision-form','feedback-complete','error'])$(id).hidden=true;
  $('decision-form').reset();$('profile-form').scrollIntoView({block:'start'});
 };
 $('clear-device-data').onclick=async()=>{
@@ -460,11 +481,12 @@ $('clear-device-data').onclick=async()=>{
  }catch(ex){error(ex.name==='AbortError'?'连接超时，请稍后再试。':ex.message);}
 };
 let wizardStep=0;
-const wizardLabels=['家庭概况','家庭成员','电器安排','用电偏好','住房情况','补充与提交'];
-const wizardHashes=['household','members','appliances','preferences','housing','research'];
-function wizardSteps(){const base=schema?.profile_questions?.some(q=>q.type==='member_list')?[0,1,2,3]:[0,2,3];return schema?.profile_questions?.some(q=>q.research_only)?[...base,4,5]:base;}
+const wizardLabels=['家庭概况','家庭成员','电器安排','用电偏好','住房情况','补充信息','确认提交'];
+const wizardHashes=['household','members','appliances','preferences','housing','research','submit'];
+function wizardSteps(){const base=schema?.profile_questions?.some(q=>q.type==='member_list')?[0,1,2,3]:[0,2,3];return [...(schema?.profile_questions?.some(q=>q.research_only)?[...base,4,5]:base),6];}
 function showWizard(step,{scroll=false,push=false,save=true}={}){
- const steps=wizardSteps();document.querySelector('.scenario-section').dataset.formPage=steps.at(-1);wizardStep=steps.includes(step)?step:steps[0];
+ const steps=wizardSteps();wizardStep=steps.includes(step)?step:steps[0];
+ $('questionnaire-context').hidden=wizardStep===6;document.querySelector('.form-topline').hidden=wizardStep===6;
  for(const section of document.querySelectorAll('[data-form-page]'))section.hidden=Number(section.dataset.formPage)!==wizardStep;
  for(const b of document.querySelectorAll('[data-wizard-step]')){const n=Number(b.dataset.wizardStep);b.hidden=!steps.includes(n);b.parentElement.hidden=b.hidden;b.parentElement.parentElement.style.setProperty('--step-count',steps.length);b.classList.toggle('active',n===wizardStep);b.setAttribute('aria-current',n===wizardStep?'step':'false');b.disabled=!!pendingSubmit;}
  const index=steps.indexOf(wizardStep);$('wizard-progress').textContent=`第 ${index+1} / ${steps.length} 步 · ${wizardLabels[wizardStep]}`;
@@ -495,6 +517,7 @@ function nextWizard(){
  if(!validateWizardStep(wizardStep))return;$('error').hidden=true;const steps=wizardSteps();showWizard(steps[Math.min(steps.indexOf(wizardStep)+1,steps.length-1)],{scroll:true,push:true});
 }
 function validateWholeQuestionnaire(){for(const step of wizardSteps())if(!validateWizardStep(step))return false;return true;}
+$('skip-optional').onclick=()=>{if(!pendingSubmit&&validateWizardStep(5))showWizard(6,{scroll:true,push:true});};
 $('wizard-next').onclick=nextWizard;
 $('wizard-prev').onclick=()=>{if(pendingSubmit)return;$('error').hidden=true;const index=Number(memberRoot()?.dataset.activeMember)||0;if(wizardStep===1&&index>0){showMember(index-1,{scroll:true});return;}const steps=wizardSteps();showWizard(steps[Math.max(0,steps.indexOf(wizardStep)-1)],{scroll:true,push:true});};
 for(const b of document.querySelectorAll('[data-wizard-step]'))b.onclick=()=>{if(!schema||pendingSubmit)return;const target=Number(b.dataset.wizardStep);if(target>wizardStep)for(const step of wizardSteps().filter(s=>s>=wizardStep&&s<target))if(!validateWizardStep(step))return;$('error').hidden=true;showWizard(target,{scroll:true,push:true});};
