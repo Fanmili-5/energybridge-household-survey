@@ -1,7 +1,7 @@
 GitHub 仓库：[https://github.com/Fanmili-5/energybridge-household-survey](https://github.com/Fanmili-5/energybridge-household-survey)
 问卷网站：[https://47.85.194.154/](https://47.85.194.154/)
 收集真实家庭对用电调整的评价，用于构造家庭评价模型的SFT数据。
-填写问卷 → 生成两份安排 → 用户比较、评分 → 保存数据
+![问卷与数据收集流程](flow.png)
 ## 1. 问卷内容
 每户由一人填写家庭情况和成员偏好，EB据此规划。
 结果出来后，由同一人代表家庭选择、评分。

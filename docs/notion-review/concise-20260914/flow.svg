@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="870" viewBox="0 0 720 870">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#6a7c74" stroke-width="1.4"/></marker>
+    <style>
+      text{font-family:"PingFang SC","Microsoft YaHei",sans-serif;fill:#233c32;text-anchor:middle}
+      .title{font-size:25px;font-weight:600}.body{font-size:19px;fill:#50655b}.small{font-size:17px;fill:#50655b}
+      .box{fill:#f1f6f2;stroke:#cad9ce;stroke-width:1.5}.line{fill:none;stroke:#6a7c74;stroke-width:2;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="720" height="870" fill="#fff"/>
+  <rect class="box" x="64" y="24" width="592" height="86" rx="13"/>
+  <text class="title" x="360" y="60">填写家庭问卷</text>
+  <text class="body" x="360" y="88">家庭情况 · 成员偏好 · 电器日程 · 住房信息</text>
+  <path class="line" d="M360 112V138"/>
+  <rect class="box" x="64" y="148" width="592" height="98" rx="13"/>
+  <text class="title" x="360" y="184">生成家庭JSON，确定模拟环境</text>
+  <text class="body" x="360" y="214">已分配日期 · 天气站 · 建筑 · VPP · 电价</text>
+  <text class="small" x="360" y="237">两份安排共用这些条件</text>
+  <path class="line" d="M360 248V265H171V294"/>
+  <path class="line" d="M360 265H517V285"/>
+  <rect x="40" y="304" width="262" height="152" rx="13" fill="#f1f4f8" stroke="#c8d2df" stroke-width="1.5"/>
+  <text class="small" x="171" y="336">调整前</text>
+  <text class="title" x="171" y="374">EP运行原日程</text>
+  <text class="body" x="171" y="409">得到原安排结果</text>
+  <rect class="box" x="394" y="294" width="246" height="70" rx="13"/>
+  <text class="title" x="517" y="336">EB调整计划</text>
+  <path class="line" d="M517 366V380"/>
+  <rect class="box" x="394" y="390" width="246" height="70" rx="13"/>
+  <text class="title" x="517" y="432">EP执行计划</text>
+  <path class="line" d="M642 425H686V328H650"/>
+  <rect x="662" y="352" width="49" height="51" fill="#fff"/>
+  <text class="small" x="686" y="371">状态</text>
+  <text class="small" x="686" y="394">反馈</text>
+  <path class="line" d="M171 458V485H360V504"/>
+  <path d="M517 462V485H360" fill="none" stroke="#6a7c74" stroke-width="2"/>
+  <rect class="box" x="64" y="514" width="592" height="86" rx="13"/>
+  <text class="title" x="360" y="550">展示调整前后对比</text>
+  <text class="body" x="360" y="579">电器时间轴 · 用电与成本 · 室温与任务完成情况</text>
+  <path class="line" d="M360 602V624"/>
+  <rect x="64" y="634" width="592" height="86" rx="13" fill="#fbf4e9" stroke="#e4d1b2" stroke-width="1.5"/>
+  <text class="title" x="360" y="670">真人代表家庭评价</text>
+  <text class="body" x="360" y="699">同意／不同意 · 四项评分 · 原因</text>
+  <path class="line" d="M360 722V744"/>
+  <rect x="64" y="754" width="592" height="86" rx="13" fill="#e8f1ea" stroke="#a9c1b1" stroke-width="1.5"/>
+  <text class="title" x="360" y="790">保存完整JSON，整理SFT样本</text>
+  <text class="body" x="360" y="819">家庭回答 + 模拟环境 + 两份结果 + 真人反馈</text>
+</svg>
