@@ -13,6 +13,10 @@
     "full-collected-record.json": {
       "sha256": "cd18c8ee09fddad496239fb28f73f7bcec828f82801e262e6d9d1ef00232c5c0",
       "bytes": 70158
+    },
+    "cleaned-supervision.json": {
+      "sha256": "cbb7f2d2be62dc8ed4a3af8aac479489d48f03271070fbeb23b70f662c8f50d7",
+      "bytes": 32041
     }
   }
 }

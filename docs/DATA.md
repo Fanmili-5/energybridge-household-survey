@@ -2,7 +2,7 @@
 
 用户填写后的问卷 JSON 只包含实际提交答案及身份关联、时间、问卷版本；不嵌入整份问卷定义或全部选项。原始值保持不变，未填写项不补答案。
 
-完整案例另附该户配置、仿真情境、两份结果、实际展示和真人反馈，不生成 SFT 提示词或训练对话。
+完整案例另附该户配置、仿真情境、两份结果、实际展示和真人反馈。另输出 `cleaned-supervision.json` 作为第一步清洗交付，不生成 SFT 提示词或训练对话。详见[实际保存与清洗](saved-json-and-cleaning.md)。
 
 [查看真实答卷和运行结果](../examples/real-test-20260914/README.md)。使用 `scripts/export_submitted_case.py` 导出；以下旧 `export_household_records.py` / `export_candidates.py` 是后台完整审计及历史候选工具，不是当前对外交付格式。后台不可变记录及快照继续用于来源校验。
 

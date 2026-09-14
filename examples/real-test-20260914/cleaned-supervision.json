@@ -1,0 +1,975 @@
+{
+  "schema_version": "eb.first_stage_supervision.v1",
+  "case_id": "f5e211505dfa1f1c4822cee8285f12c0",
+  "household_id": "household_1f303489f700ef36e11d",
+  "input": {
+    "household_answers": {
+      "B02": {
+        "question": "How many people, including you, usually live together in your household?",
+        "answer": "3 people",
+        "selected_value": "3"
+      },
+      "B04": {
+        "question": "During the specified month, is someone usually at home during the daytime?",
+        "answer": "Occupied some of the time",
+        "selected_value": "sometimes_occupied"
+      },
+      "B05": {
+        "question": "Which appliances does your household own and include in its ordinary electricity schedule? All selected appliances enter this simulation.",
+        "answer": "Air conditioner; Washing machine; Dishwasher; Dryer; Electric water heater; Electric car chargeable at home (including plug-in hybrids, excluding electric bicycles)",
+        "selected_value": [
+          "ac",
+          "washer",
+          "dishwasher",
+          "dryer",
+          "electric_water_heater",
+          "home_ev"
+        ]
+      },
+      "F_EVENING": {
+        "question": "Is someone usually at home between 18:00 and 22:00?",
+        "answer": "Occupied most of the time",
+        "selected_value": "mostly_home"
+      },
+      "F_REGULARITY": {
+        "question": "How regular are household members' departure, return and rest times?",
+        "answer": "Generally regular",
+        "selected_value": "regular"
+      },
+      "F_LATE_USE": {
+        "question": "Does anyone often remain active and use appliances after midnight?",
+        "answer": "Often",
+        "selected_value": "often"
+      },
+      "H_ac": {
+        "question": "During the specified month, when is the air conditioner usually used?",
+        "answer": "All day",
+        "selected_value": "all_day"
+      },
+      "H_washer": {
+        "question": "During the specified month, when is the washing machine usually used?",
+        "answer": "19:40",
+        "selected_value": "19.6666666667"
+      },
+      "D_washer": {
+        "question": "By what time must the washing machine task usually finish?",
+        "answer": "23:40",
+        "selected_value": "23.6666666667"
+      },
+      "E_washer": {
+        "question": "From what time can the washing machine task usually start?",
+        "answer": "17:30",
+        "selected_value": "17.5"
+      },
+      "T_washer": {
+        "question": "How long does one washing machine task usually take (minutes)?",
+        "answer": "40 minutes",
+        "selected_value": "0.6666666666666666"
+      },
+      "H_dishwasher": {
+        "question": "During the specified month, when is the dishwasher usually used?",
+        "answer": "18:40",
+        "selected_value": "18.6666666667"
+      },
+      "D_dishwasher": {
+        "question": "By what time must the dishwasher task usually finish?",
+        "answer": "20:30",
+        "selected_value": "20.5"
+      },
+      "E_dishwasher": {
+        "question": "From what time can the dishwasher task usually start?",
+        "answer": "16:40",
+        "selected_value": "16.6666666667"
+      },
+      "T_dishwasher": {
+        "question": "How long does one dishwasher task usually take (minutes)?",
+        "answer": "30 minutes",
+        "selected_value": "0.5"
+      },
+      "H_dryer": {
+        "question": "During the specified month, when is the dryer usually used?",
+        "answer": "20:10",
+        "selected_value": "20.1666666667"
+      },
+      "D_dryer": {
+        "question": "By what time must the dryer task usually finish?",
+        "answer": "24:00",
+        "selected_value": "24"
+      },
+      "E_dryer": {
+        "question": "From what time can the dryer task usually start?",
+        "answer": "16:30",
+        "selected_value": "16.5"
+      },
+      "T_dryer": {
+        "question": "How long does one dryer task usually take (minutes)?",
+        "answer": "30 minutes",
+        "selected_value": "0.5"
+      },
+      "H_electric_water_heater": {
+        "question": "When does the electric water heater usually begin heating? Midnight or overnight answers can be saved but currently cannot generate a simulation.",
+        "answer": "19:20",
+        "selected_value": "19.3333333333"
+      },
+      "H_home_ev": {
+        "question": "When is the electric car usually plugged in for charging at home?",
+        "answer": "19:30",
+        "selected_value": "19.5"
+      },
+      "H_ac_temp": {
+        "question": "What is the usual cooling setpoint (22-28 degrees C)? This is not a heating temperature.",
+        "answer": "26℃",
+        "selected_value": "26"
+      },
+      "D_home_ev": {
+        "question": "After being plugged in, when does the car usually leave home? A time earlier than arrival means the following day; the two times must differ.",
+        "answer": "07:30",
+        "selected_value": "7.5"
+      },
+      "D_electric_water_heater": {
+        "question": "When does the electric water heater usually stop heating? Earlier than the start means the following day; overnight answers can be saved but currently cannot generate a simulation.",
+        "answer": "23:30",
+        "selected_value": "23.5"
+      },
+      "X_REGION": {
+        "question": "In which provincial-level region does the household usually live?",
+        "answer": "Zhejiang",
+        "selected_value": "浙江"
+      },
+      "X_CITY": {
+        "question": "City of residence (no detailed address)",
+        "answer": "City name as reported (proper noun): 杭州",
+        "selected_value": "杭州"
+      },
+      "X_BUILDING": {
+        "question": "Which building form best describes the home?",
+        "answer": "An apartment in a building",
+        "selected_value": "apartment"
+      },
+      "X_AREA": {
+        "question": "Approximately what is the area of the entire home (whole unit for shared housing)?",
+        "answer": "90 to less than 120 m2",
+        "selected_value": "90_119"
+      },
+      "X_AREA_BASIS": {
+        "question": "Which area measurement basis was used?",
+        "answer": "Gross building area (including allocated shared space)",
+        "selected_value": "gross"
+      },
+      "X_FLOOR": {
+        "question": "Where in the apartment building is the home located?",
+        "answer": "Middle floor",
+        "selected_value": "middle"
+      },
+      "P_AC_RANGE": {
+        "question": "During the specified month, what indoor temperature range does the household usually prefer while at home (minimum to maximum, degrees C)?",
+        "answer": "25 to 27 degrees C",
+        "selected_value": "25_27"
+      },
+      "P_AC_CHANGE": {
+        "question": "What is the largest change from the usual indoor temperature that the household would tolerate to support load shifting?",
+        "answer": "2.5℃",
+        "selected_value": "2.5"
+      },
+      "P_EV_TARGET": {
+        "question": "At departure, what minimum battery charge is desired (10% steps; includes plug-in hybrids, excludes electric bicycles)?",
+        "answer": "80%",
+        "selected_value": "0.8"
+      },
+      "P_EV_RESERVE": {
+        "question": "What minimum battery charge is desired as a reserve for unplanned trips (10% steps)?",
+        "answer": "50%",
+        "selected_value": "0.5"
+      },
+      "P_HOT_WATER": {
+        "question": "At what time does the household usually need hot water most?",
+        "answer": "21:20",
+        "selected_value": "21.3333333333"
+      },
+      "P_PREHEAT": {
+        "question": "Provided hot water is available when needed, is heating in advance acceptable?",
+        "answer": "Heating in advance is acceptable",
+        "selected_value": "yes"
+      },
+      "A_EB_CONTROL": {
+        "question": "To what extent is the household willing to let the system arrange electricity use?",
+        "answer": "Automatic adjustments within the agreed bounds are acceptable",
+        "selected_value": "high_trust_auto"
+      },
+      "P_COMFORT": {
+        "question": "When considering adjustments, how important is maintaining household members' comfort?",
+        "answer": "Important",
+        "selected_value": "4"
+      },
+      "P_COST": {
+        "question": "When considering adjustments, how important is reducing electricity costs?",
+        "answer": "Important",
+        "selected_value": "4"
+      },
+      "P_GRID": {
+        "question": "When daily life is not noticeably affected, how important is supporting grid load shifting?",
+        "answer": "Important",
+        "selected_value": "4"
+      },
+      "P_NOTICE": {
+        "question": "How much advance notice is desired before electricity-use adjustments (choose the closest option)?",
+        "answer": "1 day",
+        "selected_value": "24"
+      }
+    },
+    "members": [
+      {
+        "member_id": "member_1",
+        "source": "household_representative_report",
+        "reported_fields": {
+          "age_band": {
+            "value": "adult",
+            "label": "18-59",
+            "question": "Age band (optional)",
+            "response_status": "answered"
+          },
+          "life_roles": {
+            "value": [
+              "student"
+            ],
+            "label": "Student",
+            "question": "Usual life roles (multiple choices, optional)",
+            "response_status": "answered"
+          },
+          "routine": {
+            "value": "out_regular",
+            "label": "Usually leaves at regular times for work or study",
+            "question": "Usual daily routine (closest option)",
+            "response_status": "answered"
+          },
+          "comfort": {
+            "value": "temp_tolerant",
+            "label": "Not very sensitive; usually adapts even to large temperature changes",
+            "question": "Sensitivity to indoor temperature changes",
+            "response_status": "answered"
+          },
+          "task": {
+            "value": "semi_rigid",
+            "label": "Only small advances or delays are acceptable",
+            "question": "Attitude to shifting appliance operating times",
+            "response_status": "answered"
+          },
+          "participation": {
+            "value": "usually_joint",
+            "label": "Usually decides jointly with the household",
+            "question": "Usual role in household electricity-use decisions (closest option)",
+            "response_status": "answered"
+          },
+          "needs_priority": {
+            "value": "yes",
+            "label": "Usually given priority",
+            "question": "Does the household usually prioritize this member's needs when arranging electricity use?",
+            "response_status": "answered"
+          },
+          "cost_importance": {
+            "value": "2",
+            "label": "2 Slightly important",
+            "question": "Importance of reducing electricity costs (optional)",
+            "response_status": "answered"
+          },
+          "grid_importance": {
+            "value": "2",
+            "label": "2 Slightly important",
+            "question": "Importance of load shifting when daily life is not noticeably affected (optional)",
+            "response_status": "answered"
+          },
+          "control": {
+            "value": "confirm",
+            "label": "Ask first and adjust only after explicit agreement each time",
+            "question": "Willingness to delegate electricity scheduling to the system (optional)",
+            "response_status": "answered"
+          }
+        }
+      },
+      {
+        "member_id": "member_2",
+        "source": "household_representative_report",
+        "reported_fields": {
+          "age_band": {
+            "value": "adult",
+            "label": "18-59",
+            "question": "Age band (optional)",
+            "response_status": "answered"
+          },
+          "life_roles": {
+            "value": [
+              "outside_work"
+            ],
+            "label": "Works outside the home",
+            "question": "Usual life roles (multiple choices, optional)",
+            "response_status": "answered"
+          },
+          "routine": {
+            "value": "out_regular",
+            "label": "Usually leaves at regular times for work or study",
+            "question": "Usual daily routine (closest option)",
+            "response_status": "answered"
+          },
+          "comfort": {
+            "value": "normal_comfort",
+            "label": "Accepts small changes; larger changes cause discomfort",
+            "question": "Sensitivity to indoor temperature changes",
+            "response_status": "answered"
+          },
+          "task": {
+            "value": "flexible",
+            "label": "Any operating time is acceptable if completed by the deadline",
+            "question": "Attitude to shifting appliance operating times",
+            "response_status": "answered"
+          },
+          "participation": {
+            "value": "usually_joint",
+            "label": "Usually decides jointly with the household",
+            "question": "Usual role in household electricity-use decisions (closest option)",
+            "response_status": "answered"
+          },
+          "needs_priority": {
+            "value": "yes",
+            "label": "Usually given priority",
+            "question": "Does the household usually prioritize this member's needs when arranging electricity use?",
+            "response_status": "answered"
+          },
+          "cost_importance": {
+            "value": "4",
+            "label": "4 Important",
+            "question": "Importance of reducing electricity costs (optional)",
+            "response_status": "answered"
+          },
+          "grid_importance": {
+            "value": "4",
+            "label": "4 Important",
+            "question": "Importance of load shifting when daily life is not noticeably affected (optional)",
+            "response_status": "answered"
+          },
+          "control": {
+            "value": "confirm",
+            "label": "Ask first and adjust only after explicit agreement each time",
+            "question": "Willingness to delegate electricity scheduling to the system (optional)",
+            "response_status": "answered"
+          }
+        }
+      },
+      {
+        "member_id": "member_3",
+        "source": "household_representative_report",
+        "reported_fields": {
+          "age_band": {
+            "value": "adult",
+            "label": "18-59",
+            "question": "Age band (optional)",
+            "response_status": "answered"
+          },
+          "life_roles": {
+            "value": [
+              "outside_work"
+            ],
+            "label": "Works outside the home",
+            "question": "Usual life roles (multiple choices, optional)",
+            "response_status": "answered"
+          },
+          "routine": {
+            "value": "home_regular",
+            "label": "Mostly at home, including work, study, rest or caregiving",
+            "question": "Usual daily routine (closest option)",
+            "response_status": "answered"
+          },
+          "comfort": {
+            "value": "temp_tolerant",
+            "label": "Not very sensitive; usually adapts even to large temperature changes",
+            "question": "Sensitivity to indoor temperature changes",
+            "response_status": "answered"
+          },
+          "task": {
+            "value": "flexible",
+            "label": "Any operating time is acceptable if completed by the deadline",
+            "question": "Attitude to shifting appliance operating times",
+            "response_status": "answered"
+          },
+          "participation": {
+            "value": "usually_not_involved",
+            "label": "Usually not involved; other household members arrange it",
+            "question": "Usual role in household electricity-use decisions (closest option)",
+            "response_status": "answered"
+          },
+          "needs_priority": {
+            "value": "no",
+            "label": "No special priority",
+            "question": "Does the household usually prioritize this member's needs when arranging electricity use?",
+            "response_status": "answered"
+          },
+          "cost_importance": {
+            "value": "2",
+            "label": "2 Slightly important",
+            "question": "Importance of reducing electricity costs (optional)",
+            "response_status": "answered"
+          },
+          "grid_importance": {
+            "value": "4",
+            "label": "4 Important",
+            "question": "Importance of load shifting when daily life is not noticeably affected (optional)",
+            "response_status": "answered"
+          },
+          "control": {
+            "value": "auto",
+            "label": "Automatic adjustments within the agreed bounds are acceptable",
+            "question": "Willingness to delegate electricity scheduling to the system (optional)",
+            "response_status": "answered"
+          }
+        }
+      }
+    ],
+    "unanswered_fields": {
+      "H_ac_start": "not_applicable",
+      "H_ac_end": "not_applicable"
+    },
+    "comparison": {
+      "statistics_window": {
+        "start_sim_h": 7.5,
+        "end_sim_h": 31.5,
+        "duration_h": 24,
+        "policy": "departure_to_departure_24h_v1"
+      },
+      "has_changes": true,
+      "metrics": [
+        {
+          "metric": "electricity_24h",
+          "baseline": {
+            "value": 41.3,
+            "unit": "kWh"
+          },
+          "eb": {
+            "value": 43.15,
+            "unit": "kWh"
+          }
+        },
+        {
+          "metric": "relative_cost_24h",
+          "baseline": {
+            "value": 58.68,
+            "unit": "normalized_cost"
+          },
+          "eb": {
+            "value": 60.63,
+            "unit": "normalized_cost"
+          }
+        },
+        {
+          "metric": "event_electricity",
+          "baseline": {
+            "value": 1.89,
+            "unit": "kWh"
+          },
+          "eb": {
+            "value": 0.92,
+            "unit": "kWh"
+          }
+        },
+        {
+          "metric": "event_mean_power",
+          "baseline": {
+            "value": 1.89,
+            "unit": "kW"
+          },
+          "eb": {
+            "value": 0.92,
+            "unit": "kW"
+          }
+        },
+        {
+          "metric": "event_room_temperature",
+          "baseline": {
+            "min": 26.1,
+            "max": 26.1,
+            "unit": "degC"
+          },
+          "eb": {
+            "min": 26.0,
+            "max": 26.6,
+            "unit": "degC"
+          }
+        },
+        {
+          "metric": "pre_event_room_temperature",
+          "baseline": {
+            "min": 26.0,
+            "max": 26.1,
+            "unit": "degC"
+          },
+          "eb": {
+            "min": 25.2,
+            "max": 26.0,
+            "unit": "degC"
+          },
+          "interval": {
+            "start_h": 0.0,
+            "end_h": 17.0
+          }
+        },
+        {
+          "metric": "post_event_room_temperature",
+          "baseline": {
+            "min": 26.0,
+            "max": 26.1,
+            "unit": "degC"
+          },
+          "eb": {
+            "min": 24.5,
+            "max": 25.1,
+            "unit": "degC"
+          },
+          "interval": {
+            "start_h": 18.0,
+            "end_h": 31.5
+          }
+        }
+      ],
+      "device_timeline": [
+        {
+          "device_id": "ac",
+          "changed": true,
+          "baseline": [
+            {
+              "start_h": 0.166667,
+              "end_h": 31.5,
+              "end_status": "observation_cutoff",
+              "setpoint_c": 26.0,
+              "signal": "cooling_setpoint"
+            }
+          ],
+          "eb": [
+            {
+              "start_h": 0.166667,
+              "end_h": 15.5,
+              "setpoint_c": 25.5,
+              "signal": "cooling_setpoint"
+            },
+            {
+              "start_h": 15.5,
+              "end_h": 17.0,
+              "setpoint_c": 25.1,
+              "signal": "cooling_setpoint"
+            },
+            {
+              "start_h": 17.0,
+              "end_h": 18.0,
+              "setpoint_c": 26.5,
+              "signal": "cooling_setpoint"
+            },
+            {
+              "start_h": 18.0,
+              "end_h": 24.0,
+              "setpoint_c": 25.0,
+              "signal": "cooling_setpoint"
+            },
+            {
+              "start_h": 24.0,
+              "end_h": 31.5,
+              "end_status": "observation_cutoff",
+              "setpoint_c": 24.5,
+              "signal": "cooling_setpoint"
+            }
+          ]
+        },
+        {
+          "device_id": "washer",
+          "changed": true,
+          "baseline": [
+            {
+              "start_h": 19.666667,
+              "end_h": 20.333333,
+              "power_kw": 1.5,
+              "signal": "appliance_model_power"
+            }
+          ],
+          "eb": [
+            {
+              "start_h": 18.0,
+              "end_h": 18.666667,
+              "power_kw": 1.5,
+              "signal": "appliance_model_power"
+            }
+          ]
+        },
+        {
+          "device_id": "dishwasher",
+          "changed": true,
+          "baseline": [
+            {
+              "start_h": 17.0,
+              "end_h": 17.5,
+              "power_kw": 1.2,
+              "signal": "appliance_model_power"
+            }
+          ],
+          "eb": [
+            {
+              "start_h": 18.0,
+              "end_h": 18.5,
+              "power_kw": 1.2,
+              "signal": "appliance_model_power"
+            }
+          ]
+        },
+        {
+          "device_id": "dryer",
+          "changed": true,
+          "baseline": [
+            {
+              "start_h": 18.5,
+              "end_h": 19.0,
+              "power_kw": 2.5,
+              "signal": "appliance_model_power"
+            }
+          ],
+          "eb": [
+            {
+              "start_h": 20.0,
+              "end_h": 20.5,
+              "power_kw": 2.5,
+              "signal": "appliance_model_power"
+            }
+          ]
+        },
+        {
+          "device_id": "electric_water_heater",
+          "changed": true,
+          "baseline": [
+            {
+              "start_h": 0.166667,
+              "end_h": 19.333333,
+              "setpoint_c": 40.0,
+              "signal": "water_heater_setpoint",
+              "mode": "standby"
+            },
+            {
+              "start_h": 19.333333,
+              "end_h": 23.5,
+              "setpoint_c": 60.0,
+              "signal": "water_heater_setpoint"
+            },
+            {
+              "start_h": 23.5,
+              "end_h": 31.5,
+              "end_status": "observation_cutoff",
+              "setpoint_c": 40.0,
+              "signal": "water_heater_setpoint",
+              "mode": "standby"
+            }
+          ],
+          "eb": [
+            {
+              "start_h": 0.166667,
+              "end_h": 18.5,
+              "setpoint_c": 40.0,
+              "signal": "water_heater_setpoint",
+              "mode": "standby"
+            },
+            {
+              "start_h": 18.5,
+              "end_h": 23.5,
+              "setpoint_c": 60.0,
+              "signal": "water_heater_setpoint"
+            },
+            {
+              "start_h": 23.5,
+              "end_h": 31.5,
+              "end_status": "observation_cutoff",
+              "setpoint_c": 40.0,
+              "signal": "water_heater_setpoint",
+              "mode": "standby"
+            }
+          ]
+        },
+        {
+          "device_id": "home_ev",
+          "changed": true,
+          "baseline": [
+            {
+              "start_h": 0.166667,
+              "end_h": 2.666667,
+              "power_kw": 7.4,
+              "signal": "appliance_model_power"
+            },
+            {
+              "start_h": 2.666667,
+              "end_h": 2.833333,
+              "power_kw": 6.391,
+              "signal": "appliance_model_power"
+            },
+            {
+              "start_h": 19.5,
+              "end_h": 22.0,
+              "power_kw": 7.4,
+              "signal": "appliance_model_power"
+            },
+            {
+              "start_h": 22.0,
+              "end_h": 22.166667,
+              "power_kw": 6.391,
+              "signal": "appliance_model_power"
+            }
+          ],
+          "eb": [
+            {
+              "start_h": 19.5,
+              "end_h": 22.0,
+              "power_kw": 7.4,
+              "signal": "appliance_model_power"
+            },
+            {
+              "start_h": 22.0,
+              "end_h": 22.166667,
+              "power_kw": 6.391,
+              "signal": "appliance_model_power"
+            }
+          ]
+        }
+      ],
+      "service_results": [
+        {
+          "device_id": "washer",
+          "baseline": {
+            "observed_at_h": 31.5,
+            "task_day": 1,
+            "status": "completed"
+          },
+          "eb": {
+            "observed_at_h": 31.5,
+            "task_day": 1,
+            "status": "completed"
+          }
+        },
+        {
+          "device_id": "dishwasher",
+          "baseline": {
+            "observed_at_h": 31.5,
+            "task_day": 1,
+            "status": "completed"
+          },
+          "eb": {
+            "observed_at_h": 31.5,
+            "task_day": 1,
+            "status": "completed"
+          }
+        },
+        {
+          "device_id": "dryer",
+          "baseline": {
+            "observed_at_h": 31.5,
+            "task_day": 1,
+            "status": "completed"
+          },
+          "eb": {
+            "observed_at_h": 31.5,
+            "task_day": 1,
+            "status": "completed"
+          }
+        },
+        {
+          "device_id": "electric_water_heater",
+          "baseline": {
+            "start_h": 21.166666666666668,
+            "end_h": 21.333333333333332,
+            "mean_tank_temperature_c": 57.2
+          },
+          "eb": {
+            "start_h": 21.166666666666668,
+            "end_h": 21.333333333333332,
+            "mean_tank_temperature_c": 59.2
+          }
+        },
+        {
+          "device_id": "home_ev",
+          "baseline": {
+            "departure_h": 31.5,
+            "charge_percent": 80.0,
+            "target_percent": 80.0,
+            "target_met": true
+          },
+          "eb": {
+            "departure_h": 31.5,
+            "charge_percent": 80.0,
+            "target_percent": 80.0,
+            "target_met": true
+          }
+        }
+      ],
+      "timeline_window": {
+        "start_h": 0,
+        "end_h": 31.5,
+        "event_start_h": 17,
+        "event_end_h": 18.0
+      },
+      "timeline_interpretation": "AC bars show cooling setpoints, not room temperatures. Water-heater temperature bars do not imply continuous power consumption. Power bars retain the displayed appliance model values."
+    }
+  },
+  "target": {
+    "decision": "accept",
+    "score": 4.2,
+    "comfort_score": 4.3,
+    "energy_score": 2.9,
+    "vpp_score": 4.2,
+    "comment": "整体调整结果可接受，跟日常使用差距不大"
+  },
+  "auxiliary": {
+    "supplementary_answers": {
+      "X_TENURE": {
+        "value": "rented",
+        "response_status": "answered"
+      },
+      "X_BUILDING_AGE": {
+        "value": "2000_2009",
+        "response_status": "answered"
+      },
+      "X_INCOME": {
+        "value": "ge30000",
+        "response_status": "answered"
+      },
+      "X_BILL": {
+        "value": "600_999",
+        "response_status": "answered"
+      },
+      "X_TARIFF": {
+        "value": "tou",
+        "response_status": "answered"
+      },
+      "X_EXTRA_DEVICES": {
+        "value": [
+          "refrigerator",
+          "gas_water_heater"
+        ],
+        "response_status": "answered"
+      },
+      "X_PROTECTED": {
+        "value": [
+          "work_study"
+        ],
+        "response_status": "answered"
+      },
+      "X_SMART": {
+        "value": "never",
+        "response_status": "answered"
+      },
+      "X_DR": {
+        "value": "no",
+        "response_status": "answered"
+      },
+      "X_RESTORE": {
+        "value": "prefer_restore",
+        "response_status": "answered"
+      },
+      "X_COUNT_ac": {
+        "value": "3_plus",
+        "response_status": "answered"
+      },
+      "X_FREQ_ac": {
+        "value": "days_2_3",
+        "response_status": "answered"
+      },
+      "X_COUNT_washer": {
+        "value": "2",
+        "response_status": "answered"
+      },
+      "X_FREQ_washer": {
+        "value": "days_7",
+        "response_status": "answered"
+      },
+      "X_COUNT_dishwasher": {
+        "value": "1",
+        "response_status": "answered"
+      },
+      "X_FREQ_dishwasher": {
+        "value": "days_7",
+        "response_status": "answered"
+      },
+      "X_COUNT_dryer": {
+        "value": "1",
+        "response_status": "answered"
+      },
+      "X_FREQ_dryer": {
+        "value": "days_7",
+        "response_status": "answered"
+      },
+      "X_COUNT_home_ev": {
+        "value": "1",
+        "response_status": "answered"
+      },
+      "X_FREQ_home_ev": {
+        "value": "days_2_3",
+        "response_status": "answered"
+      },
+      "X_COUNT_electric_water_heater": {
+        "value": "1",
+        "response_status": "answered"
+      },
+      "X_FREQ_electric_water_heater": {
+        "value": "days_7",
+        "response_status": "answered"
+      }
+    },
+    "simulation_context": {
+      "simulation_date": "2007-05-31",
+      "event": {
+        "id": "vpp_3bb69418568f",
+        "trigger_h": 17,
+        "end_h": 18.0,
+        "day": 1
+      },
+      "weather_station": {
+        "id": "hangzhou",
+        "station_name": "Hangzhou",
+        "wmo": "584570"
+      },
+      "building": {
+        "id": "apartment_middle_90_119_gross",
+        "kind": "apartment",
+        "floor": "middle",
+        "indoor_area_m2": 84.0
+      },
+      "tariff": {
+        "id": "eb_tianjin_normalized_tou_v1",
+        "source": "tianjin_tou_price_normalized.csv",
+        "unit": "normalized TOU cost/kWh",
+        "currency": null,
+        "geographic_scope": "shared_experiment"
+      },
+      "is_household_measurement": false
+    }
+  },
+  "provenance": {
+    "source_collected_record_hash": "41544c36d6441300c16a1ce1849ed2abb571066aab2726a5b71068e3c6f4a5ff",
+    "source_document_hashes": {
+      "questionnaire_submission.json": "aac33fba2a088c43f5ad395329bef4733ed5b61c787646ab15aa33f2563537e1",
+      "household_config.json": "80e9c7edfbba5a3d9e3da5d5ac2e8c966eec225f19d36dc535786d2387ffb163",
+      "request.json": "875d6cde9c7b0e6c903fd762eb2862f6730197c4f9876dc3f3c18d0004977997",
+      "outcome.json": "bde37d7673278936a878ddfb8d62e3c542c385fa5f425717b5fbdf8f181897e7",
+      "decision.json": "99dbbe6e17cd3d16c7955fc878bf731db64a74834cd360df1406199250717c40"
+    },
+    "cleaner_sha256": "ba69db834487cbac7f07db5d83db270f8ba76d84954ea6db1986e07a1eeb3606",
+    "language_mapping_version": "eb.planner_english.v1",
+    "input_language": "English; city proper nouns retained in their original form",
+    "target_comment_language": "zh",
+    "historical_source_rewritten": false,
+    "questionnaire_version": "eb.persona_questionnaire.v4.5",
+    "questionnaire_hash": "1bc982efe9c23fcd3ce7a44d327663021dcf0a829a8a5fc661a50b772fe18414",
+    "target_source": "engineering_test",
+    "stored_data_origin": "synthetic_engineering_test",
+    "training_release": false,
+    "split_group": "household_1f303489f700ef36e11d",
+    "stage": "first_stage_data_handoff_not_training_messages",
+    "comparison_source": "saved participant_view; displayed numeric precision preserved",
+    "supplementary_policy": "Kept separately for later analysis; not automatically added to model input.",
+    "selection_policy": "No filter on acceptance, savings, score or technical fallback.",
+    "time_unit": "hours from simulation day 1 at 00:00; values above 24 refer to the following day",
+    "quality_checks": {
+      "source_links_verified": true,
+      "human_target_complete": true,
+      "paired_simulation_complete": true
+    }
+  }
+}

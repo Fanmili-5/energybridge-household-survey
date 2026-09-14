@@ -81,9 +81,11 @@ def main():
     if a.data_dir and not a.case_id:p.error('--data-dir requires --case-id')
     records=json.loads(a.source_bundle.read_text())['records'] if a.source_bundle else read_database(a.data_dir,a.case_id)
     questionnaire,full=build_export(records)
+    from clean_collected_case import clean_case
+    cleaned=clean_case(records,full)
     a.output_dir.mkdir(parents=True,exist_ok=True)
     files={}
-    for name,data in [('questionnaire-answers.json',questionnaire),('full-collected-record.json',full)]:
+    for name,data in [('questionnaire-answers.json',questionnaire),('full-collected-record.json',full),('cleaned-supervision.json',cleaned)]:
         path=a.output_dir/name;path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
         files[name]={'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'bytes':path.stat().st_size}
     verification={'case_id':questionnaire['case_id'],'answers_match_saved_submission':True,'feedback_matches_saved_decision':True,'source_links_verified':True,'questionnaire_definitions_included':False,'sft_messages_included':False,'files':files}

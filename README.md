@@ -31,6 +31,7 @@ flowchart LR
 
 - [本人授权公开的真实答卷与运行结果](examples/real-test-20260914/README.md)
 - [中文问卷如何转换为英文 EB 输入](docs/planner-language.md)
+- [后台保存哪些 JSON，以及第一步如何清洗](docs/saved-json-and-cleaning.md)
 
 ## 复现
 
