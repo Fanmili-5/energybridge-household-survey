@@ -21,6 +21,16 @@ window.EBView=(()=>{
     }
     return out;
   }
+  // Run endpoints ignore internal setpoint/power changes, but never bridge an idle gap.
+  function runEndpoints(spans,c){
+    const runs=[];
+    for(const s of visibleSpans(spans,c)){
+      const previous=runs.at(-1);
+      if(previous&&s.start_h<=previous.end_h+1e-5)previous.end_h=Math.max(previous.end_h,s.end_h);
+      else runs.push({start_h:s.start_h,end_h:s.end_h});
+    }
+    return runs.flatMap(r=>[r.start_h,r.end_h]);
+  }
   // Stagger annotations, never the bars: the two schedules stay on two rows.
   function labelLayout(items,width){
     const lanes=[];
@@ -50,7 +60,7 @@ window.EBView=(()=>{
     const c=view.schedule_chart;if(!c){for(const row of view.rows||[])root.append(n('p',`${row.device}：调整前 ${row.original}；调整后 ${row.proposal}`));return;}
     const context=n('div',undefined,'schedule-context');
     const contextItems=[['错峰',`${clock(c.event_start_h)}—${clock(c.event_end_h)}`],['比较时段',`${clock(c.start_h,true)}—${clock(c.end_h,true)}`]];if(Number.isFinite(c.notification_h))contextItems.unshift(['通知',clock(c.notification_h)]);
-    for(const [label,value] of contextItems){const item=n('span');item.append(document.createTextNode(label+' '),n('strong',value));context.append(item);}root.append(context,n('p',(days(c).length>1?'从左到右：当天 → 次日。':'从左到右按时间排列。')+'色条左端为开始，右端为结束。','timeline-reading-guide'));
+    for(const [label,value] of contextItems){const item=n('span');item.append(document.createTextNode(label+' '),n('strong',value));context.append(item);}root.append(context);
     const board=n('div',undefined,'schedule-board'),scroll=n('div',undefined,'schedule-scroll');scroll.tabIndex=0;scroll.setAttribute('aria-label','完整电器时间轴：每个电器上方调整前，下方调整后');scroll.classList.add('fit-timeline');
     const canvas=n('div',undefined,'shared-schedule'),axis=n('div',undefined,'shared-axis');axis.append(n('span','时间','schedule-axis-label'));const scale=n('div',undefined,'time-axis'),dayScale=n('div',undefined,'day-axis');for(const d of days(c)){const band=n('span',dayName(d.day),'day-label day-'+d.day);band.style.left=pct(d.start,c)+'%';band.style.width=(pct(d.end,c)-pct(d.start,c))+'%';dayScale.append(band);}scale.append(dayScale);
     for(const h of ticks(c)){const tick=n('span',clock(h).replace(/^(次日|第\d+天) /,''),'tick');tick.style.left=pct(h,c)+'%';if(h===c.start_h)tick.classList.add('first');if(h===c.end_h)tick.classList.add('last');scale.append(tick);}axis.append(scale);canvas.append(axis);
@@ -59,7 +69,7 @@ window.EBView=(()=>{
     function show(label,device){detail.hidden=false;detail.textContent=label;for(const row of canvas.querySelectorAll('.schedule-row'))row.classList.toggle('highlighted',row.dataset.device===device);}
     for(const row of c.rows){
       const device=row.device_id||deviceIds[row.device]||'none',group=n('section',undefined,'schedule-group device-pair');group.dataset.device=device;
-      const heading=n('h3'),name=n('strong',undefined,'device-pair-name');name.append(icon(device),document.createTextNode(row.device));heading.append(name);group.append(heading);if(canvas.querySelector('.device-pair')){const ruler=axis.cloneNode(true);ruler.classList.add('device-ruler');group.append(ruler);}
+      const heading=n('h3'),name=n('strong',undefined,'device-pair-name');name.append(icon(device),document.createTextNode(row.device+(['ac','electric_water_heater'].includes(device)?' · 温度设定':'')));heading.append(name);group.append(heading);if(canvas.querySelector('.device-pair')){const ruler=axis.cloneNode(true);ruler.classList.add('device-ruler');group.append(ruler);}
       for(const side of ['original','proposal']){
         const line=n('div',undefined,'schedule-row device-'+device);line.dataset.device=device;line.dataset.side=side;
         const label=n('div',undefined,'schedule-device');label.append(n('strong',side==='original'?'调整前':'调整后'));
@@ -67,7 +77,7 @@ window.EBView=(()=>{
         const bars=[];let count=0;for(const span of visibleSpans(row[side],c)){const start=span.start_h,end=span.end_h;count++;
           const text=`${side==='original'?'调整前':'调整后'} · ${row.device} · ${clock(start,true)} 开始 → ${clock(end,true)} 结束 · ${span.label}`,bar=n('button',undefined,'schedule-bar '+side);bar.type='button';bar.dataset.startH=String(start);bar.dataset.endH=String(end);bar.style.left=pct(start,c)+'%';bar.style.width=(pct(end,c)-pct(start,c))+'%';if((end-start)/(c.end_h-c.start_h)<.07)bar.classList.add('short-bar');bar.append(n('span',['ac','electric_water_heater'].includes(device)?span.label:device==='home_ev'?'充电':'运行')); bar.title=text;bar.setAttribute('aria-label',text);bar.onfocus=bar.onclick=()=>show(text,device);track.append(bar);bars.push({bar,start,end});
         }
-        const runs=periods(row[side],device,c),boundaries=[...new Set(runs.flatMap(r=>[r.start_h,r.end_h]))].sort((a,b)=>a-b);
+        const runs=periods(row[side],device,c),boundaries=runEndpoints(row[side],c);
         const annotations=boundaries.map(hour=>{
           const label=n('span',clock(hour),'endpoint-label'),stem=n('span',undefined,'endpoint-stem');
           label.dataset.hour=String(hour);label.setAttribute('aria-label',clock(hour,true));stem.setAttribute('aria-hidden','true');
@@ -115,7 +125,6 @@ window.EBView=(()=>{
     fit.onclick=()=>setZoom(false);expand.onclick=()=>setZoom(true);zoom.append(fit,expand);root.append(zoom,board);setZoom(false);let lastWidth=-1;const observer=new ResizeObserver(()=>{if(canvas.clientWidth===lastWidth)return;lastWidth=canvas.clientWidth;layoutEndpoints();});observer.observe(canvas);observers.set(root,observer);
 
     const legend=n('div',undefined,'schedule-legend');legend.append(n('span','浅黄色：错峰时段'+(Number.isFinite(c.notification_h)?' · 虚线：通知时刻':'')));root.append(legend);
-    root.append(n('p','空调和热水器色条表示温度设定，实际室温和用电量见下方对比。','hint schedule-note'));
   }
   function outcomes(root,view){
     const wrap=n('div',undefined,'outcomes-table-wrap'),table=n('table',undefined,'outcomes-table');
@@ -153,5 +162,5 @@ window.EBView=(()=>{
     const cards=n('div',undefined,'temperature-periods');for(const p of t.periods){const card=n('div');card.append(n('strong',p.label),n('small',p.time),n('p',`原安排 ${p.original}`),n('p',`EB 调整 ${p.proposal}`));cards.append(card);}root.append(cards);const more=n('section',undefined,'supporting-detail temperature-chart');more.append(wrap,legend,n('p',t.note,'hint'));root.append(more);
   }
   function render(root,view){observers.get(root)?.disconnect();root.replaceChildren();schedule(root,view);}
-  return {render,outcomes,temperature,icon,timeline:{clock,ticks,days,visibleSpans,periods,labelLayout}};
+  return {render,outcomes,temperature,icon,timeline:{clock,ticks,days,visibleSpans,periods,runEndpoints,labelLayout}};
 })();

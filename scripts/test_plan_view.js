@@ -33,3 +33,10 @@ for(const p of placed){assert(p.left>=0);assert(p.left+p.width<=250);}
 assert.equal(placed[0].x,0);assert.equal(placed.at(-1).x,250);
 for(let i=0;i<placed.length;i++)for(let j=i+1;j<placed.length;j++)if(placed[i].lane===placed[j].lane)assert(placed[i].left+placed[i].width+6<=placed[j].left);
 console.log('Endpoint labels: adjacent boundaries, midnight edges, no coordinate shifts passed.');
+
+// Only the beginning/end of each continuous run are labelled; setting changes remain in periods().
+assert.deepEqual(plain(t.runEndpoints(ac,c)),[22,32]);
+assert.deepEqual(plain(t.runEndpoints(spans,c)),[.166667,4,22,25.833333]);
+assert.deepEqual(plain(t.runEndpoints([{start_h:0,end_h:8},{start_h:18,end_h:19},{start_h:19,end_h:32}],c)),[0,8,18,32]);
+assert.deepEqual(plain(t.runEndpoints([],c)),[]);
+console.log('Continuous-run endpoints: thermal changes omitted, idle gaps and EV dawn runs preserved.');
