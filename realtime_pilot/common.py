@@ -68,6 +68,10 @@ def normalize_answers(raw, ids, questions=None):
             from member_questionnaire import normalize_members
             out[qid] = {"value": normalize_members(v, q), "response_status": "answered"}
             continue
+        if q["type"] == "temperature_range":
+            from survey_time import temperature_range
+            out[qid] = {"value": temperature_range(v,q), "response_status": "answered"}
+            continue
         if q["type"] == "text":
             if not isinstance(v, str) or len(v) > 1000:
                 raise ValueError("反馈须为 1000 字以内的文字")

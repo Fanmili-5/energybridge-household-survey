@@ -113,6 +113,8 @@ def visible_profile(profile, questions):
         labels = {o["value"]: o["label"] for o in q["options"]}
         value = cell["value"]
         answer = (str(value) if q.get('type')=='text' else "、".join(labels[v] for v in value) if isinstance(value, list) else labels.get(value)) if cell["response_status"] == "answered" else None
+        if q.get('type')=='temperature_range' and cell['response_status']=='answered':
+            answer='—'.join(str(value).split('_'))+'℃'
         key = "household_information" if q["group"] in ("household_fact","simulation_environment") else "stated_attitudes"
         out[key].append({"question_id": q["id"], "question": q["prompt"], "answer": answer,
                          "response_status": cell["response_status"]})

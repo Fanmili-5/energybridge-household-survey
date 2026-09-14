@@ -1,0 +1,274 @@
+{
+  "production_enabled": false,
+  "paid_api_calls": 0,
+  "candidate_policy": "Live appliance state advances once per EP zone boundary; hold device actuator writes across HVAC substeps; 1e-9 hour comparison tolerance; native planning unchanged.",
+  "runs": {
+    "original70": {
+      "source": "artifacts/clock_grid_original_20260914/report.json",
+      "ep_simulations": 11,
+      "fixed_plan_cases": [
+        {
+          "case": "agent_aligned",
+          "requested_start_h": 18.0,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.0,
+          "first_meter_bin_h": 18.0,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7500000000000018,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_fractional",
+          "requested_start_h": 18.2,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.2,
+          "first_meter_bin_h": 18.333333333333332,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7500000000000004,
+          "metered_kwh": 1.5500000000000007,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_minute",
+          "requested_start_h": 18.116666666666667,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.166666666666668,
+          "first_meter_bin_h": 18.166666666666664,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7499999999999964,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_grid_10",
+          "requested_start_h": 18.166666666666668,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.166666666666668,
+          "first_meter_bin_h": 18.166666666666664,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7499999999999964,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_grid_20",
+          "requested_start_h": 18.333333333333332,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.333333333333332,
+          "first_meter_bin_h": 18.333333333333332,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7500000000000018,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_grid_30",
+          "requested_start_h": 18.5,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.5,
+          "first_meter_bin_h": 18.5,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7500000000000018,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_grid_40",
+          "requested_start_h": 18.666666666666668,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.833333333333332,
+          "first_meter_bin_h": 18.833333333333332,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.5833333333333357,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_grid_50",
+          "requested_start_h": 18.833333333333332,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.833333333333332,
+          "first_meter_bin_h": 18.833333333333332,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.5833333333333357,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3,
+            26.5
+          ]
+        }
+      ]
+    },
+    "candidate70": {
+      "source": "artifacts/clock_grid_candidate_final_20260914/report.json",
+      "ep_simulations": 11,
+      "fixed_plan_cases": [
+        {
+          "case": "agent_aligned",
+          "requested_start_h": 18.0,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.0,
+          "first_meter_bin_h": 18.0,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7500000000000018,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_fractional",
+          "requested_start_h": 18.2,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.333333333333332,
+          "first_meter_bin_h": 18.333333333333332,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7500000000000018,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_minute",
+          "requested_start_h": 18.116666666666667,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.166666666666668,
+          "first_meter_bin_h": 18.166666666666664,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7499999999999964,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_grid_10",
+          "requested_start_h": 18.166666666666668,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.166666666666668,
+          "first_meter_bin_h": 18.166666666666664,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7499999999999964,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_grid_20",
+          "requested_start_h": 18.333333333333332,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.333333333333332,
+          "first_meter_bin_h": 18.333333333333332,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7500000000000018,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_grid_30",
+          "requested_start_h": 18.5,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.5,
+          "first_meter_bin_h": 18.5,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7500000000000018,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_grid_40",
+          "requested_start_h": 18.666666666666668,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.666666666666664,
+          "first_meter_bin_h": 18.666666666666664,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7500000000000018,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_grid_50",
+          "requested_start_h": 18.833333333333332,
+          "duration_h": 1.1666666666666667,
+          "first_command_h": 18.833333333333332,
+          "first_meter_bin_h": 18.833333333333332,
+          "expected_kwh": 1.75,
+          "command_kwh": 1.7500000000000018,
+          "metered_kwh": 1.75,
+          "thermostat_values": [
+            26.3,
+            26.5
+          ]
+        }
+      ]
+    },
+    "candidate72": {
+      "source": "artifacts/clock_72min_candidate_20260914/report.json",
+      "ep_simulations": 6,
+      "fixed_plan_cases": [
+        {
+          "case": "agent_aligned",
+          "requested_start_h": 18.0,
+          "duration_h": 1.2,
+          "first_command_h": 18.0,
+          "first_meter_bin_h": 18.0,
+          "expected_kwh": 1.7999999999999998,
+          "command_kwh": 1.8000000000000045,
+          "metered_kwh": 1.8000000000000034,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_fractional",
+          "requested_start_h": 18.2,
+          "duration_h": 1.2,
+          "first_command_h": 18.333333333333332,
+          "first_meter_bin_h": 18.333333333333332,
+          "expected_kwh": 1.7999999999999998,
+          "command_kwh": 1.8000000000000003,
+          "metered_kwh": 1.7999999999999983,
+          "thermostat_values": [
+            26.3
+          ]
+        },
+        {
+          "case": "agent_minute",
+          "requested_start_h": 18.116666666666667,
+          "duration_h": 1.2,
+          "first_command_h": 18.166666666666668,
+          "first_meter_bin_h": 18.166666666666664,
+          "expected_kwh": 1.7999999999999998,
+          "command_kwh": 1.799999999999995,
+          "metered_kwh": 1.7999999999999983,
+          "thermostat_values": [
+            26.3
+          ]
+        }
+      ]
+    }
+  }
+}

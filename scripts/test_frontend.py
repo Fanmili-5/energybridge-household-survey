@@ -14,7 +14,8 @@ def main():
     args=parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='eb-browser-') as tmp:
         tmp=Path(tmp)
-        fixture=tmp/'answers.json';fixture.write_text(json.dumps(answers(),ensure_ascii=False))
+        fixture_answers=answers();fixture_answers.update(H_ac_temp='26.3',P_AC_CHANGE='0.3',P_AC_RANGE='24.3_26.7',H_washer='18.1666666667',T_washer=str(70/60))
+        fixture=tmp/'answers.json';fixture.write_text(json.dumps(fixture_answers,ensure_ascii=False))
         server=make_server(0,tmp/'data',workers=1,disable_planning=args.intake_only,timeout=300,human_pilot=args.human_mode)
         if not args.intake_only:
             server.store.worker_command=lambda folder:[sys.executable,str(ROOT/'realtime_pilot/deploy/ep_fixture_worker.py'),str(folder)]

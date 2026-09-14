@@ -1,0 +1,474 @@
+{
+  "api_calls": 0,
+  "ep_version": "24.1.0",
+  "native_entry": "run_family_agent",
+  "runner_sha256": "697a955ae9a5a34132c030c8d0f3b96ef6c0f63ec2caa24a2c1def23989de1d7",
+  "production_changed": false,
+  "input_method": "test-local copied schema; current intake remains restricted",
+  "cases": {
+    "aligned": {
+      "current_intake_rejected_fields": [],
+      "native_action_errors": [],
+      "native_window_errors": [],
+      "cooling_setpoints_written": [
+        26.0
+      ],
+      "calendar_constraints": {
+        "appliance_deadlines": {
+          "washer": "当日23:00 前完成；可开始时刻 8:00；时长 1 小时",
+          "dishwasher": "当日23:00 前完成；可开始时刻 8:00；时长 1 小时",
+          "dryer": "当日23:00 前完成；可开始时刻 8:00；时长 1 小时"
+        },
+        "next_departure_h": 22.0
+      },
+      "heater_setpoint_transitions": [
+        {
+          "hour": 0.16666666666666666,
+          "setpoint": 40.0
+        },
+        {
+          "hour": 16.0,
+          "setpoint": 60.0
+        },
+        {
+          "hour": 17.0,
+          "setpoint": 40.0
+        }
+      ],
+      "devices": {
+        "washer": {
+          "duration_minutes": 60.0,
+          "scheduled_h": 12.722913820371307,
+          "first_command_h": 12.833333333333334,
+          "expected_kwh": 1.5,
+          "command_kwh": 1.5,
+          "metered_kwh": 1.5
+        },
+        "dishwasher": {
+          "duration_minutes": 60.0,
+          "scheduled_h": 20.55090864535808,
+          "first_command_h": 20.666666666666668,
+          "expected_kwh": 1.2,
+          "command_kwh": 1.2,
+          "metered_kwh": 1.2
+        },
+        "dryer": {
+          "duration_minutes": 60.0,
+          "scheduled_h": 19.932163212260896,
+          "first_command_h": 19.944444444444446,
+          "expected_kwh": 2.5,
+          "command_kwh": 2.500000000000008,
+          "metered_kwh": 2.3611111111111276
+        }
+      }
+    },
+    "decimal_hours": {
+      "current_intake_rejected_fields": [
+        "H_ac_temp",
+        "H_electric_water_heater",
+        "D_electric_water_heater",
+        "H_home_ev",
+        "D_home_ev",
+        "H_washer",
+        "T_washer",
+        "E_washer",
+        "D_washer",
+        "H_dishwasher",
+        "T_dishwasher",
+        "E_dishwasher",
+        "D_dishwasher",
+        "H_dryer",
+        "T_dryer",
+        "E_dryer",
+        "D_dryer"
+      ],
+      "native_action_errors": [],
+      "native_window_errors": [],
+      "cooling_setpoints_written": [
+        26.3
+      ],
+      "calendar_constraints": {
+        "appliance_deadlines": {
+          "washer": "当日23.4:00 前完成；可开始时刻 8.2:00；时长 1.2 小时",
+          "dishwasher": "当日23.4:00 前完成；可开始时刻 8.2:00；时长 1.2 小时",
+          "dryer": "当日23.4:00 前完成；可开始时刻 8.2:00；时长 1.2 小时"
+        },
+        "next_departure_h": 22.4
+      },
+      "heater_setpoint_transitions": [
+        {
+          "hour": 0.16666666666666666,
+          "setpoint": 40.0
+        },
+        {
+          "hour": 16.333333333333332,
+          "setpoint": 60.0
+        },
+        {
+          "hour": 17.416666666666664,
+          "setpoint": 40.0
+        }
+      ],
+      "devices": {
+        "washer": {
+          "duration_minutes": 72.0,
+          "scheduled_h": 14.528485517292868,
+          "first_command_h": 14.666666666666666,
+          "expected_kwh": 1.7999999999999998,
+          "command_kwh": 1.7999999999999998,
+          "metered_kwh": 1.7999999999999983
+        },
+        "dishwasher": {
+          "duration_minutes": 72.0,
+          "scheduled_h": 17.959645333744586,
+          "first_command_h": 18.0,
+          "expected_kwh": 1.44,
+          "command_kwh": 1.4399999999999993,
+          "metered_kwh": 1.4399999999999984
+        },
+        "dryer": {
+          "duration_minutes": 72.0,
+          "scheduled_h": 21.46663698496166,
+          "first_command_h": 21.5,
+          "expected_kwh": 3.0,
+          "command_kwh": 2.9999999999999987,
+          "metered_kwh": 2.999999999999997
+        }
+      }
+    },
+    "minute_input": {
+      "current_intake_rejected_fields": [
+        "H_ac_temp",
+        "H_electric_water_heater",
+        "D_electric_water_heater",
+        "H_home_ev",
+        "D_home_ev",
+        "H_washer",
+        "T_washer",
+        "E_washer",
+        "D_washer",
+        "H_dishwasher",
+        "T_dishwasher",
+        "E_dishwasher",
+        "D_dishwasher",
+        "H_dryer",
+        "T_dryer",
+        "E_dryer",
+        "D_dryer"
+      ],
+      "native_action_errors": [],
+      "native_window_errors": [],
+      "cooling_setpoints_written": [
+        26.7
+      ],
+      "calendar_constraints": {
+        "appliance_deadlines": {
+          "washer": "当日23.2833:00 前完成；可开始时刻 8.11667:00；时长 1.21667 小时",
+          "dishwasher": "当日23.2833:00 前完成；可开始时刻 8.11667:00；时长 1.21667 小时",
+          "dryer": "当日23.2833:00 前完成；可开始时刻 8.11667:00；时长 1.21667 小时"
+        },
+        "next_departure_h": 22.316666666666666
+      },
+      "heater_setpoint_transitions": [
+        {
+          "hour": 0.16666666666666666,
+          "setpoint": 40.0
+        },
+        {
+          "hour": 16.166666666666668,
+          "setpoint": 60.0
+        },
+        {
+          "hour": 17.333333333333332,
+          "setpoint": 40.0
+        }
+      ],
+      "devices": {
+        "washer": {
+          "duration_minutes": 73.0,
+          "scheduled_h": 10.931249065820428,
+          "first_command_h": 11.0,
+          "expected_kwh": 1.8249999999999997,
+          "command_kwh": 1.8250000000000004,
+          "metered_kwh": 1.8250000000000008
+        },
+        "dishwasher": {
+          "duration_minutes": 73.0,
+          "scheduled_h": 11.094644073763922,
+          "first_command_h": 11.166666666666668,
+          "expected_kwh": 1.4599999999999997,
+          "command_kwh": 1.4599999999999997,
+          "metered_kwh": 1.4600000000000004
+        },
+        "dryer": {
+          "duration_minutes": 73.0,
+          "scheduled_h": 18.329411109051954,
+          "first_command_h": 18.33333333333333,
+          "expected_kwh": 3.0416666666666665,
+          "command_kwh": 3.0416666666666674,
+          "metered_kwh": 3.041666666666655
+        }
+      }
+    }
+  },
+  "agent_precision": {
+    "agent_aligned": {
+      "requested_start_h": 18.0,
+      "requested_duration_h": 1.2,
+      "requested_setpoint_c": 26.3,
+      "expected_fixed_power_kwh": 1.7999999999999998,
+      "command_integral_kwh": 1.7999999999999992,
+      "metered_kwh": 1.7999999999999983,
+      "cooling_setpoints_written": [
+        26.3
+      ],
+      "stub_calls": 9,
+      "paid_api_calls": 0,
+      "scheduled_h": 18.0,
+      "first_command_h": 18.0,
+      "first_meter_interval_start_h": 18.0,
+      "applications": [
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.0,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.0,
+            "washer_skip": false
+          },
+          "patches": [],
+          "rejections": [],
+          "status": "applied_as_requested"
+        },
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.0,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.0,
+            "washer_skip": false
+          },
+          "patches": [],
+          "rejections": [],
+          "status": "applied_as_requested"
+        },
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.0,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.0,
+            "washer_skip": false
+          },
+          "patches": [],
+          "rejections": [],
+          "status": "applied_as_requested"
+        },
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.0,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.0,
+            "washer_skip": false
+          },
+          "patches": [],
+          "rejections": [],
+          "status": "applied_as_requested"
+        }
+      ]
+    },
+    "agent_fractional": {
+      "requested_start_h": 18.2,
+      "requested_duration_h": 1.2,
+      "requested_setpoint_c": 26.3,
+      "expected_fixed_power_kwh": 1.7999999999999998,
+      "command_integral_kwh": 1.8000000000000007,
+      "metered_kwh": 1.6000000000000005,
+      "cooling_setpoints_written": [
+        26.3
+      ],
+      "stub_calls": 9,
+      "paid_api_calls": 0,
+      "scheduled_h": 18.2,
+      "first_command_h": 18.2,
+      "first_meter_interval_start_h": 18.333333333333332,
+      "applications": [
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.2,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.2,
+            "washer_skip": false
+          },
+          "patches": [],
+          "rejections": [],
+          "status": "applied_as_requested"
+        },
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.2,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.2,
+            "washer_skip": false
+          },
+          "patches": [],
+          "rejections": [],
+          "status": "applied_as_requested"
+        },
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.2,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.2,
+            "washer_skip": false
+          },
+          "patches": [],
+          "rejections": [],
+          "status": "applied_as_requested"
+        },
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.2,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.2,
+            "washer_skip": false
+          },
+          "patches": [],
+          "rejections": [],
+          "status": "applied_as_requested"
+        }
+      ]
+    },
+    "agent_minute": {
+      "requested_start_h": 18.116666666666667,
+      "requested_duration_h": 1.2,
+      "requested_setpoint_c": 26.3,
+      "expected_fixed_power_kwh": 1.7999999999999998,
+      "command_integral_kwh": 1.8000000000000003,
+      "metered_kwh": 1.8000000000000034,
+      "cooling_setpoints_written": [
+        26.3
+      ],
+      "stub_calls": 9,
+      "paid_api_calls": 0,
+      "scheduled_h": 18.116666666666667,
+      "first_command_h": 18.166666666666668,
+      "first_meter_interval_start_h": 18.166666666666664,
+      "applications": [
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.116666666666667,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.117,
+            "washer_skip": false
+          },
+          "patches": [
+            {
+              "op": "replace",
+              "path": "/washer_start_h",
+              "old_value": 18.116666666666667,
+              "value": 18.117
+            }
+          ],
+          "rejections": [],
+          "status": "applied_with_normalization"
+        },
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.116666666666667,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.117,
+            "washer_skip": false
+          },
+          "patches": [
+            {
+              "op": "replace",
+              "path": "/washer_start_h",
+              "old_value": 18.116666666666667,
+              "value": 18.117
+            }
+          ],
+          "rejections": [],
+          "status": "applied_with_normalization"
+        },
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.116666666666667,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.117,
+            "washer_skip": false
+          },
+          "patches": [
+            {
+              "op": "replace",
+              "path": "/washer_start_h",
+              "old_value": 18.116666666666667,
+              "value": 18.117
+            }
+          ],
+          "rejections": [],
+          "status": "applied_with_normalization"
+        },
+        {
+          "version": "energybridge.actuator_application.v3",
+          "requested_actions": {
+            "washer_start_h": 18.116666666666667,
+            "washer_skip": false
+          },
+          "applied_actions": {
+            "washer_start_h": 18.117,
+            "washer_skip": false
+          },
+          "patches": [
+            {
+              "op": "replace",
+              "path": "/washer_start_h",
+              "old_value": 18.116666666666667,
+              "value": 18.117
+            }
+          ],
+          "rejections": [],
+          "status": "applied_with_normalization"
+        }
+      ]
+    }
+  },
+  "findings": [
+    "Float hours and decimal thermostat settings accepted downstream.",
+    "Current form whitelist rejects test inputs.",
+    "Calendar text incorrectly formats 8.2 as 8.2:00.",
+    "Applied action audit rounds to 3 decimal hours; actual shiftable scheduler retains raw float.",
+    "Off-grid start case produced 1.6 kWh in EP vs 1.8 kWh control integral.",
+    "No claim of precision-ready production or tested autonomous LLM plan generation."
+  ]
+}

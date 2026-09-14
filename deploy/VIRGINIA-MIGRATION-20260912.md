@@ -4,6 +4,8 @@
 
 2026-09-13 当前更新：网站与学校计算端运行 `eb.paired_ep.v3.3`，问卷为 `v4.2`，代码目录分别为 `/opt/energybridge/releases/intake-v42-20260913` 和 `~/energybridge-compute/releases/intake-v42-20260913`。两端计算 release hash 均为 `019bd4d5543dd5a272b41126dd986c22523b8fe40fff910f659dd858cbd68489`；Git 提交为 `cf23b973c741d965f89d7fd8747d0545710b41be`，发布归档 SHA-256 为 `252077fae1d6eee31c68c5684812cda96d7bbc6a8cae8b57116295afa8e3a8a9`。数据库与既有记录没有迁移或改写；线上仍为工程试填模式。
 
+2026-09-14 精度更新：两端已切换到 `releases/precision-v44-20260914`，配对流程 v3.5 / 问卷 v4.4；当前哈希、备份及验收见 [十分钟精度修复](../docs/input-precision-fix-20260914.md)。下表与更早更新段保留为迁移记录。
+
 ## 运行位置与配置
 
 | 部分 | 迁移后位置或配置 |

@@ -8,6 +8,7 @@ from copy import deepcopy
 import json
 from common import digest
 from questionnaire_persona import visible_profile
+from survey_time import clock_label
 
 VERSION='eb.respondent_household.v1'
 
@@ -69,7 +70,7 @@ def build_household_config(profile, questions, original, household_id):
         record=original['devices'].get(device,{})
         if record.get('active'):
             day='次日' if record['deadline_h']<record['earliest_h'] else '当日'
-            deadlines[device]=f"{day}{record['deadline_h']:g}:00 前完成；可开始时刻 {record['earliest_h']:g}:00；时长 {record['duration_h']:g} 小时"
+            deadlines[device]=f"{day}{clock_label(record['deadline_h'])} 前完成；可开始时刻 {clock_label(record['earliest_h'])}；时长 {round(record['duration_h']*60)} 分钟"
     from native_scenario import SIMULATION_DAYS
     simulation_days=SIMULATION_DAYS
     constraints={'appliance_deadlines':deadlines}

@@ -5,10 +5,10 @@ from common import PROPOSAL_PROFILE_QUESTIONS, digest
 from questionnaire_persona import question, components, visible_profile
 from proposal_contract import DEVICES, TASKS, executable, at
 from native_support import physical_defaults, ordinary
-from survey_time import LEGACY_STARTS, start_hour
+from survey_time import LEGACY_STARTS, start_hour, clock_options, duration_options
 
-VERSION = 'eb.paired_ep.v3.4'
-QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.3'
+VERSION = 'eb.paired_ep.v3.5'
+QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.4'
 QUESTIONS = [deepcopy(q) for q in PROPOSAL_PROFILE_QUESTIONS if q['id'] != 'F_ROUTINES']
 for q in QUESTIONS:
     if q['id'] == 'B05':
@@ -40,28 +40,28 @@ for d, label in DEVICES.items():
     if d == 'ac':
         options = [('afternoon', '下午到睡前（14:00—23:00）'), ('evening', '傍晚到睡前（18:00—23:00）'), ('all_day', '全天使用'),('custom','自己选择使用时段（可跨午夜）')]
     else:
-        options = [(next((k for k,v in LEGACY_STARTS.items() if v==i/2),f'{i/2:g}'),f'{i//2:02d}:{(i%2)*30:02d}') for i in range(48)]
+        options = clock_options(aliases=True)
     q = question('H_'+d, f'在本次指定月份，{label}一般什么时候用？', options, group='household_fact')
     if d=='home_ev': q['prompt']='电动汽车通常什么时候在家接入充电设备？'
     if d=='electric_water_heater': q['prompt']='电热水器通常从什么时候开始加热？（请按真实习惯填写；午夜或跨夜安排可保存，暂不能生成模拟）'
     q['device'] = d
     HABITS.append(q)
     if d in TASKS:
-        q = question('D_'+d, f'{label}这项任务，通常最晚几点需要完成？', [(str(i),f'{i:02d}:00') for i in range(1,25)], group='household_fact')
+        q = question('D_'+d, f'{label}这项任务，通常最晚几点需要完成？', clock_options(10,1440), group='household_fact')
         q.update(device=d, active_only=True)
         HABITS.append(q)
-        q = question('E_'+d, f'{label}通常从几点起就可以开始？', [(str(i),f'{i:02d}:00') for i in range(24)], group='household_fact')
+        q = question('E_'+d, f'{label}通常从几点起就可以开始？', clock_options(), group='household_fact')
         q.update(device=d, active_only=True); HABITS.append(q)
-        q = question('T_'+d, f'{label}一次通常需要多久？', [(str(v),f'{v:g} 小时') for v in (.5,1.,1.5,2.,2.5,3.,4.)], group='household_fact')
+        q = question('T_'+d, f'{label}一次通常需要多久？（分钟）', duration_options(), group='household_fact')
         q.update(device=d, active_only=True); HABITS.append(q)
-q = question('H_ac_temp', '空调需要制冷时，通常设为多少度？（22—28℃；此项不是供暖温度）', [(f'{i/2:g}',f'{i/2:g}℃') for i in range(44,57)], group='household_fact')
+q = question('H_ac_temp', '空调需要制冷时，通常设为多少度？（22—28℃；此项不是供暖温度）', [(f'{i/10:g}',f'{i/10:g}℃') for i in range(220,281)], group='household_fact')
 q.update(device='ac', active_only=True); HABITS.append(q)
-q = question('D_home_ev', '接入充电后，电动汽车通常几点离家？（早于接入时刻表示次日；请勿选择相同时刻）', [(str(i),f'{i:02d}:00') for i in range(24)], group='household_fact')
+q = question('D_home_ev', '接入充电后，电动汽车通常几点离家？（早于接入时刻表示次日；请勿选择相同时刻）', clock_options(), group='household_fact')
 q.update(device='home_ev', active_only=True); HABITS.append(q)
-q = question('D_electric_water_heater', '电热水器通常加热到几点？（早于开始表示次日；跨夜答案可保存，暂不能生成模拟）', [(f'{i/2:g}',f'{i//2:02d}:{(i%2)*30:02d}') for i in range(49)], group='household_fact')
+q = question('D_electric_water_heater', '电热水器通常加热到几点？（早于开始表示次日；跨夜答案可保存，暂不能生成模拟）', clock_options(0,1440), group='household_fact')
 q.update(device='electric_water_heater', active_only=True); HABITS.append(q)
-for qid,prompt,stop in [('H_ac_start','空调通常几点开始使用？',48),('H_ac_end','空调通常几点结束使用？（早于开始时间表示次日）',49)]:
-    q=question(qid,prompt,[(f'{i/2:g}',f'{i//2:02d}:{(i%2)*30:02d}') for i in range(stop)],group='household_fact')
+for qid,prompt,stop in [('H_ac_start','空调通常几点开始使用？',1430),('H_ac_end','空调通常几点结束使用？（早于开始时间表示次日）',1440)]:
+    q=question(qid,prompt,clock_options(0,stop),group='household_fact')
     q.update(device='ac',required=True,show_when={'question_id':'H_ac','value':'custom'})
     HABITS.append(q)
 HABITS += deepcopy(DEVICE_PREFERENCES)
@@ -162,7 +162,7 @@ def prepare(profile, seed, *, environment_required=False, context=None):
                 # Preserve the reported clock in records; only its EB projection is expanded.
                 cfg.update(preferred_h=absolute_start, earliest_h=earliest, latest_h=end, duration_h=duration)
                 absolute_end=end+24 if end<earliest else end
-                if not earliest<=absolute_start<=absolute_end-duration:
+                if not earliest-1e-9<=absolute_start<=absolute_end-duration+1e-9:
                     raise ValueError(DEVICES[d]+'的常用时间无法落在可用时间内，请检查。最晚时间早于最早时间表示次日完成。')
                 records[d]={'active':True,'start_h':start,'duration_h':duration,'earliest_h':earliest,'deadline_h':end,'power_kw':cfg['power_kw']}
             elif d=='home_ev':

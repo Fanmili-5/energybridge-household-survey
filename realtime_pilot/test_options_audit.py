@@ -30,7 +30,7 @@ class OptionAuditTests(unittest.TestCase):
             for field in [q]+q.get('fields',[]):
                 values=[json.dumps(o['value']) for o in field['options']]
                 self.assertEqual(len(values),len(set(values)),field['id'])
-        self.assertEqual(len(LOOKUP['H_home_ev']['options']),48)
+        self.assertEqual(len(LOOKUP['H_home_ev']['options']),144)
         for old,hour in [('morning',8),('noon',12),('evening',18),('night',20),('late',22)]:
             self.assertEqual(start_hour(old),hour)
         self.assertEqual(start_hour('19'),19)

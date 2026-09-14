@@ -2,6 +2,7 @@
 Importance ratings are observations, never normalized into evaluator weights.
 """
 from questionnaire_persona import question
+from survey_time import clock_options
 
 def preference(qid,prompt,options,dimension,device=None):
     q=question(qid,prompt,options,group='stated_preference',dimension=dimension)
@@ -17,9 +18,11 @@ FAMILY=[
 ]
 DEVICES=[
  preference('P_AC_RANGE','在本次指定月份，在家时，您家通常希望室温保持在哪个范围？（选择最接近的一项）',[(x,x.replace('_','—')+'℃') for x in ['18_20','20_22','22_24','23_25','24_26','25_27','26_28','28_30']],'preferred_room_temperature','ac'),
- preference('P_AC_CHANGE','为了配合错峰，您最多能接受室温比平时变化多少？（选择最接近的一项）',[(str(v),('不接受变化' if v==0 else f'约 {v:g}℃')) for v in [0,.5,1,1.5,2,2.5,3,4,5]],'temperature_change_tolerance','ac'),
+ preference('P_AC_CHANGE','为了配合错峰，您最多能接受室温比平时变化多少？',[(f'{i/10:g}',('不接受变化' if i==0 else f'{i/10:g}℃')) for i in range(51)],'temperature_change_tolerance','ac'),
  preference('P_EV_TARGET','离家出发时，希望电动汽车电量至少达到多少？（按10%档选择；含插混，不含电动自行车）',[(str(v),f'{v*100:.0f}%') for v in [0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1]],'ev_target_soc','home_ev'),
  preference('P_EV_RESERVE','为临时出行，电动汽车平时至少希望保留多少电量？（按10%档选择）',[(str(v),f'{v*100:.0f}%') for v in [0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1]],'ev_min_soc','home_ev'),
- preference('P_HOT_WATER','家里通常最需要热水的时间是？',[(str(i),f'{i:02d}:00') for i in range(24)],'bath_required_h','electric_water_heater'),
+ preference('P_HOT_WATER','家里通常最需要热水的时间是？',clock_options(),'bath_required_h','electric_water_heater'),
  preference('P_PREHEAT','保证使用时有热水的前提下，您是否愿意提前加热？',[('yes','可以提前安排'),('confirm','每次先确认'),('no','不希望提前加热')],'preheat_preference','electric_water_heater'),
 ]
+DEVICES[0].update(type='temperature_range',minimum=18,maximum=30,step=.1,
+                  prompt='在本次指定月份，在家时，您家通常希望室温保持在哪个范围？（最低—最高，℃）')

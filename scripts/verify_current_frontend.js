@@ -25,6 +25,7 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
       if(v==null)continue;
       for(const option of Array.isArray(v)?v:[v])await row.locator(`input[name="p_member_${i}_${field}__choices"]`).filter({visible:true}).locator(`xpath=self::input[@value='${option}']`).check();
      }
+    }else if(q.type==='temperature_range'){const parts=value.split('_');await page.locator('#p_'+q.id+'_low').fill(parts[0]);await page.locator('#p_'+q.id+'_high').fill(parts[1]);
     }else if(q.cities_by_region){await page.locator('#p_'+q.id+'_choices').selectOption(value);}
     else if(q.type==='text'){await page.locator('#p_'+q.id).fill(value);}
     else if(await row.locator('input[type=range]').count()){
@@ -38,6 +39,7 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
     }else{await page.locator('#p_'+q.id).selectOption(JSON.stringify(value));}
    }
    assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   if(process.env.EB_BROWSER_SCREENSHOTS&&step===2){fs.mkdirSync(process.env.EB_BROWSER_SCREENSHOTS,{recursive:true});await page.screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/precision-'+width+'.png',fullPage:true});}
    await audit(`wizard-${step}`);
    if(step<count-1){await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes(`第 ${step+2} /`));}
   }
@@ -45,6 +47,16 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   await page.reload();await page.waitForFunction(()=>typeof schema!=='undefined'&&schema?.questionnaire_context&&document.getElementById('generate').disabled===false);
   assert.strictEqual(await page.evaluate(()=>schema.questionnaire_context.context_hash),contextHash);
   assert.strictEqual(await page.evaluate(()=>collect(schema.profile_questions,'p_').H_ac_temp),answers.H_ac_temp);
+  assert.strictEqual(await page.evaluate(()=>collect(schema.profile_questions,'p_').P_AC_RANGE),answers.P_AC_RANGE);
+  assert.strictEqual(await page.locator('#p_P_AC_RANGE_low').inputValue(),answers.P_AC_RANGE.split('_')[0]);
+  assert.strictEqual(await page.evaluate(()=>collect(schema.profile_questions,'p_').H_washer),answers.H_washer);
+  // Exercise the real version-key migration, preserving a valid old answer.
+  const originalDraft=await page.evaluate(()=>{const key='eb:questionnaire-draft:'+schema.paired_questionnaire_version;const draft=localStorage.getItem(key);const old=JSON.parse(draft);old.answers.H_ac_temp='26.5';old.answers.P_AC_RANGE='24_26';old.answers.H_washer='evening';localStorage.setItem('eb:questionnaire-draft:eb.persona_questionnaire.v4.3',JSON.stringify(old));localStorage.removeItem(key);return draft;});
+  await page.reload();await page.waitForFunction(()=>typeof schema!=='undefined'&&schema?.questionnaire_context&&document.getElementById('generate').disabled===false);
+  assert.strictEqual(await page.evaluate(()=>collect(schema.profile_questions,'p_').H_washer),'evening');
+  assert.strictEqual(await page.locator('#p_P_AC_RANGE_low').inputValue(),'24');
+  await page.evaluate(draft=>{localStorage.setItem('eb:questionnaire-draft:'+schema.paired_questionnaire_version,draft);localStorage.removeItem('eb:questionnaire-draft:eb.persona_questionnaire.v4.3');},originalDraft);
+  await page.reload();await page.waitForFunction(()=>typeof schema!=='undefined'&&schema?.questionnaire_context&&document.getElementById('generate').disabled===false);
   // Province changes clear a stale city, then the city list follows the selected province.
   await page.locator('[data-wizard-step="4"]').click();
   await page.locator('#p_X_REGION').selectOption(JSON.stringify('北京'));

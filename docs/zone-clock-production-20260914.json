@@ -1,0 +1,173 @@
+{
+  "execution_clock": "eb.appliance_zone_clock.v1",
+  "paid_api_calls": 0,
+  "network_prohibited": true,
+  "reports": {
+    "clock_production_20260914": {
+      "episodes": 11,
+      "checks": [
+        {
+          "case": "agent_aligned",
+          "expected_grid_start_h": 18.0,
+          "start_passed": true,
+          "energy_passed": true
+        },
+        {
+          "case": "agent_fractional",
+          "expected_grid_start_h": 18.333333333333332,
+          "start_passed": true,
+          "energy_passed": true
+        },
+        {
+          "case": "agent_minute",
+          "expected_grid_start_h": 18.166666666666668,
+          "start_passed": true,
+          "energy_passed": true
+        },
+        {
+          "case": "agent_grid_10",
+          "expected_grid_start_h": 18.166666666666668,
+          "start_passed": true,
+          "energy_passed": true
+        },
+        {
+          "case": "agent_grid_20",
+          "expected_grid_start_h": 18.333333333333332,
+          "start_passed": true,
+          "energy_passed": true
+        },
+        {
+          "case": "agent_grid_30",
+          "expected_grid_start_h": 18.5,
+          "start_passed": true,
+          "energy_passed": true
+        },
+        {
+          "case": "agent_grid_40",
+          "expected_grid_start_h": 18.666666666666668,
+          "start_passed": true,
+          "energy_passed": true
+        },
+        {
+          "case": "agent_grid_50",
+          "expected_grid_start_h": 18.833333333333332,
+          "start_passed": true,
+          "energy_passed": true
+        },
+        {
+          "case": "aligned",
+          "device": "washer",
+          "energy_passed": true
+        },
+        {
+          "case": "aligned",
+          "device": "dishwasher",
+          "energy_passed": true
+        },
+        {
+          "case": "aligned",
+          "device": "dryer",
+          "energy_passed": true
+        },
+        {
+          "case": "decimal_hours",
+          "device": "washer",
+          "energy_passed": true
+        },
+        {
+          "case": "decimal_hours",
+          "device": "dishwasher",
+          "energy_passed": true
+        },
+        {
+          "case": "decimal_hours",
+          "device": "dryer",
+          "energy_passed": true
+        },
+        {
+          "case": "minute_input",
+          "device": "washer",
+          "energy_passed": true
+        },
+        {
+          "case": "minute_input",
+          "device": "dishwasher",
+          "energy_passed": true
+        },
+        {
+          "case": "minute_input",
+          "device": "dryer",
+          "energy_passed": true
+        }
+      ]
+    },
+    "clock_production72_20260914": {
+      "episodes": 6,
+      "checks": [
+        {
+          "case": "agent_aligned",
+          "expected_grid_start_h": 18.0,
+          "start_passed": true,
+          "energy_passed": true
+        },
+        {
+          "case": "agent_fractional",
+          "expected_grid_start_h": 18.333333333333332,
+          "start_passed": true,
+          "energy_passed": true
+        },
+        {
+          "case": "agent_minute",
+          "expected_grid_start_h": 18.166666666666668,
+          "start_passed": true,
+          "energy_passed": true
+        },
+        {
+          "case": "aligned",
+          "device": "washer",
+          "energy_passed": true
+        },
+        {
+          "case": "aligned",
+          "device": "dishwasher",
+          "energy_passed": true
+        },
+        {
+          "case": "aligned",
+          "device": "dryer",
+          "energy_passed": true
+        },
+        {
+          "case": "decimal_hours",
+          "device": "washer",
+          "energy_passed": true
+        },
+        {
+          "case": "decimal_hours",
+          "device": "dishwasher",
+          "energy_passed": true
+        },
+        {
+          "case": "decimal_hours",
+          "device": "dryer",
+          "energy_passed": true
+        },
+        {
+          "case": "minute_input",
+          "device": "washer",
+          "energy_passed": true
+        },
+        {
+          "case": "minute_input",
+          "device": "dishwasher",
+          "energy_passed": true
+        },
+        {
+          "case": "minute_input",
+          "device": "dryer",
+          "energy_passed": true
+        }
+      ]
+    }
+  }
+}

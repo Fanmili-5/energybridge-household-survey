@@ -8,7 +8,7 @@ window.EBTime = (() => {
   function clock(h){const m=Math.round(h*60);return `${m>1440?'次日 ':''}${String(Math.floor(m/60)%24).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`.replace(/^00:00$/,h===24?'24:00':'00:00');}
   function mount(q,select,row){
     if(!q.device)return;
-    if(q.group==='stated_preference'&&q.id!=='P_HOT_WATER')return;
+    if(q.group==='stated_preference'&&!['P_HOT_WATER','P_AC_CHANGE'].includes(q.id))return;
     if(q.id==='H_ac'){select.classList.add('ac-schedule-select');return;}
     if(q.options.some(o=>o.value==='off'))return; // Historical snapshots retain their original form.
     const wrap=node('div',undefined,'time-control'),top=node('div',undefined,'time-readout');
@@ -24,6 +24,25 @@ window.EBTime = (() => {
     select._timeSync=()=>{const i=q.options.findIndex(o=>JSON.stringify(o.value)===select.value);wrap.classList.toggle('unanswered',i<0);output.textContent=i<0?'尚未选择':q.options[i].label;if(i>=0)range.value=i;range.setAttribute('aria-valuetext',i<0?'尚未选择':q.options[i].label);};
     wrap.append(range,hint,marks);row.insertBefore(wrap,select);top.append(select);select.classList.add('precise-select');select._timeSync();
   }
+  function temperatureRange(q,row,prefix,required){
+    const answer=node('input');answer.type='hidden';answer.id=prefix+q.id;answer.dataset.temperatureAnswer='true';row.append(answer);
+    const group=node('div',undefined,'temperature-range-input');group.setAttribute('role','group');group.setAttribute('aria-label',q.prompt);
+    const fields=[];
+    for(const [key,title] of [['low','最低温度'],['high','最高温度']]){
+      const cell=node('div',undefined,'temperature-endpoint'),label=node('label',title+'（℃）');
+      const number=node('input');number.type='number';number.min=q.minimum;number.max=q.maximum;number.step=q.step;number.required=required;number.id=answer.id+'_'+key;number.placeholder='请选择';label.htmlFor=number.id;
+      const slider=node('input');slider.type='range';slider.min=q.minimum;slider.max=q.maximum;slider.step=q.step;slider.value=(q.minimum+q.maximum)/2;slider.setAttribute('aria-label',title+'（℃）');
+      cell.append(label,number,slider);group.append(cell);fields.push({number,slider,cell});
+      slider.oninput=()=>{number.value=slider.value;commit();};number.oninput=()=>commit();
+    }
+    function visuals(){for(const f of fields){f.cell.classList.toggle('unanswered',f.number.value==='');if(f.number.value!=='')f.slider.value=f.number.value;f.slider.setAttribute('aria-valuetext',f.number.value===''?'尚未选择':f.number.value+'℃');}}
+    function commit(){
+      const [a,b]=fields.map(f=>f.number);b.setCustomValidity(a.value!==''&&b.value!==''&&Number(a.value)>=Number(b.value)?'最高温度须高于最低温度':'');
+      answer.value=a.value!==''&&b.value!==''?JSON.stringify(a.value+'_'+b.value):'';visuals();answer.dispatchEvent(new Event('change',{bubbles:true}));
+    }
+    answer._temperatureSync=()=>{let values=[];try{values=JSON.parse(answer.value||'null')?.split('_')||[];}catch{}fields.forEach((f,i)=>{f.number.value=values[i]??'';});fields[1].number.setCustomValidity('');visuals();};
+    row.append(group,node('small','拖动或输入温度，精确到 0.1℃。'));answer._temperatureSync();
+  }
   function timeline(container,{start,end,earliest,deadline,text}){
     container.replaceChildren();if(start==null||end==null){container.append(node('p',text||'选好时间后，这里会画出您的日常安排。','hint'));return;}
     const horizon=Math.max(end,deadline||24)>24?48:24;
@@ -36,7 +55,7 @@ window.EBTime = (() => {
   function group(container,questions,render,deviceContainer=container){
     const cards={};
     for(const q of questions.filter(q=>!['attitude','stated_preference'].includes(q.group)&&!q.device))render(q,q.id==='B05'?deviceContainer:container);
-    const empty=node('div','选好上面的电器，这里就会展开对应的时间安排。','device-empty');deviceContainer.append(empty);
+    const empty=node('div','选好上面的电器，这里就会展开对应的时间安排。','device-empty');deviceContainer.append(node('p','时间每 10 分钟一档；时长以分钟填写，温度可选到 0.1℃。','hint'),empty);
     const list=node('div',undefined,'device-cards');deviceContainer.append(list);
     // Display a task's normal start/duration first, then the allowed start/end window.
     const rank=q=>q.id.startsWith('H_')?0:q.id.startsWith('T_')?1:q.id.startsWith('E_')?2:3;
@@ -60,8 +79,8 @@ window.EBTime = (() => {
         if(['washer','dishwasher','dryer'].includes(d)){
           const e=read('E_'+d),l=read('D_'+d),t=read('T_'+d);
           if(e!=null&&l!=null){earliest=Number(e);deadline=Number(l)+(Number(l)<earliest?24:0);if(start!=null&&Number(l)<earliest&&start<earliest)start+=24;}
-          if(start!=null&&t!=null){end=start+Number(t);text=`通常 ${clock(start)}—${clock(end)} · ${t} 小时`;if(deadline!=null)text+=`；可安排窗口 ${clock(earliest)}—${clock(deadline)}`;
-            if(deadline!=null&&(start<earliest||end>deadline))text+='。当前常用安排超出窗口，请调整时间。';}
+          if(start!=null&&t!=null){end=start+Number(t);text=`通常 ${clock(start)}—${clock(end)} · ${Math.round(Number(t)*60)} 分钟`;if(deadline!=null)text+=`；可安排窗口 ${clock(earliest)}—${clock(deadline)}`;
+            if(deadline!=null&&(start<earliest-1e-9||end>deadline+1e-9))text+='。当前常用安排超出窗口，请调整时间。';}
         }else{const last=read('D_'+d);if(start!=null&&last!=null){end=Number(last);const overnight=end<start;if(overnight)end+=24;text=`${d==='home_ev'?'接入充电':'加热'} ${clock(start)} → ${d==='home_ev'?'离家':'结束'} ${clock(end)}`;if(d==='electric_water_heater'&&(start===0||overnight||end<=start||end-start>8))text+='；真实安排可保存，当前原生模型暂不能生成此安排的模拟，请勿为生成而改填。';else if(end<=start)text+='；接入与离家时刻不能相同。';}}
       }
       timeline(preview,{start,end,earliest,deadline,text});
@@ -76,5 +95,5 @@ window.EBTime = (() => {
       timeline(chart,{start,end,text:`${clock(start)}—${clock(end)}${d==='ac'?' · '+r.setpoint+'℃':''}`});card.append(chart);root.append(card);}
     root.append(node('p','下面是依据已提交答案生成的安排，正在计算调整方案。','hint'));
   }
-  return {mount,group,sync,initial,icon};
+  return {mount,group,sync,initial,icon,temperatureRange};
 })();

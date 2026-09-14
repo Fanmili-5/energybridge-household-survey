@@ -199,3 +199,5 @@ body.survey-page,body.preview-page{--muted-readable:#52665e}
 .skip-optional{display:inline-flex;margin:0 0 22px;padding:10px 13px;border:1px solid #cbdcd1;border-radius:8px;background:#f5f9f6;color:#315d4d;font-size:13px;font-weight:600;text-decoration:none}
 .skip-optional:focus-visible{outline:3px solid #b95f47;outline-offset:3px}
 @media(max-width:640px){.schedule-legend,.shared-axis .tick,.schedule-axis-label{font-size:11px}}
+
+.temperature-range-input{display:grid;grid-template-columns:1fr 1fr;gap:16px}.temperature-endpoint{display:grid;gap:8px;min-width:0}.temperature-endpoint label{font-size:12px}.temperature-endpoint input[type=number]{width:100%;min-width:0;padding:10px;border:1px solid #ccd6ce;border-radius:6px;font:inherit;background:#fff;color:#20332e}.temperature-endpoint input[type=range]{width:100%;accent-color:#488b76}.temperature-endpoint.unanswered input[type=range]{opacity:.45}

@@ -31,7 +31,7 @@ def _disable_sdk_retries(client):
 from native_support import upstream
 from resource_limits import ep_compute, api_request
 
-BOUNDARY_VERSION = 'eb.native_questionnaire_boundaries.v2'
+BOUNDARY_VERSION = 'eb.native_questionnaire_boundaries.v3'
 PINNED_RUNNER_SHA256 = '697a955ae9a5a34132c030c8d0f3b96ef6c0f63ec2caa24a2c1def23989de1d7'
 
 
@@ -271,7 +271,10 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
                    'ENERGYBRIDGE_PERSIST_AGENT_MEMORY':'1',
                    'ENERGYBRIDGE_LOAD_AGENT_MEMORY':'0', 'ENERGYBRIDGE_AGENT_MEMORY_STORE':''}
     started = time.perf_counter()
-    with patch.dict(os.environ, environment), native_boundaries(runner, household, controls, loops, progress, folder):
+    from native_clock import synchronized_appliances
+    _, suite_class = upstream()
+    with patch.dict(os.environ, environment), synchronized_appliances(runner, suite_class, loops) as clock_audit, \
+         native_boundaries(runner, household, controls, loops, progress, folder):
         entry, derived_source = collection_entry(runner)
         with ep_compute():
             result = entry(idf_path=idf, epw_path=epw, output_dir=folder,
@@ -317,11 +320,13 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
     data=storage_snapshot(data)
     write_json(folder/'native_result.json', data)
     (folder/'collection_entry.py').write_text(derived_source)
+    write_json(folder/'appliance_clock.json', clock_audit)
     write_json(folder/'native_boundary_manifest.json', {
         'version':BOUNDARY_VERSION, 'upstream_entry':'family_runner.run_family_agent',
         'upstream_sha256':file_hash(Path(runner.__file__)),
         'derived_entry_sha256':file_hash(folder/'collection_entry.py'),
-        'scope':'questionnaire input; native consent bypass; deferred human score; read-only tracing; API admission',
+        'scope':'questionnaire input; native consent bypass; deferred human score; tracing; API admission; zone-synchronized appliance execution',
+        'execution_clock': clock_audit['version'],
         'method':method,'settings':environment, 'human_labels_generated':False,
         'physical_asset_binding':asset_binding})
     # Commands are effective from their native write time until the next write.
@@ -345,7 +350,7 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
         'environment_hash':scenario.get('environment',{}).get('environment_hash'),
         'electricity_facility':{'unit':'kWh per interval','rows':electricity},
         'living_unit1_mean_air_temperature':{'unit':'degC','rows':temperatures}})
-    return {'native':data, 'controls':rows, 'seconds':time.perf_counter()-started,
+    return {'native':data, 'controls':rows, 'execution_clock':clock_audit, 'seconds':time.perf_counter()-started,
             'temperature':temperatures,
             'electricity':electricity,
             'execution':{'services':data['appliance_results']},

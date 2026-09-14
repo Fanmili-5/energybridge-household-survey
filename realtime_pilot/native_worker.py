@@ -29,7 +29,7 @@ def run(folder):
     started=time.perf_counter()
     request=json.loads((folder/'request.json').read_text())
     household=ensure_household_config(request)
-    files=('native_runner.py','native_worker.py','native_presentation.py','native_assets.py','native_scenario.py','native_support.py','paired_contract.py',
+    files=('native_runner.py','native_clock.py','native_worker.py','native_presentation.py','native_assets.py','native_scenario.py','native_support.py','paired_contract.py','survey_time.py','survey_preferences.py',
            'household_config.py','proposal_contract.py','presentation.py','resource_limits.py','simulation_environment.py','date_sampling.py')
     hashes={name:file_hash(ROOT/name) for name in files}
     def progress(stage,message):write_json(folder/'progress.json',{'stage':stage,'message':message})
@@ -68,7 +68,7 @@ def run(folder):
     for branch in ('baseline','proposal'):
         if request['scenario'].get('environment'):
             artifacts[f'{branch}/simulation_environment.json']=file_hash(folder/branch/'simulation_environment.json')
-        for name in ('native_result.json','actuator_trace.json','native_boundary_manifest.json','collection_entry.py','ep_metric_series.json','eplusout.err','eplusout.sql'):
+        for name in ('native_result.json','actuator_trace.json','appliance_clock.json','native_boundary_manifest.json','collection_entry.py','ep_metric_series.json','eplusout.err','eplusout.sql'):
             artifacts[f'{branch}/{name}']=file_hash(folder/branch/name)
     result={'schema_version':VERSION,'flow':'paired_ep_v1','task':'plan_judgement',
         'original_plan':request['original_plan'],'original_plan_hash':digest(request['original_plan']),
