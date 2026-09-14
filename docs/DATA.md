@@ -2,7 +2,7 @@
 
 用户填写后的问卷 JSON 只包含实际提交答案及身份关联、时间、问卷版本；不嵌入整份问卷定义或全部选项。原始值保持不变，未填写项不补答案。
 
-完整案例另附该户配置、仿真情境、两份结果、实际展示和真人反馈。另输出 `cleaned-supervision.json` 作为第一步清洗交付，不生成 SFT 提示词或训练对话。详见[实际保存与清洗](saved-json-and-cleaning.md)。
+完整案例另附该户配置、仿真情境、两份结果、实际展示和真人反馈。另输出 `cleaned-supervision.json` 作为第一步清洗交付：输入为家庭画像、事件条件、No-DR 计划和 EB Agent 计划，输出为真人选择、四项评分和原文原因。它不包含 EP 结果、SFT 提示词或训练对话。详见[实际保存与清洗](saved-json-and-cleaning.md)。
 
 [查看真实答卷和运行结果](../examples/real-test-20260914/README.md)。使用 `scripts/export_submitted_case.py` 导出；以下旧 `export_household_records.py` / `export_candidates.py` 是后台完整审计及历史候选工具，不是当前对外交付格式。后台不可变记录及快照继续用于来源校验。
 
@@ -19,7 +19,7 @@ SQLite 为权威记录；JSON 文件是可恢复的兼容导出。默认部署�
 | 仿真与规划资料 | `<case_id>/attempts/<序号>/` | 每次运行输入、EP 文件、规划记录和日志；文件组成随执行阶段而异 |
 | 展示结果 | `documents` 中的 `outcome.json` | 原安排、调整安排、模拟结果及展示哈希 |
 | 真人反馈 | `documents` 中的 `decision.json` | accept/reject、四项独立评分、小数分及必填的简短原因 |
-| SFT 候选 | `documents` 中的 `sft_candidate.json` | 输入与对应真人目标答案；并非已验收的训练发布版 |
+| 后台历史候选 | `documents` 中的 `sft_candidate.json` | 为兼容既有运行与证据校验而保留；不是当前对外交付的 SFT JSON |
 
 `documents` 中通常还包括 `request.json`、`questionnaire_submission.json` 等复现资料，并映射到案例目录。独立 intake 尚无任务时，其资料已经保存在数据库，不要求案例目录存在。
 
@@ -48,7 +48,7 @@ SQLite 为权威记录；JSON 文件是可恢复的兼容导出。默认部署�
 
 家庭导出包含尚未生成、计算失败和未评价的已保存提交；同一 intake 的多个案例通过 `case_ids` 关联，避免重复导出同一份提交。不同提交仍各自保留，不擅自合并。
 
-监督样本导出只包含对应版本的已保存候选，并从同一 SQLite 快照核对题表、家庭记录、方案、展示及真人反馈；不一致时拒绝输出。排除原因和版本范围写入 manifest，旧版记录仍留在原库。扩展家庭资料可随记录携带，但是否进入训练输入需要另外选择与验证，不能认为附带了字段就已经训练使用。
+当前对外交付由 `scripts/export_submitted_case.py` 从同一 SQLite 快照核对题表、家庭记录、方案、展示及真人反馈；不一致时拒绝输出。后台历史候选继续保留供兼容和证据校验，但其 `messages` 不进入 `cleaned-supervision.json`。扩展家庭资料可随记录携带，但是否进入训练输入需要另外选择与验证，不能认为附带了字段就已经训练使用。
 
 ## 交付边界与身份
 
@@ -58,4 +58,4 @@ SQLite 为权威记录；JSON 文件是可恢复的兼容导出。默认部署�
 
 EB 内部请求、回复、原生决策和执行轨迹保存在私有任务文件中用于追溯，不能当作真人理由或自动加入 assistant 目标。真正的目标标签只来自最终保存的真人回答。当前脚本不自动划分训练集／测试集。
 
-完整数据形状可参考 [当前工程 SFT 候选样例](examples/engineering_sft_candidate.jsonl)；它经过真实两次 EnergyPlus，但规划与评价均为工程测试值，`target_source=engineering_test` 且 `training_release=false`，不是真人训练样本。
+当前两份正式样例见[真实答卷与运行结果](../examples/real-test-20260914/README.md)。`docs/examples/` 下的 messages 文件仅用于历史兼容测试，不代表当前数据交付格式。

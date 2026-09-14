@@ -10,7 +10,7 @@ flowchart TD
     F --> G[日常对照 no_dr 与调整方案 agent]
     G --> H[展示时间轴与两份 EP 结果]
     H --> I[真人同意或不同意、四项评分、原因]
-    I --> J[保存原始记录与 SFT 候选样本]
+    I --> J[保存完整采集记录与清洗数据]
 ```
 
 **住房信息参与物理环境选择，家庭事实与态度进入 EB 输入；不归入五类预设家庭。** EB 连续规划、设备调度与控制逻辑保持原流程。最终评价由真人提供。
@@ -25,7 +25,7 @@ flowchart TD
 
 每个案例新增 `simulation_environment.json`，记录：原填省市与住房答案、实际气象站、同城或省代表站匹配方式、原型 ID、面积假设、EPW/DDY/IDF 与资源目录哈希、冻结日期、随机种子、未校准声明。根目录和两个仿真分支都保存同一环境记录，分支比较核对哈希。
 
-原始回答仍保存在 `household_record.json`；`household_config.json` 保存 EB 的实际输入；原生运行、设备控制、物理结果和页面内容继续按现有流程保存。SFT 输入由家庭答案与参与者实际看到的比较组成；系统匹配假设通过展示情境进入，不能冒充用户实测事实。输出仍只使用真人的 `accept/reject`、`score`、`comfort_score`、`energy_score`、`vpp_score` 和原因；允许小数，不根据规则补分。
+原始回答仍保存在 `household_record.json`；`household_config.json` 保存 EB 的实际输入；原生运行、设备控制、物理结果和页面内容继续按现有流程保存。当前清洗输入只含家庭画像、事件条件、No-DR 计划和 EB Agent 计划；EP 指标与服务结果留在完整采集记录。输出只使用真人的 `accept/reject`、`score`、`comfort_score`、`energy_score`、`vpp_score` 和原因；允许小数，不根据规则补分。
 
 技术失败与方案评价分开：EP 严重错误、缺失设备接口或结果不完整时不生成评分样本。技术运行有效但用户不满意的方案继续保留。匹配失败也不删除家庭原答案。
 

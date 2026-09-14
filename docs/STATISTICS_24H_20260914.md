@@ -28,7 +28,7 @@
 - paired flow：`eb.paired_ep.v3.7`；UI：`eb.survey_ui.v6.17`。
 - EP区间数据：`eb.ep_metric_series.v2`，新增起点、电价、区间成本与统计范围。
 - 服务证据：`eb.native_service_evidence.v3`，新增任务实例和统计边界状态。
-- 新结果的 `prediction.comparison_window` 是统计范围，`prediction.simulation_window` 是仿真覆盖；`participant_view` 包含相同统计范围和显示标签，进入候选SFT输入。
+- 新结果的 `prediction.comparison_window` 是统计范围，`prediction.simulation_window` 是仿真覆盖；`participant_view` 保存在完整采集记录。当前清洗只从其时间轴提取两份计划，统计指标不进入 SFT 输入。
 - 旧结果没有 `statistics_window` 时保留原统计口径；不重写已收集评价或旧结果。
 
 ## 验收

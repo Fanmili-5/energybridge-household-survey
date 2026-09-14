@@ -2,46 +2,50 @@ import json
 from pathlib import Path
 import unittest
 from copy import deepcopy
-from clean_collected_case import comparison, measure, service, clock_h
+from clean_collected_case import plan_pair
 
 BASE=Path(__file__).resolve().parents[1]/'examples/real-test-20260914'
 class FirstStageCleaningTests(unittest.TestCase):
     def setUp(self):self.raw=json.loads((BASE/'full-collected-record.json').read_text());self.clean=json.loads((BASE/'cleaned-supervision.json').read_text())
-    def test_saved_comparison_reproduces_cleaned_comparison(self):
+    def test_saved_schedule_reproduces_two_cleaned_plans(self):
         original=deepcopy(self.raw['shown_to_participant'])
-        self.assertEqual(comparison(original),self.clean['input']['comparison'])
+        self.assertEqual(set(self.clean['input']),{
+            'household_profile','event_condition','no_dr_plan','agent_plan'
+        })
+        self.assertEqual(plan_pair(original)['no_dr_plan'],self.clean['input']['no_dr_plan'])
+        self.assertEqual(plan_pair(original)['agent_plan'],self.clean['input']['agent_plan'])
         self.assertEqual(original,self.raw['shown_to_participant'])
-        metrics=self.clean['input']['comparison']['metrics']
-        self.assertEqual(metrics[0]['baseline'],{'value':41.30,'unit':'kWh'})
-        self.assertEqual(metrics[1]['eb'],{'value':60.63,'unit':'normalized_cost'})
-        self.assertEqual(metrics[2]['eb'],{'value':.92,'unit':'kWh'})
+        self.assertNotIn('comparison',self.clean['input'])
+        self.assertNotIn('metrics',json.dumps(self.clean['input']))
+        self.assertNotIn('service_results',json.dumps(self.clean['input']))
+        self.assertNotIn('load_history',json.dumps(self.clean))
+        self.assertEqual(set(self.clean['output']),{
+            'decision','score','comfort_score','energy_score','vpp_score','comment'
+        })
     def test_no_source_answer_or_feedback_is_lost_or_relabelled(self):
-        i=self.clean['input'];aux=self.clean['auxiliary']
-        covered=set(i['household_answers'])|set(i['unanswered_fields'])|set(aux['supplementary_answers'])|{'M_MEMBERS'}
+        i=self.clean['input'];profile=i['household_profile'];aux=self.clean['auxiliary']
+        covered=set(profile['household_answers'])|set(profile['unanswered_fields'])|set(aux['supplementary_answers'])|{'M_MEMBERS'}
         self.assertEqual(covered,set(self.raw['questionnaire']['answers']))
-        for qid,row in i['household_answers'].items():self.assertEqual(row['selected_value'],self.raw['questionnaire']['answers'][qid])
-        for old,new in zip(self.raw['questionnaire']['answers']['M_MEMBERS'],i['members']):
+        for qid,row in profile['household_answers'].items():self.assertEqual(row['selected_value'],self.raw['questionnaire']['answers'][qid])
+        for old,new in zip(self.raw['questionnaire']['answers']['M_MEMBERS'],profile['members']):
             for key,value in old.items():self.assertEqual(value,new['reported_fields'][key]['value'])
         for key in ('score','comfort_score','energy_score','vpp_score','comment'):
-            self.assertEqual(self.clean['target'][key],self.raw['feedback'][key])
-        self.assertEqual(self.clean['target']['decision'],self.raw['feedback']['choice'])
+            self.assertEqual(self.clean['output'][key],self.raw['feedback'][key])
+        self.assertEqual(self.clean['output']['decision'],self.raw['feedback']['choice'])
         self.assertEqual(self.clean['provenance']['stored_data_origin'],'synthetic_engineering_test')
         self.assertFalse(self.clean['provenance']['training_release'])
         self.assertNotIn('messages',self.clean)
         self.assertNotIn('comment',i)
-    def test_next_day_and_cutoffs_survive_cleaning(self):
-        self.assertEqual(clock_h('次日07:30'),31.5)
-        self.assertEqual(clock_h('24:00'),24)
-        self.assertEqual(service('截至次日07:30：当天任务未完成')['status'],'not_completed')
-        self.assertEqual(service('次日07:30离家前电量 60.0%（目标 80%，未达到）')['target_met'],False)
-        chart=self.clean['input']['comparison']
-        self.assertEqual(chart['statistics_window']['duration_h'],24)
-        self.assertEqual(chart['statistics_window']['start_sim_h'],7.5)
-        self.assertEqual(chart['timeline_window']['start_h'],0)
-        self.assertEqual(chart['device_timeline'][0]['eb'][-1]['end_status'],'observation_cutoff')
-    def test_unrecognized_values_do_not_turn_into_zero_or_fake_units(self):
-        for value in ('暂无数据','58.68 元','NaN kW'):
-            with self.assertRaises(ValueError):measure(value)
-        with self.assertRaises(ValueError):service('热水一定够用')
+    def test_event_and_cross_day_plan_survive_cleaning(self):
+        condition=self.clean['input']['event_condition']
+        self.assertEqual(condition['event'],self.raw['simulation_context']['event'])
+        self.assertEqual(condition['simulation_date'],self.raw['simulation_context']['simulation_start_date'])
+        self.assertEqual(condition['season'],self.raw['simulation_context']['questionnaire_context']['season'])
+        self.assertEqual(self.clean['input']['no_dr_plan']['schedule_window']['start_h'],0)
+        self.assertEqual(self.clean['input']['agent_plan']['devices'][0]['schedule'][-1]['end_status'],'observation_cutoff')
+    def test_plan_parser_rejects_unknown_values(self):
+        view=deepcopy(self.raw['shown_to_participant'])
+        view['schedule_chart']['rows'][0]['original'][0]['label']='暂无数据'
+        with self.assertRaises(ValueError):plan_pair(view)
 
 if __name__=='__main__':unittest.main()
