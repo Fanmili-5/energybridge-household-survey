@@ -100,12 +100,11 @@ def plan_pair(view):
                 m=re.fullmatch(r'([\d.]+)℃( 待机)?',span['label'])
                 if m:
                     clean['setpoint_c']=float(m[1])
-                    clean['signal']='cooling_setpoint' if row['device_id']=='ac' else 'water_heater_setpoint'
                     if m[2]:clean['mode']='standby'
                 else:
                     m=re.fullmatch(r'([\d.]+) kW',span['label'])
                     if not m:raise ValueError('Unrecognized timeline value: '+span['label'])
-                    clean.update(power_kw=float(m[1]),signal='appliance_model_power')
+                    clean['power_kw']=float(m[1])
                 device['schedule'].append(clean)
             plans[name]['devices'].append(device)
     return plans

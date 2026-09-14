@@ -134,8 +134,7 @@
               "start_h": 0.166667,
               "end_h": 31.5,
               "end_status": "observation_cutoff",
-              "setpoint_c": 26.0,
-              "signal": "cooling_setpoint"
+              "setpoint_c": 26.0
             }
           ]
         },
@@ -145,8 +144,7 @@
             {
               "start_h": 19.666667,
               "end_h": 20.333333,
-              "power_kw": 1.5,
-              "signal": "appliance_model_power"
+              "power_kw": 1.5
             }
           ]
         },
@@ -156,8 +154,7 @@
             {
               "start_h": 17.0,
               "end_h": 17.5,
-              "power_kw": 1.2,
-              "signal": "appliance_model_power"
+              "power_kw": 1.2
             }
           ]
         },
@@ -167,8 +164,7 @@
             {
               "start_h": 18.5,
               "end_h": 19.0,
-              "power_kw": 2.5,
-              "signal": "appliance_model_power"
+              "power_kw": 2.5
             }
           ]
         },
@@ -179,21 +175,18 @@
               "start_h": 0.166667,
               "end_h": 19.333333,
               "setpoint_c": 40.0,
-              "signal": "water_heater_setpoint",
               "mode": "standby"
             },
             {
               "start_h": 19.333333,
               "end_h": 23.5,
-              "setpoint_c": 60.0,
-              "signal": "water_heater_setpoint"
+              "setpoint_c": 60.0
             },
             {
               "start_h": 23.5,
               "end_h": 31.5,
               "end_status": "observation_cutoff",
               "setpoint_c": 40.0,
-              "signal": "water_heater_setpoint",
               "mode": "standby"
             }
           ]
@@ -204,26 +197,22 @@
             {
               "start_h": 0.166667,
               "end_h": 2.666667,
-              "power_kw": 7.4,
-              "signal": "appliance_model_power"
+              "power_kw": 7.4
             },
             {
               "start_h": 2.666667,
               "end_h": 2.833333,
-              "power_kw": 6.391,
-              "signal": "appliance_model_power"
+              "power_kw": 6.391
             },
             {
               "start_h": 19.5,
               "end_h": 22.0,
-              "power_kw": 7.4,
-              "signal": "appliance_model_power"
+              "power_kw": 7.4
             },
             {
               "start_h": 22.0,
               "end_h": 22.166667,
-              "power_kw": 6.391,
-              "signal": "appliance_model_power"
+              "power_kw": 6.391
             }
           ]
         }
@@ -243,33 +232,28 @@
             {
               "start_h": 0.166667,
               "end_h": 15.5,
-              "setpoint_c": 25.5,
-              "signal": "cooling_setpoint"
+              "setpoint_c": 25.5
             },
             {
               "start_h": 15.5,
               "end_h": 17.0,
-              "setpoint_c": 25.1,
-              "signal": "cooling_setpoint"
+              "setpoint_c": 25.1
             },
             {
               "start_h": 17.0,
               "end_h": 18.0,
-              "setpoint_c": 26.5,
-              "signal": "cooling_setpoint"
+              "setpoint_c": 26.5
             },
             {
               "start_h": 18.0,
               "end_h": 24.0,
-              "setpoint_c": 25.0,
-              "signal": "cooling_setpoint"
+              "setpoint_c": 25.0
             },
             {
               "start_h": 24.0,
               "end_h": 31.5,
               "end_status": "observation_cutoff",
-              "setpoint_c": 24.5,
-              "signal": "cooling_setpoint"
+              "setpoint_c": 24.5
             }
           ]
         },
@@ -279,8 +263,7 @@
             {
               "start_h": 18.0,
               "end_h": 18.666667,
-              "power_kw": 1.5,
-              "signal": "appliance_model_power"
+              "power_kw": 1.5
             }
           ]
         },
@@ -290,8 +273,7 @@
             {
               "start_h": 18.0,
               "end_h": 18.5,
-              "power_kw": 1.2,
-              "signal": "appliance_model_power"
+              "power_kw": 1.2
             }
           ]
         },
@@ -301,8 +283,7 @@
             {
               "start_h": 20.0,
               "end_h": 20.5,
-              "power_kw": 2.5,
-              "signal": "appliance_model_power"
+              "power_kw": 2.5
             }
           ]
         },
@@ -313,21 +294,18 @@
               "start_h": 0.166667,
               "end_h": 18.5,
               "setpoint_c": 40.0,
-              "signal": "water_heater_setpoint",
               "mode": "standby"
             },
             {
               "start_h": 18.5,
               "end_h": 23.5,
-              "setpoint_c": 60.0,
-              "signal": "water_heater_setpoint"
+              "setpoint_c": 60.0
             },
             {
               "start_h": 23.5,
               "end_h": 31.5,
               "end_status": "observation_cutoff",
               "setpoint_c": 40.0,
-              "signal": "water_heater_setpoint",
               "mode": "standby"
             }
           ]
@@ -338,14 +316,12 @@
             {
               "start_h": 19.5,
               "end_h": 22.0,
-              "power_kw": 7.4,
-              "signal": "appliance_model_power"
+              "power_kw": 7.4
             },
             {
               "start_h": 22.0,
               "end_h": 22.166667,
-              "power_kw": 6.391,
-              "signal": "appliance_model_power"
+              "power_kw": 6.391
             }
           ]
         }

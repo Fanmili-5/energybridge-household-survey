@@ -20,6 +20,7 @@ class FirstStageCleaningTests(unittest.TestCase):
         self.assertNotIn('metrics',json.dumps(self.clean['input']))
         self.assertNotIn('service_results',json.dumps(self.clean['input']))
         self.assertNotIn('load_history',json.dumps(self.clean))
+        self.assertNotIn('signal',json.dumps(self.clean))
         self.assertEqual(set(self.clean['output']),{
             'decision','score','comfort_score','energy_score','vpp_score','comment'
         })
