@@ -1,27 +1,18 @@
-# 一份真实提交的数据
+# 真实试填样例
 
-2026-09-14，项目本人在线填写并提交反馈，已授权公开。
+2026-09-14，项目维护者在线填写问卷、运行 EB 和 EnergyPlus，并提交反馈。本案例已获本人授权公开；数据库中的工程测试标记保留。
 
-- [用户填写后的问卷 JSON](questionnaire-answers.json)：仅含该用户实际提交的答案、提交时间和问卷版本，不含备选项、问卷模板或提示词。
-- [初步合并后的完整案例 JSON](full-collected-record.json)：从服务器多份原始记录中合并该户 EB 配置、仿真情境、两份方案、实际展示结果和真人反馈；不是整库转储。
-- [初步监督字段清洗 JSON](cleaned-supervision.json)：顶层只含 `input` 和 `output`。输入为家庭画像的英文结果值、事件条件、两份计划，以及参与者评分前看到的 EP 用电、费用、室温和任务完成结果；输出是真人选择、四项评分与原文原因。不含问卷题干、作答状态、界面文案、内部控制字段、完整 EP 轨迹、来源元数据、SFT 提示词或训练对话。
-- [来源校验与文件哈希](verification.json)。
+| 文件 | 内容 |
+|---|---|
+| [questionnaire-answers.json](questionnaire-answers.json) | 实际提交的答案、提交时间及问卷版本 |
+| [full-collected-record.json](full-collected-record.json) | 合并后的答卷、配置、情境、两份方案、展示结果与反馈 |
+| [cleaned-supervision.json](cleaned-supervision.json) | 从该案例提取的 `input` / `output` |
+| [verification.json](verification.json) | 来源核对结果与文件哈希 |
 
-真实反馈为同意；四项评分为 4.2、4.3、2.9、4.2，原因保留原文。EB 实际调用 gpt-4o-mini，EP 实际运行。
+本次选择为同意，四项评分依次为 4.2、4.3、2.9、4.2，原因保留原文。规划使用 gpt-4o-mini，仿真使用 EnergyPlus。
 
-历史记录的 `synthetic_engineering_test` 标记保留；这是真人试填，但当时系统按工程测试保存，不冒充正式采集数据。此记录产生于英文 EB 输入转换上线前，其历史输入未事后改写。
+`cleaned-supervision.json` 的输入包括家庭画像、事件条件、两份计划和参与者看到的仿真结果；输出为选择、评分及原因。它不包含问卷题干、作答状态、EB 推理、system prompt 或训练 messages。
 
-这里是从已保存记录中提取的交付数据，不是整个数据库的转储。问卷定义及后台校验快照独立保留，使用版本和哈希追溯；EP 原文件通过来源哈希关联，不嵌入 JSON。SFT 提示词及训练对话由后续负责训练的同学构造。
+该案例产生于英文 EB 输入转换功能上线前。英文清洗结果是后续导出的，原始运行记录没有改写。样例用于核对数据格式，不作为正式采集数据或模型效果证据。
 
-从数据库导出一份已完成且有反馈的答卷：
-
-```bash
-.venv/bin/python scripts/export_submitted_case.py \
-  --data-dir /path/to/jobs \
-  --case-id CASE_ID \
-  --output-dir /path/to/case-export
-```
-
-清洗数据是对这条真实记录的新转换结果，并非当时已保存的训练文件。两份计划从当时展示的设备日程提取，不加入 EP 指标、服务结果、隐藏的 EB 推理或预测接受率。英文转换不改写原始中文记录。
-
-当前清洗器遇到尚未支持的页面文案会明确报错，需补充映射后再导出；不猜测单位、不把未知结果填成零。这是第一步交付，尚未完成全量样本去重、分组划分和训练发布审核。
+导出命令和服务器保存格式见[数据说明](../../docs/DATA.md)。

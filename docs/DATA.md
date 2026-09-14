@@ -1,61 +1,63 @@
-# 数据交付口径
+# 数据保存与导出
 
-用户填写后的问卷 JSON 只包含实际提交答案及身份关联、时间、问卷版本；不嵌入整份问卷定义或全部选项。原始值保持不变，未填写项不补答案。
+答卷先保存，计算任务随后创建。计算失败或用户暂未评价时，已提交的家庭资料仍然保留。
 
-服务器实际把答卷、家庭配置、仿真环境、两路 EB/EP 运行、展示和反馈分文件保存。对外交付时先合并成 `full-collected-record.json`，再初步清洗出 `cleaned-supervision.json`：输入为家庭画像、事件条件、No-DR 计划、EB Agent 计划和参与者实际看到的仿真结果，输出为真人选择、四项评分和原文原因。两者都是初步数据处理结果，不是服务器整库转储，也不是最终 SFT 数据集。详见[实际保存与清洗](saved-json-and-cleaning.md)。
+## 服务器记录
 
-[查看真实答卷和运行结果](../examples/real-test-20260914/README.md)。使用 `scripts/export_submitted_case.py` 导出；以下旧 `export_household_records.py` / `export_candidates.py` 是后台完整审计及历史候选工具，不是当前对外交付格式。后台不可变记录及快照继续用于来源校验。
+SQLite 数据库 `state.sqlite3` 保存家庭提交、任务状态和案例文档。案例目录保存 JSON 镜像、EB 运行记录及 EnergyPlus 输出。
 
-# 数据保存与研究用途
+| 内容 | 表或文件 |
+|---|---|
+| 独立家庭提交 | `household_submissions` 表：原始答案、规范化答案、题目快照、提交时间与版本 |
+| 排队和运行状态 | `jobs` 表：案例编号、状态及关联的家庭提交编号 |
+| 答卷及家庭资料 | `questionnaire_submission.json`、`household_record.json`、`profile_components.json` |
+| EB 输入 | `household_config.json`；每个运行分支的 `planner_household_en.json` |
+| 仿真情境 | `request.json`、`simulation_environment.json`：日期、天气、住宅、VPP 和电价 |
+| 两路运行 | `baseline/`、`proposal/` 中的计划、执行轨迹、电量和室温序列，以及 EP SQL、诊断文件 |
+| 展示与反馈 | `outcome.json` 保存展示内容；`decision.json` 保存选择、评分和原因 |
+| 来源校验 | 版本、文件哈希、模型请求与回复、执行日志 |
 
-SQLite 为权威记录；JSON 文件是可恢复的兼容导出。默认部署位置为 `/var/lib/energybridge/jobs/state.sqlite3`，不同研究或工程试验应使用独立目录。
+案例文档也保存在 `documents` 表中。独立家庭提交尚未生成任务时，不要求案例目录存在。不同执行阶段产生的文件不同；失败案例可能只有部分运行文件。
 
-| 内容 | 保存位置 | 含义 |
-|---|---|---|
-| 独立家庭提交 | `household_submissions` 表 | 冻结原始回答、规范回答、题目快照、同意说明版本和哈希；不依赖计算成功 |
-| 家庭派生资料 | intake 的 `household_record.derived_facts` | 例如已报告成员数、年龄段计数，带派生来源；缺失信息不补造 |
-| 计算任务与阶段状态 | `jobs` 表 | 排队、运行、完成或失败，以及家庭 submission 链接 |
-| EB 投影 | `documents` 中的 `household_config.json` | 实际进入 EB 的设备、日程、描述与明确研究默认值 |
-| 仿真与规划资料 | `<case_id>/attempts/<序号>/` | 每次运行输入、EP 文件、规划记录和日志；文件组成随执行阶段而异 |
-| 展示结果 | `documents` 中的 `outcome.json` | 原安排、调整安排、模拟结果及展示哈希 |
-| 真人反馈 | `documents` 中的 `decision.json` | accept/reject、四项独立评分、小数分及必填的简短原因 |
-| 后台历史候选 | `documents` 中的 `sft_candidate.json` | 为兼容既有运行与证据校验而保留；不是当前对外交付的 SFT JSON |
+## 对外交付
 
-`documents` 中通常还包括 `request.json`、`questionnaire_submission.json` 等复现资料，并映射到案例目录。独立 intake 尚无任务时，其资料已经保存在数据库，不要求案例目录存在。
+`scripts/export_submitted_case.py` 从一次 SQLite 读取快照中关联答卷、方案和反馈，检查来源后生成：
 
-## 数据含义
+| 文件 | 内容 |
+|---|---|
+| `questionnaire-answers.json` | 用户实际提交的答案及提交版本，不包含整份问卷模板 |
+| `full-collected-record.json` | 合并后的家庭配置、情境、两份方案、展示结果和反馈；运行附件以哈希关联 |
+| `cleaned-supervision.json` | 顶层只有 `input` 与 `output`，详见下表 |
+| `verification.json` | 导出文件的哈希及来源核对结果 |
 
-- `raw_answers` 是提交时的原始值，`normalized_answers/profile` 是按冻结题表规范化后的值。
-- `answered`、`skipped`、`not_applicable` 分别表示已回答、未填写、不适用。选择“没有”与留空不同。
-- 一位填答者代述成员资料，不等于每位成员独立回答；不推断填答者对应哪位成员。
-- 地区、房型、面积和楼层用于匹配天气与等效研究住宅，并进入冻结的环境记录及 EB 上下文；收入、设备数量等额外研究信息原样留存，不自动改变物理模型或电价。
-- EP 耗电、室温是匹配研究情境的模拟结果，不是实测家庭负荷。典型气象年、住宅近似及统一设备参数随记录保存。
-- 真人标签采用 `decision` 和 `score / comfort_score / energy_score / vpp_score`，不从评分反推接受与否，不把 EB 推理当真人原因。
-- 当前新案例要求参与者填写简短原因；原文作为 `comment` 保存并进入监督目标。系统不补写、归纳或改写理由。
-- VPP 开始时刻从 17:00、18:00、19:00 中抽取，持续时间从 1、2 小时中抽取。情境先于反馈冻结，不根据接受／拒绝或模拟结果重新抽样。
-- 当前电价是原 EB 天津归一化分时价格这一统一研究条件。每次运行保存电价 ID、单位、来源和 SHA-256；未来地区电价须发布新版本，不覆盖历史记录。
+| 清洗字段 | 内容 |
+|---|---|
+| `input.household_profile` | 家庭事实、偏好与成员信息 |
+| `input.event_condition` | 日期、季节、VPP 时段与价格单位 |
+| `input.no_dr_plan` | 参与者看到的 No-DR 日常安排 |
+| `input.agent_plan` | 参与者看到的 EB 调整安排 |
+| `input.displayed_results` | 评分前实际展示的电量、成本、室温和任务完成信息 |
+| `output` | `decision`、`score`、`comfort_score`、`energy_score`、`vpp_score`、`comment` |
 
-## 导出
-
-在源码目录运行，输出到持久目录或研究人员指定的安全位置：
+清洗后使用英文语义字段和结果值，原因保留原文。问卷题干、全部选项、`response_status`、界面文案和内部控制字段不进入监督样本。这一步不生成 system prompt 或训练 messages。
 
 ```bash
-.venv/bin/python realtime_pilot/export_household_records.py --data-dir /var/lib/energybridge/jobs --output /var/lib/energybridge/households-review.jsonl
-.venv/bin/python realtime_pilot/export_candidates.py --data-dir /var/lib/energybridge/jobs --output /var/lib/energybridge/sft-review.jsonl
+.venv/bin/python scripts/export_submitted_case.py \
+  --data-dir /path/to/jobs \
+  --case-id CASE_ID \
+  --output-dir /path/to/case-export
 ```
 
-需用有读取数据库权限的账号执行。默认排除工程记录；只有检查格式时才使用 `--include-engineering`，该参数不会把测试数据转换为真人数据。
+这是单案例导出命令，需要数据库读取权限。它会检查完整配对仿真、反馈和来源关联，但不会自动排除工程案例；正式整理数据时需根据原始采集标记筛选。
 
-家庭导出包含尚未生成、计算失败和未评价的已保存提交；同一 intake 的多个案例通过 `case_ids` 关联，避免重复导出同一份提交。不同提交仍各自保留，不擅自合并。
+[查看授权公开的试填样例](../examples/real-test-20260914/README.md)。上述文件是从后台记录整理出的交付文件，服务器不只保存这几份 JSON。
 
-当前对外交付由 `scripts/export_submitted_case.py` 从同一 SQLite 快照核对题表、家庭记录、方案、展示及真人反馈；不一致时拒绝输出。后台历史候选继续保留供兼容和证据校验，但其 `messages` 不进入 `cleaned-supervision.json`。扩展家庭资料可随记录携带，但是否进入训练输入需要另外选择与验证，不能认为附带了字段就已经训练使用。
+## 数据处理约定
 
-## 交付边界与身份
+- 保留原始答案、缺失值和小数评分。拒绝、低分、用电增加、方案不变或回退都不是删样本的理由。
+- `household_id` 来自浏览器会话，不能据此确认真实家庭唯一。批量整理时需要另行处理重复家庭。
+- 天气、建筑及电量属于匹配情境下的模拟数据，不是该户实测负荷。电价目前使用原 EB 的归一化分时价格。
+- EB 推理和模拟接受判断不能作为真人评价目标。目标只取最终保存的参与者反馈。
+- 工程测试标记保留，不能通过导出变成正式采集记录。后续去重、数据集划分和训练由接收数据的项目负责。
 
-`household_id` 当前基于浏览器会话，不是已验证的唯一真实家庭。换浏览器可能产生多个 ID，共用浏览器也可能混用同一 ID。研究正式划分训练/验证/测试前，应结合招募编号等方案处理重复家庭，不能只凭会话 ID 宣称家庭完全隔离。
-
-所有导出保持 `training_release=false`：表示交付的是已核验的数据，不宣称下游已完成训练或评测。训练、独立评测、EB 评价适配器不在采集项目的工作范围内。数据交付仍包含来源、版本和会话身份范围说明，便于接收者正确使用。
-
-EB 内部请求、回复、原生决策和执行轨迹保存在私有任务文件中用于追溯，不能当作真人理由或自动加入 assistant 目标。真正的目标标签只来自最终保存的真人回答。当前脚本不自动划分训练集／测试集。
-
-当前两份正式样例见[真实答卷与运行结果](../examples/real-test-20260914/README.md)。`docs/examples/` 下的 messages 文件仅用于历史兼容测试，不代表当前数据交付格式。
+`export_household_records.py` 可导出所有已保存家庭，包括尚未计算或评价的提交；`export_candidates.py` 与 `sft_candidate.json` 用于历史格式兼容和来源检查。它们默认排除工程记录，格式与上述 `cleaned-supervision.json` 不同。

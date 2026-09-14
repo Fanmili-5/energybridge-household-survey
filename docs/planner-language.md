@@ -1,23 +1,23 @@
-# 中文问卷如何进入英文 EB
+# 中文答案转为英文 EB 输入
 
-参与者填写中文。后台保存原始答案和选项编码，再为 EB 生成英文表达；不调用翻译 API，不增加翻译费用。
+参与者使用中文填写。后台保留原始答案，按固定词表生成英文 EB 输入，不调用翻译 API。
 
-| 信息 | 保存 | 进入 EB |
-|---|---|---|
-| 家庭、成员选择题 | 中文问题、选项编码、原始答案 | 已核对的英文问题与选项含义 |
-| 时间、温度、设备参数 | 原数值 | 原数值，不取整、不更改单位 |
-| 城市 | 用户原文 | 地名保留原文，同时给出匹配气象站英文名 |
-| 日程与环境说明 | 原始配置 | 英文任务窗口及研究假设 |
-| 最终评分和原因 | 真人原始回答 | 属于最终监督目标，不提前传给规划器 |
+| 信息 | 转换方式 |
+|---|---|
+| 家庭和成员选项 | 选项编码映射为英文含义 |
+| 时刻、温度、时长和设备参数 | 保留数值及单位 |
+| 城市 | 保留原文，同时提供匹配气象站的英文名称 |
+| 日程和环境说明 | 使用英文任务窗口与模型假设 |
+| 最终评价 | 在规划完成后保存，原因保留原文 |
 
-例如 `confirm_required` 对应：
+例如 `confirm_required` 表示 `Ask first and adjust only after explicit agreement each time`。“3 天或更早”对应 `3 days or more`，保留原选项的范围含义。
 
-> Ask first and adjust only after explicit agreement each time
+`household_config.json` 保存家庭配置。每个运行分支另存 `planner_household_en.json`，附源配置哈希、翻译版本和词表哈希。历史记录不因词表更新而重写。
 
-“3 天或更早”对应 `3 days or more`，不会翻译成恰好 72 小时。原有数值字段仍沿用 EB 接口，英语文案保留开放上界含义。未填写的成员偏好仍是未知；成员报告不变成独立成员投票，也不变成此次方案的同意标签。
+相关代码：
 
-`household_config.json` 是原始家庭配置。每个仿真分支另存 `planner_household_en.json`，其中记录源配置哈希、翻译版本和词表哈希。两份文件各有来源，旧记录保持不变；英文文件也进入运行附件哈希清单。
+- [planner_language.py](../realtime_pilot/planner_language.py)：生成英文规划输入。
+- [planner_english_catalog.json](../realtime_pilot/planner_english_catalog.json)：中英字段和选项映射。
+- [clean_collected_case.py](../scripts/clean_collected_case.py)：提取监督样本中的英文语义字段。
 
-映射覆盖当前进入 EB 的 44 个问题及 10 项成员字段。问法或选项修改后，旧翻译不能默默沿用，必须同时更新映射。当前不提供任意自由文本的机器翻译；城市专名原样保留。未来新增中文自由描述，需要单独设计翻译和原文保留规则。
-
-代码入口：`realtime_pilot/planner_language.py`；中英词表：`realtime_pilot/planner_english_catalog.json`。修改仅位于家庭输入边界，保留 EB 规划、技术检查、回退和 EP 设备执行逻辑。
+修改题目或选项时需同步词表。当前映射不处理任意自由文本翻译；未填写的字段不补答案。

@@ -1,5 +1,7 @@
 # 本地 API 反向隧道（临时测试）
 
+> 部署历史记录，文中的路径和参数不代表当前配置。安装与更新请参阅[部署说明](../docs/DEPLOYMENT.md)。
+
 2026-09-12 后续迁移：两个 Mac LaunchAgent 已改连新实例 `47.85.194.154`，API 隧道使用 `MacBook.pem` 和迁移目录的 `known_hosts`。学校仍经 Mac relay 调用现有模型；新网站本身只转发计算任务，没有沿用下述旧网站的 `30-local-api-tunnel.conf`。以下旧实例启动命令及系统配置作为历史记录，当前运维以 [迁移记录](VIRGINIA-MIGRATION-20260912.md) 为准。
 
 阿里云 EB SDK → 云端 `127.0.0.1:18080` → SSH 加密隧道 → 本地 `127.0.0.1:18081` → `www.dmxapi.cn:443`。
