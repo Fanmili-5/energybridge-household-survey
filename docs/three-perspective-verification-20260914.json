@@ -1,0 +1,33 @@
+{
+  "commit": "59337c486219040c523c9402c7d1a61ffa19ea68",
+  "tests": 195,
+  "skipped": 0,
+  "passed": true,
+  "paid_api_calls": 0,
+  "model": "offline fixture; external network blocked by test runner",
+  "native_test_log_sha256": "2cf3b98193709ae59a4c3de11ba31f7eff23ef48e23585c062a132af4aad09cc",
+  "screenshots": {
+    "answers-step-1-390.png": {
+      "width": 390,
+      "height": 4944,
+      "viewport_height": 900,
+      "screen_heights": 5.49,
+      "source": "previous_turn_browser_run_same_code_commit"
+    },
+    "comparison-390.png": {
+      "width": 358,
+      "height": 2098,
+      "viewport_height": 900,
+      "screen_heights": 2.33,
+      "source": "previous_turn_browser_run_same_code_commit"
+    },
+    "score-390.png": {
+      "width": 358,
+      "height": 831,
+      "viewport_height": 900,
+      "screen_heights": 0.92,
+      "source": "previous_turn_browser_run_same_code_commit"
+    }
+  },
+  "live_paid_api_latency_validated": false
+}
