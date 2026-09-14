@@ -23,7 +23,9 @@ def request(ac_only=False, legacy=False):
     if ac_only:raw['B05']=['ac']
     profile=sanitize_profile(normalize_answers(raw,list(LOOKUP),LOOKUP))
     original,scenario=prepare(profile,'native-regression')
-    if legacy:scenario['evaluation_window'].update(end_sim_h=24,simulation_days=1,end_label='24:00')
+    if legacy:
+        scenario.pop('statistics_window',None)
+        scenario['evaluation_window'].update(end_sim_h=24,simulation_days=1,end_label='24:00')
     return {'profile':profile,'original_plan':original,'scenario':scenario,
             'household_id':'native-regression-household'}
 
@@ -99,7 +101,7 @@ class NativeRunnerTests(unittest.TestCase):
     def test_overnight_cross_year_meter_and_departure_cutoff(self):
         from native_presentation import metrics,display
         from paired_contract import participant_view
-        for date,departure in [('2007-07-01',8),('2007-12-31',8),('2007-07-01',8+1/6)]:
+        for date,departure in [('2007-07-01',8),('2007-12-31',8),('2007-07-01',8+1/6),('2007-07-01',0)]:
             with self.subTest(date=date),tempfile.TemporaryDirectory() as tmp,redirect_stdout(StringIO()):
                 r=request()
                 if departure!=8:
@@ -113,7 +115,7 @@ class NativeRunnerTests(unittest.TestCase):
                 self.assertEqual(len(result['electricity']),round(horizon*6))
                 self.assertAlmostEqual(result['electricity'][-1]['end_h'],horizon)
                 self.assertAlmostEqual(result['native']['daily_trace_rows'][-1]['sim_h'],horizon,delta=1e-4)  # upstream dashboard rounds hours to four decimals
-                self.assertGreater(sum(t['kwh'] for t in result['electricity'] if t['end_h']>24),0)
+                if horizon>24:self.assertGreater(sum(t['kwh'] for t in result['electricity'] if t['end_h']>24),0)
                 energy=sum(t['kwh'] for t in result['electricity'])
                 self.assertAlmostEqual(energy,result['native']['day_ahead_price_metrics']['priced_energy_kwh'],5)
                 ev=result['service_evidence']['ev']
@@ -122,11 +124,13 @@ class NativeRunnerTests(unittest.TestCase):
                 self.assertAlmostEqual(ev['day_end_soc'],ev['departures'][-1]['soc_before_drive'])
                 self.assertTrue(result['task_outcomes']['washer']['completed'])
                 prediction=metrics(result,result,r['scenario'])
-                self.assertAlmostEqual(prediction['original']['comparison_kwh'],energy)
+                self.assertAlmostEqual(prediction['original']['comparison_kwh'],sum(t['kwh'] for t in result['electricity'] if departure+1e-7<t['end_h']<=horizon+1e-7))
+                self.assertAlmostEqual(prediction['original']['daily_cost_normalized'],sum(t['cost_normalized'] for t in result['electricity'] if departure+1e-7<t['end_h']<=horizon+1e-7))
                 view=participant_view(display(r['original_plan'],result,result,r['scenario'],prediction))
-                self.assertIn(r['scenario']['evaluation_window']['end_label'],view['notice'])
-                self.assertTrue(any(span['end_h']>24 for row in view['schedule_chart']['rows'] for span in row['original']))
-                broken={**result,'horizon':24}
+                self.assertIn(r['scenario']['statistics_window']['end_label'],view['statistics_label'])
+                self.assertEqual(view['statistics_window']['duration_h'],24)
+                if horizon>24:self.assertTrue(any(span['end_h']>24 for row in view['schedule_chart']['rows'] for span in row['original']))
+                broken={**result,'horizon':horizon-1}
                 with self.assertRaises(ValueError):metrics(result,broken,r['scenario'])
 
     @unittest.skipUnless(os.environ.get('EB_TEST_NATIVE_EP')=='1','requires installed EnergyPlus')

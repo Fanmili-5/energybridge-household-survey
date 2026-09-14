@@ -5,21 +5,40 @@ from evaluation_window import clock
 from presentation import plan_chart, segments, thermal_chart
 from proposal_contract import DEVICES
 from native_support import upstream
+from native_scenario import statistics_window_for
 
 
 def metrics(baseline, proposal, scenario):
     lo=scenario['event']['trigger_h']; hi=scenario['event']['end_h']
+    window=statistics_window_for(scenario)
+    start,end=window['start_sim_h'],window['end_sim_h']
+    if not 0<=start<end<=scenario['evaluation_window']['end_sim_h']:
+        raise ValueError('Statistics interval is outside simulation coverage')
     def summarize(run):
-        daily=sum(r['kwh'] for r in run['electricity'] if 0<r['end_h']<=run['horizon'])
+        full=sum(r['kwh'] for r in run['electricity'] if 0<r['end_h']<=run['horizon']+1e-7)
+        selected=[r for r in run['electricity'] if start+1e-7<r['end_h']<=end+1e-7]
+        daily=sum(r['kwh'] for r in selected)
         event=sum(r['kwh'] for r in run['electricity'] if lo<r['end_h']<=hi)
         temps=[r['c'] for r in run['temperature'] if lo<r['end_h']<=hi]
         if not temps: raise ValueError('Missing event temperature observations')
         price=run['native']['day_ahead_price_metrics']
         if not price.get('available') or price.get('price_unit')!='normalized TOU cost/kWh':
             raise ValueError('Missing native normalized tariff metrics')
-        if not isclose(daily,price.get('priced_energy_kwh',float('nan')),rel_tol=0,abs_tol=1e-5):
+        if not isclose(full,price.get('priced_energy_kwh',float('nan')),rel_tol=0,abs_tol=1e-5):
             raise ValueError('Tariff and EnergyPlus energy cover different intervals')
-        return {'daily_kwh':daily,'daily_cost_normalized':price['total_cost_eur'],'comparison_kwh':daily,
+        if 'statistics_window' in scenario:
+            cursor=start
+            for r in selected:
+                if not isclose(r.get('start_h',float('nan')),cursor,abs_tol=1e-6):raise ValueError('Incomplete statistics meter intervals')
+                if not isclose(r['cost_normalized'],r['kwh']*r['unit_price'],abs_tol=1e-8):raise ValueError('Invalid interval cost')
+                cursor=r['end_h']
+            if not isclose(cursor,end,abs_tol=1e-6):raise ValueError('Missing statistics interval end')
+            cost=sum(r['cost_normalized'] for r in selected)
+            if not isclose(sum(r['cost_normalized'] for r in run['electricity']),price['total_cost_eur'],abs_tol=1e-5):
+                raise ValueError('Interval tariff does not match native total')
+        else:cost=price['total_cost_eur']
+        return {'daily_kwh':daily,'daily_cost_normalized':cost,'comparison_kwh':daily,
+                'statistics_duration_h':end-start,
                 'event_kwh':event,
                 'event_mean_kw':event/(hi-lo),'event_temp_min_c':min(temps),'event_temp_max_c':max(temps)}
     if any(run['horizon']!=scenario['evaluation_window']['end_sim_h'] for run in (baseline,proposal)):
@@ -38,7 +57,7 @@ def metrics(baseline, proposal, scenario):
             'event_reduction_kwh':a['event_kwh']-b['event_kwh'],
             'comparison_check':{'passed':True,'basis':'same_native_idf_weather_household_price_and_horizon'},
             'prefix_check':{'passed':None,'status':'not_applicable_native_independent_policies'},
-            'comparison_window':scenario['evaluation_window'],
+            'comparison_window':window,'simulation_window':scenario['evaluation_window'],
             'scope':'native no_dr vs agent; independent control from simulation start, not identical pre-event states'}
 
 
@@ -65,6 +84,10 @@ def display(original, baseline, proposal, scenario, prediction):
         chart={'device_id':device,'device':DEVICES[device],'active':True,'changed':a!=b,
                'original':segments(a,device,upstream()[0]._APPL_DESIGN_W),
                'proposal':segments(b,device,upstream()[0]._APPL_DESIGN_W)}
+        for side,run in [('original',baseline),('proposal',proposal)]:
+            for span in chart[side]:
+                if abs(span['end_h']-run['horizon'])<1e-6:
+                    span['end_status']='observation_cutoff'
         charts.append(chart)
         def words(side):
             return '；'.join(x['description'] for x in chart[side]) or '本比较日无运行记录'
@@ -95,7 +118,7 @@ def display(original, baseline, proposal, scenario, prediction):
     return {'title':'日常对照与 EB 调整安排','context':scenario,'prediction':prediction,'rows':rows,
         'schedule_chart':chart,'temperature_chart':thermal,'has_changes':any(r['changed'] for r in rows),
         'baseline_source':'native_no_dr_random_routine','question':'您是否同意采用 EB 的这套调整安排？',
-        'notice':f"两份安排均从当日00:00模拟至{scenario['evaluation_window']['end_label']}；次日运行也计入比较。",
+        'notice':'统计时段：'+statistics_window_for(scenario).get('start_label','当日00:00')+'—'+statistics_window_for(scenario)['end_label'],
         'assumptions':('；'.join(scenario['facts'][1:]) if scenario.get('environment') else '使用原 EB 天津住宅、天气与分时价格权重。')+'相对成本不是人民币金额。住宅未校准到您家。热水条表示设定温度，不证明出水满足需求。',
         'selection_reason':'请根据两份模拟安排和结果，代表家庭作出判断。没有模拟家庭替您预先决定是否接受。',
         'execution_notice':execution_notice,
@@ -112,6 +135,16 @@ def service_rows(original,baseline,proposal):
             if device in ('washer','dishwasher','dryer'):
                 task=run['task_outcomes'].get(device,{})
                 row[side]='截至'+clock(run.get('horizon',24))+('已完成' if task.get('completed') else '未完成')
+                instances=run.get('service_evidence',{}).get('task_instances_at_simulation_end')
+                if instances:
+                    parts=[]
+                    for task in instances:
+                        if task['device']!=device:continue
+                        if task['day_index']>0 and task['actual_start_h'] is None and not task['completed'] and (task['scheduled_start_h'] is None or task['scheduled_start_h']>=run['horizon']):continue
+                        status='已完成' if task['completed'] else '未完成' if task['deadline_h']<=run['horizon']+1e-6 else '尚未到截止时间'
+                        day='当天' if task['day_index']==0 else '次日'
+                        parts.append(day+'任务'+status)
+                    row[side]='截至'+clock(run['horizon'])+'：'+'；'.join(parts)
             else:row[side]=service_text(device,run)
         # Missing observations stay in the audit artifacts, not participant copy.
         if row['original'] is not None and row['proposal'] is not None:rows.append(row)

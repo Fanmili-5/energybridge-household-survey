@@ -43,7 +43,15 @@ def synchronized_appliances(runner, suite_class, loops):
             departed_before=set(ev._departed)
         powers = original_step(suite, tick * dt_h + TIME_TOLERANCE_H, dt_h)
         tasks={name:{'completed':app._days[0].completed} for name,app in getattr(suite,'_shiftable',{}).items() if app.present}
-        if tasks:audit['task_state_trace'].append({'start_h':tick*dt_h,'end_h':(tick+1)*dt_h,'first_day_tasks':tasks})
+        if tasks:
+            instances=[{'task_id':f'{name}:day:{day}', 'device':name,'day_index':day,
+                        'scheduled_start_h':r.scheduled_abs_h,'actual_start_h':r.run_start_abs_h,
+                        'deadline_h':app._window_abs(day)[1],'completed':r.completed,
+                        'skipped':app._day_skipped.get(day,False)}
+                       for name,app in suite._shiftable.items() if app.present
+                       for day,r in app._days.items() if day*24<=tick*dt_h]
+            audit['task_state_trace'].append({'start_h':tick*dt_h,'end_h':(tick+1)*dt_h,
+                                            'first_day_tasks':tasks,'task_instances':instances})
         if observe_ev:
             audit['ev_state_trace'].append({
                 'start_h':tick*dt_h,'end_h':(tick+1)*dt_h,

@@ -40,3 +40,8 @@ assert.deepEqual(plain(t.runEndpoints(spans,c)),[.166667,4,22,25.833333]);
 assert.deepEqual(plain(t.runEndpoints([{start_h:0,end_h:8},{start_h:18,end_h:19},{start_h:19,end_h:32}],c)),[0,8,18,32]);
 assert.deepEqual(plain(t.runEndpoints([],c)),[]);
 console.log('Continuous-run endpoints: thermal changes omitted, idle gaps and EV dawn runs preserved.');
+
+assert.deepEqual(plain(t.accountingBands({...c,statistics_window:{start_sim_h:8,end_sim_h:32}})),[{start:0,end:8}]);
+assert.deepEqual(plain(t.accountingBands({start_h:0,end_h:36,statistics_window:{start_sim_h:8,end_sim_h:32}})),[{start:0,end:8},{start:32,end:36}]);
+assert.deepEqual(plain(t.accountingBands(c)),[]);
+console.log("Accounting window: prefix/tail dimming and historical views passed.");

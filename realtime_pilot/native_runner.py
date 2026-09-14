@@ -8,6 +8,7 @@ Each invocation lives in the isolated job process, never the HTTP process.
 from contextlib import contextmanager
 from copy import deepcopy
 from dataclasses import asdict
+from datetime import datetime, timedelta
 import ast
 import inspect
 import json
@@ -249,6 +250,12 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
     horizon=float(window['end_sim_h'])
     if window['start_sim_h']!=0 or event['day']!=1 or days!=math.ceil(horizon/24) or not 24<=horizon<=48:
         raise ValueError('Invalid native comparison window')
+    if scenario.get('statistics_window'):
+        from native_scenario import statistics_window
+        if scenario['statistics_window']!=statistics_window(request['original_plan']):
+            raise ValueError('Statistics window does not match household departure')
+        if scenario['statistics_window']['end_sim_h']>horizon:
+            raise ValueError('Simulation does not cover statistics window')
     offset = (event['day']-1)*24
     event.update(trigger_h=offset+event['trigger_h'], end_h=offset+event['end_h'])
     runner, _ = upstream()
@@ -382,14 +389,21 @@ def run_native(folder, request, *, method, progress=lambda *args: None):
     from native_assets import read_series, find
     physical = read_series(folder, horizon=horizon,start_date=start_date)
     from native_service_evidence import evidence, task_outcomes
-    services=evidence(clock_audit,physical,household,horizon=horizon)
+    services=evidence(clock_audit,physical,household,horizon=horizon,
+                      statistics_window=scenario.get('statistics_window'))
     write_json(folder/'service_evidence.json',services)
     energy = find(physical, 'Electricity:Facility', horizon=horizon, unit='J')
     temperature = find(physical, 'Zone Mean Air Temperature', 'living_unit1', horizon=horizon)
-    electricity=[{'end_h':r['end_h'],'kwh':r['value']/3600000} for r in energy]
+    electricity=[]
+    for r in energy:
+        unit_price=price.price_at(datetime.fromisoformat(start_date)+timedelta(hours=r['start_h']))
+        if unit_price is None or not math.isfinite(unit_price):raise ValueError('Missing interval tariff')
+        electricity.append({'start_h':r['start_h'],'end_h':r['end_h'],'kwh':r['value']/3600000,
+                            'unit_price':unit_price,'cost_normalized':r['value']/3600000*unit_price})
     temperatures=[{'end_h':r['end_h'],'c':r['value']} for r in temperature]
     write_json(folder/'ep_metric_series.json',{
-        'schema_version':'eb.ep_metric_series.v1','source':'EnergyPlus SQLite output',
+        'schema_version':'eb.ep_metric_series.v2','source':'EnergyPlus SQLite output',
+        'statistics_window':scenario.get('statistics_window'),'price_unit':price.price_unit,
         'simulation_start_date':start_date,'horizon_hours':horizon,
         'environment_hash':scenario.get('environment',{}).get('environment_hash'),
         'electricity_facility':{'unit':'kWh per interval','rows':electricity},

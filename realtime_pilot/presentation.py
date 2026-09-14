@@ -5,12 +5,15 @@ from evaluation_window import clock, window_for
 def plan_chart(rows, scenario):
     end = window_for(scenario)['end_sim_h'] - window_for(scenario)['start_sim_h']
     rows=[{**row,'summary':change_summary(row)} for row in rows]
-    return {'version': 'eb.plan_chart.v2', 'start_h': 0, 'end_h': end,
+    chart={'version': 'eb.plan_chart.v2', 'start_h': 0, 'end_h': end,
             'notification_h': None if scenario.get('collection_engine')=='eb_native_loop' else scenario['decision_h'],
             'event_start_h': scenario['event']['trigger_h'],
             'event_end_h': scenario['event']['end_h'],
             'end_label': clock(end), 'rows': rows,
             'note': '色条表示模拟中实际生效的安排；空白表示没有对应运行记录。热水条表示温度设定，不表示持续耗电或实际出水温度。'}
+    if scenario.get('statistics_window'):
+        chart['statistics_window']=dict(scenario['statistics_window'])
+    return chart
 
 
 def segments(spans, device, design_w):

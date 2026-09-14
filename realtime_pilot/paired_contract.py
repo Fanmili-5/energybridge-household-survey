@@ -7,7 +7,7 @@ from proposal_contract import DEVICES, TASKS, executable, at
 from native_support import physical_defaults, ordinary
 from survey_time import LEGACY_STARTS, start_hour, clock_options, duration_options
 
-VERSION = 'eb.paired_ep.v3.6'
+VERSION = 'eb.paired_ep.v3.7'
 FEEDBACK_COMPATIBLE_VERSIONS = (VERSION, 'eb.paired_ep.v3.5')
 QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.5'
 QUESTIONS = [deepcopy(q) for q in PROPOSAL_PROFILE_QUESTIONS if q['id'] != 'F_ROUTINES']
@@ -197,8 +197,9 @@ def prepare(profile, seed, *, environment_required=False, context=None):
     scenario=deepcopy(CONTEXT)
     scenario.update(decision_h=decision,event={'id':'vpp_'+digest(str(seed))[:12],'trigger_h':decision+1,'end_h':decision+1+duration,'day':1},
                     sampling={'method':'uniform_event_start_17_18_19_duration_1_2_v1','seed':str(seed),'conditioned_on_response':False})
-    from native_scenario import window,START_DATE
+    from native_scenario import window,statistics_window,START_DATE
     scenario['evaluation_window']=window(original)
+    scenario['statistics_window']=statistics_window(original)
     scenario['simulation_start_date']=START_DATE
     scenario['experiment_parameters']={'simulation_days':scenario['evaluation_window']['simulation_days'],'source':'questionnaire shared overnight comparison; not an EB default'}
     scenario['collection_engine']='eb_native_loop'
@@ -297,7 +298,8 @@ def participant_view(display):
     prediction=display['prediction']; metrics=[]
     window=prediction.get('comparison_window',{})
     extended=window.get('end_sim_h',24)>24 and window.get('start_sim_h',0)==0
-    period='比较时段' if extended else '当日'
+    fixed24=window.get('duration_h')==24
+    period='24小时' if fixed24 else '比较时段' if extended else '当日'
     if prediction.get('cost_unit')=='normalized TOU cost/kWh':
         cost_metric=(period+'相对用电成本','daily_cost_normalized','相对成本单位')
     else:cost_metric=(period+'电费（无补偿）','daily_cost_cny','元')
@@ -325,6 +327,10 @@ def participant_view(display):
         'notice':' '.join(notes),'has_changes':bool(display.get('has_changes')),
         'metrics':metrics,'service_rows':deepcopy(display.get('service_rows',[])),
         'schedule_chart':deepcopy(display.get('schedule_chart'))}
+    if fixed24:
+        view['statistics_window']=deepcopy(window)
+        view['statistics_label']='统计时段：'+window['start_label']+'—'+window['end_label']+'（24小时）'
+        view['notice']=''
     service_wording={
         '按原 EB 模型安排充电；本比较截至24:00，不据时间条判断离家电量是否达标':'离家时电量是否达标：本次未验证',
         '时间轴展示热水设定；未据此判断实际出水是否满足需求':'使用时热水是否达标：本次未验证'}

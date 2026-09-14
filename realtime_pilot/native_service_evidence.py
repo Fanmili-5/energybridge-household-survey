@@ -2,11 +2,18 @@
 from math import isfinite
 from evaluation_window import clock
 
-VERSION='eb.native_service_evidence.v2'
+VERSION='eb.native_service_evidence.v3'
 
 
-def evidence(clock_audit, physical, household, horizon=24):
+def evidence(clock_audit, physical, household, horizon=24, statistics_window=None):
     result={'version':VERSION, 'horizon_h':horizon}
+    if statistics_window:result['statistics_window']=dict(statistics_window)
+    def tasks_at(at):
+        rows=[r for r in clock_audit.get('task_state_trace',[]) if r['start_h']<at-1e-8 and r['end_h']<=at+1e-8]
+        return rows[-1].get('task_instances',[]) if rows and abs(rows[-1]['end_h']-at)<1e-6 else None
+    result['task_instances_at_simulation_end']=tasks_at(horizon)
+    if statistics_window:
+        result['task_instances_at_statistics_end']=tasks_at(statistics_window['end_sim_h'])
     ev=household['appliances'].get('ev',{})
     if ev.get('present'):
         # Native EP callbacks start at the first zone boundary (00:10),
@@ -20,8 +27,14 @@ def evidence(clock_audit, physical, household, horizon=24):
                       'status':'observed' if complete else 'unavailable'}
         if complete:
             observed=[r for r in clock_audit.get('ev_state_trace',[]) if 0<=r['start_h']<=horizon+1e-8]
+            if statistics_window:
+                result['ev']['statistics_boundary_states']=[
+                    {'time_h':r['start_h'],'soc_before_step':r['soc_before'],
+                     'departure_occurred':r['departure_occurred']}
+                    for r in observed if any(abs(r['start_h']-statistics_window[k])<1e-6 for k in ('start_sim_h','end_sim_h'))]
             departure=rows[-1]['departure_h'];arrival=rows[-1]['arrival_h']
             next_departure=departure+(24 if departure<=arrival else 0)
+            if statistics_window:next_departure=statistics_window['end_sim_h']
             result['ev'].update(observed_start_h=rows[0]['start_h'],day_end_soc=rows[-1]['soc_after'],target_soc=rows[-1]['target_soc'],
                 departure_after_arrival_h=next_departure,
                 departure_after_arrival_observed=any(abs(r['start_h']-next_departure)<1e-6 and r['departure_occurred'] for r in observed),
@@ -31,6 +44,8 @@ def evidence(clock_audit, physical, household, horizon=24):
     water=household['appliances'].get('water_heater',{})
     if water.get('present'):
         bath=float(water.get('bath_required_h',21))
+        if statistics_window and bath<statistics_window['start_sim_h']:
+            bath+=24
         samples=[r for key,series in physical.items() if key.lower()=='water heater tank temperature|water heater_tank_unit1'
                  for r in series if r['start_h']<bath+1e-8 and r['end_h']>=bath-1e-8]
         # At an exact boundary use the interval ending at that time, not a future average.
@@ -51,7 +66,7 @@ def service_text(device, run):
         ev=data.get('ev',{})
         if ev.get('status')!='observed':return None
         pieces=[f"{clock(d['time_h'])}离家前电量 {d['soc_before_drive']:.1%}（目标 {d['target_soc']:.0%}，{'达到' if d['target_met'] else '未达到'}）" for d in ev['departures'] if abs(d['time_h']-ev['departure_after_arrival_h'])<1e-6 or not ev['departure_after_arrival_observed']]
-        if not any(abs(d['time_h']-data.get('horizon_h',24))<1e-6 for d in ev['departures']):
+        if not data.get('statistics_window') and not any(abs(d['time_h']-data.get('horizon_h',24))<1e-6 for d in ev['departures']):
             pieces.append(f"{clock(data.get('horizon_h',24))}电量 {ev['day_end_soc']:.1%}")
         return '；'.join(pieces)
     water=data.get('water_heater',{})
