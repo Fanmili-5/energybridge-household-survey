@@ -1,0 +1,36 @@
+<svg width="740" height="1040" viewBox="0 0 740 1040" xmlns="http://www.w3.org/2000/svg">
+<style>text{font-family:"PingFang SC",sans-serif;fill:#20372c}.sub{font-size:21px;fill:#50695b}.title{font-size:27px;font-weight:650}.cap{font-size:19px;fill:#50695b}</style><defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10" fill="none" stroke="#658472" stroke-width="1.6"/></marker></defs>
+<rect width="740" height="1040" fill="#fff"/>
+<text x="370" y="43" text-anchor="middle" font-size="30" font-weight="700">一份家庭问卷，怎样得到一条评价数据</text>
+<rect x="115" y="73" width="510" height="98" rx="14" fill="#eaf3ed" stroke="#c8dbce"/>
+<text class="title" x="370" y="113" text-anchor="middle">① 参与者填写家庭问卷</text>
+<text class="sub" x="370" y="146" text-anchor="middle">家人、设备、日常安排和用电偏好</text>
+<path d="M370 174V205" stroke="#658472" stroke-width="2" marker-end="url(#a)"/>
+<rect x="115" y="219" width="510" height="98" rx="14" fill="#f5f7f5" stroke="#d5dfd8"/>
+<text class="title" x="370" y="259" text-anchor="middle">② 系统建立这户的模拟条件</text>
+<text class="sub" x="370" y="292" text-anchor="middle">家庭配置＋天气、住宅、日期、错峰事件</text>
+<path d="M370 320V345H193V370" fill="none" stroke="#658472" stroke-width="2" marker-end="url(#a)"/>
+<path d="M370 345H547V370" fill="none" stroke="#658472" stroke-width="2" marker-end="url(#a)"/><rect x="28" y="385" width="330" height="224" rx="14" fill="#f2f4f7" stroke="#cfd7e1"/>
+<text class="title" x="193" y="426" text-anchor="middle">③ 原安排</text>
+<text class="sub" x="193" y="464" text-anchor="middle">按填报的日常习惯运行</text>
+<rect x="63" y="490" width="260" height="64" rx="9" fill="#e1e8f0"/>
+<text x="193" y="531" font-size="26" font-weight="600" text-anchor="middle">EP 仿真</text>
+<text class="cap" x="193" y="586" text-anchor="middle">得到调整前的用电与室温</text>
+<rect x="382" y="385" width="330" height="224" rx="14" fill="#edf5ee" stroke="#c8dbce"/>
+<text class="title" x="547" y="426" text-anchor="middle">④ 调整安排</text>
+<text class="sub" x="547" y="464" text-anchor="middle">响应错峰要求，考虑家庭偏好</text>
+<rect x="405" y="490" width="284" height="64" rx="9" fill="#dcebe0"/>
+<text x="547" y="531" font-size="24" font-weight="600" text-anchor="middle">EB 规划 ⇄ EP 仿真</text>
+<text class="cap" x="547" y="586" text-anchor="middle">根据模拟状态继续调整</text>
+<path d="M193 612V637H547V612M370 637V665" fill="none" stroke="#658472" stroke-width="2" marker-end="url(#a)"/>
+<rect x="115" y="679" width="510" height="91" rx="14" fill="#f5f7f5" stroke="#d5dfd8"/>
+<text class="title" x="370" y="716" text-anchor="middle">⑤ 页面展示调整前后</text>
+<text class="sub" x="370" y="749" text-anchor="middle">电器时间轴＋用电量、成本与生活影响</text>
+<path d="M370 773V800" stroke="#658472" stroke-width="2" marker-end="url(#a)"/>
+<rect x="115" y="814" width="510" height="91" rx="14" fill="#eaf3ed" stroke="#c8dbce"/>
+<text class="title" x="370" y="851" text-anchor="middle">⑥ 参与者代表家庭评价</text>
+<text class="sub" x="370" y="884" text-anchor="middle">同意或不同意＋四项评分＋原因</text>
+<path d="M370 908V935" stroke="#658472" stroke-width="2" marker-end="url(#a)"/>
+<text x="370" y="974" text-anchor="middle" font-size="25" font-weight="650">保存：家庭资料＋方案结果＋真人评价</text>
+<text class="cap" x="370" y="1010" text-anchor="middle">EB负责规划，EP负责计算，最终评价由真人提供。</text>
+</svg>
