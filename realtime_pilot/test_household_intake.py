@@ -77,6 +77,17 @@ class HouseholdIntakeTests(unittest.TestCase):
         self.assertEqual(self.store.household_owned(r['id'],'owner')['profile']['H_electric_water_heater']['value'],'0')
         with self.assertRaises(ValueError):self.store.create('owner',self.generate(r['id']),paired_flow=True)
         self.assertEqual(len(list(records(self.tmp.name))),1)
+
+    def test_contradictory_task_start_is_rejected_before_intake_persistence(self):
+        p=self.payload();p['answers'].update(E_washer='8',D_washer='22',T_washer='2.0',H_washer='21')
+        with self.assertRaisesRegex(ValueError,'平时开始时间必须落在可用时间内'):
+            self.store.save_household('owner',p)
+        self.assertEqual(self.store.db.households(),[])
+
+    def test_cross_midnight_task_start_is_valid_at_intake(self):
+        p=self.payload();p['answers'].update(E_washer='23',D_washer='0.333333333333',T_washer=str(70/60),H_washer='23.1666666667')
+        receipt=self.store.save_household('owner',p)
+        self.assertTrue(receipt['saved'])
     def test_linked_records_export_once_and_preserve_frozen_hash(self):
         r=self.store.save_household('owner',self.payload());job=self.store.create('owner',self.generate(r['id']),paired_flow=True)
         self.assertEqual(job['household_submission_id'],r['id']);self.assertEqual(job['household_record_hash'],r['household_record_hash'])

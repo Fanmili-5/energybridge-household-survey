@@ -13,7 +13,7 @@ window.EBTime = (() => {
     if(q.id==='P_EV_TARGET')return '这是离家时希望达到的电量百分比。';
     if(q.id==='P_EV_RESERVE')return '这是为临时出行希望保留的电量，与离家时的目标电量分别填写。';
     if(['washer','dishwasher','dryer'].includes(q.device)){
-      if(q.id.startsWith('H_'))return '按平时习惯，通常几点启动这项任务。';
+      if(q.id.startsWith('H_'))return '请先填上面的可用时间和运行时长；这里只会显示能按时完成的开始时间。';
       if(q.id.startsWith('T_'))return '填写从启动到完成需要的分钟数，不是结束时刻。';
       if(q.id.startsWith('E_'))return '允许调整时，最早从几点开始也可以；可以早于平时的启动时间。';
       if(q.id.startsWith('D_'))return '填写最晚必须完成的时刻，不是最晚开始的时刻。';
@@ -32,11 +32,25 @@ window.EBTime = (() => {
     const range=node('input');range.type='range';range.min=0;range.max=q.options.length-1;range.step=1;range.value=0;
     range.id=select.id+'_slider';range.setAttribute('aria-label',q.prompt);range.setAttribute('aria-describedby',select.id+'_slider_hint');
     const hint=node('span','未操作的滑块不会作为答案提交。','sr-only');hint.id=select.id+'_slider_hint';
-    const marks=node('div',undefined,'time-marks');
-    const indexes=q.options.length<=5?q.options.map((_,i)=>i):[0,Math.round((q.options.length-1)/2),q.options.length-1];
-    for(const i of indexes){const label=q.options[i].label.match(/\d{2}:\d{2}/)?.[0]||q.options[i].label;const b=node('button',label);b.type='button';b.style.left=`${i/(q.options.length-1)*100}%`;if(i===0)b.className='first';if(i===q.options.length-1)b.className='last';b.onclick=()=>{select.value=JSON.stringify(q.options[i].value);select.dispatchEvent(new Event('change',{bubbles:true}));};marks.append(b);}
-    range.oninput=()=>{select.value=JSON.stringify(q.options[Number(range.value)].value);select.dispatchEvent(new Event('change',{bubbles:true}));};
-    select._timeSync=()=>{const i=q.options.findIndex(o=>JSON.stringify(o.value)===select.value);wrap.classList.toggle('unanswered',i<0);output.textContent=i<0?'尚未选择':q.options[i].label;if(i>=0)range.value=i;range.setAttribute('aria-valuetext',i<0?'尚未选择':q.options[i].label);};
+    const marks=node('div',undefined,'time-marks');let available=q.options.map(o=>({...o,displayLabel:o.label})),invalidated=false;
+    const serialized=o=>JSON.stringify(o.value);
+    function rebuildMarks(){marks.replaceChildren();range.max=Math.max(0,available.length-1);const indexes=available.length<=5?available.map((_,i)=>i):[0,Math.round((available.length-1)/2),available.length-1];
+      for(const i of indexes){const item=available[i];if(!item)continue;const time=item.displayLabel.match(/\d{2}:\d{2}/)?.[0];const label=(item.displayLabel.startsWith('次日')?'次日 ':'')+(time||item.displayLabel);const b=node('button',label);b.type='button';b.style.left=available.length===1?'0%':`${i/(available.length-1)*100}%`;if(i===0)b.className='first';if(i===available.length-1)b.className='last';b.onclick=()=>{select.value=serialized(item);invalidated=false;select.dispatchEvent(new Event('change',{bubbles:true}));};marks.append(b);}}
+    range.oninput=()=>{const item=available[Number(range.value)];if(!item)return;select.value=serialized(item);invalidated=false;select.dispatchEvent(new Event('change',{bubbles:true}));};
+    select._timeSync=()=>{const i=available.findIndex(o=>serialized(o)===select.value),item=i<0?null:available[i];wrap.classList.toggle('unanswered',!item);output.textContent=item?.displayLabel||'尚未选择';if(item){range.value=i;invalidated=false;}range.disabled=select.disabled||!available.length;range.setAttribute('aria-valuetext',item?.displayLabel||'尚未选择');select.setCustomValidity(available.length===0?'这个时间范围不足以完成任务，请调整最早时间、最晚时间或运行时长。':invalidated?'前面的时间已改变，请重新选择平时开始时间。':'');};
+    function setAvailable(items,{ready=true}={}){const old=select.value,locked=select.disabled;available=(items||q.options).map(o=>({...o,displayLabel:o.displayLabel||o.label}));const allowed=new Map(available.map(o=>[serialized(o),o]));
+      if(old&&ready&&!allowed.has(old)&&!locked)invalidated=true;
+      const emptyOption=node('option',q.id.startsWith('T_')?'尚未选择时长':'尚未选择时间');emptyOption.value='';select.replaceChildren(emptyOption);
+      for(const item of available){const option=node('option',item.displayLabel);option.value=serialized(item);select.append(option);}
+      select.disabled=locked||!ready;if(old&&allowed.has(old))select.value=old;else select.value='';rebuildMarks();select._timeSync();}
+    if(['washer','dishwasher','dryer'].includes(q.device)&&q.id==='H_'+q.device){select._taskWindow=(earliest,deadline,duration)=>{
+      if([earliest,deadline,duration].some(v=>v==null)){select.dataset.windowReady='false';select.dataset.noFeasible='false';setAvailable(null,{ready:false});return;}
+      earliest=Number(earliest);deadline=Number(deadline);duration=Number(duration);const absoluteDeadline=deadline+(deadline<earliest?24:0);
+      const items=q.options.map(o=>{const raw=starts[o.value]??Number(o.value),absolute=raw+(deadline<earliest&&raw<earliest?24:0);return {...o,absolute,displayLabel:absolute>=24?'次日 '+o.label:o.label};})
+        .filter(o=>o.absolute>=earliest-1e-9&&o.absolute+duration<=absoluteDeadline+1e-9).sort((a,b)=>a.absolute-b.absolute);
+      select.dataset.windowReady='true';select.dataset.noFeasible=String(items.length===0);
+      setAvailable(items);
+    };}
     wrap.append(range,hint,marks);row.insertBefore(wrap,select);top.append(select);select.classList.add('precise-select');select._timeSync();
   }
   function temperatureRange(q,row,prefix,required){
@@ -72,8 +86,8 @@ window.EBTime = (() => {
     for(const q of questions.filter(q=>!['attitude','stated_preference'].includes(q.group)&&!q.device))render(q,q.id==='B05'?deviceContainer:container);
     const empty=node('div','选好上面的电器，这里就会展开对应的时间安排。','device-empty');deviceContainer.append(node('p','时间每 10 分钟一档；时长以分钟填写，温度可选到 0.1℃。','hint'),empty);
     const list=node('div',undefined,'device-cards');deviceContainer.append(list);
-    // Display a task's normal start/duration first, then the allowed start/end window.
-    const rank=q=>q.id.startsWith('H_')?0:q.id.startsWith('T_')?1:q.id.startsWith('E_')?2:3;
+    // A task's window and duration define the legal values of its usual start.
+    const rank=q=>['washer','dishwasher','dryer'].includes(q.device)?q.id.startsWith('E_')?0:q.id.startsWith('D_')?1:q.id.startsWith('T_')?2:3:q.id.startsWith('H_')?0:1;
     const ordered=questions.filter(q=>q.device).sort((a,b)=>rank(a)-rank(b));
     for(const q of ordered){
       if(!cards[q.device]){const card=node('article',undefined,'device-input-card');card.dataset.deviceCard=q.device;
@@ -84,8 +98,9 @@ window.EBTime = (() => {
     }
   }
   function sync(){
-    document.querySelectorAll('#profile-form select').forEach(s=>s._timeSync?.());
     const read=id=>{const s=document.getElementById('p_'+id);return s?.value?JSON.parse(s.value):null;};
+    for(const d of ['washer','dishwasher','dryer'])document.getElementById('p_H_'+d)?._taskWindow?.(read('E_'+d),read('D_'+d),read('T_'+d));
+    document.querySelectorAll('#profile-form select').forEach(s=>s._timeSync?.());
     for(const card of document.querySelectorAll('[data-device-card]')){
       card.hidden=![...card.querySelectorAll('[data-question-id]')].some(r=>!r.hidden);
       const d=card.dataset.deviceCard,preview=document.getElementById('habit_'+d);let start,end,earliest,deadline,text;
@@ -96,6 +111,8 @@ window.EBTime = (() => {
           if(e!=null&&l!=null){earliest=Number(e);deadline=Number(l)+(Number(l)<earliest?24:0);if(start!=null&&Number(l)<earliest&&start<earliest)start+=24;}
           if(start!=null&&t!=null){end=start+Number(t);text=`通常 ${clock(start)}—${clock(end)} · ${Math.round(Number(t)*60)} 分钟`;if(deadline!=null)text+=`；允许调整范围 ${clock(earliest)}—${clock(deadline)}`;
             if(deadline!=null&&(start<earliest-1e-9||end>deadline+1e-9))text+='。当前常用安排不在允许范围内，请核对时间。';}
+          else if(document.getElementById('p_H_'+d)?.dataset.noFeasible==='true')text='当前时间范围不足以完成这项任务，请调整前三项。';
+          else if(document.getElementById('p_H_'+d)?.dataset.windowReady==='true'&&earliest!=null&&deadline!=null)text=`请在 ${clock(earliest)}—${clock(deadline)} 内选择能按时完成的平时开始时间。`;
         }else{const last=read('D_'+d);if(start!=null&&last!=null){end=Number(last);const overnight=end<start;if(overnight)end+=24;text=`${d==='home_ev'?'接入充电':'加热'} ${clock(start)} → ${d==='home_ev'?'离家':'结束'} ${clock(end)}`;if(d==='electric_water_heater'&&(start===0||overnight||end<=start||end-start>8))text+='；这个时段暂时无法生成方案。请按实际情况填写，您的资料仍可保存。';else if(end<=start)text+='；接入与离家时刻不能相同。';}}
       }
       timeline(preview,{start,end,earliest,deadline,text});

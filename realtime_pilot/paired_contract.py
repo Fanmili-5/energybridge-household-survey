@@ -124,6 +124,24 @@ def required(profile,qid):
     if v is None: raise ValueError('请填写：'+LOOKUP[qid]['prompt'])
     return v
 
+def task_timing(profile, device):
+    """Return one reported task on an unwrapped clock and reject contradictions."""
+    start=start_hour(required(profile,'H_'+device))
+    earliest=float(required(profile,'E_'+device))
+    deadline=float(required(profile,'D_'+device))
+    duration=float(required(profile,'T_'+device))
+    absolute_deadline=deadline+(24 if deadline<earliest else 0)
+    absolute_start=start+(24 if deadline<earliest and start<earliest else 0)
+    if not earliest-1e-9<=absolute_start<=absolute_deadline-duration+1e-9:
+        raise ValueError(DEVICES[device]+'的平时开始时间必须落在可用时间内，并在最晚时间前完成。最晚时间早于最早时间表示次日完成。')
+    return {'start_h':start,'absolute_start_h':absolute_start,'earliest_h':earliest,
+            'deadline_h':deadline,'absolute_deadline_h':absolute_deadline,'duration_h':duration}
+
+def validate_task_timings(profile, owned):
+    """Validate self-reported ordinary schedules before intake persistence."""
+    for device in TASKS:
+        if device in owned:task_timing(profile,device)
+
 def prepare(profile, seed, *, environment_required=False, context=None):
     owned=required(profile,'B05')
     for qid in ('B02','B04','F_EVENING'): required(profile,qid)
@@ -158,14 +176,12 @@ def prepare(profile, seed, *, environment_required=False, context=None):
         else:
             start=start_hour(use)
             if d in TASKS:
-                earliest=float(required(profile,'E_'+d)); end=float(required(profile,'D_'+d)); duration=float(required(profile,'T_'+d))
-                absolute_start=start+24 if end<earliest and start<earliest else start
+                timing=task_timing(profile,d)
+                earliest=timing['earliest_h'];end=timing['deadline_h'];duration=timing['duration_h']
+                absolute_start=timing['absolute_start_h']
                 # Native ordinary-plan clamping uses the unwrapped task window.
                 # Preserve the reported clock in records; only its EB projection is expanded.
                 cfg.update(preferred_h=absolute_start, earliest_h=earliest, latest_h=end, duration_h=duration)
-                absolute_end=end+24 if end<earliest else end
-                if not earliest-1e-9<=absolute_start<=absolute_end-duration+1e-9:
-                    raise ValueError(DEVICES[d]+'的常用时间无法落在可用时间内，请检查。最晚时间早于最早时间表示次日完成。')
                 records[d]={'active':True,'start_h':start,'duration_h':duration,'earliest_h':earliest,'deadline_h':end,'power_kw':cfg['power_kw']}
             elif d=='home_ev':
                 end=float(required(profile,'D_home_ev'))

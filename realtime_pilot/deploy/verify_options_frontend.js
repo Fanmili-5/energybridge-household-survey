@@ -37,6 +37,14 @@ const { chromium }=require('playwright'),fs=require('fs'),assert=require('assert
   await page.locator('[data-member-remove]').click();assert.strictEqual(await page.locator('.member-card:not([hidden])').count(),6);
   assert.strictEqual(await page.locator('.member-card[hidden] input:required:enabled').count(),0);
   await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes('电器安排'));
+  // Flexible tasks collect the window first; the usual-start slider is derived from it.
+  assert.deepStrictEqual(await page.locator('[data-device-card="washer"] .device-fields>.field').evaluateAll(rows=>rows.slice(0,4).map(r=>r.dataset.questionId)),['E_washer','D_washer','T_washer','H_washer']);
+  await choose('p_E_washer',JSON.stringify('8'));await choose('p_D_washer',JSON.stringify('22'));await choose('p_T_washer',JSON.stringify('1.5'));
+  let legalStarts=await page.locator('#p_H_washer').evaluate(s=>[...s.options].map(o=>o.value));assert(!legalStarts.includes(JSON.stringify('21')));assert(legalStarts.includes(JSON.stringify('20.5')));
+  await choose('p_H_washer',JSON.stringify('20.5'));await choose('p_D_washer',JSON.stringify('21'));
+  assert.strictEqual(await page.locator('#p_H_washer').inputValue(),'');
+  legalStarts=await page.locator('#p_H_washer').evaluate(s=>[...s.options].map(o=>o.value));assert(legalStarts.includes(JSON.stringify('19.5')));
+  await choose('p_H_washer',JSON.stringify('19.5'));
   // Explicit custom AC window crosses midnight, and newly added start times render literally.
   await choose('p_H_ac',JSON.stringify('custom'));
   assert(await page.locator('[data-question-id="H_ac_start"]').isVisible());
@@ -63,7 +71,7 @@ const { chromium }=require('playwright'),fs=require('fs'),assert=require('assert
   assert.strictEqual(payload.answers.H_ac_start,'22');assert.strictEqual(payload.answers.H_ac_end,'8');assert.strictEqual(payload.answers.H_home_ev,'19');
   assert.deepStrictEqual(payload.answers.X_EXTRA_DEVICES,[]);assert.deepStrictEqual(payload.answers.X_PROTECTED,[]);
   assert.deepStrictEqual(errors,[]);
-  const result={passed:true,real_api_calls:0,cases:['v37_migration_preserves_source','semantic_fields_not_reinterpreted','six_plus_removed_required_disabled','optional_none_exclusive_and_clear','custom_ac_overnight','new_ev_time_preview','reload_and_final_payload'],questionnaire_version:schema.paired_questionnaire_version};
+  const result={passed:true,real_api_calls:0,cases:['v37_migration_preserves_source','semantic_fields_not_reinterpreted','six_plus_removed_required_disabled','optional_none_exclusive_and_clear','task_window_first','derived_legal_usual_start','invalidated_start_cleared','custom_ac_overnight','new_ev_time_preview','reload_and_final_payload'],questionnaire_version:schema.paired_questionnaire_version};
   fs.writeFileSync(out+'/frontend_options_report.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));
  }finally{await browser.close();}
 })();

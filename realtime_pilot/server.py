@@ -32,7 +32,7 @@ import paired_contract as paired
 
 TERMINAL = TERMINAL_STATUSES
 RESEARCH_NOTICE_VERSION = 'eb.research_notice.v2'
-PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.19'
+PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.20'
 
 def stop_process(process):
     # The worker owns native EP descendants; kill the whole group on cancellation/timeout.
@@ -149,6 +149,10 @@ class Store:
                 if q.get('device') and q['device'] not in owned:continue
                 if q.get('required_for_intake'):
                     paired.required(profile,q['id'])
+            # A normal start outside the household's own available window is a
+            # contradictory answer, not an unsupported physics case. Reject it
+            # before persistence; the browser applies the same constraint.
+            paired.validate_task_timings(profile,owned)
             # Deliberately no paired.prepare: truthful answers survive unsupported physics.
             from household_extensions import build_record
             now=time.time();sid=secrets.token_hex(16);hid='household_'+digest(session)[:20]
