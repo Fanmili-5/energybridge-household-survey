@@ -43,5 +43,31 @@
     ],
     "source": "disposable local HTTP/SQLite with native EP and fixed model replies; synthetic answers"
   },
-  "live_deployment": "pending"
+  "live_deployment": {
+    "origin": "https://47.85.194.154",
+    "release_directory": "overnight-v611-20260914",
+    "runtime_commit": "cbc53b1",
+    "release_hash": "d9254ab6c7788316443a51ad70e04959671e44db67df798a3ba45a353b7e0c9c",
+    "cloud_and_compute_hash_match": true,
+    "public_http_checks": 25,
+    "static_assets_match": true,
+    "collection_mode": "engineering",
+    "generation_enabled": true,
+    "captcha": "local_image",
+    "existing_records_unchanged": {
+      "jobs": 3,
+      "documents": 21,
+      "household_submissions": 2
+    },
+    "rollback_release_retained": "participant-ux-v610-20260914",
+    "paid_api_calls": 0
+  },
+  "school_native_tests": {
+    "tests": 17,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 15.881,
+    "energyplus": "24.1",
+    "paid_model_calls": 0
+  }
 }
