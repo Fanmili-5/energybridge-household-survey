@@ -14,6 +14,77 @@ from common import digest, file_hash
 from planner_language import planner_household, VERSION as LANGUAGE_VERSION
 
 
+# Stable, semantic feature names for the supervised model input.  Questionnaire
+# IDs and wording remain in the source records/provenance; the model sees the
+# reported result under a meaningful English key, not the question it answered.
+HOUSEHOLD_FIELDS = {
+    'B02':'household_size',
+    'B04':'daytime_occupancy',
+    'B05':'included_appliances',
+    'F_EVENING':'evening_occupancy',
+    'F_REGULARITY':'routine_regularity',
+    'F_LATE_USE':'late_night_appliance_use',
+    'F_ROUTINES':'protected_household_routines',
+    'H_ac':'air_conditioner_usual_period',
+    'H_ac_start':'air_conditioner_start_time',
+    'H_ac_end':'air_conditioner_end_time',
+    'H_ac_temp':'air_conditioner_setpoint',
+    'H_washer':'washing_machine_usual_start_time',
+    'D_washer':'washing_machine_deadline',
+    'E_washer':'washing_machine_earliest_start_time',
+    'T_washer':'washing_machine_duration',
+    'H_dishwasher':'dishwasher_usual_start_time',
+    'D_dishwasher':'dishwasher_deadline',
+    'E_dishwasher':'dishwasher_earliest_start_time',
+    'T_dishwasher':'dishwasher_duration',
+    'H_dryer':'dryer_usual_start_time',
+    'D_dryer':'dryer_deadline',
+    'E_dryer':'dryer_earliest_start_time',
+    'T_dryer':'dryer_duration',
+    'H_electric_water_heater':'water_heater_usual_start_time',
+    'D_electric_water_heater':'water_heater_usual_end_time',
+    'H_home_ev':'ev_home_connection_time',
+    'D_home_ev':'ev_departure_time',
+    'P_AC_RANGE':'preferred_temperature_range',
+    'P_AC_CHANGE':'maximum_acceptable_temperature_change',
+    'P_EV_TARGET':'ev_departure_target_charge',
+    'P_EV_RESERVE':'ev_minimum_reserve_charge',
+    'P_HOT_WATER':'hot_water_needed_time',
+    'P_PREHEAT':'water_heater_preheating_acceptance',
+    'A_EB_COMFORT':'household_comfort_attitude',
+    'A_EB_TASK':'task_scheduling_attitude',
+    'A_EB_PRICE':'electricity_price_attitude',
+    'A_EB_CONTROL':'automation_control_preference',
+    'P_COMFORT':'comfort_importance',
+    'P_COST':'electricity_cost_importance',
+    'P_GRID':'load_shifting_importance',
+    'P_NOTICE':'advance_notice_preference',
+    'X_REGION':'province',
+    'X_CITY':'city',
+    'X_BUILDING':'dwelling_type',
+    'X_AREA':'dwelling_area_band',
+    'X_AREA_BASIS':'dwelling_area_basis',
+    'X_FLOOR':'apartment_floor_position',
+}
+
+
+def clean_members(reported):
+    """Keep member results only; move missingness out of the value cells."""
+    result=[]
+    for member in reported:
+        values={};unanswered={}
+        for name,cell in member['reported_fields'].items():
+            if cell['response_status']=='answered':
+                value=cell['label']
+                if isinstance(cell.get('value'),list):value=value.split('; ') if value else []
+                values[name]=value
+            else:unanswered[name]=cell['response_status']
+        row={'member_id':member['member_id'],'values':values}
+        if unanswered:row['unanswered_fields']=unanswered
+        result.append(row)
+    return result
+
+
 def plan_pair(view):
     """Project the displayed schedule into two plans, without EP outcomes."""
     chart=view['schedule_chart']
@@ -46,14 +117,17 @@ def clean_case(records, collected):
     # This English copy is a new rendering, never represented as the actual
     # planner input of historical cases collected before English ingress.
     english=planner_household(source,request)
-    answers={};unanswered={}
+    answers={};unanswered={};field_sources={}
     for group in ('household_information','stated_attitudes'):
         for row in english['observable_profile'][group]:
             qid=row['question_id']
             if qid=='M_MEMBERS':continue
+            name=HOUSEHOLD_FIELDS.get(qid)
+            if name is None:raise ValueError('Missing supervised feature name for '+qid)
+            field_sources[name]=qid
             if row['response_status']=='answered':
-                answers[qid]={'question':row['question'],'answer':row['answer'],'selected_value':deepcopy(request['profile'][qid]['value'])}
-            else:unanswered[qid]=row['response_status']
+                answers[name]=row['answer']
+            else:unanswered[name]=row['response_status']
     supplemental={q['id']:deepcopy(docs['questionnaire_submission.json']['normalized_answers'][q['id']])
                   for q in request['questionnaire_snapshot'] if q.get('research_only') and q['id'] in docs['questionnaire_submission.json']['normalized_answers']}
     decision=docs['decision.json'];names=('score','comfort_score','energy_score','vpp_score')
@@ -75,19 +149,20 @@ def clean_case(records, collected):
     }
     plans=plan_pair(collected['shown_to_participant'])
     return {
-        'schema_version':'eb.first_stage_supervision.v2','case_id':collected['questionnaire']['case_id'],
+        'schema_version':'eb.first_stage_supervision.v3','case_id':collected['questionnaire']['case_id'],
         'household_id':collected['questionnaire']['household_id'],
         'input':{
             'household_profile':{
-                'household_answers':answers,
-                'members':english.get('reported_members',[]),
+                'household_facts_and_preferences':answers,
+                'members':clean_members(english.get('reported_members',[])),
                 'unanswered_fields':unanswered,
             },
             'event_condition':event_condition,
             **plans,
         },
         'output':target,
-        'auxiliary':{'supplementary_answers':supplemental,'simulation_context':context},
+        'auxiliary':{'supplementary_answers':supplemental,'simulation_context':context,
+                     'source_question_ids':field_sources,'member_source_question_id':'M_MEMBERS'},
         'provenance':{
             'source_collected_record_hash':digest(collected),
             'source_document_hashes':deepcopy(collected['provenance']['source_document_hashes']),
@@ -99,6 +174,7 @@ def clean_case(records, collected):
             'target_source':decision['target_source'], 'stored_data_origin':collected['questionnaire']['data_origin'],
             'training_release':False, 'split_group':collected['questionnaire']['household_id'],
             'stage':'first_stage_data_handoff_not_training_messages',
+            'input_projection':'semantic English result values only; questionnaire prompts and display labels excluded',
             'plan_source':'saved participant_view schedule only; EP metrics and service outcomes excluded',
             'supplementary_policy':'Kept separately for later analysis; not automatically added to model input.',
             'selection_policy':'No filter on acceptance, savings, score or technical fallback.',
