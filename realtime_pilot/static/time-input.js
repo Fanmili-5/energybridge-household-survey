@@ -96,7 +96,7 @@ window.EBTime = (() => {
           if(e!=null&&l!=null){earliest=Number(e);deadline=Number(l)+(Number(l)<earliest?24:0);if(start!=null&&Number(l)<earliest&&start<earliest)start+=24;}
           if(start!=null&&t!=null){end=start+Number(t);text=`通常 ${clock(start)}—${clock(end)} · ${Math.round(Number(t)*60)} 分钟`;if(deadline!=null)text+=`；允许调整范围 ${clock(earliest)}—${clock(deadline)}`;
             if(deadline!=null&&(start<earliest-1e-9||end>deadline+1e-9))text+='。当前常用安排不在允许范围内，请核对时间。';}
-        }else{const last=read('D_'+d);if(start!=null&&last!=null){end=Number(last);const overnight=end<start;if(overnight)end+=24;text=`${d==='home_ev'?'接入充电':'加热'} ${clock(start)} → ${d==='home_ev'?'离家':'结束'} ${clock(end)}`;if(d==='electric_water_heater'&&(start===0||overnight||end<=start||end-start>8))text+='；真实安排可保存，当前原生模型暂不能生成此安排的模拟，请勿为生成而改填。';else if(end<=start)text+='；接入与离家时刻不能相同。';}}
+        }else{const last=read('D_'+d);if(start!=null&&last!=null){end=Number(last);const overnight=end<start;if(overnight)end+=24;text=`${d==='home_ev'?'接入充电':'加热'} ${clock(start)} → ${d==='home_ev'?'离家':'结束'} ${clock(end)}`;if(d==='electric_water_heater'&&(start===0||overnight||end<=start||end-start>8))text+='；这个时段暂时无法生成方案。请按实际情况填写，您的资料仍可保存。';else if(end<=start)text+='；接入与离家时刻不能相同。';}}
       }
       timeline(preview,{start,end,earliest,deadline,text});
       if(earliest!=null&&deadline!=null&&end!=null)preview.append(node('small','浅色：允许调整的时间范围；深色：平时的运行时段。'));

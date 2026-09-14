@@ -69,7 +69,7 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
     const previous=await field.locator('select').inputValue();
     if(previous){await field.locator('.choice-clear').click();assert.strictEqual(await field.locator('select').inputValue(),'');assert(await field.locator('.choice-clear').isHidden());await field.locator(`input[value="${previous}"]`).check();}
    }
-   if(process.env.EB_BROWSER_SCREENSHOTS&&[1,2].includes(step)){fs.mkdirSync(process.env.EB_BROWSER_SCREENSHOTS,{recursive:true});await page.screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/answers-step-'+step+'-'+width+'.png',fullPage:true});}
+   if(process.env.EB_BROWSER_SCREENSHOTS&&[0,1,2,4,5].includes(step)){fs.mkdirSync(process.env.EB_BROWSER_SCREENSHOTS,{recursive:true});await page.screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/answers-step-'+step+'-'+width+'.png',fullPage:true});}
    await audit(`wizard-${step}`);
    if(step===1)await page.locator('.member-navigation button').last().click();
    if(step<count-1){await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes(`第 ${step+2} /`));}

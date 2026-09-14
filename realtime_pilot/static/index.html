@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>原安排与 EB 建议 · 家庭用电</title><meta name="description" content="根据家庭习惯生成原安排，对比 EnergyPlus 模拟的 EB 调整方案，记录家庭的选择与评分。"><link rel="stylesheet" href="/style.css"><script src="/plan-view.js" defer></script><script src="/time-input.js" defer></script><script src="/captcha.js" defer></script><script src="/app.js" defer></script></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>家庭用电安排问卷</title><meta name="description" content="介绍您家的用电习惯，比较两份安排，告诉我们您的选择。"><link rel="stylesheet" href="/style.css"><script src="/plan-view.js" defer></script><script src="/time-input.js" defer></script><script src="/captcha.js" defer></script><script src="/app.js" defer></script></head>
 <body class="survey-page">
 <header><a href="/" class="brand" aria-label="EnergyBridge 家庭用电研究">EnergyBridge <span class="brand-caption">家庭用电研究</span></a><a id="admin-link" href="/admin" hidden>管理概览</a><span class="badge" id="collection-badge">家庭用电研究</span></header>
 <main>
@@ -30,11 +30,11 @@
 <section id="profile-details" class="profile-disclosure">
 <nav id="wizard-nav" class="wizard-nav" aria-label="问卷填写步骤"><div class="wizard-top"><h2 id="wizard-heading" tabindex="-1">填写家庭情况</h2><span id="wizard-progress" role="status" aria-live="polite">第 1 / 4 步</span></div><ol class="wizard-steps"><li><button type="button" data-wizard-step="0">家庭概况</button></li><li><button type="button" data-wizard-step="1">家庭成员</button></li><li><button type="button" data-wizard-step="2">电器安排</button></li><li><button type="button" data-wizard-step="3">用电偏好</button></li><li><button type="button" data-wizard-step="4">住房情况</button></li><li><button type="button" data-wizard-step="5">补充与提交</button></li></ol></nav>
 <form id="profile-form" novalidate>
-<aside class="notice" id="questionnaire-context" aria-label="本次问卷情境"><strong id="context-date"></strong><p id="context-instruction"></p><p>这是典型天气情境，不是今天的天气预报。室温由仿真得到；研究模型的供暖设定固定为20℃，可调整的空调温度指制冷设定。</p></aside>
+<aside class="notice" id="questionnaire-context" aria-label="本次问卷情境"><strong id="context-date"></strong><p id="context-instruction"></p></aside>
 <div class="form-topline"><span>由您填写家庭情况，综合考虑后评价</span><p id="draft-status" class="draft-status" role="status" aria-live="polite"></p></div>
 <section class="panel survey-section" data-form-page="0" aria-labelledby="household-heading">
   <div class="survey-section-head"><span class="section-index" aria-hidden="true">01</span><div><h2 id="household-heading">先认识一下您家</h2><p>家庭基本情况照实填写，时间安排请代入上方指定月份。</p></div></div>
-  <aside id="research-intro" class="research-intro" aria-label="参与说明"><strong>参与前请先了解</strong><p>本问卷用于家庭用电研究和家庭用户模拟器数据构造。请由一位成员代表家庭填写；不收姓名或详细地址。参与完全自愿，提交前可以随时退出，未点击保存的内容只留在当前浏览器。</p></aside>
+  <aside id="research-intro" class="research-intro" aria-label="参与说明"><strong>参与前请先了解</strong><p>请由一位家人代表全家填写。不需要姓名或详细地址；拿不准的选填题可以跳过。</p></aside>
   <div id="basic-questions" class="basic-grid"></div>
 </section>
 <section class="panel survey-section" data-form-page="1" hidden aria-labelledby="members-heading"><div class="survey-section-head"><span class="section-index" aria-hidden="true">02</span><div><h2 id="members-heading">每个人的习惯与偏好</h2></div></div><div id="member-questions"></div></section>
@@ -46,16 +46,16 @@
   <div class="survey-section-head"><span class="section-index" aria-hidden="true">04</span><div><h2 id="attitudes-heading">您家更在意什么？</h2><p>综合考虑家人的需要，选最接近您平时想法的一项。是否采用，等看过方案再决定。</p></div></div>
   <div id="attitude-questions"></div>
 </section>
-<section class="panel survey-section" data-form-page="4" hidden><div class="survey-section-head"><span class="section-index">05</span><div><h2>匹配您家的模拟环境</h2><p>城市、房型、面积和楼层用于选择天气与研究住宅。无需详细地址；不完整或暂未覆盖的资料也可以保存。模型材料和设备采用统一研究参数，并非您家的精确重建。</p></div></div><div id="housing-questions" class="research-grid"></div><p id="environment-preview" class="notice" aria-live="polite">填写以上住房信息后，会在这里显示可用的模拟环境。</p></section>
-<section class="panel survey-section" data-form-page="5" hidden><div class="survey-section-head"><span class="section-index">06</span><div><h2>再补充一点用电背景</h2><p>以下均为选填，不填写也可以提交。设备数量与频率用于家庭研究，本次所选设备仍按每类一个模型模拟。</p></div></div><a class="skip-optional" href="#submission-confirm">跳过选填，前往提交确认 ↓</a><div id="research-questions" class="research-grid"></div></section>
-<section id="submission-confirm" class="panel scenario-section" data-form-page="3" hidden><div class="scenario-heading"><span class="scenario-icon" aria-hidden="true">↗</span><div><p class="eyebrow">接下来，看看一种新的安排</p><h2>在同一天，比较调整前后</h2></div></div><ul id="scenario-facts"></ul>
-<p id="research-notice" class="research-notice">您填写的家庭资料和后续方案评价将用于家庭用电研究，以及构造家庭用户模拟器训练候选数据。成员资料由您按日常了解代填，无需姓名或详细地址。是否采用用电方案，将在看到两份模拟结果后另行询问。</p>
+<section class="panel survey-section" data-form-page="4" hidden><div class="survey-section-head"><span class="section-index">05</span><div><h2>您家的住房情况</h2><p>请填写所在城市和住房概况，不需要小区名或详细地址。</p></div></div><div id="housing-questions" class="research-grid"></div><p id="environment-preview" class="notice" aria-live="polite">请先填写以上住房信息。</p></section>
+<section class="panel survey-section" data-form-page="5" hidden><div class="survey-section-head"><span class="section-index">06</span><div><h2>再补充一点用电背景</h2><p>以下均为选填，您可以补充，也可以直接前往提交。</p></div></div><a class="skip-optional" href="#submission-confirm">跳过选填，前往提交确认 ↓</a><div id="research-questions" class="research-grid"></div></section>
+<section id="submission-confirm" class="panel scenario-section" data-form-page="3" hidden><div class="scenario-heading"><span class="scenario-icon" aria-hidden="true">↗</span><div><p class="eyebrow">接下来，看看一种新的安排</p><h2>准备好看看两份安排了吗？</h2></div></div><ul id="scenario-facts"></ul>
+<p id="research-notice" class="research-notice">您的回答将用于研究家庭用电选择，并帮助训练理解家庭偏好的人工智能模型。是否参与由您决定。</p>
 <fieldset id="research-confirmations" class="research-confirmations"><legend>提交前确认</legend>
   <label class="check"><input id="research-consent" type="checkbox" required><span id="research-consent-label">我已阅读参与说明，自愿将本次家庭回答和后续方案评价用于上述研究。</span></label>
-  <label class="check"><input id="scenario-understood" type="checkbox" required><span>我知道接下来展示的是研究模拟情境，不是我家真实电表记录或节省承诺。</span></label>
+  <label class="check"><input id="scenario-understood" type="checkbox" required><span>我知道展示的是模拟安排和结果，不会改变家中电器的设置。</span></label>
 </fieldset>
 <div class="submit-row"><small>先保存家庭资料，再生成方案；生成失败也会保留已保存资料。</small><button id="generate" type="submit" disabled>保存家庭资料</button></div>
-<section id="household-receipt" class="household-receipt" hidden aria-live="polite"><h3>家庭资料保存回执</h3><p id="receipt-status"></p><p class="hint">记录编号：<code id="receipt-id"></code></p><button id="plan-saved" class="secondary" type="button">继续生成两份安排</button></section>
+<section id="household-receipt" class="household-receipt" hidden aria-live="polite"><h3>家庭资料已保存</h3><p id="receipt-status"></p><p class="hint">记录编号：<code id="receipt-id"></code></p><button id="plan-saved" class="secondary" type="button">继续生成两份安排</button></section>
 </section>
 </form><div class="wizard-actions"><button id="wizard-prev" class="secondary" type="button" hidden>← 上一步</button><p id="wizard-current-note">切换页面不会丢失已填内容，最后一步再统一提交。</p><button id="wizard-next" type="button">下一步：家庭成员</button></div></section>
 <div class="comparison-workspace">
@@ -80,7 +80,7 @@
 </form>
 </div>
 <section class="panel history-panel"><div class="section-top"><h2>我的记录</h2><div class="history-actions"><button id="new-case" class="secondary" type="button">修改家庭回答 / 新案例</button><button id="clear-device-data" class="secondary" type="button">结束并清除此设备数据</button></div></div><div id="history"></div><p class="hint">在共用设备上完成后，请清除此设备保存的草稿和记录入口。</p><a href="/plan-preview.html" target="_blank" rel="noopener">查看时间轴展示示例</a></section>
-</main><footer id="collection-footer">展示研究情境中的模拟结果，不控制真实电器。</footer>
+</main><footer id="collection-footer">方案为模拟结果，不会改变家中电器的设置。</footer>
 <dialog id="captcha-dialog" aria-labelledby="captcha-title" aria-describedby="captcha-message">
 <form id="captcha-form"><h2 id="captcha-title">生成前，请完成图片验证</h2><p id="captcha-message" role="status"></p>
 <div class="captcha-picture"><img id="captcha-image" width="216" height="64" alt="六位图片验证码；看不清可换一张"><button id="captcha-refresh" type="button" class="secondary">换一张</button></div>
