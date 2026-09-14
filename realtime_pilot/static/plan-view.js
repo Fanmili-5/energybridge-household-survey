@@ -17,30 +17,28 @@ window.EBView=(()=>{
   }
   const deviceIds={'空调':'ac','洗衣机':'washer','洗碗机':'dishwasher','烘干机':'dryer','电热水器':'electric_water_heater','电动车充电':'home_ev','家用电动车充电':'home_ev'};
   function schedule(root,view){
-    const c=view.schedule_chart;if(!c){root.append(n('p','这条历史记录没有时间轴数据，请展开文字安排。','hint'));return;}
+    const c=view.schedule_chart;if(!c){for(const row of view.rows||[])root.append(n('p',`${row.device}：调整前 ${row.original}；调整后 ${row.proposal}`));return;}
     const context=n('div',undefined,'schedule-context');
     const contextItems=[['错峰',`${clock(c.event_start_h)}—${clock(c.event_end_h)}`],['比较至',c.end_label]];if(Number.isFinite(c.notification_h))contextItems.unshift(['通知',clock(c.notification_h)]);
     for(const [label,value] of contextItems){const item=n('span');item.append(document.createTextNode(label+' '),n('strong',value));context.append(item);}root.append(context);
-    const board=n('div',undefined,'schedule-board'),scroll=n('div',undefined,'schedule-scroll');scroll.tabIndex=0;scroll.setAttribute('aria-label','完整用电时间轴：上方 DR 对照，下方 EB 调整；可左右滚动');
+    const board=n('div',undefined,'schedule-board'),scroll=n('div',undefined,'schedule-scroll');scroll.tabIndex=0;scroll.setAttribute('aria-label','电器运行时间：上方调整前，下方调整后；可左右滑动');
     const canvas=n('div',undefined,'shared-schedule'),axis=n('div',undefined,'shared-axis');axis.append(n('span','电器 / 时间','schedule-axis-label'));const scale=n('div',undefined,'time-axis');
     for(const h of ticks(c)){const tick=n('span',clock(h),'tick');tick.style.left=pct(h,c)+'%';if(h===c.start_h)tick.classList.add('first');if(h===c.end_h)tick.classList.add('last');scale.append(tick);}axis.append(scale);canvas.append(axis);
     const detail=n('p','点选运行条，查看具体时间与设定。','schedule-detail');detail.setAttribute('aria-live','polite');
-    const picker=n('select');picker.setAttribute('aria-label','按电器与方案选择运行片段');picker.append(n('option','选择运行片段'));picker.options[0].value='';
     function show(label,device){detail.textContent=label;for(const row of canvas.querySelectorAll('.schedule-row'))row.classList.toggle('highlighted',row.dataset.device===device);}
     for(const side of ['original','proposal']){
-      const group=n('section',undefined,'schedule-group '+side),heading=n('h3');heading.append(n('strong',side==='original'?'DR 对照':'EB 调整后'),n('span',side==='original'?'未经 EB 策略调整':'根据本次事件重新安排'));group.append(heading);
+      const group=n('section',undefined,'schedule-group '+side),heading=n('h3');heading.append(n('strong',side==='original'?'调整前':'调整后'));group.append(heading);
       for(const row of c.rows){
         const device=deviceIds[row.device]||'none',line=n('div',undefined,'schedule-row device-'+device);line.dataset.device=device;line.dataset.side=side;
-        const label=n('div',undefined,'schedule-device');label.append(icon(device),n('span',row.device));const track=n('div',undefined,'schedule-track');decoration(track,c);line.append(label,track);
+        const label=n('div',undefined,'schedule-device');label.append(icon(device),n('span',row.device));const times=n('small',undefined,'schedule-times');for(const span of row[side]||[])times.append(n('span',`${clock(Math.max(c.start_h,span.start_h))}—${clock(Math.min(c.end_h,span.end_h))} · ${span.label}`));if(!times.childNodes.length)times.append(n('span',row.active?'没有运行记录':'本情境不使用'));label.append(times);const track=n('div',undefined,'schedule-track');decoration(track,c);line.append(label,track);
         let count=0;for(const span of row[side]||[]){const start=Math.max(c.start_h,span.start_h),end=Math.min(c.end_h,span.end_h);if(end<=start)continue;count++;
-          const text=`${side==='original'?'DR 对照':'EB 调整后'} · ${row.device} · ${span.description}`,bar=n('button',undefined,'schedule-bar '+side);bar.type='button';bar.style.left=pct(start,c)+'%';bar.style.width=(pct(end,c)-pct(start,c))+'%';if((end-start)/(c.end_h-c.start_h)<.07)bar.classList.add('short-bar');bar.append(n('span',span.label));bar.title=text;bar.setAttribute('aria-label',text);bar.onfocus=bar.onclick=()=>show(text,device);track.append(bar);
-          const option=n('option',text);option.value=text;option.dataset.device=device;picker.append(option);
+          const text=`${side==='original'?'调整前':'调整后'} · ${row.device} · ${span.description}`,bar=n('button',undefined,'schedule-bar '+side);bar.type='button';bar.style.left=pct(start,c)+'%';bar.style.width=(pct(end,c)-pct(start,c))+'%';if((end-start)/(c.end_h-c.start_h)<.07)bar.classList.add('short-bar');bar.append(n('span',span.label));bar.title=text;bar.setAttribute('aria-label',text);bar.onfocus=bar.onclick=()=>show(text,device);track.append(bar);
         }
         if(!count)track.append(n('span',row.active?'没有运行记录':'本情境不使用','schedule-empty'));group.append(line);
       }
       canvas.append(group);
     }
-    scroll.append(canvas);board.append(scroll,detail);root.append(board);
+    scroll.append(canvas);board.append(scroll,detail);root.append(board);root.append(n('p','左右滑动时间轴可查看全天。','schedule-mobile-hint'));
     requestAnimationFrame(()=>{
       if(!scroll.isConnected||scroll.scrollWidth<=scroll.clientWidth)return;
       const track=canvas.querySelector('.schedule-track');if(!track)return;
@@ -49,37 +47,28 @@ window.EBView=(()=>{
       const labelWidth=canvas.querySelector('.schedule-device')?.offsetWidth||0;
       scroll.scrollLeft=Math.max(0,x-(labelWidth+scroll.clientWidth)/2);
     });
-    const legend=n('div',undefined,'schedule-legend');legend.append(n('span','上下同一刻度 · 同一种颜色代表同一台电器'),n('span','浅黄色：错峰时段'+(Number.isFinite(c.notification_h)?' · 虚线：通知时刻':'')));root.append(legend);
-    const changed=c.rows.filter(r=>r.changed);root.append(n('p',changed.length?'有调整：'+changed.map(r=>r.device).join('、')+'。':'本次两份安排相同。','schedule-change-note'));
-    root.append(n('p',c.note,'hint'));const more=n('details',undefined,'supporting-detail schedule-help');more.append(n('summary','全部运行片段（文字列表）'),picker);picker.onchange=()=>show(picker.value||'点选运行条，查看具体时间与设定。',picker.selectedOptions[0].dataset.device);root.append(more);
+    const legend=n('div',undefined,'schedule-legend');legend.append(n('span','浅黄色：错峰时段'+(Number.isFinite(c.notification_h)?' · 虚线：通知时刻':'')));root.append(legend);
+    if(c.note)root.append(n('p',c.note,'hint schedule-note'));
   }
   function outcomes(root,view){
-    const metrics=view.metrics||[];
-    const selected=[metrics.find(m=>m.label==='比较期总费用'),metrics.find(m=>m.label.startsWith('比较期总用电')),metrics.find(m=>m.label==='响应时段用电量')].filter(Boolean);
-    const grid=n('div',undefined,'outcome-grid');
-    for(const m of selected){const card=n('article',undefined,'outcome-card');card.append(n('h3',m.label));for(const side of ['original','proposal']){const row=n('div',undefined,'metric-pair '+side);row.append(n('span',side==='original'?'原安排':'EB 调整'),n('strong',m[side]));card.append(row);}grid.append(card);}root.append(grid);
-    if(selected.length)root.append(n('p','两份安排按相同时间范围比较。费用少不代表任务一定完成，请同时查看下面的使用结果。','hint'));
-    const services=n('div',undefined,'service-grid compact-services');
+    const wrap=n('div',undefined,'outcomes-table-wrap'),table=n('table',undefined,'outcomes-table');
+    const head=n('thead'),titles=n('tr');for(const title of ['比较项','调整前','调整后']){const th=n('th',title);th.scope='col';titles.append(th);}head.append(titles);table.append(head);
+    const body=n('tbody');body.id=root.id==='outcome-cards'?'metrics':'preview-metrics';
+    for(const m of view.metrics||[]){const row=n('tr',undefined,'outcome-metric');const label=n('th',m.label);label.scope='row';row.append(label);for(const side of ['original','proposal']){const cell=n('td'),parts=/^(-?\d+(?:\.\d+)?) (.+)$/.exec(m[side]);if(parts)cell.append(n('strong',parts[1]),n('small',parts[2],'metric-unit'));else cell.textContent=m[side];row.append(cell);}body.append(row);}
     for(const r of view.service_rows||[]){
-      const card=n('article',undefined,'service-card');card.append(n('h3',r.device));
-      // Deduplicate only identical supplied text AND identical underlying water records.
-      const same=r.original===r.proposal&&JSON.stringify(r.original_water_periods||[])===JSON.stringify(r.proposal_water_periods||[]);
-      card.classList.toggle('service-identical',same);
-      for(const side of same?['original']:['original','proposal']){
-        const group=n('div',undefined,'service-side'),row=n('div',undefined,'service-pair');
-        row.append(n('span',same?'两份安排一致':side==='original'?'原安排':'EB 调整'),n('p',r[side]));group.append(row);
-        const periods=r[side+'_water_periods'];
-        if(periods?.length){
-          const low=periods.filter(p=>p.below_target_periods.length);
-          if(low.length)group.append(n('p',`${low.length} 组研究用水记录中存在低于目标的时段。`,'water-summary'));
-          const details=n('details',undefined,'water-detail');details.append(n('summary','查看用水温度与具体时段'),n('p','以下为研究模板记录；连续区间不代表一次洗澡的时长。','hint'));
-          for(const period of periods){const item=n('div');item.append(n('strong',period.label),n('p',period.temperature),n('p',period.detail));if(period.below_target_periods.length)item.append(n('p','低于目标：'+period.below_target_periods.map(t=>t.text).join('、')));details.append(item);}group.append(details);
+      const row=n('tr',undefined,'outcome-service'),label=n('th',r.device);label.scope='row';row.append(label);
+      for(const side of ['original','proposal']){
+        const cell=n('td');cell.append(n('p',r[side]));
+        for(const period of r[side+'_water_periods']||[]){
+          const text=[period.label,period.temperature,period.detail];
+          if(period.below_target_periods?.length)text.push('低于目标：'+period.below_target_periods.map(t=>t.text).join('、'));
+          cell.append(n('p',text.filter(Boolean).join('；'),'water-period'));
         }
-        card.append(group);
+        row.append(cell);
       }
-      services.append(card);
+      body.append(row);
     }
-    root.append(services);
+    table.append(body);wrap.append(table);root.append(wrap);
   }
   const svgNode=(tag,attrs,text)=>{const x=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const [k,v] of Object.entries(attrs||{}))x.setAttribute(k,String(v));if(text!==undefined)x.textContent=text;return x;};
   function temperature(root,view){

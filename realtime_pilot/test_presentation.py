@@ -29,10 +29,15 @@ class PresentationTests(unittest.TestCase):
         d.update(rows=[],context={'facts':[]},prediction={'original':metrics,'proposal':metrics},
                  schedule_chart=plan_chart([],self.scenario()),temperature_chart=thermal)
         view=participant_view(d)
-        self.assertEqual(view['temperature_chart'],thermal)
+        self.assertEqual(view['render_contract_version'],'eb.participant_view.v2')
+        self.assertNotIn('temperature_chart',view)
+        self.assertNotIn('selection_reason',view)
+        self.assertNotIn('timeline',view)
+        recovery=next(m for m in view['metrics'] if m['label'].startswith('响应结束后'))
+        self.assertEqual(recovery['proposal'],'28.3—28.3℃')
         self.assertEqual(view['schedule_chart']['end_h'],26)
         thermal['series']['proposal'][-1]['c']=99
-        self.assertEqual(view['temperature_chart']['series']['proposal'][-1]['c'],28.3)
+        self.assertEqual(recovery['proposal'],'28.3—28.3℃')
 
     def test_shift_summary_keeps_overnight_direction(self):
         from presentation import change_summary

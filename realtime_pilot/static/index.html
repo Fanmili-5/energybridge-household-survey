@@ -60,18 +60,26 @@
 </form><div class="wizard-actions"><button id="wizard-prev" class="secondary" type="button" hidden>← 上一步</button><p id="wizard-current-note">切换页面不会丢失已填内容，最后一步再统一提交。</p><button id="wizard-next" type="button">下一步：家庭成员</button></div></section>
 <div class="comparison-workspace">
 <section id="job-panel" class="panel" hidden><div class="section-top"><h2 id="job-heading" tabindex="-1">正在生成两份方案</h2><button id="cancel" class="secondary" type="button">取消生成</button></div><p id="waiting-guidance" class="waiting-guidance">家庭资料已保存，无需再次提交。完成后会自动进入方案对比和评分。</p><div class="waiting-indicator" aria-hidden="true"></div><p id="job-status" role="status" aria-live="polite"></p><p id="job-timing" class="hint"></p><p id="queue-policy" class="hint" hidden></p><button id="retry-generation" class="secondary" type="button" hidden>重新尝试生成</button><div id="initial-plan"></div><p class="hint">刷新页面可以恢复已提交的记录；生成失败或取消不算拒绝。</p></section>
-<section id="result-panel" class="panel" hidden><p class="eyebrow">同一个家庭 · 同一个情境</p><h2 id="comparison-title" tabindex="-1">原安排和 EB 建议，有什么不同？</h2><p id="baseline-note" class="hint"></p><p id="unchanged-notice" class="notice" hidden>本次两份安排的运行时间与设定相同。请按实际展示的安排作选择和评分；保持原安排不代表生成失败，也不代表一定省电。</p><div id="plan-visual"></div><details class="supporting-detail"><summary>查看每台电器的完整文字安排</summary><div class="table-wrap"><table><thead><tr><th>电器</th><th>按习惯生成的原安排</th><th>EB 建议的安排</th><th>变化</th></tr></thead><tbody id="comparison"></tbody></table></div><p id="change-note"></p></details><div id="decision-timeline"></div><h3 class="result-subtitle">这次调整会带来什么？</h3><div id="outcome-cards"></div><div id="temperature-visual"></div><details class="supporting-detail"><summary>查看全部用电与温度指标</summary><div class="table-wrap"><table><thead><tr><th>比较项</th><th>原安排</th><th>调整建议</th></tr></thead><tbody id="metrics"></tbody></table></div></details><div id="service-results" hidden></div><section class="supporting-detail simulation-notes"><h3>本次模拟说明</h3><p id="forecast-note" class="notice"></p><p id="assumptions-note" class="hint"></p></section></section>
+<section id="result-panel" class="panel" hidden>
+<h2 id="comparison-title" tabindex="-1">调整前后，用电安排有什么变化？</h2>
+<div id="plan-visual"></div>
+<p id="unchanged-notice" class="notice" hidden>本次两份安排相同，请按展示结果选择和评分。</p>
+<h3 class="result-subtitle">用电和生活影响</h3>
+<div id="outcome-cards"></div>
+<p id="baseline-note" class="hint"></p>
+<div id="legacy-evidence" hidden></div>
+</section>
 <form id="decision-form" class="panel" hidden><p class="eyebrow feedback-eyebrow">您的选择</p><h2 id="decision-question">愿意采用这份调整吗？</h2><p class="feedback-intro">综合考虑您自己和家人的需要，作出您的选择。</p>
 <fieldset class="decision-choices"><legend class="sr-only">是否采用这份调整方案</legend><label class="check"><input type="radio" name="decision" value="accept" required>同意</label>
 <label class="check"><input type="radio" name="decision" value="reject">不同意</label></fieldset>
 <div class="feedback-score-heading"><h3>这份调整适合您家吗？</h3><p id="score-hint" class="hint">1 很不合适 · 5 很合适，可填小数</p></div>
 <div id="decision-scores" class="basic-grid"></div>
-<section class="score-help"><h3>如何评分</h3><p>1 分很不合适，2 分较不合适，3 分一般，4 分较合适，5 分很合适。可填 1—5 之间的小数。四项分别判断，整体分由您独立给出。</p><div id="score-definitions"></div></section>
+
 <label class="field feedback-reason">请简要说明最主要原因（必填）<textarea id="decision-reason" maxlength="1000" rows="2" placeholder="例如：调整影响晚饭时间；或室温变化可以接受"></textarea></label>
 <button id="save-decision" type="submit">提交反馈</button><p id="decision-status" role="status" aria-live="polite"></p>
 </form>
 </div>
-<section class="panel history-panel"><div class="section-top"><h2>本浏览器的方案比较记录</h2><div class="history-actions"><button id="new-case" class="secondary" type="button">修改家庭回答 / 新案例</button><button id="clear-device-data" class="secondary" type="button">结束并清除此设备数据</button></div></div><div id="history"></div><p class="hint">每条记录绑定当时的原安排、EB 建议、同意或不同意的选择、四项评分及原因。在共用设备上完成后，请清除此设备保存的草稿和记录入口。</p><a href="/plan-preview.html" target="_blank" rel="noopener">查看时间轴展示示例</a></section>
+<section class="panel history-panel"><div class="section-top"><h2>我的记录</h2><div class="history-actions"><button id="new-case" class="secondary" type="button">修改家庭回答 / 新案例</button><button id="clear-device-data" class="secondary" type="button">结束并清除此设备数据</button></div></div><div id="history"></div><p class="hint">在共用设备上完成后，请清除此设备保存的草稿和记录入口。</p><a href="/plan-preview.html" target="_blank" rel="noopener">查看时间轴展示示例</a></section>
 </main><footer id="collection-footer">展示研究情境中的模拟结果，不控制真实电器。</footer>
 <dialog id="captcha-dialog" aria-labelledby="captcha-title" aria-describedby="captcha-message">
 <form id="captcha-form"><h2 id="captcha-title">生成前，请完成图片验证</h2><p id="captcha-message" role="status"></p>

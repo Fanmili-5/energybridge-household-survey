@@ -8,13 +8,13 @@ FIELDS = [
         {'value':'mixed','label':'部分时间在家，部分时间外出'},
         {'value':'irregular','label':'轮班或时间经常变化'}]},
     {'id':'comfort','prompt':'对室温变化的感受','required':False,'options':[
-        {'value':'temp_tolerant','label':'不太敏感，能适应一定变化'},
-        {'value':'normal_comfort','label':'通常能接受小幅变化'},
-        {'value':'temp_sensitive','label':'比较敏感，希望温度稳定'}]},
+        {'value':'temp_tolerant','label':'不太敏感，室温变化较大也通常能适应'},
+        {'value':'normal_comfort','label':'能接受小幅变化，变化较大会不舒服'},
+        {'value':'temp_sensitive','label':'比较敏感，小幅变化也容易不舒服'}]},
     {'id':'task','prompt':'对电器运行时间调整的态度','required':False,'options':[
-        {'value':'flexible','label':'时间比较灵活'},
-        {'value':'semi_rigid','label':'可以调整，但要在可接受的时间内'},
-        {'value':'rigid','label':'更希望按固定时间安排'}]},
+        {'value':'flexible','label':'只要按时完成，具体运行时间都可以'},
+        {'value':'semi_rigid','label':'只接受小幅提前或推迟'},
+        {'value':'rigid','label':'希望按原定时间运行，尽量不调整'}]},
     {'id':'participation','prompt':'平时主要怎样参与家庭用电安排？（选最接近的一项）','required':False,'options':[
         {'value':'usually_not_involved','label':'通常不参与，由其他家人安排'},
         {'value':'usually_joint','label':'通常与家人共同商量决定'},
@@ -29,7 +29,7 @@ FIELDS += [
     for name,prompt,options in [
         ('cost_importance','对节省电费的重视程度（选填）',[{'value':str(i),'label':label} for i,label in enumerate(['1 不重要','2 不太重要','3 一般','4 比较重要','5 非常重要'],1)]),
         ('grid_importance','不明显影响生活时，对配合错峰用电的重视程度（选填）',[{'value':str(i),'label':label} for i,label in enumerate(['1 不重要','2 不太重要','3 一般','4 比较重要','5 非常重要'],1)]),
-        ('control','对系统调整电器的主要想法（选最接近的一项，选填）',[{'value':'auto','label':'满足条件可自动安排'},{'value':'suggest','label':'先了解建议和理由，再决定怎样安排'},{'value':'confirm','label':'每次改动都必须先征得明确同意'},{'value':'manual','label':'倾向自己安排'}]),
+        ('control','愿意把用电安排交给系统到什么程度？（选填）',[{'value':'auto','label':'在约定范围内，可以让系统自动调整'},{'value':'confirm','label':'每次先问，得到明确同意后再调整'},{'value':'manual','label':'更愿意自己安排，尽量不让系统调整'}]),
     ]
 ]
 QUESTION = {'id':'M_MEMBERS','type':'member_list','group':'member_profile','options':[],

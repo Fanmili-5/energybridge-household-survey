@@ -85,7 +85,7 @@ class MemberTests(unittest.TestCase):
             with patch.object(LLMClient,'__init__',return_value=None), patch.object(LLMClient,'chat_with_metrics',return_value={'text':'invalid','metrics':{}}) as call:
                 EBPlanner(r,Path(folder),lambda *args:None)(loop,72+s['decision_h'],{'temperature_c':25,'outdoor_c':30,'facility_w':1000,'occupancy_count':3},[],['notification'])
                 text=str(call.call_args_list)
-                self.assertIn('P_GRID',text);self.assertIn('P_NOTICE',text);self.assertIn('P_AC_RANGE',text);self.assertIn('P_EV_TARGET',text);self.assertIn('成员 2',text);self.assertIn('轮班或时间经常变化',text);self.assertIn('比较敏感，希望温度稳定',text)
+                self.assertIn('P_GRID',text);self.assertIn('P_NOTICE',text);self.assertIn('P_AC_RANGE',text);self.assertIn('P_EV_TARGET',text);self.assertIn('成员 2',text);self.assertIn('轮班或时间经常变化',text);self.assertIn('比较敏感，小幅变化也容易不舒服',text)
 
     def test_colleague_preferences_and_native_appliance_fields(self):
         from eb_execution import upstream

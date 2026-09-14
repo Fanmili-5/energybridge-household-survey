@@ -39,6 +39,17 @@ class OptionAuditTests(unittest.TestCase):
         raw=answers();raw['M_MEMBERS'][0]['participation']='shared'
         with self.assertRaises(ValueError):self.profile(raw)
 
+    def test_control_levels_keep_native_tags_and_reject_retired_ambiguous_choice(self):
+        self.assertEqual([o['value'] for o in LOOKUP['A_EB_CONTROL']['options']],
+                         ['high_trust_auto','confirm_required','low_auto_accept'])
+        fields={f['id']:f for f in LOOKUP['M_MEMBERS']['fields']}
+        self.assertEqual([o['value'] for o in fields['control']['options']],['auto','confirm','manual'])
+        for option in ('high_trust_auto','confirm_required','low_auto_accept'):
+            self.assertEqual(self.profile({**answers(),'A_EB_CONTROL':option})['A_EB_CONTROL']['value'],option)
+        with self.assertRaises(ValueError):self.profile({**answers(),'A_EB_CONTROL':'suggestion_first'})
+        raw=answers();raw['M_MEMBERS'][0]['control']='suggest'
+        with self.assertRaises(ValueError):self.profile(raw)
+
     def test_new_times_and_overnight_ac_reach_ep_schedule(self):
         raw=answers();raw.update(H_ac='custom',H_ac_start='22',H_ac_end='8',H_home_ev='19',H_washer='8.5')
         profile=self.profile(raw);original,scenario=prepare(profile,'option_test')

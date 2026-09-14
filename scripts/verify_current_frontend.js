@@ -14,6 +14,12 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   await page.route('**/api/jobs/*',async r=>{if(r.request().method()==='GET'&&/\/api\/jobs\/[^/]+$/.test(new URL(r.request().url()).pathname)){recordReads++;await new Promise(resolve=>setTimeout(resolve,1800));}await r.continue();});
   await page.goto(origin);await page.waitForFunction(()=>typeof schema!=='undefined'&&schema?.questionnaire_context&&document.getElementById('generate').disabled===false);
   assert(await page.locator('.history-panel').isHidden());
+  const migrated=await page.evaluate(()=>migrateAnswers({B02:'2',H_ac:'evening',A_EB_CONTROL:'suggestion_first',M_MEMBERS:[{age_band:'adult',routine:'out_regular',control:'suggest',comfort:'normal_comfort',task:'flexible'}]},'eb.persona_questionnaire.v4.4',schema.questionnaire_context.context_hash));
+  assert.strictEqual(migrated.B02,'2');assert.strictEqual(migrated.H_ac,'evening');
+  assert.strictEqual(migrated.A_EB_CONTROL,null);assert.strictEqual(migrated.M_MEMBERS[0].control,null);
+  assert.strictEqual(migrated.M_MEMBERS[0].comfort,null);assert.strictEqual(migrated.M_MEMBERS[0].task,null);
+  assert.strictEqual(migrated.M_MEMBERS[0].age_band,'adult');assert.strictEqual(migrated.M_MEMBERS[0].routine,'out_regular');
+
   await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes('第 1 /'));
   // Fill through visible controls, not the application's restore/collect helpers.
   const questions=await page.evaluate(()=>schema.profile_questions);
@@ -123,7 +129,17 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   assert(await page.locator('#comparison-title').evaluate(e=>e.getBoundingClientRect().top>=0&&e.getBoundingClientRect().top<innerHeight),'Completion must navigate to results');
   assert((await page.locator('.feedback-reason').innerText()).includes('必填'));
   assert(await page.locator('.schedule-board').count()>0);
-  assert((await page.locator('#result-panel').innerText()).includes('制冷设定'));
+  const view=await page.evaluate(()=>currentJob.result.display.participant_view);
+  assert.strictEqual(view.render_contract_version,'eb.participant_view.v2');
+  assert(await page.locator('#legacy-evidence').isHidden());
+  assert.strictEqual(await page.locator('#result-panel details').count(),0);
+  for(const metric of view.metrics){
+   const row=page.locator('.outcome-metric').filter({hasText:metric.label});
+   assert(await row.isVisible(),'Every metric must be visible: '+metric.label);
+   assert((await row.textContent()).replace(/\s/g,'').includes(metric.original.replace(/\s/g,'')));assert((await row.textContent()).replace(/\s/g,'').includes(metric.proposal.replace(/\s/g,'')));
+  }
+  assert(!(await page.locator('#result-panel').innerText()).includes('同一个家庭 · 同一个情境'));
+  if(process.env.EB_BROWSER_SCREENSHOTS)await page.locator('#result-panel').screenshot({path:process.env.EB_BROWSER_SCREENSHOTS+'/comparison-'+width+'.png'});
   await page.locator('[name=decision][value=reject]').check();
   for(const [key,value] of Object.entries({score:'3.75',comfort_score:'2.5',energy_score:'4.1',vpp_score:'2.25'}))await page.locator(`[name=feedback_${key}]`).fill(value);
   await page.locator('#decision-reason').fill('Synthetic browser audit, not a human response.');

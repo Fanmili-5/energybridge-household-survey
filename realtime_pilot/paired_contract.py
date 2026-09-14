@@ -8,7 +8,7 @@ from native_support import physical_defaults, ordinary
 from survey_time import LEGACY_STARTS, start_hour, clock_options, duration_options
 
 VERSION = 'eb.paired_ep.v3.5'
-QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.4'
+QUESTIONNAIRE_VERSION = 'eb.persona_questionnaire.v4.5'
 QUESTIONS = [deepcopy(q) for q in PROPOSAL_PROFILE_QUESTIONS if q['id'] != 'F_ROUTINES']
 for q in QUESTIONS:
     if q['id'] == 'B05':
@@ -23,10 +23,11 @@ for q in QUESTIONS:
         q['prompt']=q['prompt'].replace('您家的想法','您综合考虑家人需要后的想法').replace('您家平时的想法','您综合考虑家人需要后的想法').replace('您家的态度','您综合考虑家人需要后的态度')
 for q in QUESTIONS:
     if q['id']=='A_EB_CONTROL':
-        q['prompt']='让系统安排电器时，您综合考虑家人需要后的主要要求是什么？（选最接近的一项）'
-        for o in q['options']:
-            if o['value']=='suggestion_first':o['label']='先了解建议和理由，再决定怎样安排'
-            if o['value']=='confirm_required':o['label']='每次改动都必须先征得我们明确同意'
+        q['prompt']='您家愿意把用电安排交给系统到什么程度？'
+        q['options']=[
+            {'value':'high_trust_auto','label':'在约定范围内，可以让系统自动调整'},
+            {'value':'confirm_required','label':'每次先问我，得到明确同意后再调整'},
+            {'value':'low_auto_accept','label':'更愿意自己安排，尽量不让系统调整'}]
 # Keep temperature, price and control questions focused on their own concepts.
 removed={'A_EB_COMFORT':{'low_control_tolerance'},'A_EB_PRICE':{'event_fatigue'},'A_EB_CONTROL':{'privacy_sensitive'}}
 for q in QUESTIONS:
@@ -299,9 +300,31 @@ def participant_view(display):
         metrics.append({'label':label, **{side:f"{prediction[side][key]:.2f} {unit}" for side in ('original','proposal')}})
     metrics.append({'label':'响应时段居住区域室温',**{side:f"{prediction[side]['event_temp_min_c']:.1f}—{prediction[side]['event_temp_max_c']:.1f}℃" for side in ('original','proposal')}})
     for metric in display.get('comparison_metrics',[]):metrics.append(deepcopy(metric))
-    view={key:deepcopy(display[key]) for key in ('title','rows','notice','assumptions','question','selection_reason','execution_notice')}
-    view['has_changes']=bool(display.get('has_changes'))
-    return {'render_contract_version':'eb.participant_view.v1', **view,
-        'scenario_facts':display['context']['facts'],'metrics':metrics,'timeline':deepcopy(display.get('timeline',[])),
-        'service_rows':deepcopy(display.get('service_rows',[])), 'schedule_chart':deepcopy(display.get('schedule_chart')),
-        'temperature_chart':deepcopy(display.get('temperature_chart'))}
+    # Human-visible evidence is separate from EB's full audit display. Never
+    # feed planner reasoning or undisplayed temperature samples into SFT input.
+    thermal=display.get('temperature_chart') or {}
+    for period in thermal.get('periods',[]):
+        if period['label']=='响应期间':continue  # already included above
+        metrics.append({'label':period['label']+'室温（'+period['time']+'）',
+                        'original':period['original'],'proposal':period['proposal']})
+    normalized=prediction.get('cost_unit')=='normalized TOU cost/kWh'
+    notes=['以下为模拟结果，不是您家的实测用电。']
+    if normalized:notes.append('相对用电成本越低，表示按本次分时价格计算的成本越低；不是人民币金额。')
+    notes.append('只统计图中比较时段，跨夜任务的后续用电未计入。')
+    if '缺少部分电器动态接口' in display.get('execution_notice',''):
+        notes.append('部分电器的调整尚未计入用电量，不能据此判断整体节电效果。')
+    view={'render_contract_version':'eb.participant_view.v2',
+        'title':'调整前后，用电安排有什么变化？',
+        'question':'综合家人的需要，您同意采用调整后的安排吗？',
+        'notice':' '.join(notes),'has_changes':bool(display.get('has_changes')),
+        'metrics':metrics,'service_rows':deepcopy(display.get('service_rows',[])),
+        'schedule_chart':deepcopy(display.get('schedule_chart'))}
+    service_wording={
+        '按原 EB 模型安排充电；本比较截至24:00，不据时间条判断离家电量是否达标':'离家时电量是否达标：本次未验证',
+        '时间轴展示热水设定；未据此判断实际出水是否满足需求':'使用时热水是否达标：本次未验证'}
+    for row in view['service_rows']:
+        for side in ('original','proposal'):row[side]=service_wording.get(row[side],row[side])
+    if view['schedule_chart']:
+        view['schedule_chart']['note']='色条表示运行时段及设定。空调色条是制冷设定，供暖采用统一设定；实际室温见下表。热水色条不代表持续耗电。'
+    if not view['schedule_chart']:view['rows']=deepcopy(display.get('rows',[]))
+    return view

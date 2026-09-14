@@ -222,3 +222,30 @@ body.survey-page,body.preview-page{--muted-readable:#52665e}
 .survey-page .choice-clear{display:block;justify-self:start;align-self:start;margin:5px 0 0;padding:2px 0;min-height:0;text-decoration:underline;text-underline-offset:3px}
 .survey-page .member-field>.choice-clear{grid-column:2}
 .choice-clear[hidden]{display:none!important}
+
+/* Participant comparison: one shared timeline and one complete outcome table. */
+.comparison-workspace:has(#result-panel:not([hidden])){display:block;max-width:1100px;margin-inline:auto}
+.survey-page #decision-form{position:static;max-width:none;width:100%;margin-top:24px}
+.outcomes-table-wrap{border:1px solid #dae4dd;border-radius:12px;overflow:hidden;background:#fff}
+.outcomes-table{width:100%;table-layout:fixed;margin:0;border-collapse:collapse;font-size:14px}
+.outcomes-table th,.outcomes-table td{padding:13px 16px;vertical-align:top;border-bottom:1px solid #e6ece7;line-height:1.6;text-align:left;overflow-wrap:anywhere;color:#344f43}
+.outcomes-table thead th{background:#f0f5f1;font-size:13px;color:#52655a;font-weight:600}
+.outcomes-table th:first-child{width:36%}.outcomes-table tbody th{font-weight:500}
+.outcomes-table td:last-child{background:#f7faf7}.outcomes-table td p{margin:0}
+.outcomes-table tr:last-child>*{border-bottom:0}.outcome-metric td{font-variant-numeric:tabular-nums;font-weight:600}
+.outcome-service td{font-size:13px}.outcomes-table .water-period{margin-top:8px;font-size:12px}
+.shared-axis,.schedule-row{grid-template-columns:190px minmax(0,1fr)}
+.schedule-device{display:grid;grid-template-columns:22px minmax(0,1fr);gap:4px 7px;align-content:center;padding:10px 8px}
+.schedule-device .appliance-icon{width:20px;height:20px}.schedule-times{grid-column:1/-1;display:grid;font-size:10px;color:#576d60;line-height:1.6;font-variant-numeric:tabular-nums}
+.schedule-track{min-height:64px}.schedule-group h3{margin:0;padding:10px 12px}.schedule-note{font-size:12px;line-height:1.6}
+#baseline-note{font-size:12px;line-height:1.7;margin-top:12px}
+.survey-page #decision-scores{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px}
+@media(max-width:640px){
+ .outcomes-table{font-size:12px}.outcomes-table th,.outcomes-table td{padding:10px 8px}.outcomes-table th:first-child{width:34%}.outcomes-table thead th{font-size:12px}.outcome-service td{font-size:11px}
+ .shared-axis,.schedule-row{grid-template-columns:170px minmax(0,1fr)}.shared-schedule{min-width:740px}
+ .survey-page #decision-scores{grid-template-columns:1fr}.schedule-times{font-size:10px}
+}
+.schedule-row,.schedule-device{height:auto;min-height:64px}.schedule-track{height:100%;min-height:64px}.schedule-bar{top:50%;transform:translateY(-50%)}
+
+.metric-unit{display:block;font-size:11px;font-weight:400;line-height:1.5;color:#52675b}.schedule-mobile-hint{display:none}.schedule-times{font-size:11px}
+@media(max-width:640px){.schedule-mobile-hint{display:block;font-size:12px;color:#52675b;margin:8px 0}.outcome-metric td strong{font-size:15px}}
