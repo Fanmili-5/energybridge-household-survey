@@ -43,11 +43,12 @@ def submit(store, owner, payload):
         count = store.db.conn.execute('SELECT COUNT(*) FROM case_reports WHERE owner=? AND created>=?', (owner, time.time()-86400)).fetchone()[0]
         if count >= 20:
             raise OverflowError('今天已收到多条问题报告，请稍后再提交')
+        state = store.status(row) if kind == 'case' else {}
         report = {'id': secrets.token_hex(16), 'target_type': kind, 'target_id': target,
                   'case_id': target if kind == 'case' else None,
                   'household_submission_id': row.get('household_submission_id') if kind == 'case' else target,
                   'category': category, 'description': description, 'created_at': time.time(),
-                  'reported_stage': (row.get('progress') or {}).get('stage'),
+                  'reported_stage': (state.get('progress') or {}).get('stage'),
                   'reported_status': row.get('status', 'intake_saved'),
                   'ui_version': text_field(payload.get('ui_version', ''), 80, '页面版本'),
                   'runtime_version': store.runtime_version,

@@ -133,6 +133,15 @@ class ReportTests(unittest.TestCase):
         members=next(q for q in QUESTIONS if q['id']=='M_MEMBERS')
         self.assertEqual([f['id'] for f in members['fields'] if f.get('required')],['routine'])
 
+    def test_running_report_reads_actual_progress_file(self):
+        sid=self.intake()['id'];job=self.case(sid);job.update(status='running',run_directory='attempts/0001');self.store.persist(job)
+        folder=Path(self.tmp.name)/job['id']/job['run_directory'];folder.mkdir(parents=True)
+        (folder/'progress.json').write_text(json.dumps({'stage':'planning'}))
+        case_reports.submit(self.store,self.owner,self.payload(job['id']))
+        report=case_reports.list_reports(self.store)['reports'][0]
+        self.assertEqual(report['reported_stage'],'planning')
+        self.assertEqual(report['reported_status'],'running')
+
     def test_http_permissions_and_routes_while_planning_disabled(self):
         server=make_server(0,self.tmp.name,disable_planning=True,admin_user='researcher',max_queue_wait=0)
         sid=self.intake()['id']
