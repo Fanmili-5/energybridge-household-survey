@@ -29,7 +29,11 @@ class Database:
           id TEXT PRIMARY KEY, owner TEXT NOT NULL, request_id TEXT NOT NULL,
           created REAL NOT NULL, payload TEXT NOT NULL, UNIQUE(owner, request_id));
         CREATE INDEX IF NOT EXISTS household_owner ON household_submissions(owner,created);
-        PRAGMA user_version=2;
+        CREATE TABLE IF NOT EXISTS case_reports (
+          id TEXT PRIMARY KEY, owner TEXT NOT NULL, request_id TEXT NOT NULL,
+          created REAL NOT NULL, payload TEXT NOT NULL, UNIQUE(owner,request_id));
+        CREATE INDEX IF NOT EXISTS report_owner_created ON case_reports(owner,created);
+        PRAGMA user_version=3;
         ''')
 
     def save(self, job, documents=None):

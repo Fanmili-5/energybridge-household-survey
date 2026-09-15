@@ -6,6 +6,7 @@
 |---|---|
 | [问卷内容](QUESTIONNAIRE.md) | 收集哪些信息、如何使用 |
 | [数据保存与导出](DATA.md) | 后台记录、交付文件和导出命令 |
+| [案例编号与问题反馈](CASE_REPORTS.md) | 选填昵称、问题报告、后台核查和失败轨迹导出 |
 | [原始记录与清洗文件](saved-json-and-cleaning.md) | 两步整理之间的关系 |
 | [英文规划输入](planner-language.md) | 中文答案到 EB 字段的映射 |
 | [天气与住宅](../simulation_resources/README.md) | 地点、住宅和日期选择 |

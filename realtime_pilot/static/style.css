@@ -328,3 +328,27 @@ body.survey-page,body.preview-page{--muted-readable:#52665e}
 .feedback-complete p:not(.eyebrow){line-height:1.8;color:#52665e}
 .feedback-complete button{margin-top:16px}
 @media(max-width:640px){.feedback-complete{padding:26px 20px;margin:24px 0}.feedback-complete h2{font-size:22px}.feedback-complete button{width:100%}}
+/* Case support stays outside the scored questionnaire. */
+.case-support {display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:18px 22px}
+.case-support[hidden] {display:none}
+.case-reference {display:flex;flex:1;flex-wrap:wrap;align-items:center;gap:10px;min-width:0}
+.case-reference input {font:13px ui-monospace,monospace;min-width:0;width:290px;max-width:100%;padding:8px;border:1px solid #ccd8d2;border-radius:6px;background:#fafcf9}
+.case-support p {width:100%;margin:0;overflow-wrap:anywhere}
+.case-support p:empty {display:none}
+#report-dialog {width:min(520px,calc(100vw - 32px));max-height:90dvh;overflow:auto;border:1px solid #cdd9d3;border-radius:16px;padding:24px;box-sizing:border-box}
+#report-dialog::backdrop {background:rgb(20 40 34 / 40%)}
+#report-dialog textarea,#report-dialog select {width:100%;box-sizing:border-box}
+#report-reference {overflow-wrap:anywhere;font-size:13px}
+.report-actions {display:flex;justify-content:flex-end;gap:12px}
+.report-card {border-top:1px solid #d6dfd9;padding:20px 0;overflow-wrap:anywhere}
+.report-card p {white-space:pre-wrap}
+.report-card textarea {display:block;width:100%;box-sizing:border-box;margin:12px 0}
+.report-card button {margin:0 10px 8px 0}
+@media(max-width:600px){
+ #case-support {display:grid;grid-template-columns:1fr 1fr}
+ #case-support[hidden] {display:none}
+ #case-support .case-reference {display:contents}
+ #case-support .case-reference span,#case-reference-id,#case-support-status {grid-column:1 / -1}
+ #case-support #case-reference-id {width:100%;box-sizing:border-box;font-size:12px}
+ #case-support button {width:100%;padding:10px}
+}

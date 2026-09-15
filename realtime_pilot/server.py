@@ -22,7 +22,8 @@ import subprocess
 import sys
 import threading
 import time
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
+import case_reports
 
 from common import ROOT, VERSION, SCENARIO, QUESTIONS, PROFILE_IDS, RATING_IDS, digest, normalize_answers, training_candidate, write_json
 from common import PROPOSAL_PROFILE_QUESTIONS
@@ -32,7 +33,7 @@ import paired_contract as paired
 
 TERMINAL = TERMINAL_STATUSES
 RESEARCH_NOTICE_VERSION = 'eb.research_notice.v2'
-PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.20'
+PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.21'
 
 def stop_process(process):
     # The worker owns native EP descendants; kill the whole group on cancellation/timeout.
@@ -59,6 +60,10 @@ class Store:
         self.timeout = timeout
         self.workers = workers
         self.db = Database(self.root)
+        self.runtime_version = {'ui_version': PARTICIPANT_UI_VERSION,
+                                'release_id': os.environ.get('EB_RELEASE_ID'),
+                                'code_hash': digest({str(p.relative_to(ROOT)): digest(p.read_text()) for p in
+                                                    [*ROOT.glob('*.py'), *ROOT.glob('static/*.js')]})}
         self.jobs = LazyJobIndex(self.db)
         self.processes = {}
         self.pool = DurableQueue(self,workers)
@@ -111,10 +116,11 @@ class Store:
             from simulation_environment import inspect_profile
             out['environment_readiness']=inspect_profile(row['profile'])
         if full:
-            out.update({k:row.get(k) for k in ('profile','raw_answers','questionnaire_snapshot','household_record','research_consent','research_notice_version','scenario_understood','ui_version')})
+            out.update({k:row.get(k) for k in ('profile','raw_answers','questionnaire_snapshot','household_record','research_consent','research_notice_version','scenario_understood','ui_version','participant_name')})
         return out
 
     def save_household(self, session, payload, admin=False):
+        participant_name = case_reports.text_field(payload.get('participant_name', ''), 80, '姓名或昵称')
         nonce=payload.get('request_id','')
         if not isinstance(nonce,str) or not re.fullmatch(r'[a-zA-Z0-9_-]{16,80}',nonce):
             raise ValueError('提交标识无效，请刷新后重试')
@@ -160,6 +166,7 @@ class Store:
             record['questionnaire_context']=deepcopy(context)
             row={'questionnaire_context':context,'id':sid,'owner':session,'request_id':nonce,'request_hash':request_hash,'created_at':now,
                  'household_id':hid,'profile':profile,'profile_hash':digest(profile),
+                 'participant_name':participant_name, 'runtime_version':self.runtime_version,
                  'raw_answers':deepcopy(payload.get('answers')),'questionnaire_snapshot':deepcopy(paired.QUESTIONS),
                  'questionnaire_version':paired.QUESTIONNAIRE_VERSION,'questionnaire_hash':digest(paired.QUESTIONS),
                  'household_record':record,'household_record_hash':digest(record),
@@ -244,6 +251,7 @@ class Store:
                 original, scenario = paired.prepare(profile, jid,environment_required=bool(intake) or (self.human_pilot and not admin),context=intake.get('questionnaire_context') if intake else None)
             job = {
                 "schema_version": VERSION, "id": jid, "owner": session, "admin_test":bool(admin),
+                "runtime_version": self.runtime_version,
                 "household_id": "household_"+digest(session)[:20],
                 "respondent_id": "respondent_"+digest(session)[:20],
                 "profile": profile, "profile_hash": digest(profile),
@@ -618,6 +626,17 @@ class Handler(BaseHTTPRequestHandler):
             if not self.is_admin():return self.reply(403,{'error':'此入口仅供管理员使用'})
             if path=='/admin/survey':return self.reply(200,(ROOT/'static/index.html').read_bytes(),content_type='text/html; charset=utf-8')
             path={'/admin/':'/admin','/admin/admin.js':'/admin.js'}.get(path,path[6:] if path.startswith('/admin/api/') else path)
+        if path == '/api/admin/reports' or path.startswith('/api/admin/diagnostics/'):
+            if not self.is_admin():return self.reply(403, {'error':'此入口仅供管理员使用'})
+            try:
+                if path == '/api/admin/reports':
+                    query=parse_qs(urlparse(self.path).query)
+                    return self.reply(200, case_reports.list_reports(self.server.store, query.get('status',[None])[0], query.get('before',[None])[0]))
+                match=re.fullmatch(r'/api/admin/diagnostics/(case|household)/([a-f0-9]{32})',path)
+                if not match:raise KeyError()
+                return self.reply(200,case_reports.diagnostic(self.server.store,match[1],match[2]))
+            except KeyError:return self.reply(404,{'error':'找不到记录'})
+            except ValueError as exc:return self.reply(400,{'error':str(exc)})
         if path in {'/admin', '/admin.js', '/api/admin/status'}:
             if not self.is_admin():
                 return self.reply(403, {'error':'此入口仅供管理员使用'})
@@ -700,6 +719,12 @@ class Handler(BaseHTTPRequestHandler):
             if path=='/api/captcha':
                 if not self.server.captcha or self.is_admin():return self.reply(400,{'error':'当前入口无需验证码'})
                 return self.reply(200,self.server.captcha.issue(session,payload.get('request_id')))
+            if path=='/api/reports':
+                return self.reply(201,case_reports.submit(self.server.store,session,payload))
+            review_match=re.fullmatch(r'/api/admin/reports/([a-f0-9]{32})',path)
+            if review_match:
+                if not self.is_admin():return self.reply(403,{'error':'此入口仅供管理员使用'})
+                return self.reply(200,case_reports.review(self.server.store,review_match[1],payload,self.server.admin_user))
             if path=='/api/session/reset':
                 if self.is_admin():raise ValueError('管理员会话不能在参与者页面重置')
                 # Submitted records remain immutable on the server.  Rotating the

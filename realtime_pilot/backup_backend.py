@@ -2,6 +2,7 @@
 import argparse,hashlib,json,sqlite3,tarfile,tempfile,time
 from pathlib import Path
 from common import write_json
+from job_index import TERMINAL_STATUSES
 
 def backup(root,output,include_traces=True):
     root=Path(root).resolve();output=Path(output).resolve()
@@ -24,7 +25,7 @@ def backup(root,output,include_traces=True):
             # are in the DB and can be replayed after an interrupted-job recovery.
             if include_traces:
                 for jid,status in jobs:
-                    if status!='complete':continue
+                    if status not in TERMINAL_STATUSES:continue
                     case=root/jid
                     for name in ('attempts','baseline','proposal','planning'):
                         path=case/name
@@ -33,7 +34,7 @@ def backup(root,output,include_traces=True):
     checksum=hashlib.sha256()
     with output.open('rb') as stream:
         for block in iter(lambda:stream.read(1024*1024),b''):checksum.update(block)
-    report={'created_at':time.time(),'jobs':len(jobs),'documents':document_count,'sqlite_integrity':'ok','includes_completed_traces':include_traces,'sha256':checksum.hexdigest(),'bytes':output.stat().st_size,'path':str(output)}
+    report={'created_at':time.time(),'jobs':len(jobs),'documents':document_count,'sqlite_integrity':'ok','includes_completed_traces':include_traces,'includes_terminal_traces':include_traces,'sha256':checksum.hexdigest(),'bytes':output.stat().st_size,'path':str(output)}
     write_json(output.with_suffix('.manifest.json'),report)
     return report
 

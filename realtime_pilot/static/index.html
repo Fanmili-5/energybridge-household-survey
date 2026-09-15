@@ -35,7 +35,8 @@
 <div class="form-topline"><span>由您填写家庭情况，综合考虑后评价</span><p id="draft-status" class="draft-status" role="status" aria-live="polite"></p></div>
 <section class="panel survey-section" data-form-page="0" aria-labelledby="household-heading">
   <div class="survey-section-head"><span class="section-index" aria-hidden="true">01</span><div><h2 id="household-heading">先认识一下您家</h2><p>家庭基本情况照实填写，时间安排请代入上方指定月份。</p></div></div>
-  <aside id="research-intro" class="research-intro" aria-label="参与说明"><strong>参与前请先了解</strong><p>请由一位家人代表全家填写。不需要姓名或详细地址；拿不准的选填题可以跳过。</p></aside>
+  <aside id="research-intro" class="research-intro" aria-label="参与说明"><strong>参与前请先了解</strong><p>请由一位家人代表全家填写。昵称可以不填；拿不准的选填题可以跳过。</p></aside>
+  <label class="field">姓名或昵称（选填）<input id="participant-name" type="text" maxlength="80" autocomplete="off" placeholder="方便研究人员核对您的反馈"></label>
   <div id="basic-questions" class="basic-grid"></div>
 </section>
 <section class="panel survey-section" data-form-page="1" hidden aria-labelledby="members-heading"><div class="survey-section-head"><span class="section-index" aria-hidden="true">02</span><div><h2 id="members-heading">每个人的习惯与偏好</h2></div></div><div id="member-questions"></div></section>
@@ -81,6 +82,7 @@
 </div>
 <section id="feedback-complete" class="panel feedback-complete" hidden aria-labelledby="feedback-complete-heading"><p class="eyebrow">填写完成</p><h2 id="feedback-complete-heading" tabindex="-1">提交成功，感谢您的参与</h2><p>您的选择、评分和原因已保存。您可以关闭此页面。</p><button id="view-saved-feedback" type="button" class="secondary">查看已提交的反馈</button></section>
 <section class="panel history-panel"><div class="section-top"><h2>我的记录</h2><div class="history-actions"><button id="new-case" class="secondary" type="button">修改家庭回答 / 新案例</button><button id="clear-device-data" class="secondary" type="button">结束并清除此设备数据</button></div></div><div id="history"></div><p class="hint">在共用设备上完成后，请清除此设备保存的草稿和记录入口。</p><a href="/plan-preview.html" target="_blank" rel="noopener">查看时间轴展示示例</a></section>
+<section id="case-support" class="panel case-support" hidden aria-label="记录与问题反馈"><div class="case-reference"><span id="case-reference-label">案例编号</span><input id="case-reference-id" type="text" readonly aria-label="记录编号"><button id="copy-case-id" type="button" class="secondary">复制编号</button></div><button id="report-problem" type="button" class="secondary">报告问题</button><p id="case-support-status" role="status" aria-live="polite"></p></section>
 </main><footer id="collection-footer">方案为模拟结果，不会改变家中电器的设置。</footer>
 <dialog id="captcha-dialog" aria-labelledby="captcha-title" aria-describedby="captcha-message">
 <form id="captcha-form"><h2 id="captcha-title">生成前，请完成图片验证</h2><p id="captcha-message" role="status"></p>
@@ -88,4 +90,5 @@
 <label for="captcha-answer">图中的字符</label><input id="captcha-answer" type="text" required minlength="6" maxlength="6" autocomplete="off" autocapitalize="characters" spellcheck="false">
 <div class="captcha-actions"><button id="captcha-cancel" type="button" class="secondary">暂不生成</button><button id="captcha-confirm" type="submit">验证并生成</button></div>
 <p class="hint">家庭资料已保存；验证通过后才开始计算。</p></form></dialog>
+<dialog id="report-dialog" aria-labelledby="report-heading"><form id="report-form"><h2 id="report-heading">报告问题</h2><p id="report-reference"></p><label class="field">遇到了什么问题？<select id="report-category" required><option value="">请选择</option><option value="generation_failed">生成失败</option><option value="waiting">等待太久</option><option value="schedule">用电安排不合理</option><option value="display">页面或结果显示异常</option><option value="other">其他问题</option></select></label><label class="field">请简单描述一下<textarea id="report-description" required maxlength="2000" rows="3" placeholder="例如：洗衣结束时间超过了我填写的最晚时间"></textarea></label><p>报告问题不会更改您的评分，也不会重新生成方案。</p><p id="report-status" role="status" aria-live="polite"></p><div class="report-actions"><button id="report-close" type="button" class="secondary">关闭</button><button id="report-submit" type="submit">提交问题</button></div></form></dialog>
 </body></html>
