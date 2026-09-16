@@ -148,7 +148,7 @@ function restore(profile){for(const q of schema.profile_questions){if(q.type==="
 const devices={ac:"空调",washer:"洗衣机",dishwasher:"洗碗机",dryer:"烘干机",electric_water_heater:"电热水器",home_ev:"家用电动汽车充电"};
 const scoreFields={score:"整体：这份方案总体适合您家吗？",comfort_score:"舒适：室温和生活安排的变化合适吗？",energy_score:"用电与费用：模拟用电量和费用符合您家期望吗？",vpp_score:"响应安排：您对本次错峰用电的处理方式满意吗？请考虑安排调整和自主决定体验。"};
 let generation=0,pendingSubmit=false;
-const UI_VERSION="eb.survey_ui.v6.22";
+const UI_VERSION="eb.survey_ui.v6.23";
 const RESEARCH_NOTICE_VERSION="eb.research_notice.v2";
 let savedReceipt=null,savedHouseholdRecord=null;
 const pendingDecisions=new Set(),pendingRequests=new Map();
@@ -543,7 +543,7 @@ function showWizard(step,{scroll=false,push=false,save=true}={}){
  $('wizard-prev').disabled=$('wizard-next').disabled=!!pendingSubmit;
  $('wizard-next').textContent='下一步：'+(wizardLabels[steps[index+1]]||'');
  $('wizard-prev').textContent='上一步';syncMemberNavigation();
- $('wizard-current-note').textContent=currentJob?'已提交的回答可分步查看；修改请新建案例。':'切换页面不会丢失已填内容，最后一步再统一提交。';
+ $('wizard-current-note').textContent=currentJob?'已提交的回答可分步查看；修改请新建案例。':'可点击上方任意部分自由切换，已填内容会保留，提交时再检查必填项。';
  document.querySelector('.survey-hero').hidden=!!currentJob||wizardStep!==0;
  if(push)window.history.pushState(null,'','#'+wizardHashes[wizardStep]);
  if(save&&!currentJob)saveDraft();
@@ -559,17 +559,15 @@ function validateWizardStep(step){
 function nextWizard(){
  if(!schema||pendingSubmit)return;
  if(wizardStep===1){const root=memberRoot(),index=Number(root?.dataset.activeMember)||0;
-  const invalid=[...root.querySelectorAll('.member-card:not([hidden]) input')].find(x=>x.willValidate&&!x.validity.valid);
-  if(invalid){error('请填写这位成员的生活节奏，其余问题可以留空。');invalid.reportValidity();return;}
   if(index<Number(root.dataset.count)-1){$('error').hidden=true;showMember(index+1,{scroll:true});return;}
  }
- if(!validateWizardStep(wizardStep))return;$('error').hidden=true;const steps=wizardSteps();showWizard(steps[Math.min(steps.indexOf(wizardStep)+1,steps.length-1)],{scroll:true,push:true});
+ $('error').hidden=true;const steps=wizardSteps();showWizard(steps[Math.min(steps.indexOf(wizardStep)+1,steps.length-1)],{scroll:true,push:true});
 }
 function validateWholeQuestionnaire(){for(const step of wizardSteps())if(!validateWizardStep(step))return false;return true;}
-$('skip-optional').onclick=()=>{if(!pendingSubmit&&validateWizardStep(5))showWizard(6,{scroll:true,push:true});};
+$('skip-optional').onclick=()=>{if(!pendingSubmit){$('error').hidden=true;showWizard(6,{scroll:true,push:true});}};
 $('wizard-next').onclick=nextWizard;
 $('wizard-prev').onclick=()=>{if(pendingSubmit)return;$('error').hidden=true;const index=Number(memberRoot()?.dataset.activeMember)||0;if(wizardStep===1&&index>0){showMember(index-1,{scroll:true});return;}const steps=wizardSteps();showWizard(steps[Math.max(0,steps.indexOf(wizardStep)-1)],{scroll:true,push:true});};
-for(const b of document.querySelectorAll('[data-wizard-step]'))b.onclick=()=>{if(!schema||pendingSubmit)return;const target=Number(b.dataset.wizardStep);if(target>wizardStep)for(const step of wizardSteps().filter(s=>s>=wizardStep&&s<target))if(!validateWizardStep(step))return;$('error').hidden=true;showWizard(target,{scroll:true,push:true});};
+for(const b of document.querySelectorAll('[data-wizard-step]'))b.onclick=()=>{if(!schema||pendingSubmit)return;$('error').hidden=true;showWizard(Number(b.dataset.wizardStep),{scroll:true,push:true});};
 window.addEventListener('popstate',()=>{if(!schema||pendingSubmit||currentJob)return;const step=wizardHashes.indexOf(location.hash.slice(1));showWizard(step<0?0:step,{scroll:true});});
 
 async function recoverReceipt(state){

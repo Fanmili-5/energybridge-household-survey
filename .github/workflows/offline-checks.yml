@@ -19,6 +19,7 @@ jobs:
           cache: pip
       - run: python -m pip install -r requirements.txt
       - run: python scripts/check_secrets.py --history
+      - run: python -m unittest discover -s scripts -p 'test_clean_collected_case.py'
       - name: Native deployment template checks
         run: |
           sudo apt-get update -qq
@@ -44,7 +45,9 @@ jobs:
       - name: Browser and actual collection regression (no paid API)
         run: |
           python scripts/test_frontend.py
-          python scripts/test_frontend.py --human-mode
+          python scripts/test_frontend.py --human-mode --captcha
+          python scripts/test_admin_frontend.py
+          python scripts/test_report_frontend.py
           node realtime_pilot/deploy/verify_demo_entry.js
           node realtime_pilot/deploy/verify_frontend_recovery.js
         env:

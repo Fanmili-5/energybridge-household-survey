@@ -7,6 +7,7 @@
 3. 重启计算服务，使内存中的版本号更新，再重启网站。
 4. 在**网站服务的实际环境及代码目录**运行 `python scripts/check_compute_ready.py`。它通过现有私有隧道查询计算端 `/health`，核对加载的协议和版本，不创建任务、不调用模型。退出码必须为 0。
 5. 使用独立临时服务、数据库和禁止模型联网的 EP worker 验证配对结果回传；工程记录不写正式库。涉及模型、提示或原生控制改动时，另做经授权的真实模型试填。
+6. 从公开网站读取 `/api/session`，正式采集必须返回 `collection_mode=human_pilot`、`is_admin=false`、`captcha_enabled=true`。管理员入口仍应返回 `collection_mode=engineering`。必须核对实际运行的 systemd `ExecStart` 含 `--human-pilot`，或实际调用的启动脚本启用了 `EB_HUMAN_PILOT=1`；仓库模板的默认值不能证明线上生效。除非明确要求演示模式，不得在部署时改回工程采集。
 
 若第 4 步失败，不应宣布发布成功。先区分连接超时与版本不一致，保留问卷原始资料，不自动重试付费规划。
 

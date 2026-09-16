@@ -20,9 +20,20 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   assert.strictEqual(migrated.M_MEMBERS[0].comfort,null);assert.strictEqual(migrated.M_MEMBERS[0].task,null);
   assert.strictEqual(migrated.M_MEMBERS[0].age_band,'adult');assert.strictEqual(migrated.M_MEMBERS[0].routine,'out_regular');
 
-  await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes('第 1 /'));
+  // Empty pages can be browsed freely; only the final submit checks completeness.
+  await page.locator('#participant-name').fill('自由跳转测试');
+  await page.locator('#wizard-next').click();assert((await page.locator('#wizard-progress').innerText()).includes('第 2 /'));
+  for(const step of [4,2,5,6]){
+   await page.locator(`[data-wizard-step="${step}"]`).click();
+   assert((await page.locator('#wizard-progress').innerText()).includes(`第 ${step+1} /`));
+  }
+  await page.locator('#generate').click();
+  assert((await page.locator('#wizard-progress').innerText()).includes('第 1 /'));
+  assert.strictEqual(await page.locator('#participant-name').inputValue(),'自由跳转测试');
+  assert.strictEqual(await page.evaluate(()=>savedReceipt),null);
   // Fill through visible controls, not the application's restore/collect helpers.
-  const questions=await page.evaluate(()=>schema.profile_questions);
+  // Follow the rendered form: task windows and duration precede usual start.
+  const questions=await page.evaluate(()=>[...document.querySelectorAll('[data-question-id]')].map(row=>schema.profile_questions.find(q=>q.id===row.dataset.questionId)).filter(Boolean));
   const count=await page.locator('[data-wizard-step]').count();
   for(let step=0;step<count;step++){
    for(const q of questions){
@@ -30,9 +41,14 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
     if(value==null||!await row.isVisible())continue;
     if(q.type==='member_list'){
      assert.strictEqual(await row.locator('.member-card:visible').count(),1);
-     // Empty required answers cannot be bypassed by switching member tabs.
+     // Browsing members/pages is free; final submit returns to the missing member.
+     await page.locator('#wizard-next').click();
+     assert.strictEqual(await row.getAttribute('data-active-member'),'1');
      await row.locator('.member-navigation button').last().click();
      await page.locator('[data-wizard-step="2"]').click();
+     assert((await page.locator('#wizard-progress').innerText()).includes('第 3 /'));
+     await page.locator('[data-wizard-step="6"]').click();await page.locator('#generate').click();
+     assert((await page.locator('#wizard-progress').innerText()).includes('第 2 /'));
      assert.strictEqual(await page.locator('#p_M_MEMBERS').getAttribute('data-active-member'),'0');
      for(let i=0;i<value.length;i++){
       assert.strictEqual(await row.locator('.member-card:visible').count(),1);
@@ -53,7 +69,9 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
     }else if(q.cities_by_region){await page.locator('#p_'+q.id+'_choices').selectOption(value);}
     else if(q.type==='text'){await page.locator('#p_'+q.id).fill(value);}
     else if(await row.locator('input[type=range]').count()){
-     const slider=row.locator('input[type=range]'),index=q.options.findIndex(o=>o.value===value);
+     const slider=row.locator('input[type=range]');
+     const available=await page.locator('#p_'+q.id).evaluate(s=>[...s.options].filter(o=>o.value!=='').map(o=>JSON.parse(o.value)));
+     const index=available.indexOf(value);
      assert(index>=0,`Missing option for ${q.id}`);
      await slider.focus();await slider.press('End');await slider.press('Home');
      for(let i=0;i<index;i++)await slider.press('ArrowRight');
@@ -151,7 +169,15 @@ const {chromium}=require('playwright'),fs=require('fs'),assert=require('assert')
   assert(await page.locator('#decision-form').isVisible(),await page.locator('body').innerText());
   assert(await page.locator('#job-panel').isHidden());
   assert(await page.locator('.survey-hero').isHidden());
-  assert(await page.locator('#comparison-title').evaluate(e=>e.getBoundingClientRect().top>=0&&e.getBoundingClientRect().top<innerHeight),'Completion must navigate to results');
+  try{
+   // Scrolling rounds the document offset to a CSS pixel; the title may be
+   // less than one pixel above zero even when correctly aligned and visible.
+   await page.waitForFunction(()=>{const y=document.getElementById('comparison-title').getBoundingClientRect().top;return y>=-1&&y<innerHeight;},null,{timeout:3000});
+  }catch(e){
+   await page.screenshot({path:'/tmp/eb-audit-result-navigation.png'});
+   console.error('Result navigation geometry',await page.evaluate(()=>({scrollY,viewport:innerHeight,title:document.getElementById('comparison-title').getBoundingClientRect().toJSON(),panel:document.getElementById('result-panel').getBoundingClientRect().toJSON(),active:document.activeElement.id})));
+   throw e;
+  }
   assert((await page.locator('.feedback-reason').innerText()).includes('必填'));
   assert(await page.locator('.schedule-board').count()>0);
   const view=await page.evaluate(()=>currentJob.result.display.participant_view);
