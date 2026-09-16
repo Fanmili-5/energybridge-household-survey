@@ -1,6 +1,6 @@
 # 案例编号与问题反馈
 
-参与者可以选填昵称，并在等待、失败、结果或提交反馈后报告问题。昵称不是身份验证，不进入家庭画像、EB 输入或 SFT。
+参与者可以选填昵称。右下角「报告问题」按钮固定显示，滚动和切换问卷步骤时保留，首次进入、尚未保存问卷时也可以使用。昵称不是身份验证，不进入家庭画像、EB 输入或 SFT。
 
 ## 如何关联
 
@@ -15,7 +15,7 @@
 
 ## 问题报告
 
-`POST /api/reports` 接收 `target_type`（`case` / `household`）、`target_id`、`category`、`description`、`ui_version` 和幂等键 `request_id`。
+`POST /api/reports` 接收 `target_type`（`case` / `household` / `page`）、`target_id`、`category`、`description`、`page_context`、`ui_version` 和幂等键 `request_id`。没有已保存资料时使用 `page`，`target_id` 为 null；服务器生成与当前匿名会话关联的页面报告标识，记录所在问卷步骤，不上传尚未提交的问卷答案。已有资料或案例则关联对应记录。
 
 问题类型：生成失败、等待太久、安排不合理、显示异常、其他。说明最多 2000 字，每个浏览器会话每 24 小时最多提交 20 条报告。重试同一请求返回原报告编号，不重复保存。报告不占生成额度，也不会调用 EB、EP 或模型 API。
 

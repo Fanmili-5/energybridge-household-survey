@@ -33,7 +33,7 @@ import paired_contract as paired
 
 TERMINAL = TERMINAL_STATUSES
 RESEARCH_NOTICE_VERSION = 'eb.research_notice.v2'
-PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.21'
+PARTICIPANT_UI_VERSION = 'eb.survey_ui.v6.22'
 
 def stop_process(process):
     # The worker owns native EP descendants; kill the whole group on cancellation/timeout.
@@ -632,7 +632,7 @@ class Handler(BaseHTTPRequestHandler):
                 if path == '/api/admin/reports':
                     query=parse_qs(urlparse(self.path).query)
                     return self.reply(200, case_reports.list_reports(self.server.store, query.get('status',[None])[0], query.get('before',[None])[0]))
-                match=re.fullmatch(r'/api/admin/diagnostics/(case|household)/([a-f0-9]{32})',path)
+                match=re.fullmatch(r'/api/admin/diagnostics/(case|household|page)/([a-f0-9]{32})',path)
                 if not match:raise KeyError()
                 return self.reply(200,case_reports.diagnostic(self.server.store,match[1],match[2]))
             except KeyError:return self.reply(404,{'error':'找不到记录'})

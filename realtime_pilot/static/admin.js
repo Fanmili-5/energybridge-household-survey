@@ -43,7 +43,7 @@ async function loadReports(more=false){
   const data=await adminRequest('reports?'+query);if(!more)list.replaceChildren();
   for(const report of data.reports){
    const card=node('article','');card.className='report-card';
-   card.append(node('h3',categoryNames[report.category]||report.category),node('p',(report.participant_name||'未填写昵称')+' · '+new Date(report.created_at*1000).toLocaleString()),node('p',(report.target_type==='case'?'案例编号：':'家庭资料编号：')+report.target_id),node('p','报告编号：'+report.id),node('p','报告时状态：'+report.reported_status),node('p',report.description));
+   card.append(node('h3',categoryNames[report.category]||report.category),node('p',(report.participant_name||'未填写昵称')+' · '+new Date(report.created_at*1000).toLocaleString()),node('p',({case:'案例编号：',household:'家庭资料编号：',page:'填写中页面：'}[report.target_type])+ (report.target_type==='page'?(report.page_context||'尚未保存问卷'):report.target_id)),node('p','报告编号：'+report.id),node('p','报告时状态：'+report.reported_status),node('p',report.description));
    const select=node('select','');select.setAttribute('aria-label','核查状态');for(const [value,label] of Object.entries(reviewNames)){const option=node('option',label);option.value=value;select.append(option);}select.value=report.review_status;
    const note=node('textarea','');note.maxLength=2000;note.rows=2;note.placeholder='核查备注（选填）';note.setAttribute('aria-label','核查备注');
    const save=node('button','保存核查结果'),download=node('button','下载诊断记录'),feedback=node('p','');save.type=download.type='button';download.className='secondary';feedback.setAttribute('role','status');

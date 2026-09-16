@@ -142,6 +142,22 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(report['reported_stage'],'planning')
         self.assertEqual(report['reported_status'],'running')
 
+    def test_page_report_before_any_intake_needs_no_case(self):
+        payload={**self.payload(None,'page'),'page_context':'家庭成员'}
+        receipt=case_reports.submit(self.store,self.owner,payload)
+        self.assertEqual(case_reports.submit(self.store,self.owner,payload)['report_id'],receipt['report_id'])
+        report=case_reports.list_reports(self.store)['reports'][0]
+        self.assertIsNone(report['case_id']);self.assertIsNone(report['household_submission_id'])
+        self.assertEqual(report['reported_status'],'page_only');self.assertEqual(report['page_context'],'家庭成员')
+        bundle=case_reports.diagnostic(self.store,'page',report['target_id'])
+        self.assertEqual(bundle['reports'][0]['id'],receipt['report_id'])
+        self.assertIsNone(bundle['job']);self.assertIsNone(bundle['household_submission'])
+        self.assertEqual(self.store.db.household_count(),0);self.assertEqual(len(self.store.jobs),0)
+        with self.assertRaises(ValueError):case_reports.submit(self.store,self.owner,{**payload,'target_id':report['target_id']})
+        case_reports.submit(self.store,'b'*64,payload)
+        other=case_reports.list_reports(self.store)['reports'][0]
+        self.assertNotEqual(other['target_id'],report['target_id'])
+
     def test_http_permissions_and_routes_while_planning_disabled(self):
         server=make_server(0,self.tmp.name,disable_planning=True,admin_user='researcher',max_queue_wait=0)
         sid=self.intake()['id']

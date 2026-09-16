@@ -24,8 +24,11 @@ def text_field(value, limit, label, required=False):
 def submit(store, owner, payload):
     kind, target = payload.get('target_type'), payload.get('target_id')
     category = payload.get('category')
-    if not isinstance(kind,str) or not isinstance(category,str) or kind not in {'case', 'household'} or category not in CATEGORIES:
+    if not isinstance(kind,str) or not isinstance(category,str) or kind not in {'case', 'household', 'page'} or category not in CATEGORIES:
         raise ValueError('请选择问题类型和对应记录')
+    if kind == 'page':
+        if target is not None:raise ValueError('页面报告不需要指定记录编号')
+        target = digest({'page_report_owner': owner})[:32]
     if not isinstance(target,str) or not re.fullmatch(r'[a-f0-9]{32}',target):
         raise ValueError('记录编号无效')
     nonce = payload.get('request_id', '')
@@ -33,7 +36,7 @@ def submit(store, owner, payload):
         raise ValueError('报告提交标识无效')
     description = text_field(payload.get('description', ''), 2000, '问题说明', required=True)
     with store.lock, store.db.lock, store.db.conn:
-        row = store.owned(target, owner) if kind == 'case' else store.household_owned(target, owner)
+        row = store.owned(target, owner) if kind == 'case' else store.household_owned(target, owner) if kind == 'household' else {}
         previous = store.db.conn.execute('SELECT payload FROM case_reports WHERE owner=? AND request_id=?', (owner, nonce)).fetchone()
         if previous:
             report = json.loads(previous[0])
@@ -46,10 +49,11 @@ def submit(store, owner, payload):
         state = store.status(row) if kind == 'case' else {}
         report = {'id': secrets.token_hex(16), 'target_type': kind, 'target_id': target,
                   'case_id': target if kind == 'case' else None,
-                  'household_submission_id': row.get('household_submission_id') if kind == 'case' else target,
+                  'household_submission_id': row.get('household_submission_id') if kind == 'case' else target if kind == 'household' else None,
+                  'page_context': text_field(payload.get('page_context', ''), 120, '页面位置'),
                   'category': category, 'description': description, 'created_at': time.time(),
                   'reported_stage': (state.get('progress') or {}).get('stage'),
-                  'reported_status': row.get('status', 'intake_saved'),
+                  'reported_status': row.get('status', 'page_only' if kind == 'page' else 'intake_saved'),
                   'ui_version': text_field(payload.get('ui_version', ''), 80, '页面版本'),
                   'runtime_version': store.runtime_version,
                   'target_runtime_version': row.get('runtime_version'),
@@ -117,7 +121,7 @@ def scrub(value):
 
 
 def diagnostic(store, kind, target):
-    if kind not in {'case', 'household'} or not re.fullmatch(r'[a-f0-9]{32}', target):
+    if kind not in {'case', 'household', 'page'} or not re.fullmatch(r'[a-f0-9]{32}', target):
         raise KeyError('记录编号无效')
     with store.lock, store.db.lock:
         job = store.db.job(target) if kind == 'case' else None
@@ -127,6 +131,9 @@ def diagnostic(store, kind, target):
             raise KeyError('找不到记录')
         documents = {name: json.loads(payload) for name, payload in store.db.conn.execute('SELECT name,payload FROM documents WHERE job_id=?', (target,))} if job else {}
         reports = [json.loads(r[0]) for r in store.db.conn.execute("SELECT payload FROM case_reports WHERE json_extract(payload,'$.target_id')=? OR json_extract(payload,'$.household_submission_id')=?", (target, intake_id))]
+        if kind == 'page':
+            reports = [r for r in reports if r['target_type'] == 'page']
+            if not reports:raise KeyError('找不到页面报告')
         linked = [r['id'] for r in store.jobs.summaries() if intake_id and r.get('household_submission_id') == intake_id]
     output = {'schema_version': 'eb.case_diagnostic.v1', 'exported_at': time.time(), 'target_type': kind,
               'target_id': target, 'job': job, 'household_submission': intake, 'linked_case_ids': linked,

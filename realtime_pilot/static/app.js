@@ -148,7 +148,7 @@ function restore(profile){for(const q of schema.profile_questions){if(q.type==="
 const devices={ac:"空调",washer:"洗衣机",dishwasher:"洗碗机",dryer:"烘干机",electric_water_heater:"电热水器",home_ev:"家用电动汽车充电"};
 const scoreFields={score:"整体：这份方案总体适合您家吗？",comfort_score:"舒适：室温和生活安排的变化合适吗？",energy_score:"用电与费用：模拟用电量和费用符合您家期望吗？",vpp_score:"响应安排：您对本次错峰用电的处理方式满意吗？请考虑安排调整和自主决定体验。"};
 let generation=0,pendingSubmit=false;
-const UI_VERSION="eb.survey_ui.v6.21";
+const UI_VERSION="eb.survey_ui.v6.22";
 const RESEARCH_NOTICE_VERSION="eb.research_notice.v2";
 let savedReceipt=null,savedHouseholdRecord=null;
 const pendingDecisions=new Set(),pendingRequests=new Map();
@@ -171,10 +171,10 @@ function renderReceipt(){
  $('plan-saved').hidden=!!currentJob;
  $('plan-saved').disabled=pendingSubmit||schema?.planning_enabled===false||!receiptMatches();
 }
-function reportTarget(){return currentJob?{target_type:'case',target_id:currentJob.id}:savedReceipt?{target_type:'household',target_id:savedReceipt.id}:null;}
+function reportTarget(){return currentJob?{target_type:'case',target_id:currentJob.id}:savedReceipt?{target_type:'household',target_id:savedReceipt.id}:{target_type:'page',target_id:null};}
 function renderCaseSupport(){
  const target=reportTarget(),panel=$('case-support');if(!panel)return;
- panel.hidden=!target;if(!target)return;
+ panel.hidden=target.target_type==='page';if(panel.hidden)return;
  const anchor=currentJob?($('feedback-complete').hidden?document.querySelector('.comparison-workspace'):$('feedback-complete')):$('profile-details');
  anchor.before(panel);
  $('case-reference-label').textContent=target.target_type==='case'?'案例编号':'家庭资料编号';
@@ -182,7 +182,7 @@ function renderCaseSupport(){
  const last=readBrowser(draftStorage,'eb:report-receipt:'+target.target_id);
  $('case-support-status').textContent=last?'问题已收到，报告编号：'+last.report_id:'';
 }
-let reportingTarget=null,reportBusy=false;
+let reportingTarget=null,reportBusy=false,reportToastTimer;
 $('copy-case-id').onclick=async()=>{
  try{await navigator.clipboard.writeText($('case-reference-id').value);$('case-support-status').textContent='编号已复制。';}
  catch{$('case-reference-id').focus();$('case-reference-id').select();$('case-support-status').textContent='请复制已选中的编号。';}
@@ -191,8 +191,10 @@ $('report-problem').onclick=()=>{
  reportingTarget=reportTarget();if(!reportingTarget)return;
  const draft=readBrowser(draftStorage,'eb:report-draft:'+reportingTarget.target_id)||{};
  $('report-category').value=draft.category||'';$('report-description').value=draft.description||'';
- $('report-reference').textContent=(reportingTarget.target_type==='case'?'案例编号：':'家庭资料编号：')+reportingTarget.target_id;
- $('report-status').textContent='';$('report-dialog').showModal();$('report-category').focus();
+ reportingTarget.page_context=!$('feedback-complete').hidden?'提交完成':currentJob?currentJob.status==='complete'?'方案对比与评价':$('job-heading').textContent:$('wizard-heading').textContent;
+ $('report-reference').textContent=reportingTarget.target_type==='page'?'当前位置：'+reportingTarget.page_context:(reportingTarget.target_type==='case'?'案例编号：':'家庭资料编号：')+reportingTarget.target_id;
+ const last=readBrowser(draftStorage,'eb:report-receipt:'+reportingTarget.target_id);
+ $('report-status').textContent=last?'上次问题已收到，报告编号：'+last.report_id:'';$('report-dialog').showModal();$('report-category').focus();
 };
 $('report-close').onclick=()=>{if(!reportBusy)$('report-dialog').close();};
 $('report-dialog').addEventListener('cancel',e=>{if(reportBusy)e.preventDefault();});
@@ -210,6 +212,8 @@ $('report-form').onsubmit=async e=>{
   clearPending(key);removeBrowser(draftStorage,'eb:report-draft:'+body.target_id);
   writeBrowser(draftStorage,'eb:report-receipt:'+body.target_id,receipt);
   $('report-dialog').close();renderCaseSupport();
+  $('report-toast').textContent='问题已收到，感谢您的反馈。';$('report-toast').hidden=false;
+  clearTimeout(reportToastTimer);reportToastTimer=setTimeout(()=>{$('report-toast').hidden=true;},8000);
  }catch(ex){$('report-status').textContent='未能确认保存，请重试。'+ex.message;}
  finally{reportBusy=false;for(const x of $('report-form').querySelectorAll('button,select,textarea'))x.disabled=false;}
 };
