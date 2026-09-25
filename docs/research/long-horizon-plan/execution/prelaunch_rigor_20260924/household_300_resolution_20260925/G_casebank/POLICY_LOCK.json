@@ -1,0 +1,31 @@
+{
+  "schema_version": "eb.G.preresult_policy_lock.v1",
+  "status": "frozen_before_candidate_results",
+  "policy_version": "eb.g.fixed_policy.v1",
+  "policy_seed": "eb.g.20260926.fixed-policy.v1",
+  "generator_source_sha256": "3fa51cf51e865e22d03762ef2827fb9c9c500ca3dd3a88289bf76bf5c01f6ffb",
+  "meter_identity_sha256": "8a733339576b738ef64431d61af4bbd46a94935fd21dda5478ef402419642824",
+  "meter_identity": {
+    "meter_contract_version": "eb.D.single_household_AC_meter.v3",
+    "D_manifest_sha256": "2004cdcad84c754be9f63dea6e49b60d686f6b52feeae49816999954627e14b3",
+    "D_runtime_sha256": "d09b8d01f101d9cc25f3f27a47def227aba08258942bc75e6d88a53b02677886",
+    "D_final_evidence_sha256": "5fd5e1efc61f6772c5d98e6c2d5f97d3483dd5f271251158be5b41b9bad88832",
+    "B_profile_sha256": "7dbd4e5c87cc440de9f23a5042d83a809bd1cfea9d422245d228816146daaa69",
+    "public_role_manifest_sha256": "54531a2880f96d6b2a1cb743a30f0e89e2acff0bfca86d47de1f8f5a04d96ace"
+  },
+  "first_day_rule": "A_and_B_identical_initial_background_no_collectable_preference",
+  "day_2_to_10_ac_rule": "plus_0.5C_only_if_B_allows_and_existing_AC_active",
+  "device_search_order": [
+    "washer",
+    "dishwasher",
+    "dryer",
+    "electric_water_heater",
+    "home_ev"
+  ],
+  "device_selection_rule": "enumerate_all_legal_today_devices_then_min_SHA256(seed|choose|role|day|device)",
+  "device_offset_rule": "all_owned_devices_use_hash_ordered_plus_or_minus_30_20_10_minutes; enumerate_all_legal_offsets_before_choosing_first; record_available_directions",
+  "candidate_result_selection": "none; no energy or simulated preference used to choose action",
+  "candidate_numeric_artifacts_present_at_lock": false,
+  "release_boundary": "F_independent_G_contrast_review_and_E_release_gate_required",
+  "full_duration_presence_rule": "every_10_minute_slot_of_shifted_task_requires_any_member_home_or_assigned_EV_driver_home; complete_task_within_reported_B_window_and_energy_conserved"
+}

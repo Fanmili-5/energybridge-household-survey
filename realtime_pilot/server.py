@@ -24,6 +24,7 @@ import threading
 import time
 from urllib.parse import urlparse, parse_qs
 import case_reports
+from role_ten_day import RoleStudy
 
 from common import ROOT, VERSION, SCENARIO, QUESTIONS, PROFILE_IDS, RATING_IDS, digest, normalize_answers, training_candidate, write_json
 from common import PROPOSAL_PROFILE_QUESTIONS
@@ -574,6 +575,16 @@ class PilotHTTPServer(ThreadingHTTPServer):
     daemon_threads=True
 
 class Handler(BaseHTTPRequestHandler):
+    def role_study(self):
+        with self.server.role_lock:
+            if self.server.role_study is None:
+                self.server.role_study = RoleStudy(self.server.store.root,
+                    casebank_dir=self.server.role_casebank_dir,
+                    release_gate_path=self.server.role_release_gate_path,
+                    expected_roles=self.server.role_expected_roles,
+                    human_mode=self.server.role_human_pilot)
+            return self.server.role_study
+
     def handle(self):
         try:
             super().handle()
@@ -622,6 +633,37 @@ class Handler(BaseHTTPRequestHandler):
         path = urlparse(self.path).path
         if self.headers.get("Host") not in self.server.allowed_hosts:
             return self.reply(403, {"error": "请求地址不匹配"})
+        if path in {'/roles', '/roles.css', '/roles.js'}:
+            name={'/roles':'roles.html','/roles.css':'roles.css','/roles.js':'roles.js'}[path]
+            mime='text/html' if name.endswith('.html') else 'text/css' if name.endswith('.css') else 'application/javascript'
+            return self.reply(200,(ROOT/'static'/name).read_bytes(),content_type=mime+'; charset=utf-8')
+        if path in {'/api/admin/roles/feedback','/api/admin/roles/action-log'}:
+            if not self.is_admin():return self.reply(403,{'error':'此入口仅供管理员使用'})
+            try:
+                if path == '/api/admin/roles/action-log':
+                    rows=self.role_study().export_action_log()
+                    return self.reply(200,{'count':len(rows),'rows':rows})
+                query=parse_qs(urlparse(self.path).query)
+                training_only=query.get('view',['audit'])[0]=='training'
+                if query.get('view',['audit'])[0] not in {'audit','training'}:
+                    raise ValueError('导出视图无效')
+                rows=self.role_study().export_rows(training_only=training_only)
+                return self.reply(200,{'view':'training' if training_only else 'audit','count':len(rows),'rows':rows})
+            except (ValueError,RuntimeError) as exc:return self.reply(503,{'error':str(exc)})
+        if path.startswith('/api/roles/'):
+            try:
+                study=self.role_study()
+                if path=='/api/roles/session':
+                    session=self.session() or secrets.token_hex(32)
+                    return self.reply(200,study.session(session),cookie=None if self.is_admin() else session)
+                preview=re.fullmatch(r'/api/roles/preview/(cityrole-\d{4})',path)
+                if preview:return self.reply(200,study.profile(preview[1]))
+                day=re.fullmatch(r'/api/roles/day/(\d{1,2})',path)
+                if day:return self.reply(200,study.day(self.session() or '',int(day[1])))
+                return self.reply(404,{'error':'角色接口不存在'})
+            except KeyError as exc:return self.reply(404,{'error':str(exc)})
+            except ValueError as exc:return self.reply(400,{'error':str(exc)})
+            except RuntimeError as exc:return self.reply(503,{'error':str(exc)})
         if path.startswith('/admin/'):
             if not self.is_admin():return self.reply(403,{'error':'此入口仅供管理员使用'})
             if path=='/admin/survey':return self.reply(200,(ROOT/'static/index.html').read_bytes(),content_type='text/html; charset=utf-8')
@@ -716,6 +758,16 @@ class Handler(BaseHTTPRequestHandler):
             if path.startswith('/admin/'):
                 if not self.is_admin():return self.reply(403,{'error':'此入口仅供管理员使用'})
                 if path.startswith('/admin/api/'):path=path[6:]
+            if path.startswith('/api/roles/'):
+                study=self.role_study()
+                if path=='/api/roles/consent':return self.reply(200,study.consent(session,payload))
+                if path=='/api/roles/day-action':return self.reply(200,study.day_action(session,payload))
+                if path=='/api/roles/feedback':return self.reply(200,study.feedback(session,payload))
+                if path=='/api/roles/withdraw-day':return self.reply(200,study.withdraw_day(session,payload))
+                if path=='/api/roles/withdraw-actor':
+                    if payload != {'confirm': True}:raise ValueError('须确认撤回本批全部回答')
+                    return self.reply(200,study.withdraw_actor(session))
+                return self.reply(404,{'error':'角色接口不存在'})
             if path=='/api/captcha':
                 if not self.server.captcha or self.is_admin():return self.reply(400,{'error':'当前入口无需验证码'})
                 return self.reply(200,self.server.captcha.issue(session,payload.get('request_id')))
@@ -777,10 +829,12 @@ class Handler(BaseHTTPRequestHandler):
             return self.reply(404, {"error": "找不到本次任务"})
         except OverflowError as exc:
             return self.reply(429, {"error": str(exc)})
+        except RuntimeError as exc:
+            return self.reply(503,{"error":str(exc)})
         except (sqlite3.Error,OSError):
             return self.reply(503,{"error":"保存暂时不可用，请保留页面并重试同一次提交。"})
 
-def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, max_session_intakes=5, max_daily_intakes=2000, admin_user=None, allow_legacy_test_routes=False, local_captcha=False):
+def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, max_session_intakes=5, max_daily_intakes=2000, admin_user=None, allow_legacy_test_routes=False, local_captcha=False, role_casebank_dir=None, role_release_gate_path=None, role_expected_roles=300, role_human_pilot=False):
     if admin_user is not None and not re.fullmatch(r"[A-Za-z0-9_-]{1,64}",admin_user):
         raise ValueError("Invalid admin username")
     if public_origin:
@@ -789,8 +843,10 @@ def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False,
                 or origin.username or origin.password or origin.path
                 or origin.query or origin.fragment):
             raise ValueError("public_origin must be an exact http(s) origin without path")
-    if human_pilot and public_origin and origin.scheme!='https':
+    if (human_pilot or role_human_pilot) and public_origin and origin.scheme!='https':
         raise ValueError('Public human data collection requires an HTTPS public_origin')
+    if role_human_pilot and (role_casebank_dir is not None or role_release_gate_path is not None or role_expected_roles != 300):
+        raise ValueError('Human role collection uses only the fixed accepted casebank and F release gate paths for 300 roles')
     if min(max_pending,max_session_jobs,max_daily_jobs,max_session_intakes,max_daily_intakes)<1:raise ValueError('Admission limits must be positive')
     server = PilotHTTPServer(("127.0.0.1", port), Handler)
     server.allow_legacy_test_routes=bool(allow_legacy_test_routes and not public_origin)
@@ -798,6 +854,12 @@ def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False,
     server.captcha=LocalCaptcha() if local_captcha else None
     server.secure_cookie=bool(public_origin and origin.scheme=='https')
     server.planning_disabled = disable_planning
+    server.role_lock=threading.RLock()
+    server.role_study=None
+    server.role_human_pilot=bool(role_human_pilot)
+    server.role_casebank_dir=role_casebank_dir
+    server.role_release_gate_path=role_release_gate_path
+    server.role_expected_roles=role_expected_roles
     port = server.server_address[1]
     server.allowed_hosts = {f"127.0.0.1:{port}", f"localhost:{port}"}
     server.allowed_origins = {f"http://{host}" for host in server.allowed_hosts}
@@ -815,8 +877,11 @@ if __name__ == "__main__":
     parser.add_argument("--workers", type=int, choices=range(1, 33), default=1)
     parser.add_argument("--timeout", type=int, default=240)
     parser.add_argument("--human-pilot", action="store_true", help="Record real pilot self-reports; default is engineering test mode")
+    parser.add_argument("--role-human-pilot", action="store_true", help="Enable role human collection only with F's separate human approval; default is engineering preview")
     parser.add_argument("--public-origin", help="Exact external origin served by a reverse proxy; listener remains loopback")
     parser.add_argument("--data-dir", type=Path, help="Persistent job directory outside the application release")
+    parser.add_argument("--role-casebank-dir", type=Path, help="Accepted offline role casebank, contrast index and display payload directory")
+    parser.add_argument("--role-release-gate", type=Path, help="F's current revocable role-collection approval file")
     parser.add_argument("--admin-user", help="Trusted authenticated reverse-proxy username; proxy must overwrite X-EB-Authenticated-User")
     parser.add_argument("--disable-planning", action="store_true", help="Keep the UI readable but reject all job creation; no model calls")
     parser.add_argument('--max-pending',type=int,default=100,help='Maximum admitted unfinished calculations')
@@ -832,7 +897,7 @@ if __name__ == "__main__":
     singleton=(data_root/'server.lock').open('a')
     try:fcntl.flock(singleton,fcntl.LOCK_EX|fcntl.LOCK_NB)
     except BlockingIOError:parser.error('This data directory already has an active server')
-    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs,max_queue_wait=args.max_queue_wait,estimated_job_seconds=args.estimated_job_seconds,max_session_intakes=args.max_session_intakes,max_daily_intakes=args.max_daily_intakes,admin_user=args.admin_user,local_captcha=args.local_captcha)
+    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, role_human_pilot=args.role_human_pilot, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs,max_queue_wait=args.max_queue_wait,estimated_job_seconds=args.estimated_job_seconds,max_session_intakes=args.max_session_intakes,max_daily_intakes=args.max_daily_intakes,admin_user=args.admin_user,local_captcha=args.local_captcha,role_casebank_dir=args.role_casebank_dir,role_release_gate_path=args.role_release_gate)
     print(f"Local: http://127.0.0.1:{server.server_address[1]}", flush=True)
     def terminate(signum,frame):
         threading.Thread(target=server.shutdown,daemon=True).start()

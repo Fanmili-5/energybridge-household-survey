@@ -1,0 +1,21 @@
+{
+  "schema_version": "eb.F_G_public_case_table_readback.v1",
+  "table_sha256": "fa721d2f3c7d97bcb4bead239be6a5a67527de502190a4b52634a3f8cd97f677",
+  "manifest_sha256": "0775e466ac8d02efe5b1b2ac3af0e3207c08b3197d3043b4a20f5e8df984e5f0",
+  "F_simulation_acceptance_sha256": "adfdca0b41db2b185761300d4bc387580d6b0876f7d6d1bae19d0d375a9228d4",
+  "rows": 3000,
+  "roles": 300,
+  "family_counts": {
+    "no_contrast": 723,
+    "ac_plus_device_shift": 1081,
+    "device_time_shift": 852,
+    "ac_setpoint": 344
+  },
+  "feedback_rows_sum": 0,
+  "human_answer_columns": 0,
+  "max_numeric_difference": 2.4424906541753444e-15,
+  "failure_count": 0,
+  "failures": [],
+  "failure_examples_truncated": false,
+  "scope": "public simulated case metadata, not human feedback or measured bill"
+}

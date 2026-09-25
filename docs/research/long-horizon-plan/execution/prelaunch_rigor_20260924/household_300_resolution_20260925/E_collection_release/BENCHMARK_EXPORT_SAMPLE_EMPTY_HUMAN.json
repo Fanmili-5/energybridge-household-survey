@@ -1,0 +1,14 @@
+{
+  "schema_version": "eb.role_benchmark_export_example.v1",
+  "status": "engineering_preview_example_not_human_training_release",
+  "casebank_sha256": "b62eb85b8e5b09796c0c3a16f4fc567d5e6b716cfffc5c4ba375547cdb2ffd67",
+  "view": "strict_temporal_human_training",
+  "human_training_row_count": 0,
+  "rows": [],
+  "engineering_check": {
+    "source": "disposable_loopback_server_using_real_accepted_simulation_with_local_test_gate",
+    "audit_event_count": 1,
+    "audit_origins": ["synthetic_engineering_test"],
+    "not_a_formal_preference_sample": true
+  }
+}

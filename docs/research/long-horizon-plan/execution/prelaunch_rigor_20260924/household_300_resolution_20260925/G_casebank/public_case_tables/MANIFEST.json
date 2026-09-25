@@ -1,0 +1,33 @@
+{
+  "schema_version": "eb.G_public_case_metadata.v1",
+  "status": "public_candidate_metadata_pending_F_table_review",
+  "table": "cases_3000.csv",
+  "table_sha256": "fa721d2f3c7d97bcb4bead239be6a5a67527de502190a4b52634a3f8cd97f677",
+  "rows": 3000,
+  "roles": 300,
+  "family_counts": {
+    "no_contrast": 723,
+    "ac_plus_device_shift": 1081,
+    "device_time_shift": 852,
+    "ac_setpoint": 344
+  },
+  "meaningful_day_count": 2277,
+  "equivalent_day_count": 723,
+  "F_simulation_acceptance_sha256": "adfdca0b41db2b185761300d4bc387580d6b0876f7d6d1bae19d0d375a9228d4",
+  "G_source_sha256": {
+    "candidate_input_manifest_300.json": "e669616b9d640397ac19222f8379da0ab8e2a5866f1ab7dc6c36179641cc156d",
+    "candidate_runtime_300.json": "ba6de4e84bb4ed18d06198132ec33e051bb49c8d97df5191e3fad8500addfe29",
+    "casebank_pending.json": "6d159eb9af9576532c1ead6ec44122da971b004ed43d233098e98eadb794fa5c",
+    "contrast_index_pending.json": "24fbc34e185427be5ca696fc87d4a1e438156ea6bdbc9e443f62810e91069b1c",
+    "day_payload_3000.jsonl": "ddd05b7de99d97657840b5bff01835df2af25a1d60519d07dc410dd420e0949a",
+    "display_payload_3000.jsonl": "7704543af2db6aa805d2b7c57f5602365cc84a6c836b62d790601aa844347395",
+    "display_payloads_pending.json": "6d21a81b69fb9425ae48b54ccefbcbbeffda8d4a847325ea999d686ad312b41a",
+    "trajectory_evidence_300.json": "3cbca5ba4e89f51732cf3fb257c8ef23c6e544187fe42f5a70d6fb676c8af705"
+  },
+  "source_public_role_table": "E_collection_release/public_role_package/households_300.csv",
+  "metric_boundary": "experimental owned-device electricity plus selected-AC COP3 proxy; no tariff, whole-home bill, task success, measured comfort or human feedback",
+  "temperature_boundary": "24-hour mean of all owned rooms with each room and hour equally weighted; includes rooms without selected AC",
+  "participant_feedback_rows": 0,
+  "human_collection_approved": false,
+  "export_source_sha256": "70cbac3ccece23be14461b690d1f425df330e1de46183ad9f288bfd49a210224"
+}

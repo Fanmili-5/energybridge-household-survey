@@ -100,7 +100,7 @@ def read_series(folder, horizon=96, start_date='2007-07-01'):
     rows=conn.execute('''SELECT t.Month,t.Day,t.Hour,t.Minute,t.Interval,d.Name,d.KeyValue,d.Units,r.Value
       FROM ReportData r JOIN ReportDataDictionary d USING(ReportDataDictionaryIndex)
       JOIN Time t USING(TimeIndex) JOIN EnvironmentPeriods e USING(EnvironmentPeriodIndex)
-      WHERE t.WarmupFlag=0 AND e.EnvironmentType=3 AND d.ReportingFrequency IN ('Zone Timestep','HVAC System Timestep')
+      WHERE COALESCE(t.WarmupFlag,0)=0 AND e.EnvironmentType=3 AND d.ReportingFrequency IN ('Zone Timestep','HVAC System Timestep')
       ORDER BY t.TimeIndex''').fetchall()
     conn.close(); traces={}
     for month,day,hour,minute,interval,name,key,unit,val in rows:

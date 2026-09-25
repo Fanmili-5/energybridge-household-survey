@@ -1,0 +1,53 @@
+{
+  "schema_version": "eb.F_G_simulation_acceptance.v1",
+  "status": "APPROVED_FOR_ACCEPTED_OFFLINE_SIMULATION_PROJECTION_ONLY",
+  "accepted_at": "2026-09-25T19:16:32+00:00",
+  "supersedes_acceptance_sha256": "6cb6be71498637c708a7c063fc5ae818559897e201fff2914bfcd76695cdef10",
+  "method_decision_sha256": "74d502f7d555df7d021c9882c111ae1dae039fa7aa584c0f6258cd4c71859a9a",
+  "G_source_file_sha256": {
+    "candidate_input_manifest_300.json": "e669616b9d640397ac19222f8379da0ab8e2a5866f1ab7dc6c36179641cc156d",
+    "candidate_runtime_300.json": "ba6de4e84bb4ed18d06198132ec33e051bb49c8d97df5191e3fad8500addfe29",
+    "casebank_pending.json": "6d159eb9af9576532c1ead6ec44122da971b004ed43d233098e98eadb794fa5c",
+    "contrast_index_pending.json": "24fbc34e185427be5ca696fc87d4a1e438156ea6bdbc9e443f62810e91069b1c",
+    "day_payload_3000.jsonl": "ddd05b7de99d97657840b5bff01835df2af25a1d60519d07dc410dd420e0949a",
+    "display_payload_3000.jsonl": "7704543af2db6aa805d2b7c57f5602365cc84a6c836b62d790601aa844347395",
+    "display_payloads_pending.json": "6d21a81b69fb9425ae48b54ccefbcbbeffda8d4a847325ea999d686ad312b41a",
+    "trajectory_evidence_300.json": "3cbca5ba4e89f51732cf3fb257c8ef23c6e544187fe42f5a70d6fb676c8af705"
+  },
+  "F_independent_audit_sha256": {
+    "G_candidate_inputs_300.json": "3dde88455aa0d200d2f723fd8dc9bc34e7f26a37c06525802fcdca4c005f412b",
+    "G_runtime_300_readback.json": "d055dc86a700d76b3782627dea26515e2f7a86ef3a6913977bff288e6fde6940",
+    "G_day_payloads_300_readback.json": "91f5ffcdaf72d44eb6b39b7ee1611c588e36beaa0a749b32bc103d96b6faed4d",
+    "G_projection_300_readback.json": "9fc9d1f38fd1196800f0812a89ec649ec0ca542506755d76ef7ab75962901b29"
+  },
+  "D_final_evidence_sha256": "5fd5e1efc61f6772c5d98e6c2d5f97d3483dd5f271251158be5b41b9bad88832",
+  "G_policy_lock_sha256": "acffad28fed2d633a7cbe463157e9c15ee2f84f83cd10fa9db04d3e369ed787a",
+  "public_role_manifest_sha256": "54531a2880f96d6b2a1cb743a30f0e89e2acff0bfca86d47de1f8f5a04d96ace",
+  "meter_identity_sha256": "8a733339576b738ef64431d61af4bbd46a94935fd21dda5478ef402419642824",
+  "roles": 300,
+  "days": 3000,
+  "branch_days": 6000,
+  "meaningful_case_days": 2277,
+  "equivalent_case_days": 723,
+  "new_candidate_runs": 297,
+  "identical_baseline_reuses": 3,
+  "temperature_display_scope": "mean of every household-owned reported room at every one of 24 hourly observations, equal room and hour weights; includes rooms without household-controlled AC; not controlled-AC comfort or measured temperature",
+  "temperature_display_pairs_verified": 6000,
+  "approved_transition": [
+    "derive accepted_offline casebank from the exact pending bank, with consent/batch supplied separately",
+    "derive independently_accepted contrast index from the exact pending decisions",
+    "project and hash the exact reviewed 3000 E-shaped display objects",
+    "verify all three final actual files independently before any technical gate"
+  ],
+  "unchanged_required": [
+    "case identities and 3000 daily order",
+    "A/B plan, action and pre-event-state hashes",
+    "actual SQL-derived daily metrics and histories",
+    "semantic contrast statuses and evidence",
+    "public display text, weather, schedules and metrics"
+  ],
+  "human_collection_approved": false,
+  "technical_preview_gate_issued": false,
+  "participant_feedback_rows": 0,
+  "scope": "simulated research case and engineering preview preparation only; not human consent or scientific validation"
+}

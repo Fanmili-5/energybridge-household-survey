@@ -1,0 +1,1502 @@
+{
+  "n_questions": 66,
+  "n_required_for_generation": 42,
+  "rule": "required_for_generation is conditional on selected_device/show_when; no participant case feedback is filled",
+  "questions": {
+    "B02": {
+      "question_prompt": "您家通常一起居住的有几个人，包括您自己？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.B02.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "A_NBS_FAMILY",
+        "EB_V45"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "family_structure"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "B04": {
+      "question_prompt": "在本次指定月份，白天您家通常有人在家吗？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.B04.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "NBS_TIME_USE_2024",
+        "EB_V45",
+        "EXPERIMENTAL_TYPICAL_DAY"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "derived_synthetic_member_routines"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "B05": {
+      "question_prompt": "请选择家中拥有、要纳入日常用电安排的设备；所选设备都会进入本次模拟。",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.B05.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "CHNS_local_template_plus_experimental_other_devices"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "F_EVENING": {
+      "question_prompt": "平时 18:00—22:00，您家通常有人在家吗？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.F_EVENING.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "NBS_TIME_USE_2024",
+        "EB_V45",
+        "EXPERIMENTAL_TYPICAL_DAY"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "derived_synthetic_member_routines"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "F_REGULARITY": {
+      "question_prompt": "您家成员的外出、回家和休息时间通常规律吗？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.F_REGULARITY.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "NBS_TIME_USE_2024",
+        "EB_V45",
+        "EXPERIMENTAL_TYPICAL_DAY"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "experimental_profile"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "F_LATE_USE": {
+      "question_prompt": "您家是否经常有人在深夜（零点以后）仍在活动并使用电器？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.F_LATE_USE.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "NBS_TIME_USE_2024",
+        "EB_V45",
+        "EXPERIMENTAL_TYPICAL_DAY"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "experimental_profile"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "M_MEMBERS": {
+      "question_prompt": "家里每个人的日常偏好",
+      "group": "member_profile",
+      "domain": "member_profile",
+      "profile_path": "questionnaire_answers.M_MEMBERS.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "A_NBS_FAMILY",
+        "NBS_TIME_USE_2024",
+        "EB_V45"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "age_compatible_synthetic_member_routines_and_preferences"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "H_ac": {
+      "question_prompt": "在本次指定月份，空调一般什么时候用？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.H_ac.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac"
+      },
+      "device": "ac",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 224,
+      "not_applicable_households": 76,
+      "evidence_basis_values": [
+        "experimental_monthly_cooling_habit",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "H_washer": {
+      "question_prompt": "在本次指定月份，洗衣机一般什么时候用？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.H_washer.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "washer"
+      },
+      "device": "washer",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 255,
+      "not_applicable_households": 45,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "D_washer": {
+      "question_prompt": "洗衣机这项任务，通常最晚几点需要完成？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.D_washer.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "washer"
+      },
+      "device": "washer",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 255,
+      "not_applicable_households": 45,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "E_washer": {
+      "question_prompt": "洗衣机通常从几点起就可以开始？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.E_washer.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "washer"
+      },
+      "device": "washer",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 255,
+      "not_applicable_households": 45,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "T_washer": {
+      "question_prompt": "洗衣机一次通常需要多久？（分钟）",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.T_washer.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "washer"
+      },
+      "device": "washer",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 255,
+      "not_applicable_households": 45,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "H_dishwasher": {
+      "question_prompt": "在本次指定月份，洗碗机一般什么时候用？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.H_dishwasher.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dishwasher"
+      },
+      "device": "dishwasher",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 30,
+      "not_applicable_households": 270,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "D_dishwasher": {
+      "question_prompt": "洗碗机这项任务，通常最晚几点需要完成？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.D_dishwasher.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dishwasher"
+      },
+      "device": "dishwasher",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 30,
+      "not_applicable_households": 270,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "E_dishwasher": {
+      "question_prompt": "洗碗机通常从几点起就可以开始？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.E_dishwasher.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dishwasher"
+      },
+      "device": "dishwasher",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 30,
+      "not_applicable_households": 270,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "T_dishwasher": {
+      "question_prompt": "洗碗机一次通常需要多久？（分钟）",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.T_dishwasher.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dishwasher"
+      },
+      "device": "dishwasher",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 30,
+      "not_applicable_households": 270,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "H_dryer": {
+      "question_prompt": "在本次指定月份，烘干机一般什么时候用？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.H_dryer.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dryer"
+      },
+      "device": "dryer",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 36,
+      "not_applicable_households": 264,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "D_dryer": {
+      "question_prompt": "烘干机这项任务，通常最晚几点需要完成？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.D_dryer.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dryer"
+      },
+      "device": "dryer",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 36,
+      "not_applicable_households": 264,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "E_dryer": {
+      "question_prompt": "烘干机通常从几点起就可以开始？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.E_dryer.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dryer"
+      },
+      "device": "dryer",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 36,
+      "not_applicable_households": 264,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "T_dryer": {
+      "question_prompt": "烘干机一次通常需要多久？（分钟）",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.T_dryer.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "dryer"
+      },
+      "device": "dryer",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 36,
+      "not_applicable_households": 264,
+      "evidence_basis_values": [
+        "experimental_legal_task_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "H_electric_water_heater": {
+      "question_prompt": "电热水器通常从什么时候开始加热？（请按真实习惯填写；午夜或跨夜安排可保存，暂不能生成模拟）",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.H_electric_water_heater.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      },
+      "device": "electric_water_heater",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 165,
+      "not_applicable_households": 135,
+      "evidence_basis_values": [
+        "experimental_daytime_heating_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "H_home_ev": {
+      "question_prompt": "电动汽车通常什么时候在家接入充电设备？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.H_home_ev.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "home_ev"
+      },
+      "device": "home_ev",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 24,
+      "not_applicable_households": 276,
+      "evidence_basis_values": [
+        "experimental_overnight_home_charging",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "H_ac_temp": {
+      "question_prompt": "空调需要制冷时，通常设为多少度？（22—28℃；此项不是供暖温度）",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.H_ac_temp.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac"
+      },
+      "device": "ac",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 224,
+      "not_applicable_households": 76,
+      "evidence_basis_values": [
+        "experimental_profile",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "D_home_ev": {
+      "question_prompt": "接入充电后，电动汽车通常几点离家？（早于接入时刻表示次日；请勿选择相同时刻）",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.D_home_ev.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "home_ev"
+      },
+      "device": "home_ev",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 24,
+      "not_applicable_households": 276,
+      "evidence_basis_values": [
+        "experimental_overnight_home_charging",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "D_electric_water_heater": {
+      "question_prompt": "电热水器通常加热到几点？（早于开始表示次日；跨夜答案可保存，暂不能生成模拟）",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.D_electric_water_heater.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      },
+      "device": "electric_water_heater",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 165,
+      "not_applicable_households": 135,
+      "evidence_basis_values": [
+        "experimental_daytime_heating_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "H_ac_start": {
+      "question_prompt": "空调通常几点开始使用？",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.H_ac_start.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac",
+        "show_when": {
+          "question_id": "H_ac",
+          "value": "custom"
+        }
+      },
+      "device": "ac",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 53,
+      "not_applicable_households": 247,
+      "evidence_basis_values": [
+        "experimental_profile",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "H_ac_end": {
+      "question_prompt": "空调通常几点结束使用？（早于开始时间表示次日）",
+      "group": "household_fact",
+      "domain": "usual_household_or_device",
+      "profile_path": "questionnaire_answers.H_ac_end.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac",
+        "show_when": {
+          "question_id": "H_ac",
+          "value": "custom"
+        }
+      },
+      "device": "ac",
+      "source_ids": [
+        "CHEN_2024_BEHAVIOR",
+        "NIU_2016",
+        "EB_V45",
+        "EXPERIMENTAL_ORDINARY_WINDOW"
+      ],
+      "answered_households": 53,
+      "not_applicable_households": 247,
+      "evidence_basis_values": [
+        "experimental_profile",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "P_AC_RANGE": {
+      "question_prompt": "在本次指定月份，在家时，您家通常希望室温保持在哪个范围？（最低—最高，℃）",
+      "group": "stated_preference",
+      "domain": "stated_preference",
+      "profile_path": "questionnaire_answers.P_AC_RANGE.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac"
+      },
+      "device": "ac",
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_CONSTRAINT"
+      ],
+      "answered_households": 224,
+      "not_applicable_households": 76,
+      "evidence_basis_values": [
+        "experimental_comfort_band",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "P_AC_CHANGE": {
+      "question_prompt": "为了配合错峰，您最多能接受室温比平时变化多少？",
+      "group": "stated_preference",
+      "domain": "stated_preference",
+      "profile_path": "questionnaire_answers.P_AC_CHANGE.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "ac"
+      },
+      "device": "ac",
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_CONSTRAINT"
+      ],
+      "answered_households": 224,
+      "not_applicable_households": 76,
+      "evidence_basis_values": [
+        "experimental_temperature_flexibility",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "P_EV_TARGET": {
+      "question_prompt": "离家出发时，希望电动汽车电量至少达到多少？（按10%档选择；含插混，不含电动自行车）",
+      "group": "stated_preference",
+      "domain": "stated_preference",
+      "profile_path": "questionnaire_answers.P_EV_TARGET.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "home_ev"
+      },
+      "device": "home_ev",
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_CONSTRAINT"
+      ],
+      "answered_households": 24,
+      "not_applicable_households": 276,
+      "evidence_basis_values": [
+        "experimental_profile",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "P_EV_RESERVE": {
+      "question_prompt": "为临时出行，电动汽车平时至少希望保留多少电量？（按10%档选择）",
+      "group": "stated_preference",
+      "domain": "stated_preference",
+      "profile_path": "questionnaire_answers.P_EV_RESERVE.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "home_ev"
+      },
+      "device": "home_ev",
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_CONSTRAINT"
+      ],
+      "answered_households": 24,
+      "not_applicable_households": 276,
+      "evidence_basis_values": [
+        "experimental_profile",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "P_HOT_WATER": {
+      "question_prompt": "家里通常最需要热水的时间是？",
+      "group": "stated_preference",
+      "domain": "stated_preference",
+      "profile_path": "questionnaire_answers.P_HOT_WATER.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      },
+      "device": "electric_water_heater",
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_CONSTRAINT"
+      ],
+      "answered_households": 165,
+      "not_applicable_households": 135,
+      "evidence_basis_values": [
+        "experimental_daytime_heating_window",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "P_PREHEAT": {
+      "question_prompt": "保证使用时有热水的前提下，您是否愿意提前加热？",
+      "group": "stated_preference",
+      "domain": "stated_preference",
+      "profile_path": "questionnaire_answers.P_PREHEAT.value",
+      "required_for_generation": true,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      },
+      "device": "electric_water_heater",
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_CONSTRAINT"
+      ],
+      "answered_households": 165,
+      "not_applicable_households": 135,
+      "evidence_basis_values": [
+        "experimental_profile",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "A_EB_CONTROL": {
+      "question_prompt": "您家愿意把用电安排交给系统到什么程度？",
+      "group": "attitude",
+      "domain": "stated_preference",
+      "profile_path": "questionnaire_answers.A_EB_CONTROL.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "CHINA_DR_CONSTRUCT",
+        "GUANGDONG_SMART_CONTROL",
+        "EB_V45",
+        "EXPERIMENTAL_ATTITUDE_COVERAGE"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "existing_three_option_experimental_factor"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "P_COMFORT": {
+      "question_prompt": "考虑用电调整时，保持家人舒适对您家有多重要？",
+      "group": "stated_preference",
+      "domain": "stated_preference",
+      "profile_path": "questionnaire_answers.P_COMFORT.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "CHINA_DR_CONSTRUCT",
+        "GUANGDONG_SMART_CONTROL",
+        "EB_V45",
+        "EXPERIMENTAL_ATTITUDE_COVERAGE"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "expanded_counterbalanced_experimental_attitude"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "P_COST": {
+      "question_prompt": "考虑用电调整时，节省电费对您家有多重要？",
+      "group": "stated_preference",
+      "domain": "stated_preference",
+      "profile_path": "questionnaire_answers.P_COST.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "CHINA_DR_CONSTRUCT",
+        "GUANGDONG_SMART_CONTROL",
+        "EB_V45",
+        "EXPERIMENTAL_ATTITUDE_COVERAGE"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "expanded_counterbalanced_experimental_attitude"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "P_GRID": {
+      "question_prompt": "不明显影响生活时，配合电网错峰用电对您家有多重要？",
+      "group": "stated_preference",
+      "domain": "stated_preference",
+      "profile_path": "questionnaire_answers.P_GRID.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "CHINA_DR_CONSTRUCT",
+        "GUANGDONG_SMART_CONTROL",
+        "EB_V45",
+        "EXPERIMENTAL_ATTITUDE_COVERAGE"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "expanded_counterbalanced_experimental_attitude"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "P_NOTICE": {
+      "question_prompt": "用电调整前，希望提前多久收到通知？（选择最接近的一项）",
+      "group": "stated_preference",
+      "domain": "stated_preference",
+      "profile_path": "questionnaire_answers.P_NOTICE.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "CHINA_DR_CONSTRUCT",
+        "GUANGDONG_SMART_CONTROL",
+        "EB_V45",
+        "EXPERIMENTAL_ATTITUDE_COVERAGE"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "experimental_notice_requirement"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_REGION": {
+      "question_prompt": "您家常住在哪个省级地区？",
+      "group": "simulation_environment",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_REGION.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "A_NBS_FAMILY",
+        "C_IDF_BINDING",
+        "EB_V45",
+        "EXPERIMENTAL_BUILDING_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "assigned_city_province"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_CITY": {
+      "question_prompt": "常住城市（无需详细地址）",
+      "group": "simulation_environment",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_CITY.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "A_NBS_FAMILY",
+        "C_IDF_BINDING",
+        "EB_V45",
+        "EXPERIMENTAL_BUILDING_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "assigned_city"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_BUILDING": {
+      "question_prompt": "住房的建筑形式更接近哪一种？",
+      "group": "simulation_environment",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_BUILDING.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "A_NBS_FAMILY",
+        "C_IDF_BINDING",
+        "EB_V45",
+        "EXPERIMENTAL_BUILDING_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "C_physical_prototype_type"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_TENURE": {
+      "question_prompt": "目前的居住方式是？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_TENURE.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_RESEARCH_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "experimental_profile"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_AREA": {
+      "question_prompt": "您家这套住房面积大致为？（合租按整套住房）",
+      "group": "simulation_environment",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_AREA.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "A_NBS_FAMILY",
+        "C_IDF_BINDING",
+        "F_SHARED_WHOLE_UNIT_AREA",
+        "EB_V45",
+        "EXPERIMENTAL_BUILDING_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "experimental_F_scaled_whole_source_unit_net_over_shared_0p95_ratio",
+        "synthetic_H6_like_whole_dwelling_building_area"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_AREA_BASIS": {
+      "question_prompt": "以上面积采用哪种口径？",
+      "group": "simulation_environment",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_AREA_BASIS.value",
+      "required_for_generation": true,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "A_NBS_FAMILY",
+        "C_IDF_BINDING",
+        "EB_V45",
+        "EXPERIMENTAL_BUILDING_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "synthetic_H6_like_household_attributed_building_area_in_shared_dwelling",
+        "synthetic_H6_like_whole_dwelling_building_area"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_FLOOR": {
+      "question_prompt": "这套住宅位于楼房的什么位置？",
+      "group": "simulation_environment",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_FLOOR.value",
+      "required_for_generation": true,
+      "required_when": {
+        "show_when": {
+          "question_id": "X_BUILDING",
+          "value": "apartment"
+        }
+      },
+      "device": null,
+      "source_ids": [
+        "A_NBS_FAMILY",
+        "C_IDF_BINDING",
+        "EB_V45",
+        "EXPERIMENTAL_BUILDING_CONTEXT"
+      ],
+      "answered_households": 287,
+      "not_applicable_households": 13,
+      "evidence_basis_values": [
+        "C_source_unit_floor_and_roof_surface",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_BUILDING_AGE": {
+      "question_prompt": "住宅大致建于哪个时期？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_BUILDING_AGE.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "C_IDF_BINDING",
+        "EB_V45",
+        "EXPERIMENTAL_PROTOTYPE_YEAR_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "C_source_prototype_year_not_observed_building_age"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_INCOME": {
+      "question_prompt": "前面填写的同住家人，月总收入大致为？（人民币；其他币种可大致折算）",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_INCOME.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "NBS_2023_INCOME",
+        "CHINA_ENERGY_BURDEN",
+        "EB_V45",
+        "EXPERIMENTAL_INCOME_SCALE"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "NBS_2023_median_scale_experimental_income"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_BILL": {
+      "question_prompt": "最近一个月，这些同住家人合计承担的电费大致为？（人民币；其他币种可大致折算）",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_BILL.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "CHINA_ENERGY_BURDEN",
+        "EB_V45",
+        "EXPERIMENTAL_BILL_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "experimental_cashflow_bill_with_device_floor_not_energy_prediction"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_TARIFF": {
+      "question_prompt": "您家平时使用哪种电价？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_TARIFF.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_RESEARCH_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "experimental_local_tariff_context_separate_from_shared_normalized_EB_TOU"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_EXTRA_DEVICES": {
+      "question_prompt": "除前面的模拟设备外，您家还有哪些设备？（可多选）",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_EXTRA_DEVICES.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_RESEARCH_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "experimental_background_appliance_outside_EB_scope"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_PROTECTED": {
+      "question_prompt": "希望用电调整尽量不要打扰哪些活动？（可多选）",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_PROTECTED.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_RESEARCH_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "synthetic_household_constraints"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_SMART": {
+      "question_prompt": "您家以前使用过定时或自动控制电器吗？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_SMART.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_RESEARCH_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "experimental_profile"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_DR": {
+      "question_prompt": "您家以前参与过错峰用电或需求响应活动吗？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_DR.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_RESEARCH_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "experimental_profile"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_RESTORE": {
+      "question_prompt": "假设自动安排影响原来的生活习惯，您家更倾向怎样做？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_RESTORE.value",
+      "required_for_generation": false,
+      "required_when": null,
+      "device": null,
+      "source_ids": [
+        "EB_V45",
+        "EXPERIMENTAL_RESEARCH_CONTEXT"
+      ],
+      "answered_households": 300,
+      "not_applicable_households": 0,
+      "evidence_basis_values": [
+        "experimental_profile"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_COUNT_ac": {
+      "question_prompt": "家里有几台空调？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_COUNT_ac.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "ac"
+      },
+      "device": "ac",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 224,
+      "not_applicable_households": 76,
+      "evidence_basis_values": [
+        "experimental_owned_unit_count_with_private_zone_cap",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_FREQ_ac": {
+      "question_prompt": "在本次指定月份，通常一周有几天使用空调？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_FREQ_ac.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "ac"
+      },
+      "device": "ac",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 224,
+      "not_applicable_households": 76,
+      "evidence_basis_values": [
+        "experimental_weekly_frequency",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_COUNT_washer": {
+      "question_prompt": "家里有几台洗衣机？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_COUNT_washer.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "washer"
+      },
+      "device": "washer",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 255,
+      "not_applicable_households": 45,
+      "evidence_basis_values": [
+        "experimental_owned_unit_count_with_private_zone_cap",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_FREQ_washer": {
+      "question_prompt": "在本次指定月份，通常一周有几天使用洗衣机？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_FREQ_washer.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "washer"
+      },
+      "device": "washer",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 255,
+      "not_applicable_households": 45,
+      "evidence_basis_values": [
+        "experimental_weekly_frequency",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_COUNT_dishwasher": {
+      "question_prompt": "家里有几台洗碗机？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_COUNT_dishwasher.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "dishwasher"
+      },
+      "device": "dishwasher",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 30,
+      "not_applicable_households": 270,
+      "evidence_basis_values": [
+        "experimental_owned_unit_count_with_private_zone_cap",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_FREQ_dishwasher": {
+      "question_prompt": "在本次指定月份，通常一周有几天使用洗碗机？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_FREQ_dishwasher.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "dishwasher"
+      },
+      "device": "dishwasher",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 30,
+      "not_applicable_households": 270,
+      "evidence_basis_values": [
+        "experimental_weekly_frequency",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_COUNT_dryer": {
+      "question_prompt": "家里有几台烘干机？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_COUNT_dryer.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "dryer"
+      },
+      "device": "dryer",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 36,
+      "not_applicable_households": 264,
+      "evidence_basis_values": [
+        "experimental_owned_unit_count_with_private_zone_cap",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_FREQ_dryer": {
+      "question_prompt": "在本次指定月份，通常一周有几天使用烘干机？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_FREQ_dryer.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "dryer"
+      },
+      "device": "dryer",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 36,
+      "not_applicable_households": 264,
+      "evidence_basis_values": [
+        "experimental_weekly_frequency",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_COUNT_home_ev": {
+      "question_prompt": "家里有几辆可在家充电的电动汽车（含插混，不含电动自行车）？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_COUNT_home_ev.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "home_ev"
+      },
+      "device": "home_ev",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 24,
+      "not_applicable_households": 276,
+      "evidence_basis_values": [
+        "experimental_owned_unit_count_with_private_zone_cap",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_FREQ_home_ev": {
+      "question_prompt": "在本次指定月份，通常一周有几天在家为电动汽车充电？（含插混，不含电动自行车）",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_FREQ_home_ev.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "home_ev"
+      },
+      "device": "home_ev",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 24,
+      "not_applicable_households": 276,
+      "evidence_basis_values": [
+        "experimental_weekly_frequency",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_COUNT_electric_water_heater": {
+      "question_prompt": "家里有几台电热水器？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_COUNT_electric_water_heater.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      },
+      "device": "electric_water_heater",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 165,
+      "not_applicable_households": 135,
+      "evidence_basis_values": [
+        "experimental_owned_unit_count_with_private_zone_cap",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    },
+    "X_FREQ_electric_water_heater": {
+      "question_prompt": "在本次指定月份，通常一周有几天使用电热水器？",
+      "group": "research_context",
+      "domain": "dwelling_environment_or_research_context",
+      "profile_path": "questionnaire_answers.X_FREQ_electric_water_heater.value",
+      "required_for_generation": false,
+      "required_when": {
+        "selected_device": "electric_water_heater"
+      },
+      "device": "electric_water_heater",
+      "source_ids": [
+        "CHNS_2015_LOCAL",
+        "NBS_2023_APPLIANCE",
+        "ZJ_2024_APPLIANCE",
+        "EB_V45",
+        "EXPERIMENTAL_DEVICE_COVERAGE"
+      ],
+      "answered_households": 165,
+      "not_applicable_households": 135,
+      "evidence_basis_values": [
+        "experimental_weekly_frequency",
+        "questionnaire_skip_rule"
+      ],
+      "case_answer_or_feedback": false
+    }
+  }
+}

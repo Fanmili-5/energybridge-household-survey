@@ -1,0 +1,58 @@
+{
+  "schema_version": "eb.public_synthetic_fixed_roles.v1",
+  "status": "PUBLIC_CANDIDATE_FIXED_ROLES_ONLY_NOT_COLLECTION_READY",
+  "source_input_sha256": {
+    "A_family": "d8446c68dd81fa6865cb79add18602fa609188b18631b4134c315385a90ad810",
+    "B_profile": "7dbd4e5c87cc440de9f23a5042d83a809bd1cfea9d422245d228816146daaa69",
+    "C_building": "bdaab43a705bfb1fba0a675e73e86284aefe38dbcc0db9dd0271190fa42753d3",
+    "F_shared_whole_area": "4ccfc37140dce0a644a313baa7e53082d93db8df7e2797c2401d82868385fb35"
+  },
+  "local_full_package_manifest_sha256": "8fd8e79d2f8a13ee6e1377780016573334854a78a575eb692d3ea76e84176646",
+  "source_ids_preserved_in": "provenance_300.csv",
+  "building_and_weather_identifiers_preserved": true,
+  "relative_or_absolute_model_and_weather_paths_exported": false,
+  "raw_model_or_weather_assets_exported": false,
+  "zones_with_source_model_internal_names_exported": false,
+  "participant_feedback_rows": 0,
+  "accepted_ten_day_results": 0,
+  "tables": {
+    "households_300.csv": {
+      "rows": 300,
+      "sha256": "9690462bb62137b4959c2cc848632362f7566a88a16cdf139dea8d98b3d9ae61",
+      "removed_columns": [
+        "idf_repo_path",
+        "weather_epw_repo_path"
+      ]
+    },
+    "members_300.csv": {
+      "rows": 749,
+      "sha256": "64353ac165ef8d0b5b8d117410083bcef8fe0b2759b961a53890896d4ca82b54",
+      "removed_columns": []
+    },
+    "member_links_300.csv": {
+      "rows": 585,
+      "sha256": "627ac2e52729ce9391f64d769083ad7f5e52f0735581b795fd4361b6b6fb3136",
+      "removed_columns": []
+    },
+    "member_windows_300.csv": {
+      "rows": 2878,
+      "sha256": "cdf5fed23744cc062a9402da3d170beab2310a119a6f8ed77bc3ee010eed2953",
+      "removed_columns": []
+    },
+    "devices_300.csv": {
+      "rows": 734,
+      "sha256": "fdabbfe782e501a6fcd45b6d4907ab76cbdd4aebe8650eff8b391ef6ac6b41fb",
+      "removed_columns": []
+    },
+    "question_answers_300.csv": {
+      "rows": 20594,
+      "sha256": "563af7e30c7f25adfbf13d988163c33ef0273804be36f94bbb93d95ce3838534",
+      "removed_columns": []
+    },
+    "provenance_300.csv": {
+      "rows": 79827,
+      "sha256": "610bad7cb17e710898f485dc94ac3239f0e183d1567602d65d057ceaf41f9dad",
+      "removed_columns": []
+    }
+  }
+}

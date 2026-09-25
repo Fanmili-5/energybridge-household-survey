@@ -1,0 +1,28 @@
+{
+  "schema_version": "eb.F_role_collection_release.v1",
+  "status": "ROLE_TECHNICAL_PREVIEW_APPROVED",
+  "revoked": false,
+  "human_collection_approved": false,
+  "engineering_only": true,
+  "accepted_at": "2026-09-25T19:21:05+00:00",
+  "casebank_sha256": "b62eb85b8e5b09796c0c3a16f4fc567d5e6b716cfffc5c4ba375547cdb2ffd67",
+  "contrast_sha256": "c8ef1e3382af2d218cc08bfd55853d919230537e78de8f54c4a26dd0102a6e9b",
+  "display_sha256": "dd8ba408de37fe697dcb746ad52a8ee015f28a35282f3b055e4e30dd5eab79a9",
+  "public_role_manifest_sha256": "54531a2880f96d6b2a1cb743a30f0e89e2acff0bfca86d47de1f8f5a04d96ace",
+  "profile_sha256": "7dbd4e5c87cc440de9f23a5042d83a809bd1cfea9d422245d228816146daaa69",
+  "final_evidence_sha256": "5fd5e1efc61f6772c5d98e6c2d5f97d3483dd5f271251158be5b41b9bad88832",
+  "meter_version_sha256": "8a733339576b738ef64431d61af4bbd46a94935fd21dda5478ef402419642824",
+  "actual_file_byte_sha256": {
+    "casebank": "6808583670de49e37d52485c0df85b970b1b3ded441c5b3956604d4e4cf69fd2",
+    "contrast": "2942c7029b5de26dd3f940a98de289b1cd6fd7f92a479b8b7b723343b2f66311",
+    "display": "6d21a81b69fb9425ae48b54ccefbcbbeffda8d4a847325ea999d686ad312b41a"
+  },
+  "F_accepted_public_readback_sha256": "6ec21814db3cbe545a3cd41288e2c070dd0e5fb0893c26f3cf068d14df376ea3",
+  "F_G_simulation_acceptance_sha256": "adfdca0b41db2b185761300d4bc387580d6b0876f7d6d1bae19d0d375a9228d4",
+  "engineering_batch_id": "eb.engineering.preview.g3000.20260926.v1",
+  "roles": 300,
+  "days": 3000,
+  "engineering_contrast_days": 2277,
+  "participant_feedback_rows_at_signing": 0,
+  "scope": "real simulated A/B engineering preview and isolated test submissions only; no human research collection authorization"
+}

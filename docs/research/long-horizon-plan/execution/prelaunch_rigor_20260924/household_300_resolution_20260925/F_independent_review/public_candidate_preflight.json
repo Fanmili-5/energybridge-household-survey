@@ -1,0 +1,19 @@
+{
+  "schema_version": "eb.F_public_candidate_preflight.v1",
+  "public_manifest_sha256": "54531a2880f96d6b2a1cb743a30f0e89e2acff0bfca86d47de1f8f5a04d96ace",
+  "status": "PUBLIC_CANDIDATE_FIXED_ROLES_ONLY_NOT_COLLECTION_READY",
+  "file_count": 8,
+  "table_row_counts": {
+    "households_300.csv": 300,
+    "members_300.csv": 749,
+    "member_links_300.csv": 585,
+    "member_windows_300.csv": 2878,
+    "devices_300.csv": 734,
+    "question_answers_300.csv": 20594,
+    "provenance_300.csv": 79827
+  },
+  "synthetic_households_unique": 300,
+  "failure_count": 0,
+  "failures": [],
+  "scope": "portable candidate file/hash/path scan; no license grant or collection result inferred"
+}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "eb.chns_2015_ac_washer_joint.v1",
+  "status": "local_unweighted_coownership_diagnostic_only_not_china_ownership_distribution",
+  "source": "CHNS 2015 asset_12 and rst_12; original questionnaire/codebook L110/L120",
+  "raw_md5": {
+    "asset_12.sas7bdat": "0a71c69b795791fdd848721d9ce1b4b2",
+    "rst_12.sas7bdat": "53df25f82a498afe73f0bde93850d467"
+  },
+  "selection": "same 2015 FM=0 T2=1, positive area/rooms, unambiguous resident cohort as housing joint audit; L110/L120 in {0,1}",
+  "field_semantics": {
+    "L110": "any household member owns a washing machine",
+    "L120": "any household member owns an air conditioner"
+  },
+  "n_urban_joint_housing_cohort": 2198,
+  "n_valid_ac_washer_joint": 2196,
+  "n_missing_or_nonbinary": 2,
+  "cells": [
+    {
+      "washer_owned": false,
+      "ac_owned": false,
+      "n": 102,
+      "sample_fraction": 0.046448
+    },
+    {
+      "washer_owned": false,
+      "ac_owned": true,
+      "n": 32,
+      "sample_fraction": 0.014572
+    },
+    {
+      "washer_owned": true,
+      "ac_owned": false,
+      "n": 494,
+      "sample_fraction": 0.224954
+    },
+    {
+      "washer_owned": true,
+      "ac_owned": true,
+      "n": 1568,
+      "sample_fraction": 0.714026
+    }
+  ],
+  "national_weights_available": false,
+  "does_not_cover": [
+    "dishwasher",
+    "dryer",
+    "electric_water_heater",
+    "home_ev",
+    "appliance-use schedule",
+    "attitude"
+  ],
+  "role_assignments_changed": false,
+  "housing_audit": {
+    "housing_all_2015_rows": 6086,
+    "housing_phone_followup_rows_excluded": 206,
+    "housing_face_to_face_households": 5880,
+    "roster_2015_person_rows": 23937,
+    "roster_2015_households": 5892,
+    "face_to_face_households_joined_to_roster": 5880,
+    "urban_site_housing_households": 2349,
+    "urban_site_positive_area_rooms_residents_unambiguous": 2198,
+    "urban_site_households_with_ambiguous_possible_member": 142,
+    "core_urban_t4_households_in_usable": 1111
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "eb.F_accepted_public_readback.v1",
+  "file_sha256": {
+    "pending_bank": "6d159eb9af9576532c1ead6ec44122da971b004ed43d233098e98eadb794fa5c",
+    "pending_contrast": "24fbc34e185427be5ca696fc87d4a1e438156ea6bdbc9e443f62810e91069b1c",
+    "pending_display": "6d21a81b69fb9425ae48b54ccefbcbbeffda8d4a847325ea999d686ad312b41a",
+    "bank": "6808583670de49e37d52485c0df85b970b1b3ded441c5b3956604d4e4cf69fd2",
+    "contrast": "2942c7029b5de26dd3f940a98de289b1cd6fd7f92a479b8b7b723343b2f66311",
+    "display": "6d21a81b69fb9425ae48b54ccefbcbbeffda8d4a847325ea999d686ad312b41a",
+    "F_acceptance": "adfdca0b41db2b185761300d4bc387580d6b0876f7d6d1bae19d0d375a9228d4"
+  },
+  "n_roles": 300,
+  "n_cases": 3000,
+  "collectable_engineering_contrast_days": 2277,
+  "equivalent_days": 723,
+  "display_byte_identical_to_reviewed_pending": true,
+  "only_approved_promotion_fields_changed": true,
+  "public_csv_files_checked": 7,
+  "human_collection_approved": false,
+  "participant_feedback_rows": 0,
+  "failure_count": 0,
+  "failures": [],
+  "failure_examples_truncated": false
+}
