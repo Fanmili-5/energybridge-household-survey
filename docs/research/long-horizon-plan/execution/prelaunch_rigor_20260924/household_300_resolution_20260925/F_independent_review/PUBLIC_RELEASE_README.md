@@ -19,4 +19,4 @@
 
 `attributable_kwh` 是**本户受控设备电量加选中空调冷量按 COP 3 折算的实验代理量**，不是全户电表、真实电费或节省金额。展示单值温度是**本户所有纳入房间、24 小时逐房逐时等权均值**，含未受控空调房间；不是受控房间舒适温度、个人即时体验或实测温度。设备任务是否完成没有单独物理模型，不从排程推出成功。
 
-在仓库根目录可启动隔离工程页，例如 `python3 realtime_pilot/server.py --port 8766 --data-dir /tmp/energybridge-role-preview --disable-planning`，访问 `http://127.0.0.1:8766/roles`。页面默认不是 `--human-pilot`；工程回答只写指定本地测试目录。服务端 [反馈合同](../E_collection_release/OFFLINE_CASEBANK_AND_FEEDBACK_CONTRACT.md)描述按批次、同意版本和曝光顺序过滤训练导出；当前没有可发布的真人 benchmark 回答。真实研究需要另行完成适用的同意与认知试填、独立签发真人采集门，不能借用本工程批次。
+在仓库根目录可启动隔离工程页，例如 `python3 realtime_pilot/server.py --port 8766 --data-dir /tmp/energybridge-role-preview --disable-planning --session-cookie-name eb_role_preview_session`，访问 `http://127.0.0.1:8766/roles`。与原问卷在同一主机并行时，即使端口不同，浏览器 cookie 仍按主机共享；工程服务须使用独立 cookie 名和数据目录。页面默认不是 `--human-pilot`；工程回答只写指定本地测试目录。服务端 [反馈合同](../E_collection_release/OFFLINE_CASEBANK_AND_FEEDBACK_CONTRACT.md)描述按批次、同意版本和曝光顺序过滤训练导出；当前没有可发布的真人 benchmark 回答。真实研究需要另行完成适用的同意与认知试填、独立签发真人采集门，不能借用本工程批次。

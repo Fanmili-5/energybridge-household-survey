@@ -195,6 +195,112 @@ class RoleHTTPTests(unittest.TestCase):
                                release_gate_path=self.gate, expected_roles=2, human_mode=True)
         self.assertFalse(human_role.ready)
 
+    def test_distinct_cookie_names_keep_two_same_host_sessions_independent(self):
+        base = Path(self.tmp.name)
+        old = make_server(0, root=base / "old-questionnaire-data", human_pilot=True,
+                          disable_planning=True)
+        role = make_server(0, root=base / "isolated-role-data", disable_planning=True,
+                           session_cookie_name="eb_role_preview_session",
+                           role_casebank_dir=base / "casebank", role_release_gate_path=self.gate,
+                           role_expected_roles=2)
+        threads = [threading.Thread(target=server.serve_forever, daemon=True) for server in (old, role)]
+        for thread in threads: thread.start()
+        cookiejar = http.cookiejar.CookieJar()
+        client = build_opener(ProxyHandler({}), HTTPCookieProcessor(cookiejar))
+        def call(server, path, payload=None):
+            origin = f"http://127.0.0.1:{server.server_address[1]}"
+            headers = {"Origin": origin, "Content-Type": "application/json"} if payload is not None else {}
+            req = Request(origin + path, data=json.dumps(payload).encode() if payload is not None else None,
+                          headers=headers)
+            with client.open(req) as response:
+                return json.loads(response.read()), response.headers.get("Set-Cookie", "")
+        def cookie(name):
+            return next(item.value for item in cookiejar if item.name == name)
+        try:
+            old_session, old_header = call(old, "/api/session")
+            self.assertEqual(old_session["collection_mode"], "human_pilot")
+            self.assertIn("pilot_session=", old_header)
+            self.assertIn("HttpOnly", old_header)
+            self.assertIn("SameSite=Strict", old_header)
+            old_id = cookie("pilot_session")
+            role_session, role_header = call(role, "/api/roles/session")
+            self.assertTrue(role_session["ready"])
+            self.assertEqual(role_session["collection_mode"], "engineering_preview")
+            self.assertIn("eb_role_preview_session=", role_header)
+            self.assertIn("HttpOnly", role_header)
+            self.assertIn("SameSite=Strict", role_header)
+            role_id = cookie("eb_role_preview_session")
+            self.assertEqual(cookie("pilot_session"), old_id)
+            actor, _ = call(role, "/api/roles/consent", {"accept": True, "consent_version": "consent-v1"})
+            call(role, "/api/roles/day/1")
+            call(role, "/api/roles/day-action", {"day_index": 1, "action": "acknowledge",
+                                            "idempotency_key": "separate-cookie-ack"})
+            rotated, reset_header = call(old, "/api/session/reset", {})
+            self.assertTrue(rotated["cleared"])
+            self.assertIn("pilot_session=", reset_header)
+            self.assertNotEqual(cookie("pilot_session"), old_id)
+            self.assertEqual(cookie("eb_role_preview_session"), role_id)
+            post_reset_old_id = cookie("pilot_session")
+            resumed, _ = call(role, "/api/roles/session")
+            self.assertEqual((resumed["actor_id"], resumed["role_id"]),
+                             (actor["actor_id"], actor["role_id"]))
+            self.assertTrue(resumed["days"][1]["unlocked"])
+            day, _ = call(role, "/api/roles/day/2")
+            payload = {"schema_version": "eb.role_ten_day_blind_feedback.v1",
+                       "casebank_sha256": day["casebank_sha256"], "profile_sha256": day["profile_sha256"],
+                       "actor_pseudonym": actor["actor_id"], "role_id": actor["role_id"],
+                       "case_id": day["case_id"], "day_index": 2,
+                       "display_order_hash": day["display_order_hash"], "choice": "cannot_judge",
+                       "reason": "同域双会话隔离检查", "ratings_by_side": {
+                           side: {field: None for field in ("score", "comfort_score", "energy_score", "vpp_score")}
+                           for side in ("left", "right")}, "idempotency_key": "separate-cookie-answer"}
+            saved, _ = call(role, "/api/roles/feedback", payload)
+            call(role, "/api/roles/withdraw-day", {"target_event_id": saved["event_id"],
+                                                    "withdrawal_key": "separate-cookie-withdraw"})
+            self.assertEqual(cookie("pilot_session"), post_reset_old_id)
+            self.assertEqual(cookie("eb_role_preview_session"), role_id)
+            old_after, _ = call(old, "/api/session")
+            self.assertEqual(old_after["collection_mode"], "human_pilot")
+            self.assertEqual(cookie("pilot_session"), post_reset_old_id)
+            self.assertEqual(role.role_study.export_rows(training_only=True), [])
+            reverse = build_opener(ProxyHandler({}), HTTPCookieProcessor(http.cookiejar.CookieJar()))
+            first_origin = f"http://127.0.0.1:{role.server_address[1]}"
+            with reverse.open(first_origin + "/api/roles/session") as response:
+                self.assertEqual(json.loads(response.read())["collection_mode"], "engineering_preview")
+            second_origin = f"http://127.0.0.1:{old.server_address[1]}"
+            with reverse.open(second_origin + "/api/session") as response:
+                self.assertEqual(json.loads(response.read())["collection_mode"], "human_pilot")
+            self.assertEqual({item.name for h in reverse.handlers if isinstance(h, HTTPCookieProcessor)
+                              for item in h.cookiejar}, {"pilot_session", "eb_role_preview_session"})
+        finally:
+            for server in (old, role): server.shutdown()
+            for thread in threads: thread.join(timeout=5)
+            for server in (old, role):
+                server.server_close()
+                server.store.db.close()
+
+    def test_custom_cookie_name_is_validated_and_https_attributes_remain(self):
+        with self.assertRaisesRegex(ValueError, "Invalid session cookie name"):
+            make_server(0, root=Path(self.tmp.name) / "invalid-cookie", session_cookie_name="pilot_session; x")
+        secure = make_server(0, root=Path(self.tmp.name) / "secure-cookie", disable_planning=True,
+                             session_cookie_name="eb_role_preview_session",
+                             public_origin="https://47.85.194.154")
+        worker = threading.Thread(target=secure.serve_forever, daemon=True)
+        worker.start()
+        try:
+            opener = build_opener(ProxyHandler({}))
+            with opener.open(f"http://127.0.0.1:{secure.server_address[1]}/api/session") as response:
+                header = response.headers["Set-Cookie"]
+            self.assertIn("eb_role_preview_session=", header)
+            self.assertIn("HttpOnly", header)
+            self.assertIn("SameSite=Strict", header)
+            self.assertIn("Secure", header)
+        finally:
+            secure.shutdown()
+            worker.join(timeout=5)
+            secure.server_close()
+            secure.store.db.close()
+
     def test_missing_casebank_cannot_open_collection(self):
         with tempfile.TemporaryDirectory() as empty:
             study = RoleStudy(Path(empty) / "data", casebank_dir=Path(empty) / "missing",

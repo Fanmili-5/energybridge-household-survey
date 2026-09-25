@@ -611,7 +611,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Referrer-Policy", "no-referrer")
         self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; frame-ancestors 'none'")
         if cookie:
-            self.send_header("Set-Cookie", f"pilot_session={cookie}; HttpOnly; SameSite=Strict; Path=/; Max-Age=2592000"+('; Secure' if getattr(self.server,'secure_cookie',False) else ''))
+            self.send_header("Set-Cookie", f"{self.server.session_cookie_name}={cookie}; HttpOnly; SameSite=Strict; Path=/; Max-Age=2592000"+('; Secure' if getattr(self.server,'secure_cookie',False) else ''))
         self.end_headers()
         self.wfile.write(body)
 
@@ -626,7 +626,7 @@ class Handler(BaseHTTPRequestHandler):
             return 'admin_' + digest({'admin_user': self.server.admin_user})
         cookies = SimpleCookie()
         cookies.load(self.headers.get("Cookie", ""))
-        value = cookies.get("pilot_session")
+        value = cookies.get(self.server.session_cookie_name)
         return value.value if value and re.fullmatch("[a-f0-9]{64}", value.value) else None
 
     def do_GET(self):
@@ -834,9 +834,11 @@ class Handler(BaseHTTPRequestHandler):
         except (sqlite3.Error,OSError):
             return self.reply(503,{"error":"保存暂时不可用，请保留页面并重试同一次提交。"})
 
-def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, max_session_intakes=5, max_daily_intakes=2000, admin_user=None, allow_legacy_test_routes=False, local_captcha=False, role_casebank_dir=None, role_release_gate_path=None, role_expected_roles=300, role_human_pilot=False):
+def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False, public_origin=None, disable_planning=False, max_pending=100, max_session_jobs=3, max_daily_jobs=250, max_queue_wait=120, estimated_job_seconds=60, max_session_intakes=5, max_daily_intakes=2000, admin_user=None, allow_legacy_test_routes=False, local_captcha=False, role_casebank_dir=None, role_release_gate_path=None, role_expected_roles=300, role_human_pilot=False, session_cookie_name="pilot_session"):
     if admin_user is not None and not re.fullmatch(r"[A-Za-z0-9_-]{1,64}",admin_user):
         raise ValueError("Invalid admin username")
+    if not isinstance(session_cookie_name,str) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,63}",session_cookie_name):
+        raise ValueError("Invalid session cookie name")
     if public_origin:
         origin = urlparse(public_origin)
         if (origin.scheme not in {"http", "https"} or not origin.hostname
@@ -853,6 +855,7 @@ def make_server(port=8766, root=None, workers=1, timeout=240, human_pilot=False,
     server.admin_user=admin_user
     server.captcha=LocalCaptcha() if local_captcha else None
     server.secure_cookie=bool(public_origin and origin.scheme=='https')
+    server.session_cookie_name=session_cookie_name
     server.planning_disabled = disable_planning
     server.role_lock=threading.RLock()
     server.role_study=None
@@ -878,6 +881,7 @@ if __name__ == "__main__":
     parser.add_argument("--timeout", type=int, default=240)
     parser.add_argument("--human-pilot", action="store_true", help="Record real pilot self-reports; default is engineering test mode")
     parser.add_argument("--role-human-pilot", action="store_true", help="Enable role human collection only with F's separate human approval; default is engineering preview")
+    parser.add_argument("--session-cookie-name", default="pilot_session", help="Validated session cookie name; set a distinct name for an isolated role preview service")
     parser.add_argument("--public-origin", help="Exact external origin served by a reverse proxy; listener remains loopback")
     parser.add_argument("--data-dir", type=Path, help="Persistent job directory outside the application release")
     parser.add_argument("--role-casebank-dir", type=Path, help="Accepted offline role casebank, contrast index and display payload directory")
@@ -897,7 +901,7 @@ if __name__ == "__main__":
     singleton=(data_root/'server.lock').open('a')
     try:fcntl.flock(singleton,fcntl.LOCK_EX|fcntl.LOCK_NB)
     except BlockingIOError:parser.error('This data directory already has an active server')
-    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, role_human_pilot=args.role_human_pilot, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs,max_queue_wait=args.max_queue_wait,estimated_job_seconds=args.estimated_job_seconds,max_session_intakes=args.max_session_intakes,max_daily_intakes=args.max_daily_intakes,admin_user=args.admin_user,local_captcha=args.local_captcha,role_casebank_dir=args.role_casebank_dir,role_release_gate_path=args.role_release_gate)
+    server = make_server(args.port, root=args.data_dir, workers=args.workers, timeout=args.timeout, human_pilot=args.human_pilot, role_human_pilot=args.role_human_pilot, session_cookie_name=args.session_cookie_name, public_origin=args.public_origin, disable_planning=args.disable_planning,max_pending=args.max_pending,max_session_jobs=args.max_session_jobs,max_daily_jobs=args.max_daily_jobs,max_queue_wait=args.max_queue_wait,estimated_job_seconds=args.estimated_job_seconds,max_session_intakes=args.max_session_intakes,max_daily_intakes=args.max_daily_intakes,admin_user=args.admin_user,local_captcha=args.local_captcha,role_casebank_dir=args.role_casebank_dir,role_release_gate_path=args.role_release_gate)
     print(f"Local: http://127.0.0.1:{server.server_address[1]}", flush=True)
     def terminate(signum,frame):
         threading.Thread(target=server.shutdown,daemon=True).start()

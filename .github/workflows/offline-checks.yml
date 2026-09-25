@@ -20,6 +20,14 @@ jobs:
       - run: python -m pip install -r requirements.txt
       - run: python scripts/check_secrets.py --history
       - run: python -m unittest discover -s scripts -p 'test_clean_collected_case.py'
+      - name: Reviewed role HTTP, collection contract and SQL readers
+        run: |
+          python -m unittest realtime_pilot.test_role_ten_day_http -v
+          python -m unittest discover -s docs/research/long-horizon-plan/execution/prelaunch_rigor_20260924/household_300_resolution_20260925/E_collection_release -p test_offline_collection_contract.py -v
+          python -m unittest realtime_pilot.test_energyplus_sql_null_warmup -v
+        env:
+          PYTHONPATH: realtime_pilot
+          PYTHONDONTWRITEBYTECODE: '1'
       - name: Native deployment template checks
         run: |
           sudo apt-get update -qq
@@ -42,6 +50,28 @@ jobs:
           node-version: '22'
       - run: npm install --prefix "$RUNNER_TEMP/browser-tests" playwright@1.55.0
       - run: "$RUNNER_TEMP/browser-tests/node_modules/.bin/playwright install --with-deps chromium"
+      - name: Isolated role SVG browser regression without planning
+        run: |
+          set -euo pipefail
+          python realtime_pilot/server.py --port 18768 --data-dir "$RUNNER_TEMP/role-preview-data" \
+            --disable-planning --session-cookie-name eb_role_preview_session \
+            >"$RUNNER_TEMP/role-preview-server.log" 2>&1 &
+          role_pid=$!
+          trap 'kill "$role_pid" 2>/dev/null || true; wait "$role_pid" 2>/dev/null || true' EXIT
+          ready=0
+          for attempt in $(seq 1 30); do
+            if python -c 'import json,urllib.request; o=urllib.request.build_opener(urllib.request.ProxyHandler({})); d=json.load(o.open("http://127.0.0.1:18768/api/roles/session",timeout=2)); assert d.get("ready") is True and d.get("collection_mode")=="engineering_preview"' 2>/dev/null; then
+              ready=1
+              break
+            fi
+            if ! kill -0 "$role_pid" 2>/dev/null; then break; fi
+            sleep 1
+          done
+          if [ "$ready" -ne 1 ]; then cat "$RUNNER_TEMP/role-preview-server.log"; exit 1; fi
+          EB_BROWSER_ORIGIN=http://127.0.0.1:18768 node realtime_pilot/deploy/verify_role_svg.js
+        env:
+          NODE_PATH: ${{ runner.temp }}/browser-tests/node_modules
+          PYTHONDONTWRITEBYTECODE: '1'
       - name: Browser and actual collection regression (no paid API)
         run: |
           python scripts/test_frontend.py

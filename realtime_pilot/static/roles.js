@@ -20,7 +20,7 @@ function fail(error){text('notice',error.message||String(error));}
 function profileView(data){state.profile=data;const h=data.household;
   const qById=Object.fromEntries(data.question_facts.map(q=>[q.question_id,q]));const q=id=>qById[id]?.display||'未知';
   text('role-code',h.role_id);text('city',`${h.province} · ${h.city}`);text('weather-source','CSWD 典型年模拟夏季');text('hero-day-weather',data.first_day_weather||'逐日天气待重新核验');
-  const shared=h.housing_form==='shared_dwelling_private_rooms_with_allocated_common_area';$('unit-diagram').hidden=shared;$('shared-diagram').hidden=!shared;
+  const shared=h.housing_form==='shared_dwelling_private_rooms_with_allocated_common_area';$('unit-diagram').toggleAttribute('hidden',shared);$('shared-diagram').toggleAttribute('hidden',!shared);
   text('home-type',housingLabels[h.housing_form]||housingLabels[h.building_type]||h.housing_form);text('whole-area',h.whole_dwelling_building_area_m2?`${Number(h.whole_dwelling_building_area_m2).toFixed(1)} m²`:'未知');
   text('owned-area',h.household_accounted_net_area_m2?`${Number(h.household_accounted_net_area_m2).toFixed(1)} m²`:'未知');
   text('common-area',Number(h.common_allocated_area_m2)>0?`${Number(h.common_allocated_area_m2).toFixed(1)} m²`:'无');
