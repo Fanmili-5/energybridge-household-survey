@@ -1,0 +1,25 @@
+{
+  "schema_version": "eb.F_v2_trial_E_package_readback.v1",
+  "package_manifest_sha256": "baf8e16390b471e76776550883b519c241f25be0037aac34d964145f0de2fa73",
+  "public_manifest_sha256": "4387f3759068b42fea3c94789be21ff3f3a4fbd90732472057ae14b26ebd71e3",
+  "F_E_gate_sha256": "b0923ced35a9fdaab377b2afffab02a73bed739bd0b923c35734dc50d29f1e65",
+  "table_rows": {
+    "device_inventory_300.csv": 734,
+    "devices_300.csv": 715,
+    "households_300.csv": 300,
+    "member_links_300.csv": 585,
+    "member_windows_300.csv": 2878,
+    "members_300.csv": 749,
+    "provenance_300.csv": 6900,
+    "question_answers_300.csv": 20576,
+    "zones_300.csv": 2191
+  },
+  "public_table_count": 7,
+  "synthetic_roles": 300,
+  "distinct_role_question_pairs": 19800,
+  "stale_selected_inventory_rows": 0,
+  "failure_count": 0,
+  "failures": [],
+  "failure_examples_truncated": false,
+  "scope": "isolated engineering CSV/public-candidate file and semantic readback; not public release"
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": "eb.F_role_collection_release.v1",
+  "status": "ROLE_TECHNICAL_PREVIEW_APPROVED",
+  "revoked": false,
+  "human_collection_approved": false,
+  "engineering_only": true,
+  "accepted_at": "2026-09-26T01:49:53.754929+00:00",
+  "casebank_sha256": "068f88730e8cd63ba12e7df263de218e019287967beed6022320dc562d7b60ee",
+  "contrast_sha256": "b191e5f2f7a41242fe9daf379af5a9a2fada9c2c8c3ecf6b691d11bdecade364",
+  "display_sha256": "8d35219be52f376a301eec7ddb1a5ae0be1180b02263f83cd82fcfe9692775c5",
+  "public_role_manifest_sha256": "4387f3759068b42fea3c94789be21ff3f3a4fbd90732472057ae14b26ebd71e3",
+  "profile_sha256": "aab74ca47d480bc93ddd5d7243020044d439b9408a9f4ed8af0092159fc26334",
+  "final_evidence_sha256": "906dade754b1c5208303e3907d6a6f7233b5ca1b9e97a9a0cce951bc51a7d249",
+  "meter_version_sha256": "70b946e8e9a367131bfd9cccfade82ebb9a869e5f0c400d2e47d4ff842297930",
+  "actual_file_byte_sha256": {
+    "bank": "74dc0997dfbd78d778b38ccb44c1816e2a8320db46e8b33cad338f5423adb7a1",
+    "contrast": "71df472107dbcdc7efe5447a137543067218feb55f376b969c9982893dd86e99",
+    "display": "c17cf93a1d86176be8f17616a95563efd3a4b7ccc2d88d44e5cc454ed9bf7a17",
+    "public_manifest": "4387f3759068b42fea3c94789be21ff3f3a4fbd90732472057ae14b26ebd71e3"
+  },
+  "F_readback_sha256": {
+    "F_D_runtime": "42acbb2873cedc68102904d1ecc29f6c1f27135ddb10fcccd616f7a08d03bb62",
+    "F_G_runtime": "ded38a3b56660da85070d039c487ea0526303a7ab6dde9560b4aa74a96371ff6",
+    "F_G_payloads": "906dade754b1c5208303e3907d6a6f7233b5ca1b9e97a9a0cce951bc51a7d249",
+    "F_E_package": "74afafe87fb8cc4036f61ad0698d402b077f7fe7cb3daef9871b277d41015eb7",
+    "F_E_provenance": "c7d9cd9ca624f78ae80d84b6f27455695217ca2663d469f2a7dc0058aa68d133",
+    "F_accepted_public": "8880c15c32206d4fafee0a81c4db6d464752755a770fa7e36f0474f164ef19ed"
+  },
+  "engineering_batch_id": "eb.engineering.preview.v2.g3000.20260926",
+  "roles": 300,
+  "days": 3000,
+  "engineering_contrast_days": 2253,
+  "participant_feedback_rows_at_signing": 0,
+  "scope": "isolated local engineering role preview and synthetic test submissions only; no human collection, publication, push, or deployment approval"
+}

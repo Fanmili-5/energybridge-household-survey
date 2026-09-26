@@ -1,0 +1,17 @@
+{
+  "schema_version": "eb.F_v2_trial_local_adapter_readback.v1",
+  "role_adapter_sha256": "30b9a8b1024299fb02f068391cdbd6e738c9315ddc6d3a9c6b7fd0cfcaeebebf",
+  "technical_gate_sha256": "1c3861a9d5a2c8581977b4826fc9daf894a3bb3b422b8f27e2123f11d4a5c49c",
+  "public_devices_sha256": "519919d213d3082a9a3a5d19e8636a441fa98716bd844749d0a7c1057b2b0f53",
+  "roles": 300,
+  "cases": 3000,
+  "ac_roles_checked": 224,
+  "special_owned_two_controlled_one_roles": [
+    "cityrole-0025",
+    "cityrole-0249"
+  ],
+  "revoked_gate_checked": true,
+  "human_collection_authorized": false,
+  "failure_count": 0,
+  "failures": []
+}

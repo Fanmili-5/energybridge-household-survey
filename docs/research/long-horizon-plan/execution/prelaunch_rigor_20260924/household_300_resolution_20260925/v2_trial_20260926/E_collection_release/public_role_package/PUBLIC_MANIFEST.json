@@ -1,0 +1,44 @@
+{
+  "schema_version": "eb.public_synthetic_fixed_roles.v1",
+  "status": "PUBLIC_CANDIDATE_FIXED_ROLES_ONLY_NOT_COLLECTION_READY",
+  "source_v2_package_sha256": "baf8e16390b471e76776550883b519c241f25be0037aac34d964145f0de2fa73",
+  "source_input_sha256": {
+    "A_family": "1e880b8573124cd2b1050c55e41efc803d3a08d384950f2137cc748abb66870d",
+    "B_profile": "aab74ca47d480bc93ddd5d7243020044d439b9408a9f4ed8af0092159fc26334",
+    "B_behavior": "5f9feaf70c8e2fcad2775d92667fc7dca226c2c7495ac146ce49644884eceafc",
+    "C_building": "bb063fb494fd5d1ca8faaeafafab1444fe9f1fe6cd54b09ee5657e19dc957c0d",
+    "C_ready": "2fabebc427064b0f25c8dc272f608dd1229ae0eef3258ed77d90f2c4c1191aea",
+    "D_inputs": "c8bcb9415e0d03f490fa577bc3da5a8955458a679f50945c6192f11b56984c25"
+  },
+  "tables": {
+    "households_300.csv": {
+      "rows": 300,
+      "sha256": "60dce895a21395217ab3c85be36dd8e5cb6e381eda48f1bdc9678fb87bc3ec6d"
+    },
+    "members_300.csv": {
+      "rows": 749,
+      "sha256": "a175134b1c58f9b0b62c0f6d7c7802281440a7902b1afcf233de1df963f44d45"
+    },
+    "member_links_300.csv": {
+      "rows": 585,
+      "sha256": "627ac2e52729ce9391f64d769083ad7f5e52f0735581b795fd4361b6b6fb3136"
+    },
+    "member_windows_300.csv": {
+      "rows": 2878,
+      "sha256": "86b65141ea3cc71cb6bcb6c9137b11c5a7bec2bced6b44577779ec370641f9c6"
+    },
+    "devices_300.csv": {
+      "rows": 715,
+      "sha256": "519919d213d3082a9a3a5d19e8636a441fa98716bd844749d0a7c1057b2b0f53"
+    },
+    "question_answers_300.csv": {
+      "rows": 20576,
+      "sha256": "425addbfdbae7331c48cb302dd22818aebdcf61b5c2fc0f02443a6e65d67c1aa"
+    },
+    "provenance_300.csv": {
+      "rows": 6900,
+      "sha256": "1fde0e7dc377ce9165e066494f43f1ee18b4db6a26110adb7b416a2f7c8a4745"
+    }
+  },
+  "participant_responses_exported": 0
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": "eb.F_v2_trial_G_payload_readback.v1",
+  "G_output_sha256": {
+    "candidate_input_manifest_300.json": "6b73e0ce5fd040908a6d5775a2363a0709c1915bd806058761ab3b6cb227ba9e",
+    "candidate_runtime_300.json": "5fb4102e3e5017c7b6b5d908de0e99ac4e3a28261deff9d70d3018af29560ae8",
+    "casebank_pending.json": "a614a26887ea43f6c15de4c8790ba15a20317efd2c88b4953dc6c6cd0113ffb4",
+    "contrast_index_pending.json": "c9ac7035281bac788abc9b6ad11a1bbb8d17e870ae8c934b779f75d30ea518e7",
+    "trajectory_evidence_300.json": "0e9f4ed01eb545c8d9b7832c74622eaca62d14bb10ce27082447278fd30b0779",
+    "display_payloads_pending.json": "bcdd74a19e0ecf9956cda93134ba301325d1acdc86aeff54b7c08b2db306455b",
+    "day_payload_3000.jsonl": "2358e7ecb87c257fb43ca5380922558dfc2b208b05b1f9a88295ccc686ffad9b",
+    "display_payload_3000.jsonl": "cbdcc53c59130e500c70231a4e7f650bdf07baf1dab21a8ce686b9947a47d790"
+  },
+  "source_identity": {
+    "B_control1_profile_sha256": "aab74ca47d480bc93ddd5d7243020044d439b9408a9f4ed8af0092159fc26334",
+    "B_control1_behavior_sha256": "5f9feaf70c8e2fcad2775d92667fc7dca226c2c7495ac146ce49644884eceafc",
+    "C_building_sha256": "bb063fb494fd5d1ca8faaeafafab1444fe9f1fe6cd54b09ee5657e19dc957c0d",
+    "D_input_manifest_sha256": "c8bcb9415e0d03f490fa577bc3da5a8955458a679f50945c6192f11b56984c25",
+    "D_runtime_300_sha256": "300485bb6604124fb0e28646c001a0319747ccc4e318619730a20faa282c181a",
+    "G_policy_lock_sha256": "1b4efcb0b3ad7e1ec7de4caa5a1ab41b074cca381d925c9b4603311124174930",
+    "G_candidate_manifest_sha256": "6b73e0ce5fd040908a6d5775a2363a0709c1915bd806058761ab3b6cb227ba9e",
+    "G_runtime_300_sha256": "5fb4102e3e5017c7b6b5d908de0e99ac4e3a28261deff9d70d3018af29560ae8",
+    "F_D_runtime_readback_sha256": "42acbb2873cedc68102904d1ecc29f6c1f27135ddb10fcccd616f7a08d03bb62",
+    "F_G_candidate_input_readback_sha256": "30eadcb1bf3ddaabc9176c19a89b109b4935a3ab94b132faa66a35ed90db4043",
+    "F_G_runtime_readback_sha256": "ded38a3b56660da85070d039c487ea0526303a7ab6dde9560b4aa74a96371ff6",
+    "legacy_day_helper_source_sha256": "a1826bf9f64d1270d9715941465e55df26e747c12c59fe467e32a75238b59fdb",
+    "v2_day_builder_source_sha256": "41bfc68ddb9cc38d42cccee7d2385a0cfba110aa7d844295476692bef893ec8e"
+  },
+  "roles_checked": 300,
+  "counts": {
+    "days": 3000,
+    "equivalent": 747,
+    "branch_days": 6000,
+    "meaningful": 2253
+  },
+  "max_daily_SQL_difference_kwh": 4.997436607312444e-07,
+  "max_hourly_SQL_difference_kwh": 4.999741731737117e-10,
+  "failure_count": 0,
+  "failures": [],
+  "failure_examples_truncated": false,
+  "scope": "pending fixed-role simulated casebank/display; no human response or collection approval"
+}

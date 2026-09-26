@@ -1,0 +1,29 @@
+{
+  "schema_version": "eb.F_v2_trial_accepted_public_readback.v1",
+  "file_sha256": {
+    "pending_bank": "a614a26887ea43f6c15de4c8790ba15a20317efd2c88b4953dc6c6cd0113ffb4",
+    "pending_contrast": "c9ac7035281bac788abc9b6ad11a1bbb8d17e870ae8c934b779f75d30ea518e7",
+    "pending_display": "bcdd74a19e0ecf9956cda93134ba301325d1acdc86aeff54b7c08b2db306455b",
+    "bank": "74dc0997dfbd78d778b38ccb44c1816e2a8320db46e8b33cad338f5423adb7a1",
+    "contrast": "71df472107dbcdc7efe5447a137543067218feb55f376b969c9982893dd86e99",
+    "display": "c17cf93a1d86176be8f17616a95563efd3a4b7ccc2d88d44e5cc454ed9bf7a17",
+    "F_payload_review": "906dade754b1c5208303e3907d6a6f7233b5ca1b9e97a9a0cce951bc51a7d249",
+    "F_E_review": "74afafe87fb8cc4036f61ad0698d402b077f7fe7cb3daef9871b277d41015eb7",
+    "E_gate": "b0923ced35a9fdaab377b2afffab02a73bed739bd0b923c35734dc50d29f1e65",
+    "public_manifest": "4387f3759068b42fea3c94789be21ff3f3a4fbd90732472057ae14b26ebd71e3",
+    "G_runtime": "5fb4102e3e5017c7b6b5d908de0e99ac4e3a28261deff9d70d3018af29560ae8",
+    "D_inputs": "c8bcb9415e0d03f490fa577bc3da5a8955458a679f50945c6192f11b56984c25"
+  },
+  "n_roles": 300,
+  "n_cases": 3000,
+  "collectable_engineering_contrast_days": 2253,
+  "equivalent_days": 747,
+  "display_exact_role_UI_projection_of_reviewed_pending": true,
+  "only_approved_promotion_fields_changed": true,
+  "public_csv_files_checked": 7,
+  "human_collection_authorized": false,
+  "participant_feedback_rows": 0,
+  "failure_count": 0,
+  "failures": [],
+  "failure_examples_truncated": false
+}

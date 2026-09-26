@@ -1,0 +1,31 @@
+{
+  "schema_version": "eb.F_v2_trial_D_runtime_readback.v1",
+  "manifest_sha256": "c8bcb9415e0d03f490fa577bc3da5a8955458a679f50945c6192f11b56984c25",
+  "runtime_sha256": "300485bb6604124fb0e28646c001a0319747ccc4e318619730a20faa282c181a",
+  "roles": 300,
+  "zone_hours_checked": 65760,
+  "off_or_heating_zone_hours_checked": 1506752,
+  "daily_counts": {
+    "role_days": 3000,
+    "ac_days": 2240,
+    "device_days": 4910
+  },
+  "max_daily_rounding_difference_kwh": 4.996444631366614e-07,
+  "max_hourly_AC_physical_alignment_error_j": 1.862645149230957e-09,
+  "smoke_evidence_rewritten_by_full_cache_revalidation": 0,
+  "warning_categories": {
+    "source_ground_temperature": 300,
+    "source_schedule_type_limit": 1200,
+    "source_interspace_surface": 287,
+    "source_unused_construction": 300,
+    "source_requested_variable_not_generated": 13,
+    "source_timezone_meridian": 6
+  },
+  "totals_kwh": {
+    "ac_kwh": 3227.5256441912775,
+    "household_kwh": 8594.225644191276
+  },
+  "failure_count": 0,
+  "failures": [],
+  "failures_truncated": false
+}

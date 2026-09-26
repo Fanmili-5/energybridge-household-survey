@@ -1,0 +1,14 @@
+{
+  "schema_version": "eb.F_v2_trial_E_provenance_readback.v1",
+  "question_csv_sha256": "425addbfdbae7331c48cb302dd22818aebdcf61b5c2fc0f02443a6e65d67c1aa",
+  "provenance_csv_sha256": "1fde0e7dc377ce9165e066494f43f1ee18b4db6a26110adb7b416a2f7c8a4745",
+  "question_mapping_sha256": "cec28641d9952afbd9ac6319899bcc87737e8603b6a90620d72e070375a39a05",
+  "roles": 300,
+  "questions": 66,
+  "question_rows": 20576,
+  "provenance_rows": 6900,
+  "summary_fields_per_role": 23,
+  "scope": "66 question basis/source-map consistency and 23 per-role structural provenance fields; source IDs indicate design inputs, not observed responses",
+  "failure_count": 0,
+  "failures": []
+}

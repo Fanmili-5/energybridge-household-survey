@@ -1,0 +1,37 @@
+{
+  "schema_version": "eb.F_v2_trial_G_candidate_runtime_readback.v1",
+  "G_runtime_sha256": "5fb4102e3e5017c7b6b5d908de0e99ac4e3a28261deff9d70d3018af29560ae8",
+  "G_candidate_manifest_sha256": "6b73e0ce5fd040908a6d5775a2363a0709c1915bd806058761ab3b6cb227ba9e",
+  "D_manifest_sha256": "c8bcb9415e0d03f490fa577bc3da5a8955458a679f50945c6192f11b56984c25",
+  "D_runtime_sha256": "300485bb6604124fb0e28646c001a0319747ccc4e318619730a20faa282c181a",
+  "G_policy_lock_sha256": "1b4efcb0b3ad7e1ec7de4caa5a1ab41b074cca381d925c9b4603311124174930",
+  "roles_checked": 300,
+  "execution_provenance_counts": {
+    "new_EnergyPlus_run": 291,
+    "revalidated_exact_cache": 4,
+    "reused_identical_D_baseline_SQL_and_exact_output_evidence": 5
+  },
+  "role_days_checked": 3000,
+  "device_days_checked": 4910,
+  "AC_days_checked": 2240,
+  "AC_zone_hours_checked": 65760,
+  "off_or_heating_zone_hours_checked": 1506752,
+  "A_B_first_day_SQL_values_checked": 336144,
+  "max_A_B_first_day_SQL_difference": 0.0,
+  "smoke_evidence_rewritten_by_full_cache_revalidation": 0,
+  "total_household_experimental_proxy_kwh": 8444.8573279791,
+  "total_AC_proxy_kwh": 3078.157327979069,
+  "max_rounding_difference_kwh": 4.997436607312444e-07,
+  "max_AC_hourly_alignment_error_j": 2.7939677238464355e-09,
+  "warning_categories": {
+    "source_ground_temperature": 300,
+    "source_schedule_type_limit": 1200,
+    "source_interspace_surface": 287,
+    "source_unused_construction": 300,
+    "source_requested_variable_not_generated": 13,
+    "source_timezone_meridian": 6
+  },
+  "failure_count": 0,
+  "failures": [],
+  "failure_examples_truncated": false
+}

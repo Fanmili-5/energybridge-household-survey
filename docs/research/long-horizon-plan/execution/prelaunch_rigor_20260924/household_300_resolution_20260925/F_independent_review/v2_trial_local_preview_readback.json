@@ -1,0 +1,23 @@
+{
+  "schema_version": "eb.F_v2_trial_local_preview_readback.v1",
+  "E_QA_sha256": "138d10b7effeae36b2c6f431cc490aadf85f07e5f19b7141c3905ef2f8e5e934",
+  "F_technical_gate_sha256": "1c3861a9d5a2c8581977b4826fc9daf894a3bb3b422b8f27e2123f11d4a5c49c",
+  "adapter_sha256": "30b9a8b1024299fb02f068391cdbd6e738c9315ddc6d3a9c6b7fd0cfcaeebebf",
+  "observed_http_status": {
+    "/": 404,
+    "/api/households": 404,
+    "/roles": 200,
+    "/api/roles/session": 200,
+    "/api/roles/preview/cityrole-0025": 200,
+    "/api/roles/preview/cityrole-0249": 200,
+    "/api/roles/preview/cityrole-0275": 200
+  },
+  "roles": 300,
+  "cases": 3000,
+  "engineering_export_rows": 1,
+  "training_export_rows": 0,
+  "human_collection_approved": false,
+  "failure_count": 0,
+  "failures": [],
+  "scope": "actual isolated localhost HTTP, role adapter, and engineering export readback; no old live questionnaire service claim"
+}
