@@ -13,13 +13,10 @@
 .scenario-heading{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
 .scenario-heading h2{margin-bottom:5px}
 #joint-date{color:#607367;font-size:14px;margin:0 0 14px}
-.vpp-summary{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 18px;background:#eef5ef;padding:18px;border-radius:11px;align-items:center}
-.vpp-summary .request-item{min-width:0;display:grid;gap:5px}
-.vpp-summary .request-item span{font-size:12px;color:#54715d}
-.vpp-summary .request-item strong{font-size:16px;color:#244c38;line-height:1.45}
-.vpp-summary .request-item small{font-size:13px;color:#486452}
-.vpp-summary .request-notice{font-size:13px;color:#486452;margin:0;white-space:nowrap}
-.vpp-summary .request-extra{grid-column:1/-1;font-size:13px;margin:0}
+.vpp-summary{border-left:3px solid #9bbca5;padding:3px 0 3px 12px;color:#476354}
+.vpp-summary p{margin:3px 0;font-size:13px;line-height:1.55}
+.vpp-summary .request-item strong{color:#294d3e}
+.vpp-summary .request-notice,.vpp-summary .request-extra{font-size:12px;color:#647769}
 .compact-details{border:1px solid #dfe8df;border-radius:10px;background:#fff;margin-top:14px;padding:0 15px}
 .compact-details summary{cursor:pointer;padding:13px 0;font-weight:650;color:#355a44}
 .compact-details[open] summary{border-bottom:1px solid #e9eee9;margin-bottom:12px}
@@ -30,11 +27,13 @@
 .need-content{min-width:0}
 .scenario-block{margin-top:23px;padding-top:18px;border-top:1px solid #e7eee7}
 .scenario-block h3{font-size:18px;margin:0 0 13px;color:#294d3e}
+.schedule-intro{margin:-3px 0 13px;color:#5c7063;font-size:13px;line-height:1.5}
 .change-summary{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .joint-change{display:inline-block;border:1px solid #cfe2d4;border-radius:999px;background:#eef6f0;padding:7px 12px;color:#315b43;font-size:13px;line-height:1.4}
 .usual-compare{display:block;margin:7px 0 0;font-size:12px;line-height:1.55;color:#446b53}
 .usual-compare small{display:block;font-size:12px;line-height:1.5;color:#446b53}
 .usual-compare small:last-child{font-weight:650;margin-top:3px}
+#joint-plan-details{margin-top:3px}
 #joint-comparison{margin-top:17px}
 .joint-device-plan{margin:0 0 13px}
 .joint-device-plan strong{display:block}
@@ -55,4 +54,4 @@
 #score-question input[type=number]{width:92px;flex:none;box-sizing:border-box}
 #score-question .score-help,#score-question .score-meaning{font-size:13px;color:#566b60;line-height:1.5}
 #score-question .score-meaning{margin:7px 0 0}
-@media(max-width:640px){.vpp-summary,.needs-grid,.score-list{grid-template-columns:1fr}.vpp-summary .request-notice{white-space:normal}#decision-question .inline-choices{display:grid;grid-template-columns:1fr;gap:8px}#decision-question .check{width:100%;box-sizing:border-box}}
+@media(max-width:640px){.needs-grid,.score-list{grid-template-columns:1fr}#decision-question .inline-choices{display:grid;grid-template-columns:1fr;gap:8px}#decision-question .check{width:100%;box-sizing:border-box}}

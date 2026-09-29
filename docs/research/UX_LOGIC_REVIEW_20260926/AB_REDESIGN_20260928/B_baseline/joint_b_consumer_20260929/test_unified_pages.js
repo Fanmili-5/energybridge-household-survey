@@ -20,11 +20,11 @@ function open(dir){const html=fs.readFileSync(path.join(dir,'index.html'),'utf8'
 (async()=>{const batches=['legacy11','revision2_full','rich_fixture','rich_not_computed','rich_complete','rich_failed','direct_fixture'],staticNames=['candidate.css','household-view.js','joint-view.css','joint-view.js','plan-view.js','source-draft.js','style.css'],staticHashes={},counts={};
  for(const batch of batches){const base=path.join(root,'unified_preview',batch),index=JSON.parse(fs.readFileSync(path.join(base,'BUILD_INDEX.json')));let tested=0;
   for(const role of Object.keys(index.roles)){const dir=path.join(base,role),{document,api,cases,hashes}=open(dir);for(const name of staticNames){const hash=crypto.createHash('sha256').update(fs.readFileSync(path.join(dir,name))).digest('hex');if(staticHashes[name])assert.equal(hash,staticHashes[name],name+' differs across batches');else staticHashes[name]=hash;}
-   for(let i=0;i<cases.length;i++){const c=cases[i],get=id=>document.getElementById(id);await api.show(i);assert.equal(get('joint-error').textContent,'',c.identity.case_id);assert.equal(c.schema,'eb.joint_b.consumer.v2');assert.ok(c.audit.source_binding);assert.equal(c.audit.consumer_version_policy.sha256,index.policy_sha256);assert.ok(!('policy_admission' in c));const shown=api.chart(c).schedule_chart.rows.length;assert.equal(get('joint-plan-A').children.length,shown);assert.equal(get('joint-plan-B').children.length,shown);assert.equal(get('joint-changes').children.length,c.commands.length);
+   for(let i=0;i<cases.length;i++){const c=cases[i],get=id=>document.getElementById(id);await api.show(i);assert.equal(get('joint-error').textContent,'',c.identity.case_id);assert.equal(c.schema,'eb.joint_b.consumer.v2');assert.ok(c.audit.source_binding);assert.equal(c.audit.consumer_version_policy.sha256,index.policy_sha256);assert.ok(!('policy_admission' in c));const shown=api.chart(c).schedule_chart.rows.length;assert.equal(get('joint-plan-A').children.length,shown);assert.equal(get('joint-plan-B').children.length,shown);assert.ok(get('joint-changes').children.length>0&&get('joint-changes').children.length<=c.commands.length);
     const out=await api.exportRecord(c,api.current().input,hashes[i],{choice:'reject',score:'3.5',comfort_score:'4.0',energy_score:'',vpp_score:'2.5',comment:'计划晚于通常时段'},api.snapshot(),'fixture-time');assert.equal(Object.keys(out.input.fields).length,23);assert.equal(out.schema,'eb.joint_b.local_test_export.v5');assert.equal(out.test_feedback.decision,'reject');assert.equal(out.test_feedback.decision_status,'answered');assert.equal(out.test_feedback.score,3.5);assert.equal(out.test_feedback.energy_score,null);assert.equal(out.test_feedback.comment,'计划晚于通常时段');assert.ok(!/cityrole-|engineering-rich|sha256/.test(JSON.stringify(out.input)));assert.equal(out.audit.source_case.audit.consumer_manifest_sha256||out.audit.source_case.audit.source_binding.manifest_sha256,index.manifest_sha256);assert.equal(out.human_label_count,0);assert.equal(out.formal_export_eligible,false);
     if(c.physical.status==='partial')assert.ok(get('joint-results').textContent.includes('限定通道读回'));if(c.physical.status==='failed')assert.ok(get('joint-results').textContent.includes('物理读回失败'));
     if(batch.startsWith('rich_')||batch==='direct_fixture'){assert.equal(c.profile.profile.devices.filter(d=>d.controllable).length,7);assert.ok(get('joint-timeline').textContent.includes('次日')||get('joint-plan-A').textContent.includes('次日'));}
-    if(batch==='rich_fixture')assert.equal(c.physical.channels[0].B.status,'not_computed');
+    if(batch==='rich_fixture'){assert.equal(c.physical.channels[0].B.status,'not_computed');assert.ok(get('joint-changes').textContent.includes('设定温度'));assert.ok(get('joint-changes').textContent.includes('（2 段）'));assert.ok(!get('joint-changes').textContent.includes('室温'));}
     if(batch==='rich_not_computed')assert.equal(c.physical.status,'not_computed');
     if(batch==='rich_complete')assert.equal(c.physical.channels[0].B.status,'computed');
     if(batch==='rich_failed')assert.equal(c.physical.status,'failed');
@@ -39,6 +39,9 @@ function open(dir){const html=fs.readFileSync(path.join(dir,'index.html'),'utf8'
  assert.equal(historical.api.chart(historical.cases[0]).schedule_chart.rows.length,2);
  await historical.api.show(8);
  const visible=id=>historical.document.getElementById(id).textContent;
+ assert.equal(historical.api.snapshot()['joint-plan-A'],'');
+ historical.document.getElementById('joint-plan-details').open=true;
+ assert.ok(historical.api.snapshot()['joint-plan-A'].includes('洗衣机'));
  assert.ok(!visible('home-device-inventory').includes('位置未提供'));
  assert.ok(!visible('joint-timeline').includes('位置未提供'));
  assert.ok(!visible('home-attitudes').includes('/5'));

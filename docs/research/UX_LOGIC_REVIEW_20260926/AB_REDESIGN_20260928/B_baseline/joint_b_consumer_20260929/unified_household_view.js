@@ -74,7 +74,7 @@ function renderInventory(profile,labels={}){
     equipment.append(grid);
   }
   if(groups.background.size){
-    const details=make("details",null,"equipment-background");details.append(make("summary","其他日常用电"));
+    const details=make("section",null,"equipment-background");details.append(make("h4","其他日常用电","equipment-section-title"));
     const list=make("dl",null,"equipment-background-list");
     for(const [id,entries] of groups.background){const row=make("div",null,"equipment-background-row");row.dataset.deviceClass=id;
       row.append(make("dt",entries[0].item.device||deviceName(id)),make("dd",[...new Set(entries.map(({item,state})=>[zoneLabel(item.zone,labels),state!=="暂不可调"?state:""].filter(Boolean).join(" · ")).filter(Boolean))].join("、")));list.append(row);}
