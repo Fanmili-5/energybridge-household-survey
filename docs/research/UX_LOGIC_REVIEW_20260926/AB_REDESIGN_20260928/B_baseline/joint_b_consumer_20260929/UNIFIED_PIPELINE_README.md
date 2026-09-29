@@ -18,6 +18,6 @@ python3 unified_pipeline.py --manifest unified_revision2_manifest.json --policy 
 
 回答区按旧问卷改为一题明确的“同意采用 B／不同意采用 B”；移除“信息不足”决定选项。四项 1–5 分滑杆（整体、舒适、用电与费用、响应安排）可填一位小数；依据不足的分数可留空，导出为 `null`，并在唯一的必填原因中说明。统一页导出为 `eb.joint_b.local_test_export.v5`，状态仍是本地工程点击，不是人类反馈；正式采集端尚未接入这一新字段版本。
 
-页面恢复旧版悬浮“报告问题”入口，问题类别和描述独立于偏好反馈。静态预览只下载 `eb.joint_b.local_issue.v1` JSON，明确标记 `local_download_not_submitted`。独立工程服务 `unified_live_server.py` 在受保护的 `/joint-b` 路由提供实际答卷/问题写入与回执；存储独立于现有问卷，答卷固定为工程来源。服务只接受一户十轮的精确构建包，不能作为正式真人采集、邀请分配或合法历史协议的替代。工程包通过 `package_unified_live.py` 从已构建的私有页面生成，包内画像和情境不得提交公共 Git。
+页面恢复旧版悬浮“报告问题”入口，问题类别和描述独立于偏好反馈。静态预览只下载 `eb.joint_b.local_issue.v1` JSON，明确标记 `local_download_not_submitted`。独立工程服务 `unified_live_server.py` 在公开的 `/joint-b` 路由提供实际答卷/问题写入与回执；写入仍检查会话、来源和 CSRF，存储独立于现有问卷，答卷固定为工程来源。服务只接受一户十轮的精确构建包，不能作为正式真人采集、邀请分配或合法历史协议的替代。工程包通过 `package_unified_live.py` 从已构建的私有页面生成，包内画像和情境不得提交公共 Git。
 
 已实跑同一入口：旧 11 例（4 户）、历史 revision2 2970 轮（297 户）、隔离工程夹具四种物理状态及直接 v2 夹具。`test_unified_pages.js` 检查 2986 个页面案例的 DOM、事件当天计划/完整来源审计/命令展示、导出白名单、跨午夜与新增空调；各批静态文件 SHA 一致。`test_unified_release_binding.py` 验证历史单类输入可显示、后端 `held/published` 原样透传、无回执不补通过，以及错误来源哈希和非法单位被拒。错误 case SHA 的物理 sidecar 被拒；同一来源选择性重建 0012 的 10 轮时页面文件变更数为 0。DOM 检查不等于浏览器视觉检查。历史批次与工程夹具不计入新 3000；线上工程入口的范围和验证结果见 `ENGINEERING_DEPLOYMENT_20260930.md`。
