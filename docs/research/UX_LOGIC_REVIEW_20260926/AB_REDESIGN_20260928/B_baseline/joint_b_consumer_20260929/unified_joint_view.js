@@ -5,7 +5,8 @@
  function sort(x){if(Array.isArray(x))return x.map(sort);if(x&&typeof x==='object')return Object.fromEntries(Object.keys(x).sort().map(k=>[k,sort(x[k])]));return x;}
  async function hash(x){const raw=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(canonical(x)));return [...new Uint8Array(raw)].map(x=>x.toString(16).padStart(2,'0')).join('');}
  const q=id=>document.getElementById(id),el=(tag,text,cls)=>{const e=document.createElement(tag);if(text!=null)e.textContent=String(text);if(cls)e.className=cls;return e;};
- const location=(zone,labels={})=>{const z=labels[zone]||zone;return ({bathroom:'卫浴',kitchen:'厨房',living_hall:'起居厅',corridor:'过道'}[z])||String(z||'').replace(/^natural_(\d+)$/,'自然间 $1')||'位置未提供';};
+ const location=(zone,labels={})=>{const z=labels[zone]||zone;const name=({bathroom:'卫浴',kitchen:'厨房',living_hall:'起居厅',corridor:'过道'}[z])||String(z||'').replace(/^natural_(\d+)$/,'自然间 $1');return name==='位置未提供'?'':name;};
+ const named=(asset,labels)=>[asset.device,location(asset.zone,labels)].filter(Boolean).join(' · ');
  const time=(value,base)=>{const m=value-base,d=Math.floor(m/1440),v=((m%1440)+1440)%1440;return `${d===0?'当天':d===1?'次日':d<0?(d===-1?'前日':`前${-d}日`):`第${d+1}天`} ${String(Math.floor(v/60)).padStart(2,'0')}:${String(v%60).padStart(2,'0')}`;};
  const label=e=>e.operation_kind==='heater_availability'?'允许加热时段':e.setpoint_C!=null?`设置${e.setpoint_C} ℃`:'安排时段';
  const eventList=c=>c.vpp.events||[c.vpp];
@@ -26,7 +27,7 @@
  function chart(c){const base=dayBase(c),assets=Object.fromEntries(c.profile.profile.devices.map(a=>[a.asset_id,a])),selected=new Set(c.commands.map(x=>x.asset_id)),b=new Map(c.plans.B.rows.map(r=>[r.asset_id,r]));
   const [start,end]=focusWindow(c);
   return {schedule_chart:{start_h:(start-base)/60,end_h:(end-base)/60,event_start_h:(eventList(c)[0].start_abs_min-base)/60,event_end_h:(eventList(c)[0].end_abs_min-base)/60,event_windows:eventList(c).map(e=>({start_h:(e.start_abs_min-base)/60,end_h:(e.end_abs_min-base)/60})),notification_h:(c.vpp.notice_abs_min-base)/60,statistics_window:null,
-   rows:displayedRows(c,start,end).map(a=>({device_id:a.asset_id,icon_device_id:a.device_class,device:`${assets[a.asset_id].device} · ${location(assets[a.asset_id].zone,c.profile.geometry?.zone_labels)}`,active:selected.has(a.asset_id),schedule_complete:a.schedule_complete&&b.get(a.asset_id).schedule_complete,
+   rows:displayedRows(c,start,end).map(a=>({device_id:a.asset_id,icon_device_id:a.device_class,device:named(assets[a.asset_id],c.profile.geometry?.zone_labels),active:selected.has(a.asset_id),schedule_complete:a.schedule_complete&&b.get(a.asset_id).schedule_complete,
     original:a.events.map(e=>({...e,start_h:(e.start_abs_min-base)/60,end_h:(e.end_abs_min-base)/60,label:label(e)})),proposal:b.get(a.asset_id).events.map(e=>({...e,start_h:(e.start_abs_min-base)/60,end_h:(e.end_abs_min-base)/60,label:label(e)}))}))},
    options:{sideLabels:{original:'原安排 A',proposal:'调整后 B'},eventLabel:'VPP事件',axisLabel:'事件当天安排时间轴',deviceHint:(row,id)=>id==='ac'?' · 温度设定':'',emptyText:{original:r=>r.schedule_complete?'此侧未安排':'未提供安排',proposal:r=>r.schedule_complete?'此侧未安排':'未提供安排'},legendText:'上行为原安排，下行为调整后。浅色区域为本次事件时段。',barText:s=>s.label}};
  }
@@ -36,51 +37,50 @@
   if(new Set(c.commands.map(x=>x.command_id)).size!==c.commands.length)throw Error('命令编号重复');return true;
  }
  const hourText=h=>{const n=Math.round(h*60),day=n>=1440?'次日 ':'';return `${day}${String(Math.floor(n%1440/60)).padStart(2,'0')}:${String(n%60).padStart(2,'0')}`;};
- function referenceText(e,ref){if(!ref||ref.source!=='synthetic_questionnaire_profile')return '家庭通常时段未提供，无法判定偏离。';
-  const h=ref.usual_start_hour,d=ref.usual_finish_hour,parts=[],clock=((e.start_abs_min%1440)+1440)%1440;
+ function referenceText(e,ref){if(!ref||ref.source!=='synthetic_questionnaire_profile')return null;
+  const h=ref.usual_start_hour,d=ref.usual_finish_hour,usual=[],difference=[],clock=((e.start_abs_min%1440)+1440)%1440;
   const overnight=Number.isFinite(h)&&h>=18&&clock<720;
   const referenceDay=Math.floor(e.start_abs_min/1440)*1440-(overnight?1440:0);
   if(Number.isFinite(h)){
    const minute=Math.round(h*60),delta=clock+(overnight?1440:0)-minute;
-   parts.push(`通常开始 ${hourText(h)}；本次${delta===0?'与通常开始相同':`比通常${delta>0?'晚':'早'} ${Math.abs(delta)} 分钟`}`);
+   usual.push(`${hourText(h)} 开始`);difference.push(delta===0?'B 按通常时间开始':`B ${delta>0?'晚':'早'} ${Math.abs(delta)} 分钟开始`);
   }
   if(Number.isFinite(d)){
    const finishLabel=ref.finish_meaning==='usual_end'?'通常结束':'通常最晚完成';
    const nextDay=Number.isFinite(h)&&d<h;
    const deadline=referenceDay+Math.round(d*60)+(nextDay?1440:0);
    const over=e.end_abs_min-deadline;
-   parts.push(`${finishLabel} ${nextDay?'次日 ':''}${hourText(d)}；本次${over>0?`晚于该时刻 ${over} 分钟`:'未晚于该时刻'}`);
+   usual.push(`${finishLabel} ${nextDay?'次日 ':''}${hourText(d)}`);difference.push(over>0?`B 晚于通常完成 ${over} 分钟`:'B 在通常完成时间内');
   }
-  return parts.length?parts.join('。')+'。合成画像对照，非可执行性裁定。':'家庭通常时段未提供，无法判定偏离。';
+  return usual.length?{usual:usual.join(' · '),difference:difference.join(' · ')}:null;
  }
  function renderPlans(c){const base=dayBase(c),[start,end]=focusWindow(c),assets=Object.fromEntries(c.profile.profile.devices.map(a=>[a.asset_id,a])),shown=new Set(displayedRows(c,start,end).map(r=>r.asset_id));
-  for(const side of ['A','B']){const box=q('joint-plan-'+side);box.replaceChildren();for(const row of c.plans[side].rows.filter(r=>shown.has(r.asset_id))){const section=el('section',null,'joint-device-plan'),a=assets[row.asset_id],events=row.events.filter(e=>inWindow(e,start,end));section.append(el('strong',`${a.device} · ${location(a.zone,c.profile.geometry?.zone_labels)}`));
+  for(const side of ['A','B']){const box=q('joint-plan-'+side);box.replaceChildren();for(const row of c.plans[side].rows.filter(r=>shown.has(r.asset_id))){const section=el('section',null,'joint-device-plan'),a=assets[row.asset_id],events=row.events.filter(e=>inWindow(e,start,end));section.append(el('strong',named(a,c.profile.geometry?.zone_labels)));
    if(!events.length)section.append(el('p',row.schedule_complete?'此侧未安排':'未提供安排'));
    for(const e of events)section.append(el('p',`${time(e.start_abs_min,base)}—${time(e.end_abs_min,base)} · ${label(e)}`));
-   if(events.length&&c.commands.some(command=>command.asset_id===row.asset_id))section.append(el('small',referenceText(events[0],c.profile.profile.operating_reference?.[row.device_class])));
+   if(side==='B'&&events.length&&c.commands.some(command=>command.asset_id===row.asset_id)){const note=referenceText(events[0],c.profile.profile.operating_reference?.[row.device_class]);if(note){const context=el('div',null,'usual-compare');context.append(el('small',`家庭通常：${note.usual}`),el('small',note.difference));section.append(context);}}
    box.append(section);}}
-  const changes=q('joint-changes');changes.replaceChildren();for(const c0 of c.commands){const card=el('article',null,'joint-change'),a=assets[c0.asset_id];card.append(el('strong',`${a.device} · ${location(a.zone,c.profile.geometry?.zone_labels)}`));
-   card.append(el('p',c0.kind==='ac_setpoint'?`${time(c0.start_abs_min,base)}—${time(c0.end_abs_min,base)}：${c0.from_setpoint_C} ℃ → ${c0.to_setpoint_C} ℃`:`原安排 ${time(c0.A_start_abs_min,base)}—${time(c0.A_end_abs_min,base)}；调整后 ${time(c0.start_abs_min,base)}—${time(c0.end_abs_min,base)}`));
-   if(c0.reason_text)card.append(el('p',c0.reason_text));changes.append(card);}
+  const changes=q('joint-changes');changes.replaceChildren();for(const command of c.commands){const a=assets[command.asset_id],name=named(a,c.profile.geometry?.zone_labels);let difference;
+   if(command.kind==='ac_setpoint')difference=`设定 ${command.from_setpoint_C}→${command.to_setpoint_C} ℃`;
+   else{const minutes=command.start_abs_min-command.A_start_abs_min;difference=minutes===0?'时间不变':`${minutes>0?'延后':'提前'} ${Math.abs(minutes)} 分钟`;}
+   changes.append(el('span',`${name}：${difference}`,'joint-change'));}
  }
- function renderResults(c){const box=q('joint-results');box.replaceChildren();for(const r of c.quantities){if(r.A.value==null&&r.B.value==null)continue;const fmt=x=>x.value==null?'未提供':`${Math.round(x.value*1000)/1000} ${x.unit}`;box.append(el('p',`${r.label}：原安排 ${fmt(r.A)}；调整后 ${fmt(r.B)}`));}for(const r of c.impacts||[])if(r.status!=='unknown'&&r.description)box.append(el('p',r.description));
-  const unified=c.physical;if(unified?.status==='failed')box.append(el('p','物理读回失败；本轮结果未知。'));else if(unified?.status==='partial'||unified?.status==='complete'){box.append(el('h4',unified.status==='partial'?'限定通道读回（部分）':'限定通道读回'));const fmt=(x,unit)=>x.status==='computed'?`${x.value} ${unit}`:x.status==='held'?'暂缓展示':'未计算';for(const ch of unified.channels)box.append(el('p',`${ch.label}（${ch.scope==='annual_A'?'年度 A':ch.scope==='48h'?'48小时':'事件时段'}）：原安排 ${fmt(ch.A,ch.unit)}；调整后 ${fmt(ch.B,ch.unit)}。`));if(unified.hold_reason)box.append(el('p',unified.hold_reason));box.append(el('p','所列通道不等于整屋电表；不得据此判断 VPP 达标。'));}
-  const tail=c.after_horizon;if(tail?.status==='computed_design_proxy'){const rows=tail.EV_new_target_shortfall_days||[],later=rows.filter(x=>x.day_index>c.identity.day_index+1);box.append(el('p',`年度电动车目标估算：调整后 B 相比同户原安排 A 新增 ${rows.length} 个目标日未达到（其中本轮次日之后 ${later.length} 日）。这是设计代理回放，不是整屋电表结果。`));if(later.length){const details=el('details');details.open=true;details.append(el('summary','查看后续目标日'));for(const x of later)details.append(el('p',`${x.date}：原安排电量 ${Math.round(x.A_SOC_post_charge*1000)/10}%，调整后 ${Math.round(x.B_SOC_post_charge*1000)/10}%，同一目标 ${Math.round(x.same_original_target_SOC*1000)/10}%。`));box.append(details);}}
-  else box.append(el('p','两日后的电动车目标后效尚未提供。'));
-  box.append(el('p','两日外洗衣与餐具任务物料后效尚未计算。'));
-  if(c.result_note)box.append(el('p',c.result_note));}
+ function renderResults(c){const box=q('joint-results');box.replaceChildren();for(const r of c.quantities){if(r.A.value==null&&r.B.value==null)continue;const fmt=x=>x.value==null?'未计算':`${Math.round(x.value*1000)/1000} ${x.unit}`;box.append(el('p',`${r.label}：A ${fmt(r.A)}；B ${fmt(r.B)}`));}for(const r of c.impacts||[])if(r.status!=='unknown'&&r.description)box.append(el('p',r.description));
+  const unified=c.physical;if(unified?.status==='failed')box.append(el('p','物理读回失败；本轮结果未知。'));else if(unified?.status==='partial'||unified?.status==='complete'){const rows=unified.channels.filter(ch=>ch.A.status==='computed'||ch.B.status==='computed');if(rows.length)box.append(el('h4',unified.status==='partial'?'限定通道读回（部分）':'限定通道读回'));const fmt=(x,unit)=>x.status==='computed'?`${x.value} ${unit}`:'未计算';for(const ch of rows)box.append(el('p',`${ch.label}：A ${fmt(ch.A,ch.unit)}；B ${fmt(ch.B,ch.unit)}`));}
+  const tail=c.after_horizon;if(tail?.status==='computed_design_proxy'){const rows=tail.EV_new_target_shortfall_days||[];if(rows.length)box.append(el('p',`后续充电目标：B 比 A 多 ${rows.length} 天未达到。`));}
+  if(!box.children.length)box.append(el('p','用电量、费用和舒适结果尚未计算。'));}
  const snapshotIds=['role-instructions','home-intro','home-visual','home-caption','home-summary','home-device-inventory','home-targets','home-members','home-attitudes','joint-date','joint-source-note','vpp-summary','joint-weather','joint-state','joint-needs-list','selected-assets','joint-timeline','joint-plan-A','joint-plan-B','joint-changes','joint-results','joint-history','answer-instructions','decision-question','score-question'];
  const modelFieldIds=snapshotIds.filter(id=>id!=='joint-date'&&id!=='joint-history');
- function snapshot(){return Object.fromEntries(snapshotIds.map(id=>{const e=q(id);if(id==='joint-needs-list'&&!q('joint-needs').open)return [id,''];return [id,typeof e.innerText==='string'?e.innerText:e.textContent];}));}
+ function snapshot(){return Object.fromEntries(snapshotIds.map(id=>{const e=q(id);if(id==='joint-needs-list'&&q('joint-needs').tagName==='DETAILS'&&!q('joint-needs').open)return [id,''];return [id,typeof e.innerText==='string'?e.innerText:e.textContent];}));}
  function modelInputFromSnapshot(rendered,assignment,history=[]){const fields={};for(const id of modelFieldIds){if(typeof rendered?.[id]!=='string')throw Error('可见字段缺失：'+id);fields[id]=rendered[id];}if(typeof rendered?.['joint-date']!=='string'||!/^\d{4}-\d{2}-\d{2}(?: · |$)/.test(rendered['joint-date']))throw Error('可见日期缺失');if(!assignment||assignment.left===assignment.right||!['A','B'].includes(assignment.left)||!['A','B'].includes(assignment.right))throw Error('左右安排无效');return {schema:'eb.joint_b.displayed_input.v1',date:rendered['joint-date'].slice(0,10),fields,display_assignment:clone(assignment),history:clone(history)};}
  async function exportRecord(c,input,expected,answer,rendered,presentedAt){await verify(c,expected);const clean=root.EBSourceDraft.buildAnswer(answer),auditInput=clone(input),modelInput=modelInputFromSnapshot(rendered,auditInput.display_assignment),link=c.collection_linkage||{household_id:c.identity.role_id,round_id:c.identity.round_index??null,source_scenario_id:c.identity.case_id,scenario_family_id:c.scenario_family_id??null,near_duplicate_or_derivative_relation:'pending_review',source_version_sha256:c.bindings?.A_manifest_sha256??null,participant_id:null,formal_split:null};return {schema:'eb.joint_b.local_test_export.v5',status:'engineering_click_not_human_feedback',input:modelInput,test_feedback:clean,
-  audit:{collection_linkage:clone(link),semantic_input:auditInput,source_case:clone(c),source_binding:{source_package_sha256:expected,...c.bindings},presentation:{display_assignment:auditInput.display_assignment,presented_at:presentedAt,exported_at:new Date().toISOString(),joint_needs_expanded_at_export:Boolean(q('joint-needs').open),semantic_input_sha256:await hash(auditInput),rendered_snapshot:rendered,rendered_snapshot_sha256:await hash(rendered),model_input_sha256:await hash(modelInput)}},human_label_count:0,training_release:false,formal_export_eligible:false,history_status:'not_loaded_local_preview'};}
+  audit:{collection_linkage:clone(link),semantic_input:auditInput,source_case:clone(c),source_binding:{source_package_sha256:expected,...c.bindings},presentation:{display_assignment:auditInput.display_assignment,presented_at:presentedAt,exported_at:new Date().toISOString(),joint_needs_expanded_at_export:q('joint-needs').tagName==='DETAILS'?Boolean(q('joint-needs').open):true,semantic_input_sha256:await hash(auditInput),rendered_snapshot:rendered,rendered_snapshot_sha256:await hash(rendered),model_input_sha256:await hash(modelInput)}},human_label_count:0,training_release:false,formal_export_eligible:false,history_status:'not_loaded_local_preview'};}
  function issueRecord(c,expected,issue,uiError=''){return {schema:'eb.joint_b.local_issue.v1',status:'local_download_not_submitted',issue:root.EBSourceDraft.buildIssue(issue),context:{household_id:c?.identity?.role_id??null,case_id:c?.identity?.case_id??null,round_index:c?.identity?.round_index??null,date:c?.identity?.date??null,source_package_sha256:expected??null,ui_error:String(uiError||'')},created_at:new Date().toISOString()};}
  const api={chart,hash,canonical,verify,snapshot,modelInputFromSnapshot,exportRecord,issueRecord,renderPlans,renderResults};root.EBJoint=api;
  if(typeof module!=='undefined')module.exports=api;
  if(typeof document==='undefined')return;
  const live=root.EBLiveConfig||null;
- if(live){q('preview-mode-notice').textContent='这是一份合成家庭的线上工程试填。答卷与问题报告会保存到独立服务；目前不计作正式人类反馈，也不进入训练。';q('report-mode-notice').textContent='问题报告会保存到独立工程服务，成功后显示报告编号；不会更改评分。';q('report-submit').textContent='提交问题';q('joint-export').textContent='保存工程试填';}
+ if(live){q('preview-mode-notice').textContent='合成家庭工程体验 · 请代入这户家庭，依据生活需求和 A/B 安排判断是否采用 B。回答和问题报告会在线保存。';q('report-mode-notice').textContent='提交后会显示报告编号。';q('report-submit').textContent='提交问题';q('joint-export').textContent='保存工程试填';}
  const cases=JSON.parse(q('joint-cases-data').textContent),inputs=JSON.parse(q('visible-inputs-data').textContent),hashes=JSON.parse(q('source-hashes-data').textContent);let current=0,currentInput=null,presentedAt=null;
  const scoreKeys=['score','comfort-score','energy-score','vpp-score'];
  function syncScore(key){const number=q('joint-'+key),range=q('joint-'+key+'-range'),meaning=q('joint-'+key+'-meaning'),raw=number.value,n=Number(raw),anchors=['很不合适','较不合适','一般','较合适','很合适'];
@@ -90,12 +90,12 @@
   range.value=raw;meaning.textContent=Number.isInteger(n)?`${n} 分 · ${anchors[n-1]}`:`${raw} 分 · ${anchors[Math.floor(n)-1]}与${anchors[Math.ceil(n)-1]}之间`;
  }
  for(const key of scoreKeys){q('joint-'+key).addEventListener('input',()=>syncScore(key));q('joint-'+key+'-range').addEventListener('input',()=>{q('joint-'+key).value=q('joint-'+key+'-range').value;syncScore(key);});syncScore(key);}
- async function show(i){q('joint-error').textContent='';q('joint-export').disabled=true;try{const c=cases[i];await verify(c,hashes[i]);current=i;currentInput=clone(inputs[i]);currentInput.history=[];presentedAt=new Date().toISOString();q('joint-feedback').reset();q('joint-status').textContent='';
+ async function show(i){q('joint-error').textContent='';q('joint-export').disabled=true;try{const c=cases[i];await verify(c,hashes[i]);current=i;currentInput=clone(inputs[i]);currentInput.history=[];currentInput.display_assignment={left:'A',right:'B'};presentedAt=new Date().toISOString();q('joint-feedback').reset();q('joint-status').textContent='';
    for(const key of scoreKeys)syncScore(key);
-   renderHome(c.identity.role_id);q('joint-date').textContent=c.identity.date;const base=dayBase(c),v=q('vpp-summary');v.replaceChildren(el('p',`通知时间：${time(c.vpp.notice_abs_min,base)}`));for(const [n,event]of eventList(c).entries())v.append(el('p',`事件 ${n+1}：${time(event.start_abs_min,base)}—${time(event.end_abs_min,base)}`),el('p',`家庭请求：${event.household_request.text}`),el('p',event.incentive?.text||'本次未设置激励。'));
-   const weather=c.context.weather_days?.[0];q('joint-weather').textContent=weather?`情境气温：${weather.min_drybulb_C_derived}–${weather.max_drybulb_C_derived}℃`:'';q('joint-state').textContent=c.context.pre_event_state?.display_text||'当天设备初态：未提供。';
-   const needs=q('joint-needs-list');needs.replaceChildren();for(const text of c.context.daily_need_texts||[])needs.append(el('p',text));if(!needs.children.length)needs.append(el('p','本测试夹具未额外加载需求明细。'));const assets=Object.fromEntries(c.profile.profile.devices.map(a=>[a.asset_id,a]));q('selected-assets').textContent='本次调整：'+[...new Set(c.commands.map(x=>x.asset_id))].map(id=>`${assets[id].device}（${location(assets[id].zone,c.profile.geometry?.zone_labels)}）`).join('、');
-   const view=chart(c);root.EBView.render(q('joint-timeline'),view,view.options);renderPlans(c);renderResults(c);q('joint-comparison').classList.toggle('swapped',c.display_assignment.left==='B');q('joint-history').textContent='本情境未提供既往回答。';q('joint-export').disabled=false;
+   renderHome(c.identity.role_id);q('joint-date').textContent=c.identity.date;const base=dayBase(c),v=q('vpp-summary');v.replaceChildren();for(const [n,event]of eventList(c).entries()){const request=el('div',null,'request-item');request.append(el('span',eventList(c).length>1?`错峰目标 ${n+1}`:'这次错峰目标'),el('strong',event.household_request.text.replace(/^本事件内[，,]?\s*/,'')),el('small',`时段 ${time(event.start_abs_min,base)}—${time(event.end_abs_min,base)}`));v.append(request);if(event.incentive?.text)v.append(el('p',event.incentive.text,'request-extra'));}v.append(el('p',`通知 ${time(c.vpp.notice_abs_min,base)}`,'request-notice'));
+   const weather=c.context.weather_days?.[0];q('joint-weather').textContent=weather?`气温 ${weather.min_drybulb_C_derived}–${weather.max_drybulb_C_derived}℃`:'';const state=c.context.pre_event_state?.display_text||'';q('joint-state').textContent=/未提供|未单独核算/.test(state)?'':state;q('joint-more-context').hidden=!q('joint-weather').textContent&&!q('joint-state').textContent;
+   const needs=q('joint-needs-list');needs.replaceChildren();for(const raw of c.context.daily_need_texts||[]){const text=raw.replace(/（合成情境需求）/g,'').replace(/约 跨日时段，(\d+)\s*%/g,'跨日时段，目标 $1%'),match=text.match(/^(当天|次日)：(.*)$/),row=el('p',null,'need-item');if(match)row.append(el('span',match[1],'need-day'),el('span',match[2],'need-content'));else row.textContent=text;needs.append(row);}if(!needs.children.length)needs.append(el('p','本轮没有额外生活需求。'));q('selected-assets').textContent='';
+   const view=chart(c);root.EBView.render(q('joint-timeline'),view,view.options);renderPlans(c);renderResults(c);q('joint-history').textContent='';q('joint-export').disabled=false;
   }catch(e){q('joint-error').textContent='无法展示：'+e.message;}}
  cases.forEach((c,i)=>{const option=el('option',`情境 ${i+1} · ${c.identity.date} · ${c.profile.profile.household.city||'城市未知'}`);option.value=String(i);q('joint-select').append(option);});q('joint-select').addEventListener('change',()=>show(Number(q('joint-select').value)));
  function downloadJson(record,name){const url=URL.createObjectURL(new Blob([JSON.stringify(record,null,2)],{type:'application/json'})),a=el('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),500);}

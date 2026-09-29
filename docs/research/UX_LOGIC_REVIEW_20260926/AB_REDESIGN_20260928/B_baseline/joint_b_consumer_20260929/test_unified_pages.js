@@ -37,6 +37,13 @@ function open(dir){const html=fs.readFileSync(path.join(dir,'index.html'),'utf8'
  const historical=open(path.join(root,'unified_preview','revision2_full','cityrole-0012'));
  assert.equal(historical.api.chart(historical.cases[0]).schedule_chart.end_h,24);
  assert.equal(historical.api.chart(historical.cases[0]).schedule_chart.rows.length,2);
+ await historical.api.show(8);
+ const visible=id=>historical.document.getElementById(id).textContent;
+ assert.ok(!visible('home-device-inventory').includes('位置未提供'));
+ assert.ok(!visible('joint-timeline').includes('位置未提供'));
+ assert.ok(!visible('home-attitudes').includes('/5'));
+ assert.ok(!visible('joint-needs-list').includes('合成情境需求'));
+ assert.ok(visible('joint-plan-A').includes('洗衣机')&&visible('joint-plan-B').includes('洗衣机'));
  const demo=open(path.join(root,'unified_preview','rich_fixture','engineering-rich-0001'));
  demo.context.renderInventory({devices:[
   {device_class:'washer',device:'不存在的洗衣机',owned:false,installed:false},

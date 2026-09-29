@@ -7,7 +7,7 @@ const $ = id => document.getElementById(id);
 const make = (tag,text,cls) => { const x=document.createElement(tag); if(text!=null)x.textContent=String(text); if(cls)x.className=cls; return x; };
 const deviceNames={ac:"空调",washer:"洗衣机",dryer:"烘干机",dishwasher:"洗碗机",electric_water_heater:"电热水器",home_ev:"电动车充电"};
 const deviceName=id=>deviceNames[id]||id||"设备";
-const zoneLabel=(zone,labels={})=>{const label=labels[zone]||zone;return ({kitchen:"厨房",bathroom:"卫浴",corridor:"过道",living_hall:"起居厅",outdoor:"室外"}[label])||String(label||"").replace(/^natural_(\d+)$/,"自然间 $1")||"位置未提供";};
+const zoneLabel=(zone,labels={})=>{const label=labels[zone]||zone;const name=({kitchen:"厨房",bathroom:"卫浴",corridor:"过道",living_hall:"起居厅",outdoor:"室外"}[label])||String(label||"").replace(/^natural_(\d+)$/,"自然间 $1");return name==="位置未提供"?"":name;};
 const svgNS="http://www.w3.org/2000/svg";
 function svg(tag,attributes={},textValue){const x=document.createElementNS(svgNS,tag);for(const [key,value] of Object.entries(attributes))x.setAttribute(key,String(value));if(textValue!=null)x.textContent=String(textValue);return x;}
 let roles=Object.keys(SOURCE_CASES);
@@ -18,7 +18,9 @@ function clock(minute){if(!Number.isFinite(minute))return "时间未知";const d
 function local(f,value){return value-f.artifact.day_index*1440;}
 function addFact(box,label,value){const item=make("div",null,"home-fact");item.append(make("small",label),make("strong",value));box.append(item);}
 function roomPicture(profile,geometry){
-  if(!geometry?.floors?.length){$("home-visual").replaceChildren(make("p","此批次未绑定这户的住宅平面几何；不能凭面积和房间数补画。"));$("home-caption").textContent="住宅布局来源未提供";return;}
+  const figure=document.querySelector(".home-figure");
+  if(!geometry?.floors?.length){$("home-visual").replaceChildren();$("home-caption").textContent="";if(figure)figure.hidden=true;return;}
+  if(figure)figure.hidden=false;
   const points=geometry.floors.flatMap(f=>f.points),minX=Math.min(...points.map(p=>p[0])),maxX=Math.max(...points.map(p=>p[0])),minY=Math.min(...points.map(p=>p[1])),maxY=Math.max(...points.map(p=>p[1]));
   const scale=Math.min(52,900/(maxX-minX),295/(maxY-minY));
   const xy=p=>[Math.round(55+(p[0]-minX)*scale),Math.round(49+(maxY-p[1])*scale)];
@@ -48,19 +50,6 @@ function roomPicture(profile,geometry){
   $("home-visual").replaceChildren(picture);
   $("home-caption").textContent="住宅布局示意";
 }
-function avatar(index){
-  const palettes=[["#517e72","#90b7a7","#e8f0e9"],["#526f8a","#8fa8bf","#e9eef3"],["#887258","#baa68e","#f1ece4"]],colors=palettes[index%palettes.length];
-  const art=svg("svg",{viewBox:"0 0 128 128",role:"img","aria-label":"家庭成员插画"});
-  const defs=svg("defs"),gradient=svg("linearGradient",{id:`avatar-cloth-${index}`,x1:"0%",y1:"0%",x2:"100%",y2:"100%"});gradient.append(svg("stop",{offset:"0%","stop-color":colors[1]}),svg("stop",{offset:"100%","stop-color":colors[0]}));defs.append(gradient);art.append(defs);
-  art.append(svg("path",{d:"M19 24 Q33 7 70 10 Q112 16 117 59 Q113 106 69 121 Q26 118 11 83 Q4 51 19 24Z",fill:colors[2]}));
-  art.append(svg("path",{d:"M12 121 Q17 91 35 80 Q45 75 54 75 H76 Q89 75 100 83 Q117 95 120 121Z",fill:`url(#avatar-cloth-${index})`,stroke:colors[0],"stroke-width":1.5}));
-  art.append(svg("path",{d:"M54 71 L54 82 Q64 94 75 82 L75 71Z",fill:"#e9d4bd"}));
-  art.append(svg("path",{d:"M42 36 Q45 23 64 22 Q84 22 87 40 L85 59 Q80 74 65 77 Q50 75 44 62Z",fill:"#f1dfca",stroke:"#c8b19c","stroke-width":1.5}));
-  art.append(svg("path",{d:"M39 45 Q39 19 63 18 Q87 18 90 43",fill:"none",stroke:"#9caf9f","stroke-width":3,"stroke-linecap":"round"}));
-  art.append(svg("path",{d:"M38 81 Q45 79 55 87 L65 100 L76 87 Q87 79 94 82",fill:"none",stroke:"#f7faf6","stroke-width":4,"stroke-linecap":"round"}));
-  art.append(svg("path",{d:"M48 48 Q55 45 60 48 M71 48 Q77 45 82 48 M58 62 Q65 66 72 62",fill:"none",stroke:"#9b8c81","stroke-width":1.5,"stroke-linecap":"round"}));
-  return art;
-}
 function renderInventory(profile,labels={}){
   const equipment=$("home-device-inventory");equipment.replaceChildren();
   const backgroundNames={冷藏设备:"cold_storage",网络待机:"network_standby",厨房设备:"cooking_main",照明:"lighting",活动插座:"activity_plugs"};
@@ -79,7 +68,7 @@ function renderInventory(profile,labels={}){
     for(const [id,entries] of groups[key]){
       const card=make("article",null,"equipment-card");card.dataset.deviceClass=id;
       const heading=make("div",null,"equipment-card-heading");heading.append(window.EBView.icon(id),make("strong",entries[0].item.device||deviceName(id)));card.append(heading);
-      for(const {item,state} of entries){const position=make("span",zoneLabel(item.zone,labels)+(state?` · ${state}`:""),"equipment-position");if(item.asset_id)position.dataset.assetId=item.asset_id;card.append(position);}
+      for(const {item,state} of entries){const text=[zoneLabel(item.zone,labels),state].filter(Boolean).join(" · ");if(!text)continue;const position=make("span",text,"equipment-position");if(item.asset_id)position.dataset.assetId=item.asset_id;card.append(position);}
       grid.append(card);
     }
     equipment.append(grid);
@@ -88,7 +77,7 @@ function renderInventory(profile,labels={}){
     const details=make("details",null,"equipment-background");details.append(make("summary","其他日常用电"));
     const list=make("dl",null,"equipment-background-list");
     for(const [id,entries] of groups.background){const row=make("div",null,"equipment-background-row");row.dataset.deviceClass=id;
-      row.append(make("dt",entries[0].item.device||deviceName(id)),make("dd",[...new Set(entries.map(({item,state})=>zoneLabel(item.zone,labels)+(state&&state!=="暂不可调"?` · ${state}`:"")))].join("、")));list.append(row);}
+      row.append(make("dt",entries[0].item.device||deviceName(id)),make("dd",[...new Set(entries.map(({item,state})=>[zoneLabel(item.zone,labels),state!=="暂不可调"?state:""].filter(Boolean).join(" · ")).filter(Boolean))].join("、")));list.append(row);}
     if([...groups.background.values()].flat().every(({state})=>state==="暂不可调"))details.append(make("p","以下日常用电暂不可调。"));
     details.append(list);equipment.append(details);
   }
@@ -96,27 +85,28 @@ function renderInventory(profile,labels={}){
 function renderHome(roleId){
   const bound=PROFILES[roleId],profile=bound?.profile,home=profile?.household;
   if(!home){$("home-intro").textContent="本户背景资料未交付。";return;}
-  $("home-intro").textContent=`${home.city||"城市未知"} · ${home.family_size??"未知"} 位成员 · ${home.building_type||"住房类型未知"} · 合成设计资料。`;
+  $("home-intro").textContent=[home.city,home.family_size==null?null:`${home.family_size} 位成员`,home.building_type].filter(Boolean).join(" · ");
   roomPicture(profile,bound.geometry);
   const facts=$("home-summary");facts.replaceChildren();
-  addFact(facts,"城市",home.city||"未知");
-  addFact(facts,"住宅类型",home.building_type||"未知");
-  addFact(facts,"自然间数",home.natural_rooms_H7||"未知");
-  addFact(facts,"整套建筑面积（设计值）",home.whole_gross_m2==null?"未知":`${home.whole_gross_m2} ㎡`);
-  addFact(facts,"本户净面积（估计设计值）",home.household_net_share_m2==null?"未知":`${home.household_net_share_m2} ㎡`);
-  addFact(facts,"所在楼层",home.floor_position||"未知");
-  addFact(facts,"居住范围",home.housing_form_design==="independent_dwelling"?"独立整套":home.housing_form_design?"部分/合住范围":"未知");
+  if(home.building_type)addFact(facts,"住宅类型",home.building_type);
+  if(home.natural_rooms_H7)addFact(facts,"房间",home.natural_rooms_H7);
+  if(home.household_net_share_m2!=null)addFact(facts,"本户面积",`${home.household_net_share_m2} ㎡`);
+  if(home.floor_position)addFact(facts,"所在楼层",home.floor_position);
   renderInventory(profile,bound.geometry?.zone_labels);
 
-  $("home-targets").textContent="当天调整的设备会在时间轴中标出。设备可控性来自合成设定，家庭授权尚未提供。";
+  $("home-targets").textContent="";
   const members=$("home-members");members.replaceChildren();
-  for(const [number,member] of (profile.members||[]).entries()){
-    const card=make("article",null,"person-card"),art=make("div",null,"person-art"),copy=make("div",null,"person-copy");art.append(avatar(number));
-    copy.append(make("strong",`${member.relationship} · ${member.age_years} 岁`),make("span",`${member.life_roles} · ${member.routine}`),make("small",`工作日通常在家：${member.weekday_home||"未知"}`));card.append(art,copy);members.append(card);
+  for(const member of profile.members||[]){
+    const card=make("article",null,"person-card"),copy=make("div",null,"person-copy");
+    copy.append(make("strong",`${member.relationship} · ${member.age_years} 岁`));
+    if(member.life_roles||member.routine)copy.append(make("span",[member.life_roles,member.routine].filter(Boolean).join(" · ")));
+    if(member.weekday_home)copy.append(make("small",`工作日通常在家：${member.weekday_home}`));
+    card.append(copy);members.append(card);
   }
   const attitude=$("home-attitudes");attitude.replaceChildren();
-  const score=(value)=>value==null?"未提供":`${value}/5`;
-  attitude.append(make("p",`节费重视 ${score(home.saving_importance_1_5)}，舒适重视 ${score(home.comfort_importance_1_5)}，有条件错峰重视 ${score(home.conditional_grid_shift_importance_1_5)}。`));
-  if(home.budget_explanation)attitude.append(make("p",home.budget_explanation));
-  attitude.append(make("p",`希望提前通知 ${home.notice_preference_hours==null?"未知":home.notice_preference_hours+" 小时"}；设备控制条件为“${home.control_condition||"未知"}”。预算宽裕度 ${score(home.budget_margin_1_tight_5_roomy)}，月电费设定 ${home.monthly_bill_scenario_CNY==null?"未知":home.monthly_bill_scenario_CNY+" 元"}。`));
+  const phrase=(n,high,mid,low)=>n==null?null:n>=4?high:n>=3?mid:low;
+  const priority=[phrase(home.saving_importance_1_5,"很在意电费变化","会留意电费变化","电费不是主要顾虑"),phrase(home.comfort_importance_1_5,"很在意舒适度","希望兼顾舒适","舒适度可灵活调整"),phrase(home.conditional_grid_shift_importance_1_5,"愿意在条件合适时错峰","可以考虑错峰","不倾向为错峰改变安排")].filter(Boolean);
+  const addAttitude=(title,text)=>{if(!text)return;const row=make("div",null,"attitude-item");row.append(make("strong",title),make("p",text));attitude.append(row);};
+  addAttitude("用电取舍",[priority.join("；"),home.budget_explanation].filter(Boolean).join("。"));
+  addAttitude("调整条件",[home.control_condition,home.notice_preference_hours==null?null:`希望提前 ${home.notice_preference_hours} 小时通知`].filter(Boolean).join("；"));
 }
