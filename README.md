@@ -67,6 +67,12 @@ EPLUS_ROOT=/path/to/EnergyPlus-24-1-0 EB_TEST_NATIVE_EP=1 .venv/bin/python scrip
 
 测试脚本禁止访问外部网络，使用固定模型回复。启用真实规划需要单独配置模型服务，见[部署说明](docs/DEPLOYMENT.md)。
 
+## 合成家庭偏好 benchmark
+
+另一条研究路径以 300 个固定合成家庭、每户 10 个情境为目标，收集对具体用电调整的接受判断和相对偏好。它与上面的真实家庭问卷独立；当前新批次尚未完成，不代表已取得 3,000 条真人回答。
+
+[方法、来源与数据状态（2026-09-29 快照）](docs/SYNTHETIC_PREFERENCE_BENCHMARK_METHODS_20260929.md)说明家庭与住宅生成依据、IDF/天气及计量代理、有效短缺的保留、评测切分和公开边界。该说明不构成新版程序或数据发布。
+
 ## 文档
 
 - [问卷字段与用途](docs/QUESTIONNAIRE.md)
