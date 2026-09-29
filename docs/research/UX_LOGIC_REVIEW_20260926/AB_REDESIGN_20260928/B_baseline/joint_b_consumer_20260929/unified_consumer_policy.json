@@ -1,0 +1,10 @@
+{
+  "schema": "eb.joint_b.consumer_policy.v1",
+  "version": "consumer-source-binding-20260930-v1",
+  "accepted_source_versions": [
+    "historical_11_cases",
+    "revision2_historical",
+    "rich_engineering_fixture_only",
+    "unified_direct_fixture_only"
+  ]
+}

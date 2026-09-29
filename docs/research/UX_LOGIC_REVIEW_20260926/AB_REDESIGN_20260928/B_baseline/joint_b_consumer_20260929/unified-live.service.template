@@ -1,0 +1,28 @@
+[Unit]
+Description=EnergyBridge unified A/B engineering trial
+After=network.target
+
+[Service]
+Type=simple
+User=ebjoint
+Group=ebjoint
+UMask=0077
+WorkingDirectory=__RELEASE__
+ExecStart=/usr/bin/python3 -B __RELEASE__/unified_live_server.py --site-dir __RELEASE__/site --data-dir /var/lib/energybridge-joint-b --prefix /joint-b --public-origin __PUBLIC_ORIGIN__ --port 18770
+Environment=PYTHONDONTWRITEBYTECODE=1 PYTHONNOUSERSITE=1
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/energybridge-joint-b
+InaccessiblePaths=/var/lib/energybridge/demo_20260911/jobs /etc/energybridge
+RestrictAddressFamilies=AF_INET AF_UNIX
+IPAddressDeny=any
+IPAddressAllow=localhost
+MemoryMax=256M
+TasksMax=32
+
+[Install]
+WantedBy=multi-user.target
