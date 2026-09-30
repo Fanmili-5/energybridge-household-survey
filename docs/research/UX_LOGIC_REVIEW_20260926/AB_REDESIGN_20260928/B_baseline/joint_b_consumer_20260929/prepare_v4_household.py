@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from typing import Optional
 
 from formal_source_consumer import sha
 from joint_contract import require
@@ -15,8 +16,11 @@ LOCK = HERE.parents[1] / "A_proposals/rich_device_revision_20260930/formal_lifes
 PROPOSAL_SCHEMA = "rich-formal-lifestyle-v4-preoutcome-source-lock"
 
 
-def prepare(role_id: str, output: Path) -> dict:
+def prepare_many(role_ids: list[str], output: Path, physical_sidecar: Optional[Path] = None) -> dict:
     output = output.resolve()
+    role_ids = sorted(set(role_ids))
+    require(role_ids and all(role_id.startswith("cityrole-") for role_id in role_ids),
+            "At least one V4 household must be selected")
     lock_sha = sha(LOCK)
     lock = json.loads(LOCK.read_text())
     households = lock["households"]
@@ -24,17 +28,18 @@ def prepare(role_id: str, output: Path) -> dict:
     require(len(households) == 300 and len(proposals) == 3000 and
             len({h["role_id"] for h in households}) == 300,
             "V4 source population is incomplete")
-    selected = [p for p in proposals if p["role_id"] == role_id]
-    require(len(selected) == 10 and
-            {p["round_index"] for p in selected} == set(range(1, 11)) and
-            all(p["schema"] == PROPOSAL_SCHEMA for p in selected),
-            "Household does not have ten bound V4 rounds")
-    source = next((h for h in households if h["role_id"] == role_id), None)
-    require(source is not None, "Household not in V4 source")
-    for key in ("annual", "canonical"):
-        ref = source[key]
-        require(sha(Path(ref["path"])) == ref["sha256"],
-                "Selected source file changed: " + key)
+    for role_id in role_ids:
+        selected = [p for p in proposals if p["role_id"] == role_id]
+        require(len(selected) == 10 and
+                {p["round_index"] for p in selected} == set(range(1, 11)) and
+                all(p["schema"] == PROPOSAL_SCHEMA for p in selected),
+                "Household does not have ten bound V4 rounds")
+        source = next((h for h in households if h["role_id"] == role_id), None)
+        require(source is not None, "Household not in V4 source")
+        for key in ("annual", "canonical"):
+            ref = source[key]
+            require(sha(Path(ref["path"])) == ref["sha256"],
+                    "Selected source file changed: " + key)
     require(sha(LOCK) == lock_sha, "V4 source lock changed during build")
     rows = [{"role_id": h["role_id"], "annual": h["annual"],
              "profile": h["canonical"], "ordinary_A_eligible": True,
@@ -56,16 +61,24 @@ def prepare(role_id: str, output: Path) -> dict:
                 "proposal_schemas": [PROPOSAL_SCHEMA]}
     manifest_path = output / "batch_manifest.json"
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n")
-    result = build(manifest_path, [role_id], output / "site")
-    require(result["roles"] == 1 and result["cases"] == 10, "V4 household build incomplete")
-    return {"role_id": role_id, "source_lock_sha256": lock_sha,
+    sidecar = physical_sidecar.resolve() if physical_sidecar else None
+    result = build(manifest_path, role_ids, output / "site", sidecar, sha(sidecar) if sidecar else None)
+    require(result["roles"] == len(role_ids) and result["cases"] == 10 * len(role_ids),
+            "V4 household build incomplete")
+    return {"role_ids": role_ids, "source_lock_sha256": lock_sha,
             "manifest": str(manifest_path), "manifest_sha256": sha(manifest_path),
-            "site": str(output / "site" / role_id), **result}
+            "site": result["combined_site"] or str(output / "site" / role_ids[0]), **result}
+
+
+def prepare(role_id: str, output: Path) -> dict:
+    return prepare_many([role_id], output)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--role", required=True)
+    parser.add_argument("--role", nargs="+", required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--physical-sidecar", type=Path)
     args = parser.parse_args()
-    print(json.dumps(prepare(args.role, args.output), ensure_ascii=False, indent=2))
+    print(json.dumps(prepare_many(args.role, args.output, args.physical_sidecar),
+                     ensure_ascii=False, indent=2))

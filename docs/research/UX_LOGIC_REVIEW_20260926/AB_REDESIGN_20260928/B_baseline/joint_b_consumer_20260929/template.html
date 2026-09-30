@@ -1,7 +1,7 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>家庭用电安排 · 本地体验</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="candidate.css"><link rel="stylesheet" href="joint-view.css"></head><body class="survey-page r72-page"><header><span class="brand">EnergyBridge</span><span>家庭用电安排体验</span></header><main>
 <p id="preview-mode-notice" class="data-version-notice">合成家庭工程体验 · 请代入这户家庭，依据生活需求和 A/B 安排判断是否采用 B。本地预览只下载记录。</p>
 <p id="role-instructions" hidden></p>
-<section class="panel"><label for="joint-select">选择情境</label><select id="joint-select"></select><p id="joint-error" role="alert"></p></section>
+<section class="panel"><label id="joint-role-picker" for="joint-role-select" hidden>选择家庭<select id="joint-role-select"></select></label><label for="joint-select">选择情境</label><select id="joint-select"></select><p id="joint-error" role="alert"></p></section>
 <section class="panel" id="home-panel"><h2>这户家庭</h2><p id="home-intro"></p><article class="house-card"><figure class="home-figure"><div id="home-visual"></div><figcaption id="home-caption"></figcaption></figure><div id="home-summary" class="home-summary"></div><div class="home-equipment"><h3>家中设备与日常用电</h3><div id="home-device-inventory"></div><p id="home-targets"></p></div></article><div class="home-lower"><section class="member-section-card"><h3>家庭成员</h3><div id="home-members"></div></section><section class="attitude-card"><h3>家庭用电态度</h3><div id="home-attitudes"></div></section></div></section>
 <section class="panel" id="joint-scenario">
 <div class="scenario-heading"><h2>A/B 用电安排</h2><p id="joint-date"></p></div>

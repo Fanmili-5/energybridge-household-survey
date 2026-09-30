@@ -1,4 +1,4 @@
-"""Bind E's first actual V4 household readback to the existing consumer sidecar."""
+"""Bind one actual V4 household readback to the existing consumer sidecar."""
 from __future__ import annotations
 
 import argparse
@@ -33,8 +33,8 @@ def make(manifest_path, batch_manifest_path, output):
     manifest_path, batch_manifest_path, output = map(Path, (manifest_path, batch_manifest_path, output))
     m = json.loads(manifest_path.read_text())
     require(m["schema"] == "eb-v4-first-household-actual-release-manifest-v1" and
-            m["role_id"] == "cityrole-0021" and m["round_count"] == 10,
-            "Wrong first household physical release")
+            m["role_id"].startswith("cityrole-") and m["round_count"] == 10,
+            "Wrong household physical release")
     require(m["shared_A"]["scoped_status"] == "meter_pass_repaired_return_gate_warning_retained" and
             m["shared_A"]["time_steps"] == 52560 and
             m["shared_A"]["UNRESOLVED"] == 0,
@@ -47,10 +47,12 @@ def make(manifest_path, batch_manifest_path, output):
         checked(ref)
     data = json.loads(checked(m["site_data"]).read_text())
     readback = json.loads(checked(m["readback"]).read_text())
-    require(data["schema"] == "eb-v4-first-household-site-data-v1" and
+    require(data["schema"] in {"eb-v4-first-household-site-data-v1",
+                                  "eb-v4-fixed-household-site-data-v1"} and
             data["source_lock_sha256"] == m["source_lock_sha256"] and
             data["readback_sha256"] == m["readback"]["sha256"] and
-            readback["schema"] == "eb-v4-first-house-actual-10-pairs-sql-readback-v1" and
+            readback["schema"] in {"eb-v4-first-house-actual-10-pairs-sql-readback-v1",
+                                   "eb-v4-fixed-role-actual-10-pairs-sql-readback-v1"} and
             readback["role_id"] == data["role_id"] == m["role_id"] and
             len(data["rounds"]) == len(readback["pairs"]) == len(m["rounds"]) == 10,
             "E release/readback mismatch")
@@ -128,18 +130,32 @@ def make(manifest_path, batch_manifest_path, output):
                     cost[side]["value"] is None for side in ("A", "B")),
                 "E cost evidence unexpectedly changed")
         shortage = site["service_shortage"]
-        require(shortage["A"]["EV_target_unmet_days"] == [] and
-                shortage["A"]["EV_trip_unmet_kWh"] == shortage["B"]["EV_trip_unmet_kWh"] == 0 and
-                shortage["A"]["hot_water_unmet_draws"] == shortage["B"]["hot_water_unmet_draws"] == [],
+        require(all(isinstance(shortage[side]["EV_target_unmet_days"], list) and
+                    isinstance(shortage[side]["hot_water_unmet_draws"], list) and
+                    isinstance(shortage[side]["EV_trip_unmet_kWh"], (int, float)) and
+                    math.isfinite(shortage[side]["EV_trip_unmet_kWh"])
+                    for side in ("A", "B")),
                 "Unexpected service shortage shape; review before display")
-        days = shortage["B"]["EV_target_unmet_days"]
+        a_days = shortage["A"]["EV_target_unmet_days"]
+        b_days = shortage["B"]["EV_target_unmet_days"]
+        days = sorted(set(b_days) - set(a_days))
+        if shortage["A"]["EV_trip_unmet_kWh"] == shortage["B"]["EV_trip_unmet_kWh"] == 0:
+            trip_text = "模型中两种安排的出行用电需求均无缺口；"
+        else:
+            trip_text = ("模型中出行用电需求缺口：A "
+                         f"{shortage['A']['EV_trip_unmet_kWh']:g} kWh，B "
+                         f"{shortage['B']['EV_trip_unmet_kWh']:g} kWh；")
+        a_hot = len(shortage["A"]["hot_water_unmet_draws"])
+        b_hot = len(shortage["B"]["hot_water_unmet_draws"])
+        hot_text = ("热水需求均无缺口；" if a_hot == b_hot == 0 else
+                    f"热水需求未完全满足：A {a_hot} 次，B {b_hot} 次；")
         impacts = [
             {"status": "computed", "description":
              f"模型中本次购电减少 {reduction:.3f} kWh，目标 {target:g} kWh，"
              + ("达到目标。" if vpp["modeled_target_met"] else "未达到目标。")
              + "这不表示后续持续节电。"},
             {"status": "computed", "description":
-             "模型中出行用电需求和热水需求没有缺口；费用未计算，室温模型尚未校准。"},
+             trip_text + hot_text + "费用未计算，室温模型尚未校准。"},
         ]
         physical = {"schema": "eb.joint_b.physical.v2", "status": "partial",
                     "channels": channels, "hold_reason": "费用未知；室温未校准。",
@@ -152,6 +168,8 @@ def make(manifest_path, batch_manifest_path, output):
                  "physical": physical, "impacts": impacts,
                  "after_horizon": {"status": "computed_design_proxy",
                     "EV_new_target_shortfall_days": days,
+                    "EV_A_target_shortfall_days": a_days,
+                    "EV_B_target_shortfall_days": b_days,
                     "task_material_after_horizon": "unknown"}}
         entries.append(entry)
     sidecar = {"schema": "eb.joint_b.physical_sidecar.v1", "engineering_fixture_only": False,

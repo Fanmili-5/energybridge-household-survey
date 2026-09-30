@@ -34,10 +34,22 @@ def verify(directory, expected_manifest_sha):
     cases, hashes = field_json(page, "joint-cases-data"), field_json(page, "source-hashes-data")
     if len(cases) != len(hashes) or len(cases) != manifest["cases"]:
         raise ValueError("Case count mismatch")
+    role_ids = manifest.get("role_ids") or [manifest["role_id"]]
+    if sorted(role_ids) != sorted({case["identity"]["role_id"] for case in cases}) or len(cases) != 10 * len(role_ids):
+        raise ValueError("Release household count differs")
+    if len({case["identity"]["case_id"] for case in cases}) != len(cases):
+        raise ValueError("Duplicate case in release")
+    for role_id in role_ids:
+        if {case["identity"]["round_index"] for case in cases
+                if case["identity"]["role_id"] == role_id} != set(range(1, 11)):
+            raise ValueError("Household release rounds incomplete")
     for case, digest in zip(cases, hashes):
-        if case["identity"]["role_id"] != manifest["role_id"] or hashlib.sha256(encoded(case)).hexdigest() != digest:
+        if case["identity"]["role_id"] not in role_ids or hashlib.sha256(encoded(case)).hexdigest() != digest:
             raise ValueError("Case identity or hash mismatch")
-    return {"verified": True, "role_id": manifest["role_id"], "cases": len(cases), "files": len(actual)}
+        if manifest["mode"] == "experience_only" and (case.get("physical", {}).get("status") not in {"partial", "complete"}
+                                                       or not case.get("audit", {}).get("physical_binding")):
+            raise ValueError("Unbound or incomplete experience case")
+    return {"verified": True, "role_ids": role_ids, "cases": len(cases), "files": len(actual)}
 
 
 if __name__ == "__main__":

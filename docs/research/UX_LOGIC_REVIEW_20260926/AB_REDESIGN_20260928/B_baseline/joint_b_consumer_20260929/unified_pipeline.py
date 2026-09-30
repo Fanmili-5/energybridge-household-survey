@@ -74,6 +74,17 @@ def apply_sidecar(cases,sidecar_path,sidecar_sha,adapter):
             'Engineering physical fixture cannot enter a source batch')
     entries={x['case_id']:x for x in sidecar['entries']}
     require(len(entries)==len(sidecar['entries']),'Duplicate physical sidecar case')
+    if sidecar.get('source_sidecars'):
+        pinned=[]
+        for ref in sidecar['source_sidecars']:
+            source=json.loads(reference(ref,path.parent).read_text())
+            require(source.get('schema')=='eb.joint_b.physical_sidecar.v1' and
+                    source.get('engineering_fixture_only') is False,
+                    'Combined source sidecar is not a real readback')
+            pinned.extend(source['entries'])
+        require(len(pinned)==len(entries) and
+                {x['case_id']:x for x in pinned}==entries,
+                'Combined physical sidecar differs from pinned household releases')
     selected={c['identity']['case_id']:c for c in cases}
     for case_id,entry in entries.items():
         require(case_id in selected,'Physical sidecar case outside selection')
@@ -177,6 +188,8 @@ def build(manifest_path,roles,out_root,sidecar_path=None,sidecar_sha=None,policy
     for case in cases:by_role.setdefault(case['identity']['role_id'],[]).append(case)
     index_path=out_root/'BUILD_INDEX.json'
     previous=json.loads(index_path.read_text()) if index_path.exists() else {}
+    require(set(previous.get('combined_role_ids',[])) <= set(by_role),
+            'Incremental build cannot drop a previously included household')
     previous_roles=previous.get('roles',{}) if previous.get('manifest_sha256')==manifest_sha else {}
     entries=dict(previous_roles);changes={}
     for role,group in by_role.items():
@@ -191,6 +204,13 @@ def build(manifest_path,roles,out_root,sidecar_path=None,sidecar_sha=None,policy
         entries[role]={'case_count':len(group),'case_ids':[c['identity']['case_id'] for c in group],
                        'files':files,'physical_statuses':{s:sum(c['physical']['status']==s for c in group)
                            for s in ('not_computed','partial','complete','failed')}}
+    combined_site=None
+    if len(by_role)>1:
+        combined_site=out_root/'_combined';combined_site.mkdir(parents=True,exist_ok=True)
+        write_page(cases,combined_site)
+        (combined_site/'household-view.js').write_bytes(STATIC_HOME.read_bytes())
+        (combined_site/'joint-view.js').write_bytes(STATIC_JOINT.read_bytes())
+        (combined_site/'source-draft.js').write_bytes(STATIC_FEEDBACK.read_bytes())
     require(sha(manifest_path)==manifest_sha and
             (policy_path is None or sha(policy_path)==policy_sha),
             'Manifest or policy changed during build')
@@ -201,10 +221,13 @@ def build(manifest_path,roles,out_root,sidecar_path=None,sidecar_sha=None,policy
            'backend_release_status':release['status'] if release else None,
            'backend_release_receipt_sha256':manifest.get('backend_release_receipt',{}).get('sha256'),
            'roles':entries,'rebuilt_roles':sorted(by_role),'changed_files':changes,
+           'combined_role_ids':sorted(by_role),
+           'combined_site':str(combined_site) if combined_site else None,
            'human_feedback':0,'collection_release':False}
     index_path.parent.mkdir(parents=True,exist_ok=True)
     index_path.write_text(json.dumps(index,ensure_ascii=False,indent=2)+'\n')
-    return {'roles':len(by_role),'cases':len(cases),'changed_files':sum(map(len,changes.values())),
+    return {'roles':len(by_role),'cases':len(cases),'combined_site':str(combined_site) if combined_site else None,
+            'changed_files':sum(map(len,changes.values())),
             'index_sha256':sha(index_path)}
 
 
