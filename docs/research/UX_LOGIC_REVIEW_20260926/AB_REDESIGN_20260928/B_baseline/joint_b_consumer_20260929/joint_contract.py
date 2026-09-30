@@ -168,7 +168,9 @@ def validate_case(case):
             require(not physical['channels'],'Uncomputed/failed physical channel has values')
         for channel in physical['channels']:
             require(channel['kind'] in {'device_electricity','external_ev_energy','zone_temperature',
-                'ideal_cooling_thermal'} and channel['unit'] in {'kWh','kWh_th','C'} and
+                'ideal_cooling_thermal','household_grid_import','ac_coil_electricity',
+                'ac_fan_electricity','EV_connection_electricity','hot_water_electricity',
+                'task_electricity'} and channel['unit'] in {'kWh','kWh_th','C'} and
                 channel['label'] and channel['scope'] in {'annual_A','event','48h'},
                 'Unsupported physical channel/unit/scope')
             for side in ('A','B'):

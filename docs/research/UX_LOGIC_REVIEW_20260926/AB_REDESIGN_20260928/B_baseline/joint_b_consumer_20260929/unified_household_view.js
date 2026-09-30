@@ -48,7 +48,7 @@ function roomPicture(profile,geometry){
   const names=geometry.zone_labels||{};
   for(const [zone,point] of Object.entries(centroid)){const shift=zone==="bathroom"||zone==="kitchen"?37:44;picture.append(svg("text",{x:point[0],y:point[1]+shift,"text-anchor":"middle",fill:"#355a48","font-size":zone==="bathroom"?14:17,"font-weight":650},`${zoneLabel(zone,names)}${geometry.owned_zones&&!geometry.owned_zones.includes(zone)?" · 共用/其他范围":""}`));}
   $("home-visual").replaceChildren(picture);
-  $("home-caption").textContent="住宅布局示意";
+  $("home-caption").textContent="住宅布局";
 }
 function renderInventory(profile,labels={}){
   const equipment=$("home-device-inventory");equipment.replaceChildren();

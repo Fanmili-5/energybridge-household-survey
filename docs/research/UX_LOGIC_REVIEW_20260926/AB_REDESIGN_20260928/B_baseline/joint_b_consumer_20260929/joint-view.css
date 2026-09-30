@@ -25,6 +25,7 @@
 .need-item{display:flex;gap:9px;align-items:baseline}
 .need-day{flex:none;color:#477057;font-size:12px;font-weight:650}
 .need-content{min-width:0}
+.needs-grid .need-note{grid-column:1/-1;background:#f2f4f1;color:#56675b;font-size:12px}
 .scenario-block{margin-top:23px;padding-top:18px;border-top:1px solid #e7eee7}
 .scenario-block h3{font-size:18px;margin:0 0 13px;color:#294d3e}
 .schedule-intro{margin:-3px 0 13px;color:#5c7063;font-size:13px;line-height:1.5}

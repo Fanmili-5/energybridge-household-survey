@@ -2,11 +2,13 @@
 from __future__ import annotations
 from pathlib import Path
 from datetime import datetime
+from copy import deepcopy
 import argparse
 import hashlib
 import json
 
 from joint_contract import bind, canonical, digest, apply_commands, require
+from locked_idf_geometry import from_locked_idf
 
 HERE = Path(__file__).resolve().parent
 AB = HERE.parents[1]
@@ -226,6 +228,16 @@ def case_from_source(proposal,annual,source,source_sha,annual_sha,lock_sha,allow
             proposal['human_response'] is None and proposal['role_id']==annual['role_id']==source['role_id'],
             'Unsupported formal proposal/source')
     profile=profile_projection(source,annual,source_sha)
+    if proposal['schema']=='rich-formal-lifestyle-v4-preoutcome-source-lock':
+        sidecar_ref=proposal['full_plan_sidecar']
+        sidecar=json.loads(checked(sidecar_ref['path'],sidecar_ref['sha256']).read_text())
+        require(sidecar['role_id']==proposal['role_id'] and
+                sidecar['proposal_id']==proposal['proposal_id'] and
+                sidecar['date']==proposal['date'],
+                'V4 full plan sidecar does not match proposal')
+        c_ref=sidecar['source_C_IDF']
+        area=source['effective_profile']['dwelling_interface']['whole_dwelling_modeled_net_floor_area_m2']
+        profile['geometry']=deepcopy(from_locked_idf(c_ref['path'],c_ref['sha256'],area))
     A=plan_from_annual(annual,proposal,profile)
     all_events=[e for d in annual['A']['days'] for e in d['events']]
     commands=[]

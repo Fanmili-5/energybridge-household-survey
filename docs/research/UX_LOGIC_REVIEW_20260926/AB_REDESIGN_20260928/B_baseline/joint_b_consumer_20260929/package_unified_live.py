@@ -19,7 +19,7 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def build(site_dir, output):
+def build(site_dir, output, experience_only=False):
     os.umask(0o077)
     site_dir, output = Path(site_dir).resolve(), Path(output).resolve()
     if output.exists():
@@ -40,7 +40,8 @@ def build(site_dir, output):
     for name in ("unified_live_server.py", "verify_unified_release.py", "unified-live.service.template", "unified-live-nginx.conf.template"):
         shutil.copyfile(HERE / name, output / name)
     files = {str(path.relative_to(output)): sha(path) for path in sorted(output.rglob("*")) if path.is_file()}
-    manifest = {"schema": "eb.joint_b.engineering_release.v1", "mode": "engineering_only",
+    manifest = {"schema": "eb.joint_b.engineering_release.v1",
+                "mode": "experience_only" if experience_only else "engineering_only",
                 "human_collection_release": False, "training_release": False,
                 "role_id": next(iter(role_ids)), "cases": 10, "files": files}
     (output / "RELEASE.json").write_bytes(encoded(manifest))
@@ -57,5 +58,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--site-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--experience-only", action="store_true")
     args = parser.parse_args()
-    print(json.dumps(build(args.site_dir, args.output), ensure_ascii=False, indent=2))
+    print(json.dumps(build(args.site_dir, args.output, args.experience_only), ensure_ascii=False, indent=2))

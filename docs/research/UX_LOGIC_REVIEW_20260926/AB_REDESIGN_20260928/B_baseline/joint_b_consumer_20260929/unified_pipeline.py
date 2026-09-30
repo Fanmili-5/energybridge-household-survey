@@ -90,6 +90,14 @@ def apply_sidecar(cases,sidecar_path,sidecar_sha,adapter):
             for ref in files:reference(ref,path.parent)
         require(case['physical']['status']=='not_computed','Physical sidecar would overwrite source result')
         case['physical']=entry['physical']
+        if 'impacts' in entry:
+            require(case['impacts']==[] and isinstance(entry['impacts'],list),
+                    'Physical sidecar would overwrite source impacts')
+            case['impacts']=entry['impacts']
+        if 'after_horizon' in entry:
+            require(case['after_horizon']['status']=='not_provided',
+                    'Physical sidecar would overwrite after-horizon evidence')
+            case['after_horizon']=entry['after_horizon']
         case['audit']['physical_binding']={'sidecar_sha256':sidecar_sha,
                                           'sidecar_entry_sha256':digest(entry)}
         bind(case)

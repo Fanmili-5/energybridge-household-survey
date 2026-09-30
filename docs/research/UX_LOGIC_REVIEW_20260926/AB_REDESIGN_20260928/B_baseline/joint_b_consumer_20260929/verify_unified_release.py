@@ -19,7 +19,7 @@ def verify(directory, expected_manifest_sha):
     if sha(manifest_path) != expected_manifest_sha:
         raise ValueError("Release manifest SHA mismatch")
     manifest = json.loads(manifest_path.read_text())
-    if manifest.get("schema") != "eb.joint_b.engineering_release.v1" or manifest.get("human_collection_release") is not False or manifest.get("training_release") is not False:
+    if manifest.get("schema") != "eb.joint_b.engineering_release.v1" or manifest.get("mode") not in {"engineering_only", "experience_only"} or manifest.get("human_collection_release") is not False or manifest.get("training_release") is not False:
         raise ValueError("Not an engineering release")
     actual = {str(path.relative_to(root)) for path in root.rglob("*") if path.is_file()}
     expected = set(manifest["files"]) | {"RELEASE.json"}

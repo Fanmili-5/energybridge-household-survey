@@ -90,5 +90,35 @@ class LiveServiceTest(unittest.TestCase):
             self.assertEqual(db.execute("SELECT count(*) FROM writes").fetchone()[0], 2)
 
 
+class ExperienceServiceTest(unittest.TestCase):
+    def test_read_only_page_rejects_both_writes_without_database(self):
+        with tempfile.TemporaryDirectory() as temp:
+            data_dir = Path(temp) / "unused-data"
+            app = App(SITE, data_dir, "/joint-b", "https://example.test", experience_only=True)
+            server = Server(("127.0.0.1", 0), app)
+            thread = threading.Thread(target=server.serve_forever, daemon=True)
+            thread.start()
+            base = f"http://127.0.0.1:{server.server_port}/joint-b"
+            opener = build_opener(ProxyHandler({}))
+            try:
+                with opener.open(base + "/", timeout=3) as response:
+                    page = response.read().decode()
+                    self.assertNotIn("Set-Cookie", response.headers)
+                self.assertIn("window.EBExperienceOnly=true", page)
+                self.assertNotIn("window.EBLiveConfig=", page)
+                with opener.open(base + "/api/health", timeout=3) as response:
+                    self.assertEqual(json.load(response)["mode"], "experience_only")
+                for route in ("answers", "issues"):
+                    request = Request(base + "/api/" + route, data=b"{}", method="POST")
+                    with self.assertRaises(HTTPError) as caught:
+                        opener.open(request, timeout=3)
+                    self.assertEqual(caught.exception.code, 405)
+                self.assertFalse(data_dir.exists())
+            finally:
+                server.shutdown()
+                server.server_close()
+                thread.join(timeout=3)
+
+
 if __name__ == "__main__":
     unittest.main()

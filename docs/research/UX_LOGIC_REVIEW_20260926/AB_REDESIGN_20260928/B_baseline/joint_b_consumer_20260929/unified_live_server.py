@@ -90,7 +90,7 @@ def validate_record(kind, record, index, cases, hashes):
 
 
 class App:
-    def __init__(self, site_dir, data_dir, prefix, public_origin):
+    def __init__(self, site_dir, data_dir, prefix, public_origin, experience_only=False):
         self.site_dir = Path(site_dir).resolve()
         self.page = (self.site_dir / "index.html").read_text()
         self.cases = field_json(self.page, "joint-cases-data")
@@ -102,6 +102,14 @@ class App:
         if not public_origin.startswith("https://") or "/" in public_origin[8:]:
             raise ValueError("A precise HTTPS public origin is required")
         self.prefix, self.public_origin = prefix, public_origin
+        release_path = self.site_dir.parent / "RELEASE.json"
+        if release_path.is_file():
+            release = json.loads(release_path.read_text())
+            if release.get("mode") == "experience_only":
+                experience_only = True
+        self.experience_only = experience_only
+        if experience_only:
+            return
         self.data_dir = Path(data_dir).resolve()
         self.data_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
         self.db_path = self.data_dir / "engineering.sqlite3"
@@ -187,8 +195,11 @@ class Handler(BaseHTTPRequestHandler):
         if route is None:
             return self.reply(HTTPStatus.NOT_FOUND, {"error": "Not found"})
         if route == "/api/health":
-            return self.reply(HTTPStatus.OK, {"mode": "engineering_only", "cases": len(app.cases)})
+            return self.reply(HTTPStatus.OK, {"mode": "experience_only" if app.experience_only else "engineering_only", "cases": len(app.cases)})
         if route in {"/", "/index.html"}:
+            if app.experience_only:
+                html = app.page.replace("</head>", "<script>window.EBExperienceOnly=true</script></head>", 1)
+                return self.reply(HTTPStatus.OK, html.encode(), mime="text/html; charset=utf-8")
             session = app.session(self.headers.get("Cookie"), create=True)
             config = json.dumps({"base": app.prefix, "csrf": session["csrf"]}, separators=(",", ":"))
             html = app.page.replace("</head>", "<script>window.EBLiveConfig=" + config + "</script></head>", 1)
@@ -202,6 +213,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         app, route = self.server.app, self.route()
+        if app.experience_only:
+            return self.reply(HTTPStatus.METHOD_NOT_ALLOWED, {"error": "此页面仅供体验，回答不会保存。"})
         if route not in {"/api/answers", "/api/issues"}:
             return self.reply(HTTPStatus.NOT_FOUND, {"error": "Not found"})
         session = app.session(self.headers.get("Cookie"))
@@ -236,9 +249,10 @@ def main():
     parser.add_argument("--prefix", default="/joint-b")
     parser.add_argument("--public-origin", required=True)
     parser.add_argument("--port", type=int, default=18770)
+    parser.add_argument("--experience-only", action="store_true")
     args = parser.parse_args()
     os.umask(0o077)
-    app = App(args.site_dir, args.data_dir, args.prefix, args.public_origin)
+    app = App(args.site_dir, args.data_dir, args.prefix, args.public_origin, args.experience_only)
     server = Server(("127.0.0.1", args.port), app)
     server.serve_forever()
 
