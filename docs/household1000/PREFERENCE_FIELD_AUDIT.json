@@ -1,0 +1,58 @@
+{
+  "schema": "eb.given_preference_inventory.v1",
+  "created_utc": "2026-10-07T11:42:07.901476+00:00",
+  "source_stage": "roleplay_mixed_static1000_20261007_v17",
+  "source_delivery_sha256": "a0594074e1bd6d1332cb72000d7f4e8ff7e21c169bb308a8b5ea8e24daea89a5",
+  "counts": {
+    "households": 1000,
+    "comfort_importance_1_5_unknown": 1000,
+    "saving_importance_1_5_unknown": 1000,
+    "present_ac": 911,
+    "present_dryer": 899,
+    "present_ev": 910,
+    "present_washer": 988,
+    "present_dishwasher": 502,
+    "present_water_heater": 791
+  },
+  "given_routine_preference_and_service_setting_distributions": {
+    "ac_preferred_range_C": {
+      "[24.0, 26.0]": 911
+    },
+    "ac_tolerance_C": {
+      "1.0": 911
+    },
+    "washer_preferred_min": {
+      "1140": 156,
+      "1120": 146,
+      "1110": 143,
+      "1130": 150,
+      "1170": 129,
+      "1150": 115,
+      "1160": 149
+    },
+    "dishwasher_preferred_min": {
+      "1210": 126,
+      "1220": 122,
+      "1200": 143,
+      "1230": 111
+    },
+    "bath_start_min": {
+      "1230": 791
+    },
+    "mixed_water_target_C": {
+      "40.5555555555556": 791
+    },
+    "EV_target_SOC": {
+      "0.85": 910
+    }
+  },
+  "interpretation": [
+    "Null overall importance fields do not mean every preference or service condition is absent.",
+    "These are source/designed reference settings, not observed actor preferences.",
+    "Uniform EB defaults are not evidence of identical Chinese household preferences.",
+    "This inventory does not prove each parameter is visible in the current rendered role card."
+  ],
+  "production_changed": false,
+  "new_EP_runs": 0,
+  "human_answers_created": 0
+}

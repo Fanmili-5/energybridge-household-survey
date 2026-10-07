@@ -1,0 +1,75 @@
+{
+  "version": "household1000-v17-20261007",
+  "checked_utc": "2026-10-07T12:08:30.905137+00:00",
+  "source_integrity_files": 316,
+  "python_ast_checked_files": 294,
+  "python_ast_environment": "local research Python3.14;parse only",
+  "javascript_school_check": {
+    "javascript_files": 12,
+    "failures": [],
+    "host": "school Linux",
+    "node": "v20.19.0"
+  },
+  "entrypoint_school_tests": {
+    "host": "school Linux",
+    "returncode": 0,
+    "output": "test_missing_protected_inputs_remain_missing (test_household1000_entrypoint.EntrypointTests) ... ok\ntest_same_need_and_A_freeze_corruption_detected_even_with_valid_file_hashes (test_household1000_entrypoint.EntrypointTests) ... ok\ntest_well_bound_fixture_and_no_execution (test_household1000_entrypoint.EntrypointTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.449s\n\nOK\n",
+    "new_EP_runs": 0
+  },
+  "school_prepared_input_checks": {
+    "checks": [
+      {
+        "scope": "pilot50",
+        "households": 50,
+        "residents": 147,
+        "pairs": 500,
+        "failures": [],
+        "EP_started": false,
+        "human_answers_created": 0,
+        "claim": "file and common-input binding integrity only"
+      },
+      {
+        "scope": "static1000",
+        "households": 1000,
+        "residents": 2524,
+        "pairs": 10000,
+        "failures": [],
+        "EP_started": false,
+        "human_answers_created": 0,
+        "claim": "file and common-input binding integrity only"
+      }
+    ],
+    "new_EP_runs": 0,
+    "human_answers_created": 0,
+    "scope": "read-only checks of prepared school inputs;not a clean raw-source reconstruction"
+  },
+  "publication_file_scope_check": "pass",
+  "secret_patterns_found": 0,
+  "private_dataset_directories_in_new_payload": 0,
+  "frontend_case_JSON_payloads_removed": 6,
+  "new_EP_runs": 0,
+  "human_answers_created": 0,
+  "source_or_scientific_rules_changed": false,
+  "fresh_private_pipeline_reconstruction": "not_executed;protected inputs required",
+  "prior_public_history_audited_or_rewritten": false,
+  "authorization": "user: 同步到最新版本;existing public repository/main;source and aggregate status only",
+  "local_markdown_links_checked": 57,
+  "missing_links": [],
+  "archived_source_whitespace_warnings": [
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/readback.py",
+      "line": 96,
+      "decision": "preserved original bytes for source hash fidelity;blank-line whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/readback.py",
+      "line": 96,
+      "decision": "preserved original bytes for source hash fidelity;blank-line whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/readback.py",
+      "line": 96,
+      "decision": "preserved original bytes for source hash fidelity;blank-line whitespace only"
+    }
+  ]
+}

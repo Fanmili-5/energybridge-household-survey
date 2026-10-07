@@ -1,5 +1,11 @@
 # 文档目录
 
+## 当前版本入口
+
+**1000户V17（2026-10-07）**：先读[当前状态与入口](household1000/README.md)，再读[全流程源码地图](household1000/PIPELINE.md)、[来源与输入](household1000/INPUTS.md)、[复现/学校核查](household1000/REPRODUCTION.md)、[科研边界与待补](household1000/RESEARCH_GATES.md)。该入口覆盖家庭生成到原问卷展示/工程反馈；真人有效性、正式收集与训练仍未完成。
+
+下面是原自报问卷和旧版工程记录，按各自版本判读。
+
 ## 项目使用
 
 | 文档 | 内容 |

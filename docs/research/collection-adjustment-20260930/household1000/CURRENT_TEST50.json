@@ -1,0 +1,11 @@
+{
+  "stage": "roleplay_mixed_production_20261007_v17",
+  "delivery": "roleplay_mixed_production_20261007_v17/DELIVERY.json",
+  "delivery_sha256": "7a13a201732a4cfd46c4d1d273b39de3d2ee8d205bab70157e5012c20e82c849",
+  "url": "https://47.85.194.154/household50",
+  "scope": "original50 random dates,mixed proposals,actual500pairs and original frontend",
+  "full1000_static": "roleplay_mixed_static1000_20261007_v17/DELIVERY.json",
+  "full1000_EP_authorized": false,
+  "collection_release": false,
+  "training_release": false
+}

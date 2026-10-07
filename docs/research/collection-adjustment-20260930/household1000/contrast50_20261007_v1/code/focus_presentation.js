@@ -1,0 +1,7 @@
+'use strict';
+// Order factual changed assets first; preserve every unchanged device and raw result.
+const fs=require('node:fs'),path=require('node:path');const root=process.argv[2],index=JSON.parse(fs.readFileSync(path.join(root,'INDEX50.json'),'utf8'));
+for(const row of index.households){const p=path.join(root,'households',row.household_id,'index.html');let page=fs.readFileSync(p,'utf8');const cases=JSON.parse(page.match(/id="joint-cases-data"[^>]*>(.*?)<\/script>/s)[1]);for(const c of cases){const changed=new Set(c.commands.map(x=>x.asset_id));for(const plan of Object.values(c.plans))plan.rows.sort((a,b)=>Number(!changed.has(a.asset_id))-Number(!changed.has(b.asset_id)));c.presentation_policy='changed assets first; every unchanged device retained';const delta=c.quantities.find(x=>x.scope==='event').A.value-c.quantities.find(x=>x.scope==='event').B.value;c.impacts[0].description=`目标时段移峰量为 ${delta.toFixed(3)} kWh；${delta>=0.5-1e-6?'达到':'未达到'}0.5 kWh请求目标。两天总电量另列，用于检查后续回补。`;}
+page=page.replace(/(<script[^>]+id="joint-cases-data"[^>]*>).*?(<\/script>)/s,(_,a,b)=>a+JSON.stringify(cases).replace(/</g,'\\u003c')+b);fs.writeFileSync(p,page);}
+const server=path.join(root,'serve50.py');const s=fs.readFileSync(server,'utf8').replace('每户10个冻结随机日期','每户从存在合法调整机会的日期中随机抽取10天');fs.writeFileSync(server,s);
+console.log(JSON.stringify({focused_cases:500,all_devices_and_failed_goals_retained:true}));

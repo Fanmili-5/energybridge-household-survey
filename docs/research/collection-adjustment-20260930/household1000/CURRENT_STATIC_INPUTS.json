@@ -1,0 +1,29 @@
+{
+  "stage": "roleplay_mixed_static1000_20261007_v17",
+  "delivery_path": "roleplay_mixed_static1000_20261007_v17/DELIVERY.json",
+  "delivery_sha256": "a0594074e1bd6d1332cb72000d7f4e8ff7e21c169bb308a8b5ea8e24daea89a5",
+  "scope": "mixed roleplay reference input production;only selected50 actual EP outcomes validated",
+  "source_sealed_V16_delivery_sha256": "edb29a7781111ef47f8ebb709d11a6bedad78d7e43741736766483d2b65c7c78",
+  "EP_hold": true,
+  "EP_hold_scope": "other950/full1000 execution remains held;selected50 tested",
+  "current_test50": "CURRENT_TEST50.json",
+  "universal_B_static_feasibility_filter_removed_for_v17_library": true,
+  "supported_challenges": [
+    "program_deadline",
+    "AC_given_setpoint_bound",
+    "EV_charge_energy_window",
+    "WH_low_heat_target",
+    "inactive_AC_request"
+  ],
+  "human_answers": 0,
+  "collection_release": false,
+  "training_release": false,
+  "known_boundaries": [
+    "other950 EP outcomes absent",
+    "human role feedback absent",
+    "room air is not personal comfort",
+    "designed challenge ratio is not population frequency",
+    "extra request/unknown information/operator conflict families not generated in this version"
+  ],
+  "old_static_pointer_saved_at": "roleplay_mixed_production_20261007_v17/inputs_history/CURRENT_STATIC_INPUTS.json"
+}

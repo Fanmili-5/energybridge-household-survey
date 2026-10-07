@@ -1,0 +1,27 @@
+{
+  "checks": [
+    {
+      "scope": "pilot50",
+      "households": 50,
+      "residents": 147,
+      "pairs": 500,
+      "failures": [],
+      "EP_started": false,
+      "human_answers_created": 0,
+      "claim": "file and common-input binding integrity only"
+    },
+    {
+      "scope": "static1000",
+      "households": 1000,
+      "residents": 2524,
+      "pairs": 10000,
+      "failures": [],
+      "EP_started": false,
+      "human_answers_created": 0,
+      "claim": "file and common-input binding integrity only"
+    }
+  ],
+  "new_EP_runs": 0,
+  "human_answers_created": 0,
+  "scope": "read-only checks of prepared school inputs;not a clean raw-source reconstruction"
+}

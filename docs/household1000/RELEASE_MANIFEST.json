@@ -1,0 +1,1678 @@
+{
+  "version": "household1000-v17-20261007",
+  "repository": "https://github.com/Fanmili-5/energybridge-household-survey.git",
+  "target_branch": "main",
+  "parent_commit": "5282064532853b20a88e8f0490b5b456096c5485",
+  "payload_files_excluding_this_manifest": [
+    {
+      "path": "README.md",
+      "bytes": 5388,
+      "sha256": "f04ffe233d30d24372b4f70c33c76b61b0ea0b00db3ebca59d22fe8230c1d5ec"
+    },
+    {
+      "path": "docs/README.md",
+      "bytes": 3156,
+      "sha256": "e4382b4921d83bf9f2ee8a34db1ee2c31a7e70c81acc7f295e57386d5abe3ba9"
+    },
+    {
+      "path": "docs/household1000/ENTRYPOINT_TEST_CHECK.json",
+      "bytes": 517,
+      "sha256": "154557d52954d021748d0890b50720e21dde6312fa22d8f80d574ff60987c188"
+    },
+    {
+      "path": "docs/household1000/INPUTS.md",
+      "bytes": 3255,
+      "sha256": "dffc1992e209fddd3010d411c90fa7bf0f9a48309b6c2c7b073fba39a6cfb798"
+    },
+    {
+      "path": "docs/household1000/JS_SOURCE_CHECK.json",
+      "bytes": 95,
+      "sha256": "7c8dc310dabaaadf77febacc4abb84441814d124191eaf34971db022c57f8597"
+    },
+    {
+      "path": "docs/household1000/PIPELINE.json",
+      "bytes": 7183,
+      "sha256": "c7a30e4c91eb356f7d8421f6c54acd5bfcb76e42ed766471cace03f20af58e1f"
+    },
+    {
+      "path": "docs/household1000/PIPELINE.md",
+      "bytes": 3486,
+      "sha256": "91258579c4f74a2d39a78545c005b21ede89a613515f4f6cf20fc0aa22c0fc5e"
+    },
+    {
+      "path": "docs/household1000/PREFERENCE_FIELD_AUDIT.json",
+      "bytes": 1659,
+      "sha256": "b5757e9f29bd44e7ddd4b324662390a85dc4b52c2db4d29af9ca8fb9b87f448e"
+    },
+    {
+      "path": "docs/household1000/PUBLICATION_CHECK.json",
+      "bytes": 3072,
+      "sha256": "9374a32a1982740396202551c1e4be034a6ac99d0feb85671168926278efd91b"
+    },
+    {
+      "path": "docs/household1000/README.md",
+      "bytes": 2733,
+      "sha256": "13f57120c799ab40caff04351bc2f76fcb6455c267a96d3064b8db10721772d3"
+    },
+    {
+      "path": "docs/household1000/REPRODUCTION.md",
+      "bytes": 2481,
+      "sha256": "908ed7ef0c3c4b6ab68ba99bc9302b8cad576688a0aed4190e97210b6ce3299f"
+    },
+    {
+      "path": "docs/household1000/RESEARCH_GATES.md",
+      "bytes": 2715,
+      "sha256": "827b101b4ccaadea9715425fbd9114a1077889c23473ed3cbe56efa19fb3d9a2"
+    },
+    {
+      "path": "docs/household1000/SCHOOL_BINDING_CHECK.json",
+      "bytes": 678,
+      "sha256": "9359fbb1a7569895d4311be3705766b2374b2021520c525179c26a2c68ea04ce"
+    },
+    {
+      "path": "docs/household1000/SOURCE_SNAPSHOT.json",
+      "bytes": 128540,
+      "sha256": "e0c4a8cae27af19af0f8e709b1640e8e4fda5047354dc2e8310446fb191c549d"
+    },
+    {
+      "path": "docs/household1000/STATUS.json",
+      "bytes": 1274,
+      "sha256": "3e57375afe68570b796a7fe31582da74f706d73e7534a76318a703f5684b4d2a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
+      "bytes": 1309,
+      "sha256": "8e6f4dd06e5d45d9bb22e60f44ebfd196123b7755428c5a921ef61c9cf5c966e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
+      "bytes": 524,
+      "sha256": "69a5b60899f6fa0f6a40b48600525f4ccadf3ea69a1485a1e665441e3574d96f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/ab_design_audit1000_20261007_v1/code/audit.py",
+      "bytes": 9203,
+      "sha256": "3c2cef0dcb752e7bd63e7a0eb7e15e9b71d7ace10ba652c8daa2669fe071df94"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/benchmark_foundation_20261004/code/audit_foundation.py",
+      "bytes": 10907,
+      "sha256": "df31c838251c2ec85d5dfcd14cd16db4c39eae5f590e88f4f1eb9cd5be027620"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/benchmark_foundation_20261004/code/audit_modern_asset_groups.py",
+      "bytes": 7426,
+      "sha256": "e87fa4ad6453a4009df2c628abd9cfd8d4151ddb37c34c9916406eacb15af30c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/benchmark_foundation_20261004/code/build_etna_oracle.py",
+      "bytes": 8973,
+      "sha256": "084d78e6945cee04f294d7bd075a4adb79b0fa299851f9acf6bc65962a3ea06c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/benchmark_foundation_20261004/code/census_projection.py",
+      "bytes": 6034,
+      "sha256": "1202165cab576c00551ed24bb207ec0b43814bc49ffd9ee944bd0818cc3ef877"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/benchmark_foundation_20261004/code/verify_foundation.py",
+      "bytes": 6285,
+      "sha256": "41f02d63a668e4bf163e49037d5981c3dec02262dd01d3d1f37873bbecee9b42"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/chfs_admission_20261003/audit_chfs.py",
+      "bytes": 15226,
+      "sha256": "15e245418bb12507cf3e15100a75f454088ecc62d25b2266dc427160f5acc328"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/chfs_admission_20261003/build_contract.py",
+      "bytes": 14994,
+      "sha256": "672fdb37aabfb429a0e1a188ec0dff225d154163e6b4ac97129a53cce85375e2"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/chfs_admission_20261003/inspect_package.py",
+      "bytes": 3335,
+      "sha256": "d030013725c51b57b5eeb5309025edc9c844ed54ab275073cc173dde67a348b3"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/chfs_admission_20261003/verify_admission.py",
+      "bytes": 4466,
+      "sha256": "459b44d03c9c0e8195c8bf393ff7c1f722d202240eab045dd32fe0a3a6f6e6d7"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/chfs_census_bridge_20261003/bridge_rules.py",
+      "bytes": 9934,
+      "sha256": "35a42dd5e79ee49cae49ff5c0a17aabd2cd3bddfbd28932819dcabb67f8b6cdc"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/chfs_census_bridge_20261003/build_source_ledger.py",
+      "bytes": 9828,
+      "sha256": "f59bcdb6b046f9d7720fc9c755c71e83adf06e79eca05e0fe1b8cb91a82dd3b3"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/chfs_census_bridge_20261003/run_bridge.py",
+      "bytes": 13034,
+      "sha256": "562838d2971b9780cb2a823c335b94f20371069459b4885e26e91f9bd25a1278"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/chfs_census_bridge_20261003/verify_bridge.py",
+      "bytes": 6778,
+      "sha256": "f75e01c1bda4f9fa8d697363136e346aa9e9f0044d533b3363cae2f2102315b4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/city_representativeness_20261001/audit_city_targets.py",
+      "bytes": 4770,
+      "sha256": "65677945fc3300801b89e3c4c9dee7b07130ab8156e3b1b88a30d37e37e3dbe5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/city_representativeness_20261001/audit_housing_support.py",
+      "bytes": 10305,
+      "sha256": "c26bc6299eb8a8de538daf73f04b853fe30e64051326d4ae53b4352ad4813d56"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/background_models.py",
+      "bytes": 11969,
+      "sha256": "fbeadbd31f55ddeab6fd656c62c89ecdf2d89c1e2ee7f18d55cc394f89a5acb4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/build_preview.py",
+      "bytes": 1098,
+      "sha256": "5d5d5d18ef7324c93fa9284f96270dff6bbadf500d07dd65946b55e60d9c9168"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/cn_obee_audit.py",
+      "bytes": 4391,
+      "sha256": "863fd1ecf435ea4a3a521de8c37fdbe2b2344337df74035a6f6d7948e098c04f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/collection_packages.py",
+      "bytes": 15299,
+      "sha256": "7ca847ea65291e433b86141a0df7f2a482aa1ee3b1a5936b98b8b11acb684dff"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/common.py",
+      "bytes": 1319,
+      "sha256": "e79c7c6d7d2c134dcbb76efd0a9d509804602c74a86141083d86bc862486a3bf"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/device_and_intake_ledger.py",
+      "bytes": 4827,
+      "sha256": "abb4b330ee7601c92df5d1646234004e2b0cf619eed86c7c18f8dd6ba58f1f95"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/empirical_replay.py",
+      "bytes": 6004,
+      "sha256": "97413a38e5e594d5c28134648e975090850dab5a3fa998a9b23df188295c54b3"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/model_input_projection.py",
+      "bytes": 1925,
+      "sha256": "64c997167990c1cd4e59ee743027003e27641ab838f2b03425572b2b00b612f0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/native_gain_audit.py",
+      "bytes": 2396,
+      "sha256": "4b2462aa9c32a339659706240987bd2683359fd4674b32371f17b2ea7a7ac5a3"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/thermal_pairs.py",
+      "bytes": 6551,
+      "sha256": "9cec7a832de49fa603f63fa421f18a4b3a97d43d18f05d44775fcd93b198404d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/verify_empirical.py",
+      "bytes": 2626,
+      "sha256": "db384bf78400673c9e8a7778a29fd0e0c8edcf06d5633e9e0237669e50503ac8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/verify_reference.py",
+      "bytes": 8230,
+      "sha256": "c5fc97662c524b60d1182f565179354781a5328b373bb527eaeb6d2591a25c54"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/construction_chain_20261003/audit_chfs_vintage.py",
+      "bytes": 5658,
+      "sha256": "97758699189def2837a9bdcbb41801c07ac2183ebdf1970c7cb38273a5a1dd46"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/construction_chain_20261003/build_1000_chain_index.py",
+      "bytes": 4175,
+      "sha256": "0341d4b261a3ecb93b396010aee383c16c41d7ad10ef26961ad9f883bfda9516"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/construction_chain_20261003/build_joint_references.py",
+      "bytes": 7815,
+      "sha256": "f74ef4c07ac58464dd7e8fa3b73d735984119fda551116e4989274a11fde3dcc"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/construction_chain_20261003/check_layers.py",
+      "bytes": 2241,
+      "sha256": "f42da3c45b6c0ef6ecb193289c5c3d19b1f0b379d4a7882a45f956012a1ea29a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/construction_chain_20261003/evaluate_area_joint.py",
+      "bytes": 6487,
+      "sha256": "85bc53e49d37b818db60e3030890ced02ed43407c51d720221de78e6f3a96ac1"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/construction_chain_20261003/review_area_quality.py",
+      "bytes": 3106,
+      "sha256": "d95d1514a1e5ee32d07841c2d3ec5d5fe27d996f223b371bd60c7a32b9a98690"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/construction_chain_20261003/run_chain_witnesses.py",
+      "bytes": 12027,
+      "sha256": "93a58374e95acbd06b442a5a9c2641bd999166545d82744eed59c50a950d4243"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/construction_chain_20261003/seal_chain.py",
+      "bytes": 4272,
+      "sha256": "4630ac81cd4779a09d3b36e21e4c956b0c6795630278410bc765ca1dd219ec69"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/construction_chain_20261003/source_semantics.py",
+      "bytes": 6524,
+      "sha256": "b563134fb3660756c4b4eb5973a28f7a1faa4c6aa69df032110d288288a32334"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/construction_chain_20261003/typed_chain.py",
+      "bytes": 9340,
+      "sha256": "3f30dcc4b789f4e459699ec591d594185cfc8478da99cb66fb3b8f49c1f4426c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/construction_chain_20261003/verify_independent.py",
+      "bytes": 7406,
+      "sha256": "5c29602e880bfa2bf8aa3c795b831a6a73e81b72d6815dbe3f7d2267f9127e82"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/bind_frontend.js",
+      "bytes": 1602,
+      "sha256": "e9193ea3d4764d56cc1f7f5e914a029857ffb34530042fe9937de059b139a65a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/build_site.py",
+      "bytes": 15545,
+      "sha256": "0755841c5371352caf0cbc932746a361e3c89a1ea741e9a9f0bb2ab623c276a5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/calendar_bridge.py",
+      "bytes": 5097,
+      "sha256": "ae3cdee97f98c011b527c6fa6422ba818c2b1b31ef8b720d245aaa30a071e57c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/check_public.py",
+      "bytes": 1545,
+      "sha256": "fa7af382c6e705efd436ba549cead90352823f593a52b5f2b0e51c9c171ae852"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/compile.py",
+      "bytes": 1114,
+      "sha256": "7fbb4aeeb459ee75dc0e894b1d07decdd43f7b606be307901a85da270a79e00d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/focus_presentation.js",
+      "bytes": 1535,
+      "sha256": "c438eeb9e61823f6c97b767bd5f8de48e26e045ba8f34d1f9c69ae6652e983ff"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/generate.py",
+      "bytes": 11873,
+      "sha256": "9778fb4a386dc02413dcbf71d3e6442d8e7a76070a3bf6f689524a539693e600"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/readback.py",
+      "bytes": 9432,
+      "sha256": "d21ff7292cd2f768a6004485c99e12f79d27ef4609986cee90f50319f2ca337f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/run_ep.py",
+      "bytes": 4123,
+      "sha256": "80803f2dccbe039dc25c0de301d57a73a72b11dafc35e08467c20e7ff8f120c4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/serve50.py",
+      "bytes": 3829,
+      "sha256": "ee3fe603cecb196ca74afbee5de7b3d43d1660ed239d607d1f4ef13de1ea1f38"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/test_http.py",
+      "bytes": 3067,
+      "sha256": "7f14308237f0cd60e4fab416d22159bc7a96cdadd72d2f2d281ac4e682b31e19"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/test_http_focus.py",
+      "bytes": 3079,
+      "sha256": "ec5c0ff377af316c311244d8ed0e85a89086cfe3a4c93d82e9a0d71a38282e18"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/test_render.js",
+      "bytes": 4772,
+      "sha256": "f2b7cd35ba6b575a2f5ad5b110f8b687171c4a9b2dc6f67be6915b4012e3a57c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/crecs_admission_20261003/audit_crecs.py",
+      "bytes": 16070,
+      "sha256": "6e7c18a08c6b2d324b204b8958434ea85a600f155628fcea3d634eac255389b1"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/crecs_admission_20261003/build_source_ledger.py",
+      "bytes": 7631,
+      "sha256": "caafd1c9605b09596bc219cf6e41679c0b775ef8a0f3d29b7728cf246f8a7112"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/crecs_admission_20261003/build_support_matrix.py",
+      "bytes": 3655,
+      "sha256": "43d8c939de9925a0fd25fca32ba5d42461b86383ae64b74539085937d6a93681"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/crecs_admission_20261003/inspect_package.py",
+      "bytes": 4385,
+      "sha256": "8036bbd709cbf5b6cb634a03706f618db5502a850fca8d9708fa5ec1162a3636"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/end_to_end_plan_20261004/code/build_plan.py",
+      "bytes": 15253,
+      "sha256": "121185bf1c5e717bd38019e36f7dd73c2c57830d9cc19de360f8e0f3281850f0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/end_to_end_plan_20261004/code/verify_plan.py",
+      "bytes": 4942,
+      "sha256": "c33b4c4ea58e5f6598b3ddd7a215e407b710d581b0a3e80cd2556a4fabbf7c8d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/evidence_contract_20261001/allocate_population.py",
+      "bytes": 6043,
+      "sha256": "efa2cabbcf7fa86cc8c560bbafc908bca8360d694037def2e848678998768611"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/evidence_contract_20261001/allocate_population_v1.py",
+      "bytes": 5316,
+      "sha256": "457b32f458a1b6d4dbd0ece74b3f8d34bd507e81fb02aba5d8cea8eaba726c5c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/evidence_contract_20261001/extract_city_constraints.py",
+      "bytes": 9922,
+      "sha256": "688c3f3c00f698326ef8a46d3b0181fd9bbd7146c1f10aa7e88ab5974bf40814"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/evidence_contract_20261001/extract_city_constraints_v1.py",
+      "bytes": 9158,
+      "sha256": "da757a9ee7545886a86988e98e6f4a48a446ac6aea8a821ad263074460ecdb5d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/evidence_contract_20261001/fetch_public_sources.py",
+      "bytes": 2584,
+      "sha256": "cb91922a7f71a33f03cb1058815e23f4dd7c342a67def76f449c3bc47a24e2bb"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_20261003/analyze_sensitivity.py",
+      "bytes": 6694,
+      "sha256": "5a2c3e7ffc9a6c08a89dceb60bc2ce14869f60d7f0c9c544bca58c9e8ad5bf14"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_20261003/generate_candidates.py",
+      "bytes": 34987,
+      "sha256": "e8f381a65adc00091f28a32fec4d4f24ac23b25e8aebbbb7f4b06162e735bf4b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_20261003/seal_generation_package.py",
+      "bytes": 5433,
+      "sha256": "779ae6d461f25cb1d2de2dd4ccb462d1db791da2029a835896daf43de89f8491"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_20261003/test_negative_controls.py",
+      "bytes": 6528,
+      "sha256": "6e1146d5c135ca434838463b81b791ca28621a35f01ae174882729a7d0084ffd"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_20261003/verify_candidates.py",
+      "bytes": 14267,
+      "sha256": "12784782f2f9c6e2f55bd9c741a3ac05bc4913dbb080bdad4cbca4a413962780"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/audit_area_support.py",
+      "bytes": 3726,
+      "sha256": "db2d818b48937f7112290a13525df9867f3babd1c645365bd9a892e488397839"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/complete_empirical_comparisons.py",
+      "bytes": 1958,
+      "sha256": "19fc93af5ffb0e60b12a5d973611f49c09ddef127baf823dc84e87d88ef1abe8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/generate_candidates.py",
+      "bytes": 49727,
+      "sha256": "0d4e77563914d9a9f7331f7d32e9e1cd3799c6e9fe69a1dfaca670e1d3f75cd7"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/generate_empirical_support_candidates.py",
+      "bytes": 53478,
+      "sha256": "1cae486c9feeeac4ada05d6753bd28c2e905cbd683f607c2a60dbaec5a7f42c4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/run_boundary_comparisons.py",
+      "bytes": 1929,
+      "sha256": "88bbde42ae7b6d24bfd9e2f69ef565df39848ef6db10f3cfaf893c6229ec78d2"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/run_empirical_support_comparisons.py",
+      "bytes": 2144,
+      "sha256": "9351f9a2e886c885c825a85abfa5d76fdda2b875ae55654e3e00b0c589ee9da9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/run_sensitivity_batches.py",
+      "bytes": 2296,
+      "sha256": "4c47f1b88e4ddf28a572fb0b915b300d07718f8cf89b1c33fdd00a7caf1aec17"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/summarize_comparisons.py",
+      "bytes": 11241,
+      "sha256": "de87ebb3692985ba5768268633412f94ce52df731d4dc7fb6aacdde7a6689c64"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/test_policy_controls.py",
+      "bytes": 7216,
+      "sha256": "2263730cb5fd14f31576a4671d7f98ec407978cd7f4ebbb4ea3c2e7432638757"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/verify_area_integrals.py",
+      "bytes": 3955,
+      "sha256": "d4abac99f486780b0c4e1fab37e1984caa13ac1d690cd88d3bf75bf734ebedef"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/verify_candidates.py",
+      "bytes": 18870,
+      "sha256": "aa2fcf8311abdda436f1389610c81e5c631303610751df054343153ea125b90c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/generation_model_v2_20261003/verify_empirical_support_candidates.py",
+      "bytes": 19835,
+      "sha256": "afe36480b6c24a067a162ca08139c4babd910b7dac1685076d64a51b3f018680"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/admit_native_gap.py",
+      "bytes": 6224,
+      "sha256": "c3563530bdbd58cc2ed87d055c10fb3fbd30f36f9b91bc2d9f4b1d9c63e24bbf"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/audit_manifest.py",
+      "bytes": 793,
+      "sha256": "3da27c3b23d115af8db6d5b9d786392d2989419edffdbcfa048fdb506d027bc2"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/build_year_bridge.py",
+      "bytes": 8751,
+      "sha256": "ccbb2cc8e96b977f49a608f951aa052cf5639019b5d06bc2d1c425cea0f94f56"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/evidence_guard.py",
+      "bytes": 302,
+      "sha256": "5736b4028f35b7e04a8d0efe7b41556d4472d9e6527020a7ee1b35bc47c5880f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/fetch_native_gap.py",
+      "bytes": 2702,
+      "sha256": "64419d41f3a82dfc3918d12204d3c35fdddfc148d9d87f42b5aa510f9c2255ab"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/fetch_weather_gap.py",
+      "bytes": 2801,
+      "sha256": "4438d8d7c492d38e3f8ec5371e728c13ba2b9d955eecb87d31923e5884886828"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/inventory_references.py",
+      "bytes": 7117,
+      "sha256": "82986755df1c1304bc1348b8b7c3e856105dea241c2daa46204c8b47d76a014d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/lock_inputs.py",
+      "bytes": 3904,
+      "sha256": "a9c48ba006a336ebdcc17670f9bee397645d911422e9e7bb1ffc44cef95cfc1b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/matching_scenarios.py",
+      "bytes": 6289,
+      "sha256": "11e85a68baa7131dc02591fa53baefd9895eb9eb0ba953da14fcf508a7aae2b4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/regional_assemblies.py",
+      "bytes": 6049,
+      "sha256": "e437b2c57cd440ad86a14f00bc99b67cff53c8003fa8690f1615496670719014"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/regional_pilot.py",
+      "bytes": 12475,
+      "sha256": "2bb5176ed441a3340ff391e70551f29b94cd442b6cc0543b146b8ddf52d6b487"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/run_pipeline.py",
+      "bytes": 1149,
+      "sha256": "f29579db33380353400850dafb63413505648fedc2a27d67ef9078cf6dced578"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/sleep_geometry.py",
+      "bytes": 8275,
+      "sha256": "04c2d02f184138b5a90dfc593ad8c5ae6c34c14b108005ec3d258a0f74a26767"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/verify_evidence.py",
+      "bytes": 14217,
+      "sha256": "4df9bbdd931246727c1f783a70b500ddbb7dc4c7757efb8f19fde0857b858e47"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/write_report.py",
+      "bytes": 32719,
+      "sha256": "a8995cc349c091262a1bdfc0a5c457b0a0f2c68b0524e965f02900e93dcc7bf4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_housing_evidence_20261006/code/year_rules.py",
+      "bytes": 3357,
+      "sha256": "af76d4a71835734b4088fe5cc610da47ab847ac0645482dfadf97c033932cd5b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_20261003/analyze_sensitivity.py",
+      "bytes": 4423,
+      "sha256": "beabcfb29287574b6ca17a7b994e7efb271c04fb9bf357dedb056892111d3cd9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_20261003/build_source_ledger.py",
+      "bytes": 27130,
+      "sha256": "02669a38c410304bca4bd7ba064a9d7f3f234a75ee3dede06e8aee965e817cb9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_20261003/household_model.py",
+      "bytes": 11804,
+      "sha256": "a72c3b9fdc61d8af39feeabf8b17dd491fcc83f700bf323978b773ba47ce4c56"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_20261003/idf_builder.py",
+      "bytes": 19546,
+      "sha256": "71c8ae46640433fa0c475810840954700448ca70796082a620ed8e2166ce8596"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_20261003/run_stage.py",
+      "bytes": 21672,
+      "sha256": "7c18245bb9110f57bb6f88a939eb8f5e8654093716f505849807c5ee568cd4c0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_20261003/verify_geometry_independent.py",
+      "bytes": 11308,
+      "sha256": "23f6e552ac005e6ca2003a9ef9f6c756f3a44c0e27645b42f010cbf77a3edb31"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_20261003/verify_regressions.py",
+      "bytes": 17658,
+      "sha256": "4ef390d0d7a0b84ac73d2d88da57117ecdd25a3f4d7439fc7fe420c1c7f64328"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_20261003/verify_stage.py",
+      "bytes": 6762,
+      "sha256": "2321ff776fc8715348d5eebba23a3704cb1d1274a66a0dd6067c08b31e91f310"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_20261003/weather_rules.py",
+      "bytes": 29597,
+      "sha256": "22699936be0590c07cf44c2e47043f08878026144745b0581511bf9476e522c0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/analyze_sensitivity.py",
+      "bytes": 4423,
+      "sha256": "beabcfb29287574b6ca17a7b994e7efb271c04fb9bf357dedb056892111d3cd9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/build_profile_contexts.py",
+      "bytes": 9170,
+      "sha256": "dfff0b2520996ecabf1246c862b4dc27772df56b8b0e7dd5fa95905d1e6d7e6c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/build_qualification.py",
+      "bytes": 4752,
+      "sha256": "31eaa8bf0bc457124949b9de4a651a6265a88489fd5303045bf9c563c6abdf34"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/download_weather_supplement.py",
+      "bytes": 9941,
+      "sha256": "037601bf26dc8fc327714282afe1fc6ce75baecfe6731b6ac7785ce6b1902589"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/geometry_gate.py",
+      "bytes": 12502,
+      "sha256": "4989409b4b0d90f41d171d50154b078bef3128bc8c423d4ca4b0ddc7ffd15828"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/household_model.py",
+      "bytes": 18154,
+      "sha256": "bc52b5f7eb3b5533d931672a62b6f9b691fc5bd61bf08db8e360f396dc96bcc2"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/idf_builder.py",
+      "bytes": 20816,
+      "sha256": "e2879120957a0e40afea5b9147a7aa84edf1ff9c7b9689bd5d0e59c6bd17374b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/prototype_rules.py",
+      "bytes": 34358,
+      "sha256": "d2e8300f5263d681a74137fb175c567ee0f94b48dd73cc3f757666d051070653"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/run_annual_witnesses.py",
+      "bytes": 7225,
+      "sha256": "e9b5e80ec217df3f2fd749b60d66406b216433a688c8f52c26a34f3ac84832e8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/run_stage.py",
+      "bytes": 38332,
+      "sha256": "0c92b8c750aa4abbeb862648c5e0620cd62fc1ff6425f49f26c10848bc623a88"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/seal_package.py",
+      "bytes": 9272,
+      "sha256": "326d5299c850941ff002db407027f6fedb65e91a466fdad56de6e283fd5798bc"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/verify_annual_witnesses.py",
+      "bytes": 9017,
+      "sha256": "cb0cfdff88e0b5db9f307de622c2a717dfb26d508fad1a183b249a45bcaa197e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/verify_context_batch.py",
+      "bytes": 10593,
+      "sha256": "a484daebe18232cb313e709ec42d78eb6e7662af19672f861d2448997aafd347"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/verify_core_regressions.py",
+      "bytes": 14940,
+      "sha256": "268454a8e46bc7929622ae84519b650539d194eb4d2fed62f9705bcf5d1a2118"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/verify_geometry_independent.py",
+      "bytes": 6698,
+      "sha256": "27214e5a84f2b35b6f4ca8d180f465383713a8eda272496d728d2488f75f8982"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/verify_prototype_rules.py",
+      "bytes": 22108,
+      "sha256": "b16e785f33e3d6962e0fd076a539b4b952c7c00b829aee2f547347116b932a31"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/verify_stage.py",
+      "bytes": 11482,
+      "sha256": "8af85c1e1bd195b9699b1411858ca10670e035a0a60a648afc2a4fd8b6c4262e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/verify_weather_v2.py",
+      "bytes": 6112,
+      "sha256": "a477b648d64f7eceb90570e541d28c51b87cf899bff60bff2a5d583c9c0adff5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/weather_rules.py",
+      "bytes": 31413,
+      "sha256": "31d9b4258910a8dcef2f536f78b8791edc7175b71684ee6bc80e380dbeb65027"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v2_20261003/write_implementation_report.py",
+      "bytes": 11926,
+      "sha256": "f8da05bc223bfb31a5aaf896ae9020f4dc36e5aa27e4f239da9a8e4d4e0c123e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/geometry_gate.py",
+      "bytes": 12502,
+      "sha256": "4989409b4b0d90f41d171d50154b078bef3128bc8c423d4ca4b0ddc7ffd15828"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/household_model.py",
+      "bytes": 23949,
+      "sha256": "f05e2a2614a950dd25f13fdf18b8de24855c6b8d9ad3ee04a8e91c5e619af9b0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/idf_builder.py",
+      "bytes": 22465,
+      "sha256": "95ff30a0a2eb4055c64c9617485b35add5959c14258a0eb3b08d2390c3bc5d39"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/prototype_rules.py",
+      "bytes": 34358,
+      "sha256": "d2e8300f5263d681a74137fb175c567ee0f94b48dd73cc3f757666d051070653"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/run_stage.py",
+      "bytes": 40687,
+      "sha256": "4cd87921991865e610e354d3a89ca525e3e9af6cb0533d369c356b40c9fe4838"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/seal_package.py",
+      "bytes": 3427,
+      "sha256": "2d5abb0f9a43310cf9b42a0f0bdd3cd398db836fc3c3e2fdb345356a7eaa4c6d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/verify_capability_annual.py",
+      "bytes": 4416,
+      "sha256": "cc447d56ef98b31cb1b930d3b73b366f7929a287d931c37f7153ad7726733169"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/verify_generated_bindings.py",
+      "bytes": 4633,
+      "sha256": "2a4e740d34f65517e96f49393d9fdf8ad0257b8eb716780c94b2670869711194"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/verify_geometry_independent.py",
+      "bytes": 6698,
+      "sha256": "27214e5a84f2b35b6f4ca8d180f465383713a8eda272496d728d2488f75f8982"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/verify_template_policy.py",
+      "bytes": 11682,
+      "sha256": "5c4787919a1b2d23e545c531b6c2a02beeb5c6a7a9bf625474ee60e5a7846f45"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/verify_v2_comparison.py",
+      "bytes": 3871,
+      "sha256": "f0d843d86927eb321b8235142461d14aab17dcd7ee1d4fd2ad594a03cb5a0cf8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/household_to_idf_v3_20261003/weather_rules.py",
+      "bytes": 31413,
+      "sha256": "31d9b4258910a8dcef2f536f78b8791edc7175b71684ee6bc80e380dbeb65027"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/idf_joint_production_20261005/code/audit_reference_idfs.py",
+      "bytes": 15370,
+      "sha256": "00c131bfd1716e69eeb1a73b652cdcfa93c66827d7964bbb557fe11b997f7de8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/idf_joint_production_20261005/code/compile_reference_idfs.py",
+      "bytes": 21670,
+      "sha256": "284a62af4c0d563772501b06d212fd682ba816c41fa631dcc4ac1eec3a8b6581"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/idf_joint_production_20261005/code/joint_housing.py",
+      "bytes": 19375,
+      "sha256": "193fcd0f34776b8b0472c2c45268cfe01643639246472bfe1acfddbed89b4477"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/idf_joint_production_20261005/code/reference_world.py",
+      "bytes": 9068,
+      "sha256": "4e9760b76eb837d53c65668424f3e26cea446fa26a91274d9c0af803978874e8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/idf_joint_production_20261005/code/run_pipeline.py",
+      "bytes": 1262,
+      "sha256": "c868766d7bd5acca902eaefe9f2e23b434719b96a9123c5128c9247487d7df05"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/idf_joint_production_20261005/code/run_shell_smoke.py",
+      "bytes": 2866,
+      "sha256": "3c6fc52fe35ff4085e145441158a7f0d4307941ebefc19768a183c342a51c4b4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/idf_joint_production_20261005/code/verify_native_assemblies.py",
+      "bytes": 6114,
+      "sha256": "8eba7c23b487b47cb6cb0d24bbdd154fd38ebbb5fae55f332672c7f76fca8dfb"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/idf_unit_evidence_20261004/code/extract_native_layouts.py",
+      "bytes": 16898,
+      "sha256": "3ae874696fe95d966d89063f8b5203022672c10c77acb6dabea65dbaf0cc9021"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/idf_unit_evidence_20261004/code/render_native_layouts.py",
+      "bytes": 1994,
+      "sha256": "d0d62212dcecaa76bb9f1d1b7dd49299bd2671a57765e554e9225369a228e3e5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/idf_unit_evidence_20261004/code/run_source_unit_witness.py",
+      "bytes": 8759,
+      "sha256": "7016c3e9c599dab9752ec0950933ca373b68e38d1297f632b3d67eb759593f17"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/idf_unit_evidence_20261004/code/verify_evidence.py",
+      "bytes": 4406,
+      "sha256": "5a3b36503230fcae9cff8d08343663a28eb486a77b09a8bbb4c78f51ad4b72a5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/area_sensitivity.py",
+      "bytes": 3730,
+      "sha256": "248ede3d5f5079ddb6750c37003c5acc4c4caa3e519a60b545e009d74b27d092"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/assemble_worlds.py",
+      "bytes": 9499,
+      "sha256": "02743b056f81755565182097ca5d2194e4a298bd04db6ce4b6e398f397bb7a30"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/audit_manifest.py",
+      "bytes": 1602,
+      "sha256": "a1889b8d986ae38b0ed6852958e8a75f7ce4ece131c2c641e9693f85d3a57673"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/common.py",
+      "bytes": 785,
+      "sha256": "f27a371cd52f2e353d0686ca963d065525bfa651443889764bcf92b102b883fd"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/complete_metadata.py",
+      "bytes": 3184,
+      "sha256": "e0b054e4ed9ed651c9fe381e266a5852f29b21c6077fe39580d50a9fdf95f355"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/component_experiments.py",
+      "bytes": 7577,
+      "sha256": "7d35fdf9a141a134245d54d8471900387ded42b34d35fcfe26d74295ce4ef333"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/design_screen.py",
+      "bytes": 3030,
+      "sha256": "33dece84a5800334bad8cf1792ba348d1a183b66111338149acaf014fa2a681e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/finalize.py",
+      "bytes": 16812,
+      "sha256": "efc302f98f68d826164c8290f01b8b22877ca83c693e5c5e1c242edabb9b60a8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/geometry.py",
+      "bytes": 7570,
+      "sha256": "2f020768c055fedb90808e602a528c400641f6ee0810d878deb604670e83a519"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/horizontal_sources.py",
+      "bytes": 4433,
+      "sha256": "492cd711cd49567d0d3e6f81ef36958a885bcb02e4f9723fba785b734af97275"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/refresh_metadata.py",
+      "bytes": 1608,
+      "sha256": "ef8fc4e1a4d8a720e2d196294351748769e592239cd448b6b7619ff6af99fab3"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/run_joint.py",
+      "bytes": 5152,
+      "sha256": "e7b1fcb7230bc911efe9a57244155f55b94da79f4877f4fc39a4fce489d5f4e3"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/service_ports.py",
+      "bytes": 12059,
+      "sha256": "b2cb4080f70aeb10b1688874a45303f4cf7cc9101d43307075a9fe86bfb7fa60"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/source_cache.py",
+      "bytes": 1473,
+      "sha256": "6f9a498635b1183d563ff199016a6b6f38f940828ebb44ddbe566e967ebaf778"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/verify_area_sensitivity.py",
+      "bytes": 2782,
+      "sha256": "01ca22468efb7accc0cac761b11fe6bff77677dd2974b21468168b9df90767c1"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/verify_horizontal.py",
+      "bytes": 2569,
+      "sha256": "a790173a978bf27f2894b937d0c85f91d589a88c4554646a0f9cd8a241848dd6"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/verify_joint.py",
+      "bytes": 10806,
+      "sha256": "b7756f705d9ac5edb267a86cdec4b2b2681baa82f3b6eb584920ad2f0de306d4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/build_worlds.py",
+      "bytes": 19993,
+      "sha256": "d1ae694a6a0472e0e6ed8d05bda080b3f774a91f15fb8127ef2f40a696134029"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/check_r72.js",
+      "bytes": 1703,
+      "sha256": "cd7d74cef5aceb9db2460fc7646ee72c49faf7d33a2583401ee3ab7160e6c8da"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/common.py",
+      "bytes": 1575,
+      "sha256": "ca52dd3bef89fee8b11fa5d026374c6dfd8a00e6a96930e97f6aca79e23b1888"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/compile_inputs.py",
+      "bytes": 21477,
+      "sha256": "c11b22a40fcf396a41130b0c7f4352b99532184b75a2bab3bc596ed93ef5b9c0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/counterexamples.py",
+      "bytes": 2370,
+      "sha256": "dc18c4ae57f12d3955d0b9a188ed57068ab6405873d9b6b75ba49ebda9b37978"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/finalize.py",
+      "bytes": 5051,
+      "sha256": "e840c1c28be23dcfec7b51de0627d1cd847eee4e2c71d5bd31b6faea960b4988"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/joint_geometry.py",
+      "bytes": 6934,
+      "sha256": "cfebd7c06b10bd9f980fd05a9127f0db0b8f520d78bc5317d60bee69f2dbd67f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/legacy_semantics.py",
+      "bytes": 10634,
+      "sha256": "ce0612b34f0160ccba73e779aa811d9830cd7ae353e7a341370677b2734968a9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/native_interface.py",
+      "bytes": 2561,
+      "sha256": "c5ab79c430cd793bbef69fb5833b86d6dd1c942333841f90dd9710f32df29344"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/plans.py",
+      "bytes": 12944,
+      "sha256": "a39871e4aff00fcc2e9149ab26f59c1114ba67d3b5cec400b6636ac94319d306"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/produce_pairs.py",
+      "bytes": 1816,
+      "sha256": "735a0feaea5bff46e30b06d4ed08da79958bc8c6b10f61d38635a3a0766e2d24"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/project_collection.py",
+      "bytes": 9240,
+      "sha256": "8a11958c91f22e18ff72928bc2d771691ff8f5caef2a67b6b006752cb4db2405"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/refresh_worlds.py",
+      "bytes": 1097,
+      "sha256": "3083105d19553251e5b5c5081e4080d38f18646e55fd61481ca626fc0d0ff4c6"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/review_all.py",
+      "bytes": 9445,
+      "sha256": "25bde07308026c051a80d9121d94908a49d6d06e437afc26c2342f4ef0dca8d5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/review_geometry.py",
+      "bytes": 4264,
+      "sha256": "33a3164fd5320af6b105dae83105a732a0c51ba577d42651b66e07cfe1d53fca"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/run_static.py",
+      "bytes": 1525,
+      "sha256": "33e082d5e7817789ccc54f352309c691445ce02be02d7cd526dc85aa56265857"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/validate.py",
+      "bytes": 4808,
+      "sha256": "93b0c77f162e0b268dc3546eae09625cb557de9532f6f3b703ee76204d0e04b8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/matching_ab_design_20261007_v15/code/ab_semantics.py",
+      "bytes": 10480,
+      "sha256": "6ddda64a16dd246fdbb08a0acb53f0eea110f801432a56e67ebdbf25ebf88b18"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/matching_ab_design_20261007_v15/code/review_static.py",
+      "bytes": 6049,
+      "sha256": "1ac0200f39b180e95dd9af00a41760aa338d320d8ae9206fe8d960919cc5ee3e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/national_representativeness_20261001/build_reference_quotas.py",
+      "bytes": 7297,
+      "sha256": "fc7bd731d495e3c7df848198210c8cfd05eef503cbb0df86740b85550f64fd52"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/audit_manifest.py",
+      "bytes": 1598,
+      "sha256": "80904b37648dda7c25a0465160c038b5684b9435d2836c62fe9de67f871cbac8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/common.py",
+      "bytes": 1347,
+      "sha256": "c028758d12781f658169d4f6cc35c1c46af6bdbdc1f76a046a475ee8ef316c4b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/coupled_reference.py",
+      "bytes": 14203,
+      "sha256": "d561f4838b097b613b6769ed955c75a50ccf776a1325710323c37f68f7f7accd"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/event_cases.py",
+      "bytes": 12017,
+      "sha256": "d605a3ee880e55827399b39fb2726644bce8ea934cd70810a3cda3b8a543e270"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/extract_hvac_vectors.py",
+      "bytes": 2098,
+      "sha256": "314e1501a7a86a73639517ca6660ade90a4ba1b09b05cfa5e7189c90c5b4d0ee"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/fetch_primary.py",
+      "bytes": 2063,
+      "sha256": "b3c1dd221714342ab33a6e6278da7fb578fa1cb62ea9603e80286ce622891bb4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/finalize.py",
+      "bytes": 20686,
+      "sha256": "33fccca836ab36c2b682775b48c135cb75870b3e2f88dd469e5f61bcdd0a5a29"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/ground_history.py",
+      "bytes": 6589,
+      "sha256": "e694df87c317107c160dae3e398edb09c4c5c93905de6249e964a9839e24c39f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/hvac_source_kernel.py",
+      "bytes": 5272,
+      "sha256": "51974736a521c0a428236ba28369f1b8ebfc755f56aabf9ecdbf45a053fcda6f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/occupied_reference.py",
+      "bytes": 7599,
+      "sha256": "3996196bb0f1d478fe7f2b7f349186cfb0c55c35072e275b8ef38e6b98bfcfd9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/role_packets.py",
+      "bytes": 14961,
+      "sha256": "6258ac773b21ae15b8aa3266730612b6a72ddf2029e2717b7411e0743eee7377"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/run_occupied.py",
+      "bytes": 2940,
+      "sha256": "d08c625e0628e49ab80d578d66b159d20b0d111186f444d73a34c51430e39c78"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/strict_history_admission.py",
+      "bytes": 2415,
+      "sha256": "0b9097976d6be79ec1555c2ea5770acf0588d2173aafcf0eacdf59d147c95044"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/verify_completion.py",
+      "bytes": 11296,
+      "sha256": "bae35ffcbd74b7315d2b5471db3b8d5deb958716dfcb58d8fd735ddf26be6693"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/verify_occupied_coupled.py",
+      "bytes": 8468,
+      "sha256": "57c8ec117e5a8c9bc9c4831bcbb3070b6667a3df5f80c2605622d0e35e78b602"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/operational_evidence_completion_20261006/code/verify_uniform_minute.py",
+      "bytes": 6757,
+      "sha256": "803caeb1945fbe682385fb456c3159209bf2383f1ebe442083427b930d471079"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/activate_cloud_route.py",
+      "bytes": 2949,
+      "sha256": "f5b538a52f55257fcf0d9aaeeafde76ecded612caab367aa0e4b8848dcee271c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/bind_frontend.js",
+      "bytes": 1602,
+      "sha256": "e9193ea3d4764d56cc1f7f5e914a029857ffb34530042fe9937de059b139a65a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/build_site.py",
+      "bytes": 14846,
+      "sha256": "e9b924b0e8fdf88d4c8d7115adf6b579de1c7e49b19623eed4e303c26e78f90a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/calendar_bridge.py",
+      "bytes": 5135,
+      "sha256": "8003482d3a3a0b34a8a02528f6520e42e1ee9a5351800b17139e9e75c7ead27f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/check_public.py",
+      "bytes": 1545,
+      "sha256": "8becb3ffb81022b2dd0f6cfb8fa1d9ec2313358b5d288e46bc338ab80ea54cd1"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/complete_cloud_deploy.py",
+      "bytes": 2907,
+      "sha256": "a7f213d955435a904a053c8c19bce4fb6f41d641301fafa4bca6c3641047ef00"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/readback.py",
+      "bytes": 9428,
+      "sha256": "88506a76baf6a761110814686065fe213b847afa2ec297878eb1d4b8450e7c94"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/readback_threads_v1.py",
+      "bytes": 9423,
+      "sha256": "38aabd639d0c3ad2e8c553e312a93ca06c8da0e198400ee55cc0030b50a3706f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/run_ep.py",
+      "bytes": 4169,
+      "sha256": "218de2af8a096cc6dde034a249c811fc95fbcff8bf19df42b66f702e4dc7408e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/select50.py",
+      "bytes": 3801,
+      "sha256": "07007c4fff16d6d473187a8e72d9e306b2877feb146147361965bc60eaf7de09"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/serve50.py",
+      "bytes": 3829,
+      "sha256": "ee3fe603cecb196ca74afbee5de7b3d43d1660ed239d607d1f4ef13de1ea1f38"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/test_http.py",
+      "bytes": 3073,
+      "sha256": "f6e9427fcdd7d7cd135d34075b6a03f0a4e15510124192c6121ad5e0980a4ef2"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/test_render.js",
+      "bytes": 4772,
+      "sha256": "f2b7cd35ba6b575a2f5ad5b110f8b687171c4a9b2dc6f67be6915b4012e3a57c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/update_cloud_projection.py",
+      "bytes": 2548,
+      "sha256": "6852d6885e6ad8058d502978e62175d242c106bc48c81b4b20bf4dd39cf1d60e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/pilot_scope_20261007_v1/build_selection.py",
+      "bytes": 3204,
+      "sha256": "bce540b20bed5946130e88e1501cc4a0cb69042b5c9056bb02a57978f612caa5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/policy_revision_20261003/attach_physical_bundle.py",
+      "bytes": 5963,
+      "sha256": "9cc9981ff0133a9bb099bbd862824b27d1075cedead9897a359025cc6d84b835"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/policy_revision_20261003/build_conditional_contexts.py",
+      "bytes": 9916,
+      "sha256": "bfd64539efe8cea76f0d642adb1a7f4a8709a83d068346d146d56e88d7e458de"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/policy_revision_20261003/build_dependency_plan.py",
+      "bytes": 7331,
+      "sha256": "1c756a433ff38ef33c30d55289f9dd47c9c4d0e6cf2f001ed1acda242e02489d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/policy_revision_20261003/build_fact_bundle.py",
+      "bytes": 10091,
+      "sha256": "6539f06bb5bf9db3734208a89119ba6000c50bd43620cdc44d935e3ae142da68"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/policy_revision_20261003/seal_revision.py",
+      "bytes": 4149,
+      "sha256": "4b0e5d7b959a3032720fd3af9b67f5357cd4be05150fa213139e128cff7272d9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/policy_revision_20261003/verify_fact_bundle.py",
+      "bytes": 10078,
+      "sha256": "d4d9a35166c980497b25df365bf23b683ebd381e6164c77c38c7b154923fbc48"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/audit_manifest.py",
+      "bytes": 912,
+      "sha256": "8fe39cd02073a6de389377920e6622ad43bec2766f19b01bd930976810863773"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/device_contract.py",
+      "bytes": 9406,
+      "sha256": "5e92f2eb9c76c216f31a3d440860e907ab79bad2019a475cfaf4726774193203"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/device_evidence.py",
+      "bytes": 9223,
+      "sha256": "ab848e2d68ea5001e26a197912d23c5fe1dbc0ba8f47d7cb13472d29b9dfbdc8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/fetch_primary.py",
+      "bytes": 2645,
+      "sha256": "eeb8f4d838e207589ce0ecaaf742e6a1aa539ee5ae89471063c14e3b39ea30e5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/finalize.py",
+      "bytes": 9529,
+      "sha256": "02acc2f5bb98ac929feaf077980f0cd1c18bdfdb5763a6318f4c1942af35ad7a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/glazing_bridge.py",
+      "bytes": 5580,
+      "sha256": "3919df8adca238afeac942dbdae8381e4d48010c9d8bc0ab91d55480c8ba66c9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/glazing_pilot.py",
+      "bytes": 5790,
+      "sha256": "ead5cd14bf05e4ef70bfbc8b61c3f34b35f7a8be423cae990f29f6b94629a16d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/joint_identification.py",
+      "bytes": 3935,
+      "sha256": "30e33541a08aa414e73dfc7c978c1152e28d5d474d1d4ee6804e4c70b5ff56da"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/mixed_sleep.py",
+      "bytes": 8765,
+      "sha256": "5ca3c81dd60f54c84e19ba8ecc4f220b63a5674f41cc411a4156febd798360de"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/production_contract.py",
+      "bytes": 12026,
+      "sha256": "d1d4d7f9916fa58078c349a80c6d92e2e4f48328fa842f45b76205c48638ff36"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/source_screen.py",
+      "bytes": 10345,
+      "sha256": "1c46a3ef24e00e32dded7bff5790b8e8f6dd942039e1917da7a6e79e083b43f2"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/stock_controls.py",
+      "bytes": 10158,
+      "sha256": "994c8dc4f5108f2c36cae9db2edc6a7c18b15a86fb7aae81eb421d659264d3e2"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/verify_production.py",
+      "bytes": 6727,
+      "sha256": "aaafc6bbe578146bd5a3da405e2fecfcc6845d9d5907675ceaa0aa412157646b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/verify_sleep.py",
+      "bytes": 7217,
+      "sha256": "2bc7df93efc6ae9a5a81daec2944c4a1ea09a0cf2bb1ec2681724401a6126093"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v4_20261003/code/build_facilities.py",
+      "bytes": 9968,
+      "sha256": "6c38ad7f0d38628284473cf11227a53ca2bb887291f16d3f42bfe0f326a0c824"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v4_20261003/code/evaluate_production_area.py",
+      "bytes": 7858,
+      "sha256": "ff20a335357e3c1247a20165ae5a66e91d64c574894c5abd83bb0eccf0169f2d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v4_20261003/code/generate_population.py",
+      "bytes": 53524,
+      "sha256": "dfd022c214f8797badfd479b103f21e909902110714ec1cdabd47853455c19cb"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v4_20261003/code/run_chain_witnesses.py",
+      "bytes": 12027,
+      "sha256": "93a58374e95acbd06b442a5a9c2641bd999166545d82744eed59c50a950d4243"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v4_20261003/code/source_semantics.py",
+      "bytes": 6524,
+      "sha256": "b563134fb3660756c4b4eb5973a28f7a1faa4c6aa69df032110d288288a32334"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v4_20261003/code/typed_chain.py",
+      "bytes": 9420,
+      "sha256": "8500d95a7c5f2c795af735b8fdbd38bfeaa0c2637f785401f61d167c349cc2a1"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v4_20261003/code/verify_production.py",
+      "bytes": 7559,
+      "sha256": "aaf2bd6e2bc64773cd4c25fcdc561c089e4e193e4fecbdf01399c77237d87f8c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v5_20261004/code/evaluate_area.py",
+      "bytes": 7266,
+      "sha256": "073f52ffc12e280d9b0e52840038119dc4544e24ac2d1762b1377fec75ab27d5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v5_20261004/code/housing_scope.py",
+      "bytes": 4868,
+      "sha256": "5ac361d7662e9387cefed3a4a7dfd72218de21260209e586f421d1a013874b2c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v5_20261004/code/rebuild_housing.py",
+      "bytes": 23759,
+      "sha256": "ec78e61c93b48868f392153ef606766b2fe420febf75be52781926aac0ac3e3b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v5_20261004/code/verify_housing.py",
+      "bytes": 9217,
+      "sha256": "36a47f17e8d63c427e2883af995cb2eb48b0f92c79816ed36e7de751d32d5b7d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v6_20261004/code/audit_candidate.py",
+      "bytes": 10107,
+      "sha256": "2087c7f181185f47083e3cebe962752462a16a8db1fc38d657e6a64fc2483574"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v6_20261004/code/build_census_frame.py",
+      "bytes": 14281,
+      "sha256": "c5368ef342d25dfb14d34348dc0caf8e4aa58c4cd791e5122a7b9690bdc1a10d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v6_20261004/code/build_etna_steady_fixture.py",
+      "bytes": 13176,
+      "sha256": "07cc7419ca63da6bf6d34f45443f9821a6fec56532e693c6b1efff00d6c7afa0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v6_20261004/code/evaluate_joint_gaps.py",
+      "bytes": 4955,
+      "sha256": "09aace5267a3df71ed46d0af7934a6f6d1abcb9a87d2388705a239496d50a7a4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v6_20261004/code/generate_joint_population.py",
+      "bytes": 23277,
+      "sha256": "189ffd57b7b8338ae8578342d923540b2dfa6ae185ed9bb86aed537bee6d67bb"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v6_20261004/code/identify_size_bounds.py",
+      "bytes": 3764,
+      "sha256": "0587459f721c9fb67619bba2f12ab753a0efbab53b6c6ca9cfc54869a9fa843b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v6_20261004/code/inspect_floorplan_source.py",
+      "bytes": 3833,
+      "sha256": "c5006e955ae54ed28adeda475fd97abceaf1acf9e5530ccef1f202106d05c464"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/production_route_v6_20261004/code/joint_motifs.py",
+      "bytes": 4678,
+      "sha256": "c0db691f376476b7cd23140b651fb234fe5233a6e07250b6b05af7f14c2d3eec"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/assemble_random10.py",
+      "bytes": 6307,
+      "sha256": "98142eb225186c78c99d75be99af5dadae7b03c2bb233bd1044eb93a5be058c4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/audit_before_ep.py",
+      "bytes": 7339,
+      "sha256": "65d633fa17f2799af219f8b3b0f9dbc15be2bdfd68539b7cce5e14c8126c99cb"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/calendar_boundaries.py",
+      "bytes": 1254,
+      "sha256": "fa9ccdf61fbcd4de440f0f1170b3122777c16c6bdda45d977dce1be9ea0e0f7d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/common.py",
+      "bytes": 2244,
+      "sha256": "d633d7fe0f585bb17d2374f4030619dae1a0af1aeeb1fe44314b81780118f22b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/compile_physics.py",
+      "bytes": 19420,
+      "sha256": "15cbb0bcac437912b9e324de871c52024992aab5fc15b28bedb10a9510600fbf"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/geometry.py",
+      "bytes": 1156,
+      "sha256": "2651942df6f86e263aaada00baf31bc8b72d3e7adad33de53d1b500247551ae6"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/preflight.py",
+      "bytes": 1031,
+      "sha256": "560a237ca5db08c701e12062d02621fc309e24d4f003db6db75a262fae5dc3c7"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/produce.py",
+      "bytes": 7691,
+      "sha256": "232c73166f3e8e12f1bf774074ea032eaf75f484675e23db3f1c779ce57181f2"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/production_pipeline.py",
+      "bytes": 1155,
+      "sha256": "f46084302cd94b9720fcb12d8bda28797ce80e114194667190aa5b814aa49ac6"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/programs.py",
+      "bytes": 10471,
+      "sha256": "11ec4d333bbe96c3addd16b7f873fd6da1445ee2aad02f94fcc61de90d030389"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/project_actors.py",
+      "bytes": 18403,
+      "sha256": "33d4f9db335c3b2d8fa73822b89f54d91ae641d3712f90f9f4e6ce4b544d02bd"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/readback.py",
+      "bytes": 8470,
+      "sha256": "6b9cae403b066308f19a5d0688847a65cafd2b6cae6f536cd36730acdc3afc0f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/validate_inputs.py",
+      "bytes": 3560,
+      "sha256": "d231e3d14923ef651ffccd1512435fcb567a198c619bced735d404e20f162d6c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewer_design_evidence_20261003/reproduce_schedule_witnesses.py",
+      "bytes": 3319,
+      "sha256": "5b5082f02ffc5e5672984017c3fad0e64335a3b8559ead539f541facd02cf24d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/DELIVERY.json",
+      "bytes": 5245,
+      "sha256": "7a13a201732a4cfd46c4d1d273b39de3d2ee8d205bab70157e5012c20e82c849"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/PROTOCOL.json",
+      "bytes": 1691,
+      "sha256": "f4412552bca0663b7718e218f77e6f93eea0008277cf6550fddf0fc01feb6dc7"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/assess.py",
+      "bytes": 995,
+      "sha256": "2aa31ad0902c19a6f2024c1dc3ea918649b670a78b4e093c6feb308f3be5c23e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/bind_frontend.js",
+      "bytes": 1602,
+      "sha256": "e9193ea3d4764d56cc1f7f5e914a029857ffb34530042fe9937de059b139a65a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/build_site.py",
+      "bytes": 17247,
+      "sha256": "d4ee00ce7d3d5f3af4d1598b24e1c3fd2a4c5a20ccc6b82b0f81130b916c5dd1"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/calendar_bridge.py",
+      "bytes": 5097,
+      "sha256": "ae3cdee97f98c011b527c6fa6422ba818c2b1b31ef8b720d245aaa30a071e57c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/check_public.py",
+      "bytes": 1645,
+      "sha256": "667dc82cc220c9c00f0e3046713996c0f73d41506cc55ff58954525019ebbca0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/compile.py",
+      "bytes": 1263,
+      "sha256": "2d118e6bcd408d66a67249595c3c7ada1c762eaf6eaa2e0029c963136d54a66f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/generate.py",
+      "bytes": 10926,
+      "sha256": "a92ceef0d90e7e319426eb6bb7a27b3965fe11d95f84e3bb82f869da4c6776c3"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/preflight.py",
+      "bytes": 2796,
+      "sha256": "060afac2f8efa27ab2bf810b1848b411eb64a290cc6bc132a1819d621d3d692a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/prepare_frontend.py",
+      "bytes": 2692,
+      "sha256": "eef7020619a46b7c4727c92dc0e85ff209003331f09faaad02d5070618e96ac0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/project_actors.py",
+      "bytes": 3122,
+      "sha256": "973a6f0101fe93fdbb71ee05cb8130bb5bb891a6ce243e75e93072e0e8c099c4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/readback.py",
+      "bytes": 9920,
+      "sha256": "19a71d33f4feada4191477255e201c274053d5b98ee3f05cebe1c789c7a59a23"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/run_ep.py",
+      "bytes": 4123,
+      "sha256": "80803f2dccbe039dc25c0de301d57a73a72b11dafc35e08467c20e7ff8f120c4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/serve50.py",
+      "bytes": 3886,
+      "sha256": "521d3e9d11b6d31ec0c7fdd45d3445fa815ffee183ddfe3347fa8f466ed3a2fa"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/test_http_focus.py",
+      "bytes": 3083,
+      "sha256": "0cabc435f97bf1a41297ced62f08b920b711f8010754548c0b80ff57ae547515"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/test_render.js",
+      "bytes": 4946,
+      "sha256": "516ed3c7c075fc6e2be6034a398d19015a0ec72d11765b45265487f1a0fa294d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/candidate.css",
+      "bytes": 7873,
+      "sha256": "4376f657fb74fbab9ea1dcb8b6e559bbe4fd7ce73ac1e434696baee9358da8a5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/household-view.js",
+      "bytes": 11889,
+      "sha256": "a049fe7f6bff157a2495018a867a89294e04265bd9964c0e5995129d85a4b851"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/index.html",
+      "bytes": 8455,
+      "sha256": "400fa231473f412dd17c22e28f048dd94b7cd7bb0c3dd23b113ad75ad3f41258"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/joint-view.css",
+      "bytes": 4358,
+      "sha256": "016c8d0bbd0a4adf612915d86b997ac85ad49c8177fe3585dd05ba4531300f36"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/joint-view.js",
+      "bytes": 22885,
+      "sha256": "058cb509701fdd7bef08241e27494476d30f2c2cda65233c1024331e69646705"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/plan-view.js",
+      "bytes": 18799,
+      "sha256": "1f6067cedbf1c9e99427322532694d84c027b637702a1cc9f9d6f63a7fc94b48"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/source-draft.js",
+      "bytes": 1683,
+      "sha256": "5a0d959c64f97d7c5454dc8fc133b62d929dd852d34f4295bf2e6fdf3bcd7ca9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/style.css",
+      "bytes": 94083,
+      "sha256": "fb7dac98f99880e5f7416ac16a0ebb7e17af184a9480b175440beb542b4e00c5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/unified_live_server.py",
+      "bytes": 13362,
+      "sha256": "693cfc163a07a0f15fd8e9f99d606c22191eb080d426196396a084802a6942aa"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/DELIVERY.json",
+      "bytes": 2105,
+      "sha256": "a0594074e1bd6d1332cb72000d7f4e8ff7e21c169bb308a8b5ea8e24daea89a5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/PROTOCOL.json",
+      "bytes": 1691,
+      "sha256": "f4412552bca0663b7718e218f77e6f93eea0008277cf6550fddf0fc01feb6dc7"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/assess.py",
+      "bytes": 995,
+      "sha256": "2aa31ad0902c19a6f2024c1dc3ea918649b670a78b4e093c6feb308f3be5c23e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/compile.py",
+      "bytes": 1263,
+      "sha256": "2d118e6bcd408d66a67249595c3c7ada1c762eaf6eaa2e0029c963136d54a66f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/generate.py",
+      "bytes": 10926,
+      "sha256": "a92ceef0d90e7e319426eb6bb7a27b3965fe11d95f84e3bb82f869da4c6776c3"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/preflight.py",
+      "bytes": 2796,
+      "sha256": "060afac2f8efa27ab2bf810b1848b411eb64a290cc6bc132a1819d621d3d692a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/project_actors.py",
+      "bytes": 3122,
+      "sha256": "973a6f0101fe93fdbb71ee05cb8130bb5bb891a6ce243e75e93072e0e8c099c4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/round2/build_smallbatch.py",
+      "bytes": 16675,
+      "sha256": "4a3d1b69c923577bc32ed626f77c5d2ea5e474026f5228a2afe4e75fd76ede98"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/round2/check_contract.py",
+      "bytes": 5412,
+      "sha256": "4181584e805b3535610d19f9ae5b7ff4eeebb4861795dfdc4832d15eb87c1096"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/round2/common.py",
+      "bytes": 5916,
+      "sha256": "55af98d93eaa133a6d2ae9f3746a5a75fc96e944f953f9b5fe45d83901892e79"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/round2/daily.py",
+      "bytes": 10434,
+      "sha256": "96d947bfc0f7648c6517e043e0b59ebb2c2a375dedd135a1083fa8f2b7162200"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/round2/verify_smallbatch.py",
+      "bytes": 8863,
+      "sha256": "63b2fadc2449cd25bb7be682cad8585f263860900bd1409f5d63dcfd5c98b554"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/task_world_assembly_20261007/code/assemble.py",
+      "bytes": 16780,
+      "sha256": "73904c977703401488c96096f55739d280268414fa4ec3e93a4d1cc876d5efa4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/task_world_assembly_20261007/code/common.py",
+      "bytes": 2244,
+      "sha256": "d633d7fe0f585bb17d2374f4030619dae1a0af1aeeb1fe44314b81780118f22b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/task_world_assembly_20261007/code/compile_physics.py",
+      "bytes": 18295,
+      "sha256": "c8006c15960a5b7b12c29d8296773e8507cf28e9e1c24910ba36c246461c9d50"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/task_world_assembly_20261007/code/geometry.py",
+      "bytes": 1156,
+      "sha256": "2651942df6f86e263aaada00baf31bc8b72d3e7adad33de53d1b500247551ae6"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/task_world_assembly_20261007/code/produce.py",
+      "bytes": 7614,
+      "sha256": "f3461a6f2a838180a62d0a86afd4a578780c2177a4e46abe9b830fc8076282f1"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/task_world_assembly_20261007/code/programs.py",
+      "bytes": 9533,
+      "sha256": "52c2e8c833eb28ec0f537f2eb18ca1f55193fdab49b2e742065d7c75a6124c73"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/task_world_assembly_20261007/code/readback.py",
+      "bytes": 8177,
+      "sha256": "fdbf45a44b24aef3ac149f8c7869934d2866c6f0d4594b0a9f8197eaa2936de7"
+    },
+    {
+      "path": "scripts/household1000.py",
+      "bytes": 6250,
+      "sha256": "f30c67c3de9f043b1ffce2b147b9d883fe8a858dbe270be275e5c8afb4151d74"
+    },
+    {
+      "path": "tests/test_household1000_entrypoint.py",
+      "bytes": 4003,
+      "sha256": "305cbd57fa8a3dc449901f78133ad99e7d2d5202bcf26934695edd615375fa2f"
+    }
+  ],
+  "payload_sha256": "0323639952974030d382cf643c16b8dc102b3ac0b6ccb5586d6a01cee6355348",
+  "new_payload_does_not_include_private_research_data": true,
+  "source_snapshot_policy": "first-party source bytes preserved;frontend template embedded JSON removed",
+  "source_or_scientific_rules_changed": false,
+  "publication_does_not_admit_human_benchmark": true
+}

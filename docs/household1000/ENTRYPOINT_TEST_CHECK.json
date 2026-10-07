@@ -1,0 +1,6 @@
+{
+  "host": "school Linux",
+  "returncode": 0,
+  "output": "test_missing_protected_inputs_remain_missing (test_household1000_entrypoint.EntrypointTests) ... ok\ntest_same_need_and_A_freeze_corruption_detected_even_with_valid_file_hashes (test_household1000_entrypoint.EntrypointTests) ... ok\ntest_well_bound_fixture_and_no_execution (test_household1000_entrypoint.EntrypointTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.449s\n\nOK\n",
+  "new_EP_runs": 0
+}

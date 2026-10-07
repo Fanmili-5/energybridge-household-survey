@@ -1,0 +1,170 @@
+{
+  "version": "household1000-v17-20261007",
+  "default_mode": "read-only;no all-pipeline execution",
+  "steps": [
+    {
+      "id": "source-admission",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/chfs_census_bridge_20261003/run_bridge.py",
+        "docs/research/collection-adjustment-20260930/household1000/crecs_admission_20261003/audit_crecs.py"
+      ],
+      "required_inputs": [
+        "licensed CHFS/CRECS originals"
+      ],
+      "output_and_scope": "cohabitation/relationship/current dwelling and historic activity proxy contracts",
+      "automatic_execution": false
+    },
+    {
+      "id": "population",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/production_route_v6_20261004/code/build_census_frame.py",
+        "docs/research/collection-adjustment-20260930/household1000/production_route_v6_20261004/code/generate_joint_population.py"
+      ],
+      "required_inputs": [
+        "census raw tables",
+        "CHFS admitted pool"
+      ],
+      "output_and_scope": "1000 city ordinary reference family anchors",
+      "automatic_execution": false
+    },
+    {
+      "id": "housing",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/idf_joint_production_20261005/code/joint_housing.py",
+        "docs/research/collection-adjustment-20260930/household1000/idf_joint_production_20261005/code/compile_reference_idfs.py"
+      ],
+      "required_inputs": [
+        "family anchors",
+        "reference geometric/material sources"
+      ],
+      "output_and_scope": "joint H6/H7 functional housing and reference bindings",
+      "automatic_execution": false
+    },
+    {
+      "id": "facilities",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/production_contract.py",
+        "docs/research/collection-adjustment-20260930/household1000/joint_housing_service_worlds_20261006/code/assemble_worlds.py"
+      ],
+      "required_inputs": [
+        "housing/source features",
+        "source geometry/materials"
+      ],
+      "output_and_scope": "service rights and jointly feasible geometry",
+      "automatic_execution": false
+    },
+    {
+      "id": "background",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/complete_reference_worlds_20261006_v12/code/background_models.py"
+      ],
+      "required_inputs": [
+        "joint service worlds",
+        "native EB inputs",
+        "schema"
+      ],
+      "output_and_scope": "declared occupancy/background and external thermal boundary",
+      "automatic_execution": false
+    },
+    {
+      "id": "random10",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/random10_task_worlds_20261007/code/assemble_random10.py"
+      ],
+      "required_inputs": [
+        "frozen prior worlds",
+        "program/activity references"
+      ],
+      "output_and_scope": "original quarterly ten dates and task context",
+      "automatic_execution": false
+    },
+    {
+      "id": "worlds",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/build_worlds.py",
+        "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/plans.py"
+      ],
+      "required_inputs": [
+        "prior random10 worlds",
+        "V12 background",
+        "device reference catalogues"
+      ],
+      "output_and_scope": "worlds with coherent asset/operator/routine/demand and independent A",
+      "automatic_execution": false
+    },
+    {
+      "id": "mixed-ab",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/generate.py",
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/assess.py",
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/project_actors.py"
+      ],
+      "required_inputs": [
+        "frozen V16 worlds/date bindings",
+        "contrast50 candidate implementation"
+      ],
+      "output_and_scope": "10000 mixed pairs and 1000 same-world roles",
+      "automatic_execution": false
+    },
+    {
+      "id": "idf",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/compile.py",
+        "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/compile_inputs.py"
+      ],
+      "required_inputs": [
+        "worlds/pairs",
+        "EnergyPlus schema",
+        "EB native source",
+        "background IDFs"
+      ],
+      "output_and_scope": "20000 paired inputs;no execution",
+      "automatic_execution": false
+    },
+    {
+      "id": "physics50",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/run_ep.py",
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/calendar_bridge.py",
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/readback.py"
+      ],
+      "required_inputs": [
+        "authorized SELECTION50",
+        "IDFs/EPWs",
+        "school EnergyPlus"
+      ],
+      "output_and_scope": "500 actual paired model consequences;full1000 remains held",
+      "automatic_execution": false
+    },
+    {
+      "id": "questionnaire",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/build_site.py",
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/prepare_frontend.py",
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/serve50.py"
+      ],
+      "required_inputs": [
+        "same50 worlds/actors/pairs/IDFs",
+        "READBACK_REVIEW and results",
+        "Node and mature template"
+      ],
+      "output_and_scope": "original frontend with actual reference previews",
+      "automatic_execution": false
+    },
+    {
+      "id": "response-export",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/unified_live_server.py",
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/joint-view.js",
+        "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/source-draft.js"
+      ],
+      "required_inputs": [
+        "visible snapshot",
+        "original questionnaire answer"
+      ],
+      "output_and_scope": "engineering records only;formal actor provenance/history/splits pending",
+      "automatic_execution": false
+    }
+  ],
+  "scientific_rule_changes_in_this_publication": false
+}
