@@ -1,0 +1,54 @@
+{
+  "schema": "eb.population_grounding_school_check.v25",
+  "host": "hku-server",
+  "python": "3.10.12",
+  "checks": {
+    "source_check": {
+      "exit_code": 0,
+      "checked_source_files": 567,
+      "failures": [],
+      "scope": "published bytes only;not physics or human validity"
+    },
+    "CLI_hold": {
+      "exit_code": 2,
+      "generation_allowed": false,
+      "EP_allowed": false,
+      "status": "EB_six_type_prerequisite_not_accepted",
+      "real_prevalence_identified": false,
+      "target_counts": null,
+      "instruction": "See docs/household1000/EB_SIX_TYPE_REQUIREMENT.md;real household prevalence and validated mapping are pending; assigned-role quotas are superseded; V23 acceptance is historical."
+    },
+    "V25_module_hold": {
+      "exit_code": 2,
+      "generation_allowed": false,
+      "EP_allowed": false,
+      "reason": "Population grounding hold: real Chinese-city household EB6 shares are not identified. Freeze independently measured preferences, household weights, validated six-type mapping and uncertainty before quotas; then verify coherent original50 recovery. Assigned-role counts and historical V23/V24 checks cannot authorize generation or EP."
+    },
+    "entrypoint_tests": {
+      "exit_code": 0,
+      "output": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.510s\n\nOK"
+    },
+    "JSON_flag_tampering_stays_closed": {
+      "exit_code": 2,
+      "generation_allowed": false,
+      "EP_allowed": false,
+      "reason": "Population grounding hold: real Chinese-city household EB6 shares are not identified. Freeze independently measured preferences, household weights, validated six-type mapping and uncertainty before quotas; then verify coherent original50 recovery. Assigned-role counts and historical V23/V24 checks cannot authorize generation or EP."
+    },
+    "current_requirement_consistent": true
+  },
+  "engineering_check_passed": true,
+  "real_prevalence_estimation_performed": false,
+  "mapping_validated": false,
+  "scientific_production_accepted": false,
+  "new_worlds_generated": 0,
+  "new_EP_started": false,
+  "scope": "source bytes,current requirement consistency and closed-entry behavior only",
+  "research_metadata_sync": {
+    "completed": true,
+    "files": 14,
+    "failures": [],
+    "research_gate_exit_code": 2,
+    "research_board_stage": "population_grounding_revision_v25",
+    "historical_worlds_modified": false
+  }
+}

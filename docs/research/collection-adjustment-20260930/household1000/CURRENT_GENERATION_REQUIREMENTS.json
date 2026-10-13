@@ -1,13 +1,15 @@
 {
-  "EP_allowed": false,
+  "schema": "eb.current_generation_requirements.v25",
+  "stage": "population_grounding_revision_v25",
+  "requirement_path": "population_grounding_revision_v25/REQUIREMENT.json",
+  "methods_path": "population_grounding_revision_v25/METHODS.md",
+  "gate_entry": "population_grounding_revision_v25/code/require_generation.py",
   "accepted": false,
-  "date": "2026-10-13",
-  "gate_entry": "eb_six_type_prerequisite_20261013_v24/code/require_generation.py",
   "generation_allowed": false,
-  "historical_acceptance_meets_new_requirement": false,
+  "EP_allowed": false,
+  "real_type_shares_identified": false,
+  "target_counts": null,
   "historical_accepted_stage": "gate_repair_production_20261013_v23",
-  "methods_path": "eb_six_type_prerequisite_20261013_v24/METHODS.md",
-  "requirement_path": "eb_six_type_prerequisite_20261013_v24/REQUIREMENT.json",
-  "schema": "eb.current_generation_requirements.v24",
-  "stage": "eb_six_type_prerequisite_20261013_v24"
+  "historical_acceptance_meets_new_requirement": false,
+  "prior_quota_basis_superseded": true
 }

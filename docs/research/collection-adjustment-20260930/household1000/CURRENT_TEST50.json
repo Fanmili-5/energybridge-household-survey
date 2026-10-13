@@ -1,6 +1,6 @@
 {
   "collection_release": false,
-  "current_requirement_status": "EB-six-type prerequisite unresolved;legacy acceptance is historical",
+  "current_requirement_status": "real EB6 prevalence unresolved;assigned-role quotas superseded;legacy acceptance is historical",
   "date": "2026-10-13",
   "delivery": "gate_repair_production_20261013_v23/DELIVERY.json",
   "delivery_path": "gate_repair_production_20261013_v23/DELIVERY.json",
@@ -21,8 +21,8 @@
   "local_stage_contains_acceptance_receipts_not_full_prepared_inputs": true,
   "new_EB_six_type_requirement_accepted": false,
   "new_generation_allowed": false,
-  "new_generation_requirement": "eb_six_type_prerequisite_20261013_v24/REQUIREMENT.json",
-  "new_generation_requirement_stage": "eb_six_type_prerequisite_20261013_v24",
+  "new_generation_requirement": "population_grounding_revision_v25/REQUIREMENT.json",
+  "new_generation_requirement_stage": "population_grounding_revision_v25",
   "other950_EP_executed": false,
   "preview_requires_school_SSH_tunnel": true,
   "published_source_commit": "31771054e056d70c845505934441a1a35dbd2bda",

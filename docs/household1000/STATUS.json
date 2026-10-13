@@ -1,5 +1,5 @@
 {
-  "version": "household1000-v24-prerequisite-20261013",
+  "version": "household1000-v25-population-grounding",
   "as_of": "2026-10-13",
   "active_stage": "gate_repair_production_20261013_v23",
   "design_data_version": "v22",
@@ -48,23 +48,26 @@
   "current_frontend_physical_tasks": 500,
   "other_physical_pending_tasks": 9500,
   "EB6_preflight": "EB_SIX_TYPE_PREFLIGHT.json",
-  "EB_six_type_quota_source": "584 EB assigned-role participants;experimental reference mix,not Chinese prevalence",
-  "EB_six_type_target_counts": {
-    "A": 166,
-    "B": 198,
-    "C": 125,
-    "D": 151,
-    "E": 156,
-    "F": 204
-  },
+  "EB_six_type_quota_source": "real-household preference distribution,pending admission;assigned-role mix superseded",
+  "EB_six_type_target_counts": null,
   "current_original50_EB6_recovery_checked": false,
   "current_requirements_met": false,
   "generation_requirement": "EB_SIX_TYPE_REQUIREMENT.json",
   "historical_V23_source_inputs_reference_accepted": true,
   "historical_V23_worlds_unchanged": true,
   "historical_active_stage": "gate_repair_production_20261013_v23",
-  "latest_requirement_stage": "eb_six_type_prerequisite_20261013_v24",
+  "latest_requirement_stage": "population_grounding_revision_v25",
   "new_EB_six_type_requirement_accepted": false,
   "new_generation_allowed": false,
-  "scientific_claim": "Chinese-city-reference demographics and EB-designed behavior mix;no national preference prevalence or field-calibration claim"
+  "scientific_claim": "historical Chinese-city reference inputs;current real EB6 population proportions not identified;no new-world or population-prevalence claim",
+  "EB_six_type_target_shares": null,
+  "real_EB6_share_estimate_exists": false,
+  "historical_V24_experimental_counts": {
+    "A": 166,
+    "B": 198,
+    "C": 125,
+    "D": 151,
+    "E": 156,
+    "F": 204
+  }
 }

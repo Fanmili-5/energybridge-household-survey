@@ -73,5 +73,7 @@
     "E": 156,
     "F": 204
   },
-  "worlds_modified": 0
+  "worlds_modified": 0,
+  "current_use": "historical V24 experiment-mix structural diagnostics only;not real prevalence,current quotas or production acceptance",
+  "quota_basis_superseded_for_current_production": true
 }

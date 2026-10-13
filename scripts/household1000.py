@@ -137,8 +137,11 @@ def main():
         # are implemented and content-bound; a JSON boolean cannot open it.
         print(json.dumps({'generation_allowed': False, 'EP_allowed': False,
                           'status': 'EB_six_type_prerequisite_not_accepted',
+                          'real_prevalence_identified': False,
+                          'target_counts': None,
                           'instruction': 'See docs/household1000/EB_SIX_TYPE_REQUIREMENT.md;'
-                                         'legacy V23 acceptance is historical.'},
+                                         'real household prevalence and validated mapping are pending; '
+                                         'assigned-role quotas are superseded; V23 acceptance is historical.'},
                          ensure_ascii=False, indent=2))
         return 2
     if args.command == 'doctor':

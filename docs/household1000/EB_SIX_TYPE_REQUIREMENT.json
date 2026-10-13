@@ -1,39 +1,32 @@
 {
-  "Chinese_natural_preference_prevalence_claim": false,
-  "EP_allowed": false,
-  "date": "2026-10-13",
-  "episodes_per_household": 10,
-  "gate_entry": "code/require_generation.py",
-  "gate_scope": "new EB-six-type production only;does not revoke historical V23 read-only inspection",
-  "generation_allowed": false,
-  "historical_accepted_stage": "gate_repair_production_20261013_v23",
-  "historical_input_bytes_immutable": true,
+  "schema": "eb.pre_generation_requirement.v25",
+  "stage": "population_grounding_revision_v25",
+  "source_user_instruction": "论文里的角色调查比例未必真实；1000户的六类占比应尽量符合真实城市家庭比例，并在生成前确定。",
+  "supersedes_current_quota_basis": "EB published assigned-role sample counts;V24 remains historical",
   "households": 1000,
-  "national_joint_distribution_claim": false,
-  "next_allowed_work": [
-    "source-frame reconciliation",
-    "method development and nonproduction diagnostics",
-    "original50 role-blueprint trial and acceptance design"
-  ],
-  "old_V23_acceptance_meets_this_requirement": false,
+  "episodes_per_household": 10,
   "population_anchor": "mainland China city ordinary residential family reference;town/rural/collective/nonordinary excluded",
-  "prohibited_repairs": [
-    "labels appended after generation",
-    "unknown replaced with neutral scores",
-    "role overrides treated as human probabilities",
-    "demographic attitudes imputed from income/age/sex",
-    "unsupported households removed without frame reconciliation",
-    "nonresident helpers counted as residents",
-    "regenerating seeds until a passing cohort is found"
-  ],
-  "quota_origin": "584 assigned human-roleplay respondents in EB arXiv2608.08691v1;explicit experimental reference mix",
-  "reference_sha256": "f1d4732a65e1984fadc847c33efd8c80656d8b6d7d1cb33556b3248e4eb68e98",
-  "rounding": "exact largest remainder, A..F tie order",
-  "schema": "eb.pre_generation_requirement.v24",
+  "structural_anchor_year": 2020,
+  "preference_reference_year": null,
+  "type_unit": "household energy-negotiation policy;respondent and household inference weights must be resolved",
+  "quota_origin": "independently estimated real-household preference distribution,pending source/mapping/weight admission",
+  "target_shares": null,
+  "target_share_intervals": null,
+  "target_counts": null,
+  "unknown_or_unmapped_mass": null,
+  "current_real_share_estimate_exists": false,
+  "experimental_mix_authorizes_production": false,
   "six_types_are_discovered_natural_clusters": false,
-  "source_user_instruction": "Six EB types and approximately EB proportions must be satisfied as prerequisites of generation, not repaired by posthoc relabeling.",
-  "status": "pre_generation_requirement_fixed;eligibility_and_generation_rules_pending",
-  "target_counts": {
+  "China_real_preference_prevalence_claim": false,
+  "historical_V24_assigned_role_counts": {
+    "A": 97,
+    "B": 116,
+    "C": 73,
+    "D": 88,
+    "E": 91,
+    "F": 119
+  },
+  "historical_V24_1000_design_counts": {
     "A": 166,
     "B": 198,
     "C": 125,
@@ -41,8 +34,53 @@
     "E": 156,
     "F": 204
   },
-  "type_unit": "one given household energy-negotiation policy, with explicit adult resident policy holder and all member service constraints retained",
-  "unit_transfer_is_research_design": true,
-  "user_confirmation_date": "2026-10-13",
-  "user_confirmed_quota_origin": "EB_published_assigned_persona_mix"
+  "historical_counts_status": "superseded for current production;not Chinese household prevalence",
+  "historical_accepted_stage": "gate_repair_production_20261013_v23",
+  "historical_input_bytes_immutable": true,
+  "generation_allowed": false,
+  "EP_allowed": false,
+  "accepted": false,
+  "status": "real_prevalence_not_identified;methods_proposed;production_held",
+  "gate_entry": "code/require_generation.py",
+  "current_gate_is_unconditional_hold": true,
+  "required_before_quota_freeze": [
+    "household target frame,structural and preference reference years",
+    "same-household directly measured key preferences and design/access evidence",
+    "validated EB6 mapping with ambiguous/unmapped mass reported",
+    "household sampling/nonresponse/calibration weights and uncertainty/sensitivity review"
+  ],
+  "required_before_production": [
+    "independent prevalence estimate accepted and quotas/tolerances frozen",
+    "joint population-housing-device-policy eligibility and support checked",
+    "actual policy-to-routine-service-A/B-IDF propagation implemented",
+    "original50 label-blind recovery verified before full1000 verification",
+    "content-bound scientific and physical admission;school EP remains separately gated"
+  ],
+  "prohibited_repairs": [
+    "labels appended after generation",
+    "unknown replaced with neutral scores",
+    "role overrides treated as human probabilities",
+    "demographic attitudes imputed from income/age/sex",
+    "unsupported households removed without frame reconciliation",
+    "nonresident helpers counted as residents",
+    "regenerating seeds until a passing cohort is found",
+    "assigned actors or synthetic people treated as real prevalence survey respondents",
+    "discarding unmapped cases and silently renormalizing to national proportions",
+    "multiplying separately observed attitude/ownership margins as their identified joint distribution",
+    "MRP used without real preference outcomes or household poststratification information",
+    "forcing k=6 treated as empirical evidence that six natural groups exist"
+  ],
+  "next_allowed_work": [
+    "source/questionnaire/weight audit",
+    "reuse original frontend self-household mode;prepare collection materials without recruiting",
+    "mapping and sampling/calibration protocol development"
+  ],
+  "unchanged_constraints": {
+    "city_only": true,
+    "original_frontend": true,
+    "EB_functional_classes": 6,
+    "functional_class_coverage_per_household": "4to6 experimental coverage;not population ownership",
+    "full1000_EP_held": true
+  },
+  "rounding": "largest remainder only after independently estimated shares accepted;no current counts"
 }

@@ -1,6 +1,6 @@
-# 1000户生产链：六类EB生成前置要求，历史V23验收
+# 1000户生产链：先核定真实六类比例，历史V23验收
 
-2026-10-13新增要求：按EB公开角色实验构成生成六类家庭任务世界，并在生成前确定配额、适用条件和验证方法。A/B/C/D/E/F配额为166/198/125/151/156/204，比例来源是584名被分配角色的参与者，不是中国家庭自然占比。详见[六类生成要求](EB_SIX_TYPE_REQUIREMENT.md)、[规则与来源](../research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/METHODS.md)和[学校队列预检](EB_SIX_TYPE_PREFLIGHT.json)。旧1000户尚未满足此要求，新版生成和EP保持关闭。
+当前V25要求：六类比例尽量符合真实中国城市家庭，在生成前核定。旧EB角色实验配额已撤下，当前比例/人数均未确定；先审查同户偏好证据、六类映射及家庭户权重。详见[当前要求](EB_SIX_TYPE_REQUIREMENT.md)与[V25方法及缺口](../research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/METHODS.md)。旧1000户不满足新要求，新版生成和EP保持关闭。
 
 当前验收目录为 `gate_repair_production_20261013_v23`。V23保留V22的1000户、2524名成员、原十日期及10000对A/B；数据schema保留v22，验收与源码发布版本为v23。历史V17–V22保留，现行入口不再指向V17。
 

@@ -1,22 +1,22 @@
 {
-  "version": "household1000-v24-prerequisite-20261013",
+  "version": "household1000-v25-population-grounding",
   "default_mode": "read-only;new EB-six-type generation and EP held",
   "steps": [
     {
       "automatic_execution": false,
       "generation_allowed": false,
-      "id": "EB-six-type-pre-generation",
-      "output_and_scope": "G0:exact quotas,source-aware policy/routine/service propagation,prototype and blind cluster recovery;not passed yet",
+      "id": "population-grounded-EB6-pre-generation",
+      "output_and_scope": "G0:real preference prevalence with household weights/uncertainty before quotas;coherent semantic propagation and blind recovery;not passed",
       "required_inputs": [
-        "pinned six EB seed definitions",
-        "published584 assigned-role mix",
+        "pinned six EB seed definitions and validated household mapping",
+        "independent own-household preference measurements",
+        "household sampling/calibration weights and population frame",
+        "accepted prevalence and uncertainty before counts",
         "jointly feasible eligible family skeletons",
-        "concrete policy blueprints",
-        "frozen label-blind extractor/recovery protocol"
+        "concrete policy blueprints and frozen label-blind recovery protocol"
       ],
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/preflight.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/require_generation.py"
+        "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/code/require_generation.py"
       ]
     },
     {
@@ -249,5 +249,5 @@
   "scientific_rule_changes_in_this_publication": true,
   "active_stage": "gate_repair_production_20261013_v23",
   "design_data_version": "v22",
-  "latest_requirement_stage": "eb_six_type_prerequisite_20261013_v24"
+  "latest_requirement_stage": "population_grounding_revision_v25"
 }

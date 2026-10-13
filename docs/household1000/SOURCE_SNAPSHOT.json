@@ -1,18 +1,18 @@
 {
-  "version": "household1000-v24-prerequisite-20261013",
+  "version": "household1000-v25-population-grounding",
   "source_scope": "source,case-free templates,contracts and methods;protected records and calibrated or human benchmark claims excluded",
   "source_files": [
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
-      "source_sha256": "d42611b97cf55ffbf1d20cd91d14e262f30459f68d0fbf596701a55903113873",
-      "published_sha256": "d42611b97cf55ffbf1d20cd91d14e262f30459f68d0fbf596701a55903113873",
+      "source_sha256": "87b05ab8bb59412f5998ca58cea58da40fbe85cdef09c63e368c218960dbba82",
+      "published_sha256": "87b05ab8bb59412f5998ca58cea58da40fbe85cdef09c63e368c218960dbba82",
       "kind": "current_pointer",
       "transformation": "none"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
-      "source_sha256": "5783867b3dcdc0e6ba53546cc1fc20352893d9a28f36d5a6b64c47d01c04e6ba",
-      "published_sha256": "5783867b3dcdc0e6ba53546cc1fc20352893d9a28f36d5a6b64c47d01c04e6ba",
+      "source_sha256": "3c997da7b67decb3b02a2815b9336182f9d54425ecff185ae87741cb1dab0c05",
+      "published_sha256": "3c997da7b67decb3b02a2815b9336182f9d54425ecff185ae87741cb1dab0c05",
       "kind": "current_pointer",
       "transformation": "none"
     },
@@ -3834,8 +3834,8 @@
     {
       "kind": "EB6_pre_generation_requirement",
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
-      "published_sha256": "7f3b664e85c28481d562efaef1f66b82fdb5817186c73f0db4187c471d65f7b0",
-      "source_sha256": "7f3b664e85c28481d562efaef1f66b82fdb5817186c73f0db4187c471d65f7b0",
+      "published_sha256": "0b332a3cfb10e31e41d34f717cfc6f5cf74a561667415af08ef65bd33839085e",
+      "source_sha256": "0b332a3cfb10e31e41d34f717cfc6f5cf74a561667415af08ef65bd33839085e",
       "transformation": "none"
     },
     {
@@ -3918,8 +3918,8 @@
     {
       "kind": "EB6_pre_generation_requirement",
       "path": "scripts/household1000.py",
-      "published_sha256": "a3db61b576e2c6f3433005701d802be2fd0012bc9bf5d3e479f465a1c2af64d4",
-      "source_sha256": "a3db61b576e2c6f3433005701d802be2fd0012bc9bf5d3e479f465a1c2af64d4",
+      "published_sha256": "e7a2058bef046ae11e2d93d9033bd867f6316676ee0cb15153fbe5b312df7f98",
+      "source_sha256": "e7a2058bef046ae11e2d93d9033bd867f6316676ee0cb15153fbe5b312df7f98",
       "transformation": "none"
     },
     {
@@ -3935,9 +3935,51 @@
       "published_sha256": "003eba8a0e30c6f1bc566724fabfa914f05e961f5f88c5d4390890982ebe1c53",
       "kind": "EB6_pre_generation_requirement",
       "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/REQUIREMENT.json",
+      "source_sha256": "a6366a70864505c6897b84092f852ae222e96369b9b44cc1970068c607c0e69b",
+      "published_sha256": "a6366a70864505c6897b84092f852ae222e96369b9b44cc1970068c607c0e69b",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/SOURCE_LEDGER.json",
+      "source_sha256": "e8c347ffe497f04a557f8f17325071ab093af2ec2292a1f3d94840bf0074ad6d",
+      "published_sha256": "e8c347ffe497f04a557f8f17325071ab093af2ec2292a1f3d94840bf0074ad6d",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/DESIGN_REVIEW.json",
+      "source_sha256": "ccd08265716616f9ca0ce7134cd47bc9d6095cafc16ccb9fb0fdf1ba3cc4d0b3",
+      "published_sha256": "ccd08265716616f9ca0ce7134cd47bc9d6095cafc16ccb9fb0fdf1ba3cc4d0b3",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/METHODS.md",
+      "source_sha256": "b2dfc74d1c2152f0c5a308eea532a8d7b168c1842521f06f11835c23893eea94",
+      "published_sha256": "b2dfc74d1c2152f0c5a308eea532a8d7b168c1842521f06f11835c23893eea94",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/code/require_generation.py",
+      "source_sha256": "3f77d306194ad5ed398b2737693be281074f3098beeda4cbad61a0e573f6a4b2",
+      "published_sha256": "3f77d306194ad5ed398b2737693be281074f3098beeda4cbad61a0e573f6a4b2",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/SCHOOL_CHECK.json",
+      "source_sha256": "f3ec470cc187b8e159d9163cec569dd4ba3721f1cc716566a45a163212e04660",
+      "published_sha256": "f3ec470cc187b8e159d9163cec569dd4ba3721f1cc716566a45a163212e04660",
+      "kind": "aggregate_engineering_receipt",
+      "transformation": "none"
     }
   ],
-  "source_snapshot_code_file_count": 562,
+  "source_snapshot_code_file_count": 568,
   "excluded": [
     "raw CHFS/CRECS/CHNS records",
     "private household/world/actor/pair/readback data",
@@ -3952,8 +3994,8 @@
   "human_answers": 0,
   "active_stage": "gate_repair_production_20261013_v23",
   "new_household_EP_runs": 0,
-  "note": "Historical V23 source and acceptance remain. Current EB-six-type prerequisite not accepted. New stage is a requirement/negative audit, not regenerated household data.",
+  "note": "Historical V23/V24 preserved;assigned-role quotas superseded by a real-household prevalence requirement,currently unidentified. Source revision only;no new world generation.",
   "EB_six_type_requirement_accepted": false,
-  "latest_requirement_stage": "eb_six_type_prerequisite_20261013_v24",
+  "latest_requirement_stage": "population_grounding_revision_v25",
   "new_generation_allowed": false
 }

@@ -1,0 +1,170 @@
+{
+  "schema": "eb.population_grounding_source_review.v25",
+  "review_kind": "targeted scoping and field-coverage review;not exhaustive systematic review",
+  "current_prevalence_estimate": null,
+  "new_questionnaire_or_microdata_downloaded": false,
+  "raw_data_published": false,
+  "primary_sources": [
+    {
+      "id": "EB_protocol",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/human_survey_materials/PAPER_CALIBRATION_STUDY.md",
+      "access": "pinned full repository document read",
+      "evidence": "separate real-self preference grounding and assigned role calibration;seed boundaries and shares may be refined from responses",
+      "does_not_prove": "real Chinese six-type proportions or representative sampling already exist"
+    },
+    {
+      "id": "CRECS_about",
+      "url": "https://crecs.ruc.edu.cn/jj/gyCRECS/index.htm",
+      "access": "official search-index full page;direct request failed",
+      "evidence": "waves2017 adaptive behavior,2021/2022 heating/cooling listed",
+      "does_not_prove": "latest questionnaires,microdata access,household weights or all six preference axes"
+    },
+    {
+      "id": "CRECS_subjects",
+      "url": "https://crecs.ruc.edu.cn/sjjs/Introduction/index.htm",
+      "access": "official search-index section text;direct request failed",
+      "evidence": "heating/cooling monitoring covers southern-city households and includes satisfaction,willingness to pay;adaptive behavior includes policy/willingness subjects",
+      "does_not_prove": "national urban household preference distribution or joint automation permission"
+    },
+    {
+      "id": "MRP",
+      "url": "https://mc-stan.org/rstanarm/articles/mrp.html",
+      "access": "official full HTML read",
+      "evidence": "observed sample outcomes plus population cell counts;multilevel modeling and poststratification;multiple outcomes possible",
+      "does_not_prove": "unmeasured preferences or selection bias automatically identified"
+    },
+    {
+      "id": "AAPOR",
+      "url": "https://aapor.org/statements/understanding-a-credibility-interval-and-how-it-differs-from-the-margin-of-sampling-error-in-a-public-opinion-poll/",
+      "access": "official full HTML read",
+      "evidence": "model intervals and design-based margins differ;nonprobability selection biases remain despite modeling",
+      "does_not_prove": "any convenience sample can support national prevalence"
+    }
+  ],
+  "local_evidence": [
+    {
+      "id": "CRECS2012_questionnaire_text",
+      "path": "docs/research/collection-adjustment-20260930/household1000/crecs_admission_20261003/private_metadata/CRECS2012_questionnaire_pages.json",
+      "sha256": "764eaf771e017cda644bd6bbaa138660802ad013857f20a64ae8177ff91bb216",
+      "access": "metadata/questionnaire only;no respondent microdata output",
+      "published_content": "field identifiers and paraphrased semantic scope only"
+    },
+    {
+      "id": "CRECS2014_questionnaire_text",
+      "path": "docs/research/collection-adjustment-20260930/household1000/crecs_admission_20261003/private_metadata/CRECS2014_questionnaire_pages.json",
+      "sha256": "e754838fa7ff9d3f847bdac9537ed53a5bbf5bbb92292c19457a8358beb23137",
+      "access": "metadata/questionnaire only;no respondent microdata output",
+      "published_content": "field identifiers and paraphrased semantic scope only"
+    },
+    {
+      "id": "CRECS2012_variable_metadata",
+      "path": "docs/research/collection-adjustment-20260930/household1000/crecs_admission_20261003/private_metadata/CRECS2012_stata_metadata.json",
+      "sha256": "61b83c107e12fe3e3d3074ef0427522f4c0c5722310f19b5d340a9a670953422",
+      "access": "metadata/questionnaire only;no respondent microdata output",
+      "published_content": "field identifiers and paraphrased semantic scope only"
+    },
+    {
+      "id": "CRECS2014_variable_metadata",
+      "path": "docs/research/collection-adjustment-20260930/household1000/crecs_admission_20261003/private_metadata/CRECS2014_stata_metadata.json",
+      "sha256": "83f6f8c4a85905f3c3e6787c4b69de063aef2b7d72ab68a4af9a957d77a2f07a",
+      "access": "metadata/questionnaire only;no respondent microdata output",
+      "published_content": "field identifiers and paraphrased semantic scope only"
+    },
+    {
+      "id": "existing_questionnaire",
+      "path": "QUESTIONNAIRE_CODEBOOK.json",
+      "sha256": "2acb85355de55ee95fb811ec0da9a6547257193e99ed7e3252db5869f1d071c7",
+      "access": "metadata/questionnaire only;no respondent microdata output",
+      "published_content": "field identifiers and paraphrased semantic scope only"
+    }
+  ],
+  "field_coverage": [
+    {
+      "source": "CRECS2012",
+      "fields": [
+        "f4e",
+        "f4f"
+      ],
+      "use": "TOU enrollment willingness and reasons;partial price/inconvenience proxy",
+      "not_equivalent": "remote appliance permission or joint EB6 policy"
+    },
+    {
+      "source": "CRECS2014",
+      "fields": [
+        "e105",
+        "e106"
+      ],
+      "use": "TOU enrollment willingness and adjustment-friction reasons;partial proxy",
+      "not_equivalent": "event-specific shifting permission or calibrated EB6 membership"
+    },
+    {
+      "source": "CRECS2014",
+      "fields": [
+        "e60k",
+        "e61k",
+        "e62k",
+        "e63k"
+      ],
+      "use": "usual AC cooling setting",
+      "not_equivalent": "acceptable temperature change"
+    },
+    {
+      "source": "CRECS2014",
+      "fields": [
+        "a33"
+      ],
+      "use": "general interpersonal trust",
+      "not_equivalent": "energy automation consent"
+    },
+    {
+      "source": "original frontend",
+      "fields": [
+        "B04",
+        "F_REGULARITY",
+        "P_AC_CHANGE",
+        "A_EB_CONTROL",
+        "P_COMFORT",
+        "P_COST",
+        "P_GRID",
+        "P_NOTICE"
+      ],
+      "use": "prepare own-household preference measurements in original frontend",
+      "missing": "real self answers,sampling frame/weights,validated EB6 mapping;Likert priorities require trade-off validation"
+    }
+  ],
+  "search_log": [
+    {
+      "topic": "real preference stage versus assigned roles",
+      "queries": [
+        "EnergyBridge PAPER_CALIBRATION_STUDY.md"
+      ],
+      "included": [
+        "EB_protocol"
+      ]
+    },
+    {
+      "topic": "newer Chinese energy preference source coverage",
+      "queries": [
+        "site:crecs.ruc.edu.cn 2017 适应性行为",
+        "site:crecs.ruc.edu.cn 2022 供暖制冷",
+        "site:crecs.ruc.edu.cn Sample Year and Subject"
+      ],
+      "included": [
+        "CRECS_about",
+        "CRECS_subjects"
+      ]
+    },
+    {
+      "topic": "population calibration and selection uncertainty",
+      "queries": [
+        "MRP rstanarm official documentation",
+        "site:aapor.org non probability samples weighting population inference"
+      ],
+      "included": [
+        "MRP",
+        "AAPOR"
+      ]
+    }
+  ],
+  "overall": "partial preference evidence only;real six-type shares remain unidentified"
+}
