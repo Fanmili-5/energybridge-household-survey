@@ -1,0 +1,68 @@
+/* R72 source page: the live survey's style.css and EBView supply the base visual system. */
+.r72-page main{max-width:1120px}
+.r72-page .survey-hero{align-items:center}
+.r72-page .survey-hero .hero-aside p{font-size:14px;line-height:1.85}
+.r72-page .panel{box-shadow:0 7px 24px #253e3108}
+.r72-page .survey-section-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px}
+.r72-page .survey-section-head h2{margin:0 0 3px}
+.r72-page .survey-section-head p{margin:0}
+.house-card{overflow:hidden;background:#fff;border:1px solid #d9e5dc;border-radius:15px;box-shadow:0 8px 25px #2746330a}
+.home-figure{margin:0;padding:15px 20px 10px;background:linear-gradient(155deg,#f8faf6,#eaf2eb)}
+.home-figure svg{width:100%;height:auto;max-height:400px}
+.home-figure figcaption{font-size:11px;color:#52665e;line-height:1.6;margin-top:5px}
+.home-summary{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;border-top:1px solid #d9e5dc;background:#fff}
+.home-fact{min-height:75px;padding:12px 11px;border-right:1px solid #e5ece5;background:#fff}
+.home-fact:last-child{border-right:0}
+.home-fact small,.home-fact strong{display:block}
+.home-fact strong{font-size:13px;color:#244b39;line-height:1.45;margin-top:5px}
+.home-lower{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:17px}
+.member-section-card,.attitude-card{border:1px solid #dfe8df;border-radius:12px;background:#fbfcf9;padding:17px 18px}
+.member-section-card h3,.attitude-card h3{font-size:15px;color:#355a44;margin:0 0 12px}
+.person-card{display:flex;gap:14px;align-items:center;padding:8px 10px;margin:9px 0;border:1px solid #e3ebe4;border-radius:11px;background:#fff}
+.person-art{flex:none;width:82px;height:82px}
+.person-copy strong,.person-copy span,.person-copy small{display:block;line-height:1.45}
+.person-copy strong{font-size:14px;color:#294d3e}.person-copy span{font-size:12px;color:#536b5b;margin:3px 0}.person-copy small{font-size:11px}
+.attitude-card p{font-size:13px;line-height:1.85;margin:0 0 10px}.attitude-card small{font-size:11px;line-height:1.6}
+.r72-collection-panel[hidden],.r72-answer-actions[hidden]{display:none}.r72-session-controls{display:flex;flex-wrap:wrap;align-items:end;gap:12px;margin:12px 0}.r72-session-controls label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:#42594d}.r72-session-controls input:not([type=checkbox]){min-width:170px;padding:9px;border:1px solid #c8d9ce;border-radius:7px}.r72-session-controls .r72-check{flex-direction:row;align-items:center;max-width:300px}.r72-answer-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:14px 0;border-top:1px solid #dbe6dd}.r72-answer-actions p{width:100%;margin:0;color:#355a44;font-size:13px}
+.home-equipment{padding:15px 21px 19px;border-top:1px solid #e4ece5;min-width:0}.home-equipment h3{font-size:14px;color:#355a44;margin:0 0 10px}.home-equipment p{margin:10px 0 0;color:#617064;font-size:12px;line-height:1.6}
+.equipment-section-title{margin:14px 0 8px;font-size:12px;font-weight:500;color:#617064}.equipment-section-title:first-child{margin-top:0}
+.equipment-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;min-width:0}
+.equipment-card{min-width:0;padding:12px;border:1px solid #dfe8df;border-radius:10px;background:#f8faf7;overflow-wrap:anywhere}
+.equipment-card-heading{display:flex;align-items:center;gap:7px;min-width:0;color:#355a44}.equipment-card-heading strong{min-width:0;font-size:13px;line-height:1.5}.equipment-card-heading .appliance-icon{width:20px;height:20px;flex:0 0 20px}
+.equipment-position{display:block;margin-top:5px;color:#617064;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.equipment-background{margin-top:12px;border-top:1px solid #e4ece5;padding-top:10px;min-width:0;font-size:12px;color:#617064}.equipment-background summary{cursor:pointer;color:#456552;padding:3px 0}.equipment-background-list{margin:9px 0 0}.equipment-background-row{display:grid;grid-template-columns:90px minmax(0,1fr);gap:10px;padding:5px 0}.equipment-background-row dt{font-weight:500}.equipment-background-row dd{margin:0;overflow-wrap:anywhere;line-height:1.5}
+@media(max-width:640px){.home-equipment{padding:14px}.equipment-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.equipment-card{padding:10px}}
+@media(max-width:360px){.equipment-grid{grid-template-columns:minmax(0,1fr)}.equipment-background-row{grid-template-columns:1fr;gap:3px}}
+.data-version-notice{padding:12px 16px;border:1px solid #e6d4a1;border-radius:9px;background:#fff9e9;color:#725b20;font-size:13px;line-height:1.6}
+.r72-page .day-nav{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;margin:4px 0 10px}
+.r72-page .day-nav button{padding:9px 2px;min-width:0;font-size:11px;background:#eef4ee;color:#42624e;border:1px solid #dbe6dc;border-radius:7px;line-height:1.4}
+.r72-page .day-nav button.active{background:#2b6854;color:#fff;border-color:#2b6854}
+.r72-page .day-title{margin:0 0 8px;font-size:24px}
+.r72-page #source-day-number{margin:17px 0 4px}
+.r72-page #source-day-weather{margin:4px 0 18px}
+.r72-page #source-day-timeline{margin:10px 0 5px}
+.r72-page .shared-schedule{min-width:650px}
+.r72-page .schedule-group h3{margin:0}
+.r72-page .schedule-bar.original{background:#6d8996}.r72-page .schedule-bar.proposal{background:#3f8975}
+.comparison-head{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.comparison-head .result-subtitle{margin-bottom:12px}
+.plan-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.plan-card{border:1px solid #dfe9e0;border-radius:10px;padding:16px 18px;background:#fbfcf9}
+.plan-card h4{font-size:14px;color:#3b604e;margin:0 0 7px}.plan-card p{font-size:15px;color:#284b3d}.plan-card small{font-size:12px;line-height:1.6}
+.plan-pair.swapped .plan-card:first-child{order:2}.plan-pair.swapped .plan-card:last-child{order:1}
+.impact-panel{padding:16px 19px;background:#f8faf7;border:1px solid #e1e9df;border-radius:10px}
+.impact-panel p{margin:6px 0;font-size:13px;line-height:1.7}
+.impact-panel .notice{margin:0;background:#fbf7ec}
+.feedback-panel{margin-top:25px;padding:21px;border:1px solid #e0e9df;border-radius:12px;background:#fff}
+.feedback-panel h3{margin:0;font-size:18px;color:#2c5140}.feedback-panel>p{font-size:12px;margin:5px 0 12px}
+.feedback-panel fieldset{border:0;border-top:1px solid #e8ede7;padding:15px 0;margin:13px 0 0}
+.feedback-panel legend{font-size:14px;font-weight:650;color:#345945;padding:0 5px}
+.feedback-panel .inline-choices{margin-top:5px}
+.feedback-panel .reason-label{display:block;margin:12px 0;font-size:13px;color:#456552}
+.feedback-panel textarea{display:block;width:100%;min-height:60px;margin-top:6px}
+.researcher-detail{border-top:1px solid #e3eae3;margin-top:18px;padding-top:11px;font-size:12px;color:#52665e}
+.researcher-detail summary{cursor:pointer;font-weight:600;color:#426850}
+.researcher-detail p{overflow-wrap:anywhere;font-size:11px;line-height:1.7}
+.researcher-detail button{font-size:12px;padding:9px 13px}
+@media(max-width:850px){.home-summary{grid-template-columns:repeat(3,minmax(0,1fr))}.home-fact:nth-child(3){border-right:0}.home-fact:nth-child(-n+3){border-bottom:1px solid #e5ece5}.home-lower{grid-template-columns:1fr}.r72-page .day-nav{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:640px){.r72-page .survey-hero{display:block}.home-figure{padding:8px}.home-summary{grid-template-columns:1fr 1fr}.home-fact:nth-child(3){border-right:1px solid #e5ece5}.home-fact:nth-child(even){border-right:0}.home-fact:nth-child(-n+4){border-bottom:1px solid #e5ece5}.r72-page .day-nav button{font-size:10px}.plan-pair{grid-template-columns:1fr}.comparison-head{align-items:start}.comparison-head button{font-size:11px;padding:8px}.feedback-panel{padding:15px}.feedback-panel .inline-choices{display:grid;grid-template-columns:1fr 1fr}.feedback-panel .inline-choice{font-size:12px}}

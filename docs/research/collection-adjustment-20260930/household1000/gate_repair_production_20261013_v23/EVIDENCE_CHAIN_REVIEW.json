@@ -1,0 +1,83 @@
+{
+  "schema": "eb.evidence_chain_review.v23",
+  "date": "2026-10-13",
+  "review_type": "targeted scoping and claim-to-source audit",
+  "goal": "assigned-role actor response conditional on declared world, legal history and B relative to frozen A",
+  "target": "2020 mainland China city ordinary-residential family households; towns/rural/collective/nonordinary excluded",
+  "rows": [
+    {
+      "step": "population",
+      "source": "NBS2020 city ordinary residential A0112a/A0801a/A0802a/A0803a",
+      "support": "same-denominator household/resident/area/room/generation controls",
+      "unknown": "ordinary N-by-G full joint table; entropy completion, tail transport and finite integer errors retained"
+    },
+    {
+      "step": "joint roster",
+      "source": "CHFS2021 questionnaire and 9156 co-residence proxy source households, visits2021/2022; Zhu2024 DOI10.1371/journal.pcbi.1011810",
+      "support": "within-household relation,sex,coarse age/work auxiliary dependencies plus source-heldout gap diagnostics",
+      "unknown": "true biological parentage, exact birthdays, national detailed joint validation; four grafts and one member without joint-gap source support explicit"
+    },
+    {
+      "step": "housing",
+      "source": "NBS H6/H7; original DeST structures; source geometry and declared joint allocation",
+      "support": "H7 excludes kitchen,toilet,corridor,hall and shared independently used rooms; joint gross/share/net mapping and functional geometry",
+      "unknown": "actual unit floorplan, material/neighbor empirical calibration"
+    },
+    {
+      "step": "devices",
+      "source": "pinned original EB native IDF/appliance defaults; EnergyPlus24.1",
+      "support": "six functional models with declared physical assets,programs,parameters and meter topology",
+      "unknown": "national prevalence, observed ownership/licence and off-design OEM performance"
+    },
+    {
+      "step": "routines",
+      "source": "WHO2019/AASM2016 normative sleep; official holidays; explicitly transferred school calendar; Flett/Kelly2017 methodology",
+      "support": "eligible dated activity/care/service layering and normative reference bounds",
+      "unknown": "empirical Chinese joint-clock distribution and individual work shifts"
+    },
+    {
+      "step": "services and AB",
+      "source": "original EB technical tasks; CRECS2012 historical auxiliary frequency; McKenna2018 DOI10.1007/s12053-017-9525-4",
+      "support": "service expectation separated from activity/technology; independent service purposes,resource-aware frozen A and controlled six-mechanism B",
+      "unknown": "actual numeric personal deadlines, subjective comfort, extra-help willingness; given temperature,SOC,coverage never observed preference"
+    },
+    {
+      "step": "physical consequences",
+      "source": "EnergyPlus24.1 documented equations; pinned model; BOPTEST DOI10.1080/19401493.2021.1986574",
+      "support": "shared reference dynamics,baseline,boundaries and reproducible finite-window comparisons",
+      "unknown": "OEM/household field validation, equal-terminal net savings; clipping and strict wetbulb point failure remain visible"
+    },
+    {
+      "step": "actor and model",
+      "source": "original frontend and human-pilot protocol",
+      "support": "same factual world and original response questions; global role-conditioned target and grouped dependence design",
+      "unknown": "actor comprehension/role effect,independent labels,predictive performance and formal benchmark validity; human_answers=0"
+    }
+  ],
+  "primary_reverified_20261013": [
+    "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011810",
+    "https://link.springer.com/article/10.1007/s12053-017-9525-4",
+    "https://bies.lbl.gov/publications/building-optimization-testing",
+    "https://arxiv.org/abs/2609.00065",
+    "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/indexch.htm",
+    "https://bigladdersoftware.com/epx/docs/24-1/engineering-reference/coils.html",
+    "https://raw.githubusercontent.com/NREL/EnergyPlus/v24.1.0/src/EnergyPlus/CurveManager.cc"
+  ],
+  "admissible_claim": "traceable coherent reference task inputs; physical output acceptance limited to original50 after current-ledger readback",
+  "not_admissible": [
+    "1000 real households",
+    "validated national diaries/preferences",
+    "actual resident consent",
+    "field calibrated Chinese equipment/load",
+    "completed human benchmark"
+  ],
+  "human_answers": 0,
+  "full1000_EP_allowed": false,
+  "independent_peer_review": false,
+  "workflow_attribution": {
+    "authors": "Kassis T, Agarwal V, He Y, Patel D, Brueckner AM",
+    "year": 2026,
+    "doi": "10.48550/arXiv.2609.00065",
+    "use": "workflow attribution only, not evidence for numerical household parameters"
+  }
+}

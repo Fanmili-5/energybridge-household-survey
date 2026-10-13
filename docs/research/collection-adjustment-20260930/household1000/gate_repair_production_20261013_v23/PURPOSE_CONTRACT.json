@@ -1,0 +1,50 @@
+{
+  "schema": "eb.production_purpose_contract.v23",
+  "date": "2026-10-13",
+  "estimand": "p(actor answer Y | assigned reference role/profile, legally visible history, common current state, proposed B relative to frozen A)",
+  "actor_is": "a recruited human enacting the given reference household; not a member of the original CHFS donor",
+  "population_anchor": "2020 mainland China city ordinary-residential family households; exclude towns, rural, collective and nonordinary dwellings",
+  "worlds": 1000,
+  "residents": 2524,
+  "episodes_per_world": 10,
+  "primary_day": "08:00 to next08:00",
+  "episodes": "ten fixed reference dates; independent physical histories, chronological legal actor history; no fabricated actual longitudinal household",
+  "devices": [
+    "ac",
+    "washer",
+    "dryer",
+    "dishwasher",
+    "water_heater",
+    "ev"
+  ],
+  "classes_per_world": [
+    4,
+    5,
+    6
+  ],
+  "coverage_counts": [
+    333,
+    333,
+    334
+  ],
+  "coverage_is_population_ownership": false,
+  "A": "usual feasible given plan from independent service need and shared resources, frozen before B",
+  "B": "retained counterfactual requests including bad/inconvenient/near-boundary/negotiable/cross-device conditions; actor judges",
+  "labels": "binary adoption, four optional ratings, explanation from original frontend; all absent before real collection",
+  "model": "one global role-conditioned model with a total human feedback budget; no per-household adapters or identity lookup",
+  "formal_evaluation": "group source-motif and roster dependencies, keep all dates and A/B of a world together; training/calibration/heldout answers separate; no identities or current/future answers in stimulation",
+  "not_identified": [
+    "Chinese real-family adoption rate",
+    "personal preferences from demographics",
+    "national detailed diaries",
+    "actual equipment ownership",
+    "field physical calibration",
+    "model predictive performance before labels"
+  ],
+  "production_gate": "actual content closure and scientific review; original50 verification, no full1000 launch by default",
+  "human_gate": "readability and role-information prepilot and independent heldout labels before collection/training/formal benchmark claims",
+  "external_human_answers": 0,
+  "design_data_version": "v22",
+  "validation_revision": "v23",
+  "full1000_EP_allowed": false
+}

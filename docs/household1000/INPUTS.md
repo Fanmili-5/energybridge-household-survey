@@ -13,13 +13,15 @@
 
 学校准备好的工作区保持 `docs/research/collection-adjustment-20260930/household1000/` 布局。每阶段输入可能包括 `RUNTIME.json`、`raw/`、`inputs/`、`worlds/`、`actors/`、`pairs/`、`idfs/`、`runs/` 与绑定清单。源码import可以读取前置阶段，因此不能只复制五个V17脚本就执行。
 
-关键现行受控输入：
+关键现行受控输入（V23验收，V22设计数据）：
 
 - V16：`WORLD_BINDINGS1000.json`、`PAIR_BINDINGS10000.json`、世界/角色、参数目录、背景IDF和上游模型。
-- V17全量：`SELECTION1000.json`、1000世界/角色、10000配对及IDF输入。
-- V17原50户：`SELECTION50.json`、`EXECUTION_AUTHORIZATION.json`、相应输入与`CURRENT_EP_RESULTS.json`、`READBACK_REVIEW.json`/结果。
+- 冻结V19上游辅助来源、V22设计世界及原十日期，用于校验V23不重抽样。
+- V23全量：`SELECTION1000.json`、1000世界/角色、10000配对、20000 IDF及账本输入、外部来源锁`EXTERNAL_INPUT_LOCK.json`；不在GitHub公开逐户数据。
+- V23原50：`SELECTION50.json`、650对编译清单（500基线与150额外前史/入水变体）、50对模型形式清单；1400个去重物理运行的精确复用回执和当前账本回读。200对敏感性含50对已在基线中的案例，不重复计作额外运行。
+- V23验收：内容签名、反例证据、`PRE_EP_SCIENTIFIC_REVIEW.json`、三份`READBACK_*_REVIEW.json`、`FINAL_ACCEPTANCE.json`和`DELIVERY.json`。旧SQL复用来源保留，旧验收不复用。
 - 前端：公开去案例模板，加上述50户同版本资料与后果；公开模板的六段内嵌JSON为空，不能误当完整案例bank。
 
-源码以原字节记录在`SOURCE_SNAPSHOT.json`，仅模板HTML移除内嵌案例；调查、第三方模型/天气、SQL、私有研究原件、联系人、会话、答卷和密钥未进入本次载荷。原件可取得不自动意味着可以整体再分发，输入hash也不是再分发许可。
+源码以实际字节记录在`SOURCE_SNAPSHOT.json`，模板HTML移除六段内嵌案例；调查、第三方模型/天气、SQL、私有研究原件、联系人、会话、答卷和密钥未进入本次载荷。原件可取得不自动意味着可以整体再分发，输入hash也不是再分发许可。公开的PsychroLib参考实现附原MIT许可与归属。
 
 统计与几何源码用到NumPy/Pandas/SciPy及阶段声明的解析/几何依赖。原几何环境记录过Python3.14.3、Shapely2.1.2、SciPy1.17.1、Pandas3.0.3、NumPy2.5.2和access-parser特定提交；学校当前原生执行使用Python3.10.12、EnergyPlus24.1和已有Node20运行时。这里记录来源环境，不声称所有历史诊断在同一Python环境已验证。新只读统一入口仅依赖标准库。

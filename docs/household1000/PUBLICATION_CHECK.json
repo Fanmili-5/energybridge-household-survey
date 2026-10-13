@@ -1,24 +1,142 @@
 {
-  "version": "household1000-v17-20261007",
-  "checked_utc": "2026-10-07T12:08:30.905137+00:00",
-  "source_integrity_files": 316,
-  "python_ast_checked_files": 294,
-  "python_ast_environment": "local research Python3.14;parse only",
-  "javascript_school_check": {
-    "javascript_files": 12,
-    "failures": [],
-    "host": "school Linux",
-    "node": "v20.19.0"
-  },
-  "entrypoint_school_tests": {
-    "host": "school Linux",
-    "returncode": 0,
-    "output": "test_missing_protected_inputs_remain_missing (test_household1000_entrypoint.EntrypointTests) ... ok\ntest_same_need_and_A_freeze_corruption_detected_even_with_valid_file_hashes (test_household1000_entrypoint.EntrypointTests) ... ok\ntest_well_bound_fixture_and_no_execution (test_household1000_entrypoint.EntrypointTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.449s\n\nOK\n",
-    "new_EP_runs": 0
-  },
-  "school_prepared_input_checks": {
-    "checks": [
-      {
+  "version": "household1000-v23-20261013",
+  "checked_utc": "2026-10-13T02:47:40.552994+00:00",
+  "host": "school Linux",
+  "source_integrity_files": 547,
+  "python_AST_checked": 487,
+  "python_AST_environment": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "javascript_files_checked": 30,
+  "node": "v20.19.0",
+  "frontend_case_JSON_payloads_removed": 6,
+  "read_only_CLI": [
+    {
+      "command": [
+        "status"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "stages"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "check-source"
+      ],
+      "returncode": 0
+    },
+    {
+      "command": [
+        "doctor"
+      ],
+      "returncode": 0,
+      "result": {
+        "workspace": "/home/hku_user3/energybridge-compute/research_runs/household1000_random10_20261007_v1/public_v23_check_20261013",
+        "inputs": [
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
+            "available": true,
+            "delivery_present": true,
+            "delivery_hash_matches": true
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
+            "available": true,
+            "delivery_present": true,
+            "delivery_hash_matches": true
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/SELECTION1000.json",
+            "available": false
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/SELECTION50.json",
+            "available": false
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/PRE_EP_SCIENTIFIC_REVIEW.json",
+            "available": false
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/READBACK_all_REVIEW.json",
+            "available": false
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/FINAL_ACCEPTANCE.json",
+            "available": false
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/DELIVERY.json",
+            "available": false
+          }
+        ],
+        "scope": "availability only;public checkout excludes protected research inputs",
+        "EP_started": false
+      }
+    },
+    {
+      "command": [
+        "doctor",
+        "--workspace",
+        "/home/hku_user3/energybridge-compute/research_runs/household1000_random10_20261007_v1/workspace/energybridge-household-survey"
+      ],
+      "returncode": 0,
+      "result": {
+        "workspace": "/home/hku_user3/energybridge-compute/research_runs/household1000_random10_20261007_v1/workspace/energybridge-household-survey",
+        "inputs": [
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
+            "available": true,
+            "delivery_present": true,
+            "delivery_hash_matches": true
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
+            "available": true,
+            "delivery_present": true,
+            "delivery_hash_matches": true
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/SELECTION1000.json",
+            "available": true
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/SELECTION50.json",
+            "available": true
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/PRE_EP_SCIENTIFIC_REVIEW.json",
+            "available": true
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/READBACK_all_REVIEW.json",
+            "available": true
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/FINAL_ACCEPTANCE.json",
+            "available": true
+          },
+          {
+            "input": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/DELIVERY.json",
+            "available": true
+          }
+        ],
+        "scope": "availability only;public checkout excludes protected research inputs",
+        "EP_started": false
+      }
+    },
+    {
+      "command": [
+        "check-bindings",
+        "--workspace",
+        "/home/hku_user3/energybridge-compute/research_runs/household1000_random10_20261007_v1/workspace/energybridge-household-survey",
+        "--scope",
+        "pilot50"
+      ],
+      "returncode": 0,
+      "result": {
         "scope": "pilot50",
         "households": 50,
         "residents": 147,
@@ -27,8 +145,18 @@
         "EP_started": false,
         "human_answers_created": 0,
         "claim": "file and common-input binding integrity only"
-      },
-      {
+      }
+    },
+    {
+      "command": [
+        "check-bindings",
+        "--workspace",
+        "/home/hku_user3/energybridge-compute/research_runs/household1000_random10_20261007_v1/workspace/energybridge-household-survey",
+        "--scope",
+        "static1000"
+      ],
+      "returncode": 0,
+      "result": {
         "scope": "static1000",
         "households": 1000,
         "residents": 2524,
@@ -38,38 +166,339 @@
         "human_answers_created": 0,
         "claim": "file and common-input binding integrity only"
       }
-    ],
-    "new_EP_runs": 0,
-    "human_answers_created": 0,
-    "scope": "read-only checks of prepared school inputs;not a clean raw-source reconstruction"
+    }
+  ],
+  "entrypoint_tests": {
+    "returncode": 0,
+    "output": "test_missing_protected_inputs_remain_missing (test_household1000_entrypoint.EntrypointTests) ... ok\ntest_same_need_and_A_freeze_corruption_detected_even_with_valid_file_hashes (test_household1000_entrypoint.EntrypointTests) ... ok\ntest_well_bound_fixture_and_no_execution (test_household1000_entrypoint.EntrypointTests) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.412s\n\nOK\n"
   },
-  "publication_file_scope_check": "pass",
-  "secret_patterns_found": 0,
-  "private_dataset_directories_in_new_payload": 0,
-  "frontend_case_JSON_payloads_removed": 6,
+  "local_markdown_links_checked": 70,
+  "errors": [],
+  "status": "pass",
   "new_EP_runs": 0,
   "human_answers_created": 0,
-  "source_or_scientific_rules_changed": false,
-  "fresh_private_pipeline_reconstruction": "not_executed;protected inputs required",
-  "prior_public_history_audited_or_rewritten": false,
-  "authorization": "user: 同步到最新版本;existing public repository/main;source and aggregate status only",
-  "local_markdown_links_checked": 57,
-  "missing_links": [],
-  "archived_source_whitespace_warnings": [
+  "fresh_private_raw_source_reconstruction": false,
+  "scope": "public actual source bytes and prepared protected bindings;not field/human/algorithm validation",
+  "source_whitespace_warnings_preserved": [
     {
-      "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/readback.py",
-      "line": 96,
-      "decision": "preserved original bytes for source hash fidelity;blank-line whitespace only"
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/audit_bath.py",
+      "line": 28,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
     },
     {
-      "path": "docs/research/collection-adjustment-20260930/household1000/pilot50_frontend_20261007_v1/code/readback.py",
-      "line": 96,
-      "decision": "preserved original bytes for source hash fidelity;blank-line whitespace only"
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/audit_materials.py",
+      "line": 47,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
     },
     {
-      "path": "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/readback.py",
-      "line": 96,
-      "decision": "preserved original bytes for source hash fidelity;blank-line whitespace only"
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/audit_physical_inputs.py",
+      "line": 29,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/audit_reference_model.py",
+      "line": 39,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/curve_observer.py",
+      "line": 44,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/ep_gate.py",
+      "line": 25,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/psychrolib_reference.py",
+      "line": 479,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/psychrolib_reference.py",
+      "line": 532,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/psychrolib_reference.py",
+      "line": 1472,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/psychrolib_reference.py",
+      "line": 1480,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/run_static.py",
+      "line": 9,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/scientific_review.py",
+      "line": 49,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/vehicle_causal_controls.py",
+      "line": 39,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/coherent_reference_production_20261010_v20/code/psychrolib_reference.py",
+      "line": 479,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/coherent_reference_production_20261010_v20/code/psychrolib_reference.py",
+      "line": 532,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/coherent_reference_production_20261010_v20/code/psychrolib_reference.py",
+      "line": 1472,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/coherent_reference_production_20261010_v20/code/psychrolib_reference.py",
+      "line": 1480,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/evidence_conditioned_production_20261009_v19/code/psychrolib_reference.py",
+      "line": 479,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/evidence_conditioned_production_20261009_v19/code/psychrolib_reference.py",
+      "line": 532,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/evidence_conditioned_production_20261009_v19/code/psychrolib_reference.py",
+      "line": 1472,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/evidence_conditioned_production_20261009_v19/code/psychrolib_reference.py",
+      "line": 1480,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/PRODUCTION_LOGIC_CHAIN.md",
+      "line": 70,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/audit_bath.py",
+      "line": 28,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/audit_materials.py",
+      "line": 58,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/audit_physical_inputs.py",
+      "line": 29,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/audit_reference_model.py",
+      "line": 39,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/curve_observer.py",
+      "line": 44,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/ep_gate.py",
+      "line": 89,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/psychrolib_reference.py",
+      "line": 479,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/psychrolib_reference.py",
+      "line": 532,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/psychrolib_reference.py",
+      "line": 1472,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/psychrolib_reference.py",
+      "line": 1480,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/run_static.py",
+      "line": 9,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/scientific_review.py",
+      "line": 58,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/vehicle_causal_controls.py",
+      "line": 39,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/profile_conditioned_production_20261008_v18/code/psychrolib_reference.py",
+      "line": 479,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/profile_conditioned_production_20261008_v18/code/psychrolib_reference.py",
+      "line": 532,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/profile_conditioned_production_20261008_v18/code/psychrolib_reference.py",
+      "line": 1472,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/profile_conditioned_production_20261008_v18/code/psychrolib_reference.py",
+      "line": 1480,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/audit_bath.py",
+      "line": 28,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/audit_materials.py",
+      "line": 47,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/audit_physical_inputs.py",
+      "line": 29,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/audit_reference_model.py",
+      "line": 39,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/curve_observer.py",
+      "line": 44,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/ep_gate.py",
+      "line": 25,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/psychrolib_reference.py",
+      "line": 479,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/psychrolib_reference.py",
+      "line": 532,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/psychrolib_reference.py",
+      "line": 1472,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/psychrolib_reference.py",
+      "line": 1480,
+      "warning": "trailing whitespace.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/run_static.py",
+      "line": 9,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/scientific_review.py",
+      "line": 48,
+      "warning": "new blank line at EOF.",
+      "decision": "preserve tested school source or third-party bytes;nonfunctional whitespace only"
     }
-  ]
+  ],
+  "git_diff_check_returncode": 2,
+  "source_hash_fidelity_preserved": true,
+  "authorization": "User requested three gate repairs,school original50 current acceptance,production/evidence audit and GitHub sync;full1000 EP held",
+  "publication_scope": "curated first-party source,case-free frontend,contracts,methods and aggregate acceptance;protected data absent",
+  "secret_index_check": {
+    "scanned_files": 988,
+    "passed": true,
+    "findings": [],
+    "scope": "tracked Git index;not rewritten historical commits"
+  },
+  "new_household_EP_launches_during_repair": 0,
+  "weather_only_diagnostic_launches_during_repair": 1,
+  "private_dataset_directories_in_new_payload": 0,
+  "formal_human_labels_created": 0
 }

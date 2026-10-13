@@ -1,4 +1,6 @@
 {
+  "version": "household1000-v23-20261013",
+  "host": "school Linux",
   "checks": [
     {
       "scope": "pilot50",
@@ -22,6 +24,5 @@
     }
   ],
   "new_EP_runs": 0,
-  "human_answers_created": 0,
-  "scope": "read-only checks of prepared school inputs;not a clean raw-source reconstruction"
+  "human_answers_created": 0
 }

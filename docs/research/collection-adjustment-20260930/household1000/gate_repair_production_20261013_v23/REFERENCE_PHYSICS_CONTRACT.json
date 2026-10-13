@@ -1,0 +1,76 @@
+{
+  "schema": "eb.reference_physics_contract.v23",
+  "target": "deterministic, declared EB/EnergyPlus reference-world consequences for assigned-role judgments",
+  "energyplus_version": "24.1.0",
+  "nominal_hardware": "original pinned EB capacity/COP/fan/flow/PLF, fixed wet-device programs, 60kWh/7.4kW/.92 EV and native tank/mixing topology preserved",
+  "temperature_curves": {
+    "method": "original biquadratic modifiers evaluated by pinned EnergyPlus bound clipping",
+    "indoor_wetbulb_C": [
+      12.77778,
+      23.88889
+    ],
+    "outdoor_drybulb_C": [
+      21.11111,
+      46.11111
+    ],
+    "coefficients_changed": false,
+    "bounds_widened": false,
+    "source": "https://raw.githubusercontent.com/NREL/EnergyPlus/v24.1.0/src/EnergyPlus/CurveManager.cc",
+    "fit_or_manufacturer_data_origin": "unknown beyond pinned original EB model; no fitted-domain/OEM transport validation claimed",
+    "actual_outside_bound_use": "must record raw pre-clipping inputs by coil; automatic AHRI ratings are a distinct category",
+    "admissible_claim": "computed electricity/air temperature under the explicitly bounded reference model",
+    "inadmissible_claim": [
+      "validated off-design performance",
+      "Chinese OEM efficiency",
+      "personal thermal comfort",
+      "real-household savings"
+    ],
+    "production_result_policy": "outside-bound records remain in benchmark with visible model-boundary scope; never relabel domain pass, suppress warning or select new dates",
+    "sensitivity": "original50 fixed first summer dates; unit temperature modifiers as a declared model-form diagnostic, preserving nominal parameters; not a fitted replacement or confidence interval",
+    "primary_source": "https://bigladdersoftware.com/epx/docs/24-1/engineering-reference/coils.html"
+  },
+  "wet_devices": {
+    "strategy": "noninterruptible reference program with explicit loading/ready/unloading states; cancellation before start; no automatic retries",
+    "manufacturer_scope": "Miele WTD160 manual confirms lock plus explicit pause/cancel conditions; does not validate universal noninterruptibility of all washers/dishwashers",
+    "service": "batch handover/crockery inventory requirements precede A; clean or wearable status not inferred from power alone"
+  },
+  "EV": {
+    "meter": "actual EP charging circuit energy; analytic efficiency/storage and realized trip debit",
+    "target_soc": 0.85,
+    "reserve_soc": 0.2,
+    "meaning": "given access and traction/reserve contracts; no preference or national commute identification",
+    "failed_trip": "no traction delivered; alternate travel and actor rescheduling unknown",
+    "causal_authority": "one shared resource/event ledger; successful departure alone defines vehicle absence; manual handling and charging cannot use a conflicting planned-absence calendar"
+  },
+  "heating": {
+    "boundary_C": 18,
+    "electricity_meter_excludes_external_heating": true,
+    "claim": "conditioned external heating boundary, not complete household all-fuel energy"
+  },
+  "window": {
+    "primary_minutes": [
+      480,
+      1920
+    ],
+    "tail": "finite service tail; terminal tank/air/SOC differences retained",
+    "equal_state_recovery_claim": false,
+    "equal_service_net_savings_claim": false
+  },
+  "required_checks": [
+    "continuous A delivery and pre-notice equality",
+    "actual energy/meter/spatial accounting",
+    "same original50 7/14-day prior and fixed/seasonal inlet",
+    "actual curve boundary usage and model-form sensitivity",
+    "wetbulb strict point failure preserved; same-phase residual/bounds separately checked"
+  ],
+  "physical_calibration": false,
+  "field_validation_needed_for": [
+    "actual Chinese equipment efficiency",
+    "actual load/bills",
+    "detailed building thermal realism"
+  ],
+  "production_scope_before_original50_readback": "reference inputs only; physical results remain pending",
+  "result_reuse": "exact IDF,weather,engine,SQL hashes plus preserved old receipt; current ledgers independently reread; old acceptance never copied",
+  "full1000_EP_allowed": false,
+  "power_limit_semantics": "maximum 10-minute average meter power; reference planning boundary, not instantaneous starting current or protection certification"
+}

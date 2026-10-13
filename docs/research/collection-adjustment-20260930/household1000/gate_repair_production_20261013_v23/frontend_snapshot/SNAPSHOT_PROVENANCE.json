@@ -1,0 +1,60 @@
+{
+  "records": [
+    {
+      "name": "index.html",
+      "source_sha256": "332112b440f9316d5d7822a0cbe59eda7fd9d113758107b84419452b6658cdaa",
+      "published_sha256": "a33c09f07570d6f97cb730ee22d29ac9dcb26cc8108f072035b0deeecea44b81",
+      "transformation": "remove_six_embedded_case_JSON_and_normalize_asset_route"
+    },
+    {
+      "name": "style.css",
+      "source_sha256": "fb7dac98f99880e5f7416ac16a0ebb7e17af184a9480b175440beb542b4e00c5",
+      "published_sha256": "fb7dac98f99880e5f7416ac16a0ebb7e17af184a9480b175440beb542b4e00c5",
+      "transformation": "none"
+    },
+    {
+      "name": "candidate.css",
+      "source_sha256": "4376f657fb74fbab9ea1dcb8b6e559bbe4fd7ce73ac1e434696baee9358da8a5",
+      "published_sha256": "4376f657fb74fbab9ea1dcb8b6e559bbe4fd7ce73ac1e434696baee9358da8a5",
+      "transformation": "none"
+    },
+    {
+      "name": "joint-view.css",
+      "source_sha256": "016c8d0bbd0a4adf612915d86b997ac85ad49c8177fe3585dd05ba4531300f36",
+      "published_sha256": "016c8d0bbd0a4adf612915d86b997ac85ad49c8177fe3585dd05ba4531300f36",
+      "transformation": "none"
+    },
+    {
+      "name": "plan-view.js",
+      "source_sha256": "9b9297a6943ff88b88a7534b13918377213d0b12d06390c821116ef26443c400",
+      "published_sha256": "9b9297a6943ff88b88a7534b13918377213d0b12d06390c821116ef26443c400",
+      "transformation": "none"
+    },
+    {
+      "name": "source-draft.js",
+      "source_sha256": "5a0d959c64f97d7c5454dc8fc133b62d929dd852d34f4295bf2e6fdf3bcd7ca9",
+      "published_sha256": "5a0d959c64f97d7c5454dc8fc133b62d929dd852d34f4295bf2e6fdf3bcd7ca9",
+      "transformation": "none"
+    },
+    {
+      "name": "household-view.js",
+      "source_sha256": "8ba5d00bf31e3e00f1cb5828e0731e410c75fffe60601b828136c64f3fc9cfa3",
+      "published_sha256": "8ba5d00bf31e3e00f1cb5828e0731e410c75fffe60601b828136c64f3fc9cfa3",
+      "transformation": "none"
+    },
+    {
+      "name": "joint-view.js",
+      "source_sha256": "091011cec6869b810cd35674adc458b4f21b9daa21c6b7209162381b3755db98",
+      "published_sha256": "091011cec6869b810cd35674adc458b4f21b9daa21c6b7209162381b3755db98",
+      "transformation": "none"
+    },
+    {
+      "name": "unified_live_server.py",
+      "source_sha256": "693cfc163a07a0f15fd8e9f99d606c22191eb080d426196396a084802a6942aa",
+      "published_sha256": "693cfc163a07a0f15fd8e9f99d606c22191eb080d426196396a084802a6942aa",
+      "transformation": "none"
+    }
+  ],
+  "case_JSON_payloads_removed": 6,
+  "human_answers": 0
+}

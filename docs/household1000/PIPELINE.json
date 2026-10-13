@@ -1,6 +1,6 @@
 {
-  "version": "household1000-v17-20261007",
-  "default_mode": "read-only;no all-pipeline execution",
+  "version": "household1000-v23-20261013",
+  "default_mode": "read-only;full1000 EP rejected",
   "steps": [
     {
       "id": "source-admission",
@@ -81,90 +81,155 @@
     {
       "id": "worlds",
       "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/worlds.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/joint_age.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/activity_model.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/needs.py"
+      ],
+      "required_inputs": [
+        "prepared protected current-world/ledger/source inputs",
+        "frozen original50 and ten dates",
+        "licensed upstream as declared in INPUTS.md"
+      ],
+      "output_and_scope": "source-aware V22 worlds and joint age/activity/care/service contracts;unchanged in V23",
+      "automatic_execution": false,
+      "historical_v17_source_files": [
         "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/build_worlds.py",
         "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/plans.py"
       ],
-      "required_inputs": [
-        "prior random10 worlds",
-        "V12 background",
-        "device reference catalogues"
-      ],
-      "output_and_scope": "worlds with coherent asset/operator/routine/demand and independent A",
-      "automatic_execution": false
+      "active_stage": "gate_repair_production_20261013_v23"
     },
     {
       "id": "mixed-ab",
       "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/generate.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/plans.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/checks.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/execution.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/vehicle_state.py"
+      ],
+      "required_inputs": [
+        "prepared protected current-world/ledger/source inputs",
+        "frozen original50 and ten dates",
+        "licensed upstream as declared in INPUTS.md"
+      ],
+      "output_and_scope": "independent frozen A with given needs and resource-aware six-mechanism B;bad B retained;no actor labels",
+      "automatic_execution": false,
+      "historical_v17_source_files": [
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/generate.py",
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/assess.py",
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/project_actors.py"
       ],
-      "required_inputs": [
-        "frozen V16 worlds/date bindings",
-        "contrast50 candidate implementation"
-      ],
-      "output_and_scope": "10000 mixed pairs and 1000 same-world roles",
-      "automatic_execution": false
+      "active_stage": "gate_repair_production_20261013_v23"
     },
     {
       "id": "idf",
       "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/compile_inputs.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/audit_idfs.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/audit_physical_inputs.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/audit_reference_model.py"
+      ],
+      "required_inputs": [
+        "prepared protected current-world/ledger/source inputs",
+        "frozen original50 and ten dates",
+        "licensed upstream as declared in INPUTS.md"
+      ],
+      "output_and_scope": "20000 bound static inputs;1300 native/observed original50 and100 model-form inputs;compilation is not calibration",
+      "automatic_execution": false,
+      "historical_v17_source_files": [
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_static1000_20261007_v17/code/compile.py",
         "docs/research/collection-adjustment-20260930/household1000/joint_static_production_20261007_v16/code/compile_inputs.py"
       ],
-      "required_inputs": [
-        "worlds/pairs",
-        "EnergyPlus schema",
-        "EB native source",
-        "background IDFs"
-      ],
-      "output_and_scope": "20000 paired inputs;no execution",
-      "automatic_execution": false
+      "active_stage": "gate_repair_production_20261013_v23"
     },
     {
       "id": "physics50",
       "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/ep_gate.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/physics.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/reuse_physical_results.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/model_form_diagnostic.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/weather_audit.py"
+      ],
+      "required_inputs": [
+        "prepared protected current-world/ledger/source inputs",
+        "frozen original50 and ten dates",
+        "licensed upstream as declared in INPUTS.md"
+      ],
+      "output_and_scope": "fixed original50:500base,200sensitivity,50model-form pairs;1400 unique exact SQL reuse with current-ledger readback;full1000 held",
+      "automatic_execution": false,
+      "historical_v17_source_files": [
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/run_ep.py",
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/calendar_bridge.py",
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/readback.py"
       ],
-      "required_inputs": [
-        "authorized SELECTION50",
-        "IDFs/EPWs",
-        "school EnergyPlus"
-      ],
-      "output_and_scope": "500 actual paired model consequences;full1000 remains held",
-      "automatic_execution": false
+      "active_stage": "gate_repair_production_20261013_v23"
     },
     {
       "id": "questionnaire",
       "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/materials.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/audit_materials.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/bind_frontend.js",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/verify_case_bindings.js",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/verify_frontend_clock.js",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/preview_readonly.py"
+      ],
+      "required_inputs": [
+        "prepared protected current-world/ledger/source inputs",
+        "frozen original50 and ten dates",
+        "licensed upstream as declared in INPUTS.md"
+      ],
+      "output_and_scope": "1000 same-world roles and10000 tasks;original50 original questionnaire consequences;9500 physical pending tasks explicit",
+      "automatic_execution": false,
+      "historical_v17_source_files": [
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/build_site.py",
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/prepare_frontend.py",
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/code/serve50.py"
       ],
-      "required_inputs": [
-        "same50 worlds/actors/pairs/IDFs",
-        "READBACK_REVIEW and results",
-        "Node and mature template"
-      ],
-      "output_and_scope": "original frontend with actual reference previews",
-      "automatic_execution": false
+      "active_stage": "gate_repair_production_20261013_v23"
     },
     {
       "id": "response-export",
       "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/frontend_snapshot/joint-view.js",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/frontend_snapshot/source-draft.js",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/frontend_snapshot/unified_live_server.py"
+      ],
+      "required_inputs": [
+        "prepared protected current-world/ledger/source inputs",
+        "frozen original50 and ten dates",
+        "licensed upstream as declared in INPUTS.md"
+      ],
+      "output_and_scope": "actual visible factual input and legal history;current answer output isolated;human0;formal collection held",
+      "automatic_execution": false,
+      "historical_v17_source_files": [
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/unified_live_server.py",
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/joint-view.js",
         "docs/research/collection-adjustment-20260930/household1000/roleplay_mixed_production_20261007_v17/frontend_snapshot/source-draft.js"
       ],
-      "required_inputs": [
-        "visible snapshot",
-        "original questionnaire answer"
+      "active_stage": "gate_repair_production_20261013_v23"
+    },
+    {
+      "id": "acceptance-repairs",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/prepare_revision.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/acceptance_controls.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/scientific_review.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/source_diagnostics.py",
+        "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/code/final_acceptance.py"
       ],
-      "output_and_scope": "engineering records only;formal actor provenance/history/splits pending",
+      "required_inputs": [
+        "actual content bindings and external input lock",
+        "isolated negative-control fixture",
+        "current school readbacks and original frontend proofs"
+      ],
+      "output_and_scope": "three fail-closed gate repairs,source-to-claim and purpose review,current original50 acceptance;no full1000 execution",
       "automatic_execution": false
     }
   ],
-  "scientific_rule_changes_in_this_publication": false
+  "scientific_rule_changes_in_this_publication": true,
+  "active_stage": "gate_repair_production_20261013_v23",
+  "design_data_version": "v22"
 }

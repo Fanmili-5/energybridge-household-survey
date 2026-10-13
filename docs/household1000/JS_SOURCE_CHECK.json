@@ -1,6 +1,7 @@
 {
-  "javascript_files": 12,
-  "failures": [],
+  "version": "household1000-v23-20261013",
   "host": "school Linux",
-  "node": "v20.19.0"
+  "node": "20.19.0",
+  "files": 30,
+  "failures": []
 }

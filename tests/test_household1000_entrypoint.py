@@ -25,7 +25,8 @@ def write(path, value):
 
 def fixture(root, corruption=None):
     """A minimal schema fixture cannot be used as the scientific family cohort."""
-    base = root / REL / 'roleplay_mixed_production_20261007_v17'
+    active_stage = json.loads((REPO / 'docs/household1000/STATUS.json').read_text())['active_stage']
+    base = root / REL / active_stage
     households = []
     for index in range(50):
         hid = 'engineering-fixture-' + str(index)

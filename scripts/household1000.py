@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only entry to the V17 source snapshot and a prepared research workspace.
+"""Read-only entry to the current source snapshot and a prepared research workspace.
 
 No command starts EnergyPlus, calls a model, or turns engineering fills into
 human answers. Production scripts are listed explicitly rather than imported
@@ -54,9 +54,10 @@ def doctor(workspace):
             row['delivery_present'] = delivery.is_file()
             row['delivery_hash_matches'] = delivery.is_file() and sha(delivery) == pointer['delivery_sha256']
         rows.append(row)
-    for name in ['roleplay_mixed_static1000_20261007_v17/SELECTION1000.json',
-                 'roleplay_mixed_production_20261007_v17/SELECTION50.json',
-                 'roleplay_mixed_production_20261007_v17/READBACK_REVIEW.json']:
+    stage = read(PUBLIC / 'STATUS.json')['active_stage']
+    for name in [stage+'/SELECTION1000.json', stage+'/SELECTION50.json',
+                 stage+'/PRE_EP_SCIENTIFIC_REVIEW.json', stage+'/READBACK_all_REVIEW.json',
+                 stage+'/FINAL_ACCEPTANCE.json', stage+'/DELIVERY.json']:
         rows.append({'input': str(REL / name), 'available': (base / name).is_file()})
     print(json.dumps({'workspace': str(workspace), 'inputs': rows,
                       'scope': 'availability only;public checkout excludes protected research inputs',
@@ -65,7 +66,7 @@ def doctor(workspace):
 
 
 def check_bindings(workspace, scope):
-    stage = 'roleplay_mixed_static1000_20261007_v17' if scope == 'static1000' else 'roleplay_mixed_production_20261007_v17'
+    stage = read(PUBLIC / 'STATUS.json')['active_stage']
     base = workspace / REL / stage
     selection_path = base / ('SELECTION1000.json' if scope == 'static1000' else 'SELECTION50.json')
     if not selection_path.is_file():

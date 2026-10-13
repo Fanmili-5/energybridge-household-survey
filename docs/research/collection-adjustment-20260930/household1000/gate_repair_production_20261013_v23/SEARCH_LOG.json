@@ -1,0 +1,87 @@
+{
+  "scope": "targeted scoping review,not an exhaustive systematic review",
+  "date": "2026-10-10",
+  "queries": [
+    "household synthetic population joint relationships age dependency Zhu Yin 2024",
+    "residential demand response activity technology service expectations McKenna Higginson 9525",
+    "event based household occupancy appliance Flett Kelly 2017",
+    "EnergyPlus24.1 water heaters mixed water use boundary"
+  ],
+  "included_primary_sources": [
+    {
+      "id": "S11",
+      "kind": "primary_questionnaire",
+      "title": "2021年中国家庭金融调查(CHFS)问卷",
+      "local_questionnaire_sha256": "84c8cf52535a986bcdfe0be42722b5553dd2f9c4817c11d81a480a0e6fe463ac",
+      "pages": [
+        12,
+        13,
+        14,
+        16
+      ],
+      "supports": "A2001 ego-relative family categories include legal step/adoptive relations in family definition; A2000c co-residence proxy; birth-year and age uncertainty",
+      "does_not_support": "biological parentage subtype, full pairwise ancestry, exact 2020 or 2025 role birthdays, household preferences"
+    },
+    {
+      "id": "S12",
+      "kind": "peer_reviewed_method",
+      "title": "Generating synthetic population for simulating the spatiotemporal dynamics of epidemics",
+      "authors": "Zhu K, Yin L, Liu K, Liu J, Shi Y, Li X, Zou H, Du H",
+      "year": 2024,
+      "doi": "10.1371/journal.pcbi.1011810",
+      "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011810",
+      "verified": "primary full HTML read 2026-10-10",
+      "supports": "preserve household structural dependencies while matching census marginals",
+      "does_not_support": "validation of this China-city ordinary frame, licensed CHFS transport, detailed activity clocks or preferences"
+    },
+    {
+      "id": "S13",
+      "kind": "peer_reviewed_method",
+      "title": "Simulating residential demand response: Improving socio-technical assumptions in activity-based models of energy demand",
+      "authors": "McKenna E, Higginson S, Grunewald P, Darby SJ",
+      "year": 2018,
+      "online_year": 2017,
+      "doi": "10.1007/s12053-017-9525-4",
+      "url": "https://link.springer.com/article/10.1007/s12053-017-9525-4",
+      "verified": "primary full HTML read 2026-10-10",
+      "supports": "separate activities, technology and service expectations; availability is insufficient to infer flexibility",
+      "does_not_support": "numeric personal deadlines, Chinese joint diaries, free external services or willingness"
+    },
+    {
+      "id": "S14",
+      "kind": "peer_reviewed_method",
+      "title": "A disaggregated, probabilistic, high resolution method for assessment of domestic occupancy and electrical demand",
+      "authors": "Flett G, Kelly N",
+      "year": 2017,
+      "doi": "10.1016/j.enbuild.2017.01.069",
+      "url": "https://strathprints.strath.ac.uk/59557/",
+      "verified": "primary university repository abstract and publication metadata read 2026-10-10",
+      "supports": "differentiate household activities and event-based use count/timing",
+      "does_not_support": "Chinese parameter distributions or personal response labels"
+    },
+    {
+      "id": "S15",
+      "kind": "software_reference",
+      "title": "EnergyPlus24.1 Input Output Reference: water heaters",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-water-heaters.html",
+      "verified": "24.1 manual HTML read 2026-10-10; native objects are pinned local original EB",
+      "supports": "explicit tank topology, mixed-water delivery and cold-water boundary fields",
+      "does_not_support": "field calibration of Chinese homes or manufacturer performance for all scaled capacities"
+    }
+  ],
+  "deduplication": "DOI/title; same online2017/volume2018 article retained once",
+  "excluded_as_evidence": [
+    "secondary paper lists,ResearchGate metadata without primary content,unread recent preprints",
+    "papers as numeric justification for unobserved preferences"
+  ],
+  "V21_extension": {
+    "date": "2026-10-10",
+    "question": "Can an explicitly bounded reference model be scientifically distinguished from field calibrated real-household claims?",
+    "primary_queries": [
+      "BOPTEST framework building optimization testing framework benchmark 2021 Blum 1986574",
+      "site.ibpsa.org building control performance test benchmark simulated reference model BOPTEST 2021"
+    ],
+    "source": "S20",
+    "decision": "method support only; not permission to relabel EB operating-domain failure as actual performance validation"
+  }
+}

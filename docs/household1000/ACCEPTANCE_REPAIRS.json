@@ -1,0 +1,156 @@
+{
+  "version": "household1000-v23-20261013",
+  "source_receipt_sha256": "2f392326af9c97290fd4392807529fe0d7fe657e072994e7c3ea36e7e76b20ca",
+  "status": "pass",
+  "controls": 23,
+  "tested_code_sha256": {
+    "acceptance_controls.py": "1ab645b2a2ae9d71cb22dce7fc815fd039f93d15b14cc5713c9f2cc44028999f",
+    "ep_gate.py": "d84579bbe0b689873c21fca25dfc510d53af37c2d1a177cb5d97026b36fcf1d7",
+    "physics.py": "c6fe42f8cd124fff8ad34e15c1bebb102f7486826d7f106ab341728293ae1822"
+  },
+  "records": [
+    {
+      "control": "world_changed",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "pair_changed",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "ledger_changed",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "actor_changed",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "consumer_changed",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "frontend_HTML_changed",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "nested_code_changed",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "full1000_scope",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "missing_all_runs",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "missing_one_side",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "duplicate_run",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "outside_original50",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "failed_engine_receipt",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "wrong_IDF_receipt",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "wrong_engine_receipt",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "changed_date_receipt",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "empty_readback_rejected",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "A_circuit_readback",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "A_home_readback",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "A_reserve_readback",
+      "expected_rejection": true,
+      "rejected": true,
+      "passed": true
+    },
+    {
+      "control": "B_circuit_readback",
+      "expected_rejection": false,
+      "rejected": false,
+      "passed": true
+    },
+    {
+      "control": "B_home_readback",
+      "expected_rejection": false,
+      "rejected": false,
+      "passed": true
+    },
+    {
+      "control": "B_reserve_readback",
+      "expected_rejection": false,
+      "rejected": false,
+      "passed": true
+    }
+  ],
+  "EP_runs": 0,
+  "human_answers": 0,
+  "isolated_fixture_only": true,
+  "actual_full1000_scope_rejected": true,
+  "bad_B_retained_without_labels": true
+}
