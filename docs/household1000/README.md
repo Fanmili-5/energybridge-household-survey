@@ -1,4 +1,6 @@
-# 1000户生产链：V23验收修复，V22设计数据
+# 1000户生产链：六类EB生成前置要求，历史V23验收
+
+2026-10-13新增要求：按EB公开角色实验构成生成六类家庭任务世界，并在生成前确定配额、适用条件和验证方法。A/B/C/D/E/F配额为166/198/125/151/156/204，比例来源是584名被分配角色的参与者，不是中国家庭自然占比。详见[六类生成要求](EB_SIX_TYPE_REQUIREMENT.md)、[规则与来源](../research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/METHODS.md)和[学校队列预检](EB_SIX_TYPE_PREFLIGHT.json)。旧1000户尚未满足此要求，新版生成和EP保持关闭。
 
 当前验收目录为 `gate_repair_production_20261013_v23`。V23保留V22的1000户、2524名成员、原十日期及10000对A/B；数据schema保留v22，验收与源码发布版本为v23。历史V17–V22保留，现行入口不再指向V17。
 
@@ -20,6 +22,7 @@
 python3 scripts/household1000.py status
 python3 scripts/household1000.py stages
 python3 scripts/household1000.py check-source
+python3 scripts/household1000.py require-generation  # 当前返回2：新前置要求尚未验收
 python3 scripts/household1000.py doctor
 ```
 

@@ -1,0 +1,321 @@
+{
+  "author_repo": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge",
+  "author_repo_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "basic_seed_roles": 6,
+  "counts_are_Chinese_household_prevalence": false,
+  "counts_evidence": "author-published assigned-role counts;not independently recomputed from raw respondents",
+  "counts_location": "Section5.5 and Appendix Table5/Table7",
+  "date": "2026-10-13",
+  "denominator": 584,
+  "main_composite_household_scenarios": 5,
+  "paper": "https://arxiv.org/html/2608.08691v1",
+  "remote_main_verified_equals_commit": true,
+  "schema": "eb.six_seed_reference.v24",
+  "types": {
+    "A": {
+      "AC_anchor": {
+        "mode": "cooling",
+        "present": true,
+        "setpoint_preferred_max_c": 26.0,
+        "setpoint_preferred_min_c": 24.0,
+        "temp_tolerance_c": 1.0
+      },
+      "name_zh": "通勤费用优先、建议后决策",
+      "native_seed_present_devices": [
+        "ac",
+        "washer",
+        "dishwasher",
+        "water_heater"
+      ],
+      "nominal_schedule_anchor": {
+        "bath_shower_h": 21.0,
+        "leaves_home_h": 8.5,
+        "occupancy_pattern": "commuter",
+        "returns_home_h": 18.5,
+        "schedule_variability_h": 0.5,
+        "sleep_h": 23.0,
+        "travel_days_per_month": 2,
+        "vulnerable_members": [],
+        "wake_h": 7.0,
+        "weekend_leaves_h": 10.0,
+        "weekend_returns_h": 17.0,
+        "work_from_home_days_per_week": 1
+      },
+      "published_assigned_role_n": 97,
+      "quota_fraction": {
+        "denominator": 584,
+        "numerator": 97
+      },
+      "seed_id": "basic_role_a_commuter_price_cooperative",
+      "seed_override_probability_is_excluded": true,
+      "seed_physical_parameters_must_not_override_accepted_physical_lane": true,
+      "seed_score_weights_are_excluded_from_clustering_and_human_labels": true,
+      "source_path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_a_commuter_price_cooperative.json",
+      "source_sha256": "fd83453396e201eb15eeaa7dee20dbad0b79cf8c7a4745b736add05bb5f25bb7",
+      "source_traits_for_crosswalk_only": {
+        "comfort": "normal_comfort",
+        "control": "suggestion_first",
+        "grid_value": "evening_peak",
+        "price": "price_sensitive",
+        "schedule": "regular_commuter",
+        "task": "flexible"
+      },
+      "source_url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/roleplay/personas/basic_role_a_commuter_price_cooperative.json",
+      "target1000": 166
+    },
+    "B": {
+      "AC_anchor": {
+        "mode": "cooling",
+        "present": true,
+        "setpoint_preferred_max_c": 25.5,
+        "setpoint_preferred_min_c": 24.5,
+        "temp_tolerance_c": 0.5
+      },
+      "name_zh": "主要居家、舒适优先、逐次确认",
+      "native_seed_present_devices": [
+        "ac",
+        "washer",
+        "water_heater"
+      ],
+      "nominal_schedule_anchor": {
+        "bath_shower_h": 21.0,
+        "leaves_home_h": 21.5,
+        "occupancy_pattern": "stay_at_home",
+        "returns_home_h": 22.0,
+        "schedule_variability_h": 0.3,
+        "sleep_h": 23.0,
+        "travel_days_per_month": 0,
+        "vulnerable_members": [],
+        "wake_h": 7.0,
+        "weekend_leaves_h": 10.0,
+        "weekend_returns_h": 12.0,
+        "work_from_home_days_per_week": 5
+      },
+      "published_assigned_role_n": 116,
+      "quota_fraction": {
+        "denominator": 584,
+        "numerator": 116
+      },
+      "seed_id": "basic_role_b_home_comfort_gated",
+      "seed_override_probability_is_excluded": true,
+      "seed_physical_parameters_must_not_override_accepted_physical_lane": true,
+      "seed_score_weights_are_excluded_from_clustering_and_human_labels": true,
+      "source_path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_b_home_comfort_gated.json",
+      "source_sha256": "fabb435b67cc6b0d8637ba7fdc5d44b411d7b65c057d71f5a684370ee54e2f2a",
+      "source_traits_for_crosswalk_only": {
+        "comfort": "temp_sensitive",
+        "control": "confirm_required",
+        "grid_value": "short_peak_cut",
+        "price": "low_incentive",
+        "schedule": "stay_at_home",
+        "task": "semi_rigid"
+      },
+      "source_url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/roleplay/personas/basic_role_b_home_comfort_gated.json",
+      "target1000": 198
+    },
+    "C": {
+      "AC_anchor": {
+        "mode": "cooling",
+        "present": true,
+        "setpoint_preferred_max_c": 26.0,
+        "setpoint_preferred_min_c": 24.0,
+        "temp_tolerance_c": 1.0
+      },
+      "name_zh": "作息易变、任务刚性、当天确认",
+      "native_seed_present_devices": [
+        "ac",
+        "washer",
+        "water_heater"
+      ],
+      "nominal_schedule_anchor": {
+        "bath_shower_h": 21.0,
+        "leaves_home_h": 8.5,
+        "occupancy_pattern": "irregular",
+        "returns_home_h": 19.0,
+        "schedule_variability_h": 3.0,
+        "sleep_h": 23.0,
+        "travel_days_per_month": 5,
+        "vulnerable_members": [],
+        "wake_h": 7.0,
+        "weekend_leaves_h": 10.0,
+        "weekend_returns_h": 17.0,
+        "work_from_home_days_per_week": 2
+      },
+      "published_assigned_role_n": 73,
+      "quota_fraction": {
+        "denominator": 584,
+        "numerator": 73
+      },
+      "seed_id": "basic_role_c_irregular_cautious",
+      "seed_override_probability_is_excluded": true,
+      "seed_physical_parameters_must_not_override_accepted_physical_lane": true,
+      "seed_score_weights_are_excluded_from_clustering_and_human_labels": true,
+      "source_path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_c_irregular_cautious.json",
+      "source_sha256": "595851f59693e7ed405aa0481114e01e8fc5454395010d42e7620c6bb248b361",
+      "source_traits_for_crosswalk_only": {
+        "comfort": "normal_comfort",
+        "control": "confirm_required",
+        "grid_value": "uncertain_flex",
+        "price": "needs_explanation",
+        "schedule": "irregular",
+        "task": "rigid"
+      },
+      "source_url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/roleplay/personas/basic_role_c_irregular_cautious.json",
+      "target1000": 125
+    },
+    "D": {
+      "AC_anchor": {
+        "mode": "cooling",
+        "present": true,
+        "setpoint_preferred_max_c": 27.0,
+        "setpoint_preferred_min_c": 23.0,
+        "temp_tolerance_c": 2.0
+      },
+      "name_zh": "通勤、边界内自动优化",
+      "native_seed_present_devices": [
+        "ac",
+        "washer",
+        "dishwasher",
+        "water_heater"
+      ],
+      "nominal_schedule_anchor": {
+        "bath_shower_h": 21.0,
+        "leaves_home_h": 8.5,
+        "occupancy_pattern": "commuter",
+        "returns_home_h": 18.0,
+        "schedule_variability_h": 0.3,
+        "sleep_h": 23.0,
+        "travel_days_per_month": 1,
+        "vulnerable_members": [],
+        "wake_h": 7.0,
+        "weekend_leaves_h": 10.0,
+        "weekend_returns_h": 17.0,
+        "work_from_home_days_per_week": 1
+      },
+      "published_assigned_role_n": 88,
+      "quota_fraction": {
+        "denominator": 584,
+        "numerator": 88
+      },
+      "seed_id": "basic_role_d_commuter_ideal_dr",
+      "seed_override_probability_is_excluded": true,
+      "seed_physical_parameters_must_not_override_accepted_physical_lane": true,
+      "seed_score_weights_are_excluded_from_clustering_and_human_labels": true,
+      "source_path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_d_commuter_ideal_dr.json",
+      "source_sha256": "a8847a1056ebb23147f7b54d325bd9eb742ac9fe64f7377c19cea3eac5f30a72",
+      "source_traits_for_crosswalk_only": {
+        "comfort": "temp_tolerant",
+        "control": "high_trust_auto",
+        "grid_value": "stable_flex",
+        "price": "price_sensitive",
+        "schedule": "regular_commuter",
+        "task": "flexible"
+      },
+      "source_url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/roleplay/personas/basic_role_d_commuter_ideal_dr.json",
+      "target1000": 151
+    },
+    "E": {
+      "AC_anchor": {
+        "mode": "cooling",
+        "present": true,
+        "setpoint_preferred_max_c": 25.0,
+        "setpoint_preferred_min_c": 22.0,
+        "temp_tolerance_c": 0.5
+      },
+      "name_zh": "照护安全优先、提醒为主",
+      "native_seed_present_devices": [
+        "ac",
+        "washer",
+        "water_heater"
+      ],
+      "nominal_schedule_anchor": {
+        "bath_shower_h": 20.0,
+        "leaves_home_h": 20.0,
+        "occupancy_pattern": "stay_at_home",
+        "returns_home_h": 20.5,
+        "schedule_variability_h": 0.5,
+        "sleep_h": 22.0,
+        "travel_days_per_month": 0,
+        "vulnerable_members": [
+          "elderly"
+        ],
+        "wake_h": 6.5,
+        "weekend_leaves_h": 14.0,
+        "weekend_returns_h": 16.0,
+        "work_from_home_days_per_week": 5
+      },
+      "published_assigned_role_n": 91,
+      "quota_fraction": {
+        "denominator": 584,
+        "numerator": 91
+      },
+      "seed_id": "basic_role_e_caregiver_low_dr",
+      "seed_override_probability_is_excluded": true,
+      "seed_physical_parameters_must_not_override_accepted_physical_lane": true,
+      "seed_score_weights_are_excluded_from_clustering_and_human_labels": true,
+      "source_path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_e_caregiver_low_dr.json",
+      "source_sha256": "f853a61de1fbffdb9184999462870a770179f91df4a876db200a23cddbb2c404",
+      "source_traits_for_crosswalk_only": {
+        "comfort": "temp_sensitive",
+        "control": "low_auto_accept",
+        "grid_value": "low_value",
+        "price": "low_incentive",
+        "schedule": "caregiver",
+        "task": "rigid"
+      },
+      "source_url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/roleplay/personas/basic_role_e_caregiver_low_dr.json",
+      "target1000": 156
+    },
+    "F": {
+      "AC_anchor": {
+        "mode": "cooling",
+        "present": true,
+        "setpoint_preferred_max_c": 26.0,
+        "setpoint_preferred_min_c": 24.0,
+        "temp_tolerance_c": 1.0
+      },
+      "name_zh": "通勤EV服务、自动错峰",
+      "native_seed_present_devices": [
+        "ac",
+        "washer",
+        "water_heater",
+        "ev"
+      ],
+      "nominal_schedule_anchor": {
+        "bath_shower_h": 20.0,
+        "leaves_home_h": 7.5,
+        "occupancy_pattern": "commuter",
+        "returns_home_h": 18.5,
+        "schedule_variability_h": 0.5,
+        "sleep_h": 23.0,
+        "travel_days_per_month": 2,
+        "vulnerable_members": [],
+        "wake_h": 6.5,
+        "weekend_leaves_h": 9.0,
+        "weekend_returns_h": 17.0,
+        "work_from_home_days_per_week": 1
+      },
+      "published_assigned_role_n": 119,
+      "quota_fraction": {
+        "denominator": 584,
+        "numerator": 119
+      },
+      "seed_id": "basic_role_f_commuter_ev_optimizer",
+      "seed_override_probability_is_excluded": true,
+      "seed_physical_parameters_must_not_override_accepted_physical_lane": true,
+      "seed_score_weights_are_excluded_from_clustering_and_human_labels": true,
+      "source_path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_f_commuter_ev_optimizer.json",
+      "source_sha256": "883871d9506bcdb51d60d114be1673b462e4378a958831f083b2c9f6fc7b8a41",
+      "source_traits_for_crosswalk_only": {
+        "comfort": "normal_comfort",
+        "control": "high_trust_auto",
+        "grid_value": "stable_flex",
+        "price": "price_sensitive",
+        "schedule": "regular_commuter",
+        "task": "ev_constrained"
+      },
+      "source_url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/roleplay/personas/basic_role_f_commuter_ev_optimizer.json",
+      "target1000": 204
+    }
+  }
+}

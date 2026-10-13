@@ -1,5 +1,7 @@
 # V23复现与验收顺序
 
+当前EB六类要求尚未验收。以下V23命令用于历史输入的只读核查，不能授权新版生产。生成前先运行 `python3 scripts/household1000.py require-generation`；当前应返回2。详见[新前置要求](EB_SIX_TYPE_REQUIREMENT.md)。
+
 ## 公开checkout
 
 `scripts/household1000.py status/stages/check-source/doctor`只读，核公开版本、实际源码字节与受控输入可用性。缺失私有输入时如实报告；源码hash通过不等于物理、人类或全国代表性验证。

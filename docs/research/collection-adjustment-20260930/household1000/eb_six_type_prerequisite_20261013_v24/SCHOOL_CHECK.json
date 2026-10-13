@@ -1,0 +1,36 @@
+{
+  "schema": "eb.six_type_school_source_checks.v24",
+  "checked_utc": "2026-10-13T09:20:17.930572+00:00",
+  "host": "school Linux",
+  "source_bindings": {
+    "checked_source_files": 561,
+    "failures": [],
+    "scope": "published bytes only;not physics or human validity"
+  },
+  "source_check_returncode": 0,
+  "generation_hold": {
+    "generation_allowed": false,
+    "EP_allowed": false,
+    "status": "EB_six_type_prerequisite_not_accepted",
+    "instruction": "See docs/household1000/EB_SIX_TYPE_REQUIREMENT.md;legacy V23 acceptance is historical."
+  },
+  "generation_hold_expected_returncode": 2,
+  "entrypoint_tests": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.513s\n\nOK\n"
+  },
+  "admission_tests": {
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.003s\n\nOK\n"
+  },
+  "JSON_files_parsed": 102,
+  "Python_files_parsed": 665,
+  "source_overlay_sha256": "991efc5644a271341f920286de77eb4db6aef58d91d9d550c11d12fcc6e6f5f3",
+  "scientific_requirement_accepted": false,
+  "new_worlds_generated": 0,
+  "EP_started": false,
+  "human_answers_created": 0,
+  "engineering_checks_passed": true
+}

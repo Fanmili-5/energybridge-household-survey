@@ -1,0 +1,48 @@
+{
+  "Chinese_natural_preference_prevalence_claim": false,
+  "EP_allowed": false,
+  "date": "2026-10-13",
+  "episodes_per_household": 10,
+  "gate_entry": "code/require_generation.py",
+  "gate_scope": "new EB-six-type production only;does not revoke historical V23 read-only inspection",
+  "generation_allowed": false,
+  "historical_accepted_stage": "gate_repair_production_20261013_v23",
+  "historical_input_bytes_immutable": true,
+  "households": 1000,
+  "national_joint_distribution_claim": false,
+  "next_allowed_work": [
+    "source-frame reconciliation",
+    "method development and nonproduction diagnostics",
+    "original50 role-blueprint trial and acceptance design"
+  ],
+  "old_V23_acceptance_meets_this_requirement": false,
+  "population_anchor": "mainland China city ordinary residential family reference;town/rural/collective/nonordinary excluded",
+  "prohibited_repairs": [
+    "labels appended after generation",
+    "unknown replaced with neutral scores",
+    "role overrides treated as human probabilities",
+    "demographic attitudes imputed from income/age/sex",
+    "unsupported households removed without frame reconciliation",
+    "nonresident helpers counted as residents",
+    "regenerating seeds until a passing cohort is found"
+  ],
+  "quota_origin": "584 assigned human-roleplay respondents in EB arXiv2608.08691v1;explicit experimental reference mix",
+  "reference_sha256": "f1d4732a65e1984fadc847c33efd8c80656d8b6d7d1cb33556b3248e4eb68e98",
+  "rounding": "exact largest remainder, A..F tie order",
+  "schema": "eb.pre_generation_requirement.v24",
+  "six_types_are_discovered_natural_clusters": false,
+  "source_user_instruction": "Six EB types and approximately EB proportions must be satisfied as prerequisites of generation, not repaired by posthoc relabeling.",
+  "status": "pre_generation_requirement_fixed;eligibility_and_generation_rules_pending",
+  "target_counts": {
+    "A": 166,
+    "B": 198,
+    "C": 125,
+    "D": 151,
+    "E": 156,
+    "F": 204
+  },
+  "type_unit": "one given household energy-negotiation policy, with explicit adult resident policy holder and all member service constraints retained",
+  "unit_transfer_is_research_design": true,
+  "user_confirmation_date": "2026-10-13",
+  "user_confirmed_quota_origin": "EB_published_assigned_persona_mix"
+}

@@ -1,0 +1,72 @@
+{
+  "date": "2026-10-13",
+  "exclusion": "search snippets as evidence;third-party summaries;assigned-role counts mislabeled as national prevalence",
+  "inclusion": "primary author code/paper/protocol and official statistical-method documentation",
+  "questions": [
+    "Which six types does official EB define?",
+    "What do published six-class counts actually measure?",
+    "Can joint quotas and coherent features be checked before production?"
+  ],
+  "review_type": "targeted scoping of EB definitions, proportions and recovery methods;not systematic review",
+  "schema": "eb.six_type_scoping_source_ledger.v24",
+  "search_queries": [
+    "site:github.com/Agentic-Intelligence-Lab/EnergyBridge basic_role population proportions",
+    "EnergyBridge2608.08691 household persona Table5 Table7",
+    "Gower mixed variables original paper",
+    "PAM mixed-variable clustering official documentation",
+    "adjusted_rand_score official definition"
+  ],
+  "skill": "/Users/fanmili/.codex/skills/scientific-thinking-literature-review/SKILL.md",
+  "sources": [
+    {
+      "does_not_support": "six empirically discovered Chinese household classes",
+      "id": "EB01",
+      "supports": "six designed role seeds and six behavioral dimensions",
+      "type": "official pinned repository",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/roleplay/personas/README.md"
+    },
+    {
+      "does_not_support": "sample counts are own-household preference prevalence or household survey weights",
+      "id": "EB02",
+      "location": "Section5.5;AppendixA Tables4,5,7",
+      "supports": "five main household scenarios;584 assigned-persona counts97,116,73,88,91,119",
+      "type": "author preprint v1",
+      "url": "https://arxiv.org/html/2608.08691v1"
+    },
+    {
+      "does_not_support": "actual national six-class preference estimates exist",
+      "id": "EB03",
+      "supports": "own-preference grounding and assigned-role calibration are distinct;proportions require own-preference survey",
+      "type": "official research protocol",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/human_survey_materials/PAPER_CALIBRATION_STUDY.md"
+    },
+    {
+      "does_not_support": "copying household templates reproduces Chinese population margins",
+      "id": "EB04",
+      "supports": "multi-member composition and shared maximal device set",
+      "type": "official pinned repository",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/roleplay/households/README.md"
+    },
+    {
+      "does_not_support": "our feature weights or preference validity are empirically established",
+      "id": "M01",
+      "supports": "Gower dissimilarity for mixed variables, scaling and missingness handling",
+      "type": "official R cluster documentation",
+      "url": "https://stat.ethz.ch/R-manual/R-devel/library/cluster/html/daisy.html"
+    },
+    {
+      "does_not_support": "specifying six clusters validates six natural classes",
+      "id": "M02",
+      "supports": "mature medoid partitioning with dissimilarities",
+      "type": "official R cluster documentation",
+      "url": "https://stat.ethz.ch/R-manual/R-devel/library/cluster/html/pam.html"
+    },
+    {
+      "does_not_support": "ARI measures real-user behavioral truth",
+      "id": "M03",
+      "supports": "permutation-invariant partition agreement",
+      "type": "official metric documentation",
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.metrics.adjusted_rand_score.html"
+    }
+  ]
+}

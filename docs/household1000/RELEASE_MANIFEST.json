@@ -1,14 +1,14 @@
 {
-  "version": "household1000-v23-20261013",
-  "checked_utc": "2026-10-13T02:54:06.139351+00:00",
+  "version": "household1000-v24-prerequisite-20261013",
+  "checked_utc": "2026-10-13T09:38:35.717738+00:00",
   "repository": "https://github.com/Fanmili-5/energybridge-household-survey.git",
   "target_branch": "main",
-  "parent_commit": "fe0d3bd2c78e1c673f21ed25532190f26b72dc03",
+  "parent_commit": "31771054e056d70c845505934441a1a35dbd2bda",
   "payload_files_excluding_this_manifest": [
     {
       "path": "README.md",
-      "bytes": 5536,
-      "sha256": "6f952a86e604932c40954fe0f0089a2f66456aa24a4ba51c58e041ddaad4a631"
+      "bytes": 5427,
+      "sha256": "c6cd743975890b62a74ebb4d83eda1b2ece85d75ba5f6fd61b2429e674e693ee"
     },
     {
       "path": "THIRD_PARTY.md",
@@ -17,13 +17,28 @@
     },
     {
       "path": "docs/README.md",
-      "bytes": 3181,
-      "sha256": "438c54ccf46882f176033f4068e83b7209824f4f23b7c0bc3034c5d79b5a6444"
+      "bytes": 3295,
+      "sha256": "7db0c5df4e4133b90d0adce9d5594138094e0ba4ba50f8152cddf1957aeb0e0a"
     },
     {
       "path": "docs/household1000/ACCEPTANCE_REPAIRS.json",
       "bytes": 3645,
       "sha256": "b21fca5d2a0488f24c0de2d0f1be0659ed258cf6242f52991256770fdb549d04"
+    },
+    {
+      "path": "docs/household1000/EB_SIX_TYPE_PREFLIGHT.json",
+      "bytes": 2489,
+      "sha256": "1ecec8febf302981406bb0e371a4c0508eac62ca57260aee034bdda8e4ee5872"
+    },
+    {
+      "path": "docs/household1000/EB_SIX_TYPE_REQUIREMENT.json",
+      "bytes": 2300,
+      "sha256": "f755829621ae480a36e7131ce71230da769ac6f3100efdb0ffa3068e3fb5ae1c"
+    },
+    {
+      "path": "docs/household1000/EB_SIX_TYPE_REQUIREMENT.md",
+      "bytes": 2681,
+      "sha256": "38470361b90030f970e99f266e205fc89ed34ae960c38463d37fc24ecb94c896"
     },
     {
       "path": "docs/household1000/ENTRYPOINT_TEST_CHECK.json",
@@ -47,13 +62,13 @@
     },
     {
       "path": "docs/household1000/PIPELINE.json",
-      "bytes": 13273,
-      "sha256": "9abbcd93380a4479dd9fa05fbf15117a201686d2416d51f0de68f081a6f73e78"
+      "bytes": 14207,
+      "sha256": "758bccc0df4d0208b0732793a8c614aefc64a4fdf54876ec420406e7a836c243"
     },
     {
       "path": "docs/household1000/PIPELINE.md",
-      "bytes": 4502,
-      "sha256": "733ccccd18f72255bd2337c3372f3c59bb8aa944b2525ec10c739d10c3f6abbd"
+      "bytes": 4799,
+      "sha256": "1594aed43259268fce4e200bf3874028cb7e3339e3b03f1b8da6655f70815fcb"
     },
     {
       "path": "docs/household1000/PREFERENCE_FIELD_AUDIT.json",
@@ -67,8 +82,8 @@
     },
     {
       "path": "docs/household1000/README.md",
-      "bytes": 3297,
-      "sha256": "b8413699e7c8af908765dab4f8a1681966e385a3094a55c90327efa1029f472f"
+      "bytes": 3987,
+      "sha256": "1a2ea5bb8dd25f0d1a827e4f9777dd11dd254e387cc13e2c6a519730f11a24e4"
     },
     {
       "path": "docs/household1000/REFERENCE_ACCEPTANCE.json",
@@ -77,13 +92,13 @@
     },
     {
       "path": "docs/household1000/REPRODUCTION.md",
-      "bytes": 3240,
-      "sha256": "fcdd2c1b5d28bd7f985c053d2efaf21edc684e77a6f2bf0b862d387ce2fd41e6"
+      "bytes": 3503,
+      "sha256": "6aed2b9c2bf92386e05e123fdf7907edce375b147c0560537618ad8ef61cf119"
     },
     {
       "path": "docs/household1000/RESEARCH_GATES.md",
-      "bytes": 3151,
-      "sha256": "8df09d9eb79b7c9e2c65be10dd3bec9be509e10384ccedff71872e92268e944d"
+      "bytes": 3448,
+      "sha256": "089e52b8cca8bd173cd57094ca74fcec189e915b383d343ac4ad3086b9cc643a"
     },
     {
       "path": "docs/household1000/SCHOOL_BINDING_CHECK.json",
@@ -92,18 +107,43 @@
     },
     {
       "path": "docs/household1000/SOURCE_SNAPSHOT.json",
-      "bytes": 227078,
-      "sha256": "e17b1d7f10921e8ea86479206ad2516664266bb8b92c20140f8ca14a1ed9034a"
+      "bytes": 233277,
+      "sha256": "13cb12ea912f23676d67f6969a270187b0baae9ecc3083bea5ff346c88c8e46e"
     },
     {
       "path": "docs/household1000/STATUS.json",
-      "bytes": 1902,
-      "sha256": "8bb7c9b52c11906b398b7d7eb2485120224d3290e842a179cd7d7fb42b87c1e2"
+      "bytes": 2862,
+      "sha256": "8a56798d534528bae624f682cc4299e228d3a0e263cc973beb00db2abe2bbdda"
     },
     {
       "path": "docs/household1000/V23_PUBLIC_PAYLOAD.json",
       "bytes": 30574,
       "sha256": "b465bc630ad754860508e8a99e7f454b326f1c2bd5bf57f2f144a8aa5aaae74a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
+      "bytes": 568,
+      "sha256": "7f3b664e85c28481d562efaef1f66b82fdb5817186c73f0db4187c471d65f7b0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_PRODUCTION_REVIEW.json",
+      "bytes": 2579,
+      "sha256": "aacd45e191d92d570217b7b14ae41fe3d875d1c5ac8503da7776a3e3f3126309"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_REPAIR_CANDIDATE.json",
+      "bytes": 2044,
+      "sha256": "8d872276a1e6bf3247eaa369201aff1324810df9158dcb3b3c9921ee5b03b7b7"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
+      "bytes": 1832,
+      "sha256": "d42611b97cf55ffbf1d20cd91d14e262f30459f68d0fbf596701a55903113873"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
+      "bytes": 2025,
+      "sha256": "5783867b3dcdc0e6ba53546cc1fc20352893d9a28f36d5a6b64c47d01c04e6ba"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/PSYCHROLIB_LICENSE.txt",
@@ -509,6 +549,76 @@
       "path": "docs/research/collection-adjustment-20260930/household1000/coherent_reference_production_20261010_v20/code/worlds.py",
       "bytes": 7571,
       "sha256": "55e11b764c668a33e03afab9578e78464dc1a3676d50a9ff85e76e6b3568587e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/COHORT_FEASIBILITY_REVIEW.json",
+      "bytes": 2489,
+      "sha256": "1ecec8febf302981406bb0e371a4c0508eac62ca57260aee034bdda8e4ee5872"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/DESIGN_REVIEW.json",
+      "bytes": 1535,
+      "sha256": "9901b5612218e0199cf7c83be5c8f10afa8bba5ccc5df81997d8b2be928bd1f9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/EB_REFERENCE.json",
+      "bytes": 12152,
+      "sha256": "f1d4732a65e1984fadc847c33efd8c80656d8b6d7d1cb33556b3248e4eb68e98"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/FEATURE_AND_CLUSTER_CONTRACT.json",
+      "bytes": 4705,
+      "sha256": "fec647c37339632a07d06f344260ffae9c49aa9406d4d80a58669f898e7834d1"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/METHODS.md",
+      "bytes": 9685,
+      "sha256": "4fc7dee5e1fbbe28d3c6ecf049647cd5dc9dabd8ee0d4096c08be37213a1658c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/ORIGINAL50_FEASIBILITY_REVIEW.json",
+      "bytes": 1488,
+      "sha256": "f0536125a8205fbd8a017aa7eaf6c998c8390edd7391199e1348b75c2e3fd31b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/REQUIREMENT.json",
+      "bytes": 2300,
+      "sha256": "f755829621ae480a36e7131ce71230da769ac6f3100efdb0ffa3068e3fb5ae1c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/SCHOOL_CHECK.json",
+      "bytes": 1313,
+      "sha256": "3c58c3dc2b19b74fe8cf90de04fa999a2c3e465eff8a5ff6c4869f8fde5dd4a9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/SOURCE_LEDGER.json",
+      "bytes": 3700,
+      "sha256": "76a32392bea486b7607640657884f3936fe8bb6d4452a215b3b92d471399b6e9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/audit_original50.py",
+      "bytes": 2583,
+      "sha256": "003eba8a0e30c6f1bc566724fabfa914f05e961f5f88c5d4390890982ebe1c53"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/install_requirement_overlay.py",
+      "bytes": 3885,
+      "sha256": "fa70ff06942ce5dabe466457aa3ffe3527f4fa11f32cd0eb996cb1e5fa2e1735"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/preflight.py",
+      "bytes": 10146,
+      "sha256": "921fae5725d4e65cc3f9ae018699836c0245ed58a63b23b365112ee652e33a37"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/require_generation.py",
+      "bytes": 1361,
+      "sha256": "03b7344673872967d9bc9d433841ce048715888be54be91b8ef2350189c7e06e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/test_preflight.py",
+      "bytes": 3896,
+      "sha256": "fd11e326408b584581c024c8343688718bd70afd8c2fd76d08f76d85fcffa5a6"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/evidence_conditioned_production_20261009_v19/code/PSYCHROLIB_LICENSE.txt",
@@ -1046,6 +1156,11 @@
       "sha256": "c340357bea3fa2e0864d676c67dd1b4fbe955f0a7f6bc9b50ce91776c9ebdcde"
     },
     {
+      "path": "docs/research/collection-adjustment-20260930/household1000/repair_execution_20261008_v1/EXECUTION_BOARD.json",
+      "bytes": 2232,
+      "sha256": "e24e07ae5b91209fc078d6cc2d93cd8678b114c40e3927805efe6705b7286db7"
+    },
+    {
       "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/PSYCHROLIB_LICENSE.txt",
       "bytes": 1099,
       "sha256": "3372ab6db04ab898605cd8a4c47eee35e668d14ca05481f00107239be0e3b46e"
@@ -1267,24 +1382,27 @@
     },
     {
       "path": "scripts/household1000.py",
-      "bytes": 6248,
-      "sha256": "3a29a9133dd6d2701d082a89e264f1090dd2ab694fb5237482a06dbaca7133f9"
+      "bytes": 6967,
+      "sha256": "a3db61b576e2c6f3433005701d802be2fd0012bc9bf5d3e479f465a1c2af64d4"
     },
     {
       "path": "tests/test_household1000_entrypoint.py",
-      "bytes": 4076,
-      "sha256": "a16dab9b454a945a49b5147b69b24dd7074980450f71725184998c677087451e"
+      "bytes": 4432,
+      "sha256": "906d42f670f9f6717b7a41e84e1d76f8fe28221d5b33f9edfd1350bea8e36cf6"
     }
   ],
-  "payload_file_count_excluding_manifest": 254,
+  "payload_file_count_excluding_manifest": 277,
   "authorization": "user explicitly requested repairs,school verification,original50 acceptance,scientific chain audit and GitHub sync;full1000 EP held",
-  "content_scope": "curated source,case-free original frontend,contracts,methods and aggregate current acceptance",
+  "content_scope": "historicalV23 payload plus EB6 prerequisite,source counts,negative cohort/original50 audits and closed generation entrypoint;not regenerated worlds",
   "private_data_or_EP_SQL_or_human_answers_published": false,
   "school_source_check_passed": true,
   "secret_index_check_passed": true,
   "new_household_EP_launches": 0,
-  "weather_only_diagnostic_launches": 1,
+  "weather_only_diagnostic_launches": 0,
   "human_answers_created": 0,
   "full1000_EP_allowed": false,
-  "whole_program_scientific_completion": false
+  "whole_program_scientific_completion": false,
+  "new_worlds_generated": 0,
+  "EB_six_type_requirement_accepted": false,
+  "current_generation_allowed": false
 }

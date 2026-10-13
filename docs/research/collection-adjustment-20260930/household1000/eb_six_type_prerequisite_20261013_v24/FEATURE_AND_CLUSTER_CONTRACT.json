@@ -1,0 +1,105 @@
+{
+  "algorithm": {
+    "clustering": "mature R cluster::pam on precomputed dissimilarities, k=6, deterministic BUILD/SWAP protocol;no hand-written PAM accepted",
+    "distance": "group-weighted Gower;fixed source/design numeric ranges;categorical mismatch;applicability and missingness separate",
+    "prototype_projection": "recompute features from permitted facts and actual ten-day routines;no seed labels or prompt embeddings",
+    "reference_mapping": "frozen six archetype crosswalk;one-to-one minimum-distance cluster alignment;no arbitrary cluster-number comparison",
+    "seed_source": "freeze explicit seed list in accepted original50 protocol;no final-output seed search",
+    "sensitivity": "20 fixed unstratified80pct subsamples and six group-doubling weight alternatives;separate k4..8 descriptive diagnostic"
+  },
+  "answers_change_feature_invariance_required": true,
+  "duplicates": "report blueprint and full-world collisions, within-class variation and overlap;no claim of iid1000 or human-validity from recovery",
+  "forbidden_features": [
+    "household/member IDs",
+    "source donor IDs",
+    "assigned six-type label",
+    "source_traits_for_crosswalk_only",
+    "literal schedule/control/grid_value tags",
+    "template names and titles",
+    "seed scoring_weights",
+    "seed vpp_override_prob",
+    "B mechanism labels",
+    "EP outcomes",
+    "current/future human answers"
+  ],
+  "gate_passed": false,
+  "groups": [
+    {
+      "id": "schedule",
+      "inputs": [
+        "policy-holder workday home fraction08to18 from dated calendar",
+        "workday departure/return variability separated from holiday/weekend shifts",
+        "household event-window occupancy from all residents"
+      ],
+      "source": "computed from dated coherent routine;not literal role tags",
+      "weight": 0.16666666666666666
+    },
+    {
+      "id": "comfort",
+      "inputs": [
+        "given permissible temporary occupied cooling delta_C",
+        "duration-dependent comfort boundary",
+        "vulnerable-service priority under shared-room overlap"
+      ],
+      "source": "given role contract plus member constraints;not fixed26C or age-derived attitude",
+      "weight": 0.16666666666666666
+    },
+    {
+      "id": "task",
+      "inputs": [
+        "per-service earliest/latest and retrieval deadlines",
+        "operator and precedence constrained slack",
+        "given willingness to reschedule fixed vs negotiable routines"
+      ],
+      "source": "actual declared needs and permission;hardware presence is not consent",
+      "weight": 0.16666666666666666
+    },
+    {
+      "id": "price",
+      "inputs": [
+        "given cost-vs-comfort decision priority",
+        "requirement to explain estimated savings before agreement"
+      ],
+      "source": "concrete role instruction;unknown remains unknown;not income or response outcome",
+      "weight": 0.16666666666666666
+    },
+    {
+      "id": "control",
+      "inputs": [
+        "given automatic-control permission within bounds",
+        "casewise confirmation requirement",
+        "same-day re-confirmation and protective veto rules"
+      ],
+      "source": "explicit household agreement with responsible person;permission does not prefill proposal acceptance",
+      "weight": 0.16666666666666666
+    },
+    {
+      "id": "service_resource",
+      "inputs": [
+        "EV-dependent mobility service and access readiness",
+        "care responsibilities and protected-service load",
+        "feasible load slack in event window"
+      ],
+      "source": "recomputed resource/service facts;no literal grid_value label or measured willingness",
+      "weight": 0.16666666666666666
+    }
+  ],
+  "human_validity_proven_by_cluster_fit": false,
+  "missingness": "critical profile/policy missing means not classifiable;never zero/neutral imputation;not-applicable is distinct",
+  "proposed_quality_gates": {
+    "all_world_semantic_and_eligibility_checks": 1.0,
+    "allocated_counts": "exact declared quota",
+    "cluster_ARI_minimum": 0.8,
+    "per_class_recall_minimum": 0.8,
+    "recovered_vs_target_max_absolute_proportion_difference": 0.02,
+    "subsample_stability_median_ARI_minimum": 0.8,
+    "thresholds_are_research_design_not_literature_validity_cutoffs": true,
+    "thresholds_need_original50_review_before_full_generation": true,
+    "unique_supported_frozen_prototype_mapping": 1.0,
+    "weight_alternative_ARI_minimum": 0.7
+  },
+  "prototype_feature_extractor_implemented": false,
+  "schema": "eb.six_type_feature_and_recovery_design.v24",
+  "status": "initial protocol;implementation and pilot validation pending;freeze accepted revision before full generation",
+  "unsupervised_recovery_implemented": false
+}

@@ -1,5 +1,7 @@
 # 完整生产链与当前验收
 
+2026-10-13新增生成前置G0：[EB六类要求](EB_SIX_TYPE_REQUIREMENT.md)。六类配额已确定，角色适用域、政策到作息/服务的实现与原50户恢复验收尚未完成；旧版验收不满足新要求，新版生成与EP保持关闭。下文V23结果保留为历史范围。
+
 现行验收为V23，设计世界与A/B为冻结V22。源码根为 `docs/research/collection-adjustment-20260930/household1000/`，当前子目录 `gate_repair_production_20261013_v23`。历史阶段只作为有hash的前置来源，不替代当前验收。
 
 ```mermaid

@@ -116,6 +116,7 @@ def main():
     sub.add_parser('status')
     sub.add_parser('stages')
     sub.add_parser('check-source')
+    sub.add_parser('require-generation')
     doctor_parser = sub.add_parser('doctor')
     doctor_parser.add_argument('--workspace', type=Path, default=REPO)
     binding_parser = sub.add_parser('check-bindings')
@@ -130,6 +131,16 @@ def main():
         return 0
     if args.command == 'check-source':
         return source_check()
+    if args.command == 'require-generation':
+        # Historical byte/binding checks never authorize the new EB-six-type
+        # production. Keep this closed until actual blueprint/recovery checks
+        # are implemented and content-bound; a JSON boolean cannot open it.
+        print(json.dumps({'generation_allowed': False, 'EP_allowed': False,
+                          'status': 'EB_six_type_prerequisite_not_accepted',
+                          'instruction': 'See docs/household1000/EB_SIX_TYPE_REQUIREMENT.md;'
+                                         'legacy V23 acceptance is historical.'},
+                         ensure_ascii=False, indent=2))
+        return 2
     if args.command == 'doctor':
         return doctor(args.workspace.resolve())
     return check_bindings(args.workspace.resolve(), args.scope)

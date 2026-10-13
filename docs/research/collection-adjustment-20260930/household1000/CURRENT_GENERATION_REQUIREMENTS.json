@@ -1,0 +1,13 @@
+{
+  "EP_allowed": false,
+  "accepted": false,
+  "date": "2026-10-13",
+  "gate_entry": "eb_six_type_prerequisite_20261013_v24/code/require_generation.py",
+  "generation_allowed": false,
+  "historical_acceptance_meets_new_requirement": false,
+  "historical_accepted_stage": "gate_repair_production_20261013_v23",
+  "methods_path": "eb_six_type_prerequisite_20261013_v24/METHODS.md",
+  "requirement_path": "eb_six_type_prerequisite_20261013_v24/REQUIREMENT.json",
+  "schema": "eb.current_generation_requirements.v24",
+  "stage": "eb_six_type_prerequisite_20261013_v24"
+}

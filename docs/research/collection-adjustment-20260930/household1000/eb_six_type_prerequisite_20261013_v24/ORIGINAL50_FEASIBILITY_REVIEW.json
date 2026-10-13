@@ -1,0 +1,54 @@
+{
+  "EP_started": false,
+  "audit_code_sha256": "003eba8a0e30c6f1bc566724fabfa914f05e961f5f88c5d4390890982ebe1c53",
+  "critical_policy_blueprints_available": 0,
+  "generation_allowed": false,
+  "households": 50,
+  "joint_quota_feasibility": {
+    "allocation_is_observed_type": false,
+    "cut_certificate_flow": 49,
+    "jointly_feasible": false,
+    "maximum_assignable": 49,
+    "one_possible_partial_allocation": {
+      "A": 8,
+      "B": 10,
+      "C": 6,
+      "D": 8,
+      "E": 8,
+      "F": 9
+    },
+    "partial_allocation_and_unfilled_type_depend_on_traversal_order": true,
+    "target_count": 50,
+    "unfilled_quotas": {
+      "A": 0,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "E": 0,
+      "F": 1
+    }
+  },
+  "original50_identity_preserved": true,
+  "preflight_code_sha256": "921fae5725d4e65cc3f9ae018699836c0245ed58a63b23b365112ee652e33a37",
+  "prototype_or_cluster_recovery_passed": false,
+  "reference_sha256": "f1d4732a65e1984fadc847c33efd8c80656d8b6d7d1cb33556b3248e4eb68e98",
+  "schema": "eb.original50_EB6_structural_feasibility.v24",
+  "scope": "capacity diagnostic for unchanged original50;not actual role assignment or new physical acceptance",
+  "selection_sha256": "bce4f0be107f78e34443c1cff78d5359e633a4c8d8cd4655b80e29775d4c2d12",
+  "structural_candidates": {
+    "A": 39,
+    "B": 49,
+    "C": 46,
+    "D": 39,
+    "E": 17,
+    "F": 36
+  },
+  "target_counts_for_trial": {
+    "A": 8,
+    "B": 10,
+    "C": 6,
+    "D": 8,
+    "E": 8,
+    "F": 10
+  }
+}

@@ -65,6 +65,13 @@ class EntrypointTests(unittest.TestCase):
             self.assertEqual(code, 2)
             self.assertEqual(result['status'], 'missing_prepared_inputs')
 
+    def test_legacy_checks_cannot_authorize_new_EB_six_type_generation(self):
+        code, result = self.invoke('require-generation')
+        self.assertEqual(code, 2)
+        self.assertFalse(result['generation_allowed'])
+        self.assertFalse(result['EP_allowed'])
+        self.assertEqual(result['status'], 'EB_six_type_prerequisite_not_accepted')
+
     def test_well_bound_fixture_and_no_execution(self):
         with tempfile.TemporaryDirectory() as folder:
             fixture(Path(folder))

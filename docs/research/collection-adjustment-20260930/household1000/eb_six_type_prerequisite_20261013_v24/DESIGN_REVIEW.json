@@ -1,0 +1,28 @@
+{
+  "EP_allowed": false,
+  "critical_open_items": [
+    "eligible household policy-holder/guardian adaptation for16 minor-only cases while preserving source frame",
+    "actual coherent EB-policy-to-calendar/service/A/B/IDF implementation",
+    "actual feature extraction and original50 prototype/unsupervised recovery tests"
+  ],
+  "date": "2026-10-13",
+  "generation_allowed": false,
+  "passed_design_checks": [
+    "six roles/five composite households/six devices explicitly separated",
+    "584 assigned-role composition distinguished from own-preference prevalence",
+    "exact integer quotas and household denominator checked",
+    "no demographic imputation of subjective attitudes",
+    "eligibility and quotas checked jointly by integral max flow",
+    "minor singletons not discarded or silently aged",
+    "4to6-device adaptation separated from ownership and seed exact equipment",
+    "source override probabilities and outcome/labels excluded from features",
+    "policy changes require rebuilding routines,A/B and IDF as needed",
+    "critical absence produces hold;legacy acceptance cannot open production",
+    "current human answers remain0",
+    "historical V23 immutable;no new worlds or EP launched"
+  ],
+  "purpose": "role-conditioned human proxy benchmark on Chinese-city reference household worlds;one shared response model",
+  "review_scope": "design/source/negative admission review,not success of new data production",
+  "schema": "eb.six_type_requirement_self_review.v24",
+  "scientific_completion": false
+}

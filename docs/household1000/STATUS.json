@@ -1,5 +1,5 @@
 {
-  "version": "household1000-v23-20261013",
+  "version": "household1000-v24-prerequisite-20261013",
   "as_of": "2026-10-13",
   "active_stage": "gate_repair_production_20261013_v23",
   "design_data_version": "v22",
@@ -16,7 +16,7 @@
   ],
   "coverage_is_population_ownership": false,
   "original_ten_dates_and_AB_preserved": true,
-  "current_original50_acceptance": "pass",
+  "current_original50_acceptance": "historical_V23_pass;new_EB6_not_tested",
   "full1000_EP_allowed": false,
   "other950_EP_executed": false,
   "human_answers": 0,
@@ -26,9 +26,9 @@
   "physical_calibration_complete": false,
   "publication_scope": "source,case-free frontend,contracts,methods and aggregate acceptance;protected inputs excluded",
   "historical_online_frontend": {
+    "changed_by_this_release": false,
     "url": "https://47.85.194.154/household50",
-    "version": "v17",
-    "changed_by_this_release": false
+    "version": "v17"
   },
   "fresh_checkout_complete_private_pipeline_executed": false,
   "actual_EP_households": 50,
@@ -42,9 +42,29 @@
   "input_files_checked": 68605,
   "final_acceptance_sha256": "43950473c548924c808cbf10a1a78b24083fc489a9913c9c063d1514f9868c6d",
   "full_delivery_sha256": "5e4b535f4f7f9fe440accd16581f5c202a6699197fc5a1d31cd27ac4d71a3502",
-  "source_inputs_reference_accepted": true,
+  "source_inputs_reference_accepted": false,
   "whole_program_scientific_completion": false,
   "original_frontend_questions_preserved": true,
   "current_frontend_physical_tasks": 500,
-  "other_physical_pending_tasks": 9500
+  "other_physical_pending_tasks": 9500,
+  "EB6_preflight": "EB_SIX_TYPE_PREFLIGHT.json",
+  "EB_six_type_quota_source": "584 EB assigned-role participants;experimental reference mix,not Chinese prevalence",
+  "EB_six_type_target_counts": {
+    "A": 166,
+    "B": 198,
+    "C": 125,
+    "D": 151,
+    "E": 156,
+    "F": 204
+  },
+  "current_original50_EB6_recovery_checked": false,
+  "current_requirements_met": false,
+  "generation_requirement": "EB_SIX_TYPE_REQUIREMENT.json",
+  "historical_V23_source_inputs_reference_accepted": true,
+  "historical_V23_worlds_unchanged": true,
+  "historical_active_stage": "gate_repair_production_20261013_v23",
+  "latest_requirement_stage": "eb_six_type_prerequisite_20261013_v24",
+  "new_EB_six_type_requirement_accepted": false,
+  "new_generation_allowed": false,
+  "scientific_claim": "Chinese-city-reference demographics and EB-designed behavior mix;no national preference prevalence or field-calibration claim"
 }

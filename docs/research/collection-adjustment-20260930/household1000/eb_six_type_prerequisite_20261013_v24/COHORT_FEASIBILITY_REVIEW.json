@@ -1,0 +1,77 @@
+{
+  "EP_allowed": false,
+  "EP_started": false,
+  "actual_world_input_signature": "4e1ab16a462c79ae3607c97aacd276f97f8e12427e76a309c00b661a749ffe33",
+  "audit_code_sha256": "921fae5725d4e65cc3f9ae018699836c0245ed58a63b23b365112ee652e33a37",
+  "blind_cluster_recovery": "not tested: required preference blueprints absent",
+  "blockers": [
+    "strict cohort eligibility and source-frame reconciliation",
+    "source-aware EB policy blueprints and causal routine/service propagation",
+    "frozen extraction/clustering implementation and original50 verification"
+  ],
+  "checked_households": 1000,
+  "generation_allowed": false,
+  "households_without_adult_resident": 16,
+  "human_answers": 0,
+  "joint_quota_feasibility": {
+    "allocation_is_observed_type": false,
+    "cut_certificate_flow": 984,
+    "jointly_feasible": false,
+    "maximum_assignable": 984,
+    "one_possible_partial_allocation": {
+      "A": 166,
+      "B": 198,
+      "C": 125,
+      "D": 151,
+      "E": 156,
+      "F": 188
+    },
+    "partial_allocation_and_unfilled_type_depend_on_traversal_order": true,
+    "target_count": 1000,
+    "unfilled_quotas": {
+      "A": 0,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "E": 0,
+      "F": 16
+    }
+  },
+  "minor_singleton_bin_counts": {
+    "[0, 14]": 6,
+    "[15, 19]": 10
+  },
+  "missing_required_semantics": {
+    "explicit_eb6_blueprint": 1000,
+    "price_sensitivity": 1000,
+    "temperature_tolerance": 1000,
+    "willingness_to_change_habit": 1000
+  },
+  "passed_for_new_requirement": false,
+  "quota_origin": "584 assigned human-roleplay respondents in EB arXiv2608.08691v1;explicit experimental reference mix",
+  "reference_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "reference_sha256": "f1d4732a65e1984fadc847c33efd8c80656d8b6d7d1cb33556b3248e4eb68e98",
+  "requirement_sha256": "f755829621ae480a36e7131ce71230da769ac6f3100efdb0ffa3068e3fb5ae1c",
+  "schema": "eb.six_type_pre_generation_audit.v24",
+  "scope": "negative eligibility/missingness audit;not new-world production or human evidence",
+  "selection_sha256": "afd9bd62494842524d38f62dea313ddda7aaa39e56bec7cba7a4a65482875ad5",
+  "source_stage": "gate_repair_production_20261013_v23",
+  "strict_admission_is_a_declared_adaptation": true,
+  "structural_candidates": {
+    "A": 823,
+    "B": 984,
+    "C": 944,
+    "D": 823,
+    "E": 342,
+    "F": 764
+  },
+  "target_counts": {
+    "A": 166,
+    "B": 198,
+    "C": 125,
+    "D": 151,
+    "E": 156,
+    "F": 204
+  },
+  "worlds_modified": 0
+}

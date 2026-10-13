@@ -1,7 +1,24 @@
 {
-  "version": "household1000-v23-20261013",
-  "default_mode": "read-only;full1000 EP rejected",
+  "version": "household1000-v24-prerequisite-20261013",
+  "default_mode": "read-only;new EB-six-type generation and EP held",
   "steps": [
+    {
+      "automatic_execution": false,
+      "generation_allowed": false,
+      "id": "EB-six-type-pre-generation",
+      "output_and_scope": "G0:exact quotas,source-aware policy/routine/service propagation,prototype and blind cluster recovery;not passed yet",
+      "required_inputs": [
+        "pinned six EB seed definitions",
+        "published584 assigned-role mix",
+        "jointly feasible eligible family skeletons",
+        "concrete policy blueprints",
+        "frozen label-blind extractor/recovery protocol"
+      ],
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/preflight.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/require_generation.py"
+      ]
+    },
     {
       "id": "source-admission",
       "source_files": [
@@ -231,5 +248,6 @@
   ],
   "scientific_rule_changes_in_this_publication": true,
   "active_stage": "gate_repair_production_20261013_v23",
-  "design_data_version": "v22"
+  "design_data_version": "v22",
+  "latest_requirement_stage": "eb_six_type_prerequisite_20261013_v24"
 }

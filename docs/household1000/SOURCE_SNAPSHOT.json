@@ -1,18 +1,18 @@
 {
-  "version": "household1000-v23-20261013",
+  "version": "household1000-v24-prerequisite-20261013",
   "source_scope": "source,case-free templates,contracts and methods;protected records and calibrated or human benchmark claims excluded",
   "source_files": [
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
-      "source_sha256": "8e6f4dd06e5d45d9bb22e60f44ebfd196123b7755428c5a921ef61c9cf5c966e",
-      "published_sha256": "8e6f4dd06e5d45d9bb22e60f44ebfd196123b7755428c5a921ef61c9cf5c966e",
+      "source_sha256": "d42611b97cf55ffbf1d20cd91d14e262f30459f68d0fbf596701a55903113873",
+      "published_sha256": "d42611b97cf55ffbf1d20cd91d14e262f30459f68d0fbf596701a55903113873",
       "kind": "current_pointer",
       "transformation": "none"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
-      "source_sha256": "69a5b60899f6fa0f6a40b48600525f4ccadf3ea69a1485a1e665441e3574d96f",
-      "published_sha256": "69a5b60899f6fa0f6a40b48600525f4ccadf3ea69a1485a1e665441e3574d96f",
+      "source_sha256": "5783867b3dcdc0e6ba53546cc1fc20352893d9a28f36d5a6b64c47d01c04e6ba",
+      "published_sha256": "5783867b3dcdc0e6ba53546cc1fc20352893d9a28f36d5a6b64c47d01c04e6ba",
       "kind": "current_pointer",
       "transformation": "none"
     },
@@ -3830,9 +3830,114 @@
       "published_sha256": "fdbf45a44b24aef3ac149f8c7869934d2866c6f0d4594b0a9f8197eaa2936de7",
       "kind": "first_party_research_source",
       "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
+      "published_sha256": "7f3b664e85c28481d562efaef1f66b82fdb5817186c73f0db4187c471d65f7b0",
+      "source_sha256": "7f3b664e85c28481d562efaef1f66b82fdb5817186c73f0db4187c471d65f7b0",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/COHORT_FEASIBILITY_REVIEW.json",
+      "published_sha256": "1ecec8febf302981406bb0e371a4c0508eac62ca57260aee034bdda8e4ee5872",
+      "source_sha256": "1ecec8febf302981406bb0e371a4c0508eac62ca57260aee034bdda8e4ee5872",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/DESIGN_REVIEW.json",
+      "published_sha256": "9901b5612218e0199cf7c83be5c8f10afa8bba5ccc5df81997d8b2be928bd1f9",
+      "source_sha256": "9901b5612218e0199cf7c83be5c8f10afa8bba5ccc5df81997d8b2be928bd1f9",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/EB_REFERENCE.json",
+      "published_sha256": "f1d4732a65e1984fadc847c33efd8c80656d8b6d7d1cb33556b3248e4eb68e98",
+      "source_sha256": "f1d4732a65e1984fadc847c33efd8c80656d8b6d7d1cb33556b3248e4eb68e98",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/FEATURE_AND_CLUSTER_CONTRACT.json",
+      "published_sha256": "fec647c37339632a07d06f344260ffae9c49aa9406d4d80a58669f898e7834d1",
+      "source_sha256": "fec647c37339632a07d06f344260ffae9c49aa9406d4d80a58669f898e7834d1",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/METHODS.md",
+      "published_sha256": "4fc7dee5e1fbbe28d3c6ecf049647cd5dc9dabd8ee0d4096c08be37213a1658c",
+      "source_sha256": "4fc7dee5e1fbbe28d3c6ecf049647cd5dc9dabd8ee0d4096c08be37213a1658c",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/REQUIREMENT.json",
+      "published_sha256": "f755829621ae480a36e7131ce71230da769ac6f3100efdb0ffa3068e3fb5ae1c",
+      "source_sha256": "f755829621ae480a36e7131ce71230da769ac6f3100efdb0ffa3068e3fb5ae1c",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/SOURCE_LEDGER.json",
+      "published_sha256": "76a32392bea486b7607640657884f3936fe8bb6d4452a215b3b92d471399b6e9",
+      "source_sha256": "76a32392bea486b7607640657884f3936fe8bb6d4452a215b3b92d471399b6e9",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/install_requirement_overlay.py",
+      "published_sha256": "fa70ff06942ce5dabe466457aa3ffe3527f4fa11f32cd0eb996cb1e5fa2e1735",
+      "source_sha256": "fa70ff06942ce5dabe466457aa3ffe3527f4fa11f32cd0eb996cb1e5fa2e1735",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/preflight.py",
+      "published_sha256": "921fae5725d4e65cc3f9ae018699836c0245ed58a63b23b365112ee652e33a37",
+      "source_sha256": "921fae5725d4e65cc3f9ae018699836c0245ed58a63b23b365112ee652e33a37",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/require_generation.py",
+      "published_sha256": "03b7344673872967d9bc9d433841ce048715888be54be91b8ef2350189c7e06e",
+      "source_sha256": "03b7344673872967d9bc9d433841ce048715888be54be91b8ef2350189c7e06e",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/test_preflight.py",
+      "published_sha256": "fd11e326408b584581c024c8343688718bd70afd8c2fd76d08f76d85fcffa5a6",
+      "source_sha256": "fd11e326408b584581c024c8343688718bd70afd8c2fd76d08f76d85fcffa5a6",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "scripts/household1000.py",
+      "published_sha256": "a3db61b576e2c6f3433005701d802be2fd0012bc9bf5d3e479f465a1c2af64d4",
+      "source_sha256": "a3db61b576e2c6f3433005701d802be2fd0012bc9bf5d3e479f465a1c2af64d4",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "tests/test_household1000_entrypoint.py",
+      "published_sha256": "906d42f670f9f6717b7a41e84e1d76f8fe28221d5b33f9edfd1350bea8e36cf6",
+      "source_sha256": "906d42f670f9f6717b7a41e84e1d76f8fe28221d5b33f9edfd1350bea8e36cf6",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/audit_original50.py",
+      "source_sha256": "003eba8a0e30c6f1bc566724fabfa914f05e961f5f88c5d4390890982ebe1c53",
+      "published_sha256": "003eba8a0e30c6f1bc566724fabfa914f05e961f5f88c5d4390890982ebe1c53",
+      "kind": "EB6_pre_generation_requirement",
+      "transformation": "none"
     }
   ],
-  "source_snapshot_code_file_count": 547,
+  "source_snapshot_code_file_count": 562,
   "excluded": [
     "raw CHFS/CRECS/CHNS records",
     "private household/world/actor/pair/readback data",
@@ -3847,5 +3952,8 @@
   "human_answers": 0,
   "active_stage": "gate_repair_production_20261013_v23",
   "new_household_EP_runs": 0,
-  "note": "Actual case-free source fingerprint;current outputs separately summarized. Weather-only diagnostic launches are reported in acceptance summary."
+  "note": "Historical V23 source and acceptance remain. Current EB-six-type prerequisite not accepted. New stage is a requirement/negative audit, not regenerated household data.",
+  "EB_six_type_requirement_accepted": false,
+  "latest_requirement_stage": "eb_six_type_prerequisite_20261013_v24",
+  "new_generation_allowed": false
 }
