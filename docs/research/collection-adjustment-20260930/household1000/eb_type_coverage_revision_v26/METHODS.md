@@ -45,3 +45,7 @@
 研究目的已明确，协议和当前入口已修正。六个原型本地文件哈希已重新核对。尚未实现本版事实提取、完整家庭适配、聚类与原50户类型覆盖验收，因此不能称1000户已覆盖六类，也不能生产新版或启动全量EP。本版未征集答卷、未生成新世界、未运行EP。
 
 原始参照见SOURCE_LEDGER.json。方法依据：[EB角色库](https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/roleplay/personas/README.md)、[Gower混合距离](https://stat.ethz.ch/R-manual/R-devel/library/cluster/html/daisy.html)、[PAM](https://stat.ethz.ch/R-manual/R-devel/library/cluster/html/pam.html)。软件文档支持方法选择，不证明当前数据已通过或模板有全国统计代表性。
+
+## 7. 类型如何进入实际生产
+
+具体上游类型分配、稳定角色政策、六类差异、A/B与IDF传递、旧接口修改位置及原50实施顺序见[TYPE_AWARE_GENERATION.md](TYPE_AWARE_GENERATION.md)和[TYPE_GENERATION_RULES.json](TYPE_GENERATION_RULES.json)。其中candidate source support仅为只读适配分析，不等于类型分配或聚类验收。实际生成器和覆盖验收仍未实现。

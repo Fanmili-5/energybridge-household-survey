@@ -1,0 +1,79 @@
+{
+  "schema": "eb.type_generation_source_support50.v26",
+  "date": "2026-10-14",
+  "execution_host": "hku-server",
+  "objective": "type_coverage_consistent_with_EB",
+  "checked_households": 50,
+  "world_hash_checks_passed": true,
+  "selection_sha256": "bce4f0be107f78e34443c1cff78d5359e633a4c8d8cd4655b80e29775d4c2d12",
+  "input_world_hashes_digest": "d8170b3fcf4f0631811479a21a1bf791952f94be52fff352f941bd16a65df3a1",
+  "audit_code_sha256": "ec222379d755b4829907b21bd976cf33a41eb05435c2b34fc35f5ce984ef8f02",
+  "flow_helper_sha256": "921fae5725d4e65cc3f9ae018699836c0245ed58a63b23b365112ee652e33a37",
+  "candidate_support_counts": {
+    "A": 27,
+    "B": 49,
+    "C": 49,
+    "D": 27,
+    "E": 20,
+    "F": 26
+  },
+  "support_summary": {
+    "adult_responsible_person_supported": 49,
+    "long_work_scenario_supported": 27,
+    "existing_commuter_scenario_present": 16,
+    "EV_function_present": 44,
+    "protected_pair_structural_support": 20,
+    "existing_named_home_childcare": 3,
+    "existing_named_resident_childcare": 0
+  },
+  "one_per_type_screening": {
+    "maximum_assignable": 6,
+    "target_count": 6,
+    "jointly_feasible": true,
+    "one_possible_partial_allocation": {
+      "A": 1,
+      "B": 1,
+      "C": 1,
+      "D": 1,
+      "E": 1,
+      "F": 1
+    },
+    "allocation_is_observed_type": false,
+    "partial_allocation_and_unfilled_type_depend_on_traversal_order": true,
+    "cut_certificate_flow": 6,
+    "unfilled_quotas": {
+      "A": 0,
+      "B": 0,
+      "C": 0,
+      "D": 0,
+      "E": 0,
+      "F": 0
+    }
+  },
+  "screening_minimum_is_not_formal_sample_size_or_quota": true,
+  "eligibility_interpretation": {
+    "A_D_F": "existing long-work reference eligibility with source has_work; reconfiguration and actual date/service feasibility still needed",
+    "B_C": "adult policy holder; home/irregular activity is a new declared scenario, not observed occupation or calendar",
+    "E": "adult plus another young/older member; structural support only, not observed care or vulnerability; concrete protected service and care calendar still required",
+    "EV": "existing task-world functional coverage,not national vehicle ownership or verified home charging"
+  },
+  "open_items": [
+    "nonadult-only household policy holder/guardian and source-frame reconciliation",
+    "actual given policy and coherent ten-date calendars/services",
+    "freeze joint allocation of formal coverage counts before1000",
+    "replace uniform A temperature/unknown-role text by shared policy reads",
+    "actual A/B/IDF/material coupling and independent feature extraction/coverage tests"
+  ],
+  "actual_EB_type_assignment_performed": false,
+  "new_worlds_generated": 0,
+  "new_IDFs_compiled": 0,
+  "EP_started": false,
+  "actual_cluster_coverage_verified": false,
+  "generation_allowed": false,
+  "scope": "candidate source adaptation support only;not generated-world or scientific production acceptance",
+  "input_negative_controls": {
+    "changed_bytes_rejected": true,
+    "rehashed_roster_mismatch_rejected": true
+  },
+  "read_only_source_checks_passed": true
+}

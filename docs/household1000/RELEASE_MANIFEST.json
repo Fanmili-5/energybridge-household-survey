@@ -1,9 +1,9 @@
 {
   "version": "household1000-v26-EB-type-coverage",
-  "checked_utc": "2026-10-14T02:03:09.017132+00:00",
+  "checked_utc": "2026-10-14T03:29:00.843954+00:00",
   "repository": "https://github.com/Fanmili-5/energybridge-household-survey.git",
   "target_branch": "main",
-  "parent_commit": "7829e52be8747e3fd6ce3615130fa26d4530b33e",
+  "parent_commit": "0c382b47c66542452f5c6a98fe18dd40dc7f6221",
   "payload_files_excluding_this_manifest": [
     {
       "path": "README.md",
@@ -107,8 +107,8 @@
     },
     {
       "path": "docs/household1000/SOURCE_SNAPSHOT.json",
-      "bytes": 238923,
-      "sha256": "8cec514f215bfab5a220f691cadcc4d804879c7e5e3eb9607664fed565740acb"
+      "bytes": 240585,
+      "sha256": "a2be668131423db9548b202ba1947e36ba8da349c1c6baeb026904a339ba7a89"
     },
     {
       "path": "docs/household1000/STATUS.json",
@@ -637,8 +637,8 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/METHODS.md",
-      "bytes": 7028,
-      "sha256": "af6c670c5d5fa7547dcb5f0c13e705fe471db55cfa84e273b82edb3d3ed088a0"
+      "bytes": 7448,
+      "sha256": "8ea1c855f6a3df04e816480cf7357920315a8de0cb4a40428451bb7ece42117c"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/REQUIREMENT.json",
@@ -654,6 +654,26 @@
       "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SOURCE_LEDGER.json",
       "bytes": 3327,
       "sha256": "85df7ea40fc3323f86ba38ef7e401c2e3c225886aabb1fea68f60b530b2905e7"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SOURCE_SUPPORT50_REVIEW.json",
+      "bytes": 3083,
+      "sha256": "07a30483e6384ab53f24b889bc575bb95e0b24e2d7b2a630b94b66f312e26e3a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/TYPE_AWARE_GENERATION.md",
+      "bytes": 10187,
+      "sha256": "04338ba7987d5fe7f2964a186b06fc3b62247b54651b830875a515eeb8caba92"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/TYPE_GENERATION_RULES.json",
+      "bytes": 2741,
+      "sha256": "c65b33066bcae176f3890ed17d219d577ae299f96f0b8d3e24d204d87690078d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/code/audit_type_support.py",
+      "bytes": 6613,
+      "sha256": "ec222379d755b4829907b21bd976cf33a41eb05435c2b34fc35f5ce984ef8f02"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/code/require_generation.py",
@@ -1461,9 +1481,9 @@
       "sha256": "906d42f670f9f6717b7a41e84e1d76f8fe28221d5b33f9edfd1350bea8e36cf6"
     }
   ],
-  "payload_file_count_excluding_manifest": 291,
+  "payload_file_count_excluding_manifest": 295,
   "authorization": "user explicitly requested repairs,school verification,original50 acceptance,scientific chain audit and GitHub sync;full1000 EP held",
-  "content_scope": "user-confirmed EB type coverage requirement and candidate common-feature protocol;real national preference survey gate withdrawn;historical stages retained;no new world generation",
+  "content_scope": "V26 type-coverage design plus concrete type-aware generation contract and source-supported original50 candidate audit;not implemented full world generator or cluster acceptance",
   "private_data_or_EP_SQL_or_human_answers_published": false,
   "school_source_check_passed": true,
   "secret_index_check_passed": true,

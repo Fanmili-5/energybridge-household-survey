@@ -3980,8 +3980,8 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/METHODS.md",
-      "source_sha256": "af6c670c5d5fa7547dcb5f0c13e705fe471db55cfa84e273b82edb3d3ed088a0",
-      "published_sha256": "af6c670c5d5fa7547dcb5f0c13e705fe471db55cfa84e273b82edb3d3ed088a0",
+      "source_sha256": "8ea1c855f6a3df04e816480cf7357920315a8de0cb4a40428451bb7ece42117c",
+      "published_sha256": "8ea1c855f6a3df04e816480cf7357920315a8de0cb4a40428451bb7ece42117c",
       "kind": "first_party_research_source",
       "transformation": "none"
     },
@@ -4033,9 +4033,37 @@
       "published_sha256": "dd86943b5d87150411507670b743fa7ab6beefcacbbb0fd390b8dde3fe54e8ea",
       "kind": "aggregate_engineering_receipt",
       "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/TYPE_AWARE_GENERATION.md",
+      "source_sha256": "04338ba7987d5fe7f2964a186b06fc3b62247b54651b830875a515eeb8caba92",
+      "published_sha256": "04338ba7987d5fe7f2964a186b06fc3b62247b54651b830875a515eeb8caba92",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/TYPE_GENERATION_RULES.json",
+      "source_sha256": "c65b33066bcae176f3890ed17d219d577ae299f96f0b8d3e24d204d87690078d",
+      "published_sha256": "c65b33066bcae176f3890ed17d219d577ae299f96f0b8d3e24d204d87690078d",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/code/audit_type_support.py",
+      "source_sha256": "ec222379d755b4829907b21bd976cf33a41eb05435c2b34fc35f5ce984ef8f02",
+      "published_sha256": "ec222379d755b4829907b21bd976cf33a41eb05435c2b34fc35f5ce984ef8f02",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SOURCE_SUPPORT50_REVIEW.json",
+      "source_sha256": "07a30483e6384ab53f24b889bc575bb95e0b24e2d7b2a630b94b66f312e26e3a",
+      "published_sha256": "07a30483e6384ab53f24b889bc575bb95e0b24e2d7b2a630b94b66f312e26e3a",
+      "kind": "aggregate_source_support_receipt",
+      "transformation": "none"
     }
   ],
-  "source_snapshot_code_file_count": 576,
+  "source_snapshot_code_file_count": 580,
   "excluded": [
     "raw CHFS/CRECS/CHNS records",
     "private household/world/actor/pair/readback data",
@@ -4050,7 +4078,7 @@
   "human_answers": 0,
   "active_stage": "gate_repair_production_20261013_v23",
   "new_household_EP_runs": 0,
-  "note": "User-confirmed objective:EB type coverage. National preference prevalence prerequisite withdrawn;actor quotas not enabled. HistoricalV23/V24/V25 retained;actual coverage pending;no new worlds or EP.",
+  "note": "Current EB6 type-coverage design extended with concrete type-to-policy/routine/service/A-B/IDF/material contract and school read-only original50 support. Candidate support is not actual role assignment,generation or clustering.",
   "EB_six_type_requirement_accepted": false,
   "latest_requirement_stage": "eb_type_coverage_revision_v26",
   "new_generation_allowed": false
