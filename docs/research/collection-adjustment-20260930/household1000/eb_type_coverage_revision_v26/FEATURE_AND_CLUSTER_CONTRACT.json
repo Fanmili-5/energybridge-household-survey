@@ -1,0 +1,115 @@
+{
+  "algorithm": {
+    "clustering": "mature R cluster::pam on precomputed dissimilarities, k=6, deterministic BUILD/SWAP protocol;no hand-written PAM accepted",
+    "distance": "candidate group-weighted Gower for mixed features;daisy default sample-range scaling documented;any fixed-range adaptation separately verified",
+    "prototype_projection": "recompute features from permitted facts and actual ten-day routines;no seed labels or prompt embeddings",
+    "reference_mapping": "same-field reference projection plus core semantic conditions;report ambiguity and missingness;align unlabeled clusters by permitted facts,not cluster numbers",
+    "seed_source": "freeze initialization/seeds/version after development,before final1000;no final-output search",
+    "sensitivity": "proposed weight alternatives,unstratified resampling and k4..8 structural diagnostics;exact repetitions and seeds pending original50 freeze"
+  },
+  "answers_change_feature_invariance_required": true,
+  "duplicates": "report blueprint and full-world collisions, within-class variation and overlap;no claim of iid1000 or human-validity from recovery",
+  "forbidden_features": [
+    "household/member IDs",
+    "source donor IDs",
+    "assigned six-type label",
+    "source_traits_for_crosswalk_only",
+    "literal schedule/control/grid_value tags",
+    "template names and titles",
+    "seed scoring_weights",
+    "seed vpp_override_prob",
+    "B mechanism labels",
+    "EP outcomes",
+    "current/future human answers"
+  ],
+  "gate_passed": false,
+  "groups": [
+    {
+      "id": "schedule",
+      "inputs": [
+        "policy-holder workday home fraction08to18 from dated calendar",
+        "workday departure/return variability separated from holiday/weekend shifts",
+        "household event-window occupancy from all residents"
+      ],
+      "source": "computed from dated coherent routine;not literal role tags",
+      "weight": 0.16666666666666666
+    },
+    {
+      "id": "comfort",
+      "inputs": [
+        "given permissible temporary occupied cooling delta_C",
+        "duration-dependent comfort boundary",
+        "vulnerable-service priority under shared-room overlap"
+      ],
+      "source": "given role contract plus member constraints;not fixed26C or age-derived attitude",
+      "weight": 0.16666666666666666
+    },
+    {
+      "id": "task",
+      "inputs": [
+        "per-service earliest/latest and retrieval deadlines",
+        "operator and precedence constrained slack",
+        "given willingness to reschedule fixed vs negotiable routines"
+      ],
+      "source": "actual declared needs and permission;hardware presence is not consent",
+      "weight": 0.16666666666666666
+    },
+    {
+      "id": "price",
+      "inputs": [
+        "given cost-vs-comfort decision priority",
+        "requirement to explain estimated savings before agreement"
+      ],
+      "source": "concrete role instruction;unknown remains unknown;not income or response outcome",
+      "weight": 0.16666666666666666
+    },
+    {
+      "id": "control",
+      "inputs": [
+        "given automatic-control permission within bounds",
+        "casewise confirmation requirement",
+        "same-day re-confirmation and protective veto rules"
+      ],
+      "source": "explicit household agreement with responsible person;permission does not prefill proposal acceptance",
+      "weight": 0.16666666666666666
+    },
+    {
+      "id": "service_resource",
+      "inputs": [
+        "EV-dependent mobility service and access readiness",
+        "care responsibilities and protected-service load",
+        "feasible load slack in event window"
+      ],
+      "source": "recomputed resource/service facts;no literal grid_value label or measured willingness",
+      "weight": 0.16666666666666666
+    }
+  ],
+  "human_validity_proven_by_cluster_fit": false,
+  "missingness": "critical profile/policy missing means not classifiable;never zero/neutral imputation;not-applicable is distinct",
+  "proposed_quality_gates": {
+    "every_EB_reference_has_substantive_coverage": true,
+    "all_household_semantics_and_source_constraints_checked": true,
+    "within_type_variation_required": true,
+    "no_label_or_answer_leakage": true,
+    "missing_ambiguous_and_conflicting_cases_reported": true,
+    "covered_type_counts_and_minima": "pending joint feasibility/development freeze;not actor quota",
+    "numeric_stability_recall_or_distance_thresholds": null,
+    "V24_numeric_thresholds_are_not_current_approved_cutoffs": true,
+    "protocol_frozen_before_formal1000": true,
+    "semantic_reference_and_unsupervised_cluster_results_reported_separately": true
+  },
+  "prototype_feature_extractor_implemented": false,
+  "schema": "eb.type_coverage_feature_design.v26",
+  "status": "corrected scope;actual extractor/mapping/clustering/original50 development pending;freeze numeric protocol before1000",
+  "unsupervised_recovery_implemented": false,
+  "objective": "type coverage and differences against EB references;not national prevalence or blind recovery of labels alone",
+  "real_prevalence_is_generation_prerequisite": false,
+  "field_provenance_requirement": "observed/matched facts and clearly given role policies separate;derived features cite actual output paths;no psychological imputation from age/income",
+  "purpose_falsification": [
+    "all six labels exist but services/calendar/control remain identical",
+    "reference types absent or duplicated without within-type diversity",
+    "A/D merge because auto permission never reaches actual policy",
+    "F has no usable EV service or E no concrete care situation",
+    "results depend on label-bearing fields,missing-as-neutral values or selected seeds"
+  ]
+}

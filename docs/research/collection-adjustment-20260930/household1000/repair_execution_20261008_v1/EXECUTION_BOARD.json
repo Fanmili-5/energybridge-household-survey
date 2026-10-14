@@ -1,7 +1,7 @@
 {
-  "schema": "eb.public_execution_board.v25",
-  "date": "2026-10-13",
-  "production_requirement": "population_grounding_revision_v25",
+  "schema": "eb.public_execution_board.v26",
+  "date": "2026-10-14",
+  "production_requirement": "eb_type_coverage_revision_v26",
   "historical_accepted_production": "gate_repair_production_20261013_v23",
   "historical_published_source_commit": "31771054e056d70c845505934441a1a35dbd2bda",
   "fixed": {
@@ -10,20 +10,22 @@
     "households": 1000,
     "original_ten_quarter_dates": true,
     "population": "China mainland city ordinary residential households; towns/rural excluded",
-    "EB_six_type_counts_status": "not fixed;await real-household weighted prevalence estimate"
+    "EB_six_type_counts_status": "research coverage composition pending original50/joint feasibility freeze;not national or actor proportions"
   },
   "new_requirement_gate": {
-    "critical_role_preferences_missing_households": 1000,
-    "id": "G0_EB_six_types",
+    "id": "G0_EB_type_coverage",
     "new_original50_recovery_verified": false,
-    "quota_source": "real-household preference prevalence estimate pending",
+    "quota_source": "research coverage design subject to joint source/household feasibility;not actor sample or national preference prevalence",
     "required_before": "household world generation and downstream A/B/IDF",
     "status": "not_accepted",
-    "real_shares_identified": false,
     "target_counts": null,
-    "historical_V24_capacity_under_experimental_mix": 984
+    "historical_V24_capacity_under_experimental_mix": 984,
+    "objective": "type_coverage_consistent_with_EB",
+    "historical_V24_unspecified_role_policy_worlds": 1000,
+    "real_prevalence_is_generation_prerequisite": false,
+    "actual_type_coverage_verified": false
   },
-  "current_requirement_status": "real six-type proportions not identified;current quotas null;generation and EP held",
+  "current_requirement_status": "EB type coverage and coherent propagation pending;national preference survey prerequisite withdrawn",
   "strict_candidate_capacity": {
     "1000": 984,
     "original50": 49,
@@ -32,10 +34,10 @@
     "historical_V24_only": true
   },
   "critical_open_items": [
-    "real preference data with valid household inference weights",
-    "validated six-type mapping and unknown mass",
-    "household policy holder/source-frame reconciliation",
-    "coherent calendar/service/A/B/IDF propagation and blind original50 recovery"
+    "common permitted feature extractor and semantic EB reference mapping",
+    "joint source-frame/household policy-holder/device coverage adaptation",
+    "actual routine/service/normalA/candidateB/IDF propagation",
+    "original50 type-coverage/stability and existing physical/frontend admission"
   ],
   "actual_human_answers": 0,
   "new_worlds_generated": 0,
@@ -53,5 +55,6 @@
     "E": 156,
     "F": 204
   },
-  "new_generation_allowed": false
+  "new_generation_allowed": false,
+  "real_prevalence_is_generation_prerequisite": false
 }

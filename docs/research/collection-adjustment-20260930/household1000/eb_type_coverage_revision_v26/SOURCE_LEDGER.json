@@ -1,0 +1,78 @@
+{
+  "schema": "eb.type_coverage_source_review.v26",
+  "date": "2026-10-14",
+  "user_confirmed_purpose": "类型覆盖与EB一致",
+  "intent_source": "direct user reply in this task",
+  "sources": [
+    {
+      "id": "EB_roles",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/roleplay/personas/README.md",
+      "access": "full pinned local document and six JSON files read/rehashed",
+      "evidence": "six composite seeds distinguish schedule,comfort,task,price,control and grid suitability",
+      "limits": "seed framework,not discovered Chinese classes or household prevalence"
+    },
+    {
+      "id": "Gower",
+      "url": "https://stat.ethz.ch/R-manual/R-devel/library/cluster/html/daisy.html",
+      "access": "official full HTML read",
+      "evidence": "mixed nominal/ordinal/numeric distances,weights and default range scaling",
+      "limits": "metric behavior,not a validated field contract or scientific acceptance threshold"
+    },
+    {
+      "id": "PAM",
+      "url": "https://stat.ethz.ch/R-manual/R-devel/library/cluster/html/pam.html",
+      "access": "official documentation read",
+      "evidence": "mature medoid clustering accepts dissimilarities;candidate implementation",
+      "limits": "k supplied by analyst;does not prove naturally six categories"
+    }
+  ],
+  "local_type_file_bindings": [
+    {
+      "type": "A",
+      "path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_a_commuter_price_cooperative.json",
+      "sha256": "fd83453396e201eb15eeaa7dee20dbad0b79cf8c7a4745b736add05bb5f25bb7",
+      "hash_matches": true
+    },
+    {
+      "type": "B",
+      "path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_b_home_comfort_gated.json",
+      "sha256": "fabb435b67cc6b0d8637ba7fdc5d44b411d7b65c057d71f5a684370ee54e2f2a",
+      "hash_matches": true
+    },
+    {
+      "type": "C",
+      "path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_c_irregular_cautious.json",
+      "sha256": "595851f59693e7ed405aa0481114e01e8fc5454395010d42e7620c6bb248b361",
+      "hash_matches": true
+    },
+    {
+      "type": "D",
+      "path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_d_commuter_ideal_dr.json",
+      "sha256": "a8847a1056ebb23147f7b54d325bd9eb742ac9fe64f7377c19cea3eac5f30a72",
+      "hash_matches": true
+    },
+    {
+      "type": "E",
+      "path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_e_caregiver_low_dr.json",
+      "sha256": "f853a61de1fbffdb9184999462870a770179f91df4a876db200a23cddbb2c404",
+      "hash_matches": true
+    },
+    {
+      "type": "F",
+      "path": "upstream_2b17ae6/energybridge/roleplay/personas/basic_role_f_commuter_ev_optimizer.json",
+      "sha256": "883871d9506bcdb51d60d114be1673b462e4378a958831f083b2c9f6fc7b8a41",
+      "hash_matches": true
+    }
+  ],
+  "current_nonrequirements": [
+    "representative national own-household preference survey",
+    "China real six-type prevalence estimate",
+    "match EB assigned actor counts"
+  ],
+  "remaining_evidence": [
+    "actual coherent household outputs and field extractor",
+    "original50 coverage/mapping and stability results",
+    "accepted coverage composition/rules before formal1000"
+  ],
+  "raw_or_household_records_published": false
+}

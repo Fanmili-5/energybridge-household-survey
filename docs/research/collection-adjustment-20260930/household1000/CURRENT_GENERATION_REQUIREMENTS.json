@@ -1,15 +1,17 @@
 {
-  "schema": "eb.current_generation_requirements.v25",
-  "stage": "population_grounding_revision_v25",
-  "requirement_path": "population_grounding_revision_v25/REQUIREMENT.json",
-  "methods_path": "population_grounding_revision_v25/METHODS.md",
-  "gate_entry": "population_grounding_revision_v25/code/require_generation.py",
+  "schema": "eb.current_generation_requirements.v26",
+  "date": "2026-10-14",
+  "stage": "eb_type_coverage_revision_v26",
+  "objective": "type_coverage_consistent_with_EB",
+  "requirement_path": "eb_type_coverage_revision_v26/REQUIREMENT.json",
+  "methods_path": "eb_type_coverage_revision_v26/METHODS.md",
+  "gate_entry": "eb_type_coverage_revision_v26/code/require_generation.py",
   "accepted": false,
   "generation_allowed": false,
   "EP_allowed": false,
-  "real_type_shares_identified": false,
+  "real_prevalence_is_generation_prerequisite": false,
   "target_counts": null,
+  "current_type_coverage_verified": false,
   "historical_accepted_stage": "gate_repair_production_20261013_v23",
-  "historical_acceptance_meets_new_requirement": false,
-  "prior_quota_basis_superseded": true
+  "historical_acceptance_meets_new_requirement": false
 }

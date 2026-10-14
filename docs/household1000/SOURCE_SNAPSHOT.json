@@ -1,18 +1,18 @@
 {
-  "version": "household1000-v25-population-grounding",
+  "version": "household1000-v26-EB-type-coverage",
   "source_scope": "source,case-free templates,contracts and methods;protected records and calibrated or human benchmark claims excluded",
   "source_files": [
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
-      "source_sha256": "87b05ab8bb59412f5998ca58cea58da40fbe85cdef09c63e368c218960dbba82",
-      "published_sha256": "87b05ab8bb59412f5998ca58cea58da40fbe85cdef09c63e368c218960dbba82",
+      "source_sha256": "64928639c647f0a43302de531a13e954453bfbad6b68daa51395118ba7092acc",
+      "published_sha256": "64928639c647f0a43302de531a13e954453bfbad6b68daa51395118ba7092acc",
       "kind": "current_pointer",
       "transformation": "none"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
-      "source_sha256": "3c997da7b67decb3b02a2815b9336182f9d54425ecff185ae87741cb1dab0c05",
-      "published_sha256": "3c997da7b67decb3b02a2815b9336182f9d54425ecff185ae87741cb1dab0c05",
+      "source_sha256": "733b5ae819c3f5c3067b2018bafb8480320abb31622eca773f3880d3e21c2cae",
+      "published_sha256": "733b5ae819c3f5c3067b2018bafb8480320abb31622eca773f3880d3e21c2cae",
       "kind": "current_pointer",
       "transformation": "none"
     },
@@ -3834,8 +3834,8 @@
     {
       "kind": "EB6_pre_generation_requirement",
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
-      "published_sha256": "0b332a3cfb10e31e41d34f717cfc6f5cf74a561667415af08ef65bd33839085e",
-      "source_sha256": "0b332a3cfb10e31e41d34f717cfc6f5cf74a561667415af08ef65bd33839085e",
+      "published_sha256": "fd2ae7da297d1a35c80079a7c74f61a6176d0caa40d89731a31089b28cf429ad",
+      "source_sha256": "fd2ae7da297d1a35c80079a7c74f61a6176d0caa40d89731a31089b28cf429ad",
       "transformation": "none"
     },
     {
@@ -3918,8 +3918,8 @@
     {
       "kind": "EB6_pre_generation_requirement",
       "path": "scripts/household1000.py",
-      "published_sha256": "e7a2058bef046ae11e2d93d9033bd867f6316676ee0cb15153fbe5b312df7f98",
-      "source_sha256": "e7a2058bef046ae11e2d93d9033bd867f6316676ee0cb15153fbe5b312df7f98",
+      "published_sha256": "51dd93a4bdf3b62cb70e8940c732a0071ea7f4685ffd7595d53cf32866a6e8a0",
+      "source_sha256": "51dd93a4bdf3b62cb70e8940c732a0071ea7f4685ffd7595d53cf32866a6e8a0",
       "transformation": "none"
     },
     {
@@ -3977,9 +3977,65 @@
       "published_sha256": "f3ec470cc187b8e159d9163cec569dd4ba3721f1cc716566a45a163212e04660",
       "kind": "aggregate_engineering_receipt",
       "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/METHODS.md",
+      "source_sha256": "af6c670c5d5fa7547dcb5f0c13e705fe471db55cfa84e273b82edb3d3ed088a0",
+      "published_sha256": "af6c670c5d5fa7547dcb5f0c13e705fe471db55cfa84e273b82edb3d3ed088a0",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/REQUIREMENT.json",
+      "source_sha256": "9f87275fe3cd878507d95a0dfc232e6f2d41828e782ee924c46033492990191a",
+      "published_sha256": "9f87275fe3cd878507d95a0dfc232e6f2d41828e782ee924c46033492990191a",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/EB_TYPE_REFERENCE.json",
+      "source_sha256": "bd342987a79d5751d1582239114a6c6ef4447e8b342a7d7c3b249a925808e0aa",
+      "published_sha256": "bd342987a79d5751d1582239114a6c6ef4447e8b342a7d7c3b249a925808e0aa",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/FEATURE_AND_CLUSTER_CONTRACT.json",
+      "source_sha256": "c4dd73718d0c7b84237ab8170b74980443c439a440dc46f8e8807b32f5602641",
+      "published_sha256": "c4dd73718d0c7b84237ab8170b74980443c439a440dc46f8e8807b32f5602641",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SOURCE_LEDGER.json",
+      "source_sha256": "85df7ea40fc3323f86ba38ef7e401c2e3c225886aabb1fea68f60b530b2905e7",
+      "published_sha256": "85df7ea40fc3323f86ba38ef7e401c2e3c225886aabb1fea68f60b530b2905e7",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/DESIGN_REVIEW.json",
+      "source_sha256": "3e2cc50f06df265a57cb9e13ded19f9ce58efc9ce19c53b28220327d05193e0c",
+      "published_sha256": "3e2cc50f06df265a57cb9e13ded19f9ce58efc9ce19c53b28220327d05193e0c",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/code/require_generation.py",
+      "source_sha256": "e5f8703fe336d5df92dbfcc88ffb27b29de49d4ee5119c853efe5c31aa861c32",
+      "published_sha256": "e5f8703fe336d5df92dbfcc88ffb27b29de49d4ee5119c853efe5c31aa861c32",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SCHOOL_CHECK.json",
+      "source_sha256": "dd86943b5d87150411507670b743fa7ab6beefcacbbb0fd390b8dde3fe54e8ea",
+      "published_sha256": "dd86943b5d87150411507670b743fa7ab6beefcacbbb0fd390b8dde3fe54e8ea",
+      "kind": "aggregate_engineering_receipt",
+      "transformation": "none"
     }
   ],
-  "source_snapshot_code_file_count": 568,
+  "source_snapshot_code_file_count": 576,
   "excluded": [
     "raw CHFS/CRECS/CHNS records",
     "private household/world/actor/pair/readback data",
@@ -3994,8 +4050,8 @@
   "human_answers": 0,
   "active_stage": "gate_repair_production_20261013_v23",
   "new_household_EP_runs": 0,
-  "note": "Historical V23/V24 preserved;assigned-role quotas superseded by a real-household prevalence requirement,currently unidentified. Source revision only;no new world generation.",
+  "note": "User-confirmed objective:EB type coverage. National preference prevalence prerequisite withdrawn;actor quotas not enabled. HistoricalV23/V24/V25 retained;actual coverage pending;no new worlds or EP.",
   "EB_six_type_requirement_accepted": false,
-  "latest_requirement_stage": "population_grounding_revision_v25",
+  "latest_requirement_stage": "eb_type_coverage_revision_v26",
   "new_generation_allowed": false
 }

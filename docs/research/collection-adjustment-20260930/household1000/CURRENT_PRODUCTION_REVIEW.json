@@ -7,8 +7,8 @@
   "current_EP_gate_closed": true,
   "current_full1000_EP_gate_closed": true,
   "current_published_stage": "gate_repair_production_20261013_v23",
-  "current_requirement_status": "real EB6 prevalence unresolved;assigned-role quotas superseded;legacy acceptance is historical",
-  "date": "2026-10-13",
+  "current_requirement_status": "EB type coverage and coherent propagation pending;national preference survey not a production prerequisite",
+  "date": "2026-10-14",
   "delivery_path": "gate_repair_production_20261013_v23/DELIVERY.json",
   "delivery_sha256": "5e4b535f4f7f9fe440accd16581f5c202a6699197fc5a1d31cd27ac4d71a3502",
   "execution_host": "hku-server",
@@ -24,8 +24,8 @@
   "local_stage_contains_acceptance_receipts_not_full_prepared_inputs": true,
   "new_EB_six_type_requirement_accepted": false,
   "new_generation_allowed": false,
-  "new_generation_requirement": "population_grounding_revision_v25/REQUIREMENT.json",
-  "new_generation_requirement_stage": "population_grounding_revision_v25",
+  "new_generation_requirement": "eb_type_coverage_revision_v26/REQUIREMENT.json",
+  "new_generation_requirement_stage": "eb_type_coverage_revision_v26",
   "other950_EP_executed": false,
   "prior_audit_preserved": "review_20261010_v22_v1/REVIEW.json",
   "published_commit": "31771054e056d70c845505934441a1a35dbd2bda",
@@ -37,5 +37,6 @@
   "schema": "eb.current_reference_pointer.v23",
   "stage": "gate_repair_production_20261013_v23",
   "training_release": false,
-  "whole_program_scientific_completion": false
+  "whole_program_scientific_completion": false,
+  "real_prevalence_is_generation_prerequisite": false
 }

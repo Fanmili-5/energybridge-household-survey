@@ -1,14 +1,14 @@
 {
-  "version": "household1000-v25-population-grounding",
-  "checked_utc": "2026-10-13T16:22:23.609344+00:00",
+  "version": "household1000-v26-EB-type-coverage",
+  "checked_utc": "2026-10-14T02:03:09.017132+00:00",
   "repository": "https://github.com/Fanmili-5/energybridge-household-survey.git",
   "target_branch": "main",
-  "parent_commit": "5cc54aff4e1e8aefd852043cbf4bb88e1bc4dedf",
+  "parent_commit": "7829e52be8747e3fd6ce3615130fa26d4530b33e",
   "payload_files_excluding_this_manifest": [
     {
       "path": "README.md",
-      "bytes": 5424,
-      "sha256": "413ded6b40becbcdd2a8007d84829e9ab4b87d4482e623eee847b6b21a5feeef"
+      "bytes": 5437,
+      "sha256": "e071fd4bc5eb1a549a6bbcacb560d3d2e50d39c4c85256f02ddae68f6d99daf6"
     },
     {
       "path": "THIRD_PARTY.md",
@@ -32,13 +32,13 @@
     },
     {
       "path": "docs/household1000/EB_SIX_TYPE_REQUIREMENT.json",
-      "bytes": 4117,
-      "sha256": "a6366a70864505c6897b84092f852ae222e96369b9b44cc1970068c607c0e69b"
+      "bytes": 4307,
+      "sha256": "9f87275fe3cd878507d95a0dfc232e6f2d41828e782ee924c46033492990191a"
     },
     {
       "path": "docs/household1000/EB_SIX_TYPE_REQUIREMENT.md",
-      "bytes": 3807,
-      "sha256": "5806945a95b7f512be73a9facd4dbd3af2e491a4c1d36176de5dcc3da739b6b7"
+      "bytes": 3457,
+      "sha256": "9c6b5d0bf7cdc7d63c018ec206dfbc5bf717e53e37a28e10032af393f6a5f988"
     },
     {
       "path": "docs/household1000/ENTRYPOINT_TEST_CHECK.json",
@@ -62,13 +62,13 @@
     },
     {
       "path": "docs/household1000/PIPELINE.json",
-      "bytes": 14273,
-      "sha256": "1da3581a8f2987ff2d68bf230c8160bf2e127a1bdfbc483fa1845e22ab2635d4"
+      "bytes": 14236,
+      "sha256": "09e15ffe98f70738797adde1ef9765a30d3880fc9d36cfc4919abacb09ddea10"
     },
     {
       "path": "docs/household1000/PIPELINE.md",
-      "bytes": 4823,
-      "sha256": "2fc74e914c9d17c1481444766a92ddc814bffc386636ec4b2909987f4de08d15"
+      "bytes": 4860,
+      "sha256": "20e793542a7c24a62ebdd00d7ce766fd49bd51302658869499396538a18aa9b7"
     },
     {
       "path": "docs/household1000/PREFERENCE_FIELD_AUDIT.json",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/household1000/README.md",
-      "bytes": 3872,
-      "sha256": "c586dc0a8040a7e5c0415724952631ac1a24de1b95b44f619d832649715f1764"
+      "bytes": 3836,
+      "sha256": "a799e5199ca28adeff280650cff4ba5cef83851214ffe1f0396189d5c4edec55"
     },
     {
       "path": "docs/household1000/REFERENCE_ACCEPTANCE.json",
@@ -92,13 +92,13 @@
     },
     {
       "path": "docs/household1000/REPRODUCTION.md",
-      "bytes": 3533,
-      "sha256": "f146843454d497877961e7997af07d987f15709a1a8b460b13bd9687b8af97aa"
+      "bytes": 3572,
+      "sha256": "f5e390eae31c17c4c1e96adee74eb7c756b323d2315f229b0dd670d2e7c3dc84"
     },
     {
       "path": "docs/household1000/RESEARCH_GATES.md",
-      "bytes": 3472,
-      "sha256": "6f842fd4ecbfc581b9376bac4adc77d33ed953ea93b5b86a977d2bb6fb4e732a"
+      "bytes": 3509,
+      "sha256": "fa1eecacf42ffe560cec01722d324b9f2e42f249538c62739502cd4a4bb43218"
     },
     {
       "path": "docs/household1000/SCHOOL_BINDING_CHECK.json",
@@ -107,13 +107,13 @@
     },
     {
       "path": "docs/household1000/SOURCE_SNAPSHOT.json",
-      "bytes": 235696,
-      "sha256": "d4661125d9497fb3aad840445b7e02de31503af7750a369356f45d9caf887f9b"
+      "bytes": 238923,
+      "sha256": "8cec514f215bfab5a220f691cadcc4d804879c7e5e3eb9607664fed565740acb"
     },
     {
       "path": "docs/household1000/STATUS.json",
-      "bytes": 2999,
-      "sha256": "9b5110c80ede9e1411c4cb1398f7afe8c6ab58ceee475a70e7ed8a03643021e8"
+      "bytes": 3120,
+      "sha256": "e4f56091117379b73c51f00ee707d15a21c1bd9035b97f1a677b5ae38fdddeb1"
     },
     {
       "path": "docs/household1000/V23_PUBLIC_PAYLOAD.json",
@@ -122,28 +122,28 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
-      "bytes": 633,
-      "sha256": "0b332a3cfb10e31e41d34f717cfc6f5cf74a561667415af08ef65bd33839085e"
+      "bytes": 710,
+      "sha256": "fd2ae7da297d1a35c80079a7c74f61a6176d0caa40d89731a31089b28cf429ad"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_PRODUCTION_REVIEW.json",
-      "bytes": 2598,
-      "sha256": "b728cc8872949141195e3487f90f45ca5e944405d9ef8b2505122bd419e391fb"
+      "bytes": 2657,
+      "sha256": "84e051879d2db0b5985cf05b06e3d48d833af80b3af461f7900c503c7aec7e10"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_REPAIR_CANDIDATE.json",
-      "bytes": 2063,
-      "sha256": "4e3f883a0c8048fb7d04d7e3c7f8e850c2d72f4573d2fcb70954af012edc3471"
+      "bytes": 2122,
+      "sha256": "d0aa70b11d432eaf10338483e202c0486eb4146cb1579decb9ffa7f0d1eabf22"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
-      "bytes": 1851,
-      "sha256": "87b05ab8bb59412f5998ca58cea58da40fbe85cdef09c63e368c218960dbba82"
+      "bytes": 1910,
+      "sha256": "64928639c647f0a43302de531a13e954453bfbad6b68daa51395118ba7092acc"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
-      "bytes": 2044,
-      "sha256": "3c997da7b67decb3b02a2815b9336182f9d54425ecff185ae87741cb1dab0c05"
+      "bytes": 2103,
+      "sha256": "733b5ae819c3f5c3067b2018bafb8480320abb31622eca773f3880d3e21c2cae"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/PSYCHROLIB_LICENSE.txt",
@@ -619,6 +619,46 @@
       "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/test_preflight.py",
       "bytes": 3896,
       "sha256": "fd11e326408b584581c024c8343688718bd70afd8c2fd76d08f76d85fcffa5a6"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/DESIGN_REVIEW.json",
+      "bytes": 853,
+      "sha256": "3e2cc50f06df265a57cb9e13ded19f9ce58efc9ce19c53b28220327d05193e0c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/EB_TYPE_REFERENCE.json",
+      "bytes": 11124,
+      "sha256": "bd342987a79d5751d1582239114a6c6ef4447e8b342a7d7c3b249a925808e0aa"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/FEATURE_AND_CLUSTER_CONTRACT.json",
+      "bytes": 5684,
+      "sha256": "c4dd73718d0c7b84237ab8170b74980443c439a440dc46f8e8807b32f5602641"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/METHODS.md",
+      "bytes": 7028,
+      "sha256": "af6c670c5d5fa7547dcb5f0c13e705fe471db55cfa84e273b82edb3d3ed088a0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/REQUIREMENT.json",
+      "bytes": 4307,
+      "sha256": "9f87275fe3cd878507d95a0dfc232e6f2d41828e782ee924c46033492990191a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SCHOOL_CHECK.json",
+      "bytes": 2894,
+      "sha256": "dd86943b5d87150411507670b743fa7ab6beefcacbbb0fd390b8dde3fe54e8ea"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SOURCE_LEDGER.json",
+      "bytes": 3327,
+      "sha256": "85df7ea40fc3323f86ba38ef7e401c2e3c225886aabb1fea68f60b530b2905e7"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/code/require_generation.py",
+      "bytes": 1231,
+      "sha256": "e5f8703fe336d5df92dbfcc88ffb27b29de49d4ee5119c853efe5c31aa861c32"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/evidence_conditioned_production_20261009_v19/code/PSYCHROLIB_LICENSE.txt",
@@ -1187,8 +1227,8 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/repair_execution_20261008_v1/EXECUTION_BOARD.json",
-      "bytes": 2461,
-      "sha256": "a60d878e9e7dd9bd9e8c4de94533e02ffb4e019889a4e9df8484c0edfb72c67d"
+      "bytes": 2807,
+      "sha256": "3ef754401e419af9dbe6e5617319703108eab3237cfbc5d50693b247f6204a78"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/PSYCHROLIB_LICENSE.txt",
@@ -1412,8 +1452,8 @@
     },
     {
       "path": "scripts/household1000.py",
-      "bytes": 7214,
-      "sha256": "e7a2058bef046ae11e2d93d9033bd867f6316676ee0cb15153fbe5b312df7f98"
+      "bytes": 7422,
+      "sha256": "51dd93a4bdf3b62cb70e8940c732a0071ea7f4685ffd7595d53cf32866a6e8a0"
     },
     {
       "path": "tests/test_household1000_entrypoint.py",
@@ -1421,9 +1461,9 @@
       "sha256": "906d42f670f9f6717b7a41e84e1d76f8fe28221d5b33f9edfd1350bea8e36cf6"
     }
   ],
-  "payload_file_count_excluding_manifest": 283,
+  "payload_file_count_excluding_manifest": 291,
   "authorization": "user explicitly requested repairs,school verification,original50 acceptance,scientific chain audit and GitHub sync;full1000 EP held",
-  "content_scope": "historicalV23/V24 retained;current real-household EB6 prevalence requirement,partial source audit,proposed weighting/mapping method and closed generation gate;no new worlds",
+  "content_scope": "user-confirmed EB type coverage requirement and candidate common-feature protocol;real national preference survey gate withdrawn;historical stages retained;no new world generation",
   "private_data_or_EP_SQL_or_human_answers_published": false,
   "school_source_check_passed": true,
   "secret_index_check_passed": true,
@@ -1435,5 +1475,6 @@
   "new_worlds_generated": 0,
   "EB_six_type_requirement_accepted": false,
   "current_generation_allowed": false,
-  "current_population_prevalence_identified": false
+  "current_population_prevalence_identified": false,
+  "real_prevalence_is_generation_prerequisite": false
 }

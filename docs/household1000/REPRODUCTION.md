@@ -1,6 +1,6 @@
 # V23复现与验收顺序
 
-当前真实EB六类比例及其生成要求尚未验收。以下V23命令用于历史输入只读核查，不能授权新版生产。生成前先运行 `python3 scripts/household1000.py require-generation`；当前应返回2。详见[真实比例前置要求](EB_SIX_TYPE_REQUIREMENT.md)。
+当前EB类型覆盖和具体任务一致性尚未验收。以下V23命令用于历史输入只读核查，不能授权新版生产。生成前先运行 `python3 scripts/household1000.py require-generation`；当前应返回2。详见[类型覆盖前置要求](EB_SIX_TYPE_REQUIREMENT.md)；全国偏好调查不作为本门槛。
 
 ## 公开checkout
 

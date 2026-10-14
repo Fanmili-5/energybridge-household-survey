@@ -1,8 +1,8 @@
 {
   "baseline_pointers_archived_in": "gate_repair_production_20261013_v23/pointer_history",
   "collection_release": false,
-  "current_requirement_status": "real EB6 prevalence unresolved;assigned-role quotas superseded;legacy acceptance is historical",
-  "date": "2026-10-13",
+  "current_requirement_status": "EB type coverage and coherent propagation pending;national preference survey not a production prerequisite",
+  "date": "2026-10-14",
   "delivery_path": "gate_repair_production_20261013_v23/DELIVERY.json",
   "delivery_sha256": "5e4b535f4f7f9fe440accd16581f5c202a6699197fc5a1d31cd27ac4d71a3502",
   "execution_board": "repair_execution_20261008_v1/EXECUTION_BOARD.json",
@@ -17,8 +17,8 @@
   "local_stage_contains_acceptance_receipts_not_full_prepared_inputs": true,
   "new_EB_six_type_requirement_accepted": false,
   "new_generation_allowed": false,
-  "new_generation_requirement": "population_grounding_revision_v25/REQUIREMENT.json",
-  "new_generation_requirement_stage": "population_grounding_revision_v25",
+  "new_generation_requirement": "eb_type_coverage_revision_v26/REQUIREMENT.json",
+  "new_generation_requirement_stage": "eb_type_coverage_revision_v26",
   "other950_EP_executed": false,
   "preview_url_when_SSH_tunnel_active": "http://127.0.0.1:18803/household50",
   "published_source_commit": "31771054e056d70c845505934441a1a35dbd2bda",
@@ -30,5 +30,6 @@
   "schema": "eb.current_reference_pointer.v23",
   "scientific_benchmark_validity_complete": false,
   "stage": "gate_repair_production_20261013_v23",
-  "training_release": false
+  "training_release": false,
+  "real_prevalence_is_generation_prerequisite": false
 }

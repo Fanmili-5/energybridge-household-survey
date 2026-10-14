@@ -1,0 +1,59 @@
+{
+  "schema": "eb.type_coverage_scope_school_check.v26",
+  "date": "2026-10-14",
+  "host": "hku-server",
+  "python": "3.10.12",
+  "checks": {
+    "source_check": {
+      "exit_code": 0,
+      "checked_source_files": 575,
+      "failures": [],
+      "scope": "published bytes only;not physics or human validity"
+    },
+    "CLI_hold": {
+      "exit_code": 2,
+      "generation_allowed": false,
+      "EP_allowed": false,
+      "status": "EB_six_type_prerequisite_not_accepted",
+      "objective": "type_coverage_consistent_with_EB",
+      "real_prevalence_is_generation_prerequisite": false,
+      "type_coverage_verified": false,
+      "target_counts": null,
+      "instruction": "See docs/household1000/EB_SIX_TYPE_REQUIREMENT.md;concrete EB6 type coverage and original50 checks are pending; national preference survey is not a prerequisite; V23 acceptance is historical."
+    },
+    "V26_hold": {
+      "exit_code": 2,
+      "generation_allowed": false,
+      "EP_allowed": false,
+      "objective": "type_coverage_consistent_with_EB",
+      "real_prevalence_is_generation_prerequisite": false,
+      "reason": "EB type coverage hold: concrete household-policy-to-routine/service/A-B/IDF propagation, label-blind feature extraction and original50 coverage acceptance are not implemented. Freeze the type-coverage design and content-bound validation before new production. National preference prevalence is not a prerequisite; assigned-actor counts and historical V23/V24/V25 checks cannot authorize generation or EP."
+    },
+    "entrypoint_tests": {
+      "exit_code": 0,
+      "output": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.508s\n\nOK"
+    },
+    "JSON_acceptance_tampering_stays_closed": {
+      "exit_code": 2,
+      "generation_allowed": false,
+      "EP_allowed": false,
+      "objective": "type_coverage_consistent_with_EB",
+      "real_prevalence_is_generation_prerequisite": false,
+      "reason": "EB type coverage hold: concrete household-policy-to-routine/service/A-B/IDF propagation, label-blind feature extraction and original50 coverage acceptance are not implemented. Freeze the type-coverage design and content-bound validation before new production. National preference prevalence is not a prerequisite; assigned-actor counts and historical V23/V24/V25 checks cannot authorize generation or EP."
+    },
+    "purpose_contract_consistent": true
+  },
+  "engineering_scope_check_passed": true,
+  "actual_cluster_coverage_verified": false,
+  "actual_feature_extractor_implemented": false,
+  "scientific_production_accepted": false,
+  "new_worlds_generated": 0,
+  "new_EP_started": false,
+  "scope": "source bytes,current purpose/requirement alignment and closed-entry behavior only",
+  "research_metadata_sync": {
+    "completed": true,
+    "files": 16,
+    "failures": [],
+    "historical_worlds_modified": false
+  }
+}

@@ -1,23 +1,23 @@
 {
-  "version": "household1000-v25-population-grounding",
+  "version": "household1000-v26-EB-type-coverage",
   "default_mode": "read-only;new EB-six-type generation and EP held",
   "steps": [
     {
       "automatic_execution": false,
       "generation_allowed": false,
-      "id": "population-grounded-EB6-pre-generation",
-      "output_and_scope": "G0:real preference prevalence with household weights/uncertainty before quotas;coherent semantic propagation and blind recovery;not passed",
+      "id": "EB-type-coverage-pre-generation",
+      "output_and_scope": "G0:substantive EB6 coverage and coherent policy-to-world propagation;original50 verification then frozen composition;not passed",
       "required_inputs": [
-        "pinned six EB seed definitions and validated household mapping",
-        "independent own-household preference measurements",
-        "household sampling/calibration weights and population frame",
-        "accepted prevalence and uncertainty before counts",
-        "jointly feasible eligible family skeletons",
-        "concrete policy blueprints and frozen label-blind recovery protocol"
+        "pinned six EB references with common field definitions",
+        "source-aware household/housing/device eligibility",
+        "explicit given role policy and protected member needs",
+        "concrete dated routines/service/normalA/candidateB/IDF",
+        "label-blind extractor and reference/clustering coverage protocol"
       ],
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/code/require_generation.py"
-      ]
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/code/require_generation.py"
+      ],
+      "real_prevalence_is_generation_prerequisite": false
     },
     {
       "id": "source-admission",
@@ -249,5 +249,5 @@
   "scientific_rule_changes_in_this_publication": true,
   "active_stage": "gate_repair_production_20261013_v23",
   "design_data_version": "v22",
-  "latest_requirement_stage": "population_grounding_revision_v25"
+  "latest_requirement_stage": "eb_type_coverage_revision_v26"
 }

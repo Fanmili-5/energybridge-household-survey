@@ -1,0 +1,21 @@
+{
+  "schema": "eb.type_coverage_scope_review.v26",
+  "date": "2026-10-14",
+  "purpose_aligned_to_latest_user": true,
+  "national_prevalence_gate_withdrawn": true,
+  "actor_quotas_reenabled": false,
+  "type_references_rehashed": 6,
+  "type_reference_hash_mismatches": 0,
+  "coverage_protocol_scope_corrected": true,
+  "actual_feature_extractor_implemented": false,
+  "actual_cluster_coverage_verified": false,
+  "original50_current_coverage_accepted": false,
+  "given_role_preferences_are_acceptable_design_inputs": true,
+  "given_preferences_are_observed": false,
+  "all_previous_production_gaps_retained": true,
+  "generation_allowed": false,
+  "EP_allowed": false,
+  "new_worlds_generated": 0,
+  "new_EP_started": false,
+  "scientific_claim": "EB-referenced type-coverage design;not an accepted generated cohort or national preference distribution"
+}

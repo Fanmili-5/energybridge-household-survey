@@ -1,6 +1,6 @@
-# 1000户生产链：先核定真实六类比例，历史V23验收
+# 1000户生产链：EB六类类型覆盖，历史V23验收
 
-当前V25要求：六类比例尽量符合真实中国城市家庭，在生成前核定。旧EB角色实验配额已撤下，当前比例/人数均未确定；先审查同户偏好证据、六类映射及家庭户权重。详见[当前要求](EB_SIX_TYPE_REQUIREMENT.md)与[V25方法及缺口](../research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/METHODS.md)。旧1000户不满足新要求，新版生成和EP保持关闭。
+当前V26目标：1000户的类型覆盖与EB一致。聚类检查具体作息、服务、协商权限和资源差异是否覆盖六类，并反过来约束生成；全国真实偏好比例不再是生产前置。详见[当前要求](EB_SIX_TYPE_REQUIREMENT.md)与[V26方法](../research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/METHODS.md)。新版类型覆盖尚未验收，生成和EP仍关闭。
 
 当前验收目录为 `gate_repair_production_20261013_v23`。V23保留V22的1000户、2524名成员、原十日期及10000对A/B；数据schema保留v22，验收与源码发布版本为v23。历史V17–V22保留，现行入口不再指向V17。
 
