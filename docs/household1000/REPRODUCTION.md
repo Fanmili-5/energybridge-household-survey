@@ -1,9 +1,15 @@
-# V23复现与验收顺序
+# V28复现与验收顺序
 
-当前执行结果见[V27方法与验收](../research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/METHODS_AND_ACCEPTANCE.md)：原50户新版参考验收通过，1000户研究配比A101/B303/C319/D101/E85/F91冻结且保留原50户政策。全量1000静态包与整体实际覆盖仍待验收，1000户EP关闭。下文保留历史实现/方案作来源地图，未完成状态和当前入口以[STATUS.json](STATUS.json)及V27证据为准。
+当前V28全1000户参考验收和50/950正式采集包见[当前方法](../research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/METHODS_AND_ACCEPTANCE.md)。需要获准使用的前置人口/联合调查/住房/EB与天气输入；公开clone没有这些私有输入，不会自动下载或运行EP。
 
 
-当前EB类型覆盖和具体任务一致性尚未验收。以下V23命令用于历史输入只读核查，不能授权新版生产。生成前先运行 `python3 scripts/household1000.py require-generation`；当前应返回2。详见[类型覆盖前置要求](EB_SIX_TYPE_REQUIREMENT.md)；全国偏好调查不作为本门槛。
+V28入口顺序：`bootstrap.py` → `repair_chronology.py`/`adapt_full_cluster.py`/范围适配 → `produce_static.py` → `prepare_sensitivity.py` → `weather_qc.py` → `repair_external_bindings.py` → `execute_physics.py`。已有目录不得覆盖历史证据，恢复运行依赖实际内容门与当前报告；不要把辅助旧V27模块的独立CLI当作V28入口。
+
+物理完成后，`deploy/formal_questionnaires_20261014/render_materials.py`按50/950分别导出成熟前端资料；Node的`bind_frontend.js`/`verify_case_bindings.js`固定实际JS数值/哈希语义；`build_release.py`构建独立正式包，`release_acceptance.py`逐条核对实际世界/A-B/回读证据，`test_protocol.py`仅在虚构测试库检查协议。`activate.py`验证包、备份旧数据、分户邀请码并激活正式服务，后续备份由`backup.py`完成。
+
+`python3 scripts/household1000.py require-generation --scope full1000EP`在公开clone返回2（缺受控当前输入）；在正确学校工作区验证原50、950、气象敏感性三组实际内容绑定回执，仍不启动EP。任何当前输入或模型改变都须重新审核，不凭JSON状态字段准入。
+
+下面V23命令与门策略是历史复现说明，不能替代上述V28当前入口。
 
 ## 公开checkout
 

@@ -1,0 +1,1 @@
+{"batch": "formal50", "fixtures_excluded_from_formal_export": true, "human_answers_generated": 0, "invitation_assignment_consent_recovery_withdrawal": "pass", "manifest_files_checked": 501, "metadata_null_decimal_revision_idempotency": "pass", "passed": true, "production_records_written": 0, "source_and_model_input_guards": "pass"}

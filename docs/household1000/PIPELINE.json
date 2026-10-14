@@ -1,7 +1,67 @@
 {
-  "version": "household1000-v27-original50-and-frozen-mix",
-  "default_mode": "read-only;frozen static1000 may be admitted on school;fullEP held",
-  "steps": [
+  "version": "household1000-v28-formal50-formal950",
+  "default_mode": "read-only receipt verification; formal collection deployed; no automatic EP or training",
+  "scientific_rule_changes_in_this_publication": true,
+  "active_stage": "formal50_950_production_v28_20261014",
+  "design_data_version": "v28",
+  "latest_requirement_stage": "formal50_950_production_v28_20261014",
+  "steps_are_historical_source_chain": false,
+  "current_original50_source_steps": [
+    {
+      "id": "type-policy-world",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/type_model.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/worlds.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/activity_model.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/needs.py"
+      ],
+      "scope": "reference original50;full1000 pending"
+    },
+    {
+      "id": "normalA-candidateB",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/plans.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/generate.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/execution.py"
+      ],
+      "scope": "reference original50;full1000 pending"
+    },
+    {
+      "id": "concrete-features-clustering",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/audit_pilot.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/cluster_pilot.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/cluster_actual.R"
+      ],
+      "scope": "reference original50;full1000 pending"
+    },
+    {
+      "id": "physical-input-and-readback",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/compile_inputs.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/physics.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/weather_audit.py"
+      ],
+      "scope": "reference original50;full1000 pending"
+    },
+    {
+      "id": "original-frontend",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/materials.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/browser_acceptance.js"
+      ],
+      "scope": "reference original50;full1000 pending"
+    },
+    {
+      "id": "accept-and-freeze",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/finalize_pilot.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/freeze_composition.py"
+      ],
+      "scope": "reference original50;full1000 pending"
+    }
+  ],
+  "historical_steps": [
     {
       "automatic_execution": false,
       "generation_allowed": true,
@@ -247,64 +307,47 @@
       "automatic_execution": false
     }
   ],
-  "scientific_rule_changes_in_this_publication": true,
-  "active_stage": "gate_repair_production_20261013_v23",
-  "design_data_version": "v22",
-  "latest_requirement_stage": "eb_type_coverage_revision_v26",
-  "steps_are_historical_source_chain": true,
-  "current_original50_source_steps": [
+  "steps": [
     {
-      "id": "type-policy-world",
+      "id": "static1000",
+      "automatic_execution": false,
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/type_model.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/worlds.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/activity_model.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/needs.py"
-      ],
-      "scope": "reference original50;full1000 pending"
+        "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/produce_static.py"
+      ]
     },
     {
-      "id": "normalA-candidateB",
+      "id": "weather_QC",
+      "automatic_execution": false,
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/plans.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/generate.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/execution.py"
-      ],
-      "scope": "reference original50;full1000 pending"
+        "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/weather_qc.py"
+      ]
     },
     {
-      "id": "concrete-features-clustering",
+      "id": "explicit_actor_SQL_bindings",
+      "automatic_execution": false,
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/audit_pilot.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/cluster_pilot.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/cluster_actual.R"
-      ],
-      "scope": "reference original50;full1000 pending"
+        "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/repair_external_bindings.py"
+      ]
     },
     {
-      "id": "physical-input-and-readback",
+      "id": "original50_then_other950",
+      "automatic_execution": false,
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/compile_inputs.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/physics.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/weather_audit.py"
-      ],
-      "scope": "reference original50;full1000 pending"
+        "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/execute_physics.py"
+      ]
     },
     {
-      "id": "original-frontend",
+      "id": "formal50_and_formal950_collection",
+      "automatic_execution": false,
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/materials.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/browser_acceptance.js"
+        "deploy/formal_questionnaires_20261014/render_materials.py",
+        "deploy/formal_questionnaires_20261014/build_release.py",
+        "deploy/formal_questionnaires_20261014/release_acceptance.py",
+        "deploy/formal_questionnaires_20261014/server.py",
+        "deploy/formal_questionnaires_20261014/store.py",
+        "deploy/formal_questionnaires_20261014/activate.py"
       ],
-      "scope": "reference original50;full1000 pending"
-    },
-    {
-      "id": "accept-and-freeze",
-      "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/finalize_pilot.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/freeze_composition.py"
-      ],
-      "scope": "reference original50;full1000 pending"
+      "output_and_scope": "500 and9500 current input-bound cases; actual opt-in role responses; no training admission"
     }
   ]
 }

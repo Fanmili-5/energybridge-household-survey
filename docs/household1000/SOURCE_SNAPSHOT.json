@@ -1,25 +1,207 @@
 {
-  "version": "household1000-v27-original50-and-questionnaire-20261014",
+  "version": "household1000-v28-formal50-formal950",
   "source_scope": "source,case-free templates,contracts and methods;protected records and calibrated or human benchmark claims excluded",
   "source_files": [
     {
+      "path": "deploy/formal_questionnaires_20261014/ACTIVATION_RECEIPT.json",
+      "source_sha256": "4e9098a69473806a747593f594b57612bb5038b233eadbaa43f9739a55226f9a",
+      "published_sha256": "4e9098a69473806a747593f594b57612bb5038b233eadbaa43f9739a55226f9a",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/RELEASE.md",
+      "source_sha256": "14a5bf869c7a7bb1d2bcdd6cd40b9d1d59649a8437dfa03b10d34f984e3ffc7c",
+      "published_sha256": "14a5bf869c7a7bb1d2bcdd6cd40b9d1d59649a8437dfa03b10d34f984e3ffc7c",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/activate.py",
+      "source_sha256": "f321f0cd6d13e252957deebb4ae07014d271e14ae011a8f7d5995366071d5067",
+      "published_sha256": "f321f0cd6d13e252957deebb4ae07014d271e14ae011a8f7d5995366071d5067",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/admin.py",
+      "source_sha256": "17b5e292b1792662c6a1a0724464206c5878f5ecb316eaf2afb6b6ac67785866",
+      "published_sha256": "17b5e292b1792662c6a1a0724464206c5878f5ecb316eaf2afb6b6ac67785866",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/backup.py",
+      "source_sha256": "2b6c9ebab831100898e59e25b1b4cd672b5a100ff43455949b41d4bf7376f082",
+      "published_sha256": "2b6c9ebab831100898e59e25b1b4cd672b5a100ff43455949b41d4bf7376f082",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/build_release.py",
+      "source_sha256": "ead2b1a477896124a0dca9acc30847b110f40317fc0d82257faf4e52c7d477ff",
+      "published_sha256": "ead2b1a477896124a0dca9acc30847b110f40317fc0d82257faf4e52c7d477ff",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/engineering_contract.py",
+      "source_sha256": "7fdf9997b6060209b19db1bd18d7b2a5b8e227ba77d56cc75af50ffdabad1849",
+      "published_sha256": "7fdf9997b6060209b19db1bd18d7b2a5b8e227ba77d56cc75af50ffdabad1849",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/formal-client.js",
+      "source_sha256": "f6b2def9742029812566e07368a125c094dc3a1f26b17943d2cbe4e1fa21b2cf",
+      "published_sha256": "f6b2def9742029812566e07368a125c094dc3a1f26b17943d2cbe4e1fa21b2cf",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/make_protocol_fixture.py",
+      "source_sha256": "ef0353c9cf8aac03a071e7d7df763ab95effb0de9501fee1e9a54e5bd814db06",
+      "published_sha256": "ef0353c9cf8aac03a071e7d7df763ab95effb0de9501fee1e9a54e5bd814db06",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/release_acceptance.py",
+      "source_sha256": "8adc68c8821f62c935f8192237eee2a81ca349b8f373eb1620c6000afd71a278",
+      "published_sha256": "8adc68c8821f62c935f8192237eee2a81ca349b8f373eb1620c6000afd71a278",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/render_materials.py",
+      "source_sha256": "e87968b33b94c83f2ec7bae10dee188abe7d3b627e3ffa1a5cf7582732642b08",
+      "published_sha256": "e87968b33b94c83f2ec7bae10dee188abe7d3b627e3ffa1a5cf7582732642b08",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/respondent.py",
+      "source_sha256": "0fbcfa9b0dd11179dc591395e5cc4285fa6b9920cc3c49e60708796d6c932ef3",
+      "published_sha256": "0fbcfa9b0dd11179dc591395e5cc4285fa6b9920cc3c49e60708796d6c932ef3",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/server.py",
+      "source_sha256": "4ac7ea85563dfd637900163ff2dc2cbad77b52dd7ad0635874f2098ea3a20a28",
+      "published_sha256": "4ac7ea85563dfd637900163ff2dc2cbad77b52dd7ad0635874f2098ea3a20a28",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/store.py",
+      "source_sha256": "492d3196c375a78c34201940546370cd9493afcc9b8109957269b00b9d1564e6",
+      "published_sha256": "492d3196c375a78c34201940546370cd9493afcc9b8109957269b00b9d1564e6",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/test_protocol.py",
+      "source_sha256": "4a2f2b3cd4e326e548f7942eec9e2ae112fd6e1872306d206ba612866a9512d9",
+      "published_sha256": "4a2f2b3cd4e326e548f7942eec9e2ae112fd6e1872306d206ba612866a9512d9",
+      "kind": "formal_collection_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/CHECKS.json",
+      "source_sha256": "5e3297972d765fe9757ff208f32ea65ec43e266aaeef56467472b9b9aedd3677",
+      "published_sha256": "5e3297972d765fe9757ff208f32ea65ec43e266aaeef56467472b9b9aedd3677",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/RELEASE.md",
+      "source_sha256": "cfa9c88651ae271ed0e7eccf9def7dee0095f60d764cbda0cb23b25bf9456c92",
+      "published_sha256": "cfa9c88651ae271ed0e7eccf9def7dee0095f60d764cbda0cb23b25bf9456c92",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/preview.py",
+      "source_sha256": "87f2cca3c9ad5609a54fae72b3f758224054fc36195030300d16f3cd4a563725",
+      "published_sha256": "87f2cca3c9ad5609a54fae72b3f758224054fc36195030300d16f3cd4a563725",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/respondent-info.js",
+      "source_sha256": "0346767b761210f65590b73cdfce410e2fd3db03402b62d42e56391f8b13fb07",
+      "published_sha256": "0346767b761210f65590b73cdfce410e2fd3db03402b62d42e56391f8b13fb07",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/revise_frontend.py",
+      "source_sha256": "2e0d794343a7fe3f9c3723209db25b177f10476e95365419704fe16e47b52922",
+      "published_sha256": "2e0d794343a7fe3f9c3723209db25b177f10476e95365419704fe16e47b52922",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/runtime/respondent.py",
+      "source_sha256": "0fbcfa9b0dd11179dc591395e5cc4285fa6b9920cc3c49e60708796d6c932ef3",
+      "published_sha256": "0fbcfa9b0dd11179dc591395e5cc4285fa6b9920cc3c49e60708796d6c932ef3",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/runtime/serve50.py",
+      "source_sha256": "f6e55874feaed05ac74de2faf26ce89e7e740844e7b2b1404767c902ccec73d6",
+      "published_sha256": "f6e55874feaed05ac74de2faf26ce89e7e740844e7b2b1404767c902ccec73d6",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/runtime/unified_live_server.py",
+      "source_sha256": "7fdf9997b6060209b19db1bd18d7b2a5b8e227ba77d56cc75af50ffdabad1849",
+      "published_sha256": "7fdf9997b6060209b19db1bd18d7b2a5b8e227ba77d56cc75af50ffdabad1849",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/test_export.cjs",
+      "source_sha256": "5b3468adfb6a98550877638c7882c3995f0f21b076047b5a7366a067b7f44e9c",
+      "published_sha256": "5b3468adfb6a98550877638c7882c3995f0f21b076047b5a7366a067b7f44e9c",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/test_respondent.py",
+      "source_sha256": "f7c95637affaede0f145f3f8432085a011f9c99457b7da7d2e3c06adaf2e485d",
+      "published_sha256": "f7c95637affaede0f145f3f8432085a011f9c99457b7da7d2e3c06adaf2e485d",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/verify_protocol.py",
+      "source_sha256": "6bbe3b4066696152331f036404d1f519c73446920d81eb0ce262a741fdc767d4",
+      "published_sha256": "6bbe3b4066696152331f036404d1f519c73446920d81eb0ce262a741fdc767d4",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
       "source_sha256": "9e568521755d40aaf76356e6cb2613de31e4af1a50b644215303c6c06c1dc1df",
-      "published_sha256": "9e568521755d40aaf76356e6cb2613de31e4af1a50b644215303c6c06c1dc1df",
+      "published_sha256": "0325ccfaeaebdb8cb96014604ad1fefdd9afe242ec71a2e2ed4fa2799b042bfb",
       "kind": "V27_reference_source_or_aggregate",
       "transformation": "none;aggregate report private transformations documented internally"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
       "source_sha256": "64928639c647f0a43302de531a13e954453bfbad6b68daa51395118ba7092acc",
-      "published_sha256": "64928639c647f0a43302de531a13e954453bfbad6b68daa51395118ba7092acc",
+      "published_sha256": "95a784fb2325269c61ef6a6044593cf4112b6e83cd1a31fc9503b0b1a825cc09",
       "kind": "current_pointer",
       "transformation": "none"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
       "source_sha256": "9ecad47cbc2f00cb4d07c772cf2c395a44a4d144913241dd29aa198368ba710f",
-      "published_sha256": "9ecad47cbc2f00cb4d07c772cf2c395a44a4d144913241dd29aa198368ba710f",
+      "published_sha256": "9601907752cc85a5f843d61135abfa84a7c999de98603cedbe6ca7ff05f88022",
       "kind": "V27_reference_source_or_aggregate",
       "transformation": "none;aggregate report private transformations documented internally"
     },
@@ -1737,6 +1919,475 @@
       "published_sha256": "cb91922a7f71a33f03cb1058815e23f4dd7c342a67def76f449c3bc47a24e2bb",
       "kind": "first_party_research_source",
       "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/COHORT_ACCEPTANCE_NEGATIVE_CONTROLS.json",
+      "source_sha256": "b5e2315aa1db27bc1ad2d516a76bc7a210237c94fad1bc523fa9c934b1067557",
+      "published_sha256": "b5e2315aa1db27bc1ad2d516a76bc7a210237c94fad1bc523fa9c934b1067557",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/EXTERNAL_SQL_BINDING_REVIEW.json",
+      "source_sha256": "5276fb4dd9ed443ecdd164f3f60c56a4c7573860e1b6700a3f367ecd66f2c1b6",
+      "published_sha256": "5276fb4dd9ed443ecdd164f3f60c56a4c7573860e1b6700a3f367ecd66f2c1b6",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/FORMAL50_CASE_ACCEPTANCE.json",
+      "source_sha256": "bb7eeba8ca69be49ffcbc3a4cb664a0f4c8fefa944b02d6c377fa3412cc8dd5a",
+      "published_sha256": "bb7eeba8ca69be49ffcbc3a4cb664a0f4c8fefa944b02d6c377fa3412cc8dd5a",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/FORMAL50_PROTOCOL_ACCEPTANCE.json",
+      "source_sha256": "925f2aa13f93d454a0acebec508f29739055eef6afe8ed6ce853f2fc36c455d9",
+      "published_sha256": "925f2aa13f93d454a0acebec508f29739055eef6afe8ed6ce853f2fc36c455d9",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/FORMAL950_CASE_ACCEPTANCE.json",
+      "source_sha256": "87fd361fca6db1f4525837508e6306ad2666f2aaf201d01103dc4fe43e50f13c",
+      "published_sha256": "87fd361fca6db1f4525837508e6306ad2666f2aaf201d01103dc4fe43e50f13c",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/FORMAL950_PROTOCOL_ACCEPTANCE.json",
+      "source_sha256": "ad24b05cf0b27954b66de11323b2429f0237dfd5792cdb39177ea66153de2a98",
+      "published_sha256": "ad24b05cf0b27954b66de11323b2429f0237dfd5792cdb39177ea66153de2a98",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/FRONTEND50_CASE_BINDINGS.json",
+      "source_sha256": "77f9085dc7cbedd5fd95cdc32649fc59f986d618665546779715c68798212d31",
+      "published_sha256": "77f9085dc7cbedd5fd95cdc32649fc59f986d618665546779715c68798212d31",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/FRONTEND950_CASE_BINDINGS.json",
+      "source_sha256": "3ee3ba72c508cb426f5f24a95a8031105b81ae36d112681c6da889bfe9140412",
+      "published_sha256": "3ee3ba72c508cb426f5f24a95a8031105b81ae36d112681c6da889bfe9140412",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/HISTORICAL_V23_ACCEPTANCE.json",
+      "source_sha256": "22df20be1673db18b648b06b8d7be1551e4d984fcc91281c404f8cea31e68ad1",
+      "published_sha256": "22df20be1673db18b648b06b8d7be1551e4d984fcc91281c404f8cea31e68ad1",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/METHODS_AND_ACCEPTANCE.md",
+      "source_sha256": "181a2fa93a2f76cdc584058fca167ae4bd98803eb3d59975cb01c4913d068069",
+      "published_sha256": "181a2fa93a2f76cdc584058fca167ae4bd98803eb3d59975cb01c4913d068069",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/PHYSICAL_PRODUCTION_COMPLETE.json",
+      "source_sha256": "cce9629b620a83de04f6e08db24563121a38d6a1de17b2ef0e0066d2d0b3c87a",
+      "published_sha256": "cce9629b620a83de04f6e08db24563121a38d6a1de17b2ef0e0066d2d0b3c87a",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/PUBLIC_ACCEPTANCE.json",
+      "source_sha256": "8252757ada351322bef2dd99ff46d231cc1c2ec57ceb30a0539c07a27974df63",
+      "published_sha256": "8252757ada351322bef2dd99ff46d231cc1c2ec57ceb30a0539c07a27974df63",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/RENDERER_ROLE_CATALOG_REVIEW.json",
+      "source_sha256": "3f852dc603b81d75177c811da5fbb330d0ffcb3f6da43e063c0d5ef5162750f0",
+      "published_sha256": "3f852dc603b81d75177c811da5fbb330d0ffcb3f6da43e063c0d5ef5162750f0",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/STATIC_PRODUCTION_COMPLETE.json",
+      "source_sha256": "e8986e694de1b4e224198ab661ae7c3b74895b29c91fdcc2488ba2dbeb886847",
+      "published_sha256": "e8986e694de1b4e224198ab661ae7c3b74895b29c91fdcc2488ba2dbeb886847",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/STRUCTURAL_ZERO_CONTROLS.json",
+      "source_sha256": "e24566907fc3e5ce201074423f28dad4bc79dae4bb2517e1014757f1318fa9fc",
+      "published_sha256": "e24566907fc3e5ce201074423f28dad4bc79dae4bb2517e1014757f1318fa9fc",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/acceptance_negative_controls.py",
+      "source_sha256": "646c0572e8ee8bdd10ec979f30e819e7702601167741b9407cabed71eb7a46e1",
+      "published_sha256": "646c0572e8ee8bdd10ec979f30e819e7702601167741b9407cabed71eb7a46e1",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/activity_model.py",
+      "source_sha256": "2aeaf80e1503c768eb9bfbf737c27bd11c6ae0c7edaa8813705e68e4f662b52f",
+      "published_sha256": "2aeaf80e1503c768eb9bfbf737c27bd11c6ae0c7edaa8813705e68e4f662b52f",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/adapt_browser_bindings.py",
+      "source_sha256": "7a54c838fa5278dc06a905b7606fb924e997c7e116549f65968767d8049a1a89",
+      "published_sha256": "7a54c838fa5278dc06a905b7606fb924e997c7e116549f65968767d8049a1a89",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/adapt_full_cluster.py",
+      "source_sha256": "e9081a6b995e8d72da9fea1d56f2e4eccc3539eb2536fe79f3afc8f88b397290",
+      "published_sha256": "e9081a6b995e8d72da9fea1d56f2e4eccc3539eb2536fe79f3afc8f88b397290",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/adapt_materials.py",
+      "source_sha256": "443a8c95b21970c0d89ea70bf65829e929dae984a8623faabc4070b8636bd6b6",
+      "published_sha256": "443a8c95b21970c0d89ea70bf65829e929dae984a8623faabc4070b8636bd6b6",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/audit_bath.py",
+      "source_sha256": "e51d518300141fa1803a52f0d5308c6ce8bf2aaa92e03b422609b429957411ec",
+      "published_sha256": "e51d518300141fa1803a52f0d5308c6ce8bf2aaa92e03b422609b429957411ec",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/audit_calendar.py",
+      "source_sha256": "8794fd8f07de190149c46d83daf8af207f1901f05da4a1a092e29c7cc07ce0b6",
+      "published_sha256": "8794fd8f07de190149c46d83daf8af207f1901f05da4a1a092e29c7cc07ce0b6",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/audit_idfs.py",
+      "source_sha256": "e2af90497751de677d2dad96c919a607d2e5622b59731d349d80afa9a9e2a388",
+      "published_sha256": "e2af90497751de677d2dad96c919a607d2e5622b59731d349d80afa9a9e2a388",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/audit_physical_inputs.py",
+      "source_sha256": "62526339ad282f8746e5303e08b8a1f6ec5f4ada0d40db79945a7725181ee1b9",
+      "published_sha256": "62526339ad282f8746e5303e08b8a1f6ec5f4ada0d40db79945a7725181ee1b9",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/audit_pilot.py",
+      "source_sha256": "78d4d5036edb78cac468f8ad568244b3ced57cb5a6f97b74b2cc8a8e3330f064",
+      "published_sha256": "78d4d5036edb78cac468f8ad568244b3ced57cb5a6f97b74b2cc8a8e3330f064",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/audit_reference_model.py",
+      "source_sha256": "d02644678ac0a91311848e5528bea39541f43b0b34abfcb7378693512b28bd02",
+      "published_sha256": "d02644678ac0a91311848e5528bea39541f43b0b34abfcb7378693512b28bd02",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/bind_frontend.js",
+      "source_sha256": "472133273c5f6265a37a08e0cac40869adadc2a32b18db0abd70d428e96eea6b",
+      "published_sha256": "472133273c5f6265a37a08e0cac40869adadc2a32b18db0abd70d428e96eea6b",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/bootstrap.py",
+      "source_sha256": "2d6e188717b94c7f0dac84f4072bdeb1c1005c076725b22a8046e6d2b350e2a3",
+      "published_sha256": "2d6e188717b94c7f0dac84f4072bdeb1c1005c076725b22a8046e6d2b350e2a3",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/browser_acceptance.js",
+      "source_sha256": "2d3836a2f18a16f042396874db3a5d34bc4223f0917196181289f12cca7b8c70",
+      "published_sha256": "2d3836a2f18a16f042396874db3a5d34bc4223f0917196181289f12cca7b8c70",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/checks.py",
+      "source_sha256": "b459b8dbe2d94f8e123d567a149daafa49fd2c839fa790e453094d60fe40f52c",
+      "published_sha256": "b459b8dbe2d94f8e123d567a149daafa49fd2c839fa790e453094d60fe40f52c",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/cluster_actual.R",
+      "source_sha256": "314648c14969ec2410314d6899aee8c476ddccbdb2e55ca1096c8f309577c983",
+      "published_sha256": "314648c14969ec2410314d6899aee8c476ddccbdb2e55ca1096c8f309577c983",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/cluster_pilot.py",
+      "source_sha256": "ab50deeb2220f2fbc0dc43b15d4a5b94b4a4a98f7fff0c7d02e4caf7e0f2da70",
+      "published_sha256": "ab50deeb2220f2fbc0dc43b15d4a5b94b4a4a98f7fff0c7d02e4caf7e0f2da70",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/cohort_gate.py",
+      "source_sha256": "59702cb5117621d948e1fd81f1e4626e756197eb296bb78adfb04378cf267274",
+      "published_sha256": "59702cb5117621d948e1fd81f1e4626e756197eb296bb78adfb04378cf267274",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/common.py",
+      "source_sha256": "7be9aa4cb52e220942ace70d9484f17e6606183d9c729b395601f9d4560a6d8f",
+      "published_sha256": "7be9aa4cb52e220942ace70d9484f17e6606183d9c729b395601f9d4560a6d8f",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/compile_inputs.py",
+      "source_sha256": "1237fd96a31a5b4bb6ed5333c46a68fbb775a46a64824645b111e7b741e6cf84",
+      "published_sha256": "1237fd96a31a5b4bb6ed5333c46a68fbb775a46a64824645b111e7b741e6cf84",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/curve_diagnostics.py",
+      "source_sha256": "077d3f53c8f0971a71a1871fd92518e9e5c984b246824fa959becd5f79fd9c55",
+      "published_sha256": "077d3f53c8f0971a71a1871fd92518e9e5c984b246824fa959becd5f79fd9c55",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/curve_observer.py",
+      "source_sha256": "7dd261c46272c3fb4e000cc22987c7a8ed2e15d46af11b04ff304662e6cd1183",
+      "published_sha256": "7dd261c46272c3fb4e000cc22987c7a8ed2e15d46af11b04ff304662e6cd1183",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/ep_gate.py",
+      "source_sha256": "a8c56b1c6dd64b421d9def55ad801e03134af8a4b801631a8159fc06d3d31d4a",
+      "published_sha256": "a8c56b1c6dd64b421d9def55ad801e03134af8a4b801631a8159fc06d3d31d4a",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/execute_physics.py",
+      "source_sha256": "93fdcf219f960b8eadd7f24c8faf8199e2f293055ceb505ff1aaa58e2df85c5c",
+      "published_sha256": "93fdcf219f960b8eadd7f24c8faf8199e2f293055ceb505ff1aaa58e2df85c5c",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/execution.py",
+      "source_sha256": "fe4bc3fbe331f3b754ddca9f833a98c8f2bd551d88a1d20a9af634e854cc44d9",
+      "published_sha256": "fe4bc3fbe331f3b754ddca9f833a98c8f2bd551d88a1d20a9af634e854cc44d9",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/finalize_pilot.py",
+      "source_sha256": "613c8e9e12f47eb0359730528fd1af89206cf66ff6720b7d5d8cb2991ac87905",
+      "published_sha256": "613c8e9e12f47eb0359730528fd1af89206cf66ff6720b7d5d8cb2991ac87905",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/freeze_composition.py",
+      "source_sha256": "a09c88a8c7f465e2bba7f251219b75638d0b407e132ed5eae92597548c333a83",
+      "published_sha256": "a09c88a8c7f465e2bba7f251219b75638d0b407e132ed5eae92597548c333a83",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/generate.py",
+      "source_sha256": "f829b05e9e8875dc64ce973442ba856bbd8b5e85b2a5b88601f6b4df89a63e5f",
+      "published_sha256": "f829b05e9e8875dc64ce973442ba856bbd8b5e85b2a5b88601f6b4df89a63e5f",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/install_cohort_gate.py",
+      "source_sha256": "102de095436b7fac9f8ce408ba5b9bb3bded7792279ed4c846be9150b57756ee",
+      "published_sha256": "102de095436b7fac9f8ce408ba5b9bb3bded7792279ed4c846be9150b57756ee",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/materials.py",
+      "source_sha256": "e9427f4a03741757a54676ee30e83290890afd5ed89a3e6c0e5d8f2623d5b742",
+      "published_sha256": "e9427f4a03741757a54676ee30e83290890afd5ed89a3e6c0e5d8f2623d5b742",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/mechanism_controls.py",
+      "source_sha256": "979f4ac16d9a55428e6266ff0b65a95690510612fc3751f7a627218edbb458fb",
+      "published_sha256": "979f4ac16d9a55428e6266ff0b65a95690510612fc3751f7a627218edbb458fb",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/model_form_diagnostic.py",
+      "source_sha256": "ca5d59f3ba9363c8d10f66cd4854bedfb77461097ad0952eeb8192ee55340dea",
+      "published_sha256": "ca5d59f3ba9363c8d10f66cd4854bedfb77461097ad0952eeb8192ee55340dea",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/needs.py",
+      "source_sha256": "474ea412e8da89b8b1a53f70da3a325fe82f4a5a1dc49a81df9d25bbbc9fe682",
+      "published_sha256": "474ea412e8da89b8b1a53f70da3a325fe82f4a5a1dc49a81df9d25bbbc9fe682",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/physics.py",
+      "source_sha256": "1953629b4d5e6d0d19f2898402b235029725194e54fd72b3161b7493e3b36ce1",
+      "published_sha256": "1953629b4d5e6d0d19f2898402b235029725194e54fd72b3161b7493e3b36ce1",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/pilot_ep_gate_reference.py",
+      "source_sha256": "a89a30c547f0e17ff6479ef30d113343d94e269d28a9cf4da1b96cd2d989ec85",
+      "published_sha256": "a89a30c547f0e17ff6479ef30d113343d94e269d28a9cf4da1b96cd2d989ec85",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/plans.py",
+      "source_sha256": "a0ef1bb31c599f285a4bfdfd0f0a78e4ed15cd240d7c2a9f4dfd509f663419a9",
+      "published_sha256": "a0ef1bb31c599f285a4bfdfd0f0a78e4ed15cd240d7c2a9f4dfd509f663419a9",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/prepare_sensitivity.py",
+      "source_sha256": "57ebfd749678dc19a586251ba0b7d8ea257785c539f5d15c78cf6c7b17b405ac",
+      "published_sha256": "57ebfd749678dc19a586251ba0b7d8ea257785c539f5d15c78cf6c7b17b405ac",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/preview_readonly.py",
+      "source_sha256": "0501d550b705106ea9f7462e660f8ff48f69ab4f4f0e27cba68752353a077144",
+      "published_sha256": "0501d550b705106ea9f7462e660f8ff48f69ab4f4f0e27cba68752353a077144",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/produce_static.py",
+      "source_sha256": "a394a77369ae894ecb50d5c175491e9b1d20ceb305ad0f4f777b014e9be01646",
+      "published_sha256": "a394a77369ae894ecb50d5c175491e9b1d20ceb305ad0f4f777b014e9be01646",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/psychrolib_reference.py",
+      "source_sha256": "37e08506bdc2e652a77026e7107ece7eaabb1c40997b563b88fe2951385aefdf",
+      "published_sha256": "37e08506bdc2e652a77026e7107ece7eaabb1c40997b563b88fe2951385aefdf",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/repair_chronology.py",
+      "source_sha256": "9ec53b1a46fe436e2918e05df957a7f45cb8b204a25c58ec0cd9430f49039a6c",
+      "published_sha256": "9ec53b1a46fe436e2918e05df957a7f45cb8b204a25c58ec0cd9430f49039a6c",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/repair_external_bindings.py",
+      "source_sha256": "5e56e74cbb104dd3a9d768040d792d7217ce813d76a0bbc6622a657f2ddb967d",
+      "published_sha256": "5e56e74cbb104dd3a9d768040d792d7217ce813d76a0bbc6622a657f2ddb967d",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/run_cohort.py",
+      "source_sha256": "79c45f84d4bebea8772611a622d96bd9f8332684027b90de04dea621bd31b857",
+      "published_sha256": "79c45f84d4bebea8772611a622d96bd9f8332684027b90de04dea621bd31b857",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/structural_zero_controls.py",
+      "source_sha256": "c41b980df119405cc7016e8bfa3b0085f4480309062b337057d07dc0df3e5402",
+      "published_sha256": "c41b980df119405cc7016e8bfa3b0085f4480309062b337057d07dc0df3e5402",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/type_model.py",
+      "source_sha256": "3bb3df9681b5caa5e34f5e9123f743ed06b1a0f3d0ced84cb17c23907d5263c9",
+      "published_sha256": "3bb3df9681b5caa5e34f5e9123f743ed06b1a0f3d0ced84cb17c23907d5263c9",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/vehicle_causal_controls.py",
+      "source_sha256": "a1ae92c102f5e2a8b6764952a0e2b9c1c77dc4ba58999d7f158c2debe7fdeb9b",
+      "published_sha256": "a1ae92c102f5e2a8b6764952a0e2b9c1c77dc4ba58999d7f158c2debe7fdeb9b",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/vehicle_state.py",
+      "source_sha256": "198a9d3452e89903647125a989437c4e79dcd81626a73d431f0b373ec3220bed",
+      "published_sha256": "198a9d3452e89903647125a989437c4e79dcd81626a73d431f0b373ec3220bed",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/verify_case_bindings.js",
+      "source_sha256": "ee0d2e003213a8121222b28777d83fff82dd2dcd5186890f90eb7ae303b2e9b3",
+      "published_sha256": "ee0d2e003213a8121222b28777d83fff82dd2dcd5186890f90eb7ae303b2e9b3",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/verify_frontend_clock.js",
+      "source_sha256": "e46761ceeda681d0eebac4e71f807fdbb152c95e0a43c941e45edb3acda6d7a6",
+      "published_sha256": "e46761ceeda681d0eebac4e71f807fdbb152c95e0a43c941e45edb3acda6d7a6",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/weather_audit.py",
+      "source_sha256": "a491c2754f7e6a5fea99ceb954cb8f636e06c4d0c4c16f9428a35b48d556d8d8",
+      "published_sha256": "a491c2754f7e6a5fea99ceb954cb8f636e06c4d0c4c16f9428a35b48d556d8d8",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/weather_qc.py",
+      "source_sha256": "4d50759b668459a88864b4851cfc4a5e09343b5d461315431ef071653937f3cc",
+      "published_sha256": "4d50759b668459a88864b4851cfc4a5e09343b5d461315431ef071653937f3cc",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/worlds.py",
+      "source_sha256": "4b677c25731bfd0e31bdadc810722b062ecfa62386e2e7dad4dc472de8505047",
+      "published_sha256": "4b677c25731bfd0e31bdadc810722b062ecfa62386e2e7dad4dc472de8505047",
+      "kind": "v28_source_or_aggregate",
+      "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/EVIDENCE_CHAIN_REVIEW.json",
@@ -4512,10 +5163,10 @@
     },
     {
       "path": "scripts/household1000.py",
-      "source_sha256": "bfbb233aca1ac105735c9c4eaba430c14ce6706719febfbb59a083b29b2f4d58",
-      "published_sha256": "bfbb233aca1ac105735c9c4eaba430c14ce6706719febfbb59a083b29b2f4d58",
+      "source_sha256": "c9619d8a86e51fcefed89e884ba5ee222fd351d538fb45f5ae04f09231ae5680",
+      "published_sha256": "c9619d8a86e51fcefed89e884ba5ee222fd351d538fb45f5ae04f09231ae5680",
       "kind": "V27_reference_source_or_aggregate",
-      "transformation": "none;aggregate report private transformations documented internally"
+      "transformation": "current first-party V28 revision; no protected cases or participant data"
     },
     {
       "kind": "EB6_pre_generation_requirement",
@@ -4523,86 +5174,9 @@
       "published_sha256": "972c431216e39b4dc7f763f0a15f19ee397c8f96926f8e956a2ac17a87b7f342",
       "source_sha256": "972c431216e39b4dc7f763f0a15f19ee397c8f96926f8e956a2ac17a87b7f342",
       "transformation": "none"
-    },
-    {
-      "path": "deploy/questionnaire_revision_20261014/preview.py",
-      "source_sha256": "87f2cca3c9ad5609a54fae72b3f758224054fc36195030300d16f3cd4a563725",
-      "published_sha256": "87f2cca3c9ad5609a54fae72b3f758224054fc36195030300d16f3cd4a563725",
-      "kind": "questionnaire_revision_source_or_aggregate",
-      "transformation": "none; no cases or respondent records"
-    },
-    {
-      "path": "deploy/questionnaire_revision_20261014/test_respondent.py",
-      "source_sha256": "f7c95637affaede0f145f3f8432085a011f9c99457b7da7d2e3c06adaf2e485d",
-      "published_sha256": "f7c95637affaede0f145f3f8432085a011f9c99457b7da7d2e3c06adaf2e485d",
-      "kind": "questionnaire_revision_source_or_aggregate",
-      "transformation": "none; no cases or respondent records"
-    },
-    {
-      "path": "deploy/questionnaire_revision_20261014/CHECKS.json",
-      "source_sha256": "5e3297972d765fe9757ff208f32ea65ec43e266aaeef56467472b9b9aedd3677",
-      "published_sha256": "5e3297972d765fe9757ff208f32ea65ec43e266aaeef56467472b9b9aedd3677",
-      "kind": "questionnaire_revision_source_or_aggregate",
-      "transformation": "none; no cases or respondent records"
-    },
-    {
-      "path": "deploy/questionnaire_revision_20261014/verify_protocol.py",
-      "source_sha256": "6bbe3b4066696152331f036404d1f519c73446920d81eb0ce262a741fdc767d4",
-      "published_sha256": "6bbe3b4066696152331f036404d1f519c73446920d81eb0ce262a741fdc767d4",
-      "kind": "questionnaire_revision_source_or_aggregate",
-      "transformation": "none; no cases or respondent records"
-    },
-    {
-      "path": "deploy/questionnaire_revision_20261014/RELEASE.md",
-      "source_sha256": "cfa9c88651ae271ed0e7eccf9def7dee0095f60d764cbda0cb23b25bf9456c92",
-      "published_sha256": "cfa9c88651ae271ed0e7eccf9def7dee0095f60d764cbda0cb23b25bf9456c92",
-      "kind": "questionnaire_revision_source_or_aggregate",
-      "transformation": "none; no cases or respondent records"
-    },
-    {
-      "path": "deploy/questionnaire_revision_20261014/revise_frontend.py",
-      "source_sha256": "2e0d794343a7fe3f9c3723209db25b177f10476e95365419704fe16e47b52922",
-      "published_sha256": "2e0d794343a7fe3f9c3723209db25b177f10476e95365419704fe16e47b52922",
-      "kind": "questionnaire_revision_source_or_aggregate",
-      "transformation": "none; no cases or respondent records"
-    },
-    {
-      "path": "deploy/questionnaire_revision_20261014/respondent-info.js",
-      "source_sha256": "0346767b761210f65590b73cdfce410e2fd3db03402b62d42e56391f8b13fb07",
-      "published_sha256": "0346767b761210f65590b73cdfce410e2fd3db03402b62d42e56391f8b13fb07",
-      "kind": "questionnaire_revision_source_or_aggregate",
-      "transformation": "none; no cases or respondent records"
-    },
-    {
-      "path": "deploy/questionnaire_revision_20261014/test_export.cjs",
-      "source_sha256": "5b3468adfb6a98550877638c7882c3995f0f21b076047b5a7366a067b7f44e9c",
-      "published_sha256": "5b3468adfb6a98550877638c7882c3995f0f21b076047b5a7366a067b7f44e9c",
-      "kind": "questionnaire_revision_source_or_aggregate",
-      "transformation": "none; no cases or respondent records"
-    },
-    {
-      "path": "deploy/questionnaire_revision_20261014/runtime/respondent.py",
-      "source_sha256": "0fbcfa9b0dd11179dc591395e5cc4285fa6b9920cc3c49e60708796d6c932ef3",
-      "published_sha256": "0fbcfa9b0dd11179dc591395e5cc4285fa6b9920cc3c49e60708796d6c932ef3",
-      "kind": "questionnaire_revision_source_or_aggregate",
-      "transformation": "none; no cases or respondent records"
-    },
-    {
-      "path": "deploy/questionnaire_revision_20261014/runtime/unified_live_server.py",
-      "source_sha256": "7fdf9997b6060209b19db1bd18d7b2a5b8e227ba77d56cc75af50ffdabad1849",
-      "published_sha256": "7fdf9997b6060209b19db1bd18d7b2a5b8e227ba77d56cc75af50ffdabad1849",
-      "kind": "questionnaire_revision_source_or_aggregate",
-      "transformation": "none; no cases or respondent records"
-    },
-    {
-      "path": "deploy/questionnaire_revision_20261014/runtime/serve50.py",
-      "source_sha256": "f6e55874feaed05ac74de2faf26ce89e7e740844e7b2b1404767c902ccec73d6",
-      "published_sha256": "f6e55874feaed05ac74de2faf26ce89e7e740844e7b2b1404767c902ccec73d6",
-      "kind": "questionnaire_revision_source_or_aggregate",
-      "transformation": "none; no cases or respondent records"
     }
   ],
-  "source_snapshot_code_file_count": 646,
+  "source_snapshot_code_file_count": 739,
   "excluded": [
     "raw CHFS/CRECS/CHNS records",
     "private household/world/actor/pair/readback data",
@@ -4613,15 +5187,16 @@
   ],
   "scientific_rules_changed": true,
   "public_checkout_alone_reproduces_private_inputs": false,
-  "new_EP_runs": 1400,
+  "new_EP_runs": null,
   "human_answers": 0,
-  "active_stage": "eb_type_pilot_v27_20261014",
+  "active_stage": "formal50_950_production_v28_20261014",
   "new_household_EP_runs": 1400,
   "note": "V27 actual original50 regeneration,reference physical/UI acceptance and fixed-pilot1000 conditional allocation;actual full1000 outputs and whole coverage pending;fullEP held",
-  "EB_six_type_requirement_accepted": false,
-  "latest_requirement_stage": "eb_type_pilot_v27_20261014",
+  "EB_six_type_requirement_accepted": true,
+  "latest_requirement_stage": "formal50_950_production_v28_20261014",
   "new_generation_allowed": true,
   "latest_type_composition_evidence_stage": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014",
   "original50_six_type_accepted": true,
-  "new_generation_allowed_scope": "static1000 only"
+  "new_generation_allowed_scope": "signed completed reference inputs; no automatic engine launch",
+  "new_EP_runs_note": "See input-bound physical reviews; exact reuse separated"
 }

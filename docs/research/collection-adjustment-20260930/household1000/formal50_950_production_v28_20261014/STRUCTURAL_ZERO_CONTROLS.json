@@ -1,0 +1,1 @@
+{"checks":{"existing_People_component_missing_SQL_rejected":true,"existing_zero_schedule_missing_SQL_rejected":true,"occupied_missing_variable_rejected":true,"partial_SQL_missing_rejected":true,"zero_without_components_proved":true},"human_answers":0,"physical_IDF_and_source_ledger_unchanged":true,"status":"pass"}

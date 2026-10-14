@@ -1,1 +1,9 @@
 *.patch -whitespace
+# Preserve exact accepted school source bytes and upstream license text.
+# Exempt their existing formatting only; new code retains normal checks.
+docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/psychrolib_reference.py whitespace=-trailing-space
+docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/audit_bath.py whitespace=-blank-at-eof
+docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/audit_physical_inputs.py whitespace=-blank-at-eof
+docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/audit_reference_model.py whitespace=-blank-at-eof
+docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/curve_observer.py whitespace=-blank-at-eof
+docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/code/vehicle_causal_controls.py whitespace=-blank-at-eof

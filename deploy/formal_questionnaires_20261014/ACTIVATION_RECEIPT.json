@@ -1,0 +1,36 @@
+{
+  "schema": "eb.formal_questionnaire_activation.v1",
+  "activated_at": "2026-10-14T15:15:54.899878+00:00",
+  "health": {
+    "formal50": {
+      "batch": "formal50",
+      "cases": 500,
+      "households": 50,
+      "human_collection_release": true,
+      "mode": "formal_role_collection",
+      "questionnaire_ui_version": "eb.formal_role_questionnaire.20261014.1",
+      "release_signature": "78d4ca53e939ca62607825bd2a4ce2ebf74c22bb1bc3729857e4682f1878d1fd",
+      "scientific_benchmark_validated": false,
+      "source_world_version": "V28",
+      "training_release": false
+    },
+    "formal950": {
+      "batch": "formal950",
+      "cases": 9500,
+      "households": 950,
+      "human_collection_release": true,
+      "mode": "formal_role_collection",
+      "questionnaire_ui_version": "eb.formal_role_questionnaire.20261014.1",
+      "release_signature": "dcb9599739c5912bfb529738d415d9e38a76c829083b5ffe8d5633b20fbf0310",
+      "scientific_benchmark_validated": false,
+      "source_world_version": "V28",
+      "training_release": false
+    }
+  },
+  "backup": "/var/backups/energybridge-role-collection/20261014T151552Z",
+  "consistent_backup_interval_hours": 6,
+  "engineering_database_migrated_to_formal": false,
+  "old_engineering_release_and_databases_retained": true,
+  "private_invitation_count": 1000,
+  "automatic_training_release": false
+}

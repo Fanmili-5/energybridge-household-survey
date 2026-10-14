@@ -1,0 +1,31 @@
+{
+  "schema": "eb.collection_role_label_catalog.v1",
+  "all_activity_roles": [
+    "community_activity_reference",
+    "commuter_reference",
+    "flexible_work_reference",
+    "given_home_care_reference",
+    "given_variable_nonwork_reference",
+    "given_variable_short_work_reference",
+    "given_variable_work_reference",
+    "home_commitments_reference",
+    "home_work_reference",
+    "infant_home_care",
+    "mixed_activity_reference",
+    "preschool_given_daycare",
+    "preschool_home_care",
+    "school_reference",
+    "toddler_given_daycare",
+    "toddler_home_care",
+    "unknown_home_commitments",
+    "unknown_mixed_activity",
+    "unknown_outside_commitments"
+  ],
+  "additional_explicit_labels": {
+    "given_variable_short_work_reference": "有工作来源提示；给定日期变化的短时工作情景"
+  },
+  "accepted_generator_and_physical_inputs_changed": false,
+  "reference_employment_not_promoted_to_observed_profession": true,
+  "renderer_sha256": "e9427f4a03741757a54676ee30e83290890afd5ed89a3e6c0e5d8f2623d5b742",
+  "adapter_sha256": "e87968b33b94c83f2ec7bae10dee188abe7d3b627e3ffa1a5cf7582732642b08"
+}

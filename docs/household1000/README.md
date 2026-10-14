@@ -1,33 +1,25 @@
-# 1000户生产链：V27原50户通过，1000户研究配比冻结
+# V28：1000户完整参考世界与50/950正式采集
 
-当前V27目标仍是类型覆盖与EB一致。学校原50户50个世界、147名成员、500组A/B、1000份静态IDF与原前端材料已完成新版参考验收；1400个唯一家庭物理运行及500页面实际浏览器检查通过。1000户研究配比已冻结为A101/B303/C319/D101/E85/F91，原50户类型/政策固定在正式分配中。具体依据见[方法与验收](../research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/METHODS_AND_ACCEPTANCE.md)、[原50汇总](../research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/PILOT_ACCEPTANCE_SUMMARY.json)和[冻结配比](../research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/FROZEN_COMPOSITION_SUMMARY.json)。这不是全国六类自然偏好比例；实际1000户新世界/A-B/IDF及整体覆盖仍待生产验收，全量EP关闭。
+2026-10-14，1000户、2524名参考成员、10000组A/B和20000份基准IDF完成静态、六类实际覆盖、学校物理及前端源绑定验收。原50先核验500基准与200敏感性配对，通过后才核验950户9500基准配对，另完成520组气象敏感性。全部A服务/车辆/功率门及实际时序、计量和逐室/逐人闭合通过；B的不满足保留。[完整逻辑与依据](../research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/METHODS_AND_ACCEPTANCE.md)。
 
-当前原50户阶段为`eb_type_pilot_v27_20261014`。V23的1000户/2524人/10000组A-B/20000份IDF是保留的历史参考输入。新版政策已先于日程和A生成，源未知字段保持未知；实际正式1000户未在本轮生成。
+两个正式采集入口：[50户500任务](https://47.85.194.154/household50)、[950户9500任务](https://47.85.194.154/household950)。角色集合不相交，同一版生成规则，每户十个原季度分层日期。沿用成熟问卷，保留影响，增加本人年龄/性别选填，动作简略并可展开完整时段。研究者私下分发固定家庭的邀请码，参与者确认说明后填写，可恢复、修订和撤回。[采集协议与管理](../../deploy/formal_questionnaires_20261014/RELEASE.md)。
 
-目标是让真人扮演有来源锚点、内部一致的中国城市普通住宅参考角色，评价B相对于独立冻结A的安排，并支持一个共享的角色回应模型。目标人口限定2020年中国大陆城市普通住宅家庭户，排除镇、乡村、集体户及非普通住宅。这里不是1000户实际住户的日记、拥有率或真实同意调查。
+正式库与旧试填库独立。源情境仍为参考模型数据，实际答卷标记参与者提交来源；虚构验收记录不进正式导出，训练不自动准入。每条答卷连接角色/日期、源包/页面hash、可见输入、参与说明版本和回执。本人信息及当前回答在模型输出侧。
 
-当前结果与范围以 [STATUS.json](STATUS.json)、[新版原50物理汇总](../research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/PHYSICS50_SUMMARY.json)和[新版接受门反例](../research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/ACCEPTANCE_NEGATIVE_CONTROLS.json)为准。全量1000户EP保持关闭，真人答案为0，正式benchmark与训练未准入。
+目标人口限定2020年中国大陆城市普通住宅家庭户，排除镇、乡村、集体户及非普通住宅。七普直接控制、辅助调查代理、联合补全与给定政策分层记录；未知就业不改成真实职业，精确作息/设施/服务/协商条件是明确情境。六类A101/B303/C319/D101/E85/F91为家庭结构和可行性约束下的研究配比，类型覆盖与EB一致；没有识别全国真实六类偏好占比。
 
-三个验收漏洞已改为：对实际世界/配对/设备账本/IDF/天气/代码/前端内容核hash；从冻结原50户独立生成期望运行集合，缺失、重复、错配和范围外结果拒收；正常A的服务及住宅/回路10分钟平均功率为硬门，B的不满足和风险保留供演员评价，不预填拒绝答案。
+设备为原EB六功能模型，每户4–6类覆盖，洗烘可共机；覆盖不是全国拥有率。08:00至次日08:00是完整24小时，保留跨夜端点；前史和有限服务尾段用于初始化/交付，没有全年运行或等末态净节能结论。原空调曲线边界截断与警告仍保留，模型温度不等于个人舒适，也未完成品牌或建筑实测校准。
 
-旧SQL只在IDF、天气、引擎和输出hash精确一致时复用，保存旧运行回执来源，依据当前账本重读服务与物理后果。不能把旧验收报告改名当新验收。V23历史验收主要复用精确相同的旧物理运行；V27改变实际输入后重新完成原50户1400个唯一家庭运行，敏感性中重复出现的基准100个运行只按实际字节复用、不重复计数。7/14日前史、入水温度与空调模型形式比较是参考敏感性；原曲线截断与严格湿球点比对失败保留。
+本版统一修正全员外出/在家活动覆盖、源EPW湿度异常的可追溯处理和外部人员—SQL名称绑定。原家庭/日期/设备/冻结类型保持，A/B因作息修正重新生成；20400份IDF在人员绑定补充前后字节不变。源原件、旧版本和失败记录保留，未删户或掩盖失败。当前验收：[聚合报告](../research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/PUBLIC_ACCEPTANCE.json)、[50案例](../research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/FORMAL50_CASE_ACCEPTANCE.json)、[950案例](../research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/FORMAL950_CASE_ACCEPTANCE.json)。
 
-每户4–6类EB功能设备是任务覆盖，333/333/334户分别覆盖4/5/6类；洗烘可共用一个实体资产。这不是全国电器拥有率。日程、照护、服务目标、惯常A、可协商条件和未知主观取舍分别记录。十个原季度分层日期为每户十个任务日，主观察窗08:00至次日08:00，前史和有限服务尾段用于初始化/交付，不做全年模拟，也不声称A/B末态相等或等服务净节能。
-
-原成熟前端继续使用采用/不采用B、四项可空评分和原因。模型输入取演员实际可见的信息和合法历史，当前答案留在输出侧。工程填写和浏览器检查不构成真人试读。
-
-阅读顺序：[完整链条](PIPELINE.md) → [逐环节科研依据](../research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/PRODUCTION_LOGIC_CHAIN.md) → [来源与未知](../research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/EVIDENCE_CHAIN_REVIEW.json) → [受控输入](INPUTS.md) → [复现核验](REPRODUCTION.md) → [证据门](RESEARCH_GATES.md)。
+正式发布允许启动实际角色答卷收集；真人理解/角色作用、自然偏好比例和最终benchmark性能仍需后续数据验证。50/950不自动等于统计独立的训练/测试划分。公开源码、方法与聚合报告；许可原件、逐户世界、IDF/天气/SQL、邀请码和答卷留在受控环境。
 
 ```bash
 python3 scripts/household1000.py status
 python3 scripts/household1000.py stages
 python3 scripts/household1000.py check-source
-python3 scripts/household1000.py require-generation  # 公开clone返回2：缺受控学校输入
-python3 scripts/household1000.py require-generation --scope full1000EP  # 始终关闭
 python3 scripts/household1000.py doctor
+python3 scripts/household1000.py require-generation --scope full1000EP
 ```
 
-这些命令只读，不启动EP、调用模型或生成真人答案。公开载荷是第一方源码、无案例前端模板、合同、科研依据和汇总验收；许可调查原件、逐户包、IDF/天气/SQL、联系人和答卷不公开。完整重建需自行准备获准使用的受控输入，干净clone不具备全部数据。
-
-
-2026-10-14证据与设定边界：七普直接结构控制、模型联合补全、辅助调查代理和研究者给定政策分别保存；19项来源可追溯。六类构成受源结构与正常服务可行性约束；费用/舒适/授权、q和每类下限为明示设计。原50新版验收已过、研究配比已冻；真实六类比例、真人角色有效性及正式benchmark仍未验证。原前端在学校用新版材料验收；2026-10-14原50户在线入口已切换V27，并完成[问卷改版与保存接口核验](../../deploy/questionnaire_revision_20261014/RELEASE.md)。当前仍为工程试填/角色试读范围。
+这些命令不启动EP、不调用模型、不生成真人答案。干净公开clone缺少受控输入，准入命令返回2；准备好学校当前目录后，核对实际内容绑定验收回执。[复现输入](INPUTS.md)、[完整链](PIPELINE.md)、[状态](STATUS.json)、[研究门](RESEARCH_GATES.md)。

@@ -73,12 +73,16 @@ def doctor(workspace):
 def check_bindings(workspace, scope):
     stage = read(PUBLIC / 'STATUS.json')['active_stage']
     base = workspace / REL / stage
-    selection_path = base / ('SELECTION1000.json' if scope == 'static1000' else 'SELECTION50.json')
+    modern = (base / 'PARTITIONS.json').is_file()
+    selection_path = base / ('SELECTION1000.json' if scope == 'static1000' or modern else 'SELECTION50.json')
     if not selection_path.is_file():
         print(json.dumps({'status': 'missing_prepared_inputs', 'selection': str(selection_path),
                           'instruction': 'See docs/household1000/INPUTS.md;no data are downloaded automatically.'}))
         return 2
     selection = read(selection_path)
+    if modern and scope == 'pilot50':
+        ids = set(read(base / 'PARTITIONS.json')['formal50'])
+        selection['records'] = [h for h in selection['records'] if h['household_id'] in ids]
     expected = 1000 if scope == 'static1000' else 50
     errors, pairs, residents = [], 0, 0
     if len(selection['records']) != expected:
@@ -145,6 +149,25 @@ def main():
         if not entry.is_file():
             print(json.dumps({'generation_allowed':False,'EP_allowed':False,'reason':'prepared generation entry missing'}))
             return 2
+        if pointer.get('gate_kind') == 'v28_readonly_cohort_receipts':
+            stage = base / pointer['stage']
+            if not (stage / 'SELECTION1000.json').is_file():
+                print(json.dumps({'generation_allowed': False, 'EP_started': False,
+                                  'reason': 'protected current school inputs missing'}))
+                return 2
+            code = '''import sys,json
+from pathlib import Path
+stage=Path(sys.argv[1]);sys.path.insert(0,str(stage/'code'))
+from cohort_gate import require_reviewed_ep
+scopes=['original50'] if sys.argv[2]=='static1000' else ['original50','other950','weather_sensitivity']
+for scope in scopes:
+    require_reviewed_ep(scope)
+    report=json.loads((stage/('PHYSICS_'+scope+'_REVIEW.json')).read_text())
+    assert report['acceptance_passed'] and not report['failures']
+print(json.dumps({'current_content_bound_reference_receipts':'pass','scopes':scopes,'EP_started':False,'human_answers_created':0}))
+'''
+            return subprocess.run([sys.executable, '-B', '-c', code, str(stage), args.scope],
+                                  cwd=args.workspace.resolve()).returncode
         # The school gate verifies actual accepted bytes and frozen allocation;
         # no JSON status flag admits generation. This command starts no engine.
         return subprocess.run([sys.executable,str(entry),args.scope],cwd=args.workspace.resolve()).returncode

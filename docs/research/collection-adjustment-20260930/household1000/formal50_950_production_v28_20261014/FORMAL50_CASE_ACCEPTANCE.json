@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "batch": "formal50",
+  "households": 50,
+  "cases_checked": 500,
+  "release_signature": "78d4ca53e939ca62607825bd2a4ce2ebf74c22bb1bc3729857e4682f1878d1fd",
+  "physical_review_sha256": "a086fd57d06511d92146f1ec5614254d3d8189eabea628ecee4cf1da68bb4468",
+  "current_world_pair_SQL_readback_bindings": "pass",
+  "missing_or_pending_physical_cases": 0,
+  "source_reference_cases_promoted_to_human_labels": false,
+  "human_answers_created": 0
+}
