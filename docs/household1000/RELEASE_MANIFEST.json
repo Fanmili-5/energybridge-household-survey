@@ -1,14 +1,14 @@
 {
-  "version": "household1000-v26-EB-type-coverage",
-  "checked_utc": "2026-10-14T04:16:08.832207+00:00",
+  "version": "household1000-v27-original50-and-questionnaire-20261014",
+  "checked_utc": "2026-10-14T09:48:12.497241+00:00",
   "repository": "https://github.com/Fanmili-5/energybridge-household-survey.git",
   "target_branch": "main",
-  "parent_commit": "8569ce479a8abbce410b1fb7ef7fd582ac4a5931",
+  "parent_commit": "30c67c12a2f9df05ea2454dfe8edd19757f99181",
   "payload_files_excluding_this_manifest": [
     {
       "path": "README.md",
-      "bytes": 5437,
-      "sha256": "e071fd4bc5eb1a549a6bbcacb560d3d2e50d39c4c85256f02ddae68f6d99daf6"
+      "bytes": 5771,
+      "sha256": "f3163d709d05491846dcba90a8f1ae59c4aff072b2afc7d45f72bd5d26a42df6"
     },
     {
       "path": "THIRD_PARTY.md",
@@ -16,9 +16,69 @@
       "sha256": "a0de6031d3bb58fe21f371afed01e805f95adb0288a9923e18d504770cc66ba3"
     },
     {
+      "path": "deploy/questionnaire_revision_20261014/CHECKS.json",
+      "bytes": 1514,
+      "sha256": "5e3297972d765fe9757ff208f32ea65ec43e266aaeef56467472b9b9aedd3677"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/RELEASE.md",
+      "bytes": 3575,
+      "sha256": "cfa9c88651ae271ed0e7eccf9def7dee0095f60d764cbda0cb23b25bf9456c92"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/SOURCE_MANIFEST.json",
+      "bytes": 4581,
+      "sha256": "b6dad9601467c1715aece7c376b1119bf0ecabeb85ac6c1ab0df5181236606ca"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/preview.py",
+      "bytes": 2067,
+      "sha256": "87f2cca3c9ad5609a54fae72b3f758224054fc36195030300d16f3cd4a563725"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/respondent-info.js",
+      "bytes": 997,
+      "sha256": "0346767b761210f65590b73cdfce410e2fd3db03402b62d42e56391f8b13fb07"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/revise_frontend.py",
+      "bytes": 7742,
+      "sha256": "2e0d794343a7fe3f9c3723209db25b177f10476e95365419704fe16e47b52922"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/runtime/respondent.py",
+      "bytes": 742,
+      "sha256": "0fbcfa9b0dd11179dc591395e5cc4285fa6b9920cc3c49e60708796d6c932ef3"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/runtime/serve50.py",
+      "bytes": 4015,
+      "sha256": "f6e55874feaed05ac74de2faf26ce89e7e740844e7b2b1404767c902ccec73d6"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/runtime/unified_live_server.py",
+      "bytes": 13828,
+      "sha256": "7fdf9997b6060209b19db1bd18d7b2a5b8e227ba77d56cc75af50ffdabad1849"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/test_export.cjs",
+      "bytes": 2152,
+      "sha256": "5b3468adfb6a98550877638c7882c3995f0f21b076047b5a7366a067b7f44e9c"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/test_respondent.py",
+      "bytes": 3252,
+      "sha256": "f7c95637affaede0f145f3f8432085a011f9c99457b7da7d2e3c06adaf2e485d"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/verify_protocol.py",
+      "bytes": 5269,
+      "sha256": "6bbe3b4066696152331f036404d1f519c73446920d81eb0ce262a741fdc767d4"
+    },
+    {
       "path": "docs/README.md",
-      "bytes": 3295,
-      "sha256": "7db0c5df4e4133b90d0adce9d5594138094e0ba4ba50f8152cddf1957aeb0e0a"
+      "bytes": 3309,
+      "sha256": "a0c6fdbf05fafe2bbda4d8312d86accc1ca24730ca360e47c5f1b27373e0ba4e"
     },
     {
       "path": "docs/household1000/ACCEPTANCE_REPAIRS.json",
@@ -32,13 +92,13 @@
     },
     {
       "path": "docs/household1000/EB_SIX_TYPE_REQUIREMENT.json",
-      "bytes": 4307,
-      "sha256": "9f87275fe3cd878507d95a0dfc232e6f2d41828e782ee924c46033492990191a"
+      "bytes": 4671,
+      "sha256": "eb0a52901fc6ca749c91b1d427794251287a14b7313ba02b7a406da65b8059c4"
     },
     {
       "path": "docs/household1000/EB_SIX_TYPE_REQUIREMENT.md",
-      "bytes": 3457,
-      "sha256": "9c6b5d0bf7cdc7d63c018ec206dfbc5bf717e53e37a28e10032af393f6a5f988"
+      "bytes": 3930,
+      "sha256": "64037d0b7113b948ee1dcc703d7ef88193befe057d1f122034e9e59ceac2adfd"
     },
     {
       "path": "docs/household1000/ENTRYPOINT_TEST_CHECK.json",
@@ -62,13 +122,13 @@
     },
     {
       "path": "docs/household1000/PIPELINE.json",
-      "bytes": 14236,
-      "sha256": "09e15ffe98f70738797adde1ef9765a30d3880fc9d36cfc4919abacb09ddea10"
+      "bytes": 17187,
+      "sha256": "a01cfb99554e35967a00348deb71363ac242157e0625c7c1bd040a79d92a4fbd"
     },
     {
       "path": "docs/household1000/PIPELINE.md",
-      "bytes": 4860,
-      "sha256": "20e793542a7c24a62ebdd00d7ce766fd49bd51302658869499396538a18aa9b7"
+      "bytes": 5333,
+      "sha256": "7ea2cdd0b7a7cdc9443b43999425bf1b8157c878c68987e237312456c918adcb"
     },
     {
       "path": "docs/household1000/PREFERENCE_FIELD_AUDIT.json",
@@ -82,8 +142,8 @@
     },
     {
       "path": "docs/household1000/README.md",
-      "bytes": 4315,
-      "sha256": "c701dafd1903c8af03d1ab4c6320bba8a93db01133af49a3026b9b3a5a8b0857"
+      "bytes": 5358,
+      "sha256": "7052e52a3ceec0883c477d1a48d5a3cfcced5c62f3da491f4281715005d2ac13"
     },
     {
       "path": "docs/household1000/REFERENCE_ACCEPTANCE.json",
@@ -92,8 +152,8 @@
     },
     {
       "path": "docs/household1000/REPRODUCTION.md",
-      "bytes": 3572,
-      "sha256": "f5e390eae31c17c4c1e96adee74eb7c756b323d2315f229b0dd670d2e7c3dc84"
+      "bytes": 4045,
+      "sha256": "8ac59db1e591a50783f789976a5c91c14ddf97d885f31d408ead9c1ec267cee5"
     },
     {
       "path": "docs/household1000/RESEARCH_GATES.md",
@@ -107,23 +167,23 @@
     },
     {
       "path": "docs/household1000/SOURCE_SNAPSHOT.json",
-      "bytes": 244409,
-      "sha256": "9cf6498107b3715be0442eccaebd7d6d36e6730867eeb3d040faae24f6d6163f"
+      "bytes": 275793,
+      "sha256": "cc8d0a123646c3fa6e78fa858381e684e97defd96b90857691aa1c763d340813"
     },
     {
       "path": "docs/household1000/STATUS.json",
-      "bytes": 3828,
-      "sha256": "0b63045f1a8ab110c5ccaf39939832a6f880a6a80efc10ec8ac3bf73e7022b75"
+      "bytes": 5586,
+      "sha256": "472ed9a114eb35d5f1febf917495179ec19415e5c9e013f2dc2efc4900c30779"
     },
     {
       "path": "docs/household1000/V23_PUBLIC_PAYLOAD.json",
-      "bytes": 30574,
-      "sha256": "b465bc630ad754860508e8a99e7f454b326f1c2bd5bf57f2f144a8aa5aaae74a"
+      "bytes": 37481,
+      "sha256": "24ad8b71164578e7043dd3d0efc8b4008dced336a8202a958b3a3a04efb8d0c4"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
-      "bytes": 710,
-      "sha256": "fd2ae7da297d1a35c80079a7c74f61a6176d0caa40d89731a31089b28cf429ad"
+      "bytes": 1358,
+      "sha256": "9e568521755d40aaf76356e6cb2613de31e4af1a50b644215303c6c06c1dc1df"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_PRODUCTION_REVIEW.json",
@@ -142,8 +202,8 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
-      "bytes": 2103,
-      "sha256": "733b5ae819c3f5c3067b2018bafb8480320abb31622eca773f3880d3e21c2cae"
+      "bytes": 637,
+      "sha256": "9ecad47cbc2f00cb4d07c772cf2c395a44a4d144913241dd29aa198368ba710f"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/causal_reference_production_20261010_v22/code/PSYCHROLIB_LICENSE.txt",
@@ -1247,8 +1307,8 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/repair_execution_20261008_v1/EXECUTION_BOARD.json",
-      "bytes": 2807,
-      "sha256": "3ef754401e419af9dbe6e5617319703108eab3237cfbc5d50693b247f6204a78"
+      "bytes": 2639,
+      "sha256": "55cdd9398a219bee9ca99bde777de23342e5b0e7db5f10691d69af02872c89d3"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/PSYCHROLIB_LICENSE.txt",
@@ -1517,13 +1577,13 @@
     },
     {
       "path": "scripts/household1000.py",
-      "bytes": 7422,
-      "sha256": "51dd93a4bdf3b62cb70e8940c732a0071ea7f4685ffd7595d53cf32866a6e8a0"
+      "bytes": 7385,
+      "sha256": "bfbb233aca1ac105735c9c4eaba430c14ce6706719febfbb59a083b29b2f4d58"
     },
     {
       "path": "tests/test_household1000_entrypoint.py",
-      "bytes": 4432,
-      "sha256": "906d42f670f9f6717b7a41e84e1d76f8fe28221d5b33f9edfd1350bea8e36cf6"
+      "bytes": 4742,
+      "sha256": "972c431216e39b4dc7f763f0a15f19ee397c8f96926f8e956a2ac17a87b7f342"
     }
   ],
   "payload_file_count_excluding_manifest": 304,

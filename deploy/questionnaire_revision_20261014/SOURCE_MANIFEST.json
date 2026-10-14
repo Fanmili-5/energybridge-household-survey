@@ -1,0 +1,85 @@
+{
+  "schema": "eb.questionnaire_public_source.v1",
+  "questionnaire_ui_version": "eb.household50.questionnaire.20261014.1",
+  "source_world_version": "V27",
+  "source_files": [
+    {
+      "path": "deploy/questionnaire_revision_20261014/preview.py",
+      "source_sha256": "87f2cca3c9ad5609a54fae72b3f758224054fc36195030300d16f3cd4a563725",
+      "published_sha256": "87f2cca3c9ad5609a54fae72b3f758224054fc36195030300d16f3cd4a563725",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/test_respondent.py",
+      "source_sha256": "f7c95637affaede0f145f3f8432085a011f9c99457b7da7d2e3c06adaf2e485d",
+      "published_sha256": "f7c95637affaede0f145f3f8432085a011f9c99457b7da7d2e3c06adaf2e485d",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/CHECKS.json",
+      "source_sha256": "5e3297972d765fe9757ff208f32ea65ec43e266aaeef56467472b9b9aedd3677",
+      "published_sha256": "5e3297972d765fe9757ff208f32ea65ec43e266aaeef56467472b9b9aedd3677",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/verify_protocol.py",
+      "source_sha256": "6bbe3b4066696152331f036404d1f519c73446920d81eb0ce262a741fdc767d4",
+      "published_sha256": "6bbe3b4066696152331f036404d1f519c73446920d81eb0ce262a741fdc767d4",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/RELEASE.md",
+      "source_sha256": "cfa9c88651ae271ed0e7eccf9def7dee0095f60d764cbda0cb23b25bf9456c92",
+      "published_sha256": "cfa9c88651ae271ed0e7eccf9def7dee0095f60d764cbda0cb23b25bf9456c92",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/revise_frontend.py",
+      "source_sha256": "2e0d794343a7fe3f9c3723209db25b177f10476e95365419704fe16e47b52922",
+      "published_sha256": "2e0d794343a7fe3f9c3723209db25b177f10476e95365419704fe16e47b52922",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/respondent-info.js",
+      "source_sha256": "0346767b761210f65590b73cdfce410e2fd3db03402b62d42e56391f8b13fb07",
+      "published_sha256": "0346767b761210f65590b73cdfce410e2fd3db03402b62d42e56391f8b13fb07",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/test_export.cjs",
+      "source_sha256": "5b3468adfb6a98550877638c7882c3995f0f21b076047b5a7366a067b7f44e9c",
+      "published_sha256": "5b3468adfb6a98550877638c7882c3995f0f21b076047b5a7366a067b7f44e9c",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/runtime/respondent.py",
+      "source_sha256": "0fbcfa9b0dd11179dc591395e5cc4285fa6b9920cc3c49e60708796d6c932ef3",
+      "published_sha256": "0fbcfa9b0dd11179dc591395e5cc4285fa6b9920cc3c49e60708796d6c932ef3",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/runtime/unified_live_server.py",
+      "source_sha256": "7fdf9997b6060209b19db1bd18d7b2a5b8e227ba77d56cc75af50ffdabad1849",
+      "published_sha256": "7fdf9997b6060209b19db1bd18d7b2a5b8e227ba77d56cc75af50ffdabad1849",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "deploy/questionnaire_revision_20261014/runtime/serve50.py",
+      "source_sha256": "f6e55874feaed05ac74de2faf26ce89e7e740844e7b2b1404767c902ccec73d6",
+      "published_sha256": "f6e55874feaed05ac74de2faf26ce89e7e740844e7b2b1404767c902ccec73d6",
+      "kind": "questionnaire_revision_source_or_aggregate",
+      "transformation": "none; no cases or respondent records"
+    }
+  ],
+  "protected_case_and_response_data_included": false
+}
