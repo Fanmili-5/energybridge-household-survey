@@ -1,0 +1,85 @@
+{
+  "schema": "household1000.composition.source_arithmetic_review.v1",
+  "date": "2026-10-14",
+  "execution_host": "school_hku-server",
+  "script_sha256": "9d0c6be5ad087ac7c3c0df191340d3f6fbce9ee2d2c070d8ed7e88586e4f6e7c",
+  "input_sha256": "4562511a7ccd96b4ca49748db25dd1f91a56e3ef688171fa6755b1f548ba9bea",
+  "frame_sha256": "533ac5b3788e23fbcf7b42b1eeec5e28265983f8be113a67ca20f72e93520e30",
+  "frame_hash_match": true,
+  "generation_room_facts_rederived_from_hash_bound_school_frame": true,
+  "integer_solution_optimality_proven": false,
+  "input_allocation_solver_status": 1,
+  "input_allocation_mip_gap": 0.06098047776934809,
+  "housing_ratios_input_identity": "previously audited public aggregate;source bytes rechecked;XLS cell parser not rerun in this script",
+  "ordinary_generation_counts": [
+    97492521,
+    72047596,
+    22100514,
+    539689,
+    452
+  ],
+  "ordinary_generation_percent": [
+    50.7295917200291,
+    37.48949244516512,
+    11.499857020035282,
+    0.2808236195450396,
+    0.00023519522546199367
+  ],
+  "generation_1000_integer_counts": [
+    507,
+    375,
+    115,
+    3,
+    0
+  ],
+  "modeled_size_1000_counts_not_observed_joint": [
+    265,
+    295,
+    229,
+    125,
+    53,
+    23,
+    6,
+    2,
+    1,
+    1
+  ],
+  "ordinary_people_per_household": 2.5239279348924666,
+  "population1000_integer_people_target": 2524,
+  "rented_household_percent_longform": 25.570334804150853,
+  "any_family_car_household_percent_longform": 46.94331605218436,
+  "NEV_stock2020_fixed_denominator_diagnostic_percent_ceiling": 2.560089622285418,
+  "NEV_diagnostic_is_natural_ratio_estimate": false,
+  "EV_function_coverage_design_minimum_percent": 33.4,
+  "coverage_is_natural_ownership": false,
+  "public_source_bytes": [
+    {
+      "id": "A0803a",
+      "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0803a.xls",
+      "bytes": 41472,
+      "sha256": "f1bf07665f263323edbbc4a7dd78b2f9f71e7a300571ab8a0143ac245e241cc5",
+      "expected_sha256": "f1bf07665f263323edbbc4a7dd78b2f9f71e7a300571ab8a0143ac245e241cc5",
+      "bytes_match": true
+    },
+    {
+      "id": "B0913a",
+      "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0913a.xls",
+      "bytes": 36864,
+      "sha256": "5c34f733ade2a10261e5f1e7e832c851034195f7835f64846e95c2db130dcbf5",
+      "expected_sha256": "5c34f733ade2a10261e5f1e7e832c851034195f7835f64846e95c2db130dcbf5",
+      "bytes_match": true
+    }
+  ],
+  "public_source_byte_mismatches": 0,
+  "public_source_byte_unavailable": 0,
+  "arithmetic_checks_passed": true,
+  "scientific_type_prevalence_identified": false,
+  "actual_type_assignment_verified": false,
+  "target_type_counts": null,
+  "generator_implemented_in_this_stage": false,
+  "new_worlds": 0,
+  "new_IDFs": 0,
+  "EP_calls": 0,
+  "generation_allowed": false,
+  "full_EP_allowed": false
+}

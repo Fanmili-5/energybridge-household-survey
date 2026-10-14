@@ -1,0 +1,262 @@
+{
+  "schema": "household1000.composition.source_aggregates.v1",
+  "date": "2026-10-14",
+  "frame_source_relative": "data_production_audit_20261009_v1/source_snapshots/v6/ORDINARY_CITY_FRAME.json",
+  "frame_source_sha256": "533ac5b3788e23fbcf7b42b1eeec5e28265983f8be113a67ca20f72e93520e30",
+  "frame_source_reference_year": 2020,
+  "official_households": 192180772,
+  "official_residents": 485050419,
+  "ordinary_generation_room_national": [
+    192180772,
+    28978610,
+    36894182,
+    24808772,
+    4239183,
+    2571774,
+    5021186,
+    28501776,
+    29670936,
+    5493163,
+    3360535,
+    504756,
+    5980589,
+    10193772,
+    2755652,
+    2665745,
+    5246,
+    69436,
+    213556,
+    99279,
+    152172,
+    4,
+    35,
+    133,
+    88,
+    192
+  ],
+  "national_longform_housing": {
+    "long_housing_total": 19072613,
+    "building_storeys_counts": [
+      1157608,
+      10866627,
+      6780735,
+      267643
+    ],
+    "load_bearing_type_counts": [
+      13677887,
+      4821248,
+      524395,
+      7228,
+      41855
+    ],
+    "storeys_and_bearing_are_separate_margins_not_joint": true,
+    "vintage_counts": [
+      53627,
+      55146,
+      85926,
+      340125,
+      1686619,
+      3871119,
+      6266977,
+      4227704,
+      2485370
+    ],
+    "vintage_room_totals": [
+      96799,
+      102531,
+      180774,
+      746786,
+      3931952,
+      9534444,
+      15860184,
+      10642640,
+      6421375
+    ],
+    "vintage_building_area_totals_m2": [
+      2542496,
+      2816007,
+      5140723,
+      21679124,
+      121117272,
+      328379621,
+      614867845,
+      414174044,
+      243423276
+    ],
+    "vintage_whole_area_means_m2": [
+      47.4107,
+      51.0646,
+      59.8273,
+      63.7387,
+      71.8107,
+      84.8281,
+      98.1124,
+      97.9667,
+      97.9425
+    ],
+    "tenure_counts": [
+      712666,
+      4164265,
+      6552696,
+      2308368,
+      1492933,
+      776128,
+      1919282,
+      157120,
+      989155
+    ],
+    "renter_total": 4876931,
+    "renter_monthly_rent_counts": [
+      408021,
+      1240388,
+      1340820,
+      1168348,
+      361992,
+      152518,
+      120140,
+      46156,
+      17270,
+      21278
+    ],
+    "kitchen_and_toilet_by_tenure_counts": [
+      651894,
+      3639510,
+      6546655,
+      2296138,
+      1478064,
+      775158,
+      1831540,
+      149130,
+      953595
+    ],
+    "kitchen_and_toilet_fraction_by_tenure": [
+      0.914726,
+      0.873986,
+      0.999078,
+      0.994702,
+      0.99004,
+      0.99875,
+      0.954284,
+      0.949147,
+      0.96405
+    ],
+    "building_has_elevator_count": 6993711,
+    "building_no_elevator_count": 12078902,
+    "cooking_fuel_counts": [
+      16345589,
+      2213781,
+      130905,
+      76774,
+      305564
+    ],
+    "piped_water_counts": [
+      18652106,
+      420507
+    ],
+    "kitchen_exclusive_shared_none_counts": [
+      18221391,
+      266718,
+      584504
+    ],
+    "toilet_type_counts": [
+      18157174,
+      196849,
+      180417,
+      198960,
+      339213
+    ],
+    "bathing_facility_counts": [
+      604590,
+      17217809,
+      334524,
+      915690
+    ],
+    "households_with_any_family_car": 8953317,
+    "households_without_family_car": 10119296,
+    "car_is_not_EV_and_not_home_charging": true
+  },
+  "integer_allocation": {
+    "province_quota": {
+      "上海": 37,
+      "云南": 21,
+      "内蒙古": 18,
+      "北京": 33,
+      "吉林": 20,
+      "四川": 54,
+      "天津": 19,
+      "宁夏": 5,
+      "安徽": 28,
+      "山东": 65,
+      "山西": 23,
+      "广东": 131,
+      "广西": 24,
+      "新疆": 16,
+      "江苏": 68,
+      "江西": 20,
+      "河北": 38,
+      "河南": 41,
+      "浙江": 60,
+      "海南": 6,
+      "湖北": 41,
+      "湖南": 31,
+      "甘肃": 13,
+      "福建": 29,
+      "西藏": 1,
+      "贵州": 16,
+      "辽宁": 53,
+      "重庆": 29,
+      "陕西": 28,
+      "青海": 4,
+      "黑龙江": 28
+    },
+    "national_generation_quotas": [
+      507,
+      375,
+      115,
+      3,
+      0
+    ],
+    "modeled_national_size_quotas": [
+      265,
+      295,
+      229,
+      125,
+      53,
+      23,
+      6,
+      2,
+      1,
+      1
+    ],
+    "modeled_size_targets_each_floor_or_ceil": true,
+    "national_resident_count_nearest_integer_target": 2524,
+    "solver_status": 1,
+    "solver_message": "Time limit reached. (HiGHS Status 13: Time limit reached)",
+    "mip_gap": 0.06098047776934809,
+    "resident_count": 2524,
+    "population_weights_sum": 1000.0000000000041
+  },
+  "public_source_tables": [
+    {
+      "id": "A0803a",
+      "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/A0803a.xls",
+      "sha256": "f1bf07665f263323edbbc4a7dd78b2f9f71e7a300571ab8a0143ac245e241cc5"
+    },
+    {
+      "id": "B0913a",
+      "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html/B0913a.xls",
+      "sha256": "5c34f733ade2a10261e5f1e7e832c851034195f7835f64846e95c2db130dcbf5"
+    }
+  ],
+  "NEV_stock2020": 4920000,
+  "NEV_stock_source": "https://www.ndrc.gov.cn/wsdwhfz/202104/t20210402_1271693.html",
+  "stock_diagnostic_assumption": "all year-end2020 NEVs uniquely owned by different ordinary city households;fixed Nov1 denominator;NOT an estimate;not applicable to shared access",
+  "functional_coverage_design": {
+    "4": 333,
+    "5": 333,
+    "6": 334
+  },
+  "target_type_counts": null,
+  "generation_allowed": false,
+  "full_EP_allowed": false
+}

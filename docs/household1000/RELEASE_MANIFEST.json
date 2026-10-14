@@ -1,9 +1,9 @@
 {
   "version": "household1000-v26-EB-type-coverage",
-  "checked_utc": "2026-10-14T03:29:00.843954+00:00",
+  "checked_utc": "2026-10-14T04:16:08.832207+00:00",
   "repository": "https://github.com/Fanmili-5/energybridge-household-survey.git",
   "target_branch": "main",
-  "parent_commit": "0c382b47c66542452f5c6a98fe18dd40dc7f6221",
+  "parent_commit": "8569ce479a8abbce410b1fb7ef7fd582ac4a5931",
   "payload_files_excluding_this_manifest": [
     {
       "path": "README.md",
@@ -82,8 +82,8 @@
     },
     {
       "path": "docs/household1000/README.md",
-      "bytes": 3836,
-      "sha256": "a799e5199ca28adeff280650cff4ba5cef83851214ffe1f0396189d5c4edec55"
+      "bytes": 4315,
+      "sha256": "c701dafd1903c8af03d1ab4c6320bba8a93db01133af49a3026b9b3a5a8b0857"
     },
     {
       "path": "docs/household1000/REFERENCE_ACCEPTANCE.json",
@@ -107,13 +107,13 @@
     },
     {
       "path": "docs/household1000/SOURCE_SNAPSHOT.json",
-      "bytes": 240585,
-      "sha256": "a2be668131423db9548b202ba1947e36ba8da349c1c6baeb026904a339ba7a89"
+      "bytes": 244409,
+      "sha256": "9cf6498107b3715be0442eccaebd7d6d36e6730867eeb3d040faae24f6d6163f"
     },
     {
       "path": "docs/household1000/STATUS.json",
-      "bytes": 3120,
-      "sha256": "e4f56091117379b73c51f00ee707d15a21c1bd9035b97f1a677b5ae38fdddeb1"
+      "bytes": 3828,
+      "sha256": "0b63045f1a8ab110c5ccaf39939832a6f880a6a80efc10ec8ac3bf73e7022b75"
     },
     {
       "path": "docs/household1000/V23_PUBLIC_PAYLOAD.json",
@@ -1471,6 +1471,51 @@
       "sha256": "babe9f76e7709f110f9934c4b7d27687c571552d75a0f4f3414ca1f68237e927"
     },
     {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/COMPOSITION_CONTRACT.json",
+      "bytes": 2332,
+      "sha256": "4e2b7aa0493b799fbd0bc95fb8982cd183fe10035f952bf1c1dbc07f85532397"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/EVIDENCE_AND_1000_PLAN.md",
+      "bytes": 18455,
+      "sha256": "7715bf948c841269bf2642832a210f6ec6ae63885305cad7fa7179a001ac2962"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/REVIEW.json",
+      "bytes": 3058,
+      "sha256": "d277926997ef99e14a449978d26b9043eea27490875c62cd37d71a91f6f8bbe1"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/SEARCH_LOG.json",
+      "bytes": 4331,
+      "sha256": "fb96d974c6f72e3d6cc333a8c2f69bc36554d96c8476854515adf32a1790d7a2"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/SEARCH_PROTOCOL.md",
+      "bytes": 2120,
+      "sha256": "dbe8eb6163a463d3f6e150ef9960c5a0427f1f4db278fe8c60db19c3a12fb65b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/SOURCE_ARITHMETIC_REVIEW.json",
+      "bytes": 2813,
+      "sha256": "5b6a1cd88c83b05d14ffb733df894c35a85f36454a2dcc26993f6a8680a7003d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/SOURCE_INPUT_AGGREGATES.json",
+      "bytes": 5390,
+      "sha256": "4562511a7ccd96b4ca49748db25dd1f91a56e3ef688171fa6755b1f548ba9bea"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/SOURCE_LEDGER.json",
+      "bytes": 13282,
+      "sha256": "ba5b527349ad1734775c963ed792503bb622ceb3e9494b932958ca0352faf498"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/code/audit_sources.py",
+      "bytes": 5684,
+      "sha256": "9d0c6be5ad087ac7c3c0df191340d3f6fbce9ee2d2c070d8ed7e88586e4f6e7c"
+    },
+    {
       "path": "scripts/household1000.py",
       "bytes": 7422,
       "sha256": "51dd93a4bdf3b62cb70e8940c732a0071ea7f4685ffd7595d53cf32866a6e8a0"
@@ -1481,9 +1526,9 @@
       "sha256": "906d42f670f9f6717b7a41e84e1d76f8fe28221d5b33f9edfd1350bea8e36cf6"
     }
   ],
-  "payload_file_count_excluding_manifest": 295,
+  "payload_file_count_excluding_manifest": 304,
   "authorization": "user explicitly requested repairs,school verification,original50 acceptance,scientific chain audit and GitHub sync;full1000 EP held",
-  "content_scope": "V26 type-coverage design plus concrete type-aware generation contract and source-supported original50 candidate audit;not implemented full world generator or cluster acceptance",
+  "content_scope": "V26 held;19-source composition evidence review,official structure control and source-bounded1000generation design;not implemented type assignment or new-world acceptance",
   "private_data_or_EP_SQL_or_human_answers_published": false,
   "school_source_check_passed": true,
   "secret_index_check_passed": true,
@@ -1496,5 +1541,6 @@
   "EB_six_type_requirement_accepted": false,
   "current_generation_allowed": false,
   "current_population_prevalence_identified": false,
-  "real_prevalence_is_generation_prerequisite": false
+  "real_prevalence_is_generation_prerequisite": false,
+  "latest_type_composition_evidence_stage": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014"
 }

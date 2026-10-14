@@ -1,0 +1,47 @@
+{
+  "schema": "household1000.composition.evidence_self_review.v1",
+  "date": "2026-10-14",
+  "reviewer_kind": "self_audit;not_independent_peer_review",
+  "research_objective": "1000 coherent Chinese-city household task worlds;EB type coverage;human roleplay and shared-model benchmark",
+  "decision": "evidence-bounded generation method documented;not actual generation acceptance",
+  "resolved_design_errors": [
+    "Do not use EB584assignedpersonacounts as population shares",
+    "Use final ordinary-city frame;do not mix all-city size margins as observed ordinary joint",
+    "Separate person activity participation from household-type proportions",
+    "Do not equate older/child members with care or universal low response",
+    "TOU willingness and general interpersonal trust do not identify persistent automation permission",
+    "Do not interpret 4-6device function quotas or original50support as population EV/type frequencies",
+    "Type mix must fit actual conditional feasibility before world generation;no label-only repair",
+    "Structure calibration is not preference identification;source matching does not observe cross-source joint fields"
+  ],
+  "evidence_strength": {
+    "city_ordinary_household_person_generation_controls": "direct official;school arithmetic and2publictablebytechecks passed",
+    "ordinary_size_generation_joint": "model completion;assumptions and integer solver residual/optimality limitations must be retained",
+    "members_employment_housing_financial_joint": "CHFS auxiliary with household/current-residence/frame/time bridge",
+    "activity_budgets": "official person marginal;2024May;urban-town not pure city",
+    "energy_habits_TOU": "historical and partial axis;local questionnaire checked;target household weighting pending",
+    "control_and_service_tradeoffs": "local stated preference or online instruments;not national joint prevalence",
+    "actual_care_and_EV_home_access": "candidate evidence sources;target joint rates unmeasured",
+    "q_and_coverage_floor": "explicit research design;floor not frozen;conditional q needs implementation",
+    "behavioral_role_validity": "human answers0;not established"
+  },
+  "remaining_generation_acceptance_items": [
+    "source condition and responsible-member audit including minor-only worlds",
+    "actual household-feasible policy/calendar/service generation",
+    "type assignment optimization plus support and mixed/unclassified audit",
+    "fixed actual-output feature extractor and clustering/sensitivity protocol",
+    "original50 new world/IDF/physical/oldfrontend acceptance",
+    "freeze numeric type composition,minima,thresholds,seeds before1000production"
+  ],
+  "national_preference_survey_mandatory_for_coverage_benchmark": false,
+  "national_six_type_prevalence_claim_allowed": false,
+  "formal_type_counts": null,
+  "new_generator_implemented": false,
+  "actual_1000_new_type_coverage_verified": false,
+  "new_worlds": 0,
+  "new_IDFs": 0,
+  "human_answers": 0,
+  "EP_calls": 0,
+  "generation_allowed": false,
+  "full_EP_allowed": false
+}

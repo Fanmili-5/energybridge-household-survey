@@ -1,0 +1,84 @@
+{
+  "schema": "household1000.structure_constrained_EB_composition.v1",
+  "date": "2026-10-14",
+  "current_generation_requirement": "eb_type_coverage_revision_v26",
+  "target": "2020 census statistical-city ordinary-residential family households;exclude town/rural/collective",
+  "n_households": 1000,
+  "dates_per_household": 10,
+  "observation_day": "08:00 to next08:00",
+  "direct_generation_integer_counts": [
+    507,
+    375,
+    115,
+    3,
+    0
+  ],
+  "generation_codes": [
+    1,
+    2,
+    3,
+    4,
+    "5+"
+  ],
+  "persons_integer_target": 2524,
+  "model_size_integer_counts": [
+    265,
+    295,
+    229,
+    125,
+    53,
+    23,
+    6,
+    2,
+    1,
+    1
+  ],
+  "model_size_counts_are_observed": false,
+  "type_counts": null,
+  "q_reference": "uniform over actually feasible type set;research max-entropy reference only;not six-way uniform quota",
+  "q_must_exclude_unsupported_types": true,
+  "allocation_objective": "preserve source controls;integer assignment minimizes divergence from eligible q;record coverage-floor distortions",
+  "coverage_floor": null,
+  "source_weight_role": "structural calibration only;does not identify attitude prevalence",
+  "unknown_preference_split_sensitivity": {
+    "A_D_auto_probability": [
+      0.2,
+      0.5,
+      0.8
+    ],
+    "values_are_survey_estimates": false,
+    "one_parameter_changed_at_a_time": true,
+    "other_missing_dimensions": "conditional feasible alternatives;do not invent estimated bounds"
+  },
+  "source_statuses": [
+    "observed",
+    "matched",
+    "inferred",
+    "researcher_given",
+    "unknown"
+  ],
+  "devices": {
+    "functional_categories": 6,
+    "per_household_functions": [
+      4,
+      5,
+      6
+    ],
+    "counts": [
+      333,
+      333,
+      334
+    ],
+    "natural_ownership_representative": false,
+    "benchmark_provisioned_assets_must_be_disclosed": true
+  },
+  "type_mapping_is_diagnostic_not_forced": true,
+  "mixed_or_unclassified_mass_must_be_preserved": true,
+  "modify_ages_or_drop_households_to_meet_type_quotas": false,
+  "no_type_codes_or_human_answers_in_clustering": true,
+  "requires_original50_calendar_service_policy_IDF_frontend_acceptance": true,
+  "implementation_of_type_assignment_complete": false,
+  "national_type_prevalence_identified": false,
+  "generation_allowed": false,
+  "full_EP_allowed": false
+}

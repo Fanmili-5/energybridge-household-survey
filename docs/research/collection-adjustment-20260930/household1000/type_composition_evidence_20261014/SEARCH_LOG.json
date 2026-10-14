@@ -1,0 +1,44 @@
+{
+  "schema": "household1000.composition.targeted_search_log.v1",
+  "date": "2026-10-14",
+  "review_kind": "targeted_scoping_review;not_PRISMA_systematic_review",
+  "search_engines": ["web.run", "local_rg_and_metadata_reads"],
+  "query_groups_actually_used": [
+    ["site.stats.gov.cn 第三次全国时间利用调查 公报 2024 有酬劳动 照料", "site.crecs.ruc.edu.cn 2017 适应行为 2021 制冷"],
+    ["China residential demand response automation survey", "Peak-off-peak load shifting 3863 sampling"],
+    ["China household demand response willingness 74.7% Wang Cai survey", "Characteristics and patterns of residential energy consumption for space cooling 126395", "population synthesis iterative proportional updating Ye 2009"],
+    ["China residential consumers demand response Wang Cai willingness", "site.stats.gov.cn 2024 新能源 汽车 保有量 私人 2020", "site.chfs.swufe.edu.cn 2021 数据 2022 22027 权重", "site.charls.pku.edu.cn 2020 问卷 ADL 照料 权重"],
+    ["China direct load control survey willingness", "China thermal comfort demand response survey households temperature", "site.crecs.ruc.edu.cn 供暖制冷 满意度"],
+    ["site.mdpi.com/2071-1050/12/19/8052 sample", "site.mdpi.com/2071-1050/12/19/8052 74.7", "s41467-023-41970-8 pmc", "China electric vehicle household survey charging access 2021 2022 representative questionnaire"],
+    ["Determinants of Willingness 8052 sample", "Incentive based emergency demand response Methods survey", "Are consumers in China’s major cities happy charging 120082"],
+    ["site.ec.europa.eu eurostat statistical matching conditional independence assumption data fusion", "site.gov.cn 2020 492万辆 新能源汽车", "site.stats.gov.cn 陪伴照料家人活动 2024 参与率"],
+    ["site.charls.pku.edu.cn 2020 问卷 DB030 CF003 孙子女", "site.chfs.swufe.edu.cn 2021 调查 数据 2022 进行", "site.mdpi.com/2071-1050/12/19/8052 participation form", "site.nature.com/articles/s41467-023-41970-8 Data availability figshare"],
+    ["site.oecd.org Linking or matching data across data sources conditional independence assumption", "site.nature.com/articles/s41467-023-41970-8 Data availability request", "site.charls.pku.edu.cn 2020年全国追踪调查"],
+    ["Household Customers’ Cost of Interruption authors", "10.3389/fenrg.2021.802018", "site.stats.gov.cn/sj/pcsj/rkpc/7rp/zk/html 8-3a", "Generating a Synthetic Population of Individuals in Households Huynh"]
+  ],
+  "local_searches": [
+    "final V6 ordinary city frame and integer allocation;not early V2",
+    "CHFS2021 public HH/master HH variable labels:vehicle/fuel/care/householdweight/category",
+    "CHFS2021/2022 questionnaire pages:nonresident care activity and mixed vehicle fuel expenditure",
+    "CRECS2014 questionnaire:E104/E105/E106 skip logic;A33 trust;random energy module",
+    "CRECS2014 released metadata variable-name/label scan:weight fields not found in this release metadata;official sampling documentation still needed"
+  ],
+  "source_screening": "19 source entries include official datasets/series, primary papers and methods;see SOURCE_LEDGER.json. No claim of exhaustive retrieval,unique paper screening denominator or PRISMA flow.",
+  "access_limitations": [
+    "CRECS direct HTML timed out;official indexed sections only for new series",
+    "MDPI direct HTML errors;publisher indexed methods/instrument sections available",
+    "Nature/PMC direct access intermittently challenged;publisher indexed primary methods/results available",
+    "ScienceDirect cooling and charging primary abstracts/section previews;full sampling and weights unavailable",
+    "CHARLS legacy guessed2020URL failed;official current data entry located;2020questionnaire/weights not admitted",
+    "Time-use2024yearbook official contents verified;full tables not acquired"
+  ],
+  "selected_exclusions": [
+    "Turkey survey78%HEMS willingness:not Chinese prevalence",
+    "foreign EV charging access and Hong Kong travel shares:not mainland-city target prevalence",
+    "simulation optimization model hypothetical weights:not survey evidence",
+    "EB assigned actor sample counts:not own-household preference prevalence",
+    "private release raw CHFS/CRECS rows:not exported"
+  ],
+  "six_national_type_proportions_identified": false,
+  "full_EP_launched": false
+}

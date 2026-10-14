@@ -4061,9 +4061,72 @@
       "published_sha256": "07a30483e6384ab53f24b889bc575bb95e0b24e2d7b2a630b94b66f312e26e3a",
       "kind": "aggregate_source_support_receipt",
       "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/COMPOSITION_CONTRACT.json",
+      "source_sha256": "4e2b7aa0493b799fbd0bc95fb8982cd183fe10035f952bf1c1dbc07f85532397",
+      "published_sha256": "4e2b7aa0493b799fbd0bc95fb8982cd183fe10035f952bf1c1dbc07f85532397",
+      "kind": "composition_evidence_contract",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/EVIDENCE_AND_1000_PLAN.md",
+      "source_sha256": "7715bf948c841269bf2642832a210f6ec6ae63885305cad7fa7179a001ac2962",
+      "published_sha256": "7715bf948c841269bf2642832a210f6ec6ae63885305cad7fa7179a001ac2962",
+      "kind": "composition_evidence_contract",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/REVIEW.json",
+      "source_sha256": "d277926997ef99e14a449978d26b9043eea27490875c62cd37d71a91f6f8bbe1",
+      "published_sha256": "d277926997ef99e14a449978d26b9043eea27490875c62cd37d71a91f6f8bbe1",
+      "kind": "composition_evidence_contract",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/SEARCH_LOG.json",
+      "source_sha256": "fb96d974c6f72e3d6cc333a8c2f69bc36554d96c8476854515adf32a1790d7a2",
+      "published_sha256": "fb96d974c6f72e3d6cc333a8c2f69bc36554d96c8476854515adf32a1790d7a2",
+      "kind": "composition_evidence_contract",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/SEARCH_PROTOCOL.md",
+      "source_sha256": "dbe8eb6163a463d3f6e150ef9960c5a0427f1f4db278fe8c60db19c3a12fb65b",
+      "published_sha256": "dbe8eb6163a463d3f6e150ef9960c5a0427f1f4db278fe8c60db19c3a12fb65b",
+      "kind": "composition_evidence_contract",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/SOURCE_ARITHMETIC_REVIEW.json",
+      "source_sha256": "5b6a1cd88c83b05d14ffb733df894c35a85f36454a2dcc26993f6a8680a7003d",
+      "published_sha256": "5b6a1cd88c83b05d14ffb733df894c35a85f36454a2dcc26993f6a8680a7003d",
+      "kind": "school_source_arithmetic_receipt",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/SOURCE_INPUT_AGGREGATES.json",
+      "source_sha256": "4562511a7ccd96b4ca49748db25dd1f91a56e3ef688171fa6755b1f548ba9bea",
+      "published_sha256": "4562511a7ccd96b4ca49748db25dd1f91a56e3ef688171fa6755b1f548ba9bea",
+      "kind": "composition_evidence_contract",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/SOURCE_LEDGER.json",
+      "source_sha256": "ba5b527349ad1734775c963ed792503bb622ceb3e9494b932958ca0352faf498",
+      "published_sha256": "ba5b527349ad1734775c963ed792503bb622ceb3e9494b932958ca0352faf498",
+      "kind": "composition_evidence_contract",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/code/audit_sources.py",
+      "source_sha256": "9d0c6be5ad087ac7c3c0df191340d3f6fbce9ee2d2c070d8ed7e88586e4f6e7c",
+      "published_sha256": "9d0c6be5ad087ac7c3c0df191340d3f6fbce9ee2d2c070d8ed7e88586e4f6e7c",
+      "kind": "composition_evidence_contract",
+      "transformation": "none"
     }
   ],
-  "source_snapshot_code_file_count": 580,
+  "source_snapshot_code_file_count": 589,
   "excluded": [
     "raw CHFS/CRECS/CHNS records",
     "private household/world/actor/pair/readback data",
@@ -4078,8 +4141,9 @@
   "human_answers": 0,
   "active_stage": "gate_repair_production_20261013_v23",
   "new_household_EP_runs": 0,
-  "note": "Current EB6 type-coverage design extended with concrete type-to-policy/routine/service/A-B/IDF/material contract and school read-only original50 support. Candidate support is not actual role assignment,generation or clustering.",
+  "note": "V26 type coverage remains pending. Added19-source targeted evidence review,structure-constrained1000plan,explicit unmeasured preference assumptions and school source arithmetic;no actual type allocation,new worlds,IDFs or EP.",
   "EB_six_type_requirement_accepted": false,
   "latest_requirement_stage": "eb_type_coverage_revision_v26",
-  "new_generation_allowed": false
+  "new_generation_allowed": false,
+  "latest_type_composition_evidence_stage": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014"
 }

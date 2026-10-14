@@ -71,5 +71,25 @@
     "F": 204
   },
   "research_objective": "type_coverage_consistent_with_EB",
-  "real_prevalence_is_generation_prerequisite": false
+  "real_prevalence_is_generation_prerequisite": false,
+  "latest_type_composition_evidence": {
+    "stage": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014",
+    "review_kind": "targeted_scoping;19official_primary_method_sources",
+    "official_structure_generation_counts": [
+      507,
+      375,
+      115,
+      3,
+      0
+    ],
+    "ordinary_size_distribution_status": "model_completion_not_observed_joint",
+    "school_source_arithmetic_check": "pass;2officialpublictablebytechecks_match",
+    "national_six_type_prevalence_identified": false,
+    "formal_type_counts": null,
+    "new_generator_implemented": false,
+    "new_worlds": 0,
+    "new_IDFs": 0,
+    "EP_calls": 0,
+    "full_EP_allowed": false
+  }
 }
