@@ -16,7 +16,7 @@ def main():
     for r in[r50]+([r950]if r950 else[]):
         private=root/'operator_invites';private.mkdir(mode=0o700,exist_ok=True);os.chown(private,account.pw_uid,account.pw_gid)
         file=private/(r.batch+'.csv')
-        if not file.exists():run('runuser','-u','ebjoint','--','python3','-B',str(a.runtime/'admin.py'),'provision','--data-root',str(data),'--release',str(r.root),'--output',str(file))
+        run('runuser','-u','ebjoint','--','python3','-B',str(a.runtime/'admin.py'),'provision','--data-root',str(data),'--release',str(r.root),'--output',str(file))
     stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ');backup=Path('/var/backups/energybridge-role-collection')/stamp;backup.mkdir(parents=True,mode=0o700)
     db=data/'formal_responses.sqlite3'
     with sqlite3.connect('file:'+str(db)+'?mode=ro',uri=True)as src,sqlite3.connect(backup/'formal_responses.sqlite3')as dst:src.backup(dst)

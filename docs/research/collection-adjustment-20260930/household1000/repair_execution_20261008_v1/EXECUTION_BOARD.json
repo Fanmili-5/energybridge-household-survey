@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-14",
+  "date": "2026-10-15",
   "fixed": {
     "devices": "EB six functional classes,4to6 per household",
     "frontend": "original mature frontend",
@@ -10,10 +10,10 @@
   },
   "new_requirement_gate": {
     "id": "G0_EB_type_coverage",
-    "status": "original50_accepted_and_research_mix_frozen;full_static1000_pending",
+    "status": "all1000_static_actual_coverage_and_current_physics_accepted",
     "objective": "type_coverage_consistent_with_EB",
     "new_original50_recovery_verified": true,
-    "actual1000_type_coverage_verified": false,
+    "actual1000_type_coverage_verified": true,
     "target_counts": {
       "A": 101,
       "B": 303,
@@ -26,11 +26,13 @@
     "counts_are_measured_population_prevalence": false,
     "original50_acceptance_summary": "eb_type_pilot_v27_20261014/PILOT_ACCEPTANCE_SUMMARY.json",
     "frozen_composition_summary": "eb_type_pilot_v27_20261014/FROZEN_COMPOSITION_SUMMARY.json",
-    "real_prevalence_is_generation_prerequisite": false
+    "real_prevalence_is_generation_prerequisite": false,
+    "current_actual_coverage_evidence": "../formal50_950_production_v28_20261014/CLUSTER_COVERAGE1000_REVIEW.json",
+    "current_physics_evidence": "../formal50_950_production_v28_20261014/PHYSICAL_PRODUCTION_COMPLETE.json"
   },
-  "current_requirement_status": "V27 new original50 accepted;1000 research composition frozen;actual full1000 static world/coverage/IDF audit pending",
+  "current_requirement_status": "V28 all1000 reference production and physics accepted; disjoint formal50/formal950 live; empirical role validity and natural six-type prevalence unproven",
   "historical_accepted_production": "gate_repair_production_20261013_v23",
-  "full1000_EP_allowed": false,
+  "full1000_EP_allowed": true,
   "whole_program_scientific_completion": false,
   "latest_type_pilot_stage": "eb_type_pilot_v27_20261014",
   "latest_type_pilot_acceptance_sha256": "db0742371006812e63788fc21f03080ab9e55628a3e50d401892297e7b67dd2d",
@@ -46,14 +48,26 @@
   "latest_type_pilot_human_answers": 0,
   "latest_type_pilot_unique_engine_runs": 1400,
   "latest_type_pilot_new_worlds": 50,
-  "current_full1000_new_worlds": 0,
+  "current_full1000_new_worlds": 1000,
   "new_generation_allowed": true,
-  "new_generation_allowed_scope": "static1000 only;content-bound school gate",
-  "schema": "eb.public_execution_board.v27",
+  "new_generation_allowed_scope": "Current accepted reference production; all new or changed production requires content-bound review",
+  "schema": "eb.public_execution_board.v28",
   "critical_open_items": [
-    "new1000 static worlds/AB/IDFs and actual coverage acceptance",
-    "whole production review before fullEP admission",
-    "independent human role-validity and benchmark labels"
+    "independent human role comprehension and role-information effect",
+    "final actual-browser submit smoke check",
+    "national six-type preference prevalence and field calibration unproven, outside current conditional-reference admission"
   ],
-  "public_transformation": "aggregate board;private case diagnostics and historical pointer details excluded"
+  "public_transformation": "aggregate board;private case diagnostics and historical pointer details excluded",
+  "current_repair_candidate": "formal50_950_production_v28_20261014",
+  "new_generation_requirement_stage": "formal50_950_production_v28_20261014",
+  "production_requirement": "formal50_950_production_v28_20261014",
+  "production": "formal50_950_production_v28_20261014",
+  "full1000_EP_allowed_scope": "Completed V28 reference receipts only; every changed input requires fresh review; audit starts no EP",
+  "new_EB_six_type_requirement_accepted": true,
+  "satisfies_current_generation_requirements": true,
+  "source_published_to_GitHub": true,
+  "actual_human_answers": 0,
+  "actual_human_answers_checked_utc": "2026-10-14T21:19:34.381279+00:00",
+  "published_source_commit_before_audit": "42a8f6363bd15a2104014df4cbb39c7236bc1c1b",
+  "source_publication_revision": "20261015 self-audit;exact published revision is repository Git HEAD"
 }

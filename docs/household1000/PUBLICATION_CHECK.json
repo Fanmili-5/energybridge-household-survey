@@ -1,15 +1,14 @@
 {
-  "version": "v28-formal50-formal950",
-  "checked_utc": "2026-10-14T15:41:15.671795+00:00",
-  "source_integrity_files": 739,
-  "python_AST_checked": 60,
+  "version": "v28-formal50-formal950-audit20261015",
+  "checked_utc": "2026-10-14T21:19:34.381279+00:00",
+  "source_integrity_files": 754,
+  "python_AST_checked": 773,
   "formal_protocols_passed": [
     "formal50",
     "formal950"
   ],
   "all_current_cases_verified": 10000,
   "full_reference_EP_complete": true,
-  "current_browser_revision_visible_field_invariance": true,
   "current_browser_actual_final_submission_verified": false,
   "browser_limit": "Final browser submission verification remains incomplete after an older test confirmation timed out; independent current HTTP protocol fixtures passed",
   "actual_both_HTTPS_health_modes": "formal_role_collection",
@@ -23,9 +22,21 @@
   "source_hash_fidelity_preserved": true,
   "frozen_reference_whitespace_exemptions_in_gitattributes": true,
   "secret_index_scan": {
-    "scanned_files": 1186,
+    "scanned_files": 1201,
     "passed": true,
     "findings": []
   },
-  "git_diff_check_returncode": 0
+  "git_diff_check_returncode": 0,
+  "current_cases_source_regeneration_verified": 10000,
+  "current_cases_quantity_and_terminal_state_readback_verified": 10000,
+  "current_cases_shipped_JS_bindings_verified": 10000,
+  "current_protocol_multi_date_revision_and_blank_restoration_verified": true,
+  "current_recovery_failure_injection_checks_passed": 7,
+  "current_case_negative_controls_passed_per_cohort": 7,
+  "new_EP_started": false,
+  "historical_isolated_browser_revision_visible_field_invariance": true,
+  "current_browser_revision_visible_field_invariance": null,
+  "current_protocol_revision_model_input_invariance": true,
+  "actual_current_runtime_deployed": true,
+  "current_role_packages_and_credentials_unchanged": true
 }

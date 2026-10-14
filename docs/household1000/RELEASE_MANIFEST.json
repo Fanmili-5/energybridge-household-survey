@@ -1,9 +1,9 @@
 {
-  "version": "household1000-v28-formal50-formal950-20261014",
-  "checked_utc": "2026-10-14T15:58:38.252010+00:00",
+  "version": "household1000-v28-formal50-formal950-audit20261015",
+  "checked_utc": "2026-10-14T21:20:48.445168+00:00",
   "repository": "https://github.com/Fanmili-5/energybridge-household-survey.git",
   "target_branch": "main",
-  "parent_commit": "f0105da813f4985322ba8f3ae5daf5686e969388",
+  "parent_commit": "42a8f6363bd15a2104014df4cbb39c7236bc1c1b",
   "payload_files_excluding_this_manifest": [
     {
       "path": ".gitattributes",
@@ -92,18 +92,18 @@
     },
     {
       "path": "deploy/formal_questionnaires_20261014/RELEASE.md",
-      "bytes": 5345,
-      "sha256": "14a5bf869c7a7bb1d2bcdd6cd40b9d1d59649a8437dfa03b10d34f984e3ffc7c"
+      "bytes": 6239,
+      "sha256": "947771d218b27cf032ec0ed0d7314153800b0778594d079751861bb89799f32b"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/activate.py",
-      "bytes": 6866,
-      "sha256": "f321f0cd6d13e252957deebb4ae07014d271e14ae011a8f7d5995366071d5067"
+      "bytes": 6845,
+      "sha256": "a6b786468efce3b6661473d3ad097fa450e5d4c1ec0be5bc25de14656b878299"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/admin.py",
-      "bytes": 2341,
-      "sha256": "17b5e292b1792662c6a1a0724464206c5878f5ecb316eaf2afb6b6ac67785866"
+      "bytes": 4141,
+      "sha256": "a4ee0b4de44be9a9e0dbd17f0ad2810577701a34e3db190020f734eb111448cd"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/backup.py",
@@ -127,13 +127,13 @@
     },
     {
       "path": "deploy/formal_questionnaires_20261014/make_protocol_fixture.py",
-      "bytes": 1769,
-      "sha256": "ef0353c9cf8aac03a071e7d7df763ab95effb0de9501fee1e9a54e5bd814db06"
+      "bytes": 1825,
+      "sha256": "4ea4de696e7902c3c16a4cca6ac122adcb3968db62f82b903426d7da4d11510d"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/release_acceptance.py",
-      "bytes": 3162,
-      "sha256": "8adc68c8821f62c935f8192237eee2a81ca349b8f373eb1620c6000afd71a278"
+      "bytes": 6026,
+      "sha256": "a68ee4f883bef5b0ea3016a84ce7d9187716c5ea51552ba0aeaa73dbb40649af"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/render_materials.py",
@@ -152,13 +152,28 @@
     },
     {
       "path": "deploy/formal_questionnaires_20261014/store.py",
-      "bytes": 13919,
-      "sha256": "492d3196c375a78c34201940546370cd9493afcc9b8109957269b00b9d1564e6"
+      "bytes": 15570,
+      "sha256": "12b74b56df92418b59bf88eaaf7978e41490601d177cc6b6007a52e9343e0272"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/test_protocol.py",
-      "bytes": 6664,
-      "sha256": "4a2f2b3cd4e326e548f7942eec9e2ae112fd6e1872306d206ba612866a9512d9"
+      "bytes": 7854,
+      "sha256": "bfc9f66d34b3e9c3166b22c3b04600c560db6f34f435ee87545e5fb8346d586b"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/test_recovery.py",
+      "bytes": 5336,
+      "sha256": "a8a0853b1db693178a23ec74d2a6fe909b0cd93886fa9b1c5633fe051b942dfc"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/test_release_acceptance.py",
+      "bytes": 2488,
+      "sha256": "c234d6c42a5153f38e5ab41a193cee506215d729c0f4545afdf4166835e516df"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/verify_formal_bindings.cjs",
+      "bytes": 1406,
+      "sha256": "b8bcb67a6c516df22429aadd1c8833131defb2ac35c36959ba7f95ba4e99eacd"
     },
     {
       "path": "deploy/model.env.example",
@@ -371,6 +386,11 @@
       "sha256": "b21fca5d2a0488f24c0de2d0f1be0659ed258cf6242f52991256770fdb549d04"
     },
     {
+      "path": "docs/household1000/AUDIT_20261015.md",
+      "bytes": 6311,
+      "sha256": "ae4b0ca7cc06e8ab7a262bd50585ddd27a6dec3708c412eb16dd234feba7c44f"
+    },
+    {
       "path": "docs/household1000/EB_SIX_TYPE_PREFLIGHT.json",
       "bytes": 2684,
       "sha256": "ffe4d4089fe28e334401ad44079ea77483e97fe241c754fc9895f9e115942e5c"
@@ -422,13 +442,13 @@
     },
     {
       "path": "docs/household1000/PUBLICATION_CHECK.json",
-      "bytes": 1276,
-      "sha256": "f4a0b916d322e0575a32b0b3756f9c1917b6d66251c9147d7a07b65eb94bfe2d"
+      "bytes": 1928,
+      "sha256": "2749ade3daa8b43de958bb36a0fcb9a24bcfbd92fac7d325c66aadff3f547aa9"
     },
     {
       "path": "docs/household1000/README.md",
-      "bytes": 3934,
-      "sha256": "04c875d48ff474f861f9f133f8891d57a296c4ddb78e42f999105bcd5a6f3212"
+      "bytes": 4178,
+      "sha256": "d8c4aa7563401e3c477777df46373aa66eba5b502c6d482514e98d04776d1a29"
     },
     {
       "path": "docs/household1000/REFERENCE_ACCEPTANCE.json",
@@ -437,8 +457,8 @@
     },
     {
       "path": "docs/household1000/REPRODUCTION.md",
-      "bytes": 4859,
-      "sha256": "ea7230a4ee6eaa7f8daf22cf36d393383f0169629a31103d79b8e5a0cbca8dea"
+      "bytes": 5330,
+      "sha256": "76ccc26ef251f6d69b1281ba1ee639fef59b0136bfd8f5fb3465c11c3770667c"
     },
     {
       "path": "docs/household1000/RESEARCH_GATES.md",
@@ -452,18 +472,68 @@
     },
     {
       "path": "docs/household1000/SOURCE_SNAPSHOT.json",
-      "bytes": 316073,
-      "sha256": "59b55c4ddeeafce5c05f6a0ef0c457b6ec18c9da92fea162525cb0624d19b1db"
+      "bytes": 322605,
+      "sha256": "d4b67f99904356f4f247889392fa8f2103d680b7b4aa803c97fa491b5579f81d"
     },
     {
       "path": "docs/household1000/STATUS.json",
-      "bytes": 6802,
-      "sha256": "0c91d19faa8a690f9a16a4f380c8ac7589485de9ecc3010f73a0ffc52b5e0cca"
+      "bytes": 7284,
+      "sha256": "7d02c80461fa9714aa95f4e2230718a2330b25d3f2ae8042c3f856c2e76c407a"
     },
     {
       "path": "docs/household1000/V23_PUBLIC_PAYLOAD.json",
       "bytes": 37481,
       "sha256": "24ad8b71164578e7043dd3d0efc8b4008dced336a8202a958b3a3a04efb8d0c4"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/ACTIVATION_RECEIPT.json",
+      "bytes": 1691,
+      "sha256": "f54740cc786a6e7791efd7e3938edd5a7aefc314c405a74d1543f6fca108fe33"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/CURRENT_REFERENCE_RECEIPTS.json",
+      "bytes": 189,
+      "sha256": "db6d27bf9cfcbcc619cccc086cb4eb442c9e43b0ef9eb637ba0f26ae2dc54c75"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/RECOVERY_ACCEPTANCE.json",
+      "bytes": 634,
+      "sha256": "81a5eab16ede62f7bcc5b7a27b0a94d90328ceb7445155123ded67a13136785e"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/SELF_AUDIT.json",
+      "bytes": 3369,
+      "sha256": "6a12b3716c0c79e9452ce29a5520f9800c1de297beb5c0168f13046bd7a34d30"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal50_CASE_ACCEPTANCE.json",
+      "bytes": 683,
+      "sha256": "f7315290015c018d9448283f73c0df0856fa0382e59fee4730da8be83771e50d"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal50_CASE_NEGATIVE_CONTROLS.json",
+      "bytes": 406,
+      "sha256": "ac88aff12104fb0bd133c656f4e1001bf3109b6b7f47c9ee17de4a76999b2352"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal50_PROTOCOL_ACCEPTANCE.json",
+      "bytes": 427,
+      "sha256": "1695e41eb255007f1b678d454c132ac00349532a30057e3f7dc8c838f8e4b919"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal950_CASE_ACCEPTANCE.json",
+      "bytes": 686,
+      "sha256": "ba6f48e18b3b7df36205cd58293fc75d091beaaeb6d98af3c22d96218971b3d7"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal950_CASE_NEGATIVE_CONTROLS.json",
+      "bytes": 407,
+      "sha256": "0dbcda919999f2154c1bcd80e528a1e4977b8dd15924c1d0e70c35345b14aca5"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal950_PROTOCOL_ACCEPTANCE.json",
+      "bytes": 429,
+      "sha256": "9f4c08d46efe6873d2928e0868f45687329b4a2147f1314573b985b8b4509546"
     },
     {
       "path": "docs/input-precision-audit-20260914.json",
@@ -3912,8 +3982,8 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/repair_execution_20261008_v1/EXECUTION_BOARD.json",
-      "bytes": 2639,
-      "sha256": "55cdd9398a219bee9ca99bde777de23342e5b0e7db5f10691d69af02872c89d3"
+      "bytes": 3853,
+      "sha256": "95c845f3bd2cd464bce75d3e056d2504f717f319a35d41c51bbfd44da1350e41"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/PSYCHROLIB_LICENSE.txt",
@@ -5807,8 +5877,8 @@
     },
     {
       "path": "scripts/household1000.py",
-      "bytes": 8784,
-      "sha256": "c9619d8a86e51fcefed89e884ba5ee222fd351d538fb45f5ae04f09231ae5680"
+      "bytes": 9195,
+      "sha256": "dc076529a097daff807a2d1884b62b6dd25f81469df3395fc3f92bfd5c9123f7"
     },
     {
       "path": "scripts/install_energyplus_linux.sh",
@@ -5871,6 +5941,11 @@
       "sha256": "96ed54d62880ea9b2acfa90216f0602ccb8820f3d967a6f3b154180fb82c9802"
     },
     {
+      "path": "scripts/verify_household1000_publication.py",
+      "bytes": 3998,
+      "sha256": "36ab3ea9ee23b1147da046f1a6221e8b597e1b31c83714e7773bac2781603c00"
+    },
+    {
       "path": "scripts/verify_regional_resources.py",
       "bytes": 11248,
       "sha256": "bf2dbf0c302ce037e4f3ca242a8cdd6f6ef8ca8e55424577d4e837b6fadc0796"
@@ -5931,7 +6006,7 @@
       "sha256": "972c431216e39b4dc7f763f0a15f19ee397c8f96926f8e956a2ac17a87b7f342"
     }
   ],
-  "payload_file_count_excluding_manifest": 1185,
+  "payload_file_count_excluding_manifest": 1200,
   "authorization": "User requested two formal50/formal950 versions, production acceptance first, original frontend and GitHub synchronization",
   "content_scope": "first-party source, methods, case-free templates and aggregate evidence; no private surveys, households, IDF/weather/SQL, invitations or human records",
   "private_data_or_EP_SQL_or_human_answers_published": false,
@@ -5944,5 +6019,6 @@
   "scientific_benchmark_admitted": false,
   "whole_program_scientific_completion": false,
   "current_population_prevalence_identified": false,
-  "natural_preference_proportions_not_identified": true
+  "natural_preference_proportions_not_identified": true,
+  "school_source_check_scope": "current content-bound reference receipts and both current role/quantity source-regeneration acceptance;published-byte check separate"
 }

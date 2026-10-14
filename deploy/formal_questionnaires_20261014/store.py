@@ -19,6 +19,7 @@ class Store:
         self.db_path=self.root/'formal_responses.sqlite3';self.lock=threading.RLock();self.release=release;self.fixtures=fixtures
         key=self.root/'credential_pepper'
         if not key.exists():
+            if self.db_path.exists():raise RuntimeError('Existing collection database requires its original credential pepper; restore the recovery bundle.')
             with key.open('xb')as f:f.write(secrets.token_bytes(32))
             key.chmod(0o600)
         self.pepper=key.read_bytes();assert len(self.pepper)==32
@@ -48,16 +49,26 @@ class Store:
     def actor(self,session,db=None,*,consent=False):
         if db is None:
             with self.connect()as conn:return self.actor(session,conn,consent=consent)
-        a=db.execute('select * from actors where actor_id=?',(session.get('actor_id'),)).fetchone()
+        current=db.execute('select actor_id from sessions where session_digest=?',(session.get('session_digest'),)).fetchone()
+        a=db.execute('select * from actors where actor_id=?',(current['actor_id'] if current else None,)).fetchone()
         if not a or not a['active']:raise PermissionError('请先使用邀请码或恢复码进入问卷。')
         if consent and a['consent_version']!=NOTICE_VERSION:raise PermissionError('请先确认参与说明。')
         return dict(a)
     def provision(self,assignments):
+        assignments=list(assignments)
+        if len({a[0]for a in assignments})!=len(assignments)or len({a[3]for a in assignments})!=len(assignments):raise ValueError('Duplicate invitation slots or credentials')
+        inserted=0
         with self.lock,self.connect()as db:
             db.execute('BEGIN IMMEDIATE')
             for slot,batch,hid,token in assignments:
-                assert batch in ('formal50','formal950') and re.fullmatch(r'[a-zA-Z0-9_-]{24,100}',token)
-                db.execute('insert into invitations values(?,?,?,?,NULL)',(self.secret_hash('invite',token),slot,batch,hid))
+                if batch not in ('formal50','formal950')or not isinstance(token,str)or not re.fullmatch(r'[a-zA-Z0-9_-]{24,100}',token):raise ValueError('Invalid invitation assignment')
+                invite_digest=self.secret_hash('invite',token)
+                existing=db.execute('select * from invitations where slot_id=?',(slot,)).fetchone()
+                if existing:
+                    if (existing['invite_digest'],existing['batch'],existing['household_id'])!=(invite_digest,batch,hid):raise ValueError('Existing invitation differs from private operator file; no credentials replaced')
+                    continue
+                db.execute('insert into invitations values(?,?,?,?,NULL)',(invite_digest,slot,batch,hid));inserted+=1
+        return inserted
     def claim(self,session,batch,credential,remote_key):
         if not isinstance(credential,str)or not 24<=len(credential)<=100:raise ValueError('请输入完整的邀请码或恢复码。')
         with self.lock,self.connect()as db:
@@ -76,7 +87,8 @@ class Store:
                 invite=db.execute('select * from invitations where invite_digest=?',(self.secret_hash('invite',credential),)).fetchone()
                 if not invite or invite['batch']!=batch:raise PermissionError('邀请码或恢复码无效，或不属于本版本。')
                 if invite['actor_id']:
-                    if invite['actor_id']!=session.get('actor_id'):raise PermissionError('邀请码已领取，请使用领取时的恢复码。')
+                    current=self.actor(session,db)
+                    if invite['actor_id']!=current['actor_id']:raise PermissionError('邀请码已领取，请使用领取时的恢复码。')
                     actor_id=invite['actor_id'];hid=invite['household_id']
                 else:
                     actor_id='P-'+secrets.token_hex(12);hid=invite['household_id'];recovery=secrets.token_urlsafe(32)
@@ -99,8 +111,12 @@ class Store:
             rows=db.execute('select rowid,* from answers where actor_id=? order by rowid',(actor['actor_id'],)).fetchall()
         latest={}
         for row in rows:
-            record=json.loads(row['record_json']);latest[row['case_id']]={'case_id':row['case_id'],'case_index':record['case_index'],'feedback':record['response'],'respondent':record['respondent'],'receipt_id':row['receipt_id']}
-        return {**result,'consented':actor['consent_version']==NOTICE_VERSION,'participant_id':actor['actor_id'],'household_id':actor['household_id'],'answers':list(latest.values())}
+            record=json.loads(row['record_json']);latest[row['case_id']]=(row['rowid'],{'case_id':row['case_id'],'case_index':record['case_index'],'feedback':record['response'],'respondent':record['respondent'],'receipt_id':row['receipt_id']})
+        # A dict keeps a case's first insertion position after a revision. The
+        # frontend restores respondent metadata from the final answer, so order
+        # by each case's latest append instead of its first submission.
+        answers=[item for _,item in sorted(latest.values(),key=lambda item:item[0])]
+        return {**result,'consented':actor['consent_version']==NOTICE_VERSION,'participant_id':actor['actor_id'],'household_id':actor['household_id'],'answers':answers}
     def save(self,session,payload,cases,hashes,batch,hid,cohort_release=None):
         actor=self.actor(session,consent=True)
         if (actor['batch'],actor['household_id'])!=(batch,hid):raise PermissionError('当前身份与家庭任务不匹配。')
@@ -121,7 +137,9 @@ class Store:
         if digest(stimulus)!=presentation.get('model_input_sha256')or digest(snapshot)!=presentation.get('rendered_snapshot_sha256'):raise ValueError('问卷显示记录校验失败。')
         case=cases[index];phash=digest(payload)
         with self.lock,self.connect()as db:
-            db.execute('BEGIN IMMEDIATE');self.actor(session,db,consent=True)
+            db.execute('BEGIN IMMEDIATE');current=self.actor(session,db,consent=True)
+            if (current['actor_id'],current['batch'],current['household_id'])!=(actor['actor_id'],batch,hid):raise PermissionError('参与身份已变化，请刷新后提交。')
+            actor=current
             prior=db.execute('select * from answers where request_id=?',(rid,)).fetchone()
             if prior:
                 if prior['actor_id']!=actor['actor_id']or prior['payload_sha256']!=phash:raise ValueError('同一提交标识内容已变化，请重新提交。')

@@ -60,9 +60,15 @@ def doctor(workspace):
             row['scope']=pointer.get('acceptance','historical static inputs')
         rows.append(row)
     stage = read(PUBLIC / 'STATUS.json')['active_stage']
-    for name in [stage+'/SELECTION1000.json', stage+'/SELECTION50.json',
-                 stage+'/PRE_EP_SCIENTIFIC_REVIEW.json', stage+'/READBACK_all_REVIEW.json',
-                 stage+'/FINAL_ACCEPTANCE.json', stage+'/DELIVERY.json']:
+    if stage == 'formal50_950_production_v28_20261014':
+        names=['SELECTION1000.json','PARTITIONS.json','STATIC_PRODUCTION_COMPLETE.json',
+               'PRE_EP_original50.json','PRE_EP_other950.json','PRE_EP_weather_sensitivity.json',
+               'PHYSICS_original50_REVIEW.json','PHYSICS_other950_REVIEW.json',
+               'PHYSICS_weather_sensitivity_REVIEW.json','PHYSICAL_PRODUCTION_COMPLETE.json']
+    else:
+        names=['SELECTION1000.json','SELECTION50.json','PRE_EP_SCIENTIFIC_REVIEW.json',
+               'READBACK_all_REVIEW.json','FINAL_ACCEPTANCE.json','DELIVERY.json']
+    for name in [stage+'/'+name for name in names]:
         rows.append({'input': str(REL / name), 'available': (base / name).is_file()})
     print(json.dumps({'workspace': str(workspace), 'inputs': rows,
                       'scope': 'availability only;public checkout excludes protected research inputs',

@@ -1,0 +1,15 @@
+{
+  "checks": {
+    "CSV_present_DB_transaction_failed_resumes_same_credentials": true,
+    "conflicting_credential_rejected_without_DB_write": true,
+    "consistent_recovery_bundle_hash_and_SQLite_restore": true,
+    "existing_DB_missing_pepper_fails_without_rekey": true,
+    "repeat_provision_preserves_codes_and_claimed_identity": true,
+    "stale_session_and_withdrawn_invite_rejected": true,
+    "unexpected_DB_household_rejected_before_partial_repair": true
+  },
+  "human_answers_generated": 0,
+  "passed": true,
+  "production_records_written": 0,
+  "scope": "invented failure injection; no human or physical validity claim"
+}

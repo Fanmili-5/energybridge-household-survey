@@ -1,6 +1,6 @@
 {
   "version": "household1000-v28-formal50-and-formal950",
-  "as_of": "2026-10-14",
+  "as_of": "2026-10-15",
   "active_stage": "formal50_950_production_v28_20261014",
   "design_data_version": "v28",
   "validation_version": "v28",
@@ -37,7 +37,7 @@
   "current_Severe_Fatal": 0,
   "maximum_predecision_output_difference": 0.0,
   "maximum_meter_residual_J": 0.0,
-  "input_files_checked": 6371,
+  "input_files_checked": 72201,
   "final_acceptance_sha256": "cce9629b620a83de04f6e08db24563121a38d6a1de17b2ef0e0066d2d0b3c87a",
   "source_inputs_reference_accepted": true,
   "whole_program_scientific_completion": false,
@@ -137,9 +137,11 @@
       "F": 5
     },
     "given_policy_and_actual_calendar_services_propagated": true,
-    "actual_browser_pages_verified": 500,
     "live_public_site_updated": true,
-    "human_answers": 0
+    "human_answers": 0,
+    "historical_V27_browser_pages_verified": 500,
+    "current_V28_source_bound_cases_verified": 500,
+    "current_V28_actual_final_browser_submission_verified": false
   },
   "actual1000_new_worlds_generated": 1000,
   "actual1000_new_IDFs_generated": 20000,
@@ -164,7 +166,13 @@
       "url": "https://47.85.194.154/household950"
     }
   },
-  "runtime_signature": "2942007f7b8dc627373f18cc52f2ba776f73f146551abcd9a3bf035257064c79",
+  "runtime_signature": "de968168edb75b4a0322c13c591d899c5a166fddade609fdf6307fb091b34660",
   "final_acceptance": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/PHYSICAL_PRODUCTION_COMPLETE.json",
-  "current_requirements_scope": "reference production and formal role-response collection; not empirical human or national-preference validation"
+  "current_requirements_scope": "reference production and formal role-response collection; not empirical human or national-preference validation",
+  "historical_input_files_checked": 6371,
+  "full1000_EP_completed": true,
+  "new_EP_started_during_audit": false,
+  "publication_self_audit": "docs/household1000/AUDIT_20261015.md",
+  "current_collection_service_acceptance": "docs/household1000/audit_20261015/ACTIVATION_RECEIPT.json",
+  "human_answers_checked_utc": "2026-10-14T21:19:34.381279+00:00"
 }

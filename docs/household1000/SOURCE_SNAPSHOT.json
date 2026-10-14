@@ -1,5 +1,5 @@
 {
-  "version": "household1000-v28-formal50-formal950",
+  "version": "household1000-v28-formal50-formal950-audit20261015",
   "source_scope": "source,case-free templates,contracts and methods;protected records and calibrated or human benchmark claims excluded",
   "source_files": [
     {
@@ -11,22 +11,22 @@
     },
     {
       "path": "deploy/formal_questionnaires_20261014/RELEASE.md",
-      "source_sha256": "14a5bf869c7a7bb1d2bcdd6cd40b9d1d59649a8437dfa03b10d34f984e3ffc7c",
-      "published_sha256": "14a5bf869c7a7bb1d2bcdd6cd40b9d1d59649a8437dfa03b10d34f984e3ffc7c",
+      "source_sha256": "947771d218b27cf032ec0ed0d7314153800b0778594d079751861bb89799f32b",
+      "published_sha256": "947771d218b27cf032ec0ed0d7314153800b0778594d079751861bb89799f32b",
       "kind": "formal_collection_source_or_aggregate",
       "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/activate.py",
-      "source_sha256": "f321f0cd6d13e252957deebb4ae07014d271e14ae011a8f7d5995366071d5067",
-      "published_sha256": "f321f0cd6d13e252957deebb4ae07014d271e14ae011a8f7d5995366071d5067",
+      "source_sha256": "a6b786468efce3b6661473d3ad097fa450e5d4c1ec0be5bc25de14656b878299",
+      "published_sha256": "a6b786468efce3b6661473d3ad097fa450e5d4c1ec0be5bc25de14656b878299",
       "kind": "formal_collection_source_or_aggregate",
       "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/admin.py",
-      "source_sha256": "17b5e292b1792662c6a1a0724464206c5878f5ecb316eaf2afb6b6ac67785866",
-      "published_sha256": "17b5e292b1792662c6a1a0724464206c5878f5ecb316eaf2afb6b6ac67785866",
+      "source_sha256": "a4ee0b4de44be9a9e0dbd17f0ad2810577701a34e3db190020f734eb111448cd",
+      "published_sha256": "a4ee0b4de44be9a9e0dbd17f0ad2810577701a34e3db190020f734eb111448cd",
       "kind": "formal_collection_source_or_aggregate",
       "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
     },
@@ -60,15 +60,15 @@
     },
     {
       "path": "deploy/formal_questionnaires_20261014/make_protocol_fixture.py",
-      "source_sha256": "ef0353c9cf8aac03a071e7d7df763ab95effb0de9501fee1e9a54e5bd814db06",
-      "published_sha256": "ef0353c9cf8aac03a071e7d7df763ab95effb0de9501fee1e9a54e5bd814db06",
+      "source_sha256": "4ea4de696e7902c3c16a4cca6ac122adcb3968db62f82b903426d7da4d11510d",
+      "published_sha256": "4ea4de696e7902c3c16a4cca6ac122adcb3968db62f82b903426d7da4d11510d",
       "kind": "formal_collection_source_or_aggregate",
       "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/release_acceptance.py",
-      "source_sha256": "8adc68c8821f62c935f8192237eee2a81ca349b8f373eb1620c6000afd71a278",
-      "published_sha256": "8adc68c8821f62c935f8192237eee2a81ca349b8f373eb1620c6000afd71a278",
+      "source_sha256": "a68ee4f883bef5b0ea3016a84ce7d9187716c5ea51552ba0aeaa73dbb40649af",
+      "published_sha256": "a68ee4f883bef5b0ea3016a84ce7d9187716c5ea51552ba0aeaa73dbb40649af",
       "kind": "formal_collection_source_or_aggregate",
       "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
     },
@@ -95,17 +95,38 @@
     },
     {
       "path": "deploy/formal_questionnaires_20261014/store.py",
-      "source_sha256": "492d3196c375a78c34201940546370cd9493afcc9b8109957269b00b9d1564e6",
-      "published_sha256": "492d3196c375a78c34201940546370cd9493afcc9b8109957269b00b9d1564e6",
+      "source_sha256": "12b74b56df92418b59bf88eaaf7978e41490601d177cc6b6007a52e9343e0272",
+      "published_sha256": "12b74b56df92418b59bf88eaaf7978e41490601d177cc6b6007a52e9343e0272",
       "kind": "formal_collection_source_or_aggregate",
       "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/test_protocol.py",
-      "source_sha256": "4a2f2b3cd4e326e548f7942eec9e2ae112fd6e1872306d206ba612866a9512d9",
-      "published_sha256": "4a2f2b3cd4e326e548f7942eec9e2ae112fd6e1872306d206ba612866a9512d9",
+      "source_sha256": "bfc9f66d34b3e9c3166b22c3b04600c560db6f34f435ee87545e5fb8346d586b",
+      "published_sha256": "bfc9f66d34b3e9c3166b22c3b04600c560db6f34f435ee87545e5fb8346d586b",
       "kind": "formal_collection_source_or_aggregate",
       "transformation": "first-party code or explicitly aggregated report; no household instances, actors or credentials"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/test_recovery.py",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "a8a0853b1db693178a23ec74d2a6fe909b0cd93886fa9b1c5633fe051b942dfc",
+      "source_sha256": "a8a0853b1db693178a23ec74d2a6fe909b0cd93886fa9b1c5633fe051b942dfc"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/test_release_acceptance.py",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "c234d6c42a5153f38e5ab41a193cee506215d729c0f4545afdf4166835e516df",
+      "source_sha256": "c234d6c42a5153f38e5ab41a193cee506215d729c0f4545afdf4166835e516df"
+    },
+    {
+      "path": "deploy/formal_questionnaires_20261014/verify_formal_bindings.cjs",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "b8bcb67a6c516df22429aadd1c8833131defb2ac35c36959ba7f95ba4e99eacd",
+      "source_sha256": "b8bcb67a6c516df22429aadd1c8833131defb2ac35c36959ba7f95ba4e99eacd"
     },
     {
       "path": "deploy/questionnaire_revision_20261014/CHECKS.json",
@@ -183,6 +204,83 @@
       "published_sha256": "6bbe3b4066696152331f036404d1f519c73446920d81eb0ce262a741fdc767d4",
       "kind": "questionnaire_revision_source_or_aggregate",
       "transformation": "none; no cases or respondent records"
+    },
+    {
+      "path": "docs/household1000/AUDIT_20261015.md",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "ae4b0ca7cc06e8ab7a262bd50585ddd27a6dec3708c412eb16dd234feba7c44f",
+      "source_sha256": "ae4b0ca7cc06e8ab7a262bd50585ddd27a6dec3708c412eb16dd234feba7c44f"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/ACTIVATION_RECEIPT.json",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "f54740cc786a6e7791efd7e3938edd5a7aefc314c405a74d1543f6fca108fe33",
+      "source_sha256": "f54740cc786a6e7791efd7e3938edd5a7aefc314c405a74d1543f6fca108fe33"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/CURRENT_REFERENCE_RECEIPTS.json",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "db6d27bf9cfcbcc619cccc086cb4eb442c9e43b0ef9eb637ba0f26ae2dc54c75",
+      "source_sha256": "db6d27bf9cfcbcc619cccc086cb4eb442c9e43b0ef9eb637ba0f26ae2dc54c75"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/RECOVERY_ACCEPTANCE.json",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "81a5eab16ede62f7bcc5b7a27b0a94d90328ceb7445155123ded67a13136785e",
+      "source_sha256": "81a5eab16ede62f7bcc5b7a27b0a94d90328ceb7445155123ded67a13136785e"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/SELF_AUDIT.json",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "6a12b3716c0c79e9452ce29a5520f9800c1de297beb5c0168f13046bd7a34d30",
+      "source_sha256": "6a12b3716c0c79e9452ce29a5520f9800c1de297beb5c0168f13046bd7a34d30"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal50_CASE_ACCEPTANCE.json",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "f7315290015c018d9448283f73c0df0856fa0382e59fee4730da8be83771e50d",
+      "source_sha256": "f7315290015c018d9448283f73c0df0856fa0382e59fee4730da8be83771e50d"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal50_CASE_NEGATIVE_CONTROLS.json",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "ac88aff12104fb0bd133c656f4e1001bf3109b6b7f47c9ee17de4a76999b2352",
+      "source_sha256": "ac88aff12104fb0bd133c656f4e1001bf3109b6b7f47c9ee17de4a76999b2352"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal50_PROTOCOL_ACCEPTANCE.json",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "1695e41eb255007f1b678d454c132ac00349532a30057e3f7dc8c838f8e4b919",
+      "source_sha256": "1695e41eb255007f1b678d454c132ac00349532a30057e3f7dc8c838f8e4b919"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal950_CASE_ACCEPTANCE.json",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "ba6f48e18b3b7df36205cd58293fc75d091beaaeb6d98af3c22d96218971b3d7",
+      "source_sha256": "ba6f48e18b3b7df36205cd58293fc75d091beaaeb6d98af3c22d96218971b3d7"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal950_CASE_NEGATIVE_CONTROLS.json",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "0dbcda919999f2154c1bcd80e528a1e4977b8dd15924c1d0e70c35345b14aca5",
+      "source_sha256": "0dbcda919999f2154c1bcd80e528a1e4977b8dd15924c1d0e70c35345b14aca5"
+    },
+    {
+      "path": "docs/household1000/audit_20261015/formal950_PROTOCOL_ACCEPTANCE.json",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "9f4c08d46efe6873d2928e0868f45687329b4a2147f1314573b985b8b4509546",
+      "source_sha256": "9f4c08d46efe6873d2928e0868f45687329b4a2147f1314573b985b8b4509546"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
@@ -4449,8 +4547,8 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/repair_execution_20261008_v1/EXECUTION_BOARD.json",
-      "source_sha256": "fa8d41110afdf545f42d6b500d73944f9e0b26f1d4292c016d649638a9d460f8",
-      "published_sha256": "55cdd9398a219bee9ca99bde777de23342e5b0e7db5f10691d69af02872c89d3",
+      "source_sha256": "56f1bc38a1a1404d774c05c434e81e04a0439043ec7f63838aa1eb03038454a4",
+      "published_sha256": "95c845f3bd2cd464bce75d3e056d2504f717f319a35d41c51bbfd44da1350e41",
       "kind": "aggregate_current_execution_board",
       "transformation": "private board reduced to public aggregate status"
     },
@@ -5163,10 +5261,17 @@
     },
     {
       "path": "scripts/household1000.py",
-      "source_sha256": "c9619d8a86e51fcefed89e884ba5ee222fd351d538fb45f5ae04f09231ae5680",
-      "published_sha256": "c9619d8a86e51fcefed89e884ba5ee222fd351d538fb45f5ae04f09231ae5680",
+      "source_sha256": "dc076529a097daff807a2d1884b62b6dd25f81469df3395fc3f92bfd5c9123f7",
+      "published_sha256": "dc076529a097daff807a2d1884b62b6dd25f81469df3395fc3f92bfd5c9123f7",
       "kind": "V27_reference_source_or_aggregate",
       "transformation": "current first-party V28 revision; no protected cases or participant data"
+    },
+    {
+      "path": "scripts/verify_household1000_publication.py",
+      "kind": "first_party_self_audit_source_or_aggregate",
+      "transformation": "source or aggregate acceptance only; no private instances or credentials",
+      "published_sha256": "36ab3ea9ee23b1147da046f1a6221e8b597e1b31c83714e7773bac2781603c00",
+      "source_sha256": "36ab3ea9ee23b1147da046f1a6221e8b597e1b31c83714e7773bac2781603c00"
     },
     {
       "kind": "EB6_pre_generation_requirement",

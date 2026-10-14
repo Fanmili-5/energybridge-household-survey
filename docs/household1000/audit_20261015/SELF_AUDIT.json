@@ -1,0 +1,68 @@
+{
+  "schema": "eb.formal_release_self_audit.v1",
+  "checked_utc": "2026-10-14T21:19:34.381279+00:00",
+  "production_stage": "formal50_950_production_v28_20261014",
+  "accepted_scope": "current source-conditioned synthetic reference worlds and role-response collection protocols;no empirical national/human/field claims",
+  "verdict": "conditional_reference_accepted_empirical_gates_open",
+  "physical_input_signature": "9a905b809a09ea16859b78f888e7f49f1eee8d1137cf9f4d525c7dc717e45ec2",
+  "physical_input_files_checked": 72201,
+  "cases_verified": 10000,
+  "runtime_signature": "de968168edb75b4a0322c13c591d899c5a166fddade609fdf6307fb091b34660",
+  "source_role_packages_changed": false,
+  "new_EP_started": false,
+  "production_test_answers_written": 0,
+  "human_answers_generated": 0,
+  "scientific_benchmark_admitted": false,
+  "independent_peer_review": false,
+  "reference_repairs": [
+    {
+      "id": "Q01",
+      "finding": "cross-date revision restoration used first insertion ordering",
+      "status": "fixed_school_both_cohorts_verified"
+    },
+    {
+      "id": "Q02",
+      "finding": "CSV presence substituted for database invitation acceptance",
+      "status": "fixed_same_credential_replay_and_consistency_checks_verified"
+    },
+    {
+      "id": "Q03",
+      "finding": "existing database could be silently rekeyed when pepper missing;stale session actor snapshot",
+      "status": "fixed_recovery_fail_closed_and_current_transaction_actor_verified"
+    },
+    {
+      "id": "Q04",
+      "finding": "case provenance hash lacked direct quantity/terminal/source-regeneration and fresh-physics checks",
+      "status": "fixed_all10000_and_negative_controls_verified"
+    },
+    {
+      "id": "Q05",
+      "finding": "current public/private board retained V27 pending flags and historical browser count",
+      "status": "fixed_current_scope_and_evidence_types_separated"
+    }
+  ],
+  "evidence": {
+    "CURRENT_REFERENCE_RECEIPTS.json": "db6d27bf9cfcbcc619cccc086cb4eb442c9e43b0ef9eb637ba0f26ae2dc54c75",
+    "RECOVERY_ACCEPTANCE.json": "81a5eab16ede62f7bcc5b7a27b0a94d90328ceb7445155123ded67a13136785e",
+    "formal50_CASE_ACCEPTANCE.json": "f7315290015c018d9448283f73c0df0856fa0382e59fee4730da8be83771e50d",
+    "formal50_CASE_NEGATIVE_CONTROLS.json": "ac88aff12104fb0bd133c656f4e1001bf3109b6b7f47c9ee17de4a76999b2352",
+    "formal50_PROTOCOL_ACCEPTANCE.json": "1695e41eb255007f1b678d454c132ac00349532a30057e3f7dc8c838f8e4b919",
+    "formal950_CASE_ACCEPTANCE.json": "ba6f48e18b3b7df36205cd58293fc75d091beaaeb6d98af3c22d96218971b3d7",
+    "formal950_CASE_NEGATIVE_CONTROLS.json": "0dbcda919999f2154c1bcd80e528a1e4977b8dd15924c1d0e70c35345b14aca5",
+    "formal950_PROTOCOL_ACCEPTANCE.json": "9f4c08d46efe6873d2928e0868f45687329b4a2147f1314573b985b8b4509546",
+    "ACTIVATION_RECEIPT.json": "f54740cc786a6e7791efd7e3938edd5a7aefc314c405a74d1543f6fca108fe33"
+  },
+  "remaining": [
+    "independent actual human comprehension and role-information effect",
+    "current final-release actual browser submission smoke verification",
+    "national six-type natural preference prevalence unproven",
+    "building and brand field calibration unproven"
+  ],
+  "scientific_audit_method_reference": "https://doi.org/10.48550/arXiv.2609.00065",
+  "live_counts_at_activation": {
+    "invitations": 1000,
+    "actors": 0,
+    "answers": 0,
+    "withdrawals": 0
+  }
+}

@@ -7,6 +7,8 @@ V28入口顺序：`bootstrap.py` → `repair_chronology.py`/`adapt_full_cluster.
 
 物理完成后，`deploy/formal_questionnaires_20261014/render_materials.py`按50/950分别导出成熟前端资料；Node的`bind_frontend.js`/`verify_case_bindings.js`固定实际JS数值/哈希语义；`build_release.py`构建独立正式包，`release_acceptance.py`逐条核对实际世界/A-B/回读证据，`test_protocol.py`仅在虚构测试库检查协议。`activate.py`验证包、备份旧数据、分户邀请码并激活正式服务，后续备份由`backup.py`完成。
 
+2026-10-15强化准入：`release_acceptance.py --node /path/to/node20`核当前内容门、物理报告签名与完整集合、逐项源数值，并重新构造全部源案例；派生绑定通过实际发布JS单独核。`test_release_acceptance.py`及`test_recovery.py`在受控/临时输入下检查拒收和故障恢复。公开状态与载荷可只读运行`python3 scripts/verify_household1000_publication.py`；它不启动EP、不替代人类有效性验证。
+
 `python3 scripts/household1000.py require-generation --scope full1000EP`在公开clone返回2（缺受控当前输入）；在正确学校工作区验证原50、950、气象敏感性三组实际内容绑定回执，仍不启动EP。任何当前输入或模型改变都须重新审核，不凭JSON状态字段准入。
 
 下面V23命令与门策略是历史复现说明，不能替代上述V28当前入口。

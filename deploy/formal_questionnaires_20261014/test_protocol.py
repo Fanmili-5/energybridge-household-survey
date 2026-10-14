@@ -3,6 +3,7 @@ import argparse,copy,hashlib,http.client,json,re,sqlite3,tempfile,threading,uuid
 from pathlib import Path
 from server import Server,Release,COOKIE
 from store import UI_VERSION,NOTICE_VERSION
+from make_protocol_fixture import make_record
 
 def run(release_path,fixture):
     release=Release(release_path);record=json.loads(fixture.read_text());hid=record['audit']['source_case']['identity']['role_id']
@@ -46,18 +47,28 @@ def run(release_path,fixture):
             h2=session();assert request('POST',prefix+'/api/claim',{'credential':token},h2)[0]==403
             resumed=request('POST',prefix+'/api/claim',{'credential':recovery},h2);assert resumed[0]==200 and json.loads(resumed[2])['participant_id']==identity['participant_id']
             state2=json.loads(request('GET',prefix+'/api/session',headers=h2)[2]);assert state2['answers']==state['answers']
+            second=make_record(release,1);second['response']=second.pop('test_feedback')
+            second.update(status='participant_submitted_role_response',collection_release=True)
+            second['respondent']={'age_years':21,'gender':'female'}
+            assert request('POST',route+'/api/answers',{'case_index':1,'record':second,'request_id':str(uuid.uuid4())},h2)[0]==201
+            latest=copy.deepcopy(altered);latest['request_id']=str(uuid.uuid4());latest['record']['respondent']={'age_years':None,'gender':None}
+            assert request('POST',route+'/api/answers',latest,h2)[0]==201
+            state2=json.loads(request('GET',prefix+'/api/session',headers=h2)[2])
+            assert [r['case_index']for r in state2['answers']]==[1,0],'last revised earlier date must restore last'
+            assert state2['answers'][-1]['respondent']=={'age_years':None,'gender':None},'intentional blank metadata must survive restoration'
             assert request('GET',route+'/formal_responses.sqlite3',headers=h)[0]==404
             with server.store.connect()as db:
                 stored=[json.loads(r[0])for r in db.execute('select record_json from answers order by rowid')]
-            assert len(stored)==2 and all(r['human_label_count']==0 and r['label_origin']=='engineering_fixture'for r in stored)
+            assert len(stored)==4 and all(r['human_label_count']==0 and r['label_origin']=='engineering_fixture'for r in stored)
             assert stored[0]['input']==stored[1]['input'] and stored[0]['audit']['source_case']==stored[1]['audit']['source_case']
+            assert stored[0]['input']==stored[3]['input'] and stored[0]['audit']['source_case']==stored[3]['audit']['source_case']
             assert all(r['audit']['collection_linkage']['participant_id']==identity['participant_id']for r in stored)
             assert server.store.export()==[],'fixtures must not enter formal export'
             withdrawn=request('POST',prefix+'/api/withdraw',{},h2);assert withdrawn[0]==200
             assert request('POST',route+'/api/answers',dict(payload,request_id=str(uuid.uuid4())),h)[0]==403
             assert request('POST',prefix+'/api/claim',{'credential':recovery},session())[0]==403
             assert server.store.export()==[]
-            return {'passed':True,'batch':batch,'manifest_files_checked':len(release.manifest['files']),'invitation_assignment_consent_recovery_withdrawal':'pass','source_and_model_input_guards':'pass','metadata_null_decimal_revision_idempotency':'pass','fixtures_excluded_from_formal_export':True,'human_answers_generated':0,'production_records_written':0}
+            return {'passed':True,'batch':batch,'manifest_files_checked':len(release.manifest['files']),'invitation_assignment_consent_recovery_withdrawal':'pass','source_and_model_input_guards':'pass','metadata_null_decimal_revision_idempotency':'pass','multi_date_latest_revision_and_blank_respondent_restoration':'pass','fixtures_excluded_from_formal_export':True,'human_answers_generated':0,'production_records_written':0}
         finally:server.shutdown();server.server_close();thread.join()
 
 if __name__=='__main__':
