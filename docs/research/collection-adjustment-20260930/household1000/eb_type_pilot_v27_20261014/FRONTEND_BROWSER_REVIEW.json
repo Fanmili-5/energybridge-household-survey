@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "actual_browser_cases_checked": 500,
+  "actual_browser_exports_compared": 2,
+  "input_unchanged_when_all_answers_changed": true,
+  "role_policy_visible": true,
+  "original_frontend": true,
+  "original24h_axis_preserved": true,
+  "engineering_fixture_answers_only": true,
+  "human_answers": 0,
+  "collection_API_requests_sent": 0,
+  "errors": []
+}

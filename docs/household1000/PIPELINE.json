@@ -1,12 +1,12 @@
 {
-  "version": "household1000-v26-EB-type-coverage",
-  "default_mode": "read-only;new EB-six-type generation and EP held",
+  "version": "household1000-v27-original50-and-frozen-mix",
+  "default_mode": "read-only;frozen static1000 may be admitted on school;fullEP held",
   "steps": [
     {
       "automatic_execution": false,
-      "generation_allowed": false,
+      "generation_allowed": true,
       "id": "EB-type-coverage-pre-generation",
-      "output_and_scope": "G0:substantive EB6 coverage and coherent policy-to-world propagation;original50 verification then frozen composition;not passed",
+      "output_and_scope": "V27 original50 pass;research1000mix frozen;actual full1000 static coverage pending",
       "required_inputs": [
         "pinned six EB references with common field definitions",
         "source-aware household/housing/device eligibility",
@@ -15,9 +15,10 @@
         "label-blind extractor and reference/clustering coverage protocol"
       ],
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/code/require_generation.py"
+        "docs/research/collection-adjustment-20260930/household1000/type_production_admission_v27/code/require_generation.py"
       ],
-      "real_prevalence_is_generation_prerequisite": false
+      "real_prevalence_is_generation_prerequisite": false,
+      "generation_allowed_scope": "static1000 content-bound school gate"
     },
     {
       "id": "source-admission",
@@ -249,5 +250,61 @@
   "scientific_rule_changes_in_this_publication": true,
   "active_stage": "gate_repair_production_20261013_v23",
   "design_data_version": "v22",
-  "latest_requirement_stage": "eb_type_coverage_revision_v26"
+  "latest_requirement_stage": "eb_type_coverage_revision_v26",
+  "steps_are_historical_source_chain": true,
+  "current_original50_source_steps": [
+    {
+      "id": "type-policy-world",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/type_model.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/worlds.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/activity_model.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/needs.py"
+      ],
+      "scope": "reference original50;full1000 pending"
+    },
+    {
+      "id": "normalA-candidateB",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/plans.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/generate.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/execution.py"
+      ],
+      "scope": "reference original50;full1000 pending"
+    },
+    {
+      "id": "concrete-features-clustering",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/audit_pilot.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/cluster_pilot.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/cluster_actual.R"
+      ],
+      "scope": "reference original50;full1000 pending"
+    },
+    {
+      "id": "physical-input-and-readback",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/compile_inputs.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/physics.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/weather_audit.py"
+      ],
+      "scope": "reference original50;full1000 pending"
+    },
+    {
+      "id": "original-frontend",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/materials.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/browser_acceptance.js"
+      ],
+      "scope": "reference original50;full1000 pending"
+    },
+    {
+      "id": "accept-and-freeze",
+      "source_files": [
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/finalize_pilot.py",
+        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/freeze_composition.py"
+      ],
+      "scope": "reference original50;full1000 pending"
+    }
+  ]
 }

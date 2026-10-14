@@ -1,5 +1,8 @@
 # 完整生产链与当前验收
 
+当前执行结果见[V27方法与验收](../research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/METHODS_AND_ACCEPTANCE.md)：原50户新版参考验收通过，1000户研究配比A101/B303/C319/D101/E85/F91冻结且保留原50户政策。全量1000静态包与整体实际覆盖仍待验收，1000户EP关闭。下文保留历史实现/方案作来源地图，未完成状态和当前入口以[STATUS.json](STATUS.json)及V27证据为准。
+
+
 当前生成前置G0：[EB类型覆盖要求](EB_SIX_TYPE_REQUIREMENT.md)。目的已明确为1000户的类型覆盖与EB一致，撤下全国偏好比例前置，不恢复演员人数配额。需落实共同事实特征、家庭适配、作息/服务/A-B/IDF传递和原50户覆盖验收；当前生成与EP仍关闭，下文V23结果仅为历史范围。
 
 现行验收为V23，设计世界与A/B为冻结V22。源码根为 `docs/research/collection-adjustment-20260930/household1000/`，当前子目录 `gate_repair_production_20261013_v23`。历史阶段只作为有hash的前置来源，不替代当前验收。

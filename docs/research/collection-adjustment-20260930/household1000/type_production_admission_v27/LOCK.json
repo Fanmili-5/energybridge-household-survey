@@ -1,0 +1,8 @@
+{
+  "stage": "eb_type_pilot_v27_20261014",
+  "original50_acceptance_sha256": "db0742371006812e63788fc21f03080ab9e55628a3e50d401892297e7b67dd2d",
+  "frozen_composition_sha256": "5b988c2117c55c14c78b4b34b5f11cd0775ed4441bd6c306fb54fc68d5554a16",
+  "only_allowed_scope": "static1000",
+  "full1000_EP_allowed": false,
+  "fixed_original50": true
+}

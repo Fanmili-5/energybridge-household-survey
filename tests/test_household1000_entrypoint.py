@@ -65,12 +65,19 @@ class EntrypointTests(unittest.TestCase):
             self.assertEqual(code, 2)
             self.assertEqual(result['status'], 'missing_prepared_inputs')
 
-    def test_legacy_checks_cannot_authorize_new_EB_six_type_generation(self):
+    def test_public_metadata_cannot_replace_prepared_static_acceptance(self):
         code, result = self.invoke('require-generation')
         self.assertEqual(code, 2)
         self.assertFalse(result['generation_allowed'])
         self.assertFalse(result['EP_allowed'])
-        self.assertEqual(result['status'], 'EB_six_type_prerequisite_not_accepted')
+        self.assertTrue(result['reason'])
+
+    def test_full_EP_stays_blocked_after_pilot_and_composition_freeze(self):
+        code, result = self.invoke('require-generation','--scope','full1000EP')
+        self.assertEqual(code,2)
+        self.assertFalse(result['generation_allowed'])
+        self.assertFalse(result['EP_allowed'])
+        self.assertIn('full1000 EP hold',result['reason'])
 
     def test_well_bound_fixture_and_no_execution(self):
         with tempfile.TemporaryDirectory() as folder:

@@ -1,5 +1,8 @@
 # V23复现与验收顺序
 
+当前执行结果见[V27方法与验收](../research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/METHODS_AND_ACCEPTANCE.md)：原50户新版参考验收通过，1000户研究配比A101/B303/C319/D101/E85/F91冻结且保留原50户政策。全量1000静态包与整体实际覆盖仍待验收，1000户EP关闭。下文保留历史实现/方案作来源地图，未完成状态和当前入口以[STATUS.json](STATUS.json)及V27证据为准。
+
+
 当前EB类型覆盖和具体任务一致性尚未验收。以下V23命令用于历史输入只读核查，不能授权新版生产。生成前先运行 `python3 scripts/household1000.py require-generation`；当前应返回2。详见[类型覆盖前置要求](EB_SIX_TYPE_REQUIREMENT.md)；全国偏好调查不作为本门槛。
 
 ## 公开checkout

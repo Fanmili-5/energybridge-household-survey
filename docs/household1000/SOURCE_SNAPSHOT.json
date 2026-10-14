@@ -1,7 +1,14 @@
 {
-  "version": "household1000-v26-EB-type-coverage",
+  "version": "household1000-v27-original50-and-frozen-mix",
   "source_scope": "source,case-free templates,contracts and methods;protected records and calibrated or human benchmark claims excluded",
   "source_files": [
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
+      "source_sha256": "9e568521755d40aaf76356e6cb2613de31e4af1a50b644215303c6c06c1dc1df",
+      "published_sha256": "9e568521755d40aaf76356e6cb2613de31e4af1a50b644215303c6c06c1dc1df",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
       "source_sha256": "64928639c647f0a43302de531a13e954453bfbad6b68daa51395118ba7092acc",
@@ -11,10 +18,10 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
-      "source_sha256": "733b5ae819c3f5c3067b2018bafb8480320abb31622eca773f3880d3e21c2cae",
-      "published_sha256": "733b5ae819c3f5c3067b2018bafb8480320abb31622eca773f3880d3e21c2cae",
-      "kind": "current_pointer",
-      "transformation": "none"
+      "source_sha256": "9ecad47cbc2f00cb4d07c772cf2c395a44a4d144913241dd29aa198368ba710f",
+      "published_sha256": "9ecad47cbc2f00cb4d07c772cf2c395a44a4d144913241dd29aa198368ba710f",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/ab_design_audit1000_20261007_v1/code/audit.py",
@@ -974,6 +981,552 @@
       "published_sha256": "8036bbd709cbf5b6cb634a03706f618db5502a850fca8d9708fa5ec1162a3636",
       "kind": "first_party_research_source",
       "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/COHORT_FEASIBILITY_REVIEW.json",
+      "published_sha256": "1ecec8febf302981406bb0e371a4c0508eac62ca57260aee034bdda8e4ee5872",
+      "source_sha256": "1ecec8febf302981406bb0e371a4c0508eac62ca57260aee034bdda8e4ee5872",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/DESIGN_REVIEW.json",
+      "published_sha256": "9901b5612218e0199cf7c83be5c8f10afa8bba5ccc5df81997d8b2be928bd1f9",
+      "source_sha256": "9901b5612218e0199cf7c83be5c8f10afa8bba5ccc5df81997d8b2be928bd1f9",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/EB_REFERENCE.json",
+      "published_sha256": "f1d4732a65e1984fadc847c33efd8c80656d8b6d7d1cb33556b3248e4eb68e98",
+      "source_sha256": "f1d4732a65e1984fadc847c33efd8c80656d8b6d7d1cb33556b3248e4eb68e98",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/FEATURE_AND_CLUSTER_CONTRACT.json",
+      "published_sha256": "fec647c37339632a07d06f344260ffae9c49aa9406d4d80a58669f898e7834d1",
+      "source_sha256": "fec647c37339632a07d06f344260ffae9c49aa9406d4d80a58669f898e7834d1",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/METHODS.md",
+      "published_sha256": "4fc7dee5e1fbbe28d3c6ecf049647cd5dc9dabd8ee0d4096c08be37213a1658c",
+      "source_sha256": "4fc7dee5e1fbbe28d3c6ecf049647cd5dc9dabd8ee0d4096c08be37213a1658c",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/REQUIREMENT.json",
+      "published_sha256": "f755829621ae480a36e7131ce71230da769ac6f3100efdb0ffa3068e3fb5ae1c",
+      "source_sha256": "f755829621ae480a36e7131ce71230da769ac6f3100efdb0ffa3068e3fb5ae1c",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/SOURCE_LEDGER.json",
+      "published_sha256": "76a32392bea486b7607640657884f3936fe8bb6d4452a215b3b92d471399b6e9",
+      "source_sha256": "76a32392bea486b7607640657884f3936fe8bb6d4452a215b3b92d471399b6e9",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/audit_original50.py",
+      "source_sha256": "003eba8a0e30c6f1bc566724fabfa914f05e961f5f88c5d4390890982ebe1c53",
+      "published_sha256": "003eba8a0e30c6f1bc566724fabfa914f05e961f5f88c5d4390890982ebe1c53",
+      "kind": "EB6_pre_generation_requirement",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/install_requirement_overlay.py",
+      "published_sha256": "fa70ff06942ce5dabe466457aa3ffe3527f4fa11f32cd0eb996cb1e5fa2e1735",
+      "source_sha256": "fa70ff06942ce5dabe466457aa3ffe3527f4fa11f32cd0eb996cb1e5fa2e1735",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/preflight.py",
+      "published_sha256": "921fae5725d4e65cc3f9ae018699836c0245ed58a63b23b365112ee652e33a37",
+      "source_sha256": "921fae5725d4e65cc3f9ae018699836c0245ed58a63b23b365112ee652e33a37",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/require_generation.py",
+      "published_sha256": "03b7344673872967d9bc9d433841ce048715888be54be91b8ef2350189c7e06e",
+      "source_sha256": "03b7344673872967d9bc9d433841ce048715888be54be91b8ef2350189c7e06e",
+      "transformation": "none"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/test_preflight.py",
+      "published_sha256": "fd11e326408b584581c024c8343688718bd70afd8c2fd76d08f76d85fcffa5a6",
+      "source_sha256": "fd11e326408b584581c024c8343688718bd70afd8c2fd76d08f76d85fcffa5a6",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/DESIGN_REVIEW.json",
+      "source_sha256": "3e2cc50f06df265a57cb9e13ded19f9ce58efc9ce19c53b28220327d05193e0c",
+      "published_sha256": "3e2cc50f06df265a57cb9e13ded19f9ce58efc9ce19c53b28220327d05193e0c",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/EB_TYPE_REFERENCE.json",
+      "source_sha256": "bd342987a79d5751d1582239114a6c6ef4447e8b342a7d7c3b249a925808e0aa",
+      "published_sha256": "bd342987a79d5751d1582239114a6c6ef4447e8b342a7d7c3b249a925808e0aa",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/FEATURE_AND_CLUSTER_CONTRACT.json",
+      "source_sha256": "c4dd73718d0c7b84237ab8170b74980443c439a440dc46f8e8807b32f5602641",
+      "published_sha256": "c4dd73718d0c7b84237ab8170b74980443c439a440dc46f8e8807b32f5602641",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/METHODS.md",
+      "source_sha256": "8ea1c855f6a3df04e816480cf7357920315a8de0cb4a40428451bb7ece42117c",
+      "published_sha256": "8ea1c855f6a3df04e816480cf7357920315a8de0cb4a40428451bb7ece42117c",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/REQUIREMENT.json",
+      "source_sha256": "9f87275fe3cd878507d95a0dfc232e6f2d41828e782ee924c46033492990191a",
+      "published_sha256": "9f87275fe3cd878507d95a0dfc232e6f2d41828e782ee924c46033492990191a",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SCHOOL_CHECK.json",
+      "source_sha256": "dd86943b5d87150411507670b743fa7ab6beefcacbbb0fd390b8dde3fe54e8ea",
+      "published_sha256": "dd86943b5d87150411507670b743fa7ab6beefcacbbb0fd390b8dde3fe54e8ea",
+      "kind": "aggregate_engineering_receipt",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SOURCE_LEDGER.json",
+      "source_sha256": "85df7ea40fc3323f86ba38ef7e401c2e3c225886aabb1fea68f60b530b2905e7",
+      "published_sha256": "85df7ea40fc3323f86ba38ef7e401c2e3c225886aabb1fea68f60b530b2905e7",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SOURCE_SUPPORT50_REVIEW.json",
+      "source_sha256": "07a30483e6384ab53f24b889bc575bb95e0b24e2d7b2a630b94b66f312e26e3a",
+      "published_sha256": "07a30483e6384ab53f24b889bc575bb95e0b24e2d7b2a630b94b66f312e26e3a",
+      "kind": "aggregate_source_support_receipt",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/TYPE_AWARE_GENERATION.md",
+      "source_sha256": "04338ba7987d5fe7f2964a186b06fc3b62247b54651b830875a515eeb8caba92",
+      "published_sha256": "04338ba7987d5fe7f2964a186b06fc3b62247b54651b830875a515eeb8caba92",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/TYPE_GENERATION_RULES.json",
+      "source_sha256": "c65b33066bcae176f3890ed17d219d577ae299f96f0b8d3e24d204d87690078d",
+      "published_sha256": "c65b33066bcae176f3890ed17d219d577ae299f96f0b8d3e24d204d87690078d",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/code/audit_type_support.py",
+      "source_sha256": "ec222379d755b4829907b21bd976cf33a41eb05435c2b34fc35f5ce984ef8f02",
+      "published_sha256": "ec222379d755b4829907b21bd976cf33a41eb05435c2b34fc35f5ce984ef8f02",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/code/require_generation.py",
+      "source_sha256": "e5f8703fe336d5df92dbfcc88ffb27b29de49d4ee5119c853efe5c31aa861c32",
+      "published_sha256": "e5f8703fe336d5df92dbfcc88ffb27b29de49d4ee5119c853efe5c31aa861c32",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/ACCEPTANCE_NEGATIVE_CONTROLS.json",
+      "source_sha256": "5b64542fb89fde1d4ac644a2135c6d12fe8cf955c8ec37b817a3f86c4173ca24",
+      "published_sha256": "5b64542fb89fde1d4ac644a2135c6d12fe8cf955c8ec37b817a3f86c4173ca24",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/CLUSTER_COVERAGE50_SUMMARY.json",
+      "source_sha256": "83623d5b3d8f4646886dcfd6f4b8b88daff0a48e5fab71b4ee6ab2df8dba3c0e",
+      "published_sha256": "83623d5b3d8f4646886dcfd6f4b8b88daff0a48e5fab71b4ee6ab2df8dba3c0e",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/FINAL_RULE_REGRESSION.json",
+      "source_sha256": "f3463a0395cf367e78cade1ad218f4e4e0a1cc80552806eec1c96529a11a5aad",
+      "published_sha256": "f3463a0395cf367e78cade1ad218f4e4e0a1cc80552806eec1c96529a11a5aad",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/FRONTEND50_SUMMARY.json",
+      "source_sha256": "5bd5562417a56dd632eeabe497769a3f6a894da3ec8ea02247cd5093dfa13118",
+      "published_sha256": "5bd5562417a56dd632eeabe497769a3f6a894da3ec8ea02247cd5093dfa13118",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/FRONTEND_BINDINGS_REVIEW.json",
+      "source_sha256": "77f9085dc7cbedd5fd95cdc32649fc59f986d618665546779715c68798212d31",
+      "published_sha256": "77f9085dc7cbedd5fd95cdc32649fc59f986d618665546779715c68798212d31",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/FRONTEND_BROWSER_REVIEW.json",
+      "source_sha256": "ae68244c3d4272e500e65ce0e58cf76d1a97ee43392d45899ca7149385d6f782",
+      "published_sha256": "ae68244c3d4272e500e65ce0e58cf76d1a97ee43392d45899ca7149385d6f782",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/FRONTEND_CLOCK_REVIEW.json",
+      "source_sha256": "1dc7d3f263ac7ff5a47fc20b9f42312cf3a4ad0277b38dcde2623768b12c134b",
+      "published_sha256": "1dc7d3f263ac7ff5a47fc20b9f42312cf3a4ad0277b38dcde2623768b12c134b",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/FROZEN_COMPOSITION_SUMMARY.json",
+      "source_sha256": "c268288c3d8d668efcf6735114efdf887e4259182ca57d58072c9feaf9a12010",
+      "published_sha256": "c268288c3d8d668efcf6735114efdf887e4259182ca57d58072c9feaf9a12010",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/GENERATION50_SUMMARY.json",
+      "source_sha256": "bfd23fe7df04609a509349deacdc5794ce6e405f8882934ddadcebba67dff7e6",
+      "published_sha256": "bfd23fe7df04609a509349deacdc5794ce6e405f8882934ddadcebba67dff7e6",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/METHODS_AND_ACCEPTANCE.md",
+      "source_sha256": "aef1876075cbfa190fb3a378f99e44735e419bbefd10805b8910fcddc1856bcc",
+      "published_sha256": "aef1876075cbfa190fb3a378f99e44735e419bbefd10805b8910fcddc1856bcc",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/PHYSICS50_SUMMARY.json",
+      "source_sha256": "99f29efc50b3b8dfe94d0aa397919c3b78999a7e03600771b644acd9c399d31c",
+      "published_sha256": "99f29efc50b3b8dfe94d0aa397919c3b78999a7e03600771b644acd9c399d31c",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/PILOT_ACCEPTANCE_SUMMARY.json",
+      "source_sha256": "54c7b8307b2bad5d5c627f1196985455c00405f3e2280dad0df9677d2adbbdba",
+      "published_sha256": "54c7b8307b2bad5d5c627f1196985455c00405f3e2280dad0df9677d2adbbdba",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/PROTOCOL.json",
+      "source_sha256": "4d5979a615c4c761105affd128f49546fbf02860f5479dc84510757740c01650",
+      "published_sha256": "4d5979a615c4c761105affd128f49546fbf02860f5479dc84510757740c01650",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/REFERENCE_PHYSICS_CONTRACT.json",
+      "source_sha256": "f5276b00b4820c5c4fd01a87a3e4b8bbca616bc80b3fe100627d4c722a9dd19b",
+      "published_sha256": "f5276b00b4820c5c4fd01a87a3e4b8bbca616bc80b3fe100627d4c722a9dd19b",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/RULE_EVIDENCE.json",
+      "source_sha256": "7b9e78aa4d7cd8a6c8e40eaaa624fdaa1cae7e64b0ef44674d5c365ac88bdcd2",
+      "published_sha256": "7b9e78aa4d7cd8a6c8e40eaaa624fdaa1cae7e64b0ef44674d5c365ac88bdcd2",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/PSYCHROLIB_LICENSE.txt",
+      "source_sha256": "3372ab6db04ab898605cd8a4c47eee35e668d14ca05481f00107239be0e3b46e",
+      "published_sha256": "3372ab6db04ab898605cd8a4c47eee35e668d14ca05481f00107239be0e3b46e",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/acceptance_negative_controls.py",
+      "source_sha256": "646c0572e8ee8bdd10ec979f30e819e7702601167741b9407cabed71eb7a46e1",
+      "published_sha256": "646c0572e8ee8bdd10ec979f30e819e7702601167741b9407cabed71eb7a46e1",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/activity_model.py",
+      "source_sha256": "bc6cdd815afdeda3dc06761a0cb5368d874c8c36d8c9f78f21fa87aca9f19505",
+      "published_sha256": "bc6cdd815afdeda3dc06761a0cb5368d874c8c36d8c9f78f21fa87aca9f19505",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/audit_bath.py",
+      "source_sha256": "a45847a919e73b15fce024a54bd1fa2229f8b63f2c4fe28fbcda99192ceac227",
+      "published_sha256": "a45847a919e73b15fce024a54bd1fa2229f8b63f2c4fe28fbcda99192ceac227",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/audit_calendar.py",
+      "source_sha256": "5b3db0d0414d07f62f36b6d28293b6b968995186c834e413f2ae82c1dcade7df",
+      "published_sha256": "5b3db0d0414d07f62f36b6d28293b6b968995186c834e413f2ae82c1dcade7df",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/audit_idfs.py",
+      "source_sha256": "bb8415beef52c3af50da53a390a6f4d9b1e443d6358e79d1faf809695128a1cc",
+      "published_sha256": "bb8415beef52c3af50da53a390a6f4d9b1e443d6358e79d1faf809695128a1cc",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/audit_physical_inputs.py",
+      "source_sha256": "bdcd924eed5bef0184b19546d4ce292b61ca4d73a7c7a89e0d7fa28426e96174",
+      "published_sha256": "bdcd924eed5bef0184b19546d4ce292b61ca4d73a7c7a89e0d7fa28426e96174",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/audit_pilot.py",
+      "source_sha256": "c42b6f044988c4235927acd6c7a1f3bf2b39816a964c3bda5b06feb1f22eeff4",
+      "published_sha256": "c42b6f044988c4235927acd6c7a1f3bf2b39816a964c3bda5b06feb1f22eeff4",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/audit_reference_model.py",
+      "source_sha256": "91b9bc5bec0845e413725e567274b1d0f7fde973d16d5ad4e408adf25997c0d8",
+      "published_sha256": "91b9bc5bec0845e413725e567274b1d0f7fde973d16d5ad4e408adf25997c0d8",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/bind_frontend.js",
+      "source_sha256": "e9193ea3d4764d56cc1f7f5e914a029857ffb34530042fe9937de059b139a65a",
+      "published_sha256": "e9193ea3d4764d56cc1f7f5e914a029857ffb34530042fe9937de059b139a65a",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/browser_acceptance.js",
+      "source_sha256": "2d3836a2f18a16f042396874db3a5d34bc4223f0917196181289f12cca7b8c70",
+      "published_sha256": "2d3836a2f18a16f042396874db3a5d34bc4223f0917196181289f12cca7b8c70",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/checks.py",
+      "source_sha256": "b459b8dbe2d94f8e123d567a149daafa49fd2c839fa790e453094d60fe40f52c",
+      "published_sha256": "b459b8dbe2d94f8e123d567a149daafa49fd2c839fa790e453094d60fe40f52c",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/cluster_actual.R",
+      "source_sha256": "72b8d6d3f7c2f9683d13bd49687cb54d0b4923158a54dcb11f140cdea2e7f90a",
+      "published_sha256": "72b8d6d3f7c2f9683d13bd49687cb54d0b4923158a54dcb11f140cdea2e7f90a",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/cluster_pilot.py",
+      "source_sha256": "f8bc49d771b01c6624c0e3937eaed02bf70f9594bd1e81d64fd6c3bc8c2d1d9d",
+      "published_sha256": "f8bc49d771b01c6624c0e3937eaed02bf70f9594bd1e81d64fd6c3bc8c2d1d9d",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/common.py",
+      "source_sha256": "7be9aa4cb52e220942ace70d9484f17e6606183d9c729b395601f9d4560a6d8f",
+      "published_sha256": "7be9aa4cb52e220942ace70d9484f17e6606183d9c729b395601f9d4560a6d8f",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/compile_inputs.py",
+      "source_sha256": "e56e24f2e730786e0bf584b59f9103d54abf5f5970fdf0ca6a6949c1bcb92cce",
+      "published_sha256": "e56e24f2e730786e0bf584b59f9103d54abf5f5970fdf0ca6a6949c1bcb92cce",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/curve_diagnostics.py",
+      "source_sha256": "077d3f53c8f0971a71a1871fd92518e9e5c984b246824fa959becd5f79fd9c55",
+      "published_sha256": "077d3f53c8f0971a71a1871fd92518e9e5c984b246824fa959becd5f79fd9c55",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/curve_observer.py",
+      "source_sha256": "7dd261c46272c3fb4e000cc22987c7a8ed2e15d46af11b04ff304662e6cd1183",
+      "published_sha256": "7dd261c46272c3fb4e000cc22987c7a8ed2e15d46af11b04ff304662e6cd1183",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/ep_gate.py",
+      "source_sha256": "a89a30c547f0e17ff6479ef30d113343d94e269d28a9cf4da1b96cd2d989ec85",
+      "published_sha256": "a89a30c547f0e17ff6479ef30d113343d94e269d28a9cf4da1b96cd2d989ec85",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/execution.py",
+      "source_sha256": "fe4bc3fbe331f3b754ddca9f833a98c8f2bd551d88a1d20a9af634e854cc44d9",
+      "published_sha256": "fe4bc3fbe331f3b754ddca9f833a98c8f2bd551d88a1d20a9af634e854cc44d9",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/finalize_pilot.py",
+      "source_sha256": "613c8e9e12f47eb0359730528fd1af89206cf66ff6720b7d5d8cb2991ac87905",
+      "published_sha256": "613c8e9e12f47eb0359730528fd1af89206cf66ff6720b7d5d8cb2991ac87905",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/freeze_composition.py",
+      "source_sha256": "a09c88a8c7f465e2bba7f251219b75638d0b407e132ed5eae92597548c333a83",
+      "published_sha256": "a09c88a8c7f465e2bba7f251219b75638d0b407e132ed5eae92597548c333a83",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/generate.py",
+      "source_sha256": "f829b05e9e8875dc64ce973442ba856bbd8b5e85b2a5b88601f6b4df89a63e5f",
+      "published_sha256": "f829b05e9e8875dc64ce973442ba856bbd8b5e85b2a5b88601f6b4df89a63e5f",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/materials.py",
+      "source_sha256": "b63ae25075dc3adedf5ab1caf90e06f9ed3b5e9a8077c91ea1fb5958ac57d150",
+      "published_sha256": "b63ae25075dc3adedf5ab1caf90e06f9ed3b5e9a8077c91ea1fb5958ac57d150",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/mechanism_controls.py",
+      "source_sha256": "2db9f8bfbdb48bd42f0007caf316c978e7b9817211bcf2da0b6e8f12e40c874f",
+      "published_sha256": "2db9f8bfbdb48bd42f0007caf316c978e7b9817211bcf2da0b6e8f12e40c874f",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/model_form_diagnostic.py",
+      "source_sha256": "ca5d59f3ba9363c8d10f66cd4854bedfb77461097ad0952eeb8192ee55340dea",
+      "published_sha256": "ca5d59f3ba9363c8d10f66cd4854bedfb77461097ad0952eeb8192ee55340dea",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/needs.py",
+      "source_sha256": "474ea412e8da89b8b1a53f70da3a325fe82f4a5a1dc49a81df9d25bbbc9fe682",
+      "published_sha256": "474ea412e8da89b8b1a53f70da3a325fe82f4a5a1dc49a81df9d25bbbc9fe682",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/physics.py",
+      "source_sha256": "62a161a739987661b345209c0950f302b4fc230c237d53e642cce00f37a4efd8",
+      "published_sha256": "62a161a739987661b345209c0950f302b4fc230c237d53e642cce00f37a4efd8",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/plans.py",
+      "source_sha256": "a0ef1bb31c599f285a4bfdfd0f0a78e4ed15cd240d7c2a9f4dfd509f663419a9",
+      "published_sha256": "a0ef1bb31c599f285a4bfdfd0f0a78e4ed15cd240d7c2a9f4dfd509f663419a9",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/preview_readonly.py",
+      "source_sha256": "0501d550b705106ea9f7462e660f8ff48f69ab4f4f0e27cba68752353a077144",
+      "published_sha256": "0501d550b705106ea9f7462e660f8ff48f69ab4f4f0e27cba68752353a077144",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/psychrolib_reference.py",
+      "source_sha256": "37e08506bdc2e652a77026e7107ece7eaabb1c40997b563b88fe2951385aefdf",
+      "published_sha256": "37e08506bdc2e652a77026e7107ece7eaabb1c40997b563b88fe2951385aefdf",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/type_model.py",
+      "source_sha256": "3bb3df9681b5caa5e34f5e9123f743ed06b1a0f3d0ced84cb17c23907d5263c9",
+      "published_sha256": "3bb3df9681b5caa5e34f5e9123f743ed06b1a0f3d0ced84cb17c23907d5263c9",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/vehicle_causal_controls.py",
+      "source_sha256": "e5214167d0df399304ade1246867a16f5fb6336d84fb990e52bce8d46a29277d",
+      "published_sha256": "e5214167d0df399304ade1246867a16f5fb6336d84fb990e52bce8d46a29277d",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/vehicle_state.py",
+      "source_sha256": "198a9d3452e89903647125a989437c4e79dcd81626a73d431f0b373ec3220bed",
+      "published_sha256": "198a9d3452e89903647125a989437c4e79dcd81626a73d431f0b373ec3220bed",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/verify_case_bindings.js",
+      "source_sha256": "62a51aba6bf3a229398dc05631cbf5fd601bb13b5be9b64a79b7377669f95a51",
+      "published_sha256": "62a51aba6bf3a229398dc05631cbf5fd601bb13b5be9b64a79b7377669f95a51",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/verify_frontend_clock.js",
+      "source_sha256": "e46761ceeda681d0eebac4e71f807fdbb152c95e0a43c941e45edb3acda6d7a6",
+      "published_sha256": "e46761ceeda681d0eebac4e71f807fdbb152c95e0a43c941e45edb3acda6d7a6",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/weather_audit.py",
+      "source_sha256": "a491c2754f7e6a5fea99ceb954cb8f636e06c4d0c4c16f9428a35b48d556d8d8",
+      "published_sha256": "a491c2754f7e6a5fea99ceb954cb8f636e06c4d0c4c16f9428a35b48d556d8d8",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/worlds.py",
+      "source_sha256": "fa2f4c27e3da097dfca2d0ca7f69c9e381cc3e694d2e4cfa65c020b3d1a344f6",
+      "published_sha256": "fa2f4c27e3da097dfca2d0ca7f69c9e381cc3e694d2e4cfa65c020b3d1a344f6",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/report_tools/curate_public.py",
+      "source_sha256": "b84dd823266ff14cf1abafbdd68153d49f2ed471ac2e3fe2ee5cc7137ad9e658",
+      "published_sha256": "b84dd823266ff14cf1abafbdd68153d49f2ed471ac2e3fe2ee5cc7137ad9e658",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/end_to_end_plan_20261004/code/build_plan.py",
@@ -2775,6 +3328,48 @@
       "transformation": "none"
     },
     {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/DESIGN_REVIEW.json",
+      "source_sha256": "ccd08265716616f9ca0ce7134cd47bc9d6095cafc16ccb9fb0fdf1ba3cc4d0b3",
+      "published_sha256": "ccd08265716616f9ca0ce7134cd47bc9d6095cafc16ccb9fb0fdf1ba3cc4d0b3",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/METHODS.md",
+      "source_sha256": "b2dfc74d1c2152f0c5a308eea532a8d7b168c1842521f06f11835c23893eea94",
+      "published_sha256": "b2dfc74d1c2152f0c5a308eea532a8d7b168c1842521f06f11835c23893eea94",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/REQUIREMENT.json",
+      "source_sha256": "a6366a70864505c6897b84092f852ae222e96369b9b44cc1970068c607c0e69b",
+      "published_sha256": "a6366a70864505c6897b84092f852ae222e96369b9b44cc1970068c607c0e69b",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/SCHOOL_CHECK.json",
+      "source_sha256": "f3ec470cc187b8e159d9163cec569dd4ba3721f1cc716566a45a163212e04660",
+      "published_sha256": "f3ec470cc187b8e159d9163cec569dd4ba3721f1cc716566a45a163212e04660",
+      "kind": "aggregate_engineering_receipt",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/SOURCE_LEDGER.json",
+      "source_sha256": "e8c347ffe497f04a557f8f17325071ab093af2ec2292a1f3d94840bf0074ad6d",
+      "published_sha256": "e8c347ffe497f04a557f8f17325071ab093af2ec2292a1f3d94840bf0074ad6d",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/code/require_generation.py",
+      "source_sha256": "3f77d306194ad5ed398b2737693be281074f3098beeda4cbad61a0e573f6a4b2",
+      "published_sha256": "3f77d306194ad5ed398b2737693be281074f3098beeda4cbad61a0e573f6a4b2",
+      "kind": "first_party_research_source",
+      "transformation": "none"
+    },
+    {
       "path": "docs/research/collection-adjustment-20260930/household1000/production_evidence_completion_20261006/code/audit_manifest.py",
       "source_sha256": "8fe39cd02073a6de389377920e6622ad43bec2766f19b01bd930976810863773",
       "published_sha256": "8fe39cd02073a6de389377920e6622ad43bec2766f19b01bd930976810863773",
@@ -3200,6 +3795,13 @@
       "published_sha256": "d231e3d14923ef651ffccd1512435fcb567a198c619bced735d404e20f162d6c",
       "kind": "first_party_research_source",
       "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/repair_execution_20261008_v1/EXECUTION_BOARD.json",
+      "source_sha256": "fa8d41110afdf545f42d6b500d73944f9e0b26f1d4292c016d649638a9d460f8",
+      "published_sha256": "55cdd9398a219bee9ca99bde777de23342e5b0e7db5f10691d69af02872c89d3",
+      "kind": "aggregate_current_execution_board",
+      "transformation": "private board reduced to public aggregate status"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/PSYCHROLIB_LICENSE.txt",
@@ -3832,237 +4434,6 @@
       "transformation": "none"
     },
     {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
-      "published_sha256": "fd2ae7da297d1a35c80079a7c74f61a6176d0caa40d89731a31089b28cf429ad",
-      "source_sha256": "fd2ae7da297d1a35c80079a7c74f61a6176d0caa40d89731a31089b28cf429ad",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/COHORT_FEASIBILITY_REVIEW.json",
-      "published_sha256": "1ecec8febf302981406bb0e371a4c0508eac62ca57260aee034bdda8e4ee5872",
-      "source_sha256": "1ecec8febf302981406bb0e371a4c0508eac62ca57260aee034bdda8e4ee5872",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/DESIGN_REVIEW.json",
-      "published_sha256": "9901b5612218e0199cf7c83be5c8f10afa8bba5ccc5df81997d8b2be928bd1f9",
-      "source_sha256": "9901b5612218e0199cf7c83be5c8f10afa8bba5ccc5df81997d8b2be928bd1f9",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/EB_REFERENCE.json",
-      "published_sha256": "f1d4732a65e1984fadc847c33efd8c80656d8b6d7d1cb33556b3248e4eb68e98",
-      "source_sha256": "f1d4732a65e1984fadc847c33efd8c80656d8b6d7d1cb33556b3248e4eb68e98",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/FEATURE_AND_CLUSTER_CONTRACT.json",
-      "published_sha256": "fec647c37339632a07d06f344260ffae9c49aa9406d4d80a58669f898e7834d1",
-      "source_sha256": "fec647c37339632a07d06f344260ffae9c49aa9406d4d80a58669f898e7834d1",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/METHODS.md",
-      "published_sha256": "4fc7dee5e1fbbe28d3c6ecf049647cd5dc9dabd8ee0d4096c08be37213a1658c",
-      "source_sha256": "4fc7dee5e1fbbe28d3c6ecf049647cd5dc9dabd8ee0d4096c08be37213a1658c",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/REQUIREMENT.json",
-      "published_sha256": "f755829621ae480a36e7131ce71230da769ac6f3100efdb0ffa3068e3fb5ae1c",
-      "source_sha256": "f755829621ae480a36e7131ce71230da769ac6f3100efdb0ffa3068e3fb5ae1c",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/SOURCE_LEDGER.json",
-      "published_sha256": "76a32392bea486b7607640657884f3936fe8bb6d4452a215b3b92d471399b6e9",
-      "source_sha256": "76a32392bea486b7607640657884f3936fe8bb6d4452a215b3b92d471399b6e9",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/install_requirement_overlay.py",
-      "published_sha256": "fa70ff06942ce5dabe466457aa3ffe3527f4fa11f32cd0eb996cb1e5fa2e1735",
-      "source_sha256": "fa70ff06942ce5dabe466457aa3ffe3527f4fa11f32cd0eb996cb1e5fa2e1735",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/preflight.py",
-      "published_sha256": "921fae5725d4e65cc3f9ae018699836c0245ed58a63b23b365112ee652e33a37",
-      "source_sha256": "921fae5725d4e65cc3f9ae018699836c0245ed58a63b23b365112ee652e33a37",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/require_generation.py",
-      "published_sha256": "03b7344673872967d9bc9d433841ce048715888be54be91b8ef2350189c7e06e",
-      "source_sha256": "03b7344673872967d9bc9d433841ce048715888be54be91b8ef2350189c7e06e",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/test_preflight.py",
-      "published_sha256": "fd11e326408b584581c024c8343688718bd70afd8c2fd76d08f76d85fcffa5a6",
-      "source_sha256": "fd11e326408b584581c024c8343688718bd70afd8c2fd76d08f76d85fcffa5a6",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "scripts/household1000.py",
-      "published_sha256": "51dd93a4bdf3b62cb70e8940c732a0071ea7f4685ffd7595d53cf32866a6e8a0",
-      "source_sha256": "51dd93a4bdf3b62cb70e8940c732a0071ea7f4685ffd7595d53cf32866a6e8a0",
-      "transformation": "none"
-    },
-    {
-      "kind": "EB6_pre_generation_requirement",
-      "path": "tests/test_household1000_entrypoint.py",
-      "published_sha256": "906d42f670f9f6717b7a41e84e1d76f8fe28221d5b33f9edfd1350bea8e36cf6",
-      "source_sha256": "906d42f670f9f6717b7a41e84e1d76f8fe28221d5b33f9edfd1350bea8e36cf6",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_six_type_prerequisite_20261013_v24/code/audit_original50.py",
-      "source_sha256": "003eba8a0e30c6f1bc566724fabfa914f05e961f5f88c5d4390890982ebe1c53",
-      "published_sha256": "003eba8a0e30c6f1bc566724fabfa914f05e961f5f88c5d4390890982ebe1c53",
-      "kind": "EB6_pre_generation_requirement",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/REQUIREMENT.json",
-      "source_sha256": "a6366a70864505c6897b84092f852ae222e96369b9b44cc1970068c607c0e69b",
-      "published_sha256": "a6366a70864505c6897b84092f852ae222e96369b9b44cc1970068c607c0e69b",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/SOURCE_LEDGER.json",
-      "source_sha256": "e8c347ffe497f04a557f8f17325071ab093af2ec2292a1f3d94840bf0074ad6d",
-      "published_sha256": "e8c347ffe497f04a557f8f17325071ab093af2ec2292a1f3d94840bf0074ad6d",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/DESIGN_REVIEW.json",
-      "source_sha256": "ccd08265716616f9ca0ce7134cd47bc9d6095cafc16ccb9fb0fdf1ba3cc4d0b3",
-      "published_sha256": "ccd08265716616f9ca0ce7134cd47bc9d6095cafc16ccb9fb0fdf1ba3cc4d0b3",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/METHODS.md",
-      "source_sha256": "b2dfc74d1c2152f0c5a308eea532a8d7b168c1842521f06f11835c23893eea94",
-      "published_sha256": "b2dfc74d1c2152f0c5a308eea532a8d7b168c1842521f06f11835c23893eea94",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/code/require_generation.py",
-      "source_sha256": "3f77d306194ad5ed398b2737693be281074f3098beeda4cbad61a0e573f6a4b2",
-      "published_sha256": "3f77d306194ad5ed398b2737693be281074f3098beeda4cbad61a0e573f6a4b2",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/population_grounding_revision_v25/SCHOOL_CHECK.json",
-      "source_sha256": "f3ec470cc187b8e159d9163cec569dd4ba3721f1cc716566a45a163212e04660",
-      "published_sha256": "f3ec470cc187b8e159d9163cec569dd4ba3721f1cc716566a45a163212e04660",
-      "kind": "aggregate_engineering_receipt",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/METHODS.md",
-      "source_sha256": "8ea1c855f6a3df04e816480cf7357920315a8de0cb4a40428451bb7ece42117c",
-      "published_sha256": "8ea1c855f6a3df04e816480cf7357920315a8de0cb4a40428451bb7ece42117c",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/REQUIREMENT.json",
-      "source_sha256": "9f87275fe3cd878507d95a0dfc232e6f2d41828e782ee924c46033492990191a",
-      "published_sha256": "9f87275fe3cd878507d95a0dfc232e6f2d41828e782ee924c46033492990191a",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/EB_TYPE_REFERENCE.json",
-      "source_sha256": "bd342987a79d5751d1582239114a6c6ef4447e8b342a7d7c3b249a925808e0aa",
-      "published_sha256": "bd342987a79d5751d1582239114a6c6ef4447e8b342a7d7c3b249a925808e0aa",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/FEATURE_AND_CLUSTER_CONTRACT.json",
-      "source_sha256": "c4dd73718d0c7b84237ab8170b74980443c439a440dc46f8e8807b32f5602641",
-      "published_sha256": "c4dd73718d0c7b84237ab8170b74980443c439a440dc46f8e8807b32f5602641",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SOURCE_LEDGER.json",
-      "source_sha256": "85df7ea40fc3323f86ba38ef7e401c2e3c225886aabb1fea68f60b530b2905e7",
-      "published_sha256": "85df7ea40fc3323f86ba38ef7e401c2e3c225886aabb1fea68f60b530b2905e7",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/DESIGN_REVIEW.json",
-      "source_sha256": "3e2cc50f06df265a57cb9e13ded19f9ce58efc9ce19c53b28220327d05193e0c",
-      "published_sha256": "3e2cc50f06df265a57cb9e13ded19f9ce58efc9ce19c53b28220327d05193e0c",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/code/require_generation.py",
-      "source_sha256": "e5f8703fe336d5df92dbfcc88ffb27b29de49d4ee5119c853efe5c31aa861c32",
-      "published_sha256": "e5f8703fe336d5df92dbfcc88ffb27b29de49d4ee5119c853efe5c31aa861c32",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SCHOOL_CHECK.json",
-      "source_sha256": "dd86943b5d87150411507670b743fa7ab6beefcacbbb0fd390b8dde3fe54e8ea",
-      "published_sha256": "dd86943b5d87150411507670b743fa7ab6beefcacbbb0fd390b8dde3fe54e8ea",
-      "kind": "aggregate_engineering_receipt",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/TYPE_AWARE_GENERATION.md",
-      "source_sha256": "04338ba7987d5fe7f2964a186b06fc3b62247b54651b830875a515eeb8caba92",
-      "published_sha256": "04338ba7987d5fe7f2964a186b06fc3b62247b54651b830875a515eeb8caba92",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/TYPE_GENERATION_RULES.json",
-      "source_sha256": "c65b33066bcae176f3890ed17d219d577ae299f96f0b8d3e24d204d87690078d",
-      "published_sha256": "c65b33066bcae176f3890ed17d219d577ae299f96f0b8d3e24d204d87690078d",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/code/audit_type_support.py",
-      "source_sha256": "ec222379d755b4829907b21bd976cf33a41eb05435c2b34fc35f5ce984ef8f02",
-      "published_sha256": "ec222379d755b4829907b21bd976cf33a41eb05435c2b34fc35f5ce984ef8f02",
-      "kind": "first_party_research_source",
-      "transformation": "none"
-    },
-    {
-      "path": "docs/research/collection-adjustment-20260930/household1000/eb_type_coverage_revision_v26/SOURCE_SUPPORT50_REVIEW.json",
-      "source_sha256": "07a30483e6384ab53f24b889bc575bb95e0b24e2d7b2a630b94b66f312e26e3a",
-      "published_sha256": "07a30483e6384ab53f24b889bc575bb95e0b24e2d7b2a630b94b66f312e26e3a",
-      "kind": "aggregate_source_support_receipt",
-      "transformation": "none"
-    },
-    {
       "path": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014/COMPOSITION_CONTRACT.json",
       "source_sha256": "4e2b7aa0493b799fbd0bc95fb8982cd183fe10035f952bf1c1dbc07f85532397",
       "published_sha256": "4e2b7aa0493b799fbd0bc95fb8982cd183fe10035f952bf1c1dbc07f85532397",
@@ -4124,9 +4495,37 @@
       "published_sha256": "9d0c6be5ad087ac7c3c0df191340d3f6fbce9ee2d2c070d8ed7e88586e4f6e7c",
       "kind": "composition_evidence_contract",
       "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_production_admission_v27/LOCK.json",
+      "source_sha256": "764652f74197522c220babf8e52198e006d1011a19bb64870d87c76480188878",
+      "published_sha256": "764652f74197522c220babf8e52198e006d1011a19bb64870d87c76480188878",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/type_production_admission_v27/code/require_generation.py",
+      "source_sha256": "63f0510721ba364f389d912323cb4cceac513e31a7db51a14464687ddb2e8a75",
+      "published_sha256": "63f0510721ba364f389d912323cb4cceac513e31a7db51a14464687ddb2e8a75",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "path": "scripts/household1000.py",
+      "source_sha256": "bfbb233aca1ac105735c9c4eaba430c14ce6706719febfbb59a083b29b2f4d58",
+      "published_sha256": "bfbb233aca1ac105735c9c4eaba430c14ce6706719febfbb59a083b29b2f4d58",
+      "kind": "V27_reference_source_or_aggregate",
+      "transformation": "none;aggregate report private transformations documented internally"
+    },
+    {
+      "kind": "EB6_pre_generation_requirement",
+      "path": "tests/test_household1000_entrypoint.py",
+      "published_sha256": "972c431216e39b4dc7f763f0a15f19ee397c8f96926f8e956a2ac17a87b7f342",
+      "source_sha256": "972c431216e39b4dc7f763f0a15f19ee397c8f96926f8e956a2ac17a87b7f342",
+      "transformation": "none"
     }
   ],
-  "source_snapshot_code_file_count": 589,
+  "source_snapshot_code_file_count": 646,
   "excluded": [
     "raw CHFS/CRECS/CHNS records",
     "private household/world/actor/pair/readback data",
@@ -4137,13 +4536,15 @@
   ],
   "scientific_rules_changed": true,
   "public_checkout_alone_reproduces_private_inputs": false,
-  "new_EP_runs": 0,
+  "new_EP_runs": 1400,
   "human_answers": 0,
-  "active_stage": "gate_repair_production_20261013_v23",
-  "new_household_EP_runs": 0,
-  "note": "V26 type coverage remains pending. Added19-source targeted evidence review,structure-constrained1000plan,explicit unmeasured preference assumptions and school source arithmetic;no actual type allocation,new worlds,IDFs or EP.",
+  "active_stage": "eb_type_pilot_v27_20261014",
+  "new_household_EP_runs": 1400,
+  "note": "V27 actual original50 regeneration,reference physical/UI acceptance and fixed-pilot1000 conditional allocation;actual full1000 outputs and whole coverage pending;fullEP held",
   "EB_six_type_requirement_accepted": false,
-  "latest_requirement_stage": "eb_type_coverage_revision_v26",
-  "new_generation_allowed": false,
-  "latest_type_composition_evidence_stage": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014"
+  "latest_requirement_stage": "eb_type_pilot_v27_20261014",
+  "new_generation_allowed": true,
+  "latest_type_composition_evidence_stage": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014",
+  "original50_six_type_accepted": true,
+  "new_generation_allowed_scope": "static1000 only"
 }

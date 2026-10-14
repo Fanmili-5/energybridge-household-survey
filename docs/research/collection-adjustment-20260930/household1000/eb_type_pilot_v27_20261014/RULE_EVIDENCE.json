@@ -1,0 +1,356 @@
+{
+  "schema": "eb.causal_reference_evidence.v22",
+  "date": "2026-10-10",
+  "population_scope": "unchanged China mainland city ordinary residential; towns/rural excluded",
+  "primary_goal": "traceable coherent reference worlds for assigned-role human response learning/benchmark",
+  "sources": [
+    {
+      "id": "S01",
+      "kind": "statistical_anchor",
+      "title": "2020 city ordinary residential census controls and CHFS2021/2022 admitted co-residence proxy",
+      "pointer": "../production_route_v6_20261004/METHODS_AND_DECISIONS.md",
+      "scope": "population/housing and same-household relationships; not2025 occupation,diary or preference"
+    },
+    {
+      "id": "S02",
+      "kind": "normative",
+      "title": "WHO2019 under5 activity and sleep guidelines",
+      "url": "https://www.who.int/news-room/detail/24-04-2019-to-grow-up-healthy-children-need-to-sit-less-and-play-more",
+      "year": 2019,
+      "verified": "official web text2026-10-09",
+      "facts": {
+        "infant0to3months_sleep_hours": [
+          14,
+          17
+        ],
+        "infant4to11months": [
+          12,
+          16
+        ],
+        "age1to2": [
+          11,
+          14
+        ],
+        "age3to4_hours": [
+          10,
+          13
+        ]
+      },
+      "scope": "WHO under5 bounds only; age5 supported separately by AASM, not an empirical Chinese law"
+    },
+    {
+      "id": "S03",
+      "kind": "normative",
+      "title": "AASM2016 pediatric sleep consensus",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4877308/",
+      "year": 2016,
+      "verified": "2026-10-10 official consensus/PubMed text incl age3to5; directPMC challenge not bypassed",
+      "facts": {
+        "age6to12_hours": [
+          9,
+          12
+        ],
+        "age13to18_hours": [
+          8,
+          10
+        ],
+        "age3to5_hours": [
+          10,
+          13
+        ]
+      },
+      "scope": "normative range,not measured role behaviour",
+      "official_consensus_url": "https://aasm.org/resources/pdf/pediatricsleepdurationconsensus.pdf",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/27250809/"
+    },
+    {
+      "id": "S04",
+      "kind": "administrative_calendar",
+      "title": "State Council2025 national holidays and makeup days",
+      "url": "https://www.gov.cn/zhengce/content/202411/content_6986382.htm",
+      "year": 2025,
+      "verified": "official indexed full text; origin direct access403 in prior audit",
+      "scope": "public national reference calendar; individual employer shifts unobserved"
+    },
+    {
+      "id": "S05",
+      "kind": "administrative_calendar",
+      "title": "Beijing Education Commission2024to2025 school calendar",
+      "url": "https://jw.beijing.gov.cn/xxgk/2024zcwj/2024qtwj/202404/t20240408_3611941.html",
+      "verified": "official indexed full text2026-10-09",
+      "scope": "actualBeijing rule; explicitly transferred prototype elsewhere,not national school truth"
+    },
+    {
+      "id": "S06",
+      "kind": "administrative_calendar",
+      "title": "State Council2026 holiday notification Jan1to3 carry days",
+      "url": "https://www.gov.cn/zhengce/zhengceku/202511/content_7047091.htm",
+      "verified": "official index2026-10-09",
+      "scope": "Jan2026 recovery tail only; no2026 primary events"
+    },
+    {
+      "id": "S07",
+      "kind": "published_aggregate_context",
+      "title": "NBS2024 time use survey methods and age/urban groups",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202410/t20241031_1957217.html",
+      "group_url": "https://www.stats.gov.cn/xxgk/sjfb/zxfb2020/202410/t20241031_1957215.html",
+      "scope": "15min diaries of6plus,oneweekday+oneweekend; city-town denominator differs; no household joint-clock calibration claimed"
+    },
+    {
+      "id": "S08",
+      "kind": "software_physical_contract",
+      "title": "Pinned native EB appliance programs and EnergyPlus24.1 schema",
+      "pointer": "pinned upstream_2b17ae6 and installed EnergyPlus24.1.0",
+      "scope": "hardware function,program duration and heat balance interfaces; not actual household equipment,ownership or calibrated body heat"
+    },
+    {
+      "id": "S09",
+      "kind": "method_reference",
+      "title": "Gaetani2016 fit-for-purpose occupant modelling",
+      "url": "https://doi.org/10.1016/j.enbuild.2016.03.038",
+      "scope": "justify explicitly scoped reference model; cannot validate these1000 worlds"
+    },
+    {
+      "id": "S10",
+      "kind": "method_attribution",
+      "title": "Scientific Agent Skills",
+      "authors": [
+        "Timothy Kassis",
+        "Vinayak Agarwal",
+        "Yuhuan He",
+        "Darshil Patel",
+        "Aubrey M. Brueckner"
+      ],
+      "year": 2026,
+      "url": "https://arxiv.org/abs/2609.00065",
+      "current_revision": "2026-09-02",
+      "scope": "scientific-critical-thinking workflow attribution only"
+    },
+    {
+      "id": "S11",
+      "kind": "primary_questionnaire",
+      "title": "2021年中国家庭金融调查(CHFS)问卷",
+      "local_questionnaire_sha256": "84c8cf52535a986bcdfe0be42722b5553dd2f9c4817c11d81a480a0e6fe463ac",
+      "pages": [
+        12,
+        13,
+        14,
+        16
+      ],
+      "supports": "A2001 ego-relative family categories include legal step/adoptive relations in family definition; A2000c co-residence proxy; birth-year and age uncertainty",
+      "does_not_support": "biological parentage subtype, full pairwise ancestry, exact 2020 or 2025 role birthdays, household preferences"
+    },
+    {
+      "id": "S12",
+      "kind": "peer_reviewed_method",
+      "title": "Generating synthetic population for simulating the spatiotemporal dynamics of epidemics",
+      "authors": "Zhu K, Yin L, Liu K, Liu J, Shi Y, Li X, Zou H, Du H",
+      "year": 2024,
+      "doi": "10.1371/journal.pcbi.1011810",
+      "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1011810",
+      "verified": "primary full HTML read 2026-10-10",
+      "supports": "preserve household structural dependencies while matching census marginals",
+      "does_not_support": "validation of this China-city ordinary frame, licensed CHFS transport, detailed activity clocks or preferences"
+    },
+    {
+      "id": "S13",
+      "kind": "peer_reviewed_method",
+      "title": "Simulating residential demand response: Improving socio-technical assumptions in activity-based models of energy demand",
+      "authors": "McKenna E, Higginson S, Grunewald P, Darby SJ",
+      "year": 2018,
+      "online_year": 2017,
+      "doi": "10.1007/s12053-017-9525-4",
+      "url": "https://link.springer.com/article/10.1007/s12053-017-9525-4",
+      "verified": "primary full HTML read 2026-10-10",
+      "supports": "separate activities, technology and service expectations; availability is insufficient to infer flexibility",
+      "does_not_support": "numeric personal deadlines, Chinese joint diaries, free external services or willingness"
+    },
+    {
+      "id": "S14",
+      "kind": "peer_reviewed_method",
+      "title": "A disaggregated, probabilistic, high resolution method for assessment of domestic occupancy and electrical demand",
+      "authors": "Flett G, Kelly N",
+      "year": 2017,
+      "doi": "10.1016/j.enbuild.2017.01.069",
+      "url": "https://strathprints.strath.ac.uk/59557/",
+      "verified": "primary university repository abstract and publication metadata read 2026-10-10",
+      "supports": "differentiate household activities and event-based use count/timing",
+      "does_not_support": "Chinese parameter distributions or personal response labels"
+    },
+    {
+      "id": "S15",
+      "kind": "software_reference",
+      "title": "EnergyPlus24.1 Input Output Reference: water heaters",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-water-heaters.html",
+      "verified": "24.1 manual HTML read 2026-10-10; native objects are pinned local original EB",
+      "supports": "explicit tank topology, mixed-water delivery and cold-water boundary fields",
+      "does_not_support": "field calibration of Chinese homes or manufacturer performance for all scaled capacities"
+    },
+    {
+      "id": "S16",
+      "kind": "official_census_definition",
+      "title": "本户现有房间数怎么算",
+      "url": "https://tjj.beijing.gov.cn/zt/bjsdqcqgrkpc/wsfw/202010/t20201029_2124796.html",
+      "verified": "primary full text2026-10-10",
+      "supports": "H7 natural rooms excludes kitchen,toilet,corridor and hall; shared households only independently used rooms",
+      "does_not_support": "observed bedroom identity or exact metric geometry"
+    },
+    {
+      "id": "S17",
+      "kind": "primary_software_manual_and_code",
+      "title": "EnergyPlus24.1 single-speed DX and CurveManager",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/engineering-reference/coils.html",
+      "code": "https://raw.githubusercontent.com/NREL/EnergyPlus/v24.1.0/src/EnergyPlus/CurveManager.cc",
+      "supports": "rated capacity,COP,temperature/flow/partload modifier interface; bounded curve evaluation and raw input reporting",
+      "does_not_support": "original EB fit data source, actual OEM/model/domain transport or real-household savings"
+    },
+    {
+      "id": "S18",
+      "kind": "manufacturer_operating_manual",
+      "title": "Miele WTD160 GB washer-dryer operating instructions",
+      "url": "https://media.miele.com/downloads/d0/da/01_F6154D09FD151EDDABBB6922CEC2D0DA.pdf",
+      "page": 66,
+      "supports": "operating programme locks the door; pause/cancellation,drain and temperature conditions are separately specified",
+      "does_not_support": "universal noninterruptibility or generic dishwasher mechanism; our policy is explicitly given"
+    },
+    {
+      "id": "S19",
+      "kind": "numerical_algorithm_reference",
+      "title": "PsychroLib",
+      "doi": "10.21105/joss.01137",
+      "url": "https://joss.theoj.org/papers/10.21105/joss.01137",
+      "supports": "independent moist-air properties and ice/water phase-branch comparisons",
+      "does_not_support": "pointwise agreement across different phase branches, equipment or household calibration"
+    },
+    {
+      "id": "S20",
+      "kind": "peer_reviewed_reference_benchmark_method",
+      "title": "Building optimization testing framework (BOPTEST) for simulation-based benchmarking of control strategies in buildings",
+      "authors": "Blum D,Arroyo J,Huang S,Drgoňa J,Jorissen F,Walnum HT,Chen Y,Benne K,Vrabie D,Wetter M,Helsen L",
+      "year": 2021,
+      "journal": "Journal of Building Performance Simulation14(5)586–610",
+      "doi": "10.1080/19401493.2021.1986574",
+      "url": "https://bies.lbl.gov/publications/building-optimization-testing",
+      "publisher": "https://www.tandfonline.com/doi/full/10.1080/19401493.2021.1986574",
+      "supports": "repeatable common reference dynamics,boundaries,baseline/control interfaces and scoped performance accounting as a simulation benchmark methodology",
+      "does_not_support": "validation of this household roster,EB curve coefficients/offdesign performance,Chinese behaviour or human labels",
+      "verified": "2026-10-10 primary LBL abstract/metadata and DOE programme description; publisher direct403"
+    }
+  ],
+  "rules": [
+    {
+      "id": "R01",
+      "field": "employment_status/source_work/roster",
+      "support": [
+        "S01"
+      ],
+      "status": "source-aware anchor/proxy",
+      "implementation": "worlds.py retains all source_work fields,unknown and code2has_work",
+      "acceptance": "roster,N/G/H6/H7/relations/dates and device classes unchanged; unknown never relabelled as observed job"
+    },
+    {
+      "id": "R02",
+      "field": "reference_activity_role/commitments/freewindows",
+      "support": [
+        "S01",
+        "S07",
+        "S09"
+      ],
+      "status": "declared balanced experiment levels,not fitted population rate",
+      "implementation": "activity_model.scenario,build_day",
+      "acceptance": "unknown allows outside/home/mixed commitments without work label; windows exclude commitments andcare; no allunknown-defaultfree-home mapping"
+    },
+    {
+      "id": "R03",
+      "field": "sleep/naps/care/daycalendar",
+      "support": [
+        "S02",
+        "S03",
+        "S04",
+        "S05",
+        "S06"
+      ],
+      "status": "normative bounds + sourced/prototype calendar + declared coordinated care",
+      "implementation": "activity_model.sleep_spec,school_day,day_type,build_day",
+      "acceptance": "independently enumerate all under6 awake-at-home slots, including daycare opening/closed days and pickup transitions; resting-home adult presence in base calendar; age-normal sleep,naps,bathresource and holidays",
+      "care_requirement_status": "researcher-given supervision condition, not a national empirical care arrangement or clinical safety certification",
+      "dated_care_display": "responsible residents and actual external appointment intervals are displayed from the saved dated ledger, not the usual caregiver alias",
+      "operator_dispatch": "whole household actual windows, using complete program and retrieval deadline rather than fixed20:00 load cutoff; paid work and care commitments retained"
+    },
+    {
+      "id": "R04",
+      "field": "transport/driver/handler/traction/85percent",
+      "support": [
+        "S08",
+        "S01"
+      ],
+      "status": "declared transport resource and dose levels,not national journeys",
+      "implementation": "activity_model.configure,build_day;plans.make_A",
+      "acceptance": "residential/shared/external service distinguished; source licence stays unknown; resident passenger chronology and sameA/Bjourney; idle dates not imputed daily commute",
+      "operator_dispatch": "plug before next access minus required charge duration; unplug after minimum recharge in any actual free slot before next access, including previous night; no120min/100min arbitrary bounds",
+      "primary_contact_vs_actual_handling": "saved A operator IDs and clock intervals displayed separately from default hardware/transport contact"
+    },
+    {
+      "id": "R05",
+      "field": "dated room activity/operator/lighting/ACsleep",
+      "support": [
+        "S08",
+        "S09"
+      ],
+      "status": "single controlled room-calendar authority,not measured real movement",
+      "implementation": "activity_model.resident_slot;compile_inputs.spatial_ledger;plans.make_A",
+      "acceptance": "one resident in at mostonezone,homecount<=N; actual SQL occupancy equalsledger; awake lights only occupiedrooms; given sleep/napcooling included"
+    },
+    {
+      "id": "R06",
+      "field": "A/B/goal diagnostics/boundaryuncertainty",
+      "support": [
+        "S08",
+        "S09"
+      ],
+      "status": "frozen common-world counterfactual experiment,not acceptance labels",
+      "implementation": "checks,generate,physics,materials",
+      "acceptance": "Aunchanged,commonneeds/parameters,prenoticeequality; retainedbadB; runtime/meters,actualpower and sensitivity; no outcome-based date selection"
+    },
+    {
+      "id": "R07",
+      "field": "human role validity/benchmark evaluation",
+      "support": [
+        "S09"
+      ],
+      "status": "planned independent human evidence",
+      "implementation": "HUMAN_PILOT_PROTOCOL.md plus bound readable originalfrontendmaterials",
+      "acceptance": "actualreadability,independentactors,repeatedroles,heldoutanswer evaluation; cannot be passed by engineering or simulated answers"
+    }
+  ],
+  "no_joint_national_lifestyle_identification_claim": true,
+  "no_income_age_sex_to_attitude_mapping": true,
+  "preserved": [
+    "1000populationhousinganchors",
+    "original10quarterdates",
+    "4to6EBfunctionalclasses",
+    "nativeEBhardwareparameters",
+    "08to08mainwindow",
+    "originalfrontend",
+    "original50EPscope"
+  ],
+  "human_answers": 0,
+  "new_rules": {
+    "R10_joint_age": "coarsened source gap blocks; minimum-change within original synthetic bins; operator/berth conditions retained; parentage subtype unknown; one unmatched graft member has no source gap claim",
+    "R11_service_purpose": "laundry clean-batch handover and two-set crockery next dinner are explicit task contracts before A, independent of operator windows",
+    "R12_partition_continuity": "daily morning carry-clearance reservation per installed batch appliance; explicit predecessor; fixed date-local A independent of prior length",
+    "R13_execution": "separate requested load/program/unload and delivered batch; interlock and cancellation are given reference policies; no retry or rejection labels",
+    "R14_vehicle": "connection and actual presence gate charge; departure blocked by connection/energy deficit; alternate travel unmodelled",
+    "R15_care": "book baseline departure cover before B; unchanged booking shared; B extra help not presumed",
+    "R16_input": "static question prompts exclude score state; visible context observations recorded as history; IDs and dated follow-up requirements shown",
+    "R17_energy": "finite-window electricity and terminal storage reported; no forced recovery or equal-service net saving claim",
+    "R18_bath": "bath resource and currently free resident helper chosen jointly; no invented work break; exact external appointment only when no resident option; all common to A/B",
+    "R19_reference_physics": "bounded original EB temperature modifiers with visible domain limits and actual raw-input records; no limit widening or real OEM claim; model-form sensitivity is not empirical validation",
+    "R20_EP_gate": "content-bound automatic scientific and purpose review before engine calls; original50 only, no full1000 default",
+    "R21_causal_vehicle": "single shared event/resource ledger: manual effects before departure and charge; only successful journeys make vehicle absent; energy/SOC/connection from same ledger; other activity commitments remain conditional"
+  },
+  "review_method_acknowledgement": {
+    "citation": "Kassis T, Agarwal V, He Y, Patel D, Brueckner AM (2026). Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents. arXiv:2609.00065. DOI:10.48550/arXiv.2609.00065",
+    "scope": "procedural review guidance,not evidence for household values or physical validity"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "eb.original50_generation_summary.v27",
+  "counts": {
+    "A_care_gap_slots": 0,
+    "A_failed_operations": 0,
+    "A_undelivered_programs": 0,
+    "B_care_gap_slots": 0,
+    "B_failed_operations": 75,
+    "B_given_policy_exceeded_or_confirmation_cases": 426,
+    "B_undelivered_programs": 73,
+    "households": 50,
+    "members": 147,
+    "pairs": 500,
+    "unknown_employment_members": 73
+  },
+  "actual_type_counts": {
+    "A": 5,
+    "B": 14,
+    "C": 16,
+    "D": 5,
+    "E": 5,
+    "F": 5
+  },
+  "source_structural_anchors_unchanged": true,
+  "source_employment_unknown_preserved": true,
+  "distinct_actual_feature_rows_within_type": {
+    "A": 4,
+    "B": 8,
+    "C": 16,
+    "D": 3,
+    "E": 2,
+    "F": 4
+  },
+  "proposal_mechanisms": {
+    "constraint_challenge": 92,
+    "cross_device": 19,
+    "inconvenient_but_doable": 105,
+    "near_boundary": 100,
+    "negotiation": 92,
+    "service_risk": 92
+  },
+  "unavailable_requested_mechanisms": {
+    "constraint_challenge": 8,
+    "cross_device": 64,
+    "inconvenient_but_doable": 5,
+    "near_boundary": 2,
+    "negotiation": 15,
+    "service_risk": 10
+  },
+  "A_constraint_flags": {},
+  "B_constraint_flags": {
+    "AC_GIVEN_CONTROL_BOUND": 42,
+    "PROGRAM_RELEASE_OR_DEADLINE": 67,
+    "RETRIEVAL_OR_DELIVERY_CONFLICT": 71,
+    "SHARED_ASSET_OVERLAP": 11
+  },
+  "all_original_dates_retained": true,
+  "bad_proposals_retained": true,
+  "human_labels_generated": 0,
+  "calendar": {
+    "adult_code2_correct_has_work": 6,
+    "assertions": "source anchors,age sleep,naps,care cover,dated rooms and availability,A/B/version integrity,holiday calendars",
+    "authoritative_joint_diary_calibration": false,
+    "cross_midnight_controls_retained": 1300,
+    "dated_household_days": 1500,
+    "daycare_closed_child_days_checked": 21,
+    "households": 50,
+    "human_answers": 0,
+    "human_validity_measured": false,
+    "members": 147,
+    "national_holiday_days": 78,
+    "pairs": 500,
+    "regressions": [
+      "altered demand detected",
+      "pre-notice control alteration detected"
+    ],
+    "schema": "eb.dated_world_calendar_audit.v22",
+    "sleep_service_intervals": 1856,
+    "under6_awake_home_slots_checked": 9534,
+    "under6_child_days_checked": 180,
+    "under6_rest_presence_slots_checked": 12936,
+    "unknown_adult_dated_free_minutes": {
+      "max": 840,
+      "mean": 594.9411764705883,
+      "median": 590,
+      "min": 390,
+      "n": 1530
+    },
+    "unknown_employment_members": 73
+  },
+  "evidence_classification": {
+    "direct_aggregate_statistics": "2020 census city ordinary-residential province/generation/room controls",
+    "model_completion": "joint household size/generation and integer synthetic roster;not observed cell table",
+    "matched_source_proxy": "CHFS household membership/relationship/coarsened age/work;unknown stays unknown",
+    "reference_engineering": "matched housing prototype, EB device parameters, native bounded curves and weather",
+    "researcher_given": "functional4to6 assets, activity clocks, EV access/licence, role preferences/permissions, protected services, q and type quotas",
+    "human_observation": "none;acceptance/scores/reasons not generated"
+  },
+  "status": "pass",
+  "source_reports_sha256": {
+    "INPUT_AUDIT.json": "64a549940065249b35105bbf46e5d1bbeda8b7015b92fb1a3836d098d2b103c3",
+    "STATIC_REVIEW.json": "be8fdf8b6f51d881773165f74080b8742146317ce44450fd4d96769eed0aeab8",
+    "CALENDAR_AUDIT.json": "77d8e4388cb90d43d410cd9622d3b8f79fac5e4da0818fc7fb7f06a5d9bff5af"
+  }
+}

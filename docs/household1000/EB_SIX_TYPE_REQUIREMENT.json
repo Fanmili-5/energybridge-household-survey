@@ -1,7 +1,7 @@
 {
-  "schema": "eb.pre_generation_requirement.v26",
+  "schema": "eb.pre_generation_requirement.v27",
   "date": "2026-10-14",
-  "stage": "eb_type_coverage_revision_v26",
+  "stage": "eb_type_pilot_v27_20261014",
   "objective": "type_coverage_consistent_with_EB",
   "user_goal_confirmed": true,
   "source_user_instruction": "学长提出聚类的目的：类型覆盖与EB一致",
@@ -15,9 +15,16 @@
   "type_definitions_path": "EB_TYPE_REFERENCE.json",
   "feature_contract_path": "FEATURE_AND_CLUSTER_CONTRACT.json",
   "quota_origin": "research coverage design subject to joint source/household feasibility;not actor sample or national preference prevalence",
-  "target_counts": null,
-  "minimum_coverage_per_type": null,
-  "coverage_count_rule_status": "freeze after original50 development,before formal1000 production",
+  "target_counts": {
+    "A": 101,
+    "B": 303,
+    "C": 319,
+    "D": 101,
+    "E": 85,
+    "F": 91
+  },
+  "minimum_coverage_per_type": 50,
+  "coverage_count_rule_status": "frozen research design after original50 acceptance;fixed original50 policies",
   "real_prevalence_is_generation_prerequisite": false,
   "real_preference_survey_required_before_generation": false,
   "given_role_preferences_allowed": true,
@@ -26,12 +33,12 @@
   "national_preference_prevalence_claim": false,
   "historical_accepted_stage": "gate_repair_production_20261013_v23",
   "historical_input_bytes_immutable": true,
-  "status": "objective_fixed;concrete_semantic_and_coverage_implementation_pending",
+  "status": "original50 reference accepted;research mix frozen;actual fullstatic1000 coverage pending",
   "accepted": false,
-  "generation_allowed": false,
+  "generation_allowed": true,
   "EP_allowed": false,
-  "gate_entry": "code/require_generation.py",
-  "current_gate_is_unconditional_hold": true,
+  "gate_entry": "../research/collection-adjustment-20260930/household1000/type_production_admission_v27/code/require_generation.py",
+  "current_gate_is_unconditional_hold": false,
   "required_before_production": [
     "common EB-to-household feature definitions,scales and reference core conditions frozen",
     "joint source household/housing/device/policy feasibility and missing/ambiguous cases audited",
@@ -60,9 +67,9 @@
   ],
   "future_empirical_extension": "own-household preference survey may support later population prevalence claims;not this coverage gate",
   "next_allowed_work": [
-    "implement common feature extractor and household reference mapping",
-    "joint household adaptation and coverage feasibility audit",
-    "original50 nonproduction coverage development and existing admission checks"
+    "produce static1000 with frozen private household assignment",
+    "verify actual whole coverage/source/normalA/B/IDF",
+    "review fullEP admission only after whole production acceptance"
   ],
   "unchanged_constraints": {
     "city_only": true,
@@ -71,5 +78,9 @@
     "functional_class_coverage_per_household": "4to6 experiment coverage,not population ownership",
     "shared_role_conditioned_model": true,
     "full1000_EP_held": true
-  }
+  },
+  "generation_allowed_scope": "static1000;content-bound school gate",
+  "full1000_EP_gate_is_unconditional_hold": true,
+  "original50_accepted": true,
+  "actual1000_type_coverage_verified": false
 }

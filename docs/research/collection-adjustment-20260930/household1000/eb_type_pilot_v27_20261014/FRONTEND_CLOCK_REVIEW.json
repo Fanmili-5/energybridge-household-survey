@@ -1,0 +1,11 @@
+{
+  "status": "pass",
+  "actual_cases_checked": 500,
+  "axis_start_abs_min": 480,
+  "axis_end_abs_min": 1920,
+  "axis_hours": 24,
+  "complete_operation_endpoints_preserved": true,
+  "carry_events_checked": 733,
+  "question_contract_changed": false,
+  "human_answers": 0
+}

@@ -1,0 +1,154 @@
+{
+  "accepted_for_original50_reference_development": true,
+  "actual_type_counts": {
+    "A": 5,
+    "B": 14,
+    "C": 16,
+    "D": 5,
+    "E": 5,
+    "F": 5
+  },
+  "clustering": {
+    "equal_groups": {
+      "best_one_to_one_overlap_descriptive_only": 1.0,
+      "cluster_labels_used_as_features": false,
+      "contingency_after_blind_clustering": {
+        "1": {
+          "C": 16
+        },
+        "2": {
+          "D": 5
+        },
+        "3": {
+          "B": 14
+        },
+        "4": {
+          "E": 5
+        },
+        "5": {
+          "A": 5
+        },
+        "6": {
+          "F": 5
+        }
+      },
+      "k_diagnostics": [
+        {
+          "R": "4.1.2",
+          "cluster": "2.1.2",
+          "fixed_range_error": "2.22044604925031e-16",
+          "k": "4",
+          "silhouette": "0.761038563064285"
+        },
+        {
+          "R": "4.1.2",
+          "cluster": "2.1.2",
+          "fixed_range_error": "2.22044604925031e-16",
+          "k": "5",
+          "silhouette": "0.825969372669505"
+        },
+        {
+          "R": "4.1.2",
+          "cluster": "2.1.2",
+          "fixed_range_error": "2.22044604925031e-16",
+          "k": "6",
+          "silhouette": "0.902241197980364"
+        },
+        {
+          "R": "4.1.2",
+          "cluster": "2.1.2",
+          "fixed_range_error": "2.22044604925031e-16",
+          "k": "7",
+          "silhouette": "0.775586090819579"
+        },
+        {
+          "R": "4.1.2",
+          "cluster": "2.1.2",
+          "fixed_range_error": "2.22044604925031e-16",
+          "k": "8",
+          "silhouette": "0.73428517653205"
+        }
+      ],
+      "source_actor_counts_used": false
+    },
+    "schedule_double": {
+      "best_one_to_one_overlap_descriptive_only": 1.0,
+      "cluster_labels_used_as_features": false,
+      "contingency_after_blind_clustering": {
+        "1": {
+          "C": 16
+        },
+        "2": {
+          "D": 5
+        },
+        "3": {
+          "B": 14
+        },
+        "4": {
+          "E": 5
+        },
+        "5": {
+          "A": 5
+        },
+        "6": {
+          "F": 5
+        }
+      },
+      "k_diagnostics": [
+        {
+          "R": "4.1.2",
+          "cluster": "2.1.2",
+          "fixed_range_error": "2.22044604925031e-16",
+          "k": "4",
+          "silhouette": "0.764695572038194"
+        },
+        {
+          "R": "4.1.2",
+          "cluster": "2.1.2",
+          "fixed_range_error": "2.22044604925031e-16",
+          "k": "5",
+          "silhouette": "0.806909627412755"
+        },
+        {
+          "R": "4.1.2",
+          "cluster": "2.1.2",
+          "fixed_range_error": "2.22044604925031e-16",
+          "k": "6",
+          "silhouette": "0.882809787994047"
+        },
+        {
+          "R": "4.1.2",
+          "cluster": "2.1.2",
+          "fixed_range_error": "2.22044604925031e-16",
+          "k": "7",
+          "silhouette": "0.807217341159669"
+        },
+        {
+          "R": "4.1.2",
+          "cluster": "2.1.2",
+          "fixed_range_error": "2.22044604925031e-16",
+          "k": "8",
+          "silhouette": "0.749644332127509"
+        }
+      ],
+      "source_actor_counts_used": false
+    }
+  },
+  "feature_scaling": "fixed0..1 via excluded daisy anchors;manual L1 crosscheck within1e-12",
+  "full1000_EP_allowed": false,
+  "households": 50,
+  "human_validity_proven": false,
+  "national_type_prevalence_estimated": false,
+  "protocol_seeds": {
+    "R_PAM": "deterministic BUILD/SWAP;no random restarts",
+    "matching_world_seed": 2026101401
+  },
+  "reference_ambiguity_threshold_design": 0.025,
+  "reference_nearest_agreement_descriptive": 1.0,
+  "schema": "eb.actual_type_coverage_pilot.v27",
+  "semantic_input_gate": "pass",
+  "source": "actual dated worlds/services/explicit policies",
+  "ambiguous_count": 0,
+  "private_actual_world_projection_records_removed": true,
+  "source_report_sha256": "86225119bac78fade818568761adbbe42d15d93013dbbb4223ffcc90294dde5a"
+}

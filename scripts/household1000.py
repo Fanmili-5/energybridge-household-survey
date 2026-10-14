@@ -8,6 +8,7 @@ because their imports can read protected inputs or write stage outputs.
 import argparse
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 import sys
 
@@ -50,9 +51,13 @@ def doctor(workspace):
         row = {'input': str(REL / name), 'available': path.is_file()}
         if path.is_file():
             pointer = read(path)
-            delivery = base / (pointer.get('delivery_path') or pointer['delivery'])
-            row['delivery_present'] = delivery.is_file()
-            row['delivery_hash_matches'] = delivery.is_file() and sha(delivery) == pointer['delivery_sha256']
+            delivery_name=pointer.get('delivery_path') or pointer.get('delivery') or pointer.get('acceptance_summary')
+            if delivery_name:
+                delivery=base/delivery_name
+                row['delivery_present']=delivery.is_file()
+                if pointer.get('delivery_sha256'):
+                    row['delivery_hash_matches']=delivery.is_file()and sha(delivery)==pointer['delivery_sha256']
+            row['scope']=pointer.get('acceptance','historical static inputs')
         rows.append(row)
     stage = read(PUBLIC / 'STATUS.json')['active_stage']
     for name in [stage+'/SELECTION1000.json', stage+'/SELECTION50.json',
@@ -116,7 +121,9 @@ def main():
     sub.add_parser('status')
     sub.add_parser('stages')
     sub.add_parser('check-source')
-    sub.add_parser('require-generation')
+    generation_parser=sub.add_parser('require-generation')
+    generation_parser.add_argument('--workspace',type=Path,default=REPO)
+    generation_parser.add_argument('--scope',choices=['static1000','full1000EP'],default='static1000')
     doctor_parser = sub.add_parser('doctor')
     doctor_parser.add_argument('--workspace', type=Path, default=REPO)
     binding_parser = sub.add_parser('check-bindings')
@@ -132,21 +139,15 @@ def main():
     if args.command == 'check-source':
         return source_check()
     if args.command == 'require-generation':
-        # Historical byte/binding checks never authorize the new EB-six-type
-        # production. Keep this closed until actual blueprint/recovery checks
-        # are implemented and content-bound; a JSON boolean cannot open it.
-        print(json.dumps({'generation_allowed': False, 'EP_allowed': False,
-                          'status': 'EB_six_type_prerequisite_not_accepted',
-                          'objective': 'type_coverage_consistent_with_EB',
-                          'real_prevalence_is_generation_prerequisite': False,
-                          'type_coverage_verified': False,
-                          'target_counts': None,
-                          'instruction': 'See docs/household1000/EB_SIX_TYPE_REQUIREMENT.md;'
-                                         'concrete EB6 type coverage and original50 checks are pending; '
-                                         'national preference survey is not a prerequisite; '
-                                         'V23 acceptance is historical.'},
-                         ensure_ascii=False, indent=2))
-        return 2
+        base=args.workspace.resolve()/REL
+        pointer=read(base/'CURRENT_GENERATION_REQUIREMENTS.json')
+        entry=base/pointer['gate_entry']
+        if not entry.is_file():
+            print(json.dumps({'generation_allowed':False,'EP_allowed':False,'reason':'prepared generation entry missing'}))
+            return 2
+        # The school gate verifies actual accepted bytes and frozen allocation;
+        # no JSON status flag admits generation. This command starts no engine.
+        return subprocess.run([sys.executable,str(entry),args.scope],cwd=args.workspace.resolve()).returncode
     if args.command == 'doctor':
         return doctor(args.workspace.resolve())
     return check_bindings(args.workspace.resolve(), args.scope)

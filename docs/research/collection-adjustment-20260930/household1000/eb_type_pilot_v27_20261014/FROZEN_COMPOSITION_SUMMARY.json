@@ -1,0 +1,303 @@
+{
+  "EP_calls": 0,
+  "accepted_original50_type_policy_preserved": true,
+  "actual1000new_world_coverage_verified": false,
+  "automatic_permission_split_sensitivity": [
+    {
+      "accepted_original50_fixed_assignments": 50,
+      "auto_share_design_sensitivity": 0.2,
+      "conditional_q_is_observed": false,
+      "conditional_reference_expected_counts": {
+        "A": 161.1290397709524,
+        "B": 303.12197559669795,
+        "C": 318.6888769196426,
+        "D": 40.2822599427381,
+        "E": 85.66467534378656,
+        "F": 91.11317242618159
+      },
+      "integer_counts": {
+        "A": 161,
+        "B": 303,
+        "C": 310,
+        "D": 50,
+        "E": 85,
+        "F": 91
+      },
+      "minimum_is_research_coverage_not_power": true,
+      "minimum_per_type": 50,
+      "mip_gap": 0.0,
+      "population_prevalence_estimated": false,
+      "q_reference_computed_before_fixed_pilot_assignment": true,
+      "reference_uses_structural_population_weights": true,
+      "seed": 2026101401,
+      "solver_details": {
+        "all_subset_capacity_constraints": 63,
+        "assignment_solver_status": 0,
+        "count_mip_gap": 0.0,
+        "count_solver_status": 0,
+        "method": "HiGHS small integer counts with all63 Hall capacities;HiGHS min-cost bipartite LP",
+        "no_solver_time_limit_incumbent_accepted": true
+      },
+      "solver_status": 0,
+      "source_structure_or_ages_modified": false,
+      "supported_household_counts": {
+        "A": 530,
+        "B": 984,
+        "C": 998,
+        "D": 530,
+        "E": 363,
+        "F": 489
+      },
+      "total_absolute_count_projection_error": 19.43548011452301
+    },
+    {
+      "accepted_original50_fixed_assignments": 50,
+      "auto_share_design_sensitivity": 0.5,
+      "conditional_q_is_observed": false,
+      "conditional_reference_expected_counts": {
+        "A": 100.70564985684537,
+        "B": 303.12197559669795,
+        "C": 318.6888769196426,
+        "D": 100.70564985684537,
+        "E": 85.66467534378656,
+        "F": 91.11317242618159
+      },
+      "integer_counts": {
+        "A": 101,
+        "B": 303,
+        "C": 319,
+        "D": 101,
+        "E": 85,
+        "F": 91
+      },
+      "minimum_is_research_coverage_not_power": true,
+      "minimum_per_type": 50,
+      "mip_gap": 0.0,
+      "population_prevalence_estimated": false,
+      "q_reference_computed_before_fixed_pilot_assignment": true,
+      "reference_uses_structural_population_weights": true,
+      "seed": 2026101401,
+      "solver_details": {
+        "all_subset_capacity_constraints": 63,
+        "assignment_solver_status": 0,
+        "count_mip_gap": 2.5663524384519843e-14,
+        "count_solver_status": 0,
+        "method": "HiGHS small integer counts with all63 Hall capacities;HiGHS min-cost bipartite LP",
+        "no_solver_time_limit_incumbent_accepted": true
+      },
+      "solver_status": 0,
+      "source_structure_or_ages_modified": false,
+      "supported_household_counts": {
+        "A": 530,
+        "B": 984,
+        "C": 998,
+        "D": 530,
+        "E": 363,
+        "F": 489
+      },
+      "total_absolute_count_projection_error": 1.7996467333327502
+    },
+    {
+      "accepted_original50_fixed_assignments": 50,
+      "auto_share_design_sensitivity": 0.8,
+      "conditional_q_is_observed": false,
+      "conditional_reference_expected_counts": {
+        "A": 40.28225994273808,
+        "B": 303.12197559669795,
+        "C": 318.6888769196426,
+        "D": 161.1290397709524,
+        "E": 85.66467534378656,
+        "F": 91.11317242618159
+      },
+      "integer_counts": {
+        "A": 50,
+        "B": 303,
+        "C": 318,
+        "D": 153,
+        "E": 85,
+        "F": 91
+      },
+      "minimum_is_research_coverage_not_power": true,
+      "minimum_per_type": 50,
+      "mip_gap": 0.0,
+      "population_prevalence_estimated": false,
+      "q_reference_computed_before_fixed_pilot_assignment": true,
+      "reference_uses_structural_population_weights": true,
+      "seed": 2026101401,
+      "solver_details": {
+        "all_subset_capacity_constraints": 63,
+        "assignment_solver_status": 0,
+        "count_mip_gap": 0.0,
+        "count_solver_status": 0,
+        "method": "HiGHS small integer counts with all63 Hall capacities;HiGHS min-cost bipartite LP",
+        "no_solver_time_limit_incumbent_accepted": true
+      },
+      "solver_status": 0,
+      "source_structure_or_ages_modified": false,
+      "supported_household_counts": {
+        "A": 530,
+        "B": 984,
+        "C": 998,
+        "D": 530,
+        "E": 363,
+        "F": 489
+      },
+      "total_absolute_count_projection_error": 19.43548011452303
+    }
+  ],
+  "conditional_reference": {
+    "accepted_original50_fixed_assignments": 50,
+    "auto_share_design_sensitivity": null,
+    "conditional_q_is_observed": false,
+    "conditional_reference_expected_counts": {
+      "A": 100.70564985684537,
+      "B": 303.12197559669795,
+      "C": 318.6888769196426,
+      "D": 100.70564985684537,
+      "E": 85.66467534378656,
+      "F": 91.11317242618159
+    },
+    "integer_counts": {
+      "A": 101,
+      "B": 303,
+      "C": 319,
+      "D": 101,
+      "E": 85,
+      "F": 91
+    },
+    "minimum_is_research_coverage_not_power": true,
+    "minimum_per_type": 50,
+    "mip_gap": 0.0,
+    "population_prevalence_estimated": false,
+    "q_reference_computed_before_fixed_pilot_assignment": true,
+    "reference_uses_structural_population_weights": true,
+    "seed": 2026101401,
+    "solver_details": {
+      "all_subset_capacity_constraints": 63,
+      "assignment_solver_status": 0,
+      "count_mip_gap": 2.5663524384519843e-14,
+      "count_solver_status": 0,
+      "method": "HiGHS small integer counts with all63 Hall capacities;HiGHS min-cost bipartite LP",
+      "no_solver_time_limit_incumbent_accepted": true
+    },
+    "solver_status": 0,
+    "source_structure_or_ages_modified": false,
+    "supported_household_counts": {
+      "A": 530,
+      "B": 984,
+      "C": 998,
+      "D": 530,
+      "E": 363,
+      "F": 489
+    },
+    "total_absolute_count_projection_error": 1.7996467333327502
+  },
+  "counts": {
+    "A": 101,
+    "B": 303,
+    "C": 319,
+    "D": 101,
+    "E": 85,
+    "F": 91
+  },
+  "excluded": [
+    "town",
+    "rural",
+    "collective",
+    "nonordinary"
+  ],
+  "full1000_EP_allowed": false,
+  "implementation_code_sha256": {
+    "PSYCHROLIB_LICENSE.txt": "3372ab6db04ab898605cd8a4c47eee35e668d14ca05481f00107239be0e3b46e",
+    "acceptance_negative_controls.py": "646c0572e8ee8bdd10ec979f30e819e7702601167741b9407cabed71eb7a46e1",
+    "activity_model.py": "bc6cdd815afdeda3dc06761a0cb5368d874c8c36d8c9f78f21fa87aca9f19505",
+    "audit_bath.py": "a45847a919e73b15fce024a54bd1fa2229f8b63f2c4fe28fbcda99192ceac227",
+    "audit_calendar.py": "5b3db0d0414d07f62f36b6d28293b6b968995186c834e413f2ae82c1dcade7df",
+    "audit_idfs.py": "bb8415beef52c3af50da53a390a6f4d9b1e443d6358e79d1faf809695128a1cc",
+    "audit_physical_inputs.py": "bdcd924eed5bef0184b19546d4ce292b61ca4d73a7c7a89e0d7fa28426e96174",
+    "audit_pilot.py": "c42b6f044988c4235927acd6c7a1f3bf2b39816a964c3bda5b06feb1f22eeff4",
+    "audit_reference_model.py": "91b9bc5bec0845e413725e567274b1d0f7fde973d16d5ad4e408adf25997c0d8",
+    "bind_frontend.js": "e9193ea3d4764d56cc1f7f5e914a029857ffb34530042fe9937de059b139a65a",
+    "browser_acceptance.js": "2d3836a2f18a16f042396874db3a5d34bc4223f0917196181289f12cca7b8c70",
+    "checks.py": "b459b8dbe2d94f8e123d567a149daafa49fd2c839fa790e453094d60fe40f52c",
+    "cluster_actual.R": "72b8d6d3f7c2f9683d13bd49687cb54d0b4923158a54dcb11f140cdea2e7f90a",
+    "cluster_pilot.py": "f8bc49d771b01c6624c0e3937eaed02bf70f9594bd1e81d64fd6c3bc8c2d1d9d",
+    "common.py": "7be9aa4cb52e220942ace70d9484f17e6606183d9c729b395601f9d4560a6d8f",
+    "compile_inputs.py": "e56e24f2e730786e0bf584b59f9103d54abf5f5970fdf0ca6a6949c1bcb92cce",
+    "curve_diagnostics.py": "077d3f53c8f0971a71a1871fd92518e9e5c984b246824fa959becd5f79fd9c55",
+    "curve_observer.py": "7dd261c46272c3fb4e000cc22987c7a8ed2e15d46af11b04ff304662e6cd1183",
+    "ep_gate.py": "a89a30c547f0e17ff6479ef30d113343d94e269d28a9cf4da1b96cd2d989ec85",
+    "execution.py": "fe4bc3fbe331f3b754ddca9f833a98c8f2bd551d88a1d20a9af634e854cc44d9",
+    "finalize_pilot.py": "613c8e9e12f47eb0359730528fd1af89206cf66ff6720b7d5d8cb2991ac87905",
+    "freeze_composition.py": "a09c88a8c7f465e2bba7f251219b75638d0b407e132ed5eae92597548c333a83",
+    "generate.py": "f829b05e9e8875dc64ce973442ba856bbd8b5e85b2a5b88601f6b4df89a63e5f",
+    "materials.py": "b63ae25075dc3adedf5ab1caf90e06f9ed3b5e9a8077c91ea1fb5958ac57d150",
+    "mechanism_controls.py": "2db9f8bfbdb48bd42f0007caf316c978e7b9817211bcf2da0b6e8f12e40c874f",
+    "model_form_diagnostic.py": "ca5d59f3ba9363c8d10f66cd4854bedfb77461097ad0952eeb8192ee55340dea",
+    "needs.py": "474ea412e8da89b8b1a53f70da3a325fe82f4a5a1dc49a81df9d25bbbc9fe682",
+    "physics.py": "62a161a739987661b345209c0950f302b4fc230c237d53e642cce00f37a4efd8",
+    "plans.py": "a0ef1bb31c599f285a4bfdfd0f0a78e4ed15cd240d7c2a9f4dfd509f663419a9",
+    "preview_readonly.py": "0501d550b705106ea9f7462e660f8ff48f69ab4f4f0e27cba68752353a077144",
+    "psychrolib_reference.py": "37e08506bdc2e652a77026e7107ece7eaabb1c40997b563b88fe2951385aefdf",
+    "type_model.py": "3bb3df9681b5caa5e34f5e9123f743ed06b1a0f3d0ced84cb17c23907d5263c9",
+    "vehicle_causal_controls.py": "e5214167d0df399304ade1246867a16f5fb6336d84fb990e52bce8d46a29277d",
+    "vehicle_state.py": "198a9d3452e89903647125a989437c4e79dcd81626a73d431f0b373ec3220bed",
+    "verify_case_bindings.js": "62a51aba6bf3a229398dc05631cbf5fd601bb13b5be9b64a79b7377669f95a51",
+    "verify_frontend_clock.js": "e46761ceeda681d0eebac4e71f807fdbb152c95e0a43c941e45edb3acda6d7a6",
+    "weather_audit.py": "a491c2754f7e6a5fea99ceb954cb8f636e06c4d0c4c16f9428a35b48d556d8d8",
+    "worlds.py": "fa2f4c27e3da097dfca2d0ca7f69c9e381cc3e694d2e4cfa65c020b3d1a344f6"
+  },
+  "minimum50_each_is_coverage_design_not_power_or_population_statistic": true,
+  "new1000worlds_written": 0,
+  "original50_acceptance_sha256": "db0742371006812e63788fc21f03080ab9e55628a3e50d401892297e7b67dd2d",
+  "original50_type_binding_sha256": "1f49f9b2e95f331e173975e274e5888565271b7ac325c8834e8462c2c5d1c9d5",
+  "preference_and_type_mixture_status": "researcher_given conditional on verified source structure and rule feasibility",
+  "proportions_are_measured_natural_prevalence": false,
+  "reference_year": 2020,
+  "rules_seed": 2026101401,
+  "schema": "eb.frozen_structure_constrained_type_composition.v27",
+  "source_selection_sha256": "afd9bd62494842524d38f62dea313ddda7aaa39e56bec7cba7a4a65482875ad5",
+  "source_structural_controls_changed": false,
+  "target_households": 1000,
+  "shares": {
+    "A": 0.101,
+    "B": 0.303,
+    "C": 0.319,
+    "D": 0.101,
+    "E": 0.085,
+    "F": 0.091
+  },
+  "support": {
+    "EP_calls": 0,
+    "IDFs": 0,
+    "checked_source_households": 1000,
+    "in_memory_calendar_service_feasibility_only": true,
+    "new1000worlds_written": 0,
+    "source_selection_sha256": "afd9bd62494842524d38f62dea313ddda7aaa39e56bec7cba7a4a65482875ad5",
+    "support_counts": {
+      "A": 530,
+      "B": 984,
+      "C": 998,
+      "D": 530,
+      "E": 363,
+      "F": 489
+    }
+  },
+  "unmatched_households": 0,
+  "unsupported_candidate_households": 4,
+  "unsupported_candidates": [
+    {
+      "type": "C",
+      "reason": "NO_HANDLING_WINDOW",
+      "count": 2
+    },
+    {
+      "type": "F",
+      "reason": "NO_HANDLING_WINDOW",
+      "count": 2
+    }
+  ],
+  "per_household_assignment_is_frozen_privately": true,
+  "private_receipt_sha256": "5b988c2117c55c14c78b4b34b5f11cd0775ed4441bd6c306fb54fc68d5554a16",
+  "public_transformation": "removed private per-household assignments; retained method/counts/support/sensitivity/code hashes"
+}

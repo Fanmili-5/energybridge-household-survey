@@ -2,7 +2,7 @@
 
 ## 当前版本入口
 
-**1000户EB六类生成前置要求（2026-10-13，V24规则研究）**：先读[当前状态与入口](household1000/README.md)及[六类定义、比例与验收](household1000/EB_SIX_TYPE_REQUIREMENT.md)。V23原50户验收作为历史保留；旧1000户尚未满足新要求，新版生成和全量EP关闭，真人有效性、正式收集与训练未完成。原链条见[源码地图](household1000/PIPELINE.md)、[来源与输入](household1000/INPUTS.md)、[学校核查](household1000/REPRODUCTION.md)、[科研边界](household1000/RESEARCH_GATES.md)。
+**1000户V27进展（2026-10-14）**：[当前状态与入口](household1000/README.md)。原50户已完成六类、政策到作息/服务/A/B/IDF、学校物理及原前端新版验收；1000户研究配比已冻结。真实偏好比例、真人有效性与正式benchmark没有得到验证。下一步验收全量静态生产，1000户全量EP继续关闭。
 
 下面是原自报问卷和旧版工程记录，按各自版本判读。
 

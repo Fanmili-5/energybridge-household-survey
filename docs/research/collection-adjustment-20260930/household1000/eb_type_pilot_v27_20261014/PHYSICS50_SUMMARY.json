@@ -1,0 +1,123 @@
+{
+  "households": 50,
+  "AB_pairs": 500,
+  "unique_household_engine_runs": 1400,
+  "run_variants": {
+    "base7": 1000,
+    "prior14_seasonal7_seasonal14_extra": 300,
+    "nominal_temperature_modifier_diagnostic": 100
+  },
+  "all": {
+    "AC_sides_with_bound_clipping": 289,
+    "A_EV_access_target_failures": 0,
+    "A_EV_reserve_failures": 0,
+    "A_EV_undelivered_trips": 0,
+    "A_circuit_exceeded_pairs": 0,
+    "A_home_exceeded_pairs": 0,
+    "A_hot_water_target_failures": 0,
+    "B_EV_access_target_failures": 18,
+    "B_EV_reserve_failures": 8,
+    "B_circuit_exceeded_pairs": 0,
+    "B_home_exceeded_pairs": 0,
+    "B_hot_water_target_failures": 37,
+    "acceptance_passed": true,
+    "checked_pairs": 500,
+    "compiled_scope_sha256": "9293bd869d2b40677e9b433879437b3eb946f6d25abf0cb20b3790331dcf3e9c",
+    "complete_expected_runs_verified": true,
+    "expected_pairs": 500,
+    "human_answers": 0,
+    "input_signature_at_readback": "9f362504e5d2913921ca1f280c98b907e0632f353d218236d674fec80a1256b2",
+    "maximum_meter_residual_J": 0.0,
+    "maximum_pre_notice_difference": 0.0,
+    "maximum_spatial_SQL_difference": 0.0,
+    "old_acceptance_report_reused": false,
+    "original_households_checked": 50,
+    "physical_calibration": false,
+    "readback_code_sha256": "62a161a739987661b345209c0950f302b4fc230c237d53e642cce00f37a4efd8",
+    "requested_pairs": 500,
+    "run_receipts_sha256": "46a30945421c3ff8bd075145f04701f709681a4fe55fe64c19406442a47ea1fd",
+    "schema": "eb.current_ledger_physical_readback.v23",
+    "warning_categories": {
+      "AHRI_curve_domain": 840,
+      "DX_airflow_domain": 0,
+      "psychrometric_domain": 14
+    }
+  },
+  "sensitivity": {
+    "7_vs_14_fixed15": {
+      "households": 50,
+      "max_absolute_A_minus_B_change_kWh": 0.04886496232524351,
+      "max_absolute_normal_A_energy_change_kWh": 0.2832988163378367
+    },
+    "7_vs_14_seasonal": {
+      "households": 50,
+      "max_absolute_A_minus_B_change_kWh": 0.03919630564465848,
+      "max_absolute_normal_A_energy_change_kWh": 0.29296859897733185
+    },
+    "fixed15_vs_seasonal_prior7": {
+      "households": 50,
+      "max_absolute_A_minus_B_change_kWh": 0.6270427929069768,
+      "max_absolute_normal_A_energy_change_kWh": 2.5595763001890717
+    }
+  },
+  "model_form": {
+    "households": 50,
+    "human_answers": 0,
+    "maximum_A_minus_B_difference_to_native_kWh": 0.016565838305464098,
+    "native_original_EB_reference_replaced": false,
+    "no_favorable_model_selected": true,
+    "nominal_parameters_and_flow_partload_functions_preserved": true,
+    "only_temperature_modifiers_changed": true,
+    "other950_executed": false,
+    "ranges_are_assumption_sensitivity_not_confidence_intervals": true,
+    "schema": "eb.nominal_temperature_modifier_sensitivity.v2",
+    "verified_runs": 100
+  },
+  "native_curve_bound_clipping_disclosed": true,
+  "native_model_not_replaced_by_diagnostic": true,
+  "weather_diagnostic": {
+    "engine_sha256": "a75bf2d25236c7f55bfc8573ef2ad49920d7db7a947af8d373493050ee1474a8",
+    "engine_source": "EnergyPlus24.1 Psychrometrics.cc PsyTwbFnTdbWPb uses unbounded General::Iterate and passes intermediate WBT toPsyPsatFnTemp",
+    "explanation": "unbounded intermediate trial caused warning; weather-only reproduction tests attribution, branch-specific equation/bounds tests returned physical quantity. This is not manufacturer or household calibration",
+    "household_EP_launches": 0,
+    "minimal_model_has_zones_or_HVAC": false,
+    "minimal_model_reproduced_PsyPsatFnTemp_warning": true,
+    "minimal_reported_wetbulb_comparison": {
+      "different_ice_water_branch_count": 28,
+      "maximum_error_C": 0.5720116745433498,
+      "maximum_returned_solution_humidity_residual_kg_kg": 3.6999705310203704e-07,
+      "over_prespecified_0_05C": 28,
+      "same_branch_over_0_05C": 0,
+      "steps": 1440,
+      "wetbulb_thermodynamic_bounds_failures": 0
+    },
+    "minimal_warning_lines": [
+      "** Warning ** Temperature out of range [-100. to 200.] (PsyPsatFnTemp)",
+      "**   ~~~   **  Routine=PsyTwbFnTdbWPb, Environment=V18_CONTINUOUS_COMMON_PRIOR_TARGET_RECOVERY, at Simulation time=04/13 08:20 - 08:30",
+      "**   ~~~   **  Input Temperature=-251.45",
+      "*************  ** Warning ** Temperature out of range [-100. to 200.] (PsyPsatFnTemp)"
+    ],
+    "model_or_engine_modified_to_hide_warning": false,
+    "post_diagnostic_refinement": "strict point agreement failed near0C; published ice/water latent-heat branches allow distinct roots. Retain original strict failure; verify same-branch agreement, original returned-solution humidity equation residual and dewpoint/drybulb bounds, not a larger temperature tolerance",
+    "reference": "PsychroLib2.5.0 bounded wetbulb algorithm, Meyer and Thevenard2019 JOSS DOI10.21105/joss.01137",
+    "reference_code_sha256": "37e08506bdc2e652a77026e7107ece7eaabb1c40997b563b88fe2951385aefdf",
+    "schema": "eb.independent_weather_solver_diagnostic.v2",
+    "strict_point_reference_agreement_pass": false,
+    "verification_pass": true,
+    "warnings_suppressed": false,
+    "weather_only_IDF_sha256": "5038b45e43d714acdf0ad1ec930c7062b4e1e21d1d6ad5c83a3db9b6ec1f1a7b",
+    "weather_only_SQL_sha256": "54200cdd6a78b87486dfd166dacaa76286a79b17e044719e16a4f522cb982ffe",
+    "weather_only_diagnostic_launches": 1,
+    "weather_sha256": "4d62302e8e5732b42b774a18924b2ac94b6087f5f8fcbb43bc212d12296a5109",
+    "weather_values_modified": false,
+    "affected_A_cases_count": 7
+  },
+  "weather_verification_claim": "weather-only attribution and returned-equation/bounds consistency; strict cross-branch point agreement remains false",
+  "manufacturer_performance_or_household_field_calibration": false,
+  "source_reports_sha256": {
+    "READBACK_all_REVIEW.json": "04eb7655e2bdbbcd5b010f046dfe6f3426994f2f87a6d061434592cfdca2456b",
+    "READBACK_sensitivity_REVIEW.json": "eaa3b3c5c9db66a73ab76d2e8870783255ffad4379cff68d1c94bcc1eae80ec7",
+    "MODEL_FORM_SENSITIVITY.json": "16e90ce93d466ab0a83ce724020f971b3a0ae614d936f8a1d93fba52319d9dce",
+    "WEATHER_SOLVER_REVIEW.json": "50aeac9654ce7fbf5550513974529818e5fa852e1288a4b14396116da4d90e14"
+  }
+}

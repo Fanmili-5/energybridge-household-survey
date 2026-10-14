@@ -1,0 +1,46 @@
+{
+  "materials": {
+    "actor_cards": 50,
+    "consumer_tasks": 500,
+    "human_answers": 0,
+    "live_deployment_changed": false,
+    "original_frontend_households": 50,
+    "original_layout_questions_submit_contract_preserved": true,
+    "physical_missing_explicit_pending": true,
+    "source_design_labels_hidden": true
+  },
+  "browser": {
+    "status": "pass",
+    "actual_browser_cases_checked": 500,
+    "actual_browser_exports_compared": 2,
+    "input_unchanged_when_all_answers_changed": true,
+    "role_policy_visible": true,
+    "original_frontend": true,
+    "original24h_axis_preserved": true,
+    "engineering_fixture_answers_only": true,
+    "human_answers": 0,
+    "collection_API_requests_sent": 0,
+    "errors": []
+  },
+  "clock": {
+    "status": "pass",
+    "actual_cases_checked": 500,
+    "axis_start_abs_min": 480,
+    "axis_end_abs_min": 1920,
+    "axis_hours": 24,
+    "complete_operation_endpoints_preserved": true,
+    "carry_events_checked": 733,
+    "question_contract_changed": false,
+    "human_answers": 0
+  },
+  "binding": {
+    "status": "pass",
+    "case_bindings_verified": 500,
+    "human_answers": 0,
+    "browser_answer_isolation_is_separate": true
+  },
+  "current_public_live_site_updated": false,
+  "new_materials_staged_and_verified_on_school": true,
+  "human_trial_completed": false,
+  "synthetic_export_fixtures_are_engineering_tests_only": true
+}

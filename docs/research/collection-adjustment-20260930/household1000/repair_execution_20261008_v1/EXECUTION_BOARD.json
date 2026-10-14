@@ -1,60 +1,59 @@
 {
-  "schema": "eb.public_execution_board.v26",
   "date": "2026-10-14",
-  "production_requirement": "eb_type_coverage_revision_v26",
-  "historical_accepted_production": "gate_repair_production_20261013_v23",
-  "historical_published_source_commit": "31771054e056d70c845505934441a1a35dbd2bda",
   "fixed": {
     "devices": "EB six functional classes,4to6 per household",
     "frontend": "original mature frontend",
     "households": 1000,
     "original_ten_quarter_dates": true,
     "population": "China mainland city ordinary residential households; towns/rural excluded",
-    "EB_six_type_counts_status": "research coverage composition pending original50/joint feasibility freeze;not national or actor proportions"
+    "EB_six_type_counts_status": "frozen structure-conditioned research design;not natural or assigned-actor proportions"
   },
   "new_requirement_gate": {
     "id": "G0_EB_type_coverage",
-    "new_original50_recovery_verified": false,
-    "quota_source": "research coverage design subject to joint source/household feasibility;not actor sample or national preference prevalence",
-    "required_before": "household world generation and downstream A/B/IDF",
-    "status": "not_accepted",
-    "target_counts": null,
-    "historical_V24_capacity_under_experimental_mix": 984,
+    "status": "original50_accepted_and_research_mix_frozen;full_static1000_pending",
     "objective": "type_coverage_consistent_with_EB",
-    "historical_V24_unspecified_role_policy_worlds": 1000,
-    "real_prevalence_is_generation_prerequisite": false,
-    "actual_type_coverage_verified": false
+    "new_original50_recovery_verified": true,
+    "actual1000_type_coverage_verified": false,
+    "target_counts": {
+      "A": 101,
+      "B": 303,
+      "C": 319,
+      "D": 101,
+      "E": 85,
+      "F": 91
+    },
+    "quota_source": "uniform within verified source/rule feasible types;structure weights;research coverage floor50;fixed accepted original50",
+    "counts_are_measured_population_prevalence": false,
+    "original50_acceptance_summary": "eb_type_pilot_v27_20261014/PILOT_ACCEPTANCE_SUMMARY.json",
+    "frozen_composition_summary": "eb_type_pilot_v27_20261014/FROZEN_COMPOSITION_SUMMARY.json",
+    "real_prevalence_is_generation_prerequisite": false
   },
-  "current_requirement_status": "EB type coverage and coherent propagation pending;national preference survey prerequisite withdrawn",
-  "strict_candidate_capacity": {
-    "1000": 984,
-    "original50": 49,
-    "strict_admission_is_research_adaptation": true,
-    "capacity_is_not_actual_type_recovery": true,
-    "historical_V24_only": true
-  },
-  "critical_open_items": [
-    "common permitted feature extractor and semantic EB reference mapping",
-    "joint source-frame/household policy-holder/device coverage adaptation",
-    "actual routine/service/normalA/candidateB/IDF propagation",
-    "original50 type-coverage/stability and existing physical/frontend admission"
-  ],
-  "actual_human_answers": 0,
-  "new_worlds_generated": 0,
-  "new_EP_started": false,
+  "current_requirement_status": "V27 new original50 accepted;1000 research composition frozen;actual full1000 static world/coverage/IDF audit pending",
+  "historical_accepted_production": "gate_repair_production_20261013_v23",
   "full1000_EP_allowed": false,
   "whole_program_scientific_completion": false,
-  "historical_V23_acceptance_scope": "source-aware reference inputs and original50 conditional physics;not new EB6 requirement",
-  "public_transformation": "aggregate board only;private per-household diagnostics,records and pointer history excluded",
-  "source_publication_record": "Git commit containing this file;source publication does not admit generation",
-  "historical_V24_experimental_counts": {
-    "A": 166,
-    "B": 198,
-    "C": 125,
-    "D": 151,
-    "E": 156,
-    "F": 204
+  "latest_type_pilot_stage": "eb_type_pilot_v27_20261014",
+  "latest_type_pilot_acceptance_sha256": "db0742371006812e63788fc21f03080ab9e55628a3e50d401892297e7b67dd2d",
+  "latest_type_pilot_counts": {
+    "A": 5,
+    "B": 14,
+    "C": 16,
+    "D": 5,
+    "E": 5,
+    "F": 5
   },
-  "new_generation_allowed": false,
-  "real_prevalence_is_generation_prerequisite": false
+  "latest_frozen_composition_sha256": "5b988c2117c55c14c78b4b34b5f11cd0775ed4441bd6c306fb54fc68d5554a16",
+  "latest_type_pilot_human_answers": 0,
+  "latest_type_pilot_unique_engine_runs": 1400,
+  "latest_type_pilot_new_worlds": 50,
+  "current_full1000_new_worlds": 0,
+  "new_generation_allowed": true,
+  "new_generation_allowed_scope": "static1000 only;content-bound school gate",
+  "schema": "eb.public_execution_board.v27",
+  "critical_open_items": [
+    "new1000 static worlds/AB/IDFs and actual coverage acceptance",
+    "whole production review before fullEP admission",
+    "independent human role-validity and benchmark labels"
+  ],
+  "public_transformation": "aggregate board;private case diagnostics and historical pointer details excluded"
 }
