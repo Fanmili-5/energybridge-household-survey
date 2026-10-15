@@ -157,11 +157,14 @@ def main():
     if args.command == 'require-generation':
         base=args.workspace.resolve()/REL
         pointer=read(base/'CURRENT_GENERATION_REQUIREMENTS.json')
+        if pointer.get('gate_kind')=='v30_original50_only_950_paused':
+            print(json.dumps({'generation_allowed':False,'EP_allowed':False,'EP_started':False,'formal50_collection_released':True,'formal950_paused':True,'reason':'user paused school work;950 final acceptance and raw receipt synchronization pending'}))
+            return 2
         entry=base/pointer['gate_entry']
         if not entry.is_file():
             print(json.dumps({'generation_allowed':False,'EP_allowed':False,'reason':'prepared generation entry missing'}))
             return 2
-        if pointer.get('gate_kind') in ('v28_readonly_cohort_receipts','v29_readonly_contrast_receipts'):
+        if pointer.get('gate_kind') in ('v28_readonly_cohort_receipts','v29_readonly_contrast_receipts','v30_readonly_contrast_receipts'):
             stage = base / pointer['stage']
             if not (stage / 'SELECTION1000.json').is_file():
                 print(json.dumps({'generation_allowed': False, 'EP_started': False,
@@ -177,6 +180,11 @@ for scope in scopes:
     report=json.loads((stage/('PHYSICS_'+scope+'_REVIEW.json')).read_text())
     assert report['acceptance_passed'] and not report['failures']
     assert report['input_signature_at_readback']==lease['review']['input_signature']
+    if (stage/'PROTOCOL_V29.json').exists() and json.loads((stage/'PROTOCOL_V29.json').read_text()).get('version','').startswith('v30'):
+        for prefix in ('SUBSTANTIVE','CONTROL_SQL'):
+            checked=json.loads((stage/(prefix+'_'+scope+'_REVIEW.json')).read_text())
+            assert checked['passed'] and not checked['failures']
+            assert checked['input_signature']==lease['review']['input_signature']
 if (stage/'PROTOCOL_V29.json').exists():
     from cohort_gate import require_original50_acceptance
     require_original50_acceptance()
@@ -186,6 +194,11 @@ if (stage/'PROTOCOL_V29.json').exists():
         for file,digest in accepted['evidence'].items():assert hashlib.sha256((stage/file).read_bytes()).hexdigest()==digest
     final=json.loads((stage/'PHYSICAL_PRODUCTION_COMPLETE.json').read_text())
     assert final['passed'] and final['verified_input_bound_run_sides']==21440
+    if final.get('schema','').endswith('.v30'):
+        for prefix,key in [('SUBSTANTIVE','substantive_evidence'),('CONTROL_SQL','control_SQL_evidence')]:
+            for scope,digest in final[key].items():
+                assert hashlib.sha256((stage/(prefix+'_'+scope+'_REVIEW.json')).read_bytes()).hexdigest()==digest
+        assert final['substantive_task_contrast_verified']
 print(json.dumps({'current_content_bound_reference_receipts':'pass','scopes':scopes,'EP_started':False,'human_answers_created':0}))
 '''
             return subprocess.run([sys.executable, '-B', '-c', code, str(stage), args.scope],

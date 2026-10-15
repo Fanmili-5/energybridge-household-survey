@@ -28,11 +28,11 @@
     "frozen_composition_summary": "eb_type_pilot_v27_20261014/FROZEN_COMPOSITION_SUMMARY.json",
     "real_prevalence_is_generation_prerequisite": false,
     "current_actual_coverage_evidence": "../formal50_950_production_v28_20261014/CLUSTER_COVERAGE1000_REVIEW.json",
-    "current_physics_evidence": "../contrast_repair_v29_20261015/PHYSICAL_PRODUCTION_COMPLETE.json"
+    "current_physics_evidence": "../substantive_repair_v30_20261015/SCHOOL_50_ACCEPTANCE_OBSERVED.json"
   },
-  "current_requirement_status": "V29 contrast source/physics/material/browser/HTTP accepted; original50 before950; human validity unknown",
+  "current_requirement_status": "50 published;950 paused;school raw50 receipt synchronization pending",
   "historical_accepted_production": "gate_repair_production_20261013_v23",
-  "full1000_EP_allowed": true,
+  "full1000_EP_allowed": false,
   "whole_program_scientific_completion": false,
   "latest_type_pilot_stage": "eb_type_pilot_v27_20261014",
   "latest_type_pilot_acceptance_sha256": "db0742371006812e63788fc21f03080ab9e55628a3e50d401892297e7b67dd2d",
@@ -53,14 +53,15 @@
   "new_generation_allowed_scope": "Current accepted reference production; all new or changed production requires content-bound review",
   "schema": "eb.public_execution_board.v29",
   "critical_open_items": [
-    "independent human comprehension and role-information effect",
-    "national natural six-type preference proportions and field calibration unproven"
+    "retrieve original50 raw JSON receipt after school reconnection",
+    "formal950 final acceptance unknown due offline;user paused",
+    "independent actor validity and physical field calibration unproven"
   ],
   "public_transformation": "aggregate board;private case diagnostics and historical pointer details excluded",
-  "current_repair_candidate": "contrast_repair_v29_20261015",
-  "new_generation_requirement_stage": "contrast_repair_v29_20261015",
-  "production_requirement": "contrast_repair_v29_20261015",
-  "production": "contrast_repair_v29_20261015",
+  "current_repair_candidate": "substantive_repair_v30_20261015",
+  "new_generation_requirement_stage": "substantive_repair_v30_20261015",
+  "production_requirement": "substantive_repair_v30_20261015",
+  "production": "substantive_repair_v30_20261015",
   "full1000_EP_allowed_scope": "completed V29 scoped receipts only;no automatic rerun;new inputs require fresh review",
   "new_EB_six_type_requirement_accepted": true,
   "satisfies_current_generation_requirements": true,
@@ -70,68 +71,12 @@
   "published_source_commit_before_audit": "42a8f6363bd15a2104014df4cbb39c7236bc1c1b",
   "source_publication_revision": "V29 task-contrast repair; exact source revision is repository Git HEAD",
   "current_task_contrast": {
-    "A_household_policy_hardware_dates_mandatory_needs_and_common_history_unchanged": true,
-    "actual_browser_pages_checked": {
-      "formal50": 500,
-      "formal950": 1000
-    },
-    "actual_formal_payload_files_hash_checked": 10002,
-    "all1000_fresh_EP_rerun": false,
-    "all1000_type_feature_values_unchanged": true,
-    "cases": 10000,
-    "counts": {
-      "cases": 10000,
-      "charging_permission_tradeoff": 391,
-      "micro_requests": 0,
-      "modeled_consequence_difference": 9008,
-      "no_cooling_need_extra_request": 269,
-      "repaired_priority41": 41,
-      "same_displayed_outcomes": 992,
-      "temperature_permission_tradeoff": 332
-    },
-    "current_type_counts": {
-      "A": 101,
-      "B": 303,
-      "C": 319,
-      "D": 101,
-      "E": 85,
-      "F": 91
-    },
-    "energy_difference_floor": null,
-    "exact_unchanged_SQL_reused_sides": 19619,
-    "fresh_source_and_six_type_audit_passed": true,
+    "scope": "formal50",
+    "cases": 500,
+    "same_displayed_outcomes": 0,
     "human_JND_validated": false,
-    "human_response_labels_created": 0,
-    "input_bound_run_sides": 21440,
-    "new_EP_sides": 1821,
-    "original50_passed_before950_review": true,
-    "original_equal857_accounted": 857,
-    "original_equal857_current_classes": {
-      "charging_permission_tradeoff": 292,
-      "modeled_consequence_difference": 13,
-      "no_cooling_need_extra_request": 269,
-      "temperature_permission_tradeoff": 283
-    },
-    "original_equal857_still_equal_displayed": 844,
-    "passed": true,
-    "priority41_final_classes": {
-      "modeled_consequence_difference": 9,
-      "temperature_permission_tradeoff": 32
-    },
-    "priority41_repaired": 41,
-    "same_outcome_tasks_explicitly_annotated": true,
-    "scenario_counts_are_population_event_prevalence": false,
-    "scenario_design_counts": {
-      "constraint_challenge": 1713,
-      "cross_device": 408,
-      "inconvenient_but_doable": 2725,
-      "near_boundary": 2664,
-      "negotiation": 1562,
-      "service_risk": 928
-    },
-    "schema": "eb.task_contrast_public_summary.v29",
-    "source_only_repair_no_outcome_selection": true,
-    "source_repaired_pairs": 1706
+    "full10000_formal_acceptance_claim": false
   },
-  "current_full1000_worlds": 1000
+  "current_full1000_worlds": 1000,
+  "production_scope": "formal50_only_950_paused"
 }

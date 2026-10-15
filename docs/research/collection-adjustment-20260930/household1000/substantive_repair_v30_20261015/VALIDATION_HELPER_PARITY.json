@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "files_sha256": {
+    "deploy/substantive_validation_20261015/browser_fixture.py": "aac755555cc49f806ff3c27f94be05f61364106ccc071796cbe02005fc98e045",
+    "deploy/substantive_validation_20261015/complete_review.py": "3c7f65b169be705637d35544ca79e88794dac4e94d39cb67f234a53bc512418b",
+    "deploy/substantive_validation_20261015/run_weather.py": "3cceeed832d082c1dd4a6c5924c8c54bb59161692c06a28fc1d00f34ee6ec418",
+    "deploy/substantive_validation_20261015/finish_cohort.py": "aaab8f4e0d5d685a671c8043e09bf969b5f9aa3c734396d9429b96b09b648437",
+    "deploy/substantive_validation_20261015/run_other950.py": "3c5aa6ffe36ac9bea164908f6c5cfb4fa68bda68f66d72396863f58dd03351f8",
+    "deploy/substantive_validation_20261015/control_sql.py": "a6df34608eb7bdbee51e25f67db8c5754b3dba52173c33950d302775ce446913",
+    "deploy/substantive_validation_20261015/run_original50.py": "e77539e87fc4f0ab6deb031c50a77380a876c81d3bf72bbf5f822eb4a09e5906",
+    "deploy/substantive_validation_20261015/browser_fixture_parallel.cjs": "c6dd3e6e7dd86de0332545e40fecdcc8b8c57d6ec0e9e17709a6fe8389eb1eb2",
+    "deploy/substantive_validation_20261015/resume_after_storage.py": "14e4d5d7d2c3cee5599e5d3dd8e6662f2c5dced0f6ab0f1dc8823a9c2738cafe",
+    "deploy/substantive_validation_20261015/collect_receipts.py": "6ceef845f638f82e9084172b316956cd8b330aad2a8085584cd5a87be74d79c3",
+    "deploy/formal_questionnaires_20261014/store.py": "b44fd5cba47f669c358b9a35f2151ab6f0a91fa0697fee5ea841ddf5fb2c8e62",
+    "deploy/formal_questionnaires_20261014/backup.py": "2b6c9ebab831100898e59e25b1b4cd672b5a100ff43455949b41d4bf7376f082",
+    "deploy/formal_questionnaires_20261014/server.py": "07b871ee987c8f60bfde55a2dd1c7d77599e8b29e5fb05b87837ba0c74a9b1ac",
+    "deploy/formal_questionnaires_20261014/test_protocol.py": "58ffd0bf324f1cd9a97b97f12a15f6c0945de4bf53512c9ff42358cb9ed9301c",
+    "deploy/formal_questionnaires_20261014/respondent.py": "0fbcfa9b0dd11179dc591395e5cc4285fa6b9920cc3c49e60708796d6c932ef3",
+    "deploy/formal_questionnaires_20261014/test_recovery.py": "a8a0853b1db693178a23ec74d2a6fe909b0cd93886fa9b1c5633fe051b942dfc",
+    "deploy/formal_questionnaires_20261014/build_release.py": "ead2b1a477896124a0dca9acc30847b110f40317fc0d82257faf4e52c7d477ff",
+    "deploy/formal_questionnaires_20261014/release_acceptance.py": "a68ee4f883bef5b0ea3016a84ce7d9187716c5ea51552ba0aeaa73dbb40649af",
+    "deploy/formal_questionnaires_20261014/render_materials.py": "e87968b33b94c83f2ec7bae10dee188abe7d3b627e3ffa1a5cf7582732642b08",
+    "deploy/formal_questionnaires_20261014/admin.py": "a4ee0b4de44be9a9e0dbd17f0ad2810577701a34e3db190020f734eb111448cd",
+    "deploy/formal_questionnaires_20261014/test_release_acceptance.py": "c234d6c42a5153f38e5ab41a193cee506215d729c0f4545afdf4166835e516df",
+    "deploy/formal_questionnaires_20261014/verify_formal_bindings.cjs": "b8bcb67a6c516df22429aadd1c8833131defb2ac35c36959ba7f95ba4e99eacd",
+    "deploy/formal_questionnaires_20261014/make_protocol_fixture.py": "4ea4de696e7902c3c16a4cca6ac122adcb3968db62f82b903426d7da4d11510d",
+    "deploy/formal_questionnaires_20261014/formal-client.js": "c9e19bbc8551d33962ada1ec15648f085b6cadd42c118018d4b9e819c8dc227a",
+    "deploy/formal_questionnaires_20261014/activate.py": "a6b786468efce3b6661473d3ad097fa450e5d4c1ec0be5bc25de14656b878299",
+    "deploy/formal_questionnaires_20261014/engineering_contract.py": "7fdf9997b6060209b19db1bd18d7b2a5b8e227ba77d56cc75af50ffdabad1849"
+  },
+  "helpers_checked": 26
+}

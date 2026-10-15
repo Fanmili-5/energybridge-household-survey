@@ -1,0 +1,48 @@
+{
+  "schema": "eb.formal_questionnaire_activation.v1",
+  "activated_at": "2026-10-15T10:44:24.451636+00:00",
+  "health": {
+    "formal50": {
+      "batch": "formal50",
+      "cases": 500,
+      "households": 50,
+      "human_collection_release": true,
+      "mode": "formal_role_collection",
+      "questionnaire_ui_version": "eb.formal_role_questionnaire.20261014.1",
+      "release_signature": "0c6893ef23e8467218b1e0489e4baa98ef2514b4d15f2028143d4b3669faa9f0",
+      "scientific_benchmark_validated": false,
+      "source_world_version": "V30",
+      "training_release": false
+    }
+  },
+  "backup": "/var/backups/energybridge-role-collection/20261015T104421Z",
+  "consistent_backup_interval_hours": 6,
+  "engineering_database_migrated_to_formal": false,
+  "old_engineering_release_and_databases_retained": true,
+  "private_invitation_count": 50,
+  "automatic_training_release": false,
+  "scope": "formal50_only_950_paused",
+  "formal950_public_paused": true,
+  "formal950_public_status": 503,
+  "formal950_existing_packages_and_records_preserved": true,
+  "prior_database_all_table_contents_unchanged": true,
+  "private_invitation_files_unchanged": true,
+  "credential_pepper_unchanged": true,
+  "production_counts": {
+    "actors": 0,
+    "answers": 0,
+    "attempts": 0,
+    "invitations": 1000,
+    "sessions": 1,
+    "withdrawals": 0
+  },
+  "active_invitation_count": 50,
+  "preserved_invitation_count": 1000,
+  "runtime_files_verified": 16,
+  "service_user_all50_payload_bytes_verified": true,
+  "human_records_created": 0,
+  "school_observation_sha256": "b6187e4635205e7c0f2d88215bd2e6b109842d95666354e40ae1e21a41e9812c",
+  "school_original_raw_receipt_download_pending": true,
+  "full1000_EP_started": false,
+  "public_HTTPS50_signature_verified": true
+}

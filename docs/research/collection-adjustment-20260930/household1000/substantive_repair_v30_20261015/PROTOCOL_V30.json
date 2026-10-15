@@ -1,0 +1,39 @@
+{
+  "schema": "eb.task_contrast_protocol.v30",
+  "version": "v30.3",
+  "minimum_temperature_request_C": 0.5,
+  "minimum_temperature_changed_minutes": 30,
+  "minimum_program_start_change_min": 20,
+  "minimum_availability_difference_min": 20,
+  "minimum_manual_time_change_min": 10,
+  "human_JND_validated": false,
+  "energy_difference_floor": null,
+  "human_answer_generated": false,
+  "preserved": [
+    "household",
+    "policy",
+    "hardware",
+    "dates",
+    "mandatory_needs",
+    "frozen_A",
+    "common_history"
+  ],
+  "same_outcome_classes": [
+    "temperature_permission_tradeoff",
+    "charging_permission_tradeoff",
+    "no_cooling_need_extra_request"
+  ],
+  "no_implicit_near_indifference_controls": true,
+  "minimum_tank_temperature_request_C": 5.0,
+  "minimum_tank_temperature_changed_minutes": 20,
+  "operative_energy_difference_kWh": 0.1,
+  "operative_water_temperature_difference_C": 1.0,
+  "operative_room_temperature_difference_C": 0.5,
+  "operative_manual_added_min": 10,
+  "minimum_operative_AC_request_C": 2.0,
+  "thresholds_are_declared_task_design_not_human_JND_or_population_estimates": true,
+  "generic_confirmation_or_control_bound_only_admits_primary_tasks": false,
+  "bad_B_permitted_but_structural_IDF_errors_forbidden": true,
+  "A_reference_trace_may_condition_intervention": true,
+  "B_EP_outcomes_used_for_candidate_ranking": false
+}

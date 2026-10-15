@@ -1,15 +1,15 @@
 {
-  "schema": "eb.current_generation_requirements.v29",
+  "schema": "eb.current_generation_requirements.v30",
   "date": "2026-10-15",
-  "stage": "contrast_repair_v29_20261015",
+  "stage": "substantive_repair_v30_20261015",
   "objective": "type_coverage_consistent_with_EB",
-  "methods_path": "contrast_repair_v29_20261015/METHODS_AND_ACCEPTANCE.md",
-  "gate_entry": "contrast_repair_v29_20261015/code/cohort_gate.py",
-  "gate_kind": "v29_readonly_contrast_receipts",
-  "accepted": true,
-  "generation_allowed": true,
+  "methods_path": "substantive_repair_v30_20261015/METHODS_AND_ACCEPTANCE.md",
+  "gate_entry": "substantive_repair_v30_20261015/code/cohort_gate.py",
+  "gate_kind": "v30_original50_only_950_paused",
+  "accepted": false,
+  "generation_allowed": false,
   "generation_allowed_scope": "completed signed reference inputs; commands check receipts only",
-  "EP_completed": true,
+  "EP_completed": false,
   "future_EP_requires_fresh_review": true,
   "collection_release": true,
   "training_release": false,
@@ -23,8 +23,10 @@
     "F": 91
   },
   "current_type_coverage_verified": true,
-  "actual1000_new_worlds_generated": 1000,
-  "actual1000_new_IDFs_generated": 20000,
   "real_prevalence_is_generation_prerequisite": false,
-  "task_contrast_accepted": true
+  "task_contrast_accepted": true,
+  "formal50_accepted": true,
+  "formal950_paused": true,
+  "task_contrast_accepted_scope": "formal50 only",
+  "full1000_EP_allowed": false
 }

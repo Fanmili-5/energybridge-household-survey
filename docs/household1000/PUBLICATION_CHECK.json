@@ -1,8 +1,8 @@
 {
-  "version": "v29-task-contrast-formal50-formal950",
+  "version": "v30.3-formal50-only-950-paused",
   "checked_utc": "2026-10-15T07:23:05.482979+00:00",
-  "source_integrity_files": 847,
-  "python_AST_checked": 829,
+  "source_integrity_files": 931,
+  "python_AST_checked": 897,
   "formal_protocols_passed": [
     "formal50",
     "formal950"
@@ -10,19 +10,19 @@
   "all_current_cases_verified": 10000,
   "full_reference_EP_complete": true,
   "current_browser_actual_final_submission_verified": true,
-  "browser_limit": "school isolated invented actors only; all500 original50 pages and systematic100-household/1000-page950 sample; not human validation",
+  "browser_limit": "school500 real Chromium pages completed before outage;local recheck is JS-only;no human validation",
   "actual_both_HTTPS_health_modes": "formal_role_collection",
   "source_aggregates_only": true,
   "human_labels_created": 0,
   "training_release": false,
-  "scope": "publication engineering and conditional reference acceptance, not human/field/national validation",
-  "status": "pass_with_declared_scientific_scope",
+  "scope": "formal50_only_950_paused",
+  "status": "pass_scoped50;950 paused",
   "actual_both_formal_entry_DOM_and_screenshot_verified": true,
   "current_input_bound_school_readonly_receipts_passed": true,
   "source_hash_fidelity_preserved": true,
   "frozen_reference_whitespace_exemptions_in_gitattributes": true,
   "secret_index_scan": {
-    "scanned_files": 1294,
+    "scanned_files": 1378,
     "passed": true,
     "findings": []
   },
@@ -41,73 +41,18 @@
   "current_role_packages_and_credentials_unchanged": false,
   "role_packages_changed": true,
   "credentials_unchanged": true,
-  "actual_browser_pages": 1500,
+  "actual_browser_pages": 500,
   "task_contrast": {
-    "A_household_policy_hardware_dates_mandatory_needs_and_common_history_unchanged": true,
-    "actual_browser_pages_checked": {
-      "formal50": 500,
-      "formal950": 1000
-    },
-    "actual_formal_payload_files_hash_checked": 10002,
-    "all1000_fresh_EP_rerun": false,
-    "all1000_type_feature_values_unchanged": true,
-    "cases": 10000,
-    "counts": {
-      "cases": 10000,
-      "charging_permission_tradeoff": 391,
-      "micro_requests": 0,
-      "modeled_consequence_difference": 9008,
-      "no_cooling_need_extra_request": 269,
-      "repaired_priority41": 41,
-      "same_displayed_outcomes": 992,
-      "temperature_permission_tradeoff": 332
-    },
-    "current_type_counts": {
-      "A": 101,
-      "B": 303,
-      "C": 319,
-      "D": 101,
-      "E": 85,
-      "F": 91
-    },
-    "energy_difference_floor": null,
-    "exact_unchanged_SQL_reused_sides": 19619,
-    "fresh_source_and_six_type_audit_passed": true,
+    "scope": "formal50",
+    "cases": 500,
+    "same_displayed_outcomes": 0,
     "human_JND_validated": false,
-    "human_response_labels_created": 0,
-    "input_bound_run_sides": 21440,
-    "new_EP_sides": 1821,
-    "original50_passed_before950_review": true,
-    "original_equal857_accounted": 857,
-    "original_equal857_current_classes": {
-      "charging_permission_tradeoff": 292,
-      "modeled_consequence_difference": 13,
-      "no_cooling_need_extra_request": 269,
-      "temperature_permission_tradeoff": 283
-    },
-    "original_equal857_still_equal_displayed": 844,
-    "passed": true,
-    "priority41_final_classes": {
-      "modeled_consequence_difference": 9,
-      "temperature_permission_tradeoff": 32
-    },
-    "priority41_repaired": 41,
-    "same_outcome_tasks_explicitly_annotated": true,
-    "scenario_counts_are_population_event_prevalence": false,
-    "scenario_design_counts": {
-      "constraint_challenge": 1713,
-      "cross_device": 408,
-      "inconvenient_but_doable": 2725,
-      "near_boundary": 2664,
-      "negotiation": 1562,
-      "service_risk": 928
-    },
-    "schema": "eb.task_contrast_public_summary.v29",
-    "source_only_repair_no_outcome_selection": true,
-    "source_repaired_pairs": 1706
+    "full10000_formal_acceptance_claim": false
   },
   "current_protocol_prior_release_restoration_isolated": true,
   "current_school_readonly_CLI_passed": true,
   "public_checkout_missing_inputs_rejected": true,
-  "source_parity_scope": "57 actual school pre-EP reviewed stage source files match published bytes;all public source bytes verified locally"
+  "source_parity_scope": "57 actual school pre-EP reviewed stage source files match published bytes;all public source bytes verified locally",
+  "school_raw_receipt_download_pending": true,
+  "full1000_EP_started": false
 }

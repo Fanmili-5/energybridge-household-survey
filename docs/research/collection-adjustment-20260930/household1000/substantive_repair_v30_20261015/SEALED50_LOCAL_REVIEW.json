@@ -1,0 +1,24 @@
+{
+  "schema": "eb.sealed50_offline_recheck.v30",
+  "passed": true,
+  "release_signature": "0c6893ef23e8467218b1e0489e4baa98ef2514b4d15f2028143d4b3669faa9f0",
+  "households": 50,
+  "cases_checked": 500,
+  "payload_files_hash_checked": 501,
+  "same_displayed_outcomes": 0,
+  "actual_shipped_JS_bindings": {
+    "passed": true,
+    "case_bindings_verified": 500,
+    "canonicalization": "shipped frontend sorted JSON.stringify",
+    "actual_browser_interaction": false,
+    "human_answers_generated": 0
+  },
+  "cases_with_thermal_commands": 12,
+  "cases_with_tank_commands": 117,
+  "all_cases_full24hour_living_day": true,
+  "hotwater_target_change_texts_checked": 62,
+  "source_SQL_or_real_browser_rerun": false,
+  "scope": "sealed package hashes,structural stimuli,visible outcomes and shipped JS canonical bindings only;school source/physics/browser acceptance was already completed",
+  "human_answers_created": 0,
+  "training_release": false
+}

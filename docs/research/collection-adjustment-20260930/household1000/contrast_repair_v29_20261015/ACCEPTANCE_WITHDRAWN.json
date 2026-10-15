@@ -1,0 +1,10 @@
+{
+  "schema": "eb.withdrawn_reference_acceptance.v1",
+  "withdrawn": true,
+  "superseded_by": "substantive_repair_v30_20261015",
+  "superseded_public_revision": "f2272c6190033c6e0e00acf6162b78b7c59a6b23",
+  "scope": "substantive actor-visible task adequacy",
+  "reason": "Hotwater target omission and nonoperative AC controls allowed effectively equal tasks;encoding-only acceptance was insufficient",
+  "old_SQL_and_hash_evidence_retained_as_historical": true,
+  "current_published_scope": "formal50_only;formal950 paused"
+}

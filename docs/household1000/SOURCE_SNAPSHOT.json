@@ -1,5 +1,5 @@
 {
-  "version": "household1000-v29-task-contrast",
+  "version": "household1000-v30-task-contrast",
   "source_scope": "source,case-free templates,contracts and methods;protected records and calibrated or human benchmark claims excluded",
   "source_files": [
     {
@@ -46,8 +46,8 @@
     },
     {
       "path": "deploy/formal_questionnaires_20261014/RELEASE.md",
-      "source_sha256": "8ae6aebd56a568e23d981ae370369e1ecb22e389dc7184e5cadf1415a1cc4ce1",
-      "published_sha256": "8ae6aebd56a568e23d981ae370369e1ecb22e389dc7184e5cadf1415a1cc4ce1",
+      "source_sha256": "9216aadc42f7e43de525ea093cb1997c4ae630fec3391294ae73dc388ae66d53",
+      "published_sha256": "9216aadc42f7e43de525ea093cb1997c4ae630fec3391294ae73dc388ae66d53",
       "kind": "formal_collection_source_or_aggregate",
       "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately"
     },
@@ -241,6 +241,90 @@
       "transformation": "none; no cases or respondent records"
     },
     {
+      "path": "deploy/release50_offline_20261015/activate50.py",
+      "source_sha256": "b8f0e5456179e856664d77aeeec8d8a2e00dbd2318cf10f505d4a03abf2c82e8",
+      "published_sha256": "b8f0e5456179e856664d77aeeec8d8a2e00dbd2318cf10f505d4a03abf2c82e8",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "deploy/release50_offline_20261015/verify_sealed50.py",
+      "source_sha256": "8bdd1cce24a1f1ff82960b74be5aa387c5191e9b933e8811ed5adca4471d41a1",
+      "published_sha256": "8bdd1cce24a1f1ff82960b74be5aa387c5191e9b933e8811ed5adca4471d41a1",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "deploy/substantive_validation_20261015/browser_fixture.py",
+      "source_sha256": "aac755555cc49f806ff3c27f94be05f61364106ccc071796cbe02005fc98e045",
+      "published_sha256": "aac755555cc49f806ff3c27f94be05f61364106ccc071796cbe02005fc98e045",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "deploy/substantive_validation_20261015/browser_fixture_parallel.cjs",
+      "source_sha256": "c6dd3e6e7dd86de0332545e40fecdcc8b8c57d6ec0e9e17709a6fe8389eb1eb2",
+      "published_sha256": "c6dd3e6e7dd86de0332545e40fecdcc8b8c57d6ec0e9e17709a6fe8389eb1eb2",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "deploy/substantive_validation_20261015/collect_receipts.py",
+      "source_sha256": "6ceef845f638f82e9084172b316956cd8b330aad2a8085584cd5a87be74d79c3",
+      "published_sha256": "6ceef845f638f82e9084172b316956cd8b330aad2a8085584cd5a87be74d79c3",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "deploy/substantive_validation_20261015/complete_review.py",
+      "source_sha256": "3c7f65b169be705637d35544ca79e88794dac4e94d39cb67f234a53bc512418b",
+      "published_sha256": "3c7f65b169be705637d35544ca79e88794dac4e94d39cb67f234a53bc512418b",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "deploy/substantive_validation_20261015/control_sql.py",
+      "source_sha256": "a6df34608eb7bdbee51e25f67db8c5754b3dba52173c33950d302775ce446913",
+      "published_sha256": "a6df34608eb7bdbee51e25f67db8c5754b3dba52173c33950d302775ce446913",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "deploy/substantive_validation_20261015/finish_cohort.py",
+      "source_sha256": "aaab8f4e0d5d685a671c8043e09bf969b5f9aa3c734396d9429b96b09b648437",
+      "published_sha256": "aaab8f4e0d5d685a671c8043e09bf969b5f9aa3c734396d9429b96b09b648437",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "deploy/substantive_validation_20261015/resume_after_storage.py",
+      "source_sha256": "14e4d5d7d2c3cee5599e5d3dd8e6662f2c5dced0f6ab0f1dc8823a9c2738cafe",
+      "published_sha256": "14e4d5d7d2c3cee5599e5d3dd8e6662f2c5dced0f6ab0f1dc8823a9c2738cafe",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "deploy/substantive_validation_20261015/run_original50.py",
+      "source_sha256": "e77539e87fc4f0ab6deb031c50a77380a876c81d3bf72bbf5f822eb4a09e5906",
+      "published_sha256": "e77539e87fc4f0ab6deb031c50a77380a876c81d3bf72bbf5f822eb4a09e5906",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "deploy/substantive_validation_20261015/run_other950.py",
+      "source_sha256": "3c5aa6ffe36ac9bea164908f6c5cfb4fa68bda68f66d72396863f58dd03351f8",
+      "published_sha256": "3c5aa6ffe36ac9bea164908f6c5cfb4fa68bda68f66d72396863f58dd03351f8",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "deploy/substantive_validation_20261015/run_weather.py",
+      "source_sha256": "3cceeed832d082c1dd4a6c5924c8c54bb59161692c06a28fc1d00f34ee6ec418",
+      "published_sha256": "3cceeed832d082c1dd4a6c5924c8c54bb59161692c06a28fc1d00f34ee6ec418",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
       "path": "docs/household1000/AUDIT_20261015.md",
       "kind": "first_party_self_audit_source_or_aggregate",
       "transformation": "source or aggregate acceptance only; no private instances or credentials",
@@ -249,10 +333,10 @@
     },
     {
       "path": "docs/household1000/CONTRAST_REVIEW_20261015.md",
-      "source_sha256": "233131785630c461c72b675212bd345f1af6f30c68e6ad0c715512797851753f",
-      "published_sha256": "233131785630c461c72b675212bd345f1af6f30c68e6ad0c715512797851753f",
+      "source_sha256": "809015d6d8ca7e9991d55c867ad1afdbe24458c8f08299cd27f474fa0dbf701c",
+      "published_sha256": "809015d6d8ca7e9991d55c867ad1afdbe24458c8f08299cd27f474fa0dbf701c",
       "kind": "v29_source_or_aggregate",
-      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+      "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately"
     },
     {
       "path": "docs/household1000/audit_20261015/ACTIVATION_RECEIPT.json",
@@ -326,22 +410,22 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
-      "source_sha256": "2b5ee5aaa65b14b9057493c82c654434e969c25c1e673f9d31d669597ef22e32",
-      "published_sha256": "2b5ee5aaa65b14b9057493c82c654434e969c25c1e673f9d31d669597ef22e32",
+      "source_sha256": "cb07812b82c05c481ca42249af260186295bace50ed9468d733f8c0b41d27772",
+      "published_sha256": "cb07812b82c05c481ca42249af260186295bace50ed9468d733f8c0b41d27772",
       "kind": "V27_reference_source_or_aggregate",
       "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
-      "source_sha256": "2d889b891819a752fbaf5131ff1bedfb1e5d2ee3b49c7f31c1a6685874179baf",
-      "published_sha256": "2d889b891819a752fbaf5131ff1bedfb1e5d2ee3b49c7f31c1a6685874179baf",
+      "source_sha256": "7d2f70b5ec1bde4c1ff4611c9034a1d90d74af46c882fa059cc5adc4cb09a236",
+      "published_sha256": "7d2f70b5ec1bde4c1ff4611c9034a1d90d74af46c882fa059cc5adc4cb09a236",
       "kind": "current_pointer",
       "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
-      "source_sha256": "88442e4542ce05a161d49ad6669b4f440f2dc31d572200cdbfbd6dd2a0114482",
-      "published_sha256": "88442e4542ce05a161d49ad6669b4f440f2dc31d572200cdbfbd6dd2a0114482",
+      "source_sha256": "eccfad27c2da771c336f6526cbfdd5614513f0d806cd13076fda074a70a251fc",
+      "published_sha256": "eccfad27c2da771c336f6526cbfdd5614513f0d806cd13076fda074a70a251fc",
       "kind": "V27_reference_source_or_aggregate",
       "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately"
     },
@@ -1275,6 +1359,13 @@
       "published_sha256": "f2b7cd35ba6b575a2f5ad5b110f8b687171c4a9b2dc6f67be6915b4012e3a57c",
       "kind": "first_party_research_source",
       "transformation": "none"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/ACCEPTANCE_WITHDRAWN.json",
+      "source_sha256": "e1f17026d67036c065a199d0e8b978d9e3652f62da9a083e414f832113ba0d60",
+      "published_sha256": "e1f17026d67036c065a199d0e8b978d9e3652f62da9a083e414f832113ba0d60",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/ACTIVATION_RECEIPT.json",
@@ -5198,8 +5289,8 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/repair_execution_20261008_v1/EXECUTION_BOARD.json",
-      "source_sha256": "24b903cc60b2199ab1cfe9d99e3af64aa4ad9b23f2ce3f01af769dca4f4450a2",
-      "published_sha256": "24b903cc60b2199ab1cfe9d99e3af64aa4ad9b23f2ce3f01af769dca4f4450a2",
+      "source_sha256": "cbac532a298a3b4408e077904361457324a01cc4fb41419d5907e1cee1386a62",
+      "published_sha256": "cbac532a298a3b4408e077904361457324a01cc4fb41419d5907e1cee1386a62",
       "kind": "aggregate_current_execution_board",
       "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately"
     },
@@ -5785,6 +5876,503 @@
       "transformation": "none"
     },
     {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/ACTIVATION_RECEIPT50_V30.json",
+      "source_sha256": "fddc8eb13a980d530b824fc221138ba24dc53eab245a1e72628f42a0f502953d",
+      "published_sha256": "fddc8eb13a980d530b824fc221138ba24dc53eab245a1e72628f42a0f502953d",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/HTTP_FORMAL50_V30_RECHECK.json",
+      "source_sha256": "355d5d34da606ed7015c1f11f2149fff25c41f39ca7ed54a46181d19c89770f1",
+      "published_sha256": "355d5d34da606ed7015c1f11f2149fff25c41f39ca7ed54a46181d19c89770f1",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/METHODS_AND_ACCEPTANCE.md",
+      "source_sha256": "f5530e54c5e69a393f9361e938863a3666c2a77bc174fd776e7629d639d073da",
+      "published_sha256": "f5530e54c5e69a393f9361e938863a3666c2a77bc174fd776e7629d639d073da",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/PROTOCOL_V30.json",
+      "source_sha256": "3ac8965f3dceaa435c5a64ddb44e42f7e765c806b96673af3b43f08e50d07d1b",
+      "published_sha256": "3ac8965f3dceaa435c5a64ddb44e42f7e765c806b96673af3b43f08e50d07d1b",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/REVIEWED_SOURCE_PARITY.json",
+      "source_sha256": "91a7ff00844640be4defcb61a540d4e45bf8527ee8983755eaedd5dd27116c3e",
+      "published_sha256": "91a7ff00844640be4defcb61a540d4e45bf8527ee8983755eaedd5dd27116c3e",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/SCHOOL_50_ACCEPTANCE_OBSERVED.json",
+      "source_sha256": "b6187e4635205e7c0f2d88215bd2e6b109842d95666354e40ae1e21a41e9812c",
+      "published_sha256": "b6187e4635205e7c0f2d88215bd2e6b109842d95666354e40ae1e21a41e9812c",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/SEALED50_LOCAL_REVIEW.json",
+      "source_sha256": "e132fa9f17c5148c0b8c9816546d7f84149321697a18e73d6c55ee8494982d6e",
+      "published_sha256": "e132fa9f17c5148c0b8c9816546d7f84149321697a18e73d6c55ee8494982d6e",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/VALIDATION_HELPER_PARITY.json",
+      "source_sha256": "ad660ba2367d1df012b79ab736ca713ed1ff702b2c7a87d164e90e6a87bcd7cb",
+      "published_sha256": "ad660ba2367d1df012b79ab736ca713ed1ff702b2c7a87d164e90e6a87bcd7cb",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/PSYCHROLIB_LICENSE.txt",
+      "source_sha256": "3372ab6db04ab898605cd8a4c47eee35e668d14ca05481f00107239be0e3b46e",
+      "published_sha256": "3372ab6db04ab898605cd8a4c47eee35e668d14ca05481f00107239be0e3b46e",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/acceptance_negative_controls.py",
+      "source_sha256": "646c0572e8ee8bdd10ec979f30e819e7702601167741b9407cabed71eb7a46e1",
+      "published_sha256": "646c0572e8ee8bdd10ec979f30e819e7702601167741b9407cabed71eb7a46e1",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/activity_model.py",
+      "source_sha256": "2aeaf80e1503c768eb9bfbf737c27bd11c6ae0c7edaa8813705e68e4f662b52f",
+      "published_sha256": "2aeaf80e1503c768eb9bfbf737c27bd11c6ae0c7edaa8813705e68e4f662b52f",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/adapt_browser_bindings.py",
+      "source_sha256": "7a54c838fa5278dc06a905b7606fb924e997c7e116549f65968767d8049a1a89",
+      "published_sha256": "7a54c838fa5278dc06a905b7606fb924e997c7e116549f65968767d8049a1a89",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/adapt_full_cluster.py",
+      "source_sha256": "e9081a6b995e8d72da9fea1d56f2e4eccc3539eb2536fe79f3afc8f88b397290",
+      "published_sha256": "e9081a6b995e8d72da9fea1d56f2e4eccc3539eb2536fe79f3afc8f88b397290",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/adapt_materials.py",
+      "source_sha256": "443a8c95b21970c0d89ea70bf65829e929dae984a8623faabc4070b8636bd6b6",
+      "published_sha256": "443a8c95b21970c0d89ea70bf65829e929dae984a8623faabc4070b8636bd6b6",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/audit_bath.py",
+      "source_sha256": "e51d518300141fa1803a52f0d5308c6ce8bf2aaa92e03b422609b429957411ec",
+      "published_sha256": "e51d518300141fa1803a52f0d5308c6ce8bf2aaa92e03b422609b429957411ec",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/audit_calendar.py",
+      "source_sha256": "8794fd8f07de190149c46d83daf8af207f1901f05da4a1a092e29c7cc07ce0b6",
+      "published_sha256": "8794fd8f07de190149c46d83daf8af207f1901f05da4a1a092e29c7cc07ce0b6",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/audit_idfs.py",
+      "source_sha256": "e2af90497751de677d2dad96c919a607d2e5622b59731d349d80afa9a9e2a388",
+      "published_sha256": "e2af90497751de677d2dad96c919a607d2e5622b59731d349d80afa9a9e2a388",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/audit_physical_inputs.py",
+      "source_sha256": "62526339ad282f8746e5303e08b8a1f6ec5f4ada0d40db79945a7725181ee1b9",
+      "published_sha256": "62526339ad282f8746e5303e08b8a1f6ec5f4ada0d40db79945a7725181ee1b9",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/audit_pilot.py",
+      "source_sha256": "78d4d5036edb78cac468f8ad568244b3ced57cb5a6f97b74b2cc8a8e3330f064",
+      "published_sha256": "78d4d5036edb78cac468f8ad568244b3ced57cb5a6f97b74b2cc8a8e3330f064",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/audit_reference_model.py",
+      "source_sha256": "d02644678ac0a91311848e5528bea39541f43b0b34abfcb7378693512b28bd02",
+      "published_sha256": "d02644678ac0a91311848e5528bea39541f43b0b34abfcb7378693512b28bd02",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/bind_frontend.js",
+      "source_sha256": "472133273c5f6265a37a08e0cac40869adadc2a32b18db0abd70d428e96eea6b",
+      "published_sha256": "472133273c5f6265a37a08e0cac40869adadc2a32b18db0abd70d428e96eea6b",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/bootstrap.py",
+      "source_sha256": "2d6e188717b94c7f0dac84f4072bdeb1c1005c076725b22a8046e6d2b350e2a3",
+      "published_sha256": "2d6e188717b94c7f0dac84f4072bdeb1c1005c076725b22a8046e6d2b350e2a3",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/bootstrap_v29.py",
+      "source_sha256": "387b5dd44aab0a856b5afbf2bd5271da092990bb4dfa03929555d5c171d6c04c",
+      "published_sha256": "387b5dd44aab0a856b5afbf2bd5271da092990bb4dfa03929555d5c171d6c04c",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/bootstrap_v30.py",
+      "source_sha256": "91a0168c7fde33343e32ad4c01f3f0ab7d155b9529b5fa80405c674a5f26d53f",
+      "published_sha256": "91a0168c7fde33343e32ad4c01f3f0ab7d155b9529b5fa80405c674a5f26d53f",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/browser_acceptance.js",
+      "source_sha256": "2d3836a2f18a16f042396874db3a5d34bc4223f0917196181289f12cca7b8c70",
+      "published_sha256": "2d3836a2f18a16f042396874db3a5d34bc4223f0917196181289f12cca7b8c70",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/checks.py",
+      "source_sha256": "b459b8dbe2d94f8e123d567a149daafa49fd2c839fa790e453094d60fe40f52c",
+      "published_sha256": "b459b8dbe2d94f8e123d567a149daafa49fd2c839fa790e453094d60fe40f52c",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/cluster_actual.R",
+      "source_sha256": "314648c14969ec2410314d6899aee8c476ddccbdb2e55ca1096c8f309577c983",
+      "published_sha256": "314648c14969ec2410314d6899aee8c476ddccbdb2e55ca1096c8f309577c983",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/cluster_pilot.py",
+      "source_sha256": "ab50deeb2220f2fbc0dc43b15d4a5b94b4a4a98f7fff0c7d02e4caf7e0f2da70",
+      "published_sha256": "ab50deeb2220f2fbc0dc43b15d4a5b94b4a4a98f7fff0c7d02e4caf7e0f2da70",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/cohort_gate.py",
+      "source_sha256": "ff19198c49ad931eff41d33807b1f393266cb2a83585761ab9714216dd34aecb",
+      "published_sha256": "ff19198c49ad931eff41d33807b1f393266cb2a83585761ab9714216dd34aecb",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/common.py",
+      "source_sha256": "fe8d8ec4a8acea9a93a69e9a4b89e750ccd42568c2b58f0142a9c25504f51c56",
+      "published_sha256": "fe8d8ec4a8acea9a93a69e9a4b89e750ccd42568c2b58f0142a9c25504f51c56",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/compile_inputs.py",
+      "source_sha256": "2728c4526f6f56609bf07729feb5d5ee2a1940b085780e45f3ec71798d75989b",
+      "published_sha256": "2728c4526f6f56609bf07729feb5d5ee2a1940b085780e45f3ec71798d75989b",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/compile_repaired.py",
+      "source_sha256": "255a1ba9426f16ef6c2f5f02b84f21366662165b82f10dee47d53831ef594596",
+      "published_sha256": "255a1ba9426f16ef6c2f5f02b84f21366662165b82f10dee47d53831ef594596",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/contrast_controls.py",
+      "source_sha256": "d79bf7182d0ed160e4cbd5695b91559e62657110bda7f28bbf547cf5dcd4e7dd",
+      "published_sha256": "d79bf7182d0ed160e4cbd5695b91559e62657110bda7f28bbf547cf5dcd4e7dd",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/contrast_core.py",
+      "source_sha256": "1b4047fec2e6da7cf6191e5d19182c3bcb3eae52618641b282607f80d91f348f",
+      "published_sha256": "1b4047fec2e6da7cf6191e5d19182c3bcb3eae52618641b282607f80d91f348f",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/curve_diagnostics.py",
+      "source_sha256": "077d3f53c8f0971a71a1871fd92518e9e5c984b246824fa959becd5f79fd9c55",
+      "published_sha256": "077d3f53c8f0971a71a1871fd92518e9e5c984b246824fa959becd5f79fd9c55",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/curve_observer.py",
+      "source_sha256": "7dd261c46272c3fb4e000cc22987c7a8ed2e15d46af11b04ff304662e6cd1183",
+      "published_sha256": "7dd261c46272c3fb4e000cc22987c7a8ed2e15d46af11b04ff304662e6cd1183",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/decision_contrast.py",
+      "source_sha256": "de916ad2a456fa8ded247bdf5505d6ca59e8ed2bd6084833350e9c373cd7e7d8",
+      "published_sha256": "de916ad2a456fa8ded247bdf5505d6ca59e8ed2bd6084833350e9c373cd7e7d8",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/ep_gate.py",
+      "source_sha256": "a8c56b1c6dd64b421d9def55ad801e03134af8a4b801631a8159fc06d3d31d4a",
+      "published_sha256": "a8c56b1c6dd64b421d9def55ad801e03134af8a4b801631a8159fc06d3d31d4a",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/execute_physics.py",
+      "source_sha256": "e6e06f79efb6a6dd307e056db3af500943afcf01fd53b0af2ce90f49c60dd7d4",
+      "published_sha256": "e6e06f79efb6a6dd307e056db3af500943afcf01fd53b0af2ce90f49c60dd7d4",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/execution.py",
+      "source_sha256": "fe4bc3fbe331f3b754ddca9f833a98c8f2bd551d88a1d20a9af634e854cc44d9",
+      "published_sha256": "fe4bc3fbe331f3b754ddca9f833a98c8f2bd551d88a1d20a9af634e854cc44d9",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/final_contrast.py",
+      "source_sha256": "bed915feadaee35153dffb177f0ed0fdf960f0e9f75ee060ff4125c05d0cd5c5",
+      "published_sha256": "bed915feadaee35153dffb177f0ed0fdf960f0e9f75ee060ff4125c05d0cd5c5",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/finalize_pilot.py",
+      "source_sha256": "613c8e9e12f47eb0359730528fd1af89206cf66ff6720b7d5d8cb2991ac87905",
+      "published_sha256": "613c8e9e12f47eb0359730528fd1af89206cf66ff6720b7d5d8cb2991ac87905",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/freeze_composition.py",
+      "source_sha256": "a09c88a8c7f465e2bba7f251219b75638d0b407e132ed5eae92597548c333a83",
+      "published_sha256": "a09c88a8c7f465e2bba7f251219b75638d0b407e132ed5eae92597548c333a83",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/generate.py",
+      "source_sha256": "f2f0e82bd5260a9fd7bf3c461e8245725d8d488b81da5487797f12ac8aa8ec61",
+      "published_sha256": "f2f0e82bd5260a9fd7bf3c461e8245725d8d488b81da5487797f12ac8aa8ec61",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/install_cohort_gate.py",
+      "source_sha256": "102de095436b7fac9f8ce408ba5b9bb3bded7792279ed4c846be9150b57756ee",
+      "published_sha256": "102de095436b7fac9f8ce408ba5b9bb3bded7792279ed4c846be9150b57756ee",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/materials.py",
+      "source_sha256": "0c6d9b6e5ff65c4d55bd5b155c73100639c6922a760e7c4056ec525352231216",
+      "published_sha256": "0c6d9b6e5ff65c4d55bd5b155c73100639c6922a760e7c4056ec525352231216",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/mechanism_controls.py",
+      "source_sha256": "979f4ac16d9a55428e6266ff0b65a95690510612fc3751f7a627218edbb458fb",
+      "published_sha256": "979f4ac16d9a55428e6266ff0b65a95690510612fc3751f7a627218edbb458fb",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/model_form_diagnostic.py",
+      "source_sha256": "2a0fb65708b8e5fead54616c6ef8a5220be11249014e0babd2e3c42187dbdac5",
+      "published_sha256": "2a0fb65708b8e5fead54616c6ef8a5220be11249014e0babd2e3c42187dbdac5",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/needs.py",
+      "source_sha256": "474ea412e8da89b8b1a53f70da3a325fe82f4a5a1dc49a81df9d25bbbc9fe682",
+      "published_sha256": "474ea412e8da89b8b1a53f70da3a325fe82f4a5a1dc49a81df9d25bbbc9fe682",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/physics.py",
+      "source_sha256": "5a5736e7429021a82064a4e6d1ce95d8e03916f2d65ca64bf09a4c6083fc0312",
+      "published_sha256": "5a5736e7429021a82064a4e6d1ce95d8e03916f2d65ca64bf09a4c6083fc0312",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/pilot_ep_gate_reference.py",
+      "source_sha256": "a89a30c547f0e17ff6479ef30d113343d94e269d28a9cf4da1b96cd2d989ec85",
+      "published_sha256": "a89a30c547f0e17ff6479ef30d113343d94e269d28a9cf4da1b96cd2d989ec85",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/plans.py",
+      "source_sha256": "a0ef1bb31c599f285a4bfdfd0f0a78e4ed15cd240d7c2a9f4dfd509f663419a9",
+      "published_sha256": "a0ef1bb31c599f285a4bfdfd0f0a78e4ed15cd240d7c2a9f4dfd509f663419a9",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/prepare_sensitivity.py",
+      "source_sha256": "57ebfd749678dc19a586251ba0b7d8ea257785c539f5d15c78cf6c7b17b405ac",
+      "published_sha256": "57ebfd749678dc19a586251ba0b7d8ea257785c539f5d15c78cf6c7b17b405ac",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/preview_readonly.py",
+      "source_sha256": "0501d550b705106ea9f7462e660f8ff48f69ab4f4f0e27cba68752353a077144",
+      "published_sha256": "0501d550b705106ea9f7462e660f8ff48f69ab4f4f0e27cba68752353a077144",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/produce_static.py",
+      "source_sha256": "a394a77369ae894ecb50d5c175491e9b1d20ceb305ad0f4f777b014e9be01646",
+      "published_sha256": "a394a77369ae894ecb50d5c175491e9b1d20ceb305ad0f4f777b014e9be01646",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/psychrolib_reference.py",
+      "source_sha256": "37e08506bdc2e652a77026e7107ece7eaabb1c40997b563b88fe2951385aefdf",
+      "published_sha256": "37e08506bdc2e652a77026e7107ece7eaabb1c40997b563b88fe2951385aefdf",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/repair_chronology.py",
+      "source_sha256": "9ec53b1a46fe436e2918e05df957a7f45cb8b204a25c58ec0cd9430f49039a6c",
+      "published_sha256": "9ec53b1a46fe436e2918e05df957a7f45cb8b204a25c58ec0cd9430f49039a6c",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/repair_contrast.py",
+      "source_sha256": "d55a12947fe7ab4b7c0138ca8252c377b3ec38edc2396dc57dddb78fe9a52b1e",
+      "published_sha256": "d55a12947fe7ab4b7c0138ca8252c377b3ec38edc2396dc57dddb78fe9a52b1e",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/repair_external_bindings.py",
+      "source_sha256": "5e56e74cbb104dd3a9d768040d792d7217ce813d76a0bbc6622a657f2ddb967d",
+      "published_sha256": "5e56e74cbb104dd3a9d768040d792d7217ce813d76a0bbc6622a657f2ddb967d",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/run_cohort.py",
+      "source_sha256": "7ac9e0f40d9a7d5e049d353856af8bbe2ab34a1930262bbdb389c90ff90c5071",
+      "published_sha256": "7ac9e0f40d9a7d5e049d353856af8bbe2ab34a1930262bbdb389c90ff90c5071",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/structural_zero_controls.py",
+      "source_sha256": "c41b980df119405cc7016e8bfa3b0085f4480309062b337057d07dc0df3e5402",
+      "published_sha256": "c41b980df119405cc7016e8bfa3b0085f4480309062b337057d07dc0df3e5402",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/substantive_review.py",
+      "source_sha256": "ceaf2dd1a217d39249e8d0e07bbebd1b320c0683f97b151643b82b639d2d09bf",
+      "published_sha256": "ceaf2dd1a217d39249e8d0e07bbebd1b320c0683f97b151643b82b639d2d09bf",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/type_model.py",
+      "source_sha256": "3bb3df9681b5caa5e34f5e9123f743ed06b1a0f3d0ced84cb17c23907d5263c9",
+      "published_sha256": "3bb3df9681b5caa5e34f5e9123f743ed06b1a0f3d0ced84cb17c23907d5263c9",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/vehicle_causal_controls.py",
+      "source_sha256": "a1ae92c102f5e2a8b6764952a0e2b9c1c77dc4ba58999d7f158c2debe7fdeb9b",
+      "published_sha256": "a1ae92c102f5e2a8b6764952a0e2b9c1c77dc4ba58999d7f158c2debe7fdeb9b",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/vehicle_state.py",
+      "source_sha256": "198a9d3452e89903647125a989437c4e79dcd81626a73d431f0b373ec3220bed",
+      "published_sha256": "198a9d3452e89903647125a989437c4e79dcd81626a73d431f0b373ec3220bed",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/verify_case_bindings.js",
+      "source_sha256": "ee0d2e003213a8121222b28777d83fff82dd2dcd5186890f90eb7ae303b2e9b3",
+      "published_sha256": "ee0d2e003213a8121222b28777d83fff82dd2dcd5186890f90eb7ae303b2e9b3",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/verify_frontend_clock.js",
+      "source_sha256": "e46761ceeda681d0eebac4e71f807fdbb152c95e0a43c941e45edb3acda6d7a6",
+      "published_sha256": "e46761ceeda681d0eebac4e71f807fdbb152c95e0a43c941e45edb3acda6d7a6",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/weather_audit.py",
+      "source_sha256": "a491c2754f7e6a5fea99ceb954cb8f636e06c4d0c4c16f9428a35b48d556d8d8",
+      "published_sha256": "a491c2754f7e6a5fea99ceb954cb8f636e06c4d0c4c16f9428a35b48d556d8d8",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/weather_qc.py",
+      "source_sha256": "4d50759b668459a88864b4851cfc4a5e09343b5d461315431ef071653937f3cc",
+      "published_sha256": "4d50759b668459a88864b4851cfc4a5e09343b5d461315431ef071653937f3cc",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/worlds.py",
+      "source_sha256": "4b677c25731bfd0e31bdadc810722b062ecfa62386e2e7dad4dc472de8505047",
+      "published_sha256": "4b677c25731bfd0e31bdadc810722b062ecfa62386e2e7dad4dc472de8505047",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/zone_controls.py",
+      "source_sha256": "5c95e8dfc3637b974cb544252b2f6d9d0678995e21ff9a4863bfd4a0f9c6e061",
+      "published_sha256": "5c95e8dfc3637b974cb544252b2f6d9d0678995e21ff9a4863bfd4a0f9c6e061",
+      "kind": "v30_source_or_aggregate",
+      "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
+    },
+    {
       "path": "docs/research/collection-adjustment-20260930/household1000/task_world_assembly_20261007/code/assemble.py",
       "source_sha256": "73904c977703401488c96096f55739d280268414fa4ec3e93a4d1cc876d5efa4",
       "published_sha256": "73904c977703401488c96096f55739d280268414fa4ec3e93a4d1cc876d5efa4",
@@ -5912,8 +6500,8 @@
     },
     {
       "path": "scripts/household1000.py",
-      "source_sha256": "72616d7dd53554fc5694df7e7f20912912bfaa39f1de62e67b5c7bcc06cd363d",
-      "published_sha256": "72616d7dd53554fc5694df7e7f20912912bfaa39f1de62e67b5c7bcc06cd363d",
+      "source_sha256": "219ea4a777e6a9b42aa3ff6b2673e2986ade3652393964719cea9ad7e9845b59",
+      "published_sha256": "219ea4a777e6a9b42aa3ff6b2673e2986ade3652393964719cea9ad7e9845b59",
       "kind": "V27_reference_source_or_aggregate",
       "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately"
     },
@@ -5921,8 +6509,8 @@
       "path": "scripts/verify_household1000_publication.py",
       "kind": "first_party_self_audit_source_or_aggregate",
       "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately",
-      "published_sha256": "0f2c8ff91ba5e241e6a1fbfade54c749d0b7edc7cb0703de199b94b38ffce4ef",
-      "source_sha256": "0f2c8ff91ba5e241e6a1fbfade54c749d0b7edc7cb0703de199b94b38ffce4ef"
+      "published_sha256": "c21b1974505313f018fb6ad1c16b753da6116d3394cbfd1078f384cfe43e19bd",
+      "source_sha256": "c21b1974505313f018fb6ad1c16b753da6116d3394cbfd1078f384cfe43e19bd"
     },
     {
       "kind": "EB6_pre_generation_requirement",
@@ -5932,7 +6520,7 @@
       "transformation": "none"
     }
   ],
-  "source_snapshot_code_file_count": 708,
+  "source_snapshot_code_file_count": 782,
   "excluded": [
     "raw CHFS/CRECS/CHNS records",
     "private household/world/actor/pair/readback data",
@@ -5945,14 +6533,14 @@
   "public_checkout_alone_reproduces_private_inputs": false,
   "new_EP_runs": null,
   "human_answers": 0,
-  "active_stage": "contrast_repair_v29_20261015",
+  "active_stage": "substantive_repair_v30_20261015",
   "new_household_EP_runs": null,
-  "note": "V29 frozen-parent reference production;41 priority repaired;857 accounted;50 final before950; no human validation",
+  "note": "V30.3 formal50 only;school acceptance observed before outage;sealed packet verified;950 user-paused;raw receipt synchronization pending",
   "EB_six_type_requirement_accepted": true,
-  "latest_requirement_stage": "contrast_repair_v29_20261015",
+  "latest_requirement_stage": "substantive_repair_v30_20261015",
   "new_generation_allowed": true,
   "latest_type_composition_evidence_stage": "docs/research/collection-adjustment-20260930/household1000/type_composition_evidence_20261014",
   "original50_six_type_accepted": true,
-  "new_generation_allowed_scope": "completed scoped receipts only;no automatic engine launch",
+  "new_generation_allowed_scope": "completed50 packet only;950 paused;no engine launch",
   "new_EP_runs_note": "See input-bound physical reviews; exact reuse separated"
 }

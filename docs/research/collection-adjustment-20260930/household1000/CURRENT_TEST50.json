@@ -1,14 +1,15 @@
 {
   "schema": "eb.current_original50.v29",
-  "stage": "contrast_repair_v29_20261015",
+  "stage": "substantive_repair_v30_20261015",
   "households": 50,
   "pairs": 500,
   "sensitivity_pairs": 200,
   "selection": "SELECTION1000.json filtered by PARTITIONS.formal50",
-  "acceptance_summary": "contrast_repair_v29_20261015/ORIGINAL50_CONTRAST_ACCEPTANCE_PUBLIC.json",
-  "formal_release_signature": "a32d5013e9b7281318584ddac48272dd9816d866cb6d6144bbeaab19764f9097",
+  "acceptance_summary": "substantive_repair_v30_20261015/SCHOOL_50_ACCEPTANCE_OBSERVED.json",
+  "formal_release_signature": "0c6893ef23e8467218b1e0489e4baa98ef2514b4d15f2028143d4b3669faa9f0",
   "collection_release": true,
   "training_release": false,
   "human_validity_unmeasured": true,
-  "actual_browser_cases_verified": 500
+  "actual_browser_cases_verified": 500,
+  "raw_school_receipt_download_pending": true
 }

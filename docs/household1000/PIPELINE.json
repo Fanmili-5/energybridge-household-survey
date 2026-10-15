@@ -1,10 +1,10 @@
 {
-  "version": "household1000-v29-task-contrast",
+  "version": "v30.3-50-only",
   "default_mode": "read-only receipt verification; formal collection deployed; no automatic EP or training",
   "scientific_rule_changes_in_this_publication": true,
-  "active_stage": "contrast_repair_v29_20261015",
+  "active_stage": "substantive_repair_v30_20261015",
   "design_data_version": "v29",
-  "latest_requirement_stage": "contrast_repair_v29_20261015",
+  "latest_requirement_stage": "substantive_repair_v30_20261015",
   "steps_are_historical_source_chain": false,
   "current_original50_source_steps": [
     {
@@ -330,5 +330,12 @@
       ],
       "output_and_scope": "500 and9500 current input-bound cases; actual opt-in role responses; no training admission"
     }
+  ],
+  "current_release_scope": "formal50_only_950_paused",
+  "current_rule_files": [
+    "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/contrast_core.py",
+    "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/zone_controls.py",
+    "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/decision_contrast.py",
+    "docs/research/collection-adjustment-20260930/household1000/substantive_repair_v30_20261015/code/repair_contrast.py"
   ]
 }
