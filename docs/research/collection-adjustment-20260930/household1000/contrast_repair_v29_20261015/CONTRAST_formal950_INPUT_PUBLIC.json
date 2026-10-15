@@ -1,0 +1,21 @@
+{
+  "A_needs_household_policy_and_dates_unchanged": true,
+  "EP_started": false,
+  "actual_mechanisms": {
+    "constraint_challenge": 1618,
+    "cross_device": 389,
+    "inconvenient_but_doable": 2607,
+    "near_boundary": 2539,
+    "negotiation": 1470,
+    "service_risk": 877
+  },
+  "cases": 9500,
+  "changed_pairs": 1632,
+  "no_EP_outcome_selection": true,
+  "passed": true,
+  "protocol_sha256": "8eb891be11a2dbdcec8b9b80f6a21968c44c4b31591ac763684a6189430459e2",
+  "schema": "eb.contrast_cohort_input.v29",
+  "scope": "formal950",
+  "source_private_receipt_sha256": "57b9ab54cdb145a031380ed01dbc40ef4ade6f0464f50989e1067c43fef76977",
+  "public_transformation": "individual cases and source requests excluded"
+}

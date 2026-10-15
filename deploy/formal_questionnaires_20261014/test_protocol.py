@@ -63,12 +63,16 @@ def run(release_path,fixture):
             assert stored[0]['input']==stored[1]['input'] and stored[0]['audit']['source_case']==stored[1]['audit']['source_case']
             assert stored[0]['input']==stored[3]['input'] and stored[0]['audit']['source_case']==stored[3]['audit']['source_case']
             assert all(r['audit']['collection_linkage']['participant_id']==identity['participant_id']for r in stored)
+            old=copy.deepcopy(stored[-1]);old['source_release_sha256']='invented-prior-release'
+            with server.store.connect()as db:
+                db.execute('insert into answers values(?,?,?,?,?,?,?)',(str(uuid.uuid4()),identity['participant_id'],old['audit']['source_case']['identity']['case_id'],'fixture-old-payload','ANS-FIXTURE-OLD-RELEASE',json.dumps(old), 'fixture'))
+            current=json.loads(request('GET',prefix+'/api/session',headers=h2)[2]);assert current['answers']==state2['answers'] and current['prior_release_answer_count']==1,'prior-release answers must remain stored without restoring over the current task'
             assert server.store.export()==[],'fixtures must not enter formal export'
             withdrawn=request('POST',prefix+'/api/withdraw',{},h2);assert withdrawn[0]==200
             assert request('POST',route+'/api/answers',dict(payload,request_id=str(uuid.uuid4())),h)[0]==403
             assert request('POST',prefix+'/api/claim',{'credential':recovery},session())[0]==403
             assert server.store.export()==[]
-            return {'passed':True,'batch':batch,'manifest_files_checked':len(release.manifest['files']),'invitation_assignment_consent_recovery_withdrawal':'pass','source_and_model_input_guards':'pass','metadata_null_decimal_revision_idempotency':'pass','multi_date_latest_revision_and_blank_respondent_restoration':'pass','fixtures_excluded_from_formal_export':True,'human_answers_generated':0,'production_records_written':0}
+            return {'passed':True,'batch':batch,'manifest_files_checked':len(release.manifest['files']),'invitation_assignment_consent_recovery_withdrawal':'pass','source_and_model_input_guards':'pass','metadata_null_decimal_revision_idempotency':'pass','multi_date_latest_revision_and_blank_respondent_restoration':'pass','prior_release_answers_preserved_and_excluded_from_current_restoration':True,'fixtures_excluded_from_formal_export':True,'human_answers_generated':0,'production_records_written':0}
         finally:server.shutdown();server.server_close();thread.join()
 
 if __name__=='__main__':

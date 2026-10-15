@@ -1,6 +1,6 @@
 # 当前证据范围与后续门槛
 
-当前V28生成前置G0与全1000户实际参考链已通过，目的仍为类型覆盖与EB一致，六类自然偏好比例未被识别。50/950两个正式角色采集版本已准入，实际家庭/任务/物理/前端绑定见[V28方法与验收](../research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/METHODS_AND_ACCEPTANCE.md)。
+当前V29生成前置G0与全1000户实际参考链已通过，目的仍为类型覆盖与EB一致，六类自然偏好比例未被识别。50/950两个正式角色采集版本已准入，实际家庭/任务/物理/前端绑定见[V29方法与验收](../research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/METHODS_AND_ACCEPTANCE.md)。
 
 V28通过的主张限定为有2020城市普通住宅统计锚点、来源/给定/未知分层明确、逐户贯通的1000个参考任务世界，及其条件物理/前端验收与正式收集协议。实测住宅/品牌性能、全国详细作息/偏好及人类角色有效性未得到验证。
 
@@ -22,3 +22,5 @@ G1–G5的限定参考检查与G6的材料/采集协议检查已通过；G6真�
 后续真人门：先按原前端试读，核角色、需求及后果理解；再检验角色信息对回答/解释的作用；固定演员×角色×事件×合法历史及来源组切分，总反馈预算B、无历史k=0与共享模型合同。只有独立真实回答支持角色有效性/预测性能。真实居民同意与Phase-2实测负荷变化是另一个目标。
 
 逐项来源和主张关系见 [EVIDENCE_CHAIN_REVIEW.json](../research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/EVIDENCE_CHAIN_REVIEW.json) 与 [PRODUCTION_LOGIC_CHAIN.md](../research/collection-adjustment-20260930/household1000/gate_repair_production_20261013_v23/PRODUCTION_LOGIC_CHAIN.md)。该审查是代码/资料/有限模型的自查，没有独立同行评审或实测验证。
+
+V29补充任务区分度门：41组优先修正、原857组逐条分类、10000组源请求验收及原50先行后950均已完成。实际浏览器500+1000页和两套提交全流程通过；这些仍为隔离工程证据。编码下限不是经真人验证的可觉阈值，同后果任务需后续试读核验。

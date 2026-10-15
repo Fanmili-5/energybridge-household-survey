@@ -1,14 +1,14 @@
 {
-  "version": "household1000-v28-formal50-formal950-audit20261015",
-  "checked_utc": "2026-10-14T21:20:48.445168+00:00",
+  "version": "household1000-v29-task-contrast-formal50-formal950",
+  "checked_utc": "2026-10-15T07:25:33.210983+00:00",
   "repository": "https://github.com/Fanmili-5/energybridge-household-survey.git",
   "target_branch": "main",
-  "parent_commit": "42a8f6363bd15a2104014df4cbb39c7236bc1c1b",
+  "parent_commit": "13228cd94e3bb325e809fecd8723d8ebdc5d6f6d",
   "payload_files_excluding_this_manifest": [
     {
       "path": ".gitattributes",
-      "bytes": 1057,
-      "sha256": "f453d752c0d0a2b9588ed8f18499fcbc3f0fa15c3a6753f46cabb544fb3cae05"
+      "bytes": 1901,
+      "sha256": "3115d756f3dd7b741a0350e40fd9c4821bde8b6299077406cd998a6ff84ec586"
     },
     {
       "path": ".github/workflows/offline-checks.yml",
@@ -32,8 +32,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 6122,
-      "sha256": "c82bf86d31a7b154266490861d29b8ffbd99a94451908db63e754d6e96a98b77"
+      "bytes": 6504,
+      "sha256": "7e1f2624cc943ee3558fe3d9722b6be0c837ec558b5ce1781f62fe80e36ad4e7"
     },
     {
       "path": "THIRD_PARTY.md",
@@ -81,6 +81,31 @@
       "sha256": "ca8ffe0430d186fc6bf1fab16bdf7421e40e4aca2730c79c0961eab6f8fa492c"
     },
     {
+      "path": "deploy/contrast_validation_20261015/browser_fixture.cjs",
+      "bytes": 5831,
+      "sha256": "5f563aab00fac8c8c00ba2ec74d3255b1b41d2551e451e8d396bf7784686e09f"
+    },
+    {
+      "path": "deploy/contrast_validation_20261015/browser_fixture.py",
+      "bytes": 3449,
+      "sha256": "ec06e7f651dda75639d3b1b8c781e33757db90d702b25b40ff3e011da52806c7"
+    },
+    {
+      "path": "deploy/contrast_validation_20261015/browser_fixture_parallel.cjs",
+      "bytes": 5989,
+      "sha256": "1a5af900c9cae59570772ea0f6f78e3bc38ccc17fd6769ab51de26ada36cceec"
+    },
+    {
+      "path": "deploy/contrast_validation_20261015/bundle_delta.py",
+      "bytes": 1592,
+      "sha256": "4722bc2c9a531e951344fedaa13f62e4f43ded597584983dc8649aa959d39c62"
+    },
+    {
+      "path": "deploy/contrast_validation_20261015/complete_review.py",
+      "bytes": 6654,
+      "sha256": "dc2c22a610c641d940798d097c69995054feb5bc7c4363b405c5114fedcde5e4"
+    },
+    {
       "path": "deploy/energybridge.service",
       "bytes": 720,
       "sha256": "fb1b87c3dd4d19f6ee252cba111a8ad0f69157d2cddc0fe9b1631c2e14ca62d7"
@@ -92,8 +117,8 @@
     },
     {
       "path": "deploy/formal_questionnaires_20261014/RELEASE.md",
-      "bytes": 6239,
-      "sha256": "947771d218b27cf032ec0ed0d7314153800b0778594d079751861bb89799f32b"
+      "bytes": 6801,
+      "sha256": "8ae6aebd56a568e23d981ae370369e1ecb22e389dc7184e5cadf1415a1cc4ce1"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/activate.py",
@@ -122,8 +147,8 @@
     },
     {
       "path": "deploy/formal_questionnaires_20261014/formal-client.js",
-      "bytes": 4235,
-      "sha256": "f6b2def9742029812566e07368a125c094dc3a1f26b17943d2cbe4e1fa21b2cf"
+      "bytes": 4367,
+      "sha256": "c9e19bbc8551d33962ada1ec15648f085b6cadd42c118018d4b9e819c8dc227a"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/make_protocol_fixture.py",
@@ -147,18 +172,18 @@
     },
     {
       "path": "deploy/formal_questionnaires_20261014/server.py",
-      "bytes": 13883,
-      "sha256": "4ac7ea85563dfd637900163ff2dc2cbad77b52dd7ad0635874f2098ea3a20a28"
+      "bytes": 13939,
+      "sha256": "07b871ee987c8f60bfde55a2dd1c7d77599e8b29e5fb05b87837ba0c74a9b1ac"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/store.py",
-      "bytes": 15570,
-      "sha256": "12b74b56df92418b59bf88eaaf7978e41490601d177cc6b6007a52e9343e0272"
+      "bytes": 15909,
+      "sha256": "b44fd5cba47f669c358b9a35f2151ab6f0a91fa0697fee5ea841ddf5fb2c8e62"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/test_protocol.py",
-      "bytes": 7854,
-      "sha256": "bfc9f66d34b3e9c3166b22c3b04600c560db6f34f435ee87545e5fb8346d586b"
+      "bytes": 8574,
+      "sha256": "58ffd0bf324f1cd9a97b97f12a15f6c0945de4bf53512c9ff42358cb9ed9301c"
     },
     {
       "path": "deploy/formal_questionnaires_20261014/test_recovery.py",
@@ -327,8 +352,8 @@
     },
     {
       "path": "docs/README.md",
-      "bytes": 3361,
-      "sha256": "5538b5ab086d1079762fe17489a02aa776818fd949619d7301ff58bd1914bc04"
+      "bytes": 3532,
+      "sha256": "d4c93b481eb2cd056ad277cb7624146229d8ddec665a32d66bf2a70bdb516375"
     },
     {
       "path": "docs/RECENT_SEMANTICS_AUDIT_20260914.md",
@@ -391,6 +416,11 @@
       "sha256": "ae4b0ca7cc06e8ab7a262bd50585ddd27a6dec3708c412eb16dd234feba7c44f"
     },
     {
+      "path": "docs/household1000/CONTRAST_REVIEW_20261015.md",
+      "bytes": 3838,
+      "sha256": "233131785630c461c72b675212bd345f1af6f30c68e6ad0c715512797851753f"
+    },
+    {
       "path": "docs/household1000/EB_SIX_TYPE_PREFLIGHT.json",
       "bytes": 2684,
       "sha256": "ffe4d4089fe28e334401ad44079ea77483e97fe241c754fc9895f9e115942e5c"
@@ -412,8 +442,8 @@
     },
     {
       "path": "docs/household1000/INPUTS.md",
-      "bytes": 3876,
-      "sha256": "abf2a10d2265f2ed9a858ebffb5b5d86e3a7337832a329d5643832109d590ef2"
+      "bytes": 4268,
+      "sha256": "f93a6d14fb484ba63b66b4ca65dadc731d9a2543b63c577a1c1c965d7233a5c4"
     },
     {
       "path": "docs/household1000/JS_SOURCE_CHECK.json",
@@ -427,13 +457,13 @@
     },
     {
       "path": "docs/household1000/PIPELINE.json",
-      "bytes": 18854,
-      "sha256": "ed46cc01995016e1566c3ac331b910cfd2bee7e2089bdaea7604fd1b444af7d5"
+      "bytes": 17792,
+      "sha256": "35b67f8b313a6a7b82dc8941079776267092fb111e71d7c12f393c70e5affbc0"
     },
     {
       "path": "docs/household1000/PIPELINE.md",
-      "bytes": 3633,
-      "sha256": "8065fc5f85a141e5f6109f9a4f40e761997281d2ed672bf5ac1ee5a575351ae5"
+      "bytes": 5404,
+      "sha256": "6b3a7bb57dd41ef29d58dd781301c2ebeb38a8953cd656bd6037d59dc529baf1"
     },
     {
       "path": "docs/household1000/PREFERENCE_FIELD_AUDIT.json",
@@ -442,28 +472,28 @@
     },
     {
       "path": "docs/household1000/PUBLICATION_CHECK.json",
-      "bytes": 1928,
-      "sha256": "2749ade3daa8b43de958bb36a0fcb9a24bcfbd92fac7d325c66aadff3f547aa9"
+      "bytes": 4430,
+      "sha256": "bdf384c4451e62747e16777ced54d6aea0d100de9d7adbfed719b950dc072704"
     },
     {
       "path": "docs/household1000/README.md",
-      "bytes": 4178,
-      "sha256": "d8c4aa7563401e3c477777df46373aa66eba5b502c6d482514e98d04776d1a29"
+      "bytes": 3520,
+      "sha256": "a84e0aa3d2c54097e46113b06af1c565fdee98de9b0c2009c8b4fb110c91efeb"
     },
     {
       "path": "docs/household1000/REFERENCE_ACCEPTANCE.json",
-      "bytes": 1150,
-      "sha256": "927a0f26f5610a25102c5101a49404ff8d0f4c9efab9aff063079694c5b7719a"
+      "bytes": 1530,
+      "sha256": "1bef8e676847a7afa76bc5f359233038166fe56f33e618378741828da1c4fdd0"
     },
     {
       "path": "docs/household1000/REPRODUCTION.md",
-      "bytes": 5330,
-      "sha256": "76ccc26ef251f6d69b1281ba1ee639fef59b0136bfd8f5fb3465c11c3770667c"
+      "bytes": 7101,
+      "sha256": "0e8c952129567599e5ff7b6095b83362231cc0661b10cbf530fdb2e89fb3a0be"
     },
     {
       "path": "docs/household1000/RESEARCH_GATES.md",
-      "bytes": 3593,
-      "sha256": "16f9608820d32cbdfdf51ab0c3a48f68a5ae37aceed61acfc90ef5d316eeee57"
+      "bytes": 3901,
+      "sha256": "990f487324dc74b67d9a7795b6988ce1ddc66dbd7416d45defadaf050bbe3a57"
     },
     {
       "path": "docs/household1000/SCHOOL_BINDING_CHECK.json",
@@ -472,13 +502,13 @@
     },
     {
       "path": "docs/household1000/SOURCE_SNAPSHOT.json",
-      "bytes": 322605,
-      "sha256": "d4b67f99904356f4f247889392fa8f2103d680b7b4aa803c97fa491b5579f81d"
+      "bytes": 368580,
+      "sha256": "9ae888bd9314cd9ae0710d750403870dafeac52c14659f0fc112f57cfaaf2162"
     },
     {
       "path": "docs/household1000/STATUS.json",
-      "bytes": 7284,
-      "sha256": "7d02c80461fa9714aa95f4e2230718a2330b25d3f2ae8042c3f856c2e76c407a"
+      "bytes": 9998,
+      "sha256": "a45fc6d39fd99aaa82306eb5272128eb039808442713c1ec44208b93f24f29be"
     },
     {
       "path": "docs/household1000/V23_PUBLIC_PAYLOAD.json",
@@ -912,8 +942,8 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_GENERATION_REQUIREMENTS.json",
-      "bytes": 986,
-      "sha256": "0325ccfaeaebdb8cb96014604ad1fefdd9afe242ec71a2e2ed4fa2799b042bfb"
+      "bytes": 998,
+      "sha256": "2b5ee5aaa65b14b9057493c82c654434e969c25c1e673f9d31d669597ef22e32"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_PRODUCTION_REVIEW.json",
@@ -927,13 +957,13 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_STATIC_INPUTS.json",
-      "bytes": 814,
-      "sha256": "95a784fb2325269c61ef6a6044593cf4112b6e83cd1a31fc9503b0b1a825cc09"
+      "bytes": 798,
+      "sha256": "2d889b891819a752fbaf5131ff1bedfb1e5d2ee3b49c7f31c1a6685874179baf"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/CURRENT_TEST50.json",
-      "bytes": 516,
-      "sha256": "9601907752cc85a5f843d61135abfa84a7c999de98603cedbe6ca7ff05f88022"
+      "bytes": 553,
+      "sha256": "88442e4542ce05a161d49ad6669b4f440f2dc31d572200cdbfbd6dd2a0114482"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/ab_design_audit1000_20261007_v1/code/audit.py",
@@ -1599,6 +1629,441 @@
       "path": "docs/research/collection-adjustment-20260930/household1000/contrast50_20261007_v1/code/test_render.js",
       "bytes": 4772,
       "sha256": "f2b7cd35ba6b575a2f5ad5b110f8b687171c4a9b2dc6f67be6915b4012e3a57c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/ACTIVATION_RECEIPT.json",
+      "bytes": 1360,
+      "sha256": "76740ba3cf78c557c421de6678971be5a4a077813fe05265abd40a1aa92db57f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/BROWSER_formal50_REVIEW_PUBLIC.json",
+      "bytes": 903,
+      "sha256": "967f6f01ca43a3e6852169f8f18c94e225b993e7f476a2f43b7642a967263994"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/BROWSER_formal950_REVIEW_PUBLIC.json",
+      "bytes": 968,
+      "sha256": "6d0fc7680eaeb8d35c7c64f14c2cd6e2ce4c309e6bbde45f740edcb83456d2c9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/CASE_NEGATIVE_formal50.json",
+      "bytes": 358,
+      "sha256": "6cf1e96ee8c2779f88728378e8f8c05a227eb436be648855f9b03dd22395ac80"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/CASE_NEGATIVE_formal950.json",
+      "bytes": 359,
+      "sha256": "c49d27d01bb1d42c8e91506d03cc2c32846e00e448c7c4580da7d178458b848e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/CLUSTER_COVERAGE1000_REVIEW.json",
+      "bytes": 4110,
+      "sha256": "a6178b865f724c46d4c59eae7a7be2b20a484087090450821df4be60885528d7"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/CONTRAST_FULL_RULE_DRY_RUN.json",
+      "bytes": 152,
+      "sha256": "8d6752c76e7c71ae705fbb63640e11cd0cd71e42710a605a3565c43b683280fa"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/CONTRAST_NEGATIVE_CONTROLS.json",
+      "bytes": 386,
+      "sha256": "2fa4ebd8c83670adbe76e0ed3a9ff5f3974682ded1d4f8591e53d2cb30bc0fd0"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/CONTRAST_formal50_INPUT_PUBLIC.json",
+      "bytes": 703,
+      "sha256": "01aba8483ac2be44fb1f43529deacae0db7edac04d53d6d61290cf4c0dc44f8a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/CONTRAST_formal950_INPUT_PUBLIC.json",
+      "bytes": 715,
+      "sha256": "8dc2e52d018ff1a7ff548ff0dc1b76afbc491e15b4f2ef78ae55c4ccea27af56"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/EB_AC_SOURCE_REVIEW.json",
+      "bytes": 3978,
+      "sha256": "a67009f697db66f7a7f914ae1cedde9e4621d818cbd9e43c3b3250fd1765c64c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/FORMAL_formal50_CASE_REVIEW.json",
+      "bytes": 683,
+      "sha256": "c741f35f3babe642246ef266322be7e3f58120a7a0cceeb0b901a826c522353a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/FORMAL_formal950_CASE_REVIEW.json",
+      "bytes": 686,
+      "sha256": "f7568097d2ac64580c2391da74fcf6be04b82bc1540031ad38ea6eada052ff69"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/HTTP_formal50_REVIEW.json",
+      "bytes": 484,
+      "sha256": "355d5d34da606ed7015c1f11f2149fff25c41f39ca7ed54a46181d19c89770f1"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/HTTP_formal950_REVIEW.json",
+      "bytes": 486,
+      "sha256": "20738c3761560b07045622d770da8e25f551310b1639df02a76e5b8b06f15306"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/INPUT_AUDIT.json",
+      "bytes": 1403,
+      "sha256": "07cbf98f4de16d4690c1b0392a3ea8e1a5441800681f99a302e9bec5b9993c63"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/METHODS_AND_ACCEPTANCE.md",
+      "bytes": 6522,
+      "sha256": "dea2619a956208268ccb01e6b6a89b44462e6e7628c763a6551b66a1c2b3f43c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/ORIGINAL50_CONTRAST_ACCEPTANCE_PUBLIC.json",
+      "bytes": 2069,
+      "sha256": "4b98007260cda3a7a9ce82038f4acc31541036f2a1b0645ca4778a3e96052eb8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/OTHER950_CONTRAST_ACCEPTANCE_PUBLIC.json",
+      "bytes": 2076,
+      "sha256": "adfb08aea537e01a6e65227cf2d7384d16cdaef50bb5b351a7109f5d9be253b9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/PHYSICAL_PRODUCTION_COMPLETE.json",
+      "bytes": 1757,
+      "sha256": "490d512bb092405ef96bd5a9e75410712beb4020cda977cb77a12b71d89f3475"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/PHYSICS_original50_REVIEW.json",
+      "bytes": 1241,
+      "sha256": "d7066d5d5f44e10275d51b5906069ff8b19c0a5c1d5b61030febced9ceea0cbe"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/PHYSICS_other950_REVIEW.json",
+      "bytes": 1248,
+      "sha256": "0f80f9baa23b97154c44a918521efbb6089ad57c235a40b42becb3966a567367"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/PHYSICS_weather_sensitivity_REVIEW.json",
+      "bytes": 1246,
+      "sha256": "93f2fd81f2228f4fb1edc042be3c120573d9eab585e13d265474f55640af3862"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/POST_ACTIVATION_AUDIT.json",
+      "bytes": 1198,
+      "sha256": "616022bfae56362eae51aa6c736a9f63231f03717884ef08848b24de5ac3852a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/PROTOCOL_V29.json",
+      "bytes": 978,
+      "sha256": "04ed62998398153ea072eb1c3d4c1ef76c378c7ca2bdd2326c492f1093f425e3"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/PUBLIC_CONTRAST_SUMMARY.json",
+      "bytes": 1673,
+      "sha256": "397641c3e7796108371c088018abde18540478d2681baadf4786fa045bd4a0b4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/READONLY_CLI_ACCEPTANCE.json",
+      "bytes": 395,
+      "sha256": "58bc47a698edb0e846cf51b50ef181d0399e81097ad68cc332a96a7356a8065c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/REVIEWED_SOURCE_PARITY.json",
+      "bytes": 462,
+      "sha256": "a10ac37b1eebaec2ee3994edc89ea622e118ba319aec62e2e58ad6001c25ebb8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/PSYCHROLIB_LICENSE.txt",
+      "bytes": 1099,
+      "sha256": "3372ab6db04ab898605cd8a4c47eee35e668d14ca05481f00107239be0e3b46e"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/acceptance_negative_controls.py",
+      "bytes": 1795,
+      "sha256": "646c0572e8ee8bdd10ec979f30e819e7702601167741b9407cabed71eb7a46e1"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/activity_model.py",
+      "bytes": 28239,
+      "sha256": "2aeaf80e1503c768eb9bfbf737c27bd11c6ae0c7edaa8813705e68e4f662b52f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/adapt_browser_bindings.py",
+      "bytes": 1082,
+      "sha256": "7a54c838fa5278dc06a905b7606fb924e997c7e116549f65968767d8049a1a89"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/adapt_full_cluster.py",
+      "bytes": 1418,
+      "sha256": "e9081a6b995e8d72da9fea1d56f2e4eccc3539eb2536fe79f3afc8f88b397290"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/adapt_materials.py",
+      "bytes": 2393,
+      "sha256": "443a8c95b21970c0d89ea70bf65829e929dae984a8623faabc4070b8636bd6b6"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/audit_bath.py",
+      "bytes": 1602,
+      "sha256": "e51d518300141fa1803a52f0d5308c6ce8bf2aaa92e03b422609b429957411ec"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/audit_calendar.py",
+      "bytes": 10205,
+      "sha256": "8794fd8f07de190149c46d83daf8af207f1901f05da4a1a092e29c7cc07ce0b6"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/audit_idfs.py",
+      "bytes": 4781,
+      "sha256": "e2af90497751de677d2dad96c919a607d2e5622b59731d349d80afa9a9e2a388"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/audit_physical_inputs.py",
+      "bytes": 2189,
+      "sha256": "62526339ad282f8746e5303e08b8a1f6ec5f4ada0d40db79945a7725181ee1b9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/audit_pilot.py",
+      "bytes": 11085,
+      "sha256": "78d4d5036edb78cac468f8ad568244b3ced57cb5a6f97b74b2cc8a8e3330f064"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/audit_reference_model.py",
+      "bytes": 2575,
+      "sha256": "d02644678ac0a91311848e5528bea39541f43b0b34abfcb7378693512b28bd02"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/bind_frontend.js",
+      "bytes": 1717,
+      "sha256": "472133273c5f6265a37a08e0cac40869adadc2a32b18db0abd70d428e96eea6b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/bootstrap.py",
+      "bytes": 3561,
+      "sha256": "2d6e188717b94c7f0dac84f4072bdeb1c1005c076725b22a8046e6d2b350e2a3"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/bootstrap_v29.py",
+      "bytes": 2064,
+      "sha256": "387b5dd44aab0a856b5afbf2bd5271da092990bb4dfa03929555d5c171d6c04c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/browser_acceptance.js",
+      "bytes": 3884,
+      "sha256": "2d3836a2f18a16f042396874db3a5d34bc4223f0917196181289f12cca7b8c70"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/checks.py",
+      "bytes": 4062,
+      "sha256": "b459b8dbe2d94f8e123d567a149daafa49fd2c839fa790e453094d60fe40f52c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/cluster_actual.R",
+      "bytes": 1306,
+      "sha256": "314648c14969ec2410314d6899aee8c476ddccbdb2e55ca1096c8f309577c983"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/cluster_pilot.py",
+      "bytes": 6106,
+      "sha256": "ab50deeb2220f2fbc0dc43b15d4a5b94b4a4a98f7fff0c7d02e4caf7e0f2da70"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/cohort_gate.py",
+      "bytes": 8026,
+      "sha256": "52c89b810e30cafa1965b9efb1244df17c1593c4471c45b09440dd5b271745cf"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/common.py",
+      "bytes": 1887,
+      "sha256": "fe8d8ec4a8acea9a93a69e9a4b89e750ccd42568c2b58f0142a9c25504f51c56"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/compile_inputs.py",
+      "bytes": 27921,
+      "sha256": "1237fd96a31a5b4bb6ed5333c46a68fbb775a46a64824645b111e7b741e6cf84"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/compile_repaired.py",
+      "bytes": 3954,
+      "sha256": "d4206eb8b38773a69b51070a75c29404f9e3fa028eab6246f252b95d3c3c1b19"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/contrast_controls.py",
+      "bytes": 3144,
+      "sha256": "d79bf7182d0ed160e4cbd5695b91559e62657110bda7f28bbf547cf5dcd4e7dd"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/contrast_core.py",
+      "bytes": 5698,
+      "sha256": "14ff6182d7fbcc3b18f3d662b08b64b41ccd365edead164f8eba1d322804ab8c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/curve_diagnostics.py",
+      "bytes": 6978,
+      "sha256": "077d3f53c8f0971a71a1871fd92518e9e5c984b246824fa959becd5f79fd9c55"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/curve_observer.py",
+      "bytes": 2717,
+      "sha256": "7dd261c46272c3fb4e000cc22987c7a8ed2e15d46af11b04ff304662e6cd1183"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/ep_gate.py",
+      "bytes": 152,
+      "sha256": "a8c56b1c6dd64b421d9def55ad801e03134af8a4b801631a8159fc06d3d31d4a"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/execute_physics.py",
+      "bytes": 439,
+      "sha256": "e6e06f79efb6a6dd307e056db3af500943afcf01fd53b0af2ce90f49c60dd7d4"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/execution.py",
+      "bytes": 8149,
+      "sha256": "fe4bc3fbe331f3b754ddca9f833a98c8f2bd551d88a1d20a9af634e854cc44d9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/final_contrast.py",
+      "bytes": 6169,
+      "sha256": "59d8b21bb07d06d888238da843e4c93bc8038cb1a34b60a92846bd8d76ce209b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/finalize_pilot.py",
+      "bytes": 3849,
+      "sha256": "613c8e9e12f47eb0359730528fd1af89206cf66ff6720b7d5d8cb2991ac87905"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/freeze_composition.py",
+      "bytes": 4754,
+      "sha256": "a09c88a8c7f465e2bba7f251219b75638d0b407e132ed5eae92597548c333a83"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/generate.py",
+      "bytes": 15625,
+      "sha256": "f829b05e9e8875dc64ce973442ba856bbd8b5e85b2a5b88601f6b4df89a63e5f"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/install_cohort_gate.py",
+      "bytes": 1395,
+      "sha256": "102de095436b7fac9f8ce408ba5b9bb3bded7792279ed4c846be9150b57756ee"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/materials.py",
+      "bytes": 45868,
+      "sha256": "2937114dd0e08e345242f8ea50196b31ce9a3d24c6f4a78d727029ba0b2b91cf"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/mechanism_controls.py",
+      "bytes": 4434,
+      "sha256": "979f4ac16d9a55428e6266ff0b65a95690510612fc3751f7a627218edbb458fb"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/model_form_diagnostic.py",
+      "bytes": 4636,
+      "sha256": "2a0fb65708b8e5fead54616c6ef8a5220be11249014e0babd2e3c42187dbdac5"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/needs.py",
+      "bytes": 1596,
+      "sha256": "474ea412e8da89b8b1a53f70da3a325fe82f4a5a1dc49a81df9d25bbbc9fe682"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/physics.py",
+      "bytes": 31437,
+      "sha256": "53c3146e686dc3eadea0b771d0a6476c88aab7d6cc9eb2d6689380474e487680"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/pilot_ep_gate_reference.py",
+      "bytes": 6623,
+      "sha256": "a89a30c547f0e17ff6479ef30d113343d94e269d28a9cf4da1b96cd2d989ec85"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/plans.py",
+      "bytes": 15985,
+      "sha256": "a0ef1bb31c599f285a4bfdfd0f0a78e4ed15cd240d7c2a9f4dfd509f663419a9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/prepare_sensitivity.py",
+      "bytes": 2372,
+      "sha256": "57ebfd749678dc19a586251ba0b7d8ea257785c539f5d15c78cf6c7b17b405ac"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/preview_readonly.py",
+      "bytes": 4527,
+      "sha256": "0501d550b705106ea9f7462e660f8ff48f69ab4f4f0e27cba68752353a077144"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/produce_static.py",
+      "bytes": 7675,
+      "sha256": "a394a77369ae894ecb50d5c175491e9b1d20ceb305ad0f4f777b014e9be01646"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/psychrolib_reference.py",
+      "bytes": 52101,
+      "sha256": "37e08506bdc2e652a77026e7107ece7eaabb1c40997b563b88fe2951385aefdf"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/repair_chronology.py",
+      "bytes": 4388,
+      "sha256": "9ec53b1a46fe436e2918e05df957a7f45cb8b204a25c58ec0cd9430f49039a6c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/repair_contrast.py",
+      "bytes": 5599,
+      "sha256": "84a20fb136bab2d3b58d4b83604fa0e8e51affcbf0fce10ab6326677c337c59c"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/repair_external_bindings.py",
+      "bytes": 2813,
+      "sha256": "5e56e74cbb104dd3a9d768040d792d7217ce813d76a0bbc6622a657f2ddb967d"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/run_cohort.py",
+      "bytes": 6851,
+      "sha256": "e88dcf71083ccd4eb9b518fab964c70cb663ce589c797aa0f618c7f92b721466"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/structural_zero_controls.py",
+      "bytes": 1507,
+      "sha256": "c41b980df119405cc7016e8bfa3b0085f4480309062b337057d07dc0df3e5402"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/type_model.py",
+      "bytes": 12680,
+      "sha256": "3bb3df9681b5caa5e34f5e9123f743ed06b1a0f3d0ced84cb17c23907d5263c9"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/vehicle_causal_controls.py",
+      "bytes": 3325,
+      "sha256": "a1ae92c102f5e2a8b6764952a0e2b9c1c77dc4ba58999d7f158c2debe7fdeb9b"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/vehicle_state.py",
+      "bytes": 3229,
+      "sha256": "198a9d3452e89903647125a989437c4e79dcd81626a73d431f0b373ec3220bed"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/verify_case_bindings.js",
+      "bytes": 1183,
+      "sha256": "ee0d2e003213a8121222b28777d83fff82dd2dcd5186890f90eb7ae303b2e9b3"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/verify_frontend_clock.js",
+      "bytes": 1620,
+      "sha256": "e46761ceeda681d0eebac4e71f807fdbb152c95e0a43c941e45edb3acda6d7a6"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/weather_audit.py",
+      "bytes": 6056,
+      "sha256": "a491c2754f7e6a5fea99ceb954cb8f636e06c4d0c4c16f9428a35b48d556d8d8"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/weather_qc.py",
+      "bytes": 6459,
+      "sha256": "4d50759b668459a88864b4851cfc4a5e09343b5d461315431ef071653937f3cc"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/worlds.py",
+      "bytes": 7711,
+      "sha256": "4b677c25731bfd0e31bdadc810722b062ecfa62386e2e7dad4dc472de8505047"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/crecs_admission_20261003/audit_crecs.py",
@@ -3982,8 +4447,8 @@
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/repair_execution_20261008_v1/EXECUTION_BOARD.json",
-      "bytes": 3853,
-      "sha256": "95c845f3bd2cd464bce75d3e056d2504f717f319a35d41c51bbfd44da1350e41"
+      "bytes": 5818,
+      "sha256": "24b903cc60b2199ab1cfe9d99e3af64aa4ad9b23f2ce3f01af769dca4f4450a2"
     },
     {
       "path": "docs/research/collection-adjustment-20260930/household1000/reviewed_reference_production_20261010_v21/code/PSYCHROLIB_LICENSE.txt",
@@ -5877,8 +6342,8 @@
     },
     {
       "path": "scripts/household1000.py",
-      "bytes": 9195,
-      "sha256": "dc076529a097daff807a2d1884b62b6dd25f81469df3395fc3f92bfd5c9123f7"
+      "bytes": 10403,
+      "sha256": "72616d7dd53554fc5694df7e7f20912912bfaa39f1de62e67b5c7bcc06cd363d"
     },
     {
       "path": "scripts/install_energyplus_linux.sh",
@@ -5942,8 +6407,8 @@
     },
     {
       "path": "scripts/verify_household1000_publication.py",
-      "bytes": 3998,
-      "sha256": "36ab3ea9ee23b1147da046f1a6221e8b597e1b31c83714e7773bac2781603c00"
+      "bytes": 9566,
+      "sha256": "0f2c8ff91ba5e241e6a1fbfade54c749d0b7edc7cb0703de199b94b38ffce4ef"
     },
     {
       "path": "scripts/verify_regional_resources.py",
@@ -6006,8 +6471,8 @@
       "sha256": "972c431216e39b4dc7f763f0a15f19ee397c8f96926f8e956a2ac17a87b7f342"
     }
   ],
-  "payload_file_count_excluding_manifest": 1200,
-  "authorization": "User requested two formal50/formal950 versions, production acceptance first, original frontend and GitHub synchronization",
+  "payload_file_count_excluding_manifest": 1293,
+  "authorization": "User requested task contrast acceptance,repair41,classify857,school50 before950 and GitHub;no blanket EP rerun",
   "content_scope": "first-party source, methods, case-free templates and aggregate evidence; no private surveys, households, IDF/weather/SQL, invitations or human records",
   "private_data_or_EP_SQL_or_human_answers_published": false,
   "school_source_check_passed": true,

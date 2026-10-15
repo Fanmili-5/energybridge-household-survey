@@ -1,3 +1,15 @@
+# V29当前入口与冻结顺序
+
+当前阶段 `contrast_repair_v29_20261015`，方法见[V29修正与验收](../research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/METHODS_AND_ACCEPTANCE.md)。V28世界、家庭、需求、正常A、硬件、日期与角色政策为冻结父版本；V29修正B请求和显示语义。只复用精确相同物理输入的SQL，所有读回重新绑定。
+
+受控学校顺序：`bootstrap_v29.py` → 全10000组只读候选预检 → `contrast_controls.py` → `repair_contrast.py --scope formal50` → `compile_repaired.py --scope formal50` → `execute_physics.py --scope original50` → 材料/绑定/正式包/全案例/API/500页实际浏览器 → `final_contrast.py --batch formal50`。完整原50证据通过后才能以同规则处理formal950、other950及weather_sensitivity；再核9500源案例、1000页浏览器、六类覆盖及最终合并，最后发布。
+
+材料与接口使用原成熟前端和 `deploy/formal_questionnaires_20261014/`。实际浏览器由 `deploy/contrast_validation_20261015/browser_fixture.py` 在学校以独立虚构身份验收；`complete_review.py`连接全部当前物理/正式材料/角色覆盖收据。命令不会替参与者生成真人答案。旧静态/生成辅助模块不能直接覆盖新阶段，现有目录与历史失败均保留。
+
+`household1000.py require-generation` 是只读验证，当前输入/代码变化即拒绝旧收据，不自动启动EP。公开clone缺少许可原件和逐户完整输入；学校准备好的工作区才能核完整证据。G6真人与实测限制见[研究门](RESEARCH_GATES.md)。
+
+下面是历史V28及更早版本的源链和复现说明，其当前状态或启动顺序不能替代上述V29入口。
+
 # V28复现与验收顺序
 
 当前V28全1000户参考验收和50/950正式采集包见[当前方法](../research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/METHODS_AND_ACCEPTANCE.md)。需要获准使用的前置人口/联合调查/住房/EB与天气输入；公开clone没有这些私有输入，不会自动下载或运行EP。

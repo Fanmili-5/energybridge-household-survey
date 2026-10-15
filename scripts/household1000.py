@@ -60,7 +60,13 @@ def doctor(workspace):
             row['scope']=pointer.get('acceptance','historical static inputs')
         rows.append(row)
     stage = read(PUBLIC / 'STATUS.json')['active_stage']
-    if stage == 'formal50_950_production_v28_20261014':
+    if stage=='contrast_repair_v29_20261015':
+        names=['SELECTION1000.json','PARTITIONS.json','PROTOCOL_V29.json',
+               'CONTRAST_FULL_RULE_DRY_RUN.json','PRE_EP_original50.json','PRE_EP_other950.json',
+               'PRE_EP_weather_sensitivity.json','PHYSICS_original50_REVIEW.json',
+               'PHYSICS_other950_REVIEW.json','PHYSICS_weather_sensitivity_REVIEW.json',
+               'PUBLIC_CONTRAST_SUMMARY.json','PHYSICAL_PRODUCTION_COMPLETE.json']
+    elif stage=='formal50_950_production_v28_20261014':
         names=['SELECTION1000.json','PARTITIONS.json','STATIC_PRODUCTION_COMPLETE.json',
                'PRE_EP_original50.json','PRE_EP_other950.json','PRE_EP_weather_sensitivity.json',
                'PHYSICS_original50_REVIEW.json','PHYSICS_other950_REVIEW.json',
@@ -155,7 +161,7 @@ def main():
         if not entry.is_file():
             print(json.dumps({'generation_allowed':False,'EP_allowed':False,'reason':'prepared generation entry missing'}))
             return 2
-        if pointer.get('gate_kind') == 'v28_readonly_cohort_receipts':
+        if pointer.get('gate_kind') in ('v28_readonly_cohort_receipts','v29_readonly_contrast_receipts'):
             stage = base / pointer['stage']
             if not (stage / 'SELECTION1000.json').is_file():
                 print(json.dumps({'generation_allowed': False, 'EP_started': False,
@@ -167,9 +173,19 @@ stage=Path(sys.argv[1]);sys.path.insert(0,str(stage/'code'))
 from cohort_gate import require_reviewed_ep
 scopes=['original50'] if sys.argv[2]=='static1000' else ['original50','other950','weather_sensitivity']
 for scope in scopes:
-    require_reviewed_ep(scope)
+    lease=require_reviewed_ep(scope)
     report=json.loads((stage/('PHYSICS_'+scope+'_REVIEW.json')).read_text())
     assert report['acceptance_passed'] and not report['failures']
+    assert report['input_signature_at_readback']==lease['review']['input_signature']
+if (stage/'PROTOCOL_V29.json').exists():
+    from cohort_gate import require_original50_acceptance
+    require_original50_acceptance()
+    import hashlib
+    for name in ('ORIGINAL50_CONTRAST_ACCEPTANCE.json','OTHER950_CONTRAST_ACCEPTANCE.json'):
+        accepted=json.loads((stage/name).read_text());assert accepted['passed']
+        for file,digest in accepted['evidence'].items():assert hashlib.sha256((stage/file).read_bytes()).hexdigest()==digest
+    final=json.loads((stage/'PHYSICAL_PRODUCTION_COMPLETE.json').read_text())
+    assert final['passed'] and final['verified_input_bound_run_sides']==21440
 print(json.dumps({'current_content_bound_reference_receipts':'pass','scopes':scopes,'EP_started':False,'human_answers_created':0}))
 '''
             return subprocess.run([sys.executable, '-B', '-c', code, str(stage), args.scope],

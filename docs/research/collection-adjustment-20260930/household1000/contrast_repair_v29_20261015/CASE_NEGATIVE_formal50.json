@@ -1,0 +1,1 @@
+{"EP_started": false, "batch": "formal50", "human_answers_generated": 0, "passed": true, "positive_actual_case_checked": true, "production_records_written": 0, "rejected_controls": {"duplicate_scope": true, "energy": true, "event_window": true, "missing_physical_side": true, "missing_scope": true, "stale_physical_signature": true, "terminal_state": true}}

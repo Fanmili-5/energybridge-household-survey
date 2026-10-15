@@ -1,0 +1,113 @@
+{
+  "schema": "eb.AC_source_semantics.v29",
+  "pinned_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "sources": [
+    {
+      "path": "upstream_2b17ae6/Family_Model/Family_Simple.idf",
+      "sha256": "5ae863fc41c2997540eb991b2c09976f5b5c3455793151070c52a1cf9b80a6d1",
+      "source_url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/Family_Model/Family_Simple.idf",
+      "schedules": [
+        [
+          "Schedule:Compact",
+          "always_avail",
+          "On/Off",
+          "Through: 12/31",
+          "For: AllDays",
+          "Until: 24:00",
+          "1"
+        ],
+        [
+          "Schedule:Compact",
+          "cooling_sch_HRef",
+          "Temperature",
+          "Through: 12/31",
+          "For: AllDays",
+          "Until: 24:00",
+          "25.55"
+        ],
+        [
+          "Schedule:Compact",
+          "cooling_sch",
+          "Temperature",
+          "Through: 12/31",
+          "For: AllDays",
+          "Until: 24:00",
+          "23.888888888889"
+        ],
+        [
+          "Schedule:Compact",
+          "fan_cycle",
+          "any number",
+          "Through: 12/31",
+          "For: AllDays",
+          "Until: 24:00",
+          "0"
+        ]
+      ]
+    },
+    {
+      "path": "upstream_2b17ae6/Family_Model/original_model.idf",
+      "sha256": "2b115a87d9fa3acb3fcd1f9ef5bc961a0d9b001a5351fec9277e107671c53993",
+      "source_url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/Family_Model/original_model.idf",
+      "schedules": [
+        [
+          "Schedule:Compact",
+          "always_avail",
+          "On/Off",
+          "Through: 12/31",
+          "For: AllDays",
+          "Until: 24:00",
+          "1"
+        ],
+        [
+          "Schedule:Compact",
+          "cooling_sch_HRef",
+          "Temperature",
+          "Through: 12/31",
+          "For: AllDays",
+          "Until: 24:00",
+          "25.55"
+        ],
+        [
+          "Schedule:Compact",
+          "cooling_sch",
+          "Temperature",
+          "Through: 12/31",
+          "For: AllDays",
+          "Until: 24:00",
+          "23.888888888889"
+        ],
+        [
+          "Schedule:Compact",
+          "fan_cycle",
+          "any number",
+          "Through: 12/31",
+          "For: AllDays",
+          "Until: 24:00",
+          "0"
+        ]
+      ]
+    },
+    {
+      "path": "upstream_2b17ae6/energybridge/simulation/actuator_writer.py",
+      "sha256": "43aefe9c9139e43ae0f3b06cd504ea0cc98ed6d4bb2861c0fd0bfb2bdd38552f",
+      "source_url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/simulation/actuator_writer.py"
+    },
+    {
+      "path": "upstream_2b17ae6/energybridge/simulation/variable_catalog.py",
+      "sha256": "5ea23e4795ee87595aed4d8d1f4b67dcda6265f3ee201c194b03f8ee0f8df9da",
+      "source_url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/simulation/variable_catalog.py"
+    }
+  ],
+  "verified_conclusions": [
+    "native availability schedule is24h enabled",
+    "native cooling_sch is24h constant23.888888888889C;HRef25.55C is separate",
+    "runtime writer can override cooling schedule and starts with last_cooling_setpoint25C",
+    "availability and thermostat setting are not continuous compressor duty"
+  ],
+  "V28_adaptation": "May-Sep occupied/sleeping-room enablement is our given household reference policy,not the native EB default",
+  "repair_policy": "A and household policy retained;do not make every room cool all day or fabricate thermal demand to amplify B",
+  "minimum0_5C_status": "predeclared engineering task-encoding threshold;not empirical human JND or manufacturer resolution",
+  "official_semantics_reference": "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-unitary-equipment.html",
+  "EP_started": false
+}

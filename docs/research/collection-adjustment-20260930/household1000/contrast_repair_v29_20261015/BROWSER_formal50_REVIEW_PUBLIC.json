@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "release_signature": "a32d5013e9b7281318584ddac48272dd9816d866cb6d6144bbeaab19764f9097",
+  "source_case_count": 500,
+  "actual_browser_cases_checked": 500,
+  "visible_change_text_matches_source": true,
+  "current_answer_and_respondent_outside_model_input": true,
+  "actual_submit_recovery_revision_withdrawal_passed": true,
+  "all_cases_24_hours": true,
+  "given_role_policy_visible": true,
+  "browser": "school Chromium / actual shipped formal release",
+  "household_sampling": "complete census",
+  "errors": [],
+  "isolated_fixture_database": true,
+  "fixture_submissions": 2,
+  "production_records_written": 0,
+  "human_answers_generated": 0,
+  "fixture_formal_export_count": 0,
+  "source_private_receipt_sha256": "b79da498fbffeb403a5e7c63075c66528ed5d68688fa9e1d86541702e87ac8d3",
+  "public_transformation": "household sample identifiers removed; aggregate checks unchanged"
+}

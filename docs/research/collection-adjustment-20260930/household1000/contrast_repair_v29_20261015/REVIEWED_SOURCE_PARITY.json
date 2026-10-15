@@ -1,0 +1,11 @@
+{
+  "schema": "eb.reviewed_source_publication_parity.v29",
+  "passed": true,
+  "scope": "actual school pre-EP reviewed stage source bytes vs published source",
+  "input_signature": "61a066f11a2e6a8d24efa5d1cc5e4f730671de3328b4f16d0425b0e80bc194e5",
+  "source_files_checked": 57,
+  "expected_code_hashes_sha256": "3a7190b62c996b4b89ab6cdf341cb5003969b45a379c4d93755a93b91422abbd",
+  "failures": [],
+  "private_inputs_included": false,
+  "new_EP_started": false
+}

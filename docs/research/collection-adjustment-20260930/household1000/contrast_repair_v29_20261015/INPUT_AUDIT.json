@@ -1,0 +1,47 @@
+{
+  "actual_type_counts": {
+    "A": 101,
+    "B": 303,
+    "C": 319,
+    "D": 101,
+    "E": 85,
+    "F": 91
+  },
+  "counts": {
+    "A_care_gap_slots": 0,
+    "A_failed_operations": 0,
+    "A_undelivered_programs": 0,
+    "B_care_gap_slots": 0,
+    "B_failed_operations": 1426,
+    "B_given_policy_exceeded_or_confirmation_cases": 8527,
+    "B_undelivered_programs": 1314,
+    "households": 1000,
+    "members": 2524,
+    "pairs": 10000,
+    "unknown_employment_members": 1259
+  },
+  "distinct_actual_feature_rows_within_type": {
+    "A": 9,
+    "B": 46,
+    "C": 302,
+    "D": 13,
+    "E": 2,
+    "F": 10
+  },
+  "failures": [],
+  "human_answers": 0,
+  "matched_source_structure_unchanged": true,
+  "negative_controls": [
+    "changed need detected",
+    "type and ID changes leave extracted features unchanged",
+    "human answers leave extracted features unchanged"
+  ],
+  "role_policies_are_given_not_observed": true,
+  "schema": "eb.type_pilot_input_audit.v27",
+  "source_data_does_not_identify_six_type_prevalence": true,
+  "status": "pass",
+  "legacy_type_module_full_EP_flag": false,
+  "current_EP_admission_source": "cohort_gate current scoped byte receipts, not this legacy type-only module",
+  "source_private_receipt_sha256": "99a7c06a20802e7865ceffb6839b9b9eeb45b832cc08aa507566094d8a0e993b",
+  "public_transformation": "individual reference mappings removed; aggregate results unchanged"
+}

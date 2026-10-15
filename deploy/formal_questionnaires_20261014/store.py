@@ -14,9 +14,10 @@ def now():return datetime.now(timezone.utc).isoformat()
 def digest(value):return hashlib.sha256(encoded(value)).hexdigest()
 
 class Store:
-    def __init__(self,root,release,*,fixtures=False):
+    def __init__(self,root,release,*,fixtures=False,cohort_releases=None):
         self.root=Path(root);self.root.mkdir(parents=True,exist_ok=True,mode=0o700)
         self.db_path=self.root/'formal_responses.sqlite3';self.lock=threading.RLock();self.release=release;self.fixtures=fixtures
+        self.cohort_releases=cohort_releases or {}
         key=self.root/'credential_pepper'
         if not key.exists():
             if self.db_path.exists():raise RuntimeError('Existing collection database requires its original credential pepper; restore the recovery bundle.')
@@ -109,14 +110,17 @@ class Store:
         if actor['batch']!=batch:return result
         with self.connect()as db:
             rows=db.execute('select rowid,* from answers where actor_id=? order by rowid',(actor['actor_id'],)).fetchall()
-        latest={}
+        latest={};prior_release_answer_count=0
         for row in rows:
-            record=json.loads(row['record_json']);latest[row['case_id']]=(row['rowid'],{'case_id':row['case_id'],'case_index':record['case_index'],'feedback':record['response'],'respondent':record['respondent'],'receipt_id':row['receipt_id']})
+            record=json.loads(row['record_json'])
+            if batch in self.cohort_releases and record.get('source_release_sha256')!=self.cohort_releases[batch]:
+                prior_release_answer_count+=1;continue
+            latest[row['case_id']]=(row['rowid'],{'case_id':row['case_id'],'case_index':record['case_index'],'feedback':record['response'],'respondent':record['respondent'],'receipt_id':row['receipt_id']})
         # A dict keeps a case's first insertion position after a revision. The
         # frontend restores respondent metadata from the final answer, so order
         # by each case's latest append instead of its first submission.
         answers=[item for _,item in sorted(latest.values(),key=lambda item:item[0])]
-        return {**result,'consented':actor['consent_version']==NOTICE_VERSION,'participant_id':actor['actor_id'],'household_id':actor['household_id'],'answers':answers}
+        return {**result,'consented':actor['consent_version']==NOTICE_VERSION,'participant_id':actor['actor_id'],'household_id':actor['household_id'],'answers':answers,'prior_release_answer_count':prior_release_answer_count}
     def save(self,session,payload,cases,hashes,batch,hid,cohort_release=None):
         actor=self.actor(session,consent=True)
         if (actor['batch'],actor['household_id'])!=(batch,hid):raise PermissionError('当前身份与家庭任务不匹配。')

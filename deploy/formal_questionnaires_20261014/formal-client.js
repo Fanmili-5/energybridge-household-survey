@@ -10,7 +10,7 @@
  let state=null,restoring=false;
  function restore(){
   if(!state)return;
-  const completed=state.answers.length;q('formal-progress').textContent=`参与编号：${state.participant_id} · 已提交 ${completed}/10 个日期。修改后重新提交会保留修订记录。`;
+  const completed=state.answers.length;q('formal-progress').textContent=`参与编号：${state.participant_id} · 已提交 ${completed}/10 个日期。修改后重新提交会保留修订记录。`+(state.prior_release_answer_count?' 您有旧版问卷的记录，已保留；当前新版任务需要重新阅读并作答。':'');
   q('formal-consent-text').textContent=state.notice;q('formal-consent-controls').hidden=state.consented;
   q('joint-export').disabled=!state.consented;
   q('formal-consent-status').textContent=state.consented?'已确认自愿参与。':'确认参与说明后即可提交答卷。';

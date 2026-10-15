@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "batch": "formal50",
+  "households": 50,
+  "cases_checked": 500,
+  "release_signature": "a32d5013e9b7281318584ddac48272dd9816d866cb6d6144bbeaab19764f9097",
+  "physical_review_sha256": "d7066d5d5f44e10275d51b5906069ff8b19c0a5c1d5b61030febced9ceea0cbe",
+  "current_world_pair_SQL_readback_bindings": "pass",
+  "current_content_bound_physical_receipt": "pass",
+  "source_renderer_full_case_regeneration": "pass",
+  "displayed_quantities_and_terminal_states_equal_readback": "pass",
+  "shipped_frontend_canonical_bindings": "pass",
+  "missing_or_pending_physical_cases": 0,
+  "source_reference_cases_promoted_to_human_labels": false,
+  "human_answers_created": 0
+}

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checked_utc": "2026-10-15T07:25:32.144716+00:00",
+  "school_prepared_inputs_current_scopes": [
+    "original50",
+    "other950",
+    "weather_sensitivity"
+  ],
+  "school_readonly_entry_content_bound_receipts": "pass",
+  "public_checkout_missing_protected_inputs_rejected": true,
+  "public_checkout_exitcode": 2,
+  "new_EP_started": false,
+  "human_answers_generated": 0
+}

@@ -1,13 +1,14 @@
 {
-  "schema": "eb.current_original50.v28",
-  "stage": "formal50_950_production_v28_20261014",
+  "schema": "eb.current_original50.v29",
+  "stage": "contrast_repair_v29_20261015",
   "households": 50,
   "pairs": 500,
   "sensitivity_pairs": 200,
   "selection": "SELECTION1000.json filtered by PARTITIONS.formal50",
-  "acceptance_summary": "formal50_950_production_v28_20261014/FORMAL50_CASE_ACCEPTANCE.json",
-  "formal_release_signature": "78d4ca53e939ca62607825bd2a4ce2ebf74c22bb1bc3729857e4682f1878d1fd",
+  "acceptance_summary": "contrast_repair_v29_20261015/ORIGINAL50_CONTRAST_ACCEPTANCE_PUBLIC.json",
+  "formal_release_signature": "a32d5013e9b7281318584ddac48272dd9816d866cb6d6144bbeaab19764f9097",
   "collection_release": true,
   "training_release": false,
-  "human_validity_unmeasured": true
+  "human_validity_unmeasured": true,
+  "actual_browser_cases_verified": 500
 }

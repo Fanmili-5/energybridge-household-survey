@@ -1,7 +1,7 @@
 {
-  "schema": "eb.current_reference_acceptance.v28",
+  "schema": "eb.current_reference_acceptance.v29",
   "status": "pass",
-  "checked_utc": "2026-10-14T15:35:55.657147+00:00",
+  "checked_utc": "2026-10-15T07:23:05.482979+00:00",
   "accepted_claim": "all1000 source-aware given reference worlds, current-ledger conditional consequences and disjoint formal50/formal950 collection protocols",
   "checks": {
     "static_and_type1000": true,
@@ -10,10 +10,14 @@
     "weather520": true,
     "current_frontend_case_bindings10000": true,
     "protocol50_950": true,
-    "human_current_answers_and_metadata_outside_role_input": true
+    "human_current_answers_and_metadata_outside_role_input": true,
+    "task_contrast10000": true,
+    "priority41": true,
+    "equal857_classified": true,
+    "actual_browser500_and1000": true,
+    "actual_submit_revision_recovery_withdrawal": true
   },
-  "physics_evidence": "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/PHYSICAL_PRODUCTION_COMPLETE.json",
-  "input_signature": "9a905b809a09ea16859b78f888e7f49f1eee8d1137cf9f4d525c7dc717e45ec2",
+  "physics_evidence": "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/PHYSICAL_PRODUCTION_COMPLETE.json",
   "other950_executed": true,
   "collection_release": true,
   "training_release": false,
@@ -22,5 +26,10 @@
   "physical_calibration_complete": false,
   "scientific_benchmark_admitted": false,
   "whole_program_scientific_completion": false,
-  "independent_peer_review": false
+  "independent_peer_review": false,
+  "input_signatures": {
+    "original50": "3359d4a44f14a72bbc5ea5f46fdbc3f59b5b45eec9af205502670372fbf421ff",
+    "other950": "61a066f11a2e6a8d24efa5d1cc5e4f730671de3328b4f16d0425b0e80bc194e5",
+    "weather_sensitivity": "4522a3eb2ed4859f26551c574c7657dd7d04a614116d030ea869195860a14b9d"
+  }
 }

@@ -136,7 +136,7 @@ class Server(ThreadingHTTPServer):
         self.releases={r.batch:r for r in releases};self.origin=origin
         allids=[row['household_id']for r in releases for row in r.rows.values()];assert len(allids)==len(set(allids)),'cohorts overlap'
         signature=hashlib.sha256(encoded({r.batch:r.signature for r in releases})).hexdigest()
-        self.store=Store(data_root,signature,fixtures=fixtures);self.request_slots=threading.BoundedSemaphore(8);super().__init__(('127.0.0.1',port),Handler)
+        self.store=Store(data_root,signature,fixtures=fixtures,cohort_releases={r.batch:r.signature for r in releases});self.request_slots=threading.BoundedSemaphore(8);super().__init__(('127.0.0.1',port),Handler)
     def process_request(self,request,client_address):
         self.request_slots.acquire()
         try:super().process_request(request,client_address)

@@ -1,64 +1,45 @@
 {
-  "version": "household1000-v28-formal50-formal950",
+  "version": "household1000-v29-task-contrast",
   "default_mode": "read-only receipt verification; formal collection deployed; no automatic EP or training",
   "scientific_rule_changes_in_this_publication": true,
-  "active_stage": "formal50_950_production_v28_20261014",
-  "design_data_version": "v28",
-  "latest_requirement_stage": "formal50_950_production_v28_20261014",
+  "active_stage": "contrast_repair_v29_20261015",
+  "design_data_version": "v29",
+  "latest_requirement_stage": "contrast_repair_v29_20261015",
   "steps_are_historical_source_chain": false,
   "current_original50_source_steps": [
     {
-      "id": "type-policy-world",
+      "id": "frozen-parent-households-A-needs-hardware-dates",
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/type_model.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/worlds.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/activity_model.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/needs.py"
+        "docs/research/collection-adjustment-20260930/household1000/formal50_950_production_v28_20261014/METHODS_AND_ACCEPTANCE.md"
       ],
-      "scope": "reference original50;full1000 pending"
+      "scope": "V28 accepted frozen parent1000"
     },
     {
-      "id": "normalA-candidateB",
+      "id": "input-only-contrast-repair",
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/plans.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/generate.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/execution.py"
+        "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/contrast_core.py",
+        "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/repair_contrast.py",
+        "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/compile_repaired.py"
       ],
-      "scope": "reference original50;full1000 pending"
+      "scope": "all10000;no EP-based candidate selection"
     },
     {
-      "id": "concrete-features-clustering",
+      "id": "school-original50-before950",
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/audit_pilot.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/cluster_pilot.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/cluster_actual.R"
+        "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/cohort_gate.py",
+        "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/execute_physics.py",
+        "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/final_contrast.py"
       ],
-      "scope": "reference original50;full1000 pending"
+      "scope": "full50 acceptance gates other950;only affected EP branches new"
     },
     {
-      "id": "physical-input-and-readback",
+      "id": "source-physics-browser-collection",
       "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/compile_inputs.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/physics.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/weather_audit.py"
+        "docs/research/collection-adjustment-20260930/household1000/contrast_repair_v29_20261015/code/materials.py",
+        "deploy/contrast_validation_20261015/browser_fixture.py",
+        "deploy/contrast_validation_20261015/complete_review.py"
       ],
-      "scope": "reference original50;full1000 pending"
-    },
-    {
-      "id": "original-frontend",
-      "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/materials.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/browser_acceptance.js"
-      ],
-      "scope": "reference original50;full1000 pending"
-    },
-    {
-      "id": "accept-and-freeze",
-      "source_files": [
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/finalize_pilot.py",
-        "docs/research/collection-adjustment-20260930/household1000/eb_type_pilot_v27_20261014/code/freeze_composition.py"
-      ],
-      "scope": "reference original50;full1000 pending"
+      "scope": "all10000 source cases,1500 actual browser pages,isolated fixture protocol"
     }
   ],
   "historical_steps": [

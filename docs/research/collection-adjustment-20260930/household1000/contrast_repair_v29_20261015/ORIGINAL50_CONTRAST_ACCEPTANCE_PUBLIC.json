@@ -1,0 +1,29 @@
+{
+  "batch": "formal50",
+  "human_validity_claim": false,
+  "input_signature": "3359d4a44f14a72bbc5ea5f46fdbc3f59b5b45eec9af205502670372fbf421ff",
+  "no_automatic_EP_launch": true,
+  "other950_may_proceed": true,
+  "passed": true,
+  "release_signature": "a32d5013e9b7281318584ddac48272dd9816d866cb6d6144bbeaab19764f9097",
+  "schema": "eb.final_task_world_acceptance.v29",
+  "source_receipt_sha256": "3420d4cf89820d1df357f3e571c26988a6615ef4a2450bb64f0651b9d3ec2853",
+  "private_evidence_sha256": {
+    "BROWSER_formal50_REVIEW.json": "b79da498fbffeb403a5e7c63075c66528ed5d68688fa9e1d86541702e87ac8d3",
+    "CONTRAST_NEGATIVE_CONTROLS.json": "2fa4ebd8c83670adbe76e0ed3a9ff5f3974682ded1d4f8591e53d2cb30bc0fd0",
+    "CONTRAST_formal50_RELEASE_REVIEW.json": "93d1f680f19f98bf6bb5849d6cf53c2a6b1907cddcd36d1c36a5f63927f8a82a",
+    "FORMAL_formal50_CASE_REVIEW.json": "c741f35f3babe642246ef266322be7e3f58120a7a0cceeb0b901a826c522353a",
+    "HTTP_formal50_REVIEW.json": "355d5d34da606ed7015c1f11f2149fff25c41f39ca7ed54a46181d19c89770f1",
+    "PHYSICS_original50_REVIEW.json": "d7066d5d5f44e10275d51b5906069ff8b19c0a5c1d5b61030febced9ceea0cbe",
+    "formal_release50/FORMAL_RELEASE.json": "b50fc06ba2f508fc42a0b25c13308f01491372f4b87d4d311ab5d9f1b8f74ae5"
+  },
+  "public_evidence_sha256": {
+    "PHYSICS_original50_REVIEW.json": "d7066d5d5f44e10275d51b5906069ff8b19c0a5c1d5b61030febced9ceea0cbe",
+    "FORMAL_formal50_CASE_REVIEW.json": "c741f35f3babe642246ef266322be7e3f58120a7a0cceeb0b901a826c522353a",
+    "HTTP_formal50_REVIEW.json": "355d5d34da606ed7015c1f11f2149fff25c41f39ca7ed54a46181d19c89770f1",
+    "BROWSER_formal50_REVIEW_PUBLIC.json": "967f6f01ca43a3e6852169f8f18c94e225b993e7f476a2f43b7642a967263994",
+    "CONTRAST_formal50_INPUT_PUBLIC.json": "01aba8483ac2be44fb1f43529deacae0db7edac04d53d6d61290cf4c0dc44f8a",
+    "CONTRAST_NEGATIVE_CONTROLS.json": "2fa4ebd8c83670adbe76e0ed3a9ff5f3974682ded1d4f8591e53d2cb30bc0fd0"
+  },
+  "public_transformation": "individual task classification and full release payloads remain private; original evidence hashes retained"
+}
