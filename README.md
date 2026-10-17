@@ -1,98 +1,34 @@
-当前50户正式问卷已更新V30.3；950户按要求暂停。原始学校收据同步待恢复，已封存50包和执行观察分别列明。见[当前状态与证据](docs/household1000/README.md)。
+# EnergyBridge 家庭用电偏好 Benchmark
 
-以下保留历史版本说明，其旧当前状态已由上述状态替代。
+当前基线是**50户、500组A46/B57**，每名参与者评价固定一户的10个日期。免邀请码、无时间轴，四项评分、接受判断及原因必填；支持保存、恢复、修订、撤回和版本化人工质控。
 
-# EnergyBridge 家庭用电问卷
+**[打开当前50户问卷](https://47.85.194.154/household50-current/)** · [版本清单](benchmark/releases/reference50-v1/MANIFEST.json) · [11项验收状态](benchmark/ACCEPTANCE.md)
 
-当前V29已补任务区分度：优先41组全部修正、原857组分类核清，原50完整验收后更新950。家庭/正常A/需求/硬件不变；未跑整套1000户EP，改变输入的B在学校核验。工程可辨与真人可辨分开报告。见[当前结果和证据](docs/household1000/CONTRAST_REVIEW_20261015.md)。
+| 对象 | 与当前版本的关系 | 已完成与待完成 |
+|---|---|---|
+| 50户/500组 | 同源原比例子集，六类5/15/16/5/4/5 | 当前参考物理V61、摘要V62及采集V69；真人有效标签待实际采集 |
+| 1000户/10000组 | 包含这50户的同一主数据，A46/B57 | 输入已生成；本版全量物理、标签及最终评测未完成，继续暂缓 |
+| 线上版本 | `reference50-v1` / V69，每人10题 | 不再限制为12人3题；保留原排程、仿真和B失败，不预填答案 |
 
-当前 **V29：50户与950户正式角色问卷（2026-10-15）**：[完整生产链与证据](docs/household1000/README.md)。1000户/2524名参考成员/10000组A/B/20000份基准IDF已完成学校静态、类型覆盖及物理验收，原50先通过后才运行950；另完成200组原50敏感性及520组气象敏感性。A服务/功率、时序和计量闭合无失败。六类A101/B303/C319/D101/E85/F91是结构约束下的给定政策构成，非全国自然偏好占比。
+旧版全1000户验收不能用于证明当前A46/B57已完成全量仿真。历史`/household50`、`/household950`及原自报家庭入口不代表当前版本。
 
-正式入口：[50户/500任务](https://47.85.194.154/household50)、[950户/9500任务](https://47.85.194.154/household950)。两个角色集合不相交，沿用成熟问卷，保留影响、本人年龄/性别选填、简略动作与完整时段展开；邀请码分户，支持参与说明、回执、恢复、修订和撤回。[正式采集协议与核验](deploy/formal_questionnaires_20261014/RELEASE.md)。正式答卷与旧试填库独立；未完成真人有效性、自然偏好占比或最终benchmark验证，训练未准入。
+## 数据如何生成
 
-本仓库现保留两条路径：当前固定角色研究链与下方原真实家庭自报问卷。源码/状态已同步，调查原件、逐户研究包、IDF/天气/SQL及真人记录留在受控研究环境。
+有来源约束的家庭骨架和住房 → 设备与支持边界 → 上游生活日程 → 正常A → 同需求下的VPP调整B → 同版A/B仿真 → 能耗、生活和客观VPP摘要 → 家庭角色评价。B可失败、不利或被拒绝；客观达标不等于接受。
 
-网站：https://47.85.194.154/
+[完整生成规则](benchmark/GENERATION.md) · [数据卡](benchmark/DATASET_CARD.md) · [采集质控](benchmark/COLLECTION.md) · [评测边界](benchmark/EVALUATION.md) · [复现步骤](benchmark/REPRODUCTION.md)
 
-数据样例：[完整案例](examples/real-test-20260914/full-collected-record.json) · [清洗后的 input / output](examples/real-test-20260914/cleaned-supervision.json)
-
-这个项目用问卷收集家庭对用电调整方案的评价。参与者先填写家庭情况，系统调用 EnergyBridge（EB）规划和 EnergyPlus（EP）仿真，展示日常安排与调整后的安排，再收集同意或不同意、四项评分和原因。数据用于后续训练家庭评价模型。
-
-本仓库包含问卷网站、任务队列、仿真接入和数据导出代码。模型训练由后续项目负责。
-
-## 原真实家庭问卷填写流程
-
-```mermaid
-flowchart TD
-    A[填写家庭情况与电器安排] --> B[保存答卷，生成 EB 家庭配置]
-    B --> C[匹配天气与住宅模型]
-    C --> D[No-DR 日常安排与 EP 仿真]
-    C --> E[EB 调整安排与 EP 仿真]
-    D --> F[查看两份安排的时间轴和结果]
-    E --> F
-    F --> G[选择是否同意，填写评分与原因]
-```
-
-一位参与者代表家庭填写成员资料及最终评价。系统直接使用填写的家庭信息，不把家庭归入原 EB 的五类预设。问卷内容包括成员情况、用电习惯、电器时间安排、能源态度和住房信息；补充字段供后续分析使用。
-
-洗衣机、洗碗机和烘干机先填写最早开始、最晚完成和运行时长，再选择平时开始时间。滑块每 10 分钟一档，可选范围随前三项变化；温度支持 0.1℃。
-
-规划使用固定版本的原 EB `no_dr` 和 `agent` 入口，保留技术检查与回退，移除模拟家庭的接受判断和最终评分，并接入所选电器的 EP 执行接口。具体改动见[上游接口核对记录](docs/upstream-binding-review/README.md)。
-
-## 查看数据
-
-| 文件 | 内容 |
-|---|---|
-| [questionnaire-answers.json](examples/real-test-20260914/questionnaire-answers.json) | 用户实际提交的答案及提交版本 |
-| [full-collected-record.json](examples/real-test-20260914/full-collected-record.json) | 答卷、家庭配置、情境、两份方案、展示结果及反馈 |
-| [cleaned-supervision.json](examples/real-test-20260914/cleaned-supervision.json) | 家庭画像、事件、计划和可见结果作为输入；真人评价作为输出 |
-
-以上样例来自项目维护者授权公开的一次真实试填，当时按工程测试记录保存。其他答卷、数据库、运行日志和凭据不提交到仓库。服务器保存格式与导出命令见[数据说明](docs/DATA.md)。
-
-## 本地运行
-
-需要 Python 3.10+；运行仿真还需要 EnergyPlus 24.1。
+## 核验当前公开版本
 
 ```bash
-git clone https://github.com/Fanmili-5/energybridge-household-survey.git
-cd energybridge-household-survey
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-.venv/bin/python scripts/bootstrap_upstream.py
-.venv/bin/python scripts/bootstrap_resources.py
-.venv/bin/python realtime_pilot/server.py --port 8766 --disable-planning --data-dir /tmp/eb-survey-demo
+python -B benchmark/verify_publication.py
+python -B benchmark/collector/test_protocol.py
 ```
 
-打开 `http://127.0.0.1:8766/`，可以填写并保存测试问卷。此命令不调用模型。资源脚本会下载固定版本的天气和上游文件，并检查哈希；已有资源可通过 `bootstrap_resources.py --source-cache /path/to/existing-checkout` 复用。
+公开clone可核验源码、50/1000同源摘要与HTTP采集协议；测试只用虚构临时数据，不跑EP、不创建真人标签。获准研究工作区可按[采集器说明](benchmark/collector/README.md)构建、验证及部署对应受控资料包。
 
-离线后端测试：
+公开内容是当前代码、方法、格式、聚合证据和输入哈希。调查、逐户受控包、住宅/天气原件、完整EP输出及真人记录不在Git中；取得许可原件不自动意味着可以再分发。[来源与许可](THIRD_PARTY.md)
 
-```bash
-.venv/bin/python scripts/test_offline.py
-```
+当前不是已完成真实标签、独立测试集和模型成绩的论文benchmark发布。具体划分与正式评测指标待确认冻结，工程测试与物理参考不能替代真人理解和研究有效性。
 
-安装 EnergyPlus 后，可加入原生仿真测试：
-
-```bash
-EPLUS_ROOT=/path/to/EnergyPlus-24-1-0 EB_TEST_NATIVE_EP=1 .venv/bin/python scripts/test_offline.py
-```
-
-测试脚本禁止访问外部网络，使用固定模型回复。启用真实规划需要单独配置模型服务，见[部署说明](docs/DEPLOYMENT.md)。
-
-## 合成家庭研究：当前1000户与旧版历史
-
-当前固定角色链使用1000户城市普通住宅参考世界、每户原季度分层十个日期、4–6类EB功能设备和混合A/B。B可包含服务冲突或风险，物理注释不替真人填写采用答案。完整代码、来源、输入依赖、已验证范围和未完成项见[1000户当前入口](docs/household1000/README.md)。
-
-旧300户工程链和[2026-09-29方法快照](docs/SYNTHETIC_PREFERENCE_BENCHMARK_METHODS_20260929.md)保留作历史；其中年度/夏季十天、设备参数与旧状态不能用于说明当前版本已经完成。
-
-## 文档
-
-- [问卷字段与用途](docs/QUESTIONNAIRE.md)
-- [数据保存与导出](docs/DATA.md)
-- [天气、住宅和日期匹配](simulation_resources/README.md)
-- [中文答案转为英文 EB 输入](docs/planner-language.md)
-- [部署与维护](docs/DEPLOYMENT.md)
-- [文档目录与历史记录](docs/README.md)
-- [第三方代码及资源来源](THIRD_PARTY.md)
-
-当前50/950固定角色入口为正式采集版本；原自报问卷保留各自版本。真人有效性与训练准入仍需后续验证。待处理问题见[验证记录](docs/AUDIT.md)。
+[完整基准入口](benchmark/README.md) · [旧主说明归档](docs/history/README_BEFORE_REFERENCE50_20261017.md)

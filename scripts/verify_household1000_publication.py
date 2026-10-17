@@ -11,6 +11,11 @@ def read(path):return json.loads(path.read_text())
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def check():
+    if read(PUBLIC/'STATUS.json').get('active_stage')=='reference50-v1':
+        import importlib.util
+        spec=importlib.util.spec_from_file_location('current_reference_publication',ROOT/'benchmark/verify_publication.py')
+        current=importlib.util.module_from_spec(spec);spec.loader.exec_module(current)
+        return current.check()
     status=read(PUBLIC/'STATUS.json');stage=H/status['active_stage']
     board=read(H/'repair_execution_20261008_v1/EXECUTION_BOARD.json')
     if status.get('release_scope')=='formal50_only_950_paused':

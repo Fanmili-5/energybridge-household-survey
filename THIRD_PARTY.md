@@ -8,3 +8,6 @@
 - PsychroLib 2.5.0：<https://github.com/psychrometrics/psychrolib>，Meyer与Thevenard，JOSS 2019，DOI10.21105/joss.01137。家庭1000参考检查所附 `psychrolib_reference.py` 保留原实现归属，旁附 `PSYCHROLIB_LICENSE.txt`（MIT；Copyright 2018–2020 The PsychroLib Contributors）；它只支持湿空气数值核验，不授予住宅或设备性能验证。
 
 本仓库没有为所有来源统一声明一个开源许可证。
+
+
+当前参考基准的输入边界见`benchmark/DATASET_CARD.md`。生成源码包含既有PsychroLib参考实现，保留其原版权及MIT许可；源目录相邻许可文件按`benchmark/generation/SOURCE_CATALOG.json`一并保留。当前代码可见性不为所有研究输入统一授予新许可。

@@ -146,6 +146,14 @@ def main():
     binding_parser.add_argument('--workspace', type=Path, required=True)
     binding_parser.add_argument('--scope', choices=['static1000', 'pilot50'], default='pilot50')
     args = parser.parse_args()
+    current = json.loads((PUBLIC / 'STATUS.json').read_text())
+    if current.get('active_stage') == 'reference50-v1':
+        if args.command == 'status':
+            print(json.dumps(current, ensure_ascii=False, indent=2))
+            return 0
+        print(json.dumps({'status':'current_reference50_scope','legacy_generation_not_admitted':True,
+                          'full1000_EP_allowed':False,'reason':'Use benchmark/REPRODUCTION.md and the current source manifest; legacy gates do not admit A46/B57.'},ensure_ascii=False))
+        return 2
     if args.command == 'status':
         print((PUBLIC / 'STATUS.json').read_text())
         return 0

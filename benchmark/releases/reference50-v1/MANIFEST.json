@@ -1,0 +1,87 @@
+{
+  "schema": "eb.reference_benchmark.public_manifest.v1",
+  "dataset_id": "reference50-v1",
+  "release_date": "2026-10-17",
+  "cohort": {
+    "households": 50,
+    "cases": 500,
+    "type_counts": {
+      "A": 5,
+      "B": 15,
+      "C": 16,
+      "D": 5,
+      "E": 4,
+      "F": 5
+    },
+    "same_master_subset": true
+  },
+  "master": {
+    "households": 1000,
+    "cases": 10000,
+    "type_counts": {
+      "A": 101,
+      "B": 303,
+      "C": 319,
+      "D": 101,
+      "E": 85,
+      "F": 91
+    },
+    "A_stage": "normal_A_v46_20261017",
+    "B_stage": "candidate_B_v57_20261017",
+    "input_generation_complete": true,
+    "physical_complete": false,
+    "full1000_deferred_by_user": true
+  },
+  "online": {
+    "url": "https://47.85.194.154/household50-current/",
+    "release_sha256": "1e1ee2b4931ab67997d17c57b5c3863e915e31309054dc1eedc26da1d5adeff7",
+    "ui_revision": "eb.questionnaire50.collection.v69",
+    "questions_per_participant": 10,
+    "invitation_required": false,
+    "twelve_slot_cap": false,
+    "timeline": false
+  },
+  "physical": {
+    "stage": "unified_physics50_v61_20261017",
+    "impact_stage": "impact_summary50_v62_20261017",
+    "households": 50,
+    "cases": 500,
+    "sensitivity_cases": 200,
+    "sensitivity_comparisons": 632,
+    "sensitive_cases": 44,
+    "sensitive_comparisons": 72,
+    "not_individually_sensitivity_tested_cases": 300
+  },
+  "source_pins": {
+    "master_AB_pointer": "dc48c8bda5c921f958e2fd43e008d11d20385845e2c2bfc375fe9a577b891147",
+    "physical_seal": "7683e1fba954b1a6a2f0c9dceca97d722a4f1a001ee15714d405eab0e29a2e0b",
+    "summary_bindings": "f3f8f0ea4bb3a55482d45eda5d4e9c36a25afd1f2e774ca35732f6d6994593d8",
+    "summary_seal": "2e991796142950960f7d6c4ce682267579393c8864b517f68d70696558ec97fa"
+  },
+  "collector_files": {
+    "README.md": "5dccf7dc02d0e9aad72921d829f79b350c4ad5ca5e673af64a86036d91649697",
+    "admin.py": "82663519a69cf782fbe64ea6581afa2715b03f9be21d4b4dbc84b6b08042e016",
+    "answer_contract.py": "125a2408299519fd14f8c65fa708fb8e940c1fd83319bb02f57c16510d9ff0bd",
+    "base.css": "e00d0c00f6d8cccc9c106a18be2a525e0fac1c0ca461a1ee9232597e929752df",
+    "build.py": "035f4573e2ce0ff79dc589b54093c7c8c64938802a3309a50046fa7d7f1ab566",
+    "collection-client.js": "f389f19cda9f9851fb5c1f08c78c2e1a0c58420dac4752c74635cb9c52475a5a",
+    "entry.html": "5e4927e250f586681671048aa61f009d8e2ffb142b042dfc58aa7018a2483553",
+    "entry.js": "461f28e7d8b23d50469f457e2f4a232af45b7314695817e39fc4ed46e118e995",
+    "identity.py": "c6ac8de0d78e127d38a0963632616f62443653165e38a50e09304306045bfb84",
+    "index.html": "11935829f30d696e062aca399985b815e21722a8e3ed471194cedf7cca624b1d",
+    "ledger.py": "a37cf99c1304d59ad4999c3ae19b5a2e6346f8fff149d4f16e9ff3c8995cbdea",
+    "make_fixture.py": "0518ef15d171c1e62cbc4063cc382233401c0e75ca7139bc073c976437eb33e0",
+    "release.py": "655c737b910f2035996d3bef9291238683fafcca73a8a0abd15ab6856520cc07",
+    "required-response.js": "aaa539fb696574972a07735e833c821feced8da2782520f02ec0965d95a3762a",
+    "server.py": "9ae953353eec85152b7b5229ce124fcf0da5dddf9b76e1d6ec5f4df69b6b40c5",
+    "test_protocol.py": "f975b19816207c56309903d836e70738993c0ccc7c431f12399f3341c102dcae",
+    "view.css": "22f0158a79449120981e8500609ddb27cd3e494bd73506ea46cc61f300e9c969",
+    "view.js": "4cff389151ba083443c8c676d3f9b80eceec6caa90d5531f01ffdb3a5563fee2"
+  },
+  "data_access": "controlled_inputs_and_records_not_in_git",
+  "human_labels_published": 0,
+  "human_validity_verified": false,
+  "training_release": false,
+  "whole_benchmark_validated": false,
+  "public_metadata_only": true
+}

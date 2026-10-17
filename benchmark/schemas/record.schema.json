@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:energybridge:reference-record:v1",
+  "title": "Version-bound collected record envelope",
+  "type": "object",
+  "required": [
+    "schema",
+    "ui_revision",
+    "answer_contract",
+    "source_release_sha256",
+    "source_case_sha256",
+    "source_profile_sha256",
+    "source_bindings",
+    "case_id",
+    "household_id",
+    "date",
+    "participant_id",
+    "input",
+    "input_sha256",
+    "response",
+    "objective_results",
+    "revision",
+    "receipt_id",
+    "consent",
+    "label_origin",
+    "human_label_count",
+    "training_release"
+  ],
+  "properties": {
+    "source_release_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "source_case_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "source_profile_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "input_sha256": {
+      "$ref": "#/$defs/sha"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "response": {
+      "$ref": "urn:energybridge:reference-response:v1"
+    },
+    "input": {
+      "type": "object",
+      "required": [
+        "fields",
+        "expanded_schedule",
+        "answer_instructions"
+      ],
+      "not": {
+        "required": [
+          "response"
+        ]
+      }
+    },
+    "objective_results": {
+      "type": "object",
+      "required": [
+        "source_case_sha256",
+        "VPP_requests",
+        "VPP_results"
+      ],
+      "not": {
+        "required": [
+          "response"
+        ]
+      }
+    },
+    "label_origin": {
+      "enum": [
+        "engineering_fixture",
+        "participant_roleplay_submission"
+      ]
+    },
+    "human_label_count": {
+      "enum": [
+        0,
+        1
+      ]
+    },
+    "training_release": {
+      "const": false
+    }
+  },
+  "$defs": {
+    "sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "label_origin": {
+            "const": "engineering_fixture"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "human_label_count": {
+            "const": 0
+          }
+        }
+      }
+    }
+  ]
+}

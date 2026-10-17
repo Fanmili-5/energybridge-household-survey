@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:energybridge:reference-response:v1",
+  "title": "Role-preference response; objective outcomes are separate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision",
+    "score",
+    "comfort_score",
+    "energy_score",
+    "vpp_score",
+    "reason"
+  ],
+  "properties": {
+    "decision": {
+      "enum": [
+        "accept",
+        "reject"
+      ]
+    },
+    "score": {
+      "$ref": "#/$defs/rating"
+    },
+    "comfort_score": {
+      "$ref": "#/$defs/rating"
+    },
+    "energy_score": {
+      "$ref": "#/$defs/rating"
+    },
+    "vpp_score": {
+      "$ref": "#/$defs/rating"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000,
+      "pattern": "\\S"
+    }
+  },
+  "$defs": {
+    "rating": {
+      "type": "number",
+      "enum": [
+        1.0,
+        1.1,
+        1.2,
+        1.3,
+        1.4,
+        1.5,
+        1.6,
+        1.7,
+        1.8,
+        1.9,
+        2.0,
+        2.1,
+        2.2,
+        2.3,
+        2.4,
+        2.5,
+        2.6,
+        2.7,
+        2.8,
+        2.9,
+        3.0,
+        3.1,
+        3.2,
+        3.3,
+        3.4,
+        3.5,
+        3.6,
+        3.7,
+        3.8,
+        3.9,
+        4.0,
+        4.1,
+        4.2,
+        4.3,
+        4.4,
+        4.5,
+        4.6,
+        4.7,
+        4.8,
+        4.9,
+        5.0
+      ]
+    }
+  }
+}

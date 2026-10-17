@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Cite the exact reference50-v1 code and data-contract version used."
+title: "EnergyBridge reference-household preference benchmark infrastructure"
+type: software
+version: "reference50-v1"
+date-released: 2026-10-17
+repository-code: "https://github.com/Fanmili-5/energybridge-household-survey"
+authors:
+  - name: "Fanmili-5"

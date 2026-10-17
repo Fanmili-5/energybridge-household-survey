@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "engineering_fixture_only": true,
+  "question_count": 10,
+  "initial_scores_empty": true,
+  "initial_acceptance_unselected": true,
+  "initial_reason_empty": true,
+  "partial_draft_and_view_history_restored_in_browser": true,
+  "real_browser_submit_TEST_receipt": true,
+  "separate_VPP_preference_and_objective_verified": true,
+  "human_labels_created": 0,
+  "production_records_written": 0
+}

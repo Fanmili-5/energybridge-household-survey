@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "source_households": 50,
+  "source_cases": 500,
+  "questions_per_participant": 10,
+  "open_entry_no_invitation_or_twelve_slot_cap": true,
+  "concurrent_household_assignment": true,
+  "complete_case_retained": true,
+  "idle_assignment_does_not_block_replenishment": true,
+  "partial_draft_view_cross_session_restart_backup": true,
+  "version_identity_and_case_guards": true,
+  "mandatory_fields": true,
+  "quality_review_revision_bound": true,
+  "objective_VPP_separate": true,
+  "append_only_revisions_and_idempotency": true,
+  "withdrawal_excluded": true,
+  "negative_requests_rejected": 18,
+  "human_labels_created": 0,
+  "production_records_written": 0
+}
