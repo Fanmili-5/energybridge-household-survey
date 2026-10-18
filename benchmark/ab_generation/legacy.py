@@ -8,6 +8,7 @@ from pathlib import Path
 from .common import bound, digest, read, save, seal, sha
 from .generate import binding
 from .model import plan_commands
+from .resources import authority, legacy_program_constraints
 
 
 def channel(trace, name, key):
@@ -53,15 +54,17 @@ def extract(pack, pair, physics, trace, source):
         mode = 'identical_control'
     else:
         mode = 'fresh_candidates'
-    context = {'schema': 'eb.ab_generation.context.v1', 'case_id': pair['case_id'],
+    context = {'schema': 'eb.ab_generation.context.v2', 'case_id': pair['case_id'],
                'household_id': pair['household_id'], 'date': pair['date'],
                'decision_min': pair['decision_min'], 'horizon_min': [480, 1920],
-               'A': plan_commands(pair['A']), 'needs': pair['needs_A'],
+               'A': plan_commands(pair['A']), 'needs': legacy_program_constraints(pair['needs_A']),
                'devices': pack['world']['parameter_pack']['devices'],
                'operator_windows': dict(windows), 'occupancy': {k: intervals(v) for k, v in occupancy.items()},
                'reservations': reservations, 'events': pair['VPP_events'],
+               'event_meter_scope': 'modeled_controlled_equipment',
                'tariff': [], 'assignment': {'mode': mode, 'source': 'frozen_legacy_assignment;not_reclassified_by_new_outcomes'},
                'source': source}
+    context['authority'] = authority(pack, windows)
     if mode == 'preserved_failure_replay':
         context['retained_B_request'] = plan_commands(pair['B'])
     thermal = {}
@@ -75,7 +78,7 @@ def extract(pack, pair, physics, trace, source):
             fans = channel(trace, 'Fan Electricity Energy', name.replace('_UNIT', '_FAN'))
             temps = channel(trace, 'Zone Mean Air Temperature', device['room_id'])
             # This is the supplied electrical reference rating, not cooling W.
-            cap = device['parameters']['max_electric_W']
+            cap = device.get('max_electric_kw', device['parameters']['max_electric_W'] / 1000) * 1000
         else:
             name = physics['tank_name']
             energy = channel(trace, 'Water Heater Electricity Energy', name)

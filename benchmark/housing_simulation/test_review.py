@@ -140,6 +140,36 @@ class ReadbackReviewTests(unittest.TestCase):
     def test_complete_contract_passes(self):
         with tempfile.TemporaryDirectory()as t:self.assertTrue(self.fixture(Path(t))['passed'])
 
+    def test_feasible_trip_does_not_hide_departure_target_shortfall(self):
+        def change(meta, trace):
+            meta['EV'] = {'installed': True, 'energy_balance_error_kWh': 0,
+                          'stop_at_unexecutable_trip_min': None, 'end_energy_kWh': 42,
+                          'trips': [{'unserved_traction_kWh': 0, 'minimum_reserve_shortfall_kWh': 0,
+                                     'target_shortfall_kWh': 1}]}
+            meta['EV_grid_steps'] = []
+            values = [[t, 0] for t, _ in trace['Electricity:Facility|']['values']]
+            for name in ('ExteriorEquipment:Electricity|', 'Exterior Equipment Electricity Energy|EXTERNAL_EV'):
+                trace[name] = {'unit': 'J', 'is_meter': name.startswith('ExteriorEquipment:'), 'values': values}
+        with tempfile.TemporaryDirectory() as temp:
+            result = self.fixture(Path(temp), change)
+            self.assertFalse(result['passed'])
+            self.assertTrue(result['records'][0]['checks']['B_EV_balance'])
+            self.assertFalse(result['records'][0]['checks']['B_EV_departure_target'])
+
+    def test_independent_comfort_is_checked_and_unknown_is_preserved(self):
+        for band in ([26, 27], None):
+            def change(meta, trace):
+                meta['comfort_requirements'] = [{'need_id': 'comfort', 'room_id': 'room', 'release_min': 480,
+                                                'deadline_min': 1920, 'temperature_band_C': band}]
+            with self.subTest(band=band), tempfile.TemporaryDirectory() as temp:
+                result = self.fixture(Path(temp), change)
+                if band:
+                    self.assertFalse(result['passed'])
+                    self.assertFalse(result['records'][0]['checks']['B_declared_comfort'])
+                else:
+                    self.assertTrue(result['passed'])
+                    self.assertEqual('unknown', result['records'][0]['details']['B_independent_comfort']['status'])
+
     def test_missing_zone_channel_in_both_arms_cannot_pass(self):
         with tempfile.TemporaryDirectory()as t:
             result=self.fixture(Path(t),lambda m,tr:tr.pop('Zone Mean Air Temperature|ROOM'))

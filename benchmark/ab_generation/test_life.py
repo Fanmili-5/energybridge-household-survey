@@ -206,10 +206,14 @@ class LifeTests(unittest.TestCase):
         windows = {}
         for d in p['days'].values():
             for mid, spans in d['operator_windows'].items(): windows.setdefault(mid, []).extend(spans)
-        c = {'schema': 'eb.ab_generation.context.v1', 'case_id': 'new-life-case', 'household_id': p['household_id'],
+        c = {'schema': 'eb.ab_generation.context.v2', 'case_id': 'new-life-case', 'household_id': p['household_id'],
              'date': p['anchor'], 'decision_min': 480, 'horizon_min': [480, 1920], 'A': p['A'],
              'needs': p['requirements'], 'devices': self.world['devices'], 'operator_windows': windows,
              'occupancy': {}, 'reservations': [], 'events': [], 'tariff': [], 'source': {'world': p['world_sha256']}}
+        c['authority'] = {'schema': 'eb.ab_authority.v1', 'assets': {
+            d['asset_id']: {'authorized_operator_ids': [m['member_id'] for m in self.world['members'] if d['asset_id'] in m['can_operate_asset_ids']],
+                            'target_control_authorized': True} for d in self.world['devices']},
+            'immutable_operator_ids': [], 'origin': 'declared_test_world'}
         c['reference'] = {'binding': binding(c), 'thermal': {}, 'ev_charging_steps': []}
         return c
 

@@ -49,14 +49,15 @@
     "calendar generalization maps target year to2026, rejects leap-day and >365day intervals;history/recovery coverage cannot truncate",
     "deterministic household ordering and canonical JSON serialization;content hash includes all module Python files",
     "v2.1 audit adds typed weather provenance and annual profile gates; fixed assumption catalog in physics identity; complete room/node/service readback and authority/EV/calendar constraints",
-    "accept explicit physical EV connections from life generator; verify known anchor state, original handling bounds and journey exclusion; legacy operation-derived connections unchanged"
+    "accept explicit physical EV connections from life generator; verify known anchor state, original handling bounds and journey exclusion; legacy operation-derived connections unchanged",
+    "report native heating/cooling coil energy for mode-evidenced A opportunities;check EV departure target separately from trip feasibility and terminal recovery"
   ],
   "kernel_files": {
     "__init__.py": "f45e77cbda2b4a8adbce11ebd4dc59970914188fc60113833495d5d29bf06332",
-    "compiler.py": "d737f438ebdbabd1bb3a8cff70b42c391794fa4067434326b9c2120c5f0dc542",
+    "compiler.py": "0a985cd528d7f7f916635621150d1c9001258fc98e431dbd50d6268761ecc477",
     "core.py": "57fb60aafaeee263198304e5e71dda3045cf5fe299aac3a1d76b00af91270e15",
     "core_tools.py": "5e39a8aac787d42c2bc301e5b4eb03300718af989ace0729c1c796777d5ba7a4",
-    "execution.py": "339273b95e67bba7881dbd29eae30fec8316032a66b7abaa92faf65ac7001479",
+    "execution.py": "c67c5926f1a117a0c34da010fe30755c1a4f13e9a504544f91f635ee0988bd6e",
     "faces.py": "57a902e41d5e1d4e34e37b2a0b87c6beaf4de43f5290cfb5fc5c5a46bf181029",
     "geometry.py": "a8b2af617f6cdab2f02945849ac254b2fabcd3b1ce1fab26b94c67a0960aa024",
     "native_bundle.py": "e0ea3180b9ab0f8dfff09b3bef793dbbf6ac90d91fced97f8638d3ec3587161a",

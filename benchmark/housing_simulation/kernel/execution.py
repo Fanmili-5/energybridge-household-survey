@@ -1,10 +1,21 @@
 """Literal operator and device execution; independent of resource paths."""
 import collections
+import bisect
 import datetime as dt
 
 
 def overlap(a,z,b,y):
     return max(a,b)<min(z,y)
+
+
+def departure_target_times(connections, departures):
+    """A home charge target applies to the next departure, not every away leg."""
+    ordered = sorted(departures); result = set()
+    for a, z in connections.values():
+        index = bisect.bisect_left(ordered, z)
+        if index < len(ordered):
+            result.add(ordered[index])
+    return result
 
 
 def explicit_EV_connections(pack, base):

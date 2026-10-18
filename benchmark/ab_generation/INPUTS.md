@@ -1,65 +1,66 @@
-# 数据接口
+# B生成与后果回读接口
 
-## 1. 批次与规则
+## 1. 版本与单位
 
-批次为UTF-8 JSON：`schema=eb.ab_generation.batch.v1`，`records`为 `{case_id,context}` 列表。`context`相对批次文件解析，不得越出批次根目录。案例ID必须唯一。允许JSON与gzip JSON；公开生成阶段仅使用Python标准库。
+规范上下文为 `eb.ab_generation.context.v2`，生成结果为 `eb.ab_generation.result.v2`，包阶段为 `eb.ab_generation.frozen_A.v2`，物理报告为 `eb.ab_generation.physical_report.v2`。批次容器沿用 `eb.ab_generation.batch.v1`。v1上下文只有补齐明确资源契约后才可作为过渡输入；缺失时拒绝并要求重新导入，不默认赋予权限或定时能力。
 
-`--rules`为 `eb.ab_generation.rules.v1`。支持字段及默认水平见 `examples/rules.json`。未知字段、未知选择规则、非10分钟时间水平和非正剂量被拒绝。不同实验应另存配置，不修改已封存清单。
+时间为相对案例日期的整数分钟，采用10分钟网格；负值表示通知前/前一日期。功率kW，电量kWh，温度°C，电价为显式币种每kWh。原始轨迹能耗J在回读时转换，不能直接与kWh相加。
 
-## 2. 案例上下文
+## 2. 上下文
 
-| 字段 | 类型/单位 | 定义 |
-|---|---|---|
-| `schema` | string | `eb.ab_generation.context.v1` |
-| `case_id`,`household_id`,`date` | string | 案例、家庭及原日历日期 |
-| `decision_min` | integer，min | 已知情境并允许提出干预的起点 |
-| `horizon_min` | integer[2]，min | 主机会搜索区间；分钟均相对 `date`，允许日外值 |
-| `A.tasks` | object[] | `task_id,need_id,asset_id,kind,start_min,end_min` |
-| `A.operations` | object[] | `operation_id,need_id,asset_id,kind,operator_id,room_id,start_min,end_min` |
-| `A.controls` | object[] | 设备原生控制；AC供暖/制冷设定与风机、热水设定、EV许可及SOC目标 |
-| `needs` | object[] | 独立服务需求；程序至少含 `need_id,asset_id,kind,release_min,deadline_min`；可含最长取出等待 |
-| `devices` | object[] | 设备标识、类型、房间及参数；程序功率kW；温控温度°C；EV参数不由类别猜测 |
-| `operator_windows` | object | 原操作人员到绝对分钟区间列表的映射 |
-| `occupancy` | object | 房间到实际有人区间列表的映射；不同于温控许可 |
-| `reservations` | object[] | `room_id,start_min,end_min`，含原共享预约及洗浴占用 |
-| `events` | object[] | 固定 `event_id,start_min,end_min,direction,target_kw`；方向为 `up/down` |
-| `tariff` | object[] | 分段 `start_min,end_min,price_per_kWh`；可空，空或不完整时费用排序不可用 |
-| `assignment` | object | `mode=fresh_candidates/identical_control/preserved_failure_replay`；事先固定 |
-| `retained_B_request` | object | 仅指定失败回放必需，原始B命令；不得用新候选替换 |
-| `source` | object | 原家庭、A输入、模型、天气、引擎、初始化及相关来源摘要 |
-| `reference` | object | 下述当前A运行参考 |
-
-本版本要求同一设备同类控制区间不重叠。程序任务与操作ID唯一、资产存在、起止有效、分钟在10分钟网格上。它不是全部家庭世界的领域验证器；物理/服务完整性仍由住房模块执行。
-
-## 3. 当前A参考
-
-`reference.binding`由 `benchmark.ab_generation.generate.binding(context)`计算，包含 `A_commands_sha256`及物理上下文摘要。它必须与当前输入一致，失配立即拒绝。`reference.provenance`声明来源。
-
-`reference.thermal[asset_id]`为 `{minute,temperature_C,electric_kWh,headroom_kWh}`列表。温度为间隔起点，能量对应其后10分钟；AC电量扣除风机，额定电余量是搜索参照。公开合成例将参考明确标为人工测试状态。
-
-`reference.ev_charging_steps`为当前A已交付的 `{need_id,start_min,end_min,grid_kWh}`。没有能量的许可时段不构成EV机会。它不包含新B的连续SOC结果。
-
-## 4. 生成结果
-
-每案输出 `eb.ab_generation.result.v1`，包括原物理依赖、整个输入摘要、参考摘要、规则摘要、单设备 `candidates`、`unavailable`、三份 `selections`和 `joint_candidates`。
-
-每个候选保存原生因素、显式补丁、静态问题、预测范围及未知的实际结果。`rows`补丁只能替换已有ID；`control_interval`仅修改原控制的指定相交区间，保留区间外A。EV内部控制身份不写入选定物理方案。
-
-| 选择状态 | 含义 |
+| 字段 | 含义 |
 |---|---|
-| `candidate_selected` | 根据公开规则选到静态可用候选；尚未完整仿真 |
-| `assigned_identical_control` | 事先指定A=B，保持原命令 |
-| `original_failure_request_preserved` | 原B指定失败原样进入回放；不是新生成成功候选 |
-| `no_comparable_opportunity` | 该规则缺少可比较机会，不能把输出A副本作为一份新的干预 |
+| `case_id,household_id,date` | 原案例与家庭身份 |
+| `decision_min,horizon_min` | 通知与主要比较区间 |
+| `A.tasks/operations/controls` | 已冻结的程序、真实人工操作与控制 |
+| `needs` | 独立服务要求；程序项含 `timer_allowed,maximum_preload_wait_min,machine_windows_min`及原等待/截止 |
+| `devices` | 已安装资产及实际声明的参数，不代表可随意增添设备 |
+| `operator_windows,occupancy,reservations` | 原人员可操作窗口、房间占用及预约 |
+| `authority` | 每资产 `authorized_operator_ids,target_control_authorized`，以及 `immutable_operator_ids`和来源 |
+| `events,event_meter_scope` | 固定事件与目标计量；事件自身的 `meter_scope`优先 |
+| `tariff,tariff_provenance` | 完整显式价格段与币种/来源；不表示实时价格 |
+| `source,reference` | 家庭、模型、天气、初始化、当前A输入及运行证据 |
+| `assignment` | `fresh_candidates`、`identical_control`或 `preserved_failure_replay` |
+| `retained_B_request` | 仅指定历史失败回放分支使用的原请求，不读其实际后果 |
 
-`actual_outcomes=null`、`human_acceptance=null`。代码不会把静态可行、费用减少或VPP贡献赋为接受答案。联合候选的静态冲突分别保留。
+`reference.binding`保存A命令和物理上下文摘要。`thermal`按资产保存时步温度、电耗与名义余量；AC新增 `axis_electric_kWh`，来自原生制热/制冷线圈。缺少模式证据时不猜测降载轴。`ev_charging_steps`是当前A的实际网侧充电步骤；同一需求/时步不得重复。
 
-## 5. 物理交接
+控制权限不等于人在家。共享上下文成员仍进入占用与仿真，但其操作不能由目标家庭的B移动。原A46的720分钟预装及06:30—23:30窗口在导入器中明示为继承的项目假设，未表述为实测设备规格。
 
-`export-physics`核验导入和生成清单、原始A、家庭、配对文件及天气，输出新资源目录与 `physics_job.json`。所选B、原A、需求及事件构成新的配对请求；旧B的分类、温度、SOC结果不继承为新结果。
+## 3. 候选与选择
 
-作业使用 `housing_simulation` 的 `compile`与 `run`接口，固定相同外壳、天气、前史、初态和恢复时域。资源原件的使用条件沿用其来源；公开仓库仅发布代码、合成示例与聚合验证，不将受控家庭或天气原件一并发布。
+结果包含 `candidates,unavailable,selections,joint_candidates`。单候选保存稳定身份、因素、补丁、`static_issues`和预测；已知程序/EV预测保存A/B负荷剖面供复核，热响应预测为未知。实际后果和人类接受值不写入候选排序。
 
-## 6. 新生活生成接口
+补丁类型为既有行替换、明确温控区间，以及EV的 `control_pause`。暂停只移除原许可的特定部分，保留原间隙和通知前命令。不得借补丁新增帮手、换资产或缩短非中断程序。
 
-`build-life`、`bind-life-worlds`、`assemble-life`、`reference-life`、`export-life`及 `reproduce-life`组成不依赖历史样本的入口，定义见 [LIFE_INPUTS.md](LIFE_INPUTS.md)。新A保留独立服务需求，原人工操作与独立烘干依赖进入B候选检查；EV锚点状态和原物理连接不通过虚构操作补齐。
+三种规则各返回 `candidate_ids,status,plan_B,B_commands_sha256`、预测和命令扰动。比较域为单设备且有命令变化的替代方案；`baseline_outside_option`另列不改变A的零增量。`no_comparable_opportunity`表示没有该规则的可比候选，不是假造一个有交付响应的B。无事件时VPP规则不可比较。
+
+联合请求保留独立 `id`、子候选身份及组合后的静态检查。常规三规则未自动选择联合最优；公开复核可按冻结计划选择联合探针并执行。
+
+## 4. 物理交接
+
+`export-life`核对生活装配、当前A参考、生成批次及选定B，输出统一住房作业。原A、独立需求、事件和通知前命令保持。服务需求与控制设定仍为不同对象。
+
+旧版 `export-physics`须提供原阶段、更新后的规范导入与生成目录。若旧家庭包缺完整需求，另传 `--annual-A-root`，目录内为各家庭原年度A文件；逐文件核对原家庭包登记的SHA、身份、任务和操作后读取全年原需求。没有该文件即拒绝，不从已排程程序补造需求，也不因配对文件只有数日而漏检恢复期服务。
+
+一房间多套独立AC的旧世界不受当前编译器支持。适配器明确拒绝导出，不合并设备或修改原控制。静态生成结果与物理可重放状态分别解释。
+
+## 5. 实际报告
+
+`report-physics`绑定作业、编译、运行与审查，检查各臂IDF、SQL和轨迹回执。可传 `--reference-runs`与用于生成B的A基线逐通道比较；旧阶段使用 `--reference-stage`时只声明共有通道范围，两者不可同时给定。
+
+报告包含：
+
+- 每事件净住宅电表和所建模可控设备小计、所声明口径的目标是否满足；
+- 主24小时与主区间加跟随期的电量和明确币种电费；缺价保持未知；
+- 实际执行、人工时刻变化、交付、预装/取出等待和截止；
+- 每房间温度及独立范围外分钟/度分钟，未知要求保持 `null`；
+- 热水数量/温度、EV原居家连接后的出发目标/储备/牵引能量，以及恢复残差。
+
+共享整套电表不自动分摊为目标家庭账单；未声明的VPP补偿不计入费用。编译或引擎失败、通道缺失保留 `readback_status=incomplete`和原因，不填零后果。实际结果不触发重选；`human_acceptance`保持未知。
+
+## 6. 公开复核与上游接口
+
+`reproduce-strategies`使用公开生活与空间输入、显式实验及 `plan.json`，输出冻结计划、A基线、同A三规则请求、设备/联合/失败探针和完整回读。冬季计划单独验证制热；数量由配置列表决定。常规 `reproduce-life`也执行默认三策略。
+
+上游输入及单位见 [LIFE_INPUTS.md](LIFE_INPUTS.md)，方法与来源见 [METHOD.md](METHOD.md)、[STRATEGY_RULES.json](STRATEGY_RULES.json)，执行命令见 [REPRODUCE.md](REPRODUCE.md)。

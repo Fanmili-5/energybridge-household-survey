@@ -87,6 +87,14 @@ def main():
     p.add_argument('--experiments', default='benchmark/ab_generation/examples/life/experiments.json')
     p.add_argument('--energyplus-dir', required=True)
     p.add_argument('--out', required=True)
+    p = sub.add_parser('reproduce-strategies')
+    p.add_argument('--input', default='benchmark/ab_generation/examples/life/life_batch.json')
+    p.add_argument('--world-contracts', default='benchmark/ab_generation/examples/life/world_contracts.json')
+    p.add_argument('--shell-config', default='benchmark/housing_simulation/examples/shell_batch.json')
+    p.add_argument('--experiments', default='benchmark/ab_generation/examples/strategy_review/experiments.json')
+    p.add_argument('--plan', default='benchmark/ab_generation/examples/strategy_review/plan.json')
+    p.add_argument('--energyplus-dir', required=True)
+    p.add_argument('--out', required=True)
     p = sub.add_parser('verify')
     p.add_argument('directory')
     p = sub.add_parser('export-physics')
@@ -96,6 +104,7 @@ def main():
     p.add_argument('--case', action='append', required=True)
     p.add_argument('--policy', choices=DEFAULT_RULES['selection_policies'], required=True)
     p.add_argument('--candidate-id')
+    p.add_argument('--annual-A-root')
     p.add_argument('--out', required=True)
     p = sub.add_parser('report-physics')
     p.add_argument('--input', required=True)
@@ -104,6 +113,7 @@ def main():
     p.add_argument('--audit', required=True)
     p.add_argument('--out', required=True)
     p.add_argument('--reference-stage')
+    p.add_argument('--reference-runs')
     p.add_argument('--imported')
     p = sub.add_parser('build-life')
     p.add_argument('--input', required=True)
@@ -122,6 +132,9 @@ def main():
     elif args.command == 'export-life':
         from .life_physics import export_life
         result = export_life(args.assembled, args.contexts, args.generated, args.policy, args.out)
+    elif args.command == 'reproduce-strategies':
+        from .review import reproduce_strategies
+        result = reproduce_strategies(args.input, args.world_contracts, args.shell_config, args.experiments, args.energyplus_dir, args.out, args.plan)
     elif args.command == 'reproduce-life':
         from .life_physics import reproduce_life
         result = reproduce_life(args.input, args.world_contracts, args.shell_config, args.experiments, args.energyplus_dir, args.out)
@@ -135,10 +148,10 @@ def main():
         result = build_batch(args.input, args.out, args.rules)
     elif args.command == 'export-physics':
         from .export import export_physics
-        result = export_physics(args.stage, args.imported, args.generated, args.case, args.policy, args.out, args.candidate_id)
+        result = export_physics(args.stage, args.imported, args.generated, args.case, args.policy, args.out, args.candidate_id, args.annual_A_root)
     elif args.command == 'report-physics':
         from .evaluate import summarize
-        result = summarize(args.input, args.compiled, args.runs, args.audit, args.out, args.reference_stage, args.imported)
+        result = summarize(args.input, args.compiled, args.runs, args.audit, args.out, args.reference_stage, args.imported, args.reference_runs)
     else:
         result = verify(args.directory)
         result = {'verified': True, 'files': len(result['files'])}

@@ -1,115 +1,99 @@
-"""Read paired consequences after selection; never choose or rewrite requests."""
+"""Bound readback after selection, including incomplete and failed executions."""
 import json
 import lzma
 from pathlib import Path
 from .common import bound, read, save, seal, sha, verify
 from .model import plan_hash
+from .outcomes import consequences
 
 
-def summarize(job_path, compiled, runs, audit, out, reference_stage=None, imported=None):
+def compare_traces(current, previous, same_channels=True):
+    previous = {k.lower(): v for k, v in previous.items()}
+    names = {k.lower() for k in current}
+    rows = []
+    for name, values in current.items():
+        old = previous.get(name.lower())
+        if old is None:
+            continue
+        now, before = dict(values['values']), dict(old['values'])
+        common = now.keys() & before.keys()
+        error = max((abs(now[t] - before[t]) for t in common), default=None)
+        rows.append({'channel': name, 'unit': values['unit'], 'samples': len(common),
+                     'reference_unit_verified': 'unit' in old, 'same_unit': old.get('unit', values['unit']) == values['unit'],
+                     'complete_common_timeline': bool(common) and now.keys() == before.keys(),
+                     'max_absolute_error': error, 'within_1e_minus6': error is not None and error < 1e-6})
+    channels_equal = names == previous.keys()
+    passed = bool(rows) and all(r['complete_common_timeline'] and r['within_1e_minus6'] and r['same_unit'] for r in rows) and (channels_equal or not same_channels)
+    return {'status': 'passed' if passed else 'failed', 'passed': passed, 'common_channels': len(rows),
+            'same_channel_set': channels_equal, 'scope': 'all_channels' if same_channels else 'common_channels_only',
+            'within_1e_minus6_each_native_channel': passed, 'channels': rows}
+
+
+def summarize(job_path, compiled, runs, audit, out, reference_stage=None, imported=None, reference_runs=None):
     job_path, compiled, runs, audit, out = map(Path, (job_path, compiled, runs, audit, out))
-    job = read(job_path)
-    verify(compiled)
-    verify(runs)
-    audit_data = verify(audit)
-    audits = {r['id']: r for r in audit_data['records']}
-    resources = (job_path.parent / job['resource_root']).resolve()
+    job = read(job_path); cm, rm, am = verify(compiled), verify(runs), verify(audit)
+    if cm['input_sha256'] != sha(job_path):
+        raise ValueError('REPORT_JOB_COMPILATION_MISMATCH')
+    if rm['compiled_manifest_sha256'] != sha(compiled / 'MANIFEST.json'):
+        raise ValueError('REPORT_RUN_COMPILATION_MISMATCH')
+    if am['compiled_manifest_sha256'] != sha(compiled / 'MANIFEST.json') or am['runs_manifest_sha256'] != sha(runs / 'MANIFEST.json'):
+        raise ValueError('REPORT_AUDIT_BINDING_MISMATCH')
+    if reference_runs and reference_stage:
+        raise ValueError('AMBIGUOUS_A_REFERENCE')
+    if reference_runs:
+        reference_runs = Path(reference_runs); verify(reference_runs)
     contexts = {}
     if imported:
-        verify(imported)
-        incoming = Path(imported)
+        incoming = Path(imported); verify(incoming)
         contexts = {r['case_id']: read(bound(incoming, r['context'])) for r in read(incoming / 'BATCH.json')['records']}
-    rows = []
+    audits = {r['id']: r for r in am['records']}; compiled_records = {r['id']: r for r in cm['records']}
+    resources = (job_path.parent / job['resource_root']).resolve(); rows = []
     for entry in job['pairs']:
-        pair = read(bound(resources, entry['pair']['path']))
-        rid = entry['id']
-        traces = {s: read(runs / rid / s / 'TRACE.json.gz') for s in ('A', 'B')}
-        metas = {s: read(compiled / rid / s / 'INPUT.json.gz') for s in ('A', 'B')}
-        def channel(side, name, key):
-            found = [c['values'] for k, c in traces[side].items() if k.lower() == (name + '|' + key).lower()]
-            if len(found) != 1:
-                raise ValueError('MISSING_PAIRED_CHANNEL:' + name)
-            return dict(found[0])
-        def controlled(side):
-            meta = metas[side]
-            targets = [('Zone Packaged Terminal Heat Pump Electricity Energy', name) for name in meta['HVAC_equipment_mapping'].values()]
-            targets += [('Electric Equipment Electricity Energy', name) for name in meta['equipment_meter_mapping']]
-            if meta['tank_name']:
-                targets += [('WaterSystems:Electricity', '')]
-            if meta['EV']['installed']:
-                targets += [('Exterior Equipment Electricity Energy', 'EXTERNAL_EV')]
-            total = {}
-            for variable, key in targets:
-                for t, value in channel(side, variable, key).items():
-                    total[t] = total.get(t, 0) + value / 3600000
-            return total
-        energy = {s: controlled(s) for s in ('A', 'B')}
-        costs = None
-        if imported:
-            context = contexts[pair['case_id']]
-            if plan_hash(pair['A']) != context['reference']['binding']['A_commands_sha256'] or pair['VPP_events'] != context['events']:
-                raise ValueError('PRICING_CONTEXT_MISMATCH')
-            tariff = context['tariff']
-            def bill(values, lo, hi):
-                total = 0.0
-                for t, kWh in values.items():
-                    if not lo <= t < hi:
-                        continue
-                    rates = [r['price_per_kWh'] for r in tariff if r['start_min'] <= t and t + 10 <= r['end_min']]
-                    if len(rates) != 1:
-                        return None
-                    total += kWh * rates[0]
-                return total
-            costs = {'currency': context.get('tariff_provenance', {}).get('currency', 'declared_input_currency'),
-                     'scope': 'unrounded_simulated_meter_cost;no_VPP_compensation_or_acceptance_inferred',
-                     'tariff_provenance': context.get('tariff_provenance'), 'intervals': {}}
-            for label, hi in [('primary_24h', 1920), ('primary_and_followup', metas['A']['run_interval_min'][1])]:
-                totals = {s: bill({t: v / 3600000 for t, v in channel(s, 'Electricity:Facility', '').items()}, 480, hi) for s in ('A', 'B')}
-                costs['intervals'][label] = {'interval_min': [480, hi], **totals,
-                                             'B_minus_A': totals['B'] - totals['A'] if None not in totals.values() else None}
-        events = []
-        for e in pair['VPP_events']:
-            measured = {s: sum(v for t, v in energy[s].items() if e['start_min'] <= t < e['end_min']) for s in ('A', 'B')}
-            delta = (measured['B'] - measured['A']) * 60 / (e['end_min'] - e['start_min'])
-            aligned = delta * (1 if e['direction'] == 'up' else -1)
-            events.append({'event_id': e['event_id'], 'requested_direction': e['direction'],
-                           'delta_kw': delta, 'aligned_response_kw': aligned,
-                           'target_kw': e['target_kw'], 'target_met': aligned + 1e-8 >= e['target_kw']})
-        old_match = None
-        if reference_stage:
-            oldpath = Path(reference_stage) / 'results/pilot50' / pair['household_id'] / pair['date'] / 'A/TRACE.json.xz'
-            old = json.loads(lzma.decompress(oldpath.read_bytes()))['channels']
-            lower = {k.lower(): dict(v) for k, v in old.items()}
-            errors = []
-            common = 0
-            for name, c in traces['A'].items():
-                if name.lower() not in lower:
-                    continue
-                common += 1
-                previous = lower[name.lower()]
-                errors.extend(abs(v - previous[t]) for t, v in c['values'] if t in previous)
-            old_match = {'common_channels': common, 'max_absolute_error_in_channel_native_units': max(errors, default=None),
-                         'within_1e_minus6_each_native_channel': bool(errors) and max(errors) < 1e-6,
-                         'reference_archive_sha256': sha(oldpath)}
-        check = audits[rid]
+        pair_path = bound(resources, entry['pair']['path'])
+        if sha(pair_path) != entry['pair']['sha256']:
+            raise ValueError('REPORT_REQUEST_CHANGED')
+        pair = read(pair_path); rid = entry['id']; context = contexts.get(pair['case_id'])
+        if context and (plan_hash(pair['A']) != context['reference']['binding']['A_commands_sha256'] or pair['VPP_events'] != context['events']):
+            raise ValueError('PRICING_CONTEXT_MISMATCH')
+        check = audits.get(rid, {'status': 'missing', 'checks': {}, 'details': {}})
         row = {'case_id': pair['case_id'], 'policy': pair['AB_generation']['policy'],
                'request_status': pair['AB_generation']['status'], 'engine_arms': 2,
-               'history_days': metas['A']['history_days'],
-               'A_reference_comparison': old_match,
+               'A_reference_comparison': {'status': 'not_requested', 'passed': None},
                'audit_status': check['status'], 'failed_checks': [k for k, v in check['checks'].items() if not v],
-               'events': events, 'meter_scope': 'target HVAC,programs,water systems,and separately supplied EV;not whole facility',
-               'facility_energy_kWh': {s: read(runs / rid / s / 'RESULT.json')['facility_energy_kWh'] for s in ('A', 'B')},
-               'simulated_facility_cost': costs,
-               'service_execution': {s: metas[s]['execution']['batches'] for s in ('A', 'B')},
-               'EV': {s: {'installed': metas[s]['EV']['installed'],
-                           'end_energy_kWh': metas[s]['EV'].get('end_energy_kWh'),
-                           'unexecutable_trip_min': metas[s]['EV'].get('stop_at_unexecutable_trip_min')}
-                      for s in ('A', 'B')},
                'actual_results_used_for_reselection': False, 'human_acceptance': None}
+        try:
+            if compiled_records.get(rid, {}).get('status') != 'compiled':
+                raise ValueError('MODEL_NOT_COMPILED')
+            results = {s: read(runs / rid / s / 'RESULT.json') for s in ('A', 'B')}
+            row['engine_status'] = {s: results[s]['status'] for s in ('A', 'B')}
+            if any(r['status'] != 'completed' for r in results.values()):
+                raise ValueError('ENGINE_EXECUTION_INCOMPLETE')
+            metas = {s: read(compiled / rid / s / 'INPUT.json.gz') for s in ('A', 'B')}
+            traces = {s: read(runs / rid / s / 'TRACE.json.gz') for s in ('A', 'B')}
+            for side in ('A', 'B'):
+                if results[side]['idf_sha256'] != metas[side]['idf_sha256'] or results[side]['trace_sha256'] != sha(runs / rid / side / 'TRACE.json.gz') or results[side]['SQL_sha256'] != sha(runs / rid / side / 'out/eplusout.sql'):
+                    raise ValueError('REPORT_ARM_RECEIPT_MISMATCH')
+            row['history_days'] = metas['A']['history_days']
+            row.update(consequences(pair, metas, traces, check, context))
+            row['readback_status'] = 'complete'
+            if reference_runs:
+                oldpath = reference_runs / rid / 'A/TRACE.json.gz'
+                if context is None or sha(oldpath) != context['source']['A_trace_sha256']:
+                    raise ValueError('CURRENT_A_REFERENCE_TRACE_MISMATCH')
+                row['A_reference_comparison'] = {**compare_traces(traces['A'], read(oldpath)), 'reference_trace_sha256': sha(oldpath)}
+            elif reference_stage:
+                oldpath = Path(reference_stage) / 'results/pilot50' / pair['household_id'] / pair['date'] / 'A/TRACE.json.xz'
+                old = json.loads(lzma.decompress(oldpath.read_bytes()))['channels']
+                normalized = {k: {'values': v} for k, v in old.items()}
+                row['A_reference_comparison'] = {**compare_traces(traces['A'], normalized, False), 'reference_archive_sha256': sha(oldpath)}
+        except (ValueError, KeyError, OSError) as error:
+            row['readback_status'] = 'incomplete'; row['readback_reason'] = str(error)
+            row['unverified_outcomes_are_not_zero'] = True
         rows.append(row)
     out.mkdir(parents=True, exist_ok=False)
-    save(out / 'REPORT.json', {'schema': 'eb.ab_generation.physical_report.v1', 'records': rows,
+    save(out / 'REPORT.json', {'schema': 'eb.ab_generation.physical_report.v2', 'records': rows,
                               'whole500_physical_acceptance': False, 'human_acceptance_inferred': False})
     seal(out, {'job_sha256': sha(job_path), 'compiled_manifest_sha256': sha(compiled / 'MANIFEST.json'),
                'runs_manifest_sha256': sha(runs / 'MANIFEST.json'), 'audit_manifest_sha256': sha(audit / 'MANIFEST.json')})
-    return {'reported_cases': len(rows), 'engine_arms': len(rows) * 2}
+    return {'reported_cases': len(rows), 'engine_arms': sum(r['engine_arms'] for r in rows),
+            'complete_readbacks': sum(r['readback_status'] == 'complete' for r in rows)}

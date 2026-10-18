@@ -6,7 +6,8 @@ from pathlib import Path
 from .common import bound, digest, read, save, seal, sha, verify
 from .generate import binding
 from .life import normalize_world, require
-from .model import plan_commands, plan_hash
+from .model import apply, plan_commands, plan_hash, request_issues
+from .resources import authority
 
 
 def bind_life_worlds(world_contracts, shells, out):
@@ -165,11 +166,14 @@ def context_from_A(pair, pack, meta, trace, experiment, source):
     base = (dt.date.fromisoformat(pair['date']) - dt.date.fromisoformat(pack['anchor'])).days * 1440
     windows, occupancy, reservations = collections_for_context(pack, pair['date'])
     devices = copy.deepcopy(pack['world']['parameter_pack']['devices'])
-    context = {'schema': 'eb.ab_generation.context.v1', 'case_id': pair['case_id'], 'household_id': pair['household_id'],
+    context = {'schema': 'eb.ab_generation.context.v2', 'case_id': pair['case_id'], 'household_id': pair['household_id'],
                'date': pair['date'], 'decision_min': 480, 'horizon_min': [480, 1920],
                'A': plan_commands(pair['A']), 'needs': pair['needs_A'], 'devices': devices,
                'operator_windows': windows, 'occupancy': occupancy, 'reservations': reservations,
                'events': experiment['events'], 'tariff': experiment['tariff'],
+               'event_meter_scope': experiment.get('event_meter_scope', 'whole_physical_dwelling'),
+               'authority': authority(pack, windows),
+               'tariff_provenance': experiment.get('tariff_provenance'),
                'assignment': experiment['assignment'], 'source': source}
     thermal = {}
     for device in devices:
@@ -182,6 +186,9 @@ def context_from_A(pair, pack, meta, trace, experiment, source):
             fan = next(r[1] for r in package['rows'] if r[0].startswith('Fan:'))
             energy = trace_values(trace, 'Zone Packaged Terminal Heat Pump Electricity Energy', name)
             fan_energy = trace_values(trace, 'Fan Electricity Energy', fan)
+            components = meta['HVAC_component_mapping'][aid]
+            modes = {axis: [trace_values(trace, axis.title() + ' Coil Electricity Energy', n)
+                            for n in components[axis]] for axis in ('heating', 'cooling')}
             temperature = trace_values(trace, 'Zone Mean Air Temperature', device['room_id'])
             capacity = device['parameters']['nameplate_W']
         else:
@@ -191,6 +198,9 @@ def context_from_A(pair, pack, meta, trace, experiment, source):
             capacity = device['parameters']['heater_capacity_W'] / device['parameters']['efficiency']
         thermal[aid] = [{'minute': t, 'temperature_C': temperature[t - 10],
                          'electric_kWh': max(0, energy[t] - fan_energy.get(t, 0)) / 3600000,
+                         **({'axis_electric_kWh': {axis: sum(c[t] for c in channels) / 3600000
+                                                  for axis, channels in modes.items()},
+                             'operating_axis_source': 'native_coil_electricity;not_distance_to_setpoint'} if kind == 'ac' else {}),
                          'headroom_kWh': max(0, capacity / 6000 - energy[t] / 3600000)}
                         for t in range(480, 1920, 10)]
     ev_steps = []
@@ -249,7 +259,7 @@ def reference_life(assembled, compiled, runs, out):
     return {'cases': len(records), 'current_A_reference_bound': True}
 
 
-def export_life(assembled, contexts, generated, policy, out):
+def export_life(assembled, contexts, generated, policy, out, case_ids=None, request_overrides=None):
     assembled, contexts, generated, out = map(Path, (assembled, contexts, generated, out))
     verify(assembled); con = verify(contexts); gen = verify(generated)
     require(con['assembled_manifest_sha256'] == sha(assembled / 'MANIFEST.json'), 'CONTEXT_ASSEMBLY_MISMATCH')
@@ -262,17 +272,40 @@ def export_life(assembled, contexts, generated, policy, out):
     shutil.copytree(assembled / 'households', out / 'households')
     shutil.copyfile(assembled / 'THERMAL_ENVIRONMENT_POLICY.json', out / 'THERMAL_ENVIRONMENT_POLICY.json')
     job = read(assembled / 'physics_job.json'); pairs = []
+    requested = set(case_ids) if case_ids is not None else {i['case_id'] for i in read(assembled / 'CASE_INDEX.json')['records']}
+    require(requested and requested <= by_id.keys(), 'UNKNOWN_OR_EMPTY_EXPORT_CASES')
     for item in read(assembled / 'CASE_INDEX.json')['records']:
-        case_id = item['case_id']; result = read(bound(generated, by_id[case_id]['path']))
+        case_id = item['case_id']
+        if case_id not in requested:
+            continue
+        result = read(bound(generated, by_id[case_id]['path']))
         context = read(bound(contexts, context_rows[case_id]['context']))
         require(result['context_sha256'] == digest(context), 'CURRENT_A_CONTEXT_CHANGED')
         selected = result['selections'][policy]
+        override = (request_overrides or {}).get(case_id)
+        if override:
+            require(result['assignment']['mode'] == 'fresh_candidates', 'CANNOT_OVERRIDE_FROZEN_CONTROL_OR_FAILURE')
+            probe = (next(c for c in result['joint_candidates'] if c['id'] == override['joint_id']) if 'joint_id' in override
+                     else next(c for c in result['candidates'] if c['id'] == override['candidate_id']))
+            allowed = override.get('expected_static_issues', [])
+            require(probe['static_issues'] == allowed, 'PROBE_STATIC_ISSUES_NOT_PREDECLARED')
+            baseline = plan_commands(context['A'])
+            for c in baseline['controls']:
+                c['_ab_control_id'] = digest(c)
+            plan = apply(baseline, probe['patches'])
+            for c in plan['controls']:
+                c.pop('_ab_control_id', None)
+            selected = {'status': 'predeclared_failure_probe' if allowed else 'explicit_predeclared_candidate_probe',
+                        'candidate_ids': probe.get('candidate_ids', [probe['id']]), 'plan_B': plan}
         require(selected['status'] != 'no_comparable_opportunity', 'NO_B_OPPORTUNITY:' + case_id)
         pair = read(bound(assembled, item['pair']['path']))
         require(plan_hash(pair['A']) == result['A_commands_sha256'], 'FROZEN_A_CHANGED')
         pair['B'] = selected['plan_B']
+        require(not request_issues(context, pair['B']), 'REQUEST_CHANGED_FROZEN_IDENTITIES_OR_PAST')
+        require(selected.get('B_commands_sha256', plan_hash(pair['B'])) == plan_hash(pair['B']), 'SELECTED_B_HASH_CHANGED')
         pair['schedule_hashes'] = {s: digest(pair[s]) for s in ('A', 'B')}
-        pair['AB_generation'] = {'policy': policy, 'candidate_ids': selected['candidate_ids'], 'rules_sha256': result['rules_sha256'],
+        pair['AB_generation'] = {'policy': ('failure_probe' if override and override.get('expected_static_issues') else 'explicit_candidate_probe') if override else policy, 'candidate_ids': selected['candidate_ids'], 'rules_sha256': result['rules_sha256'],
+                                 'event_meter_scope': context['event_meter_scope'],
                                  'reference_sha256': result['reference_sha256'], 'status': selected['status']}
         pair.pop('source_pair_sha256', None); pair['source_pair_sha256'] = digest(pair)
         name = item['pair']['path']; save(out / name, pair)
@@ -286,63 +319,6 @@ def export_life(assembled, contexts, generated, policy, out):
 
 
 def reproduce_life(input_path, world_contracts, shell_config, experiments, energyplus_dir, out):
-    """Independent public construction and numerical validation, with no cohort."""
-    from benchmark.housing_simulation.pipeline import build_shell, compile_pairs, run_pairs
-    from benchmark.housing_simulation.validation import audit
-    from .life_pipeline import build_life
-    from .__main__ import build_batch
-    input_path, world_contracts, shell_config, experiments, energyplus_dir, out = map(Path,
-        (input_path, world_contracts, shell_config, experiments, energyplus_dir, out))
-    out.mkdir(parents=True, exist_ok=False)
-    ep = energyplus_dir.resolve(); weather = ep / 'WeatherData/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw'
-    require(weather.is_file(), 'PUBLIC_REFERENCE_WEATHER_NOT_FOUND')
-    stages = []
-    shell_result = build_shell(shell_config.resolve(), out / 'shells')
-    require(all(r['status'] == 'shell_compiled' for r in shell_result['records']), 'SHELL_BUILD_FAILED')
-    stages.append({'stage': 'shells', 'households': len(shell_result['records'])})
-    bind_life_worlds(world_contracts, out / 'shells', out / 'world_binding')
-    life_result = build_life(input_path, out / 'life')
-    require(life_result['all_A_constructed'], 'LIFE_REQUIREMENTS_UNSERVED;inspect_life_output')
-    require(read(out / 'life/WORLD_INPUT.json') == read(out / 'world_binding/resource_worlds.json'), 'DECLARED_WORLD_RESOURCE_NOT_REPRODUCED')
-    stages.append({'stage': 'life', 'households': life_result['households']})
-    assembled = assemble_life(out / 'life', world_contracts, out / 'shells', weather, experiments, out / 'assembled')
-    require(all(r['status'] == 'assembled' for r in assembled['records']), 'LIFE_PHYSICS_ASSEMBLY_FAILED')
-    stages.append({'stage': 'assembled', 'cases': assembled['case_count']})
-    for label, folder in [('baseline', out / 'assembled'), ('selected_B', out / 'selected_B')]:
-        if label == 'selected_B':
-            reference_life(out / 'assembled', out / 'baseline_compiled', out / 'baseline_runs', out / 'contexts')
-            build_batch(out / 'contexts/BATCH.json', out / 'candidates')
-            export_life(out / 'assembled', out / 'contexts', out / 'candidates', 'known_profile_vpp', out / 'selected_B')
-        compiled, runs, audits = out / (label + '_compiled'), out / (label + '_runs'), out / (label + '_audit')
-        compilation = compile_pairs((folder / 'physics_job.json').resolve(), compiled)
-        require(all(r['status'] == 'compiled' for r in compilation['records']), 'PHYSICAL_COMPILATION_FAILED:' + label)
-        execution = run_pairs(compiled, runs, ep / 'energyplus', sha(ep / 'energyplus'), 300)
-        require(all(r['status'] == 'completed' for r in execution['records']), 'ENGINE_RUN_FAILED:' + label)
-        assessment = audit(compiled, runs, audits)
-        require(assessment['passed'], 'PHYSICAL_AUDIT_FAILED:' + label)
-        stages.append({'stage': label, 'engine_arms': len(execution['records']), 'audit_passed': True})
-    # Evaluate independent comfort requirements without calling setpoints preferences.
-    comfort = []
-    life_records = verify(out / 'life')['records']
-    plans = {r['household_id']: read(out / 'life' / r['path']) for r in life_records}
-    for item in read(out / 'assembled/CASE_INDEX.json')['records']:
-        experiment = item['experiment']; life = plans[experiment['household_id']]
-        offset = (dt.date.fromisoformat(experiment['date']) - dt.date.fromisoformat(life['anchor'])).days * 1440
-        trace = read(out / 'baseline_runs' / item['id'] / 'A/TRACE.json.gz')
-        for n in life['requirements']:
-            if n['kind'] != 'comfort' or not max(n['release_min'] - offset, 480) < min(n['deadline_min'] - offset, 1920):
-                continue
-            band = n['temperature_band_C']; temps = trace_values(trace, 'Zone Mean Air Temperature', n['room_id'])
-            times = range(max(480, n['release_min'] - offset), min(1920, n['deadline_min'] - offset), 10)
-            violations = None if band is None else sum(10 for t in times if not band[0] <= temps[t] <= band[1])
-            comfort.append({'case_id': experiment['case_id'], 'room_id': n['room_id'],
-                            'declared_band_C': band, 'outside_declared_band_min': violations,
-                            'unknown_preference_preserved': band is None})
-    result = {'schema': 'eb.life_AB.public_reproduction.v1', 'passed': True, 'stages': stages,
-              'historical_households_required': False, 'API_used': False, 'engine_sha256': sha(ep / 'energyplus'),
-              'weather_sha256': sha(weather), 'life_input_sha256': sha(input_path), 'comfort_readback': comfort,
-              'empirical_calibration_claimed': False, 'human_acceptance_inferred': False,
-              'master1000_simulation_started': False}
-    save(out / 'RESULT.json', result)
-    seal(out, {'schema': result['schema'], 'passed': True, 'engine_arms': sum(s.get('engine_arms', 0) for s in stages)})
-    return result
+    """Default public comparison executes all declared selection policies."""
+    from .review import reproduce_strategies
+    return reproduce_strategies(input_path, world_contracts, shell_config, experiments, energyplus_dir, out)
