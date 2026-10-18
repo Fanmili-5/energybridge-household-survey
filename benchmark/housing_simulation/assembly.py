@@ -44,35 +44,46 @@ def indexed(items, key):
     return result
 
 
-def place(items, room):
-    """Grid search with rotation; reserve an access strip, then disjoint rectangles."""
-    x0, y0, x1, y1 = room['usable_rect_m']
-    grid=INSTALL['grid_m'];gap=INSTALL['gap_m']
-    placed = []
-    for item in items:
-        w, h = item['footprint_m']
-        for v in (w, h): number(v, 'footprint dimension')
-        found = None
-        for width, depth in dict.fromkeys(((w, h), (h, w))):
-            # Coordinates snap to a declared 0.1m grid relative to usable extent.
-            for iy in range(int((y1-y0)/grid)+1):
-                y = y0 + INSTALL['access_strip_m'] + iy * grid
-                for ix in range(int((x1-x0)/grid)+1):
-                    x = x0 + ix * grid
-                    rect = [x, y, x+width, y+depth]
-                    if rect[2] > x1+1e-8 or rect[3] > y1+1e-8:
-                        continue
-                    if all(rect[2]+gap <= r['rect_m'][0]+1e-8 or r['rect_m'][2]+gap <= rect[0]+1e-8 or
-                           rect[3]+gap <= r['rect_m'][1]+1e-8 or r['rect_m'][3]+gap <= rect[1]+1e-8 for r in placed):
-                        found = {**item, 'room_id': room['room_id'], 'rect_m': rect}; break
-                if found: break
-            if found: break
-        require(found is not None, 'NO_INSTALLATION_SPACE:' + item['object_id'])
-        placed.append(found)
-    return placed
+from .installation import place, InstallationInfeasible, InstallationUnresolved
 
 
 def bind_world(spec, layout):
+    """Enumerate legal sleep assignments; solve joint installation per room."""
+    groups=sorted(indexed(spec['sleep_groups'],'group_id').values(),key=lambda x:x['group_id'])
+    members=indexed(spec['members'],'member_id');rooms=layout['rooms']
+    contexts={h['household_id']for h in layout['households']}
+    require({m['household_id']for m in members.values()}==contexts,'complete roster required for every physical household, including shared context')
+    # Validate non-spatial contracts first; assignment alternatives never repair them.
+    assigned=[mid for g in groups for mid in g['member_ids']]
+    require(sorted(assigned)==sorted(members),'every resident must have exactly one bed assignment')
+    candidates={}
+    for g in groups:
+        owners={members[m]['household_id']for m in g['member_ids']}
+        require(len(owners)==1,'sleep group spans households')
+        candidates[g['group_id']]=[r['room_id']for r in sorted(rooms,key=lambda r:r['room_id'])
+            if r['census_room_class']=='bedroom'and r['using_household_ids']==list(owners)
+            and (not g.get('room_id')or r['room_id']==g['room_id'])]
+    explored=0
+    def search(i,used,assignment):
+        nonlocal explored
+        if i==len(groups):
+            explored+=1
+            if explored>INSTALL['assignment_limit']:raise InstallationUnresolved('INSTALLATION_UNRESOLVED:sleep assignment limit')
+            try:return _bind_world(spec,copy.deepcopy(layout),assignment)
+            except InstallationInfeasible:return None
+        gid=groups[i]['group_id']
+        for rid in candidates[gid]:
+            if rid not in used:
+                result=search(i+1,used|{rid},{**assignment,gid:rid})
+                if result is not None:return result
+        return None
+    result=search(0,set(),{})
+    if result is None:raise InstallationInfeasible('NO_SLEEP_SPACE/NO_INSTALLATION_SPACE:all declared sleep assignments grid-infeasible')
+    result['installation_search']={'sleep_assignments_examined':explored,'packing_method':'joint_MILP_HiGHS','infeasibility_scope':'declared grid,envelopes,rotations,access strip;not continuous geometry or code compliance'}
+    return result
+
+
+def _bind_world(spec, layout, assignment):
     hid = spec['household_id']; rooms = {r['room_id']: r for r in layout['rooms']}
     require(hid == layout['target_household_id'], 'shell/world identity mismatch')
     members = indexed(spec['members'], 'member_id')
@@ -84,6 +95,7 @@ def bind_world(spec, layout):
     for m in members.values():
         number(m['age_years'], 'age_years', 0, 120, False)
         number(m['hot_water_liters'], 'hot_water_liters', 0, 200, False)
+        number(m.get('metabolic_scale',1),'metabolic_scale',0,2)
     groups = indexed(spec['sleep_groups'], 'group_id')
     assigned = []; sleep_rooms = {}; assigned_bedrooms=set(); floor_items = {rid: [] for rid in rooms}
     for gid, group in sorted(groups.items()):
@@ -94,25 +106,22 @@ def bind_world(spec, layout):
         require(type(group['capacity']) is int and len(mids) <= group['capacity'] <= 2, 'bed capacity exceeded')
         candidates = sorted((r for r in rooms.values() if r['census_room_class'] == 'bedroom'
                              and r['using_household_ids'] == list(owners) and r['room_id'] not in assigned_bedrooms), key=lambda r: r['room_id'])
-        if group.get('room_id'):
-            candidates = [r for r in candidates if r['room_id'] == group['room_id']]
-        item = {'object_id': 'bed_' + gid, 'kind': 'bed', 'footprint_m': group['bed_footprint_m'], 'member_ids': mids}
+        candidates = [r for r in candidates if r['room_id'] == assignment[gid]]
+        item = {'object_id': 'bed_' + gid, 'kind': 'bed', 'footprint_m': group['bed_footprint_m'], 'member_ids': mids,'clearance_m':group.get('clearance_m',[0,0,0,0])}
         require(len(item['footprint_m']) == 2, 'bed footprint needs two dimensions')
         require(min(item['footprint_m']) >= (INSTALL['single_bed_min_width_m'] if group['capacity']==1 else INSTALL['double_bed_min_width_m']) and max(item['footprint_m'])>=INSTALL['bed_min_length_m'],'bed dimensions below declared reference minimum')
         for room in candidates:
             rid = room['room_id']
-            try: place(floor_items[rid] + [item], room)
-            except ValueError: continue
             floor_items[rid].append(item)
             assigned_bedrooms.add(rid)
             sleep_rooms.update({mid: rid for mid in mids}); break
-        else: raise ValueError('NO_SLEEP_SPACE:' + gid)
+        else: raise InstallationInfeasible('NO_SLEEP_SPACE:' + gid)
         assigned.extend(mids)
     require(sorted(assigned) == sorted(members), 'every resident must have exactly one bed assignment')
     for fixture in indexed(spec['fixtures'],'fixture_id').values():
         rid=fixture['room_id'];require(rid in rooms and rid!='corridor','invalid fixture room')
         require(len(fixture['footprint_m'])==2,'fixture footprint needs two dimensions')
-        floor_items[rid].append({'object_id':'fixture_'+fixture['fixture_id'],'kind':fixture['kind'],'footprint_m':fixture['footprint_m']})
+        floor_items[rid].append({'object_id':'fixture_'+fixture['fixture_id'],'kind':fixture['kind'],'footprint_m':fixture['footprint_m'],'clearance_m':fixture.get('clearance_m',[0,0,0,0])})
     if 'washroom' in rooms:
         require({'toilet_reference','shower_reference'} <= {f['kind']for f in spec['fixtures']if f['room_id']=='washroom'}, 'sanitary fixtures must be declared')
     if any(r['census_room_class']=='kitchen'for r in rooms.values()):
@@ -145,7 +154,7 @@ def bind_world(spec, layout):
             require(location in ('floor', 'wall'), 'unsupported placement')
             if location == 'floor':
                 require(len(device['footprint_m']) == 2, 'device footprint needs two dimensions')
-                floor_items[rid].append({'object_id': 'asset_'+aid, 'kind': kind, 'footprint_m': device['footprint_m']})
+                floor_items[rid].append({'object_id': 'asset_'+aid, 'kind': kind, 'footprint_m': device['footprint_m'],'clearance_m':device.get('clearance_m',[0,0,0,0])})
             else:
                 number(device['mount_width_m'], 'mount_width_m')
         p = device['parameters']
@@ -184,6 +193,7 @@ def bind_world(spec, layout):
     background = spec['background']
     for k in ('lighting_W_m2','misc_W_m2','refrigerator_W','cooking_W'): number(background[k], k, 0, 10000, False)
     require(not (background['refrigerator_W'] or background['cooking_W']) or roles['kitchen'] is not None,'positive food background requires declared kitchen')
+    number(background.get('misc_standby_fraction',0),'misc_standby_fraction',0,1,False)
     passive = sum(r['thermal_reference_area_m2'] for r in rooms.values())*(background['lighting_W_m2']+background['misc_W_m2'])+background['refrigerator_W']+background['cooking_W']
     passive += spec['exhaust_power_budget_W']; number(spec['exhaust_power_budget_W'],'exhaust_power_budget_W',0,10000,False)
     ventilation=read(HERE/'reference_environment.json')['spot_exhaust']
@@ -201,7 +211,7 @@ def bind_world(spec, layout):
     return {'layout':layout,'members':list(members.values()),'sleep_room_by_member':sleep_rooms,
             'parameter_pack':{'devices':list(assets.values())}, 'activity_contract':{'room_map':roles},
             'routine':{'mixed_target_C':spec['hot_water_minimum_C']}, 'placements':placements,
-            'installation_policy':'rectangular_grid_0.1m_gap_0.1m_access_strip_0.8m;wall_width_budget;not_code_compliance',
+            'installation_policy':'joint_MILP_declared_clearance_envelopes_grid;wall_width_budget;not_code_compliance',
             'electrical':{'supply_W':supply,'nameplate_plus_background_W':sum(d['parameters']['nameplate_W']for d in assets.values())+passive},
             'reference_assumptions_sha256':fingerprint(),
             'input_kind':'declared_reference_household;not_survey_observation'}
@@ -239,6 +249,7 @@ def calendar_for(member, day, spec, world):
             require(e['location']=='home' and e['room_id']==world['sleep_room_by_member'][member['member_id']], 'sleep event must use assigned bedroom')
         if e['activity']=='bath':
             require(e['location']=='home' and e['room_id']==world['activity_contract']['room_map']['bath'], 'bath event must use sanitary room')
+        if e['activity']=='cooking':require(e['location']=='home'and e['room_id']==world['activity_contract']['room_map']['kitchen'],'cooking requires declared kitchen')
         if e['activity']=='dinner':require(e['location']=='home', 'dinner background rule requires at-home meal')
         require(not e['available_for_operation'] or (e['location']=='home' and not sleeping and e['activity']!='bath'), 'invalid operation availability')
         out.append(e)

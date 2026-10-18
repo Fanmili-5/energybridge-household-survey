@@ -115,13 +115,60 @@
           "x-evidence-class": "declared_input"
         },
         "portal_flow_scale": {
-          "enum": [
-            0.5,
-            1,
-            2
-          ],
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 2,
           "x-rule-ids": [
             "ENV-01"
+          ],
+          "x-evidence-class": "declared_input"
+        },
+        "people_scale": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 2,
+          "x-rule-ids": [
+            "VAL-02"
+          ],
+          "x-evidence-class": "declared_input"
+        },
+        "lighting_scale": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 2,
+          "x-rule-ids": [
+            "VAL-02"
+          ],
+          "x-evidence-class": "declared_input"
+        },
+        "misc_scale": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 2,
+          "x-rule-ids": [
+            "VAL-02"
+          ],
+          "x-evidence-class": "declared_input"
+        },
+        "simulation_timestep_min": {
+          "enum": [
+            1,
+            2,
+            5,
+            10
+          ],
+          "x-rule-ids": [
+            "VAL-02"
+          ],
+          "x-evidence-class": "declared_input"
+        },
+        "airflow_model": {
+          "enum": [
+            "reference_mixing",
+            "pressure_network"
+          ],
+          "x-rule-ids": [
+            "ENV-02"
           ],
           "x-evidence-class": "declared_input"
         }
@@ -320,6 +367,15 @@
             "ASM-04"
           ],
           "x-evidence-class": "declared_input"
+        },
+        "metabolic_scale": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 2,
+          "x-rule-ids": [
+            "LOAD-01"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -387,6 +443,20 @@
             "ASM-01"
           ],
           "x-evidence-class": "declared_input"
+        },
+        "clearance_m": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "x-rule-ids": [
+            "ASM-02"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -442,6 +512,20 @@
           ],
           "x-evidence-class": "declared_input",
           "x-unit": "m"
+        },
+        "clearance_m": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 3
+          },
+          "x-rule-ids": [
+            "ASM-02"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -576,6 +660,20 @@
               ],
               "x-evidence-class": "declared_input",
               "x-unit": "m"
+            },
+            "clearance_m": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "x-rule-ids": [
+                "ASM-02"
+              ],
+              "x-evidence-class": "declared_input"
             }
           },
           "required": [
@@ -794,6 +892,20 @@
               ],
               "x-evidence-class": "declared_input",
               "x-unit": "m"
+            },
+            "clearance_m": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "x-rule-ids": [
+                "ASM-02"
+              ],
+              "x-evidence-class": "declared_input"
             }
           },
           "required": [
@@ -1012,6 +1124,20 @@
               ],
               "x-evidence-class": "declared_input",
               "x-unit": "m"
+            },
+            "clearance_m": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "x-rule-ids": [
+                "ASM-02"
+              ],
+              "x-evidence-class": "declared_input"
             }
           },
           "required": [
@@ -1316,6 +1442,20 @@
               ],
               "x-evidence-class": "declared_input",
               "x-unit": "m"
+            },
+            "clearance_m": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "x-rule-ids": [
+                "ASM-02"
+              ],
+              "x-evidence-class": "declared_input"
             }
           },
           "required": [
@@ -1602,6 +1742,20 @@
               ],
               "x-evidence-class": "declared_input",
               "x-unit": "m"
+            },
+            "clearance_m": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "x-rule-ids": [
+                "ASM-02"
+              ],
+              "x-evidence-class": "declared_input"
             }
           },
           "required": [
@@ -1864,6 +2018,20 @@
               ],
               "x-evidence-class": "declared_input",
               "x-unit": "m"
+            },
+            "clearance_m": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 3
+              },
+              "x-rule-ids": [
+                "ASM-02"
+              ],
+              "x-evidence-class": "declared_input"
             }
           },
           "required": [
@@ -2748,6 +2916,22 @@
               ],
               "x-evidence-class": "declared_input",
               "x-unit": "W"
+            },
+            "misc_standby_fraction": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "x-rule-ids": [
+                "DEV-03"
+              ],
+              "x-evidence-class": "declared_input"
+            },
+            "reference_note": {
+              "type": "string",
+              "x-rule-ids": [
+                "DEV-03"
+              ],
+              "x-evidence-class": "declared_input"
             }
           },
           "required": [

@@ -13,6 +13,7 @@ from .core import *
 from .thermal_environment import add_environment
 from .execution import execute, explicit_EV_connections
 from ..policy import reference, fingerprint
+from ..loads import metabolic_watts, cooking_minutes
 
 PEOPLE=reference('people');BG=reference('background');HP=reference('heat_pump');TANK=reference('tank');TIME=reference('time')
 
@@ -112,9 +113,10 @@ def merged_plan(pack,pair,side,lo,hi):
     return result
 
 
-def day_people(pack,date,ops,rooms):
+def day_loads(pack,date,ops,rooms):
     d=pack['days'][str(date)];people={r:[0.]*144 for r in rooms};awake={r:[0.]*144 for r in rooms}
-    positions={}
+    positions={};metabolic={r:[0.]*144 for r in rooms}
+    scales={m['member_id']:m.get('metabolic_scale',1)for m in pack['world'].get('members',[])}
     assets={x['asset_id']:x for x in pack['world']['parameter_pack']['devices']}
     calendars={**d['calendars'],**d['shared']['member_calendars']}
     for mid,cal in calendars.items():
@@ -122,22 +124,28 @@ def day_people(pack,date,ops,rooms):
             for t in range(max(0,item['start_min']),min(1440,item['end_min']),10):
                 room=item.get('room_id')if item.get('location')=='home'else None
                 activity=item.get('activity','');is_awake=not(activity.startswith('sleep')or'nap'in activity)
-                positions[(mid,t)]=(room,is_awake)
+                positions[(mid,t)]=(room,is_awake,activity)
     # Declared nonresident visits contribute heat only while actually present.
     visits=d.get('external_visits',[])
     for ix,v in enumerate(visits):
         rid=v.get('room_id');a=v.get('start_min');z=v.get('end_min')
         if rid in people and a is not None and z is not None:
-            for t in range(a,z,10):positions[(v.get('person_id','given_visitor_'+str(ix)),t)]=(rid,True)
+            for t in range(a,z,10):positions[(v.get('person_id','given_visitor_'+str(ix)),t)]=(rid,True,'handling')
     # This also represents a nonresident actual handler absent from all resident
     # calendars; a person is counted only once even if a visit already exists.
     for op in ops:
         rid=None if op['kind'].startswith('EV_')else assets[op['asset_id']]['room_id']
-        for t in range(max(0,op['start_min']),min(1440,op['end_min']),10):positions[(op['operator_id'],t)]=(rid,True)
-    for (_,t),(rid,is_awake)in positions.items():
+        for t in range(max(0,op['start_min']),min(1440,op['end_min']),10):positions[(op['operator_id'],t)]=(rid,True,'handling')
+    for (mid,t),(rid,is_awake,activity)in positions.items():
         if rid in people:
             people[rid][t//10]+=1
+            metabolic[rid][t//10]+=metabolic_watts(activity,scales.get(mid,1))*float(os.environ.get('EB_PEOPLE_SCALE','1'))
             if is_awake:awake[rid][t//10]+=1
+    return people,awake,metabolic
+
+
+def day_people(pack,date,ops,rooms):
+    people,awake,_=day_loads(pack,date,ops,rooms)
     return people,awake
 
 def ev_delivery(pack,pair,side,plan,lo,hi):
@@ -215,9 +223,10 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
         raise ValueError('RUN_REQUIRES_NONLEAP_INTERVAL_AT_MOST365DAYS')
     # Reference weather years2025..2027 are non-leap; retain the human calendar separately.
     year_shift=TIME['model_target_year']-date.year
-    rows +=[['Timestep',6],['SimulationControl','No','No','No','No','Yes'],
+    solver_step=int(os.environ.get('EB_SIMULATION_TIMESTEP_MIN','10'))
+    rows +=[['Timestep',60//solver_step],['SimulationControl','No','No','No','No','Yes'],
              ['RunPeriod','unified_AB',start.month,start.day,start.year+year_shift,(end-dt.timedelta(days=1)).month,(end-dt.timedelta(days=1)).day,(end-dt.timedelta(days=1)).year+year_shift,dt.date(start.year+year_shift,start.month,start.day).strftime('%A'),'No','No','No','Yes','Yes'],
-             ['ScheduleTypeLimits','any','','','Continuous'],['Schedule:Constant','always','any',1],['Schedule:Constant','zero','any',0],['Schedule:Constant','dual','any',4],['Schedule:Constant','metabolic','any',PEOPLE['metabolic_W']]]
+             ['ScheduleTypeLimits','any','','','Continuous'],['Schedule:Constant','always','any',1],['Schedule:Constant','zero','any',0],['Schedule:Constant','dual','any',4]]
     rooms=[r['room_id']for r in pack['world']['layout']['rooms']];assets={d['asset_id']:d for d in pack['world']['parameter_pack']['devices']}
     controls=collections.defaultdict(list)
     for c in plan['controls']:controls[(c['asset_id'],c['kind'])].append(c)
@@ -246,24 +255,28 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
                  ['ThermostatSetpoint:DualSetpoint',prefix+'_setpoint',ps[0]['schedule_names']['heat_sp'],ps[0]['schedule_names']['cool_sp']],
                  ['ZoneControl:Thermostat',prefix+'_thermostat',room,'dual','ThermostatSetpoint:DualSetpoint',prefix+'_setpoint']]
     # Actual executed handling changes room headcounts; blocked handling does not.
-    pp={};aa={}
+    pp={};aa={};heat={}
     for day in days:
         off=(day-date).days*1440
         ops=[{**o,'start_min':o['start_min']-off,'end_min':o['end_min']-off}for o in executed['operations']if overlap(o['start_min'],o['end_min'],off,off+1440)]
-        pp[day],aa[day]=day_people(pack,day,ops,rooms)
+        pp[day],aa[day],heat[day]=day_loads(pack,day,ops,rooms)
     for room in rooms:
         name='people_'+digest(room)[:10];rows.append(schedule(name,{d:pp[d][room]for d in days}))
-        rows.append(obj('People',{'name':name,'zone_or_zonelist_or_space_or_spacelist_name':room,'number_of_people_schedule_name':name,'number_of_people_calculation_method':'People','number_of_people':1,'fraction_radiant':PEOPLE['radiant_fraction'],'sensible_heat_fraction':'autocalculate','activity_level_schedule_name':'metabolic','enable_ashrae_55_comfort_warnings':'No'}))
+        rows.append(schedule(name+'_activity',{d:[w/n if n else PEOPLE['activity_W']['sleep']for w,n in zip(heat[d][room],pp[d][room])]for d in days},PEOPLE['activity_W']['sleep']))
+        rows.append(obj('People',{'name':name,'zone_or_zonelist_or_space_or_spacelist_name':room,'number_of_people_schedule_name':name,'number_of_people_calculation_method':'People','number_of_people':1,'fraction_radiant':PEOPLE['radiant_fraction'],'sensible_heat_fraction':'autocalculate','activity_level_schedule_name':name+'_activity','enable_ashrae_55_comfort_warnings':'No'}))
     # Explicit common benchmark boundary, rather than an accidental perfectly
     # sealed dwelling. Project reference, not local compliance or measurement.
     reference_ach=float(os.environ.get('EB_REFERENCE_ACH','.35'))
     if not 0<reference_ach<=3:raise ValueError('INVALID_REFERENCE_AIR_EXCHANGE')
-    for room in rooms:
+    for room in (rooms if os.environ.get('EB_AIRFLOW_MODEL','reference_mixing')=='reference_mixing'else []):
         rows.append(obj('ZoneInfiltration:DesignFlowRate',{'name':'reference_air_'+digest(room)[:10],
             'zone_or_zonelist_or_space_or_spacelist_name':room,'schedule_name':'always',
             'design_flow_rate_calculation_method':'AirChanges/Hour','air_changes_per_hour':reference_ach,
             'constant_term_coefficient':1,'temperature_term_coefficient':0,'velocity_term_coefficient':0,'velocity_squared_term_coefficient':0}))
     environment=add_environment(rows,pack,days,date,executed,obj,schedule)
+    if os.environ.get('EB_AIRFLOW_MODEL','reference_mixing')=='pressure_network':
+        from .pressure_network import add_pressure_network
+        environment=add_pressure_network(rows,pack,days,date,environment,obj,schedule)
     gains={r[1].lower():r for r in native()['gains']if r[0]=='ElectricEquipment'}
     thermal={'washer':'clotheswasher1','dryer':'electric_dryer1','dishwasher':'dishwasher1'}
     for aid,device in assets.items():
@@ -278,14 +291,14 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
             asset_meters[equip.upper()]={'asset_id':aid,'kind':kind,'watts':watts,'thermal_fractions':source[8:11]}
     # EB prototype background powers/fractions are explicit common A/B conditions.
     background=pack.get('background')
-    lighting_density=background['lighting_W_m2']if background else sum(float(r[6])for r in native()['gains']if r[0]=='Lights')
+    lighting_density=(background['lighting_W_m2']if background else sum(float(r[6])for r in native()['gains']if r[0]=='Lights'))*float(os.environ.get('EB_LIGHTING_SCALE','1'))
     for room in pack['world']['layout']['rooms']:
         rid=room['room_id'];area=room['thermal_reference_area_m2'];key=digest(rid)[:10]
         light='lighting_'+key;rows.append(schedule(light,{d:[int(v>0)for v in aa[d][rid]]for d in days}))
         rows.append(['Lights',light+'_equipment',rid,light,'LightingLevel',lighting_density*area,'','',BG['lighting_return_fraction'],BG['lighting_radiant_fraction'],BG['lighting_visible_fraction'],BG['lighting_replaceable_fraction'],'background_lighting'])
         misc='misc_'+key;source=gains['IECC_Adj1'.lower()]
-        rows.append(schedule(misc,{d:[BG['misc_unoccupied_fraction']+(1-BG['misc_unoccupied_fraction'])*int(v>0)for v in aa[d][rid]]for d in days}))
-        density=background['misc_W_m2']if background else float(source[6])
+        rows.append(schedule(misc,{d:[(background or {}).get('misc_standby_fraction',0)+(1-(background or {}).get('misc_standby_fraction',0))*int(v>0)for v in aa[d][rid]]for d in days}))
+        density=(background['misc_W_m2']if background else float(source[6]))*float(os.environ.get('EB_MISC_SCALE','1'))
         rows.append(['ElectricEquipment',misc+'_equipment',rid,misc,'EquipmentLevel',density*area,'','',*source[8:11],'background_plugs'])
     kitchen=next((r['room_id']for r in pack['world']['layout']['rooms']if r['census_room_class']=='kitchen'),rooms[0])
     for kind,native_name in [('refrigerator','refrigerator1'),('cooking','electric_range1')]:
@@ -294,8 +307,7 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
         else:
             sch=name+'_schedule'
             def meal(t,d,l):
-                dinners=pack['days'][str(d)]['family']['member_dinners_min'].values()
-                return int(any(a-BG['cooking_lead_min']<=l<a for a in dinners))
+                return int(l in cooking_minutes(pack['days'][str(d)]))
             rows.append(schedule(sch,series(meal)))
         watts=background[kind+'_W']if background else float(source[5])
         rows.append(['ElectricEquipment',name,kitchen,sch,'EquipmentLevel',watts,'','',*source[8:11],'background_'+kind])
@@ -368,18 +380,19 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
     meta={'schema':VERSION,'case_id':pair['case_id'],'side':side,'source_pair_sha256':pair['source_pair_sha256'],
           'source_schedule_hash':pair['schedule_hashes'][side],'source_shell_sha256':pack['source_shell_sha256'],
           'weather_sha256':pack['weather_sha256'],'idf_sha256':sha(folder/'model.idf'),'code_sha256':code_hash(),
-          'history_days':(date-start).days,'run_interval_min':[lo,hi],'intervention_last_request_min':last_request,
+          'simulation_timestep_min':solver_step,'report_timestep_min':10,'history_days':(date-start).days,'run_interval_min':[lo,hi],'intervention_last_request_min':last_request,
           'actual_intervention_end_min':last_change,
           'nonleap_weather_year_shift':year_shift,'original_human_calendar_dates_preserved':True,
           'derived_interzone_layer_order_repairs':wall_repairs,
           'reference_assumptions_sha256':fingerprint(),'water_mains':stat,'equipment_meter_mapping':asset_meters,'HVAC_equipment_mapping':equipment_names,
           'reference_air_changes_per_hour':reference_ach,
           'thermal_environment':environment,
-          'air_exchange_scope':'project-selected fixed passive-equivalent reference;not measured Chinese leakage or a transplanted native AFN',
+          'air_exchange_scope':os.environ.get('EB_AIRFLOW_MODEL','reference_mixing')+';declared scenario parameters,not measured Chinese calibration',
           'tank_name':tank_name,'water_needs':water_needs,'execution':executed,'EV_grid_steps':[[t,v]for t,v in sorted(evsteps.items())if 480<=t<hi],
           'EV':evtrace,
           'energy_meter_scope':'whole_physical_dwelling_including_shared_context;not_target_household_submeter',
           'human_acceptance':None,'schedules_modified':False,
+          'internal_gains':{'method':'activity_resolved_official_adult_reference_with_declared_member_scale','activity_W':PEOPLE['activity_W'],'radiant_fraction':PEOPLE['radiant_fraction'],'people_scale':float(os.environ.get('EB_PEOPLE_SCALE','1')),'lighting_scale':float(os.environ.get('EB_LIGHTING_SCALE','1')),'misc_scale':float(os.environ.get('EB_MISC_SCALE','1'))},
           'reference_background':{'policy':'explicit project background parameters and heat fractions'if background else 'legacy pinned EB reference gains','parameters':background},
           'hot_water_model':pack.get('hot_water_model','native_mixed_water_plant'),
           'world_assembly':{'declared_residents':len(pack['world'].get('members',[])),

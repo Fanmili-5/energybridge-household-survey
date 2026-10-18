@@ -192,7 +192,10 @@ def build_shell(config, output):
             for shape in shapes:
                 try:
                     layout = sized(profile, h['facilities'], a, shape)
+                    from .geometry_reference import check_geometry_reference
+                    layout['geometry_reference']=check_geometry_reference(h,layout)
                     rows, metadata = model(layout, a, job['height_m'])
+                    metadata['geometry_reference']=layout['geometry_reference']
                     break
                 except (ValueError, AssertionError) as e:
                     failures.append(str(e))
@@ -285,7 +288,7 @@ def make_demo(schema, weather, output):
 def compile_pairs(config, output):
     job = read(config)
     root = (config.parent / job['resource_root']).resolve()
-    settings = {'history_days': 112, 'tail_days': 8, 'reference_ach': .35, 'portal_flow_scale': 1.}
+    settings = {'history_days':112,'tail_days':8,'reference_ach':.35,'portal_flow_scale':1.,'simulation_timestep_min':10,'airflow_model':'reference_mixing','people_scale':1.,'lighting_scale':1.,'misc_scale':1.}
     if set(job.get('settings', {})) - set(settings):
         raise ValueError('unknown compiler setting')
     settings.update(job.get('settings', {}))
@@ -293,8 +296,12 @@ def compile_pairs(config, output):
         raise ValueError('invalid history_days')
     if type(settings['tail_days']) is not int or settings['tail_days'] < 1:
         raise ValueError('invalid tail_days')
-    if not 0 < settings['reference_ach'] <= 3 or settings['portal_flow_scale'] not in (.5, 1., 2.):
+    if not 0 < settings['reference_ach'] <= 3 or not .5<=settings['portal_flow_scale']<=2:
         raise ValueError('undeclared airflow settings')
+    if settings['simulation_timestep_min']not in (1,2,5,10)or settings['airflow_model']not in ('reference_mixing','pressure_network'):
+        raise ValueError('unsupported solver timestep/airflow model')
+    if any(type(settings[k])not in(int,float)or not math.isfinite(settings[k])or not .5<=settings[k]<=2 for k in ('people_scale','lighting_scale','misc_scale')):
+        raise ValueError('internal gain scale outside declared study domain')
     resources = {}
     for rel in ('inputs/schema_fields.json.gz', 'inputs/native_rows.json.gz', 'THERMAL_ENVIRONMENT_POLICY.json'):
         resources[rel] = sha(bound(root, {'path': rel, 'sha256': job['resources'][rel]}))
@@ -347,7 +354,7 @@ def compile_pairs(config, output):
                       'pair_count': len(pairs), 'new_EnergyPlus_runs': 0})
 
 
-def sql_trace(path, history_days):
+def sql_trace(path, history_days, native_step=10):
     channels = {}
     with sqlite3.connect(path) as db:
         query = '''SELECT d.Name,d.KeyValue,d.Units,d.IsMeter,t.SimulationDays,t.Hour,t.Minute,t.Interval,r.Value
@@ -356,11 +363,20 @@ def sql_trace(path, history_days):
         WHERE t.WarmupFlag=0 AND e.EnvironmentType=3 AND t.SimulationDays>=?
         ORDER BY t.TimeIndex'''
         for name, key, unit, meter, day, hour, minute, interval, value in db.execute(query, (history_days + 1,)):
-            if interval != 10 or not math.isfinite(value):
+            if interval != native_step or not math.isfinite(value):
                 raise ValueError('invalid timestep or nonfinite output')
             t = (day - history_days - 1) * 1440 + hour * 60 + minute - interval
             channel = channels.setdefault(name + '|' + (key or ''), {'unit': unit, 'is_meter': bool(meter), 'values': []})
             channel['values'].append([t, value])
+    if native_step!=10:
+        for c in channels.values():
+            raw=c['values'];expected=list(range(raw[0][0],raw[-1][0]+native_step,native_step))
+            if [t for t,v in raw]!=expected:raise ValueError('missing/duplicate native solver interval')
+            bins={}
+            for t,value in raw:bins.setdefault(t//10*10,[]).append(value)
+            if any(len(v)!=10//native_step for v in bins.values()):raise ValueError('incomplete native aggregation bin')
+            c['values']=[[t,sum(v)if c['unit']=='J'else sum(v)/len(v)]for t,v in bins.items()]
+            c['native_timestep_min']=native_step;c['report_timestep_min']=10
     if not any(k.startswith('Electricity:Facility|') for k in channels) or not any(k.startswith('Zone Mean Air Temperature|') for k in channels):
         raise ValueError('required meter/temperature channels missing')
     return channels
@@ -402,7 +418,7 @@ def run_pairs(compiled, output, engine, engine_sha, timeout):
                           'warnings': [l for l in errors.splitlines() if '** Warning **' in l],
                           'human_acceptance': None, 'engine_completion_is_not_service_success': True}
                 if success:
-                    channels = sql_trace(folder / 'out/eplusout.sql', meta['history_days'])
+                    channels = sql_trace(folder / 'out/eplusout.sql', meta['history_days'],meta.get('simulation_timestep_min',10))
                     expected = list(range(0, meta['run_interval_min'][1], 10))
                     if any([t for t, v in c['values']] != expected for c in channels.values()):
                         raise ValueError('incomplete or duplicated output timeline')
@@ -437,6 +453,7 @@ def main():
     p = sub.add_parser('reproduce'); p.add_argument('--energyplus-dir', type=Path, required=True); p.add_argument('--weather', type=Path)
     p.add_argument('--weather-metadata', type=Path)
     p.add_argument('--out', type=Path, required=True)
+    p = sub.add_parser('study'); p.add_argument('--energyplus-dir',type=Path,required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--workers',type=int,default=3);p.add_argument('--weather',type=Path);p.add_argument('--weather-metadata',type=Path)
     p = sub.add_parser('run'); p.add_argument('--compiled', type=Path, required=True); p.add_argument('--out', type=Path, required=True)
     p.add_argument('--engine', type=Path, required=True); p.add_argument('--engine-sha256', required=True); p.add_argument('--timeout', type=int, default=300)
     args = parser.parse_args()
@@ -456,6 +473,9 @@ def main():
         elif args.command == 'reproduce':
             from .validation import reproduce
             result=reproduce(args.energyplus_dir,args.weather,args.out,args.weather_metadata)
+        elif args.command == 'study':
+            from .robustness import public_study
+            result=public_study(args.energyplus_dir,args.out,args.workers,args.weather,args.weather_metadata)
         elif args.command == 'run': result = run_pairs(args.compiled, args.out, args.engine, args.engine_sha256, args.timeout)
         else: result = verify(args.directory)
         display={k:v for k,v in result.items()if k!='files'}

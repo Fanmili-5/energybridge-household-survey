@@ -115,6 +115,41 @@
       "evidence_class": "declared_input"
     },
     {
+      "schema_pointer": "/properties/settings/properties/people_scale",
+      "rule_ids": [
+        "VAL-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/settings/properties/lighting_scale",
+      "rule_ids": [
+        "VAL-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/settings/properties/misc_scale",
+      "rule_ids": [
+        "VAL-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/settings/properties/simulation_timestep_min",
+      "rule_ids": [
+        "VAL-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/settings/properties/airflow_model",
+      "rule_ids": [
+        "ENV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
       "schema_pointer": "/properties/thermal_fractions/properties/washer",
       "rule_ids": [
         "DEV-03"
@@ -200,6 +235,13 @@
       "evidence_class": "declared_input"
     },
     {
+      "schema_pointer": "/$defs/member/properties/metabolic_scale",
+      "rule_ids": [
+        "LOAD-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
       "schema_pointer": "/$defs/sleep_group/properties/group_id",
       "rule_ids": [
         "ASM-01"
@@ -236,6 +278,13 @@
       "evidence_class": "declared_input"
     },
     {
+      "schema_pointer": "/$defs/sleep_group/properties/clearance_m",
+      "rule_ids": [
+        "ASM-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
       "schema_pointer": "/$defs/fixture/properties/fixture_id",
       "rule_ids": [
         "ASM-02"
@@ -258,6 +307,13 @@
     },
     {
       "schema_pointer": "/$defs/fixture/properties/footprint_m",
+      "rule_ids": [
+        "ASM-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/fixture/properties/clearance_m",
       "rule_ids": [
         "ASM-02"
       ],
@@ -323,6 +379,13 @@
       "schema_pointer": "/$defs/device/oneOf/0/properties/mount_width_m",
       "rule_ids": [
         "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/clearance_m",
+      "rule_ids": [
+        "ASM-02"
       ],
       "evidence_class": "declared_input"
     },
@@ -425,6 +488,13 @@
       "evidence_class": "declared_input"
     },
     {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/clearance_m",
+      "rule_ids": [
+        "ASM-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
       "schema_pointer": "/$defs/device/oneOf/1/properties/parameters/properties/power_kw",
       "rule_ids": [
         "DEV-03"
@@ -523,6 +593,13 @@
       "evidence_class": "declared_input"
     },
     {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/clearance_m",
+      "rule_ids": [
+        "ASM-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
       "schema_pointer": "/$defs/device/oneOf/2/properties/parameters/properties/power_kw",
       "rule_ids": [
         "DEV-03"
@@ -617,6 +694,13 @@
       "schema_pointer": "/$defs/device/oneOf/3/properties/mount_width_m",
       "rule_ids": [
         "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/clearance_m",
+      "rule_ids": [
+        "ASM-02"
       ],
       "evidence_class": "declared_input"
     },
@@ -782,6 +866,13 @@
       "evidence_class": "declared_input"
     },
     {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/clearance_m",
+      "rule_ids": [
+        "ASM-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
       "schema_pointer": "/$defs/device/oneOf/4/properties/parameters/properties/nameplate_W",
       "rule_ids": [
         "DEV-02"
@@ -925,6 +1016,13 @@
       "schema_pointer": "/$defs/device/oneOf/5/properties/mount_width_m",
       "rule_ids": [
         "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/clearance_m",
+      "rule_ids": [
+        "ASM-02"
       ],
       "evidence_class": "declared_input"
     },
@@ -1523,6 +1621,20 @@
     },
     {
       "schema_pointer": "/$defs/household/properties/background/properties/cooking_W",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/background/properties/misc_standby_fraction",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/background/properties/reference_note",
       "rule_ids": [
         "DEV-03"
       ],

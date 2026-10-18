@@ -6,6 +6,7 @@ No minimum temperature cutoff, extra heat or schedule rescue is introduced.
 """
 import collections
 from .core import *
+from ..loads import cooking_minutes
 
 CFM = 0.0004719474432
 
@@ -13,7 +14,7 @@ CFM = 0.0004719474432
 def add_environment(rows, pack, days, date, executed, obj, schedule):
     policy = read(ROOT/'THERMAL_ENVIRONMENT_POLICY.json')
     scale = float(os.environ.get('EB_PORTAL_FLOW_SCALE', '1'))
-    if scale not in (0.5, 1.0, 2.0):
+    if not .5<=scale<=2:
         raise ValueError('UNDECLARED_PORTAL_FLOW_SCALE')
     roominfo = {r['room_id']: r for r in pack['world']['layout']['rooms']}
     private = {r for r,v in roominfo.items() if v['census_room_class']=='bedroom'}
@@ -38,8 +39,7 @@ def add_environment(rows, pack, days, date, executed, obj, schedule):
                     bath_active[d].update(minutes)
         for a in day['family']['bath_times_min'].values():
             bath_active[d].update(range(a,a+10,10))
-        for a in day['family']['member_dinners_min'].values():
-            kitchen_active[d].update(range(a-30,a,10))
+        kitchen_active[d].update(cooking_minutes(day))
 
     def overrun(source, minutes=20):
         absolute=set()

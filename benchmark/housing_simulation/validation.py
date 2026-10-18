@@ -55,7 +55,7 @@ def audit(compiled, runs, output):
                 def values(name,key=''):
                     channel=trace.get(name+'|'+key)
                     if channel is None:raise ValueError('required physical channel missing:'+name+'|'+key)
-                    unit='J'if name.endswith(('Electricity','Energy')) or name.startswith('Electricity:') else 'kg/s'if name.endswith('Mass Flow Rate')else '%'if name=='Zone Air Relative Humidity'else ''if name=='Zone People Occupant Count'else 'C'
+                    unit='J'if name.endswith(('Electricity','Energy')) or name.startswith('Electricity:') else 'kg/s'if name.endswith('Mass Flow Rate')else 'Pa'if name=='AFN Node Total Pressure'else '%'if name=='Zone Air Relative Humidity'else ''if name=='Zone People Occupant Count'else 'C'
                     if channel['unit']!=unit:raise ValueError('physical channel unit mismatch:'+name)
                     return dict(channel['values'])
                 rooms=meta['world_assembly']['room_ids']
@@ -64,6 +64,14 @@ def audit(compiled, runs, output):
                     for variable in ('Zone Mean Air Temperature','Zone Mean Radiant Temperature','Zone Air Relative Humidity','Zone People Occupant Count'):
                         values(variable,room.upper())
                 checks[side+'_required_zone_channels']=True
+                environment=meta.get('thermal_environment',{})
+                if environment.get('model')=='native_EnergyPlus_AirflowNetwork':
+                    from .robustness import airflow_balance
+                    balance=airflow_balance(trace,environment,rooms)
+                    checks[side+'_AFN_mass_balance']=balance['passed']
+                    details[side+'_AFN_mass_balance']=balance
+                    for room in rooms:values('AFN Node Total Pressure',room.upper())
+                    checks[side+'_AFN_pressure_channels']=True
                 if meta['tank_name']:
                     values('Water Heater Tank Temperature',meta['tank_name'])
                     nodes=meta['world_assembly']['tank_nodes']

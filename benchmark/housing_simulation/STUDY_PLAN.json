@@ -1,0 +1,86 @@
+{
+  "schema": "eb.housing_simulation.study_plan.v1",
+  "registered_on": "2026-10-19",
+  "registration_stage": "before robustness matrix engine execution;development smoke tests excluded",
+  "scope": "3 declared dwellings x summer2025-07-15/winter2025-11-15;public Chicago TMY3;no China climate or population calibration claimed",
+  "history_days": [
+    7,
+    28,
+    56,
+    112
+  ],
+  "tail_days": [
+    9,
+    16
+  ],
+  "simulation_timestep_min": [
+    10,
+    5,
+    2,
+    1
+  ],
+  "reference": {
+    "history_days": 112,
+    "tail_days": 9,
+    "simulation_timestep_min": 10,
+    "airflow_model": "reference_mixing"
+  },
+  "comparison": {
+    "per_arm_energy_relative": 0.01,
+    "effect_absolute_kWh": 0.02,
+    "effect_relative": 0.1,
+    "zone_mean_absolute_C": 0.1,
+    "tank_mean_absolute_C": 0.5,
+    "common_interval_min": 12960,
+    "history_selection": "shortest history with two consecutive finer comparisons passing;otherwise112 requires112vs168extension",
+    "timestep_selection": "coarsest step passing comparison to next finer step;evaluate sequentially10vs5,5vs2,2vs1 until passed;finest1alone is not proof",
+    "tail_selection": "9days only if9vs16 cumulative paired effect and existing recovery gates pass"
+  },
+  "pressure_network": {
+    "AFN_zone_balance_absolute_kg_s": 1e-06,
+    "AFN_zone_balance_relative": 1e-05,
+    "compare_to_reference_mixing": true,
+    "agreement_required": false,
+    "reason": "structural alternatives need physical gates;difference is model uncertainty,not numerical nonconvergence"
+  },
+  "morris": {
+    "method": "Morris1991 elementary effects;independent physical scenario scales only",
+    "seed": 20261019,
+    "levels": 4,
+    "normalized_step": 0.6666666666666666,
+    "trajectories": 2,
+    "parameters": {
+      "reference_ach": [
+        0.175,
+        0.7
+      ],
+      "portal_flow_scale": [
+        0.5,
+        2.0
+      ],
+      "people_scale": [
+        0.8,
+        1.2
+      ],
+      "lighting_scale": [
+        0.8,
+        1.2
+      ],
+      "misc_scale": [
+        0.5,
+        1.5
+      ]
+    },
+    "outputs": [
+      "A_kWh",
+      "B_kWh",
+      "B_minus_A_kWh"
+    ],
+    "success": "all planned simulations pass physical/service gates;complete finite elementary effects;sign changes are reported,never discarded",
+    "limits": "small screening design;not total-order Sobol,not calibrated uncertainty probabilities,not demographic independence"
+  },
+  "run_timeout_s": 300,
+  "max_workers": 3,
+  "thresholds_are_project_acceptance_criteria": true,
+  "paper_support_does_not_validate_chosen_thresholds": true
+}

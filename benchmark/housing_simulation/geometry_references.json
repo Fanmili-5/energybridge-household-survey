@@ -1,0 +1,70 @@
+{
+  "schema": "eb.housing_geometry_references.v1",
+  "source_id": "xia2025_units",
+  "citation": "Xia, Wu, Zou, Chen, Lou(2025), Frontiers of Architectural Research14:1810–1833, Table9 and plan scaling Table4",
+  "doi": "10.1016/j.foar.2025.03.006",
+  "area_basis": "gross indoor area as named by source;not equated to census allocated gross area",
+  "admitted_linear_scale_range": [
+    0.8,
+    1.2
+  ],
+  "scope": "Guangzhou reference design domain;scale interval is a study design range,not an observed population distribution",
+  "profiles": [
+    {
+      "id": "xia2025_P1",
+      "bedrooms": 1,
+      "area_m2": 35.14,
+      "reported_living_area_ratio": 0.44,
+      "reported_living_window_wall_ratio": 0.26
+    },
+    {
+      "id": "xia2025_P2",
+      "bedrooms": 1,
+      "area_m2": 59.59,
+      "reported_living_area_ratio": 0.49,
+      "reported_living_window_wall_ratio": 0.1
+    },
+    {
+      "id": "xia2025_P3",
+      "bedrooms": 2,
+      "area_m2": 63.34,
+      "reported_living_area_ratio": 0.53,
+      "reported_living_window_wall_ratio": null
+    },
+    {
+      "id": "xia2025_P4",
+      "bedrooms": 2,
+      "area_m2": 54.48,
+      "reported_living_area_ratio": 0.44,
+      "reported_living_window_wall_ratio": null
+    },
+    {
+      "id": "xia2025_P5",
+      "bedrooms": 3,
+      "area_m2": 61.21,
+      "reported_living_area_ratio": 0.31,
+      "reported_living_window_wall_ratio": null
+    },
+    {
+      "id": "xia2025_P6",
+      "bedrooms": 3,
+      "area_m2": 74.83,
+      "reported_living_area_ratio": 0.39,
+      "reported_living_window_wall_ratio": null
+    },
+    {
+      "id": "xia2025_P7",
+      "bedrooms": 4,
+      "area_m2": 146.06,
+      "reported_living_area_ratio": 0.39,
+      "reported_living_window_wall_ratio": 0.23
+    },
+    {
+      "id": "xia2025_P8",
+      "bedrooms": 4,
+      "area_m2": 114.8,
+      "reported_living_area_ratio": 0.44,
+      "reported_living_window_wall_ratio": 0.08
+    }
+  ]
+}
