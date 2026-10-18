@@ -1,0 +1,40 @@
+name: A-B strategy generation
+
+on:
+  push:
+    paths:
+      - 'benchmark/ab_generation/**'
+      - '.github/workflows/ab-generation.yml'
+  pull_request:
+    paths:
+      - 'benchmark/ab_generation/**'
+      - '.github/workflows/ab-generation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  public-reproduction:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -B -m unittest benchmark.ab_generation.test_generation -v
+      - run: python -B -m benchmark.ab_generation.verify_package
+      - name: Reproduce without the historical cohort or other modules
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/ab-independent/benchmark"
+          cp benchmark/__init__.py "$RUNNER_TEMP/ab-independent/benchmark/"
+          cp -R benchmark/ab_generation "$RUNNER_TEMP/ab-independent/benchmark/"
+          cd "$RUNNER_TEMP/ab-independent"
+          python -B -m benchmark.ab_generation generate \
+            --input benchmark/ab_generation/examples/batch.json \
+            --rules benchmark/ab_generation/examples/rules.json \
+            --out "$RUNNER_TEMP/ab-example"
+          python -B -m benchmark.ab_generation verify "$RUNNER_TEMP/ab-example"

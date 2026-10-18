@@ -1,0 +1,1 @@
+{"records":[{"case_id":"synthetic-family__2025-06-07","context":"family.json"},{"case_id":"synthetic-control__2025-06-07","context":"control.json"},{"case_id":"synthetic-missing__2025-06-07","context":"missing-reference.json"}],"schema":"eb.ab_generation.batch.v1"}
