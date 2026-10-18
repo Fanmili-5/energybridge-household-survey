@@ -1,80 +1,135 @@
-# 复现与版本固定
+# 构建与复现指南
 
-本包无需先生成某个固定规模的家庭库。先选择所需的执行层，准备该层输入，再按下面顺序运行。每一步写到新目录；原始资料和已完成案例不会被覆盖。
+## 1. 环境准备
 
-## 环境
-
-Python3.10+。几何层使用SciPy和Shapely：
+所有命令在仓库根目录执行。Python 版本要求为 3.10 或更高版本。
 
 ```bash
 python -m pip install -r benchmark/housing_simulation/requirements.txt
 ```
 
-原生Access提取另需`access_parser_c`及其依赖，来源版本见`requirements-native.txt`：
+原生 Access 提取依赖单独安装：
 
 ```bash
 python -m pip install -r benchmark/housing_simulation/requirements-native.txt
 ```
 
-只有执行`run`需要安装EnergyPlus24.1.0-9d7789a3ac；schema与引擎应来自同一官方发布。记录Python版本、依赖版本、操作系统和引擎实际SHA256。可用Python计算文件SHA：
+`requirements-native.txt`固定 Access 解析器提交和辅助依赖。几何依赖按声明的版本范围安装，实际安装版本应随实验环境记录。数值执行要求 EnergyPlus `24.1.0-9d7789a3ac`，schema 与二进制应来自同一官方发布。
+
+实验环境记录至少包括 Python 版本、依赖版本、操作系统、CPU 架构、引擎版本和二进制哈希。
+
+## 2. 资源准备
+
+### 2.1 建筑原件
+
+原生建筑模型从 [DeST 作者模型库](https://www.dest.net.cn/dxjzk)取得，登记建筑类型、城市、目录年代、下载来源和原件 SHA-256。现有获取接口为 `https://svr.dest.net.cn/api/v1/load_model_file`，请求包含 `data.building_type`、`location` 和 `year`；执行时须记录实际响应及资源身份。
+
+### 2.2 气象文件
+
+EPW 登记项包括下载 URL、数据集类型、时期、LOCATION、站号、坐标、时区和内容哈希。CSWD 来源见 [EnergyPlus 手册](https://bigladdersoftware.com/epx/docs/24-1/auxiliary-programs/references.html)，TMYx 方法见[提供方说明](https://climate.onebuilding.org/sources/default.html)。
+
+资源登记阶段完成全年时间序列、缺值和气象量质量检查。原生提取阶段另执行站号、坐标和字节核验。原件和 EPW 按各自使用条件准备，公共源码包不包含这些文件。
+
+### 2.3 哈希生成
 
 ```bash
-python -c 'import hashlib,pathlib; print(hashlib.sha256(pathlib.Path("/path/to/energyplus").read_bytes()).hexdigest())'
+python -c 'import hashlib,pathlib; print(hashlib.sha256(pathlib.Path("/path/to/resource").read_bytes()).hexdigest())'
 ```
 
-公开示例与测试命令见[README](README.md)。测试材料为人工构造，不需要CHFS、CRECS、既有家庭或答卷。
+资源哈希写入对应配置。压缩资源按压缩后的实际字节登记。
 
-## 取得来源与建立参考输入
+## 3. 原型匹配与参数提取
 
-1. 从[DeST作者模型库](https://www.dest.net.cn/dxjzk)取得所需城市、楼型、标准年代原件，记录下载请求及实际字节哈希。现有项目提取入口使用作者`https://svr.dest.net.cn/api/v1/load_model_file`，请求字段为`data.building_type/location/year`；返回资源与服务可用性须在实际运行时核对。
-2. 从原始分发源取得EPW，保留下载URL、文件头、站号、坐标、时期和哈希。CSWD的来源记录见[手册](https://bigladdersoftware.com/epx/docs/24-1/auxiliary-programs/references.html)，补充TMYx见[提供方](https://climate.onebuilding.org/sources/default.html)。先完成全年质量检查，再把文件登记为候选。
-3. 按[输入契约](INPUTS.md)准备单份原生来源记录，并执行：
+按[接口规范](INPUTS.md)准备匹配请求及已准入候选目录：
+
+```bash
+python -B -m benchmark.housing_simulation match \
+  --request /path/to/match_request.json \
+  --catalog /path/to/reference_catalog.json \
+  > outputs/reference-selection.json
+```
+
+上述标准输出重定向要求 `outputs` 目录已存在。原型选择记录和候选目录应纳入实验输入版本。
+
+对选定原件执行参数提取：
 
 ```bash
 python -B -m benchmark.housing_simulation extract-native \
-  --input /path/to/native_entry.json --out /tmp/native-reference
+  --input /path/to/native_entry.json \
+  --out outputs/native-reference
 ```
 
-该步实际读取源ENVIRONMENT和使用中的构造表，拒绝哈希、城市或气象身份冲突。`assembly.json`可供外壳生成；`reference.json`保留源标量与证据。原生平面没有因此逐户复制。第三方原件、转换资料与天气按各自条件保留，本包不统一授予再分发许可。
+输出 `reference.json`、`assembly.json` 及阶段清单。原件、环境或气象身份不满足条件时，执行返回非零状态。
 
-## 构造住房
+## 4. 参考外壳构建
 
-将`examples/shell_batch.json`复制为实验配置，改为自己的来源assembly路径及SHA、层高、尺寸语法、住房条件与明确的`boundary_policy`。当前支持`midfloor_north_south_reference`；不支持的边界应增加新的实现分支和验证，不能仅换标签。
+外壳作业指定构造参数文件及哈希、住宅条件、候选尺寸语法、层高和边界策略。配置结构见 [shell_batch.json](examples/shell_batch.json)。
 
 ```bash
 python -B -m benchmark.housing_simulation build-shell \
-  --input /path/to/shell_job.json --out /tmp/reference-shells
-python -B -m benchmark.housing_simulation verify /tmp/reference-shells
+  --input /path/to/shell_job.json \
+  --out outputs/reference-shells
+python -B -m benchmark.housing_simulation verify outputs/reference-shells
 ```
 
-检查所有条目，包括rejected；不删除失败家庭改变分母。此阶段得到外壳，完整家庭还要由上游补齐成员到房间、床位、照护、设备安装和访问权限等证据。设备布置和日程不是本外壳命令自动猜测的字段。
+验收时检查整个输入列表，包括 `rejected` 条目。外壳产物的验收对象为几何、面积和围护结构；完整家庭世界的成员、床位、照护、设备安装、供电和控制权限须经集成阶段绑定。
 
-## 成对编译和执行
+## 5. 配对模型编译与执行
 
-把完整家庭世界与第二条策略主线的A/B请求导出为[输入契约](INPUTS.md)规定的household/pair包。`physics_job.json`选择任意明确的pairs列表，并冻结schema、设备模板、天气和环境配置。
+### 5.1 输入装配
+
+按[家庭世界集成接口](INPUTS.md)准备家庭包和 A/B 请求，生成 `physics_job.json`。作业应固定以下输入：家庭包、配对请求、EPW、官方 schema 字段表、源设备对象和热环境配置。
+
+当前独立包不提供一般家庭画像到完整物理家庭包的自动装配器。带设备运行依赖已完成集成的上游包；公共工程示例提供最小结构参考。
+
+### 5.2 编译
 
 ```bash
 python -B -m benchmark.housing_simulation compile \
-  --input /path/to/physics_job.json --out /tmp/compiled-pairs
-python -B -m benchmark.housing_simulation run \
-  --compiled /tmp/compiled-pairs --out /tmp/physical-runs \
-  --engine /path/to/energyplus --engine-sha256 YOUR_ENGINE_SHA256
-python -B -m benchmark.housing_simulation verify /tmp/physical-runs
+  --input /path/to/physics_job.json \
+  --out outputs/compiled-pairs
 ```
 
-`compile`只编译，不启动引擎。两臂使用同一组资源；每对由隔离进程加载资源根，避免多任务共享缓存。`run`核字节与引擎版本后逐臂运行；返回非零不丢弃失败记录。每步MANIFEST保留全部输出哈希，实际运行区间、前史和日历映射在INPUT中。原始SQL和警告保留，TRACE只取目标日期及尾期，不将预热混入评价。
+编译阶段不启动 EnergyPlus。每对使用独立编译进程，资源根目录与配置显式传入。各臂的 `INPUT.json.gz` 保存实际前史、运行区间、请求终点、执行计划和计量映射。
 
-当前编译内核只支持既定2024/2025/2026参考日程覆盖。更改源日历、时步、服务协议或设备种类属于新内核版本，不能仅更换配置日期便宣称已支持。
+### 5.3 执行与回读
 
-## 不含既有家庭的完整演示
+```bash
+python -B -m benchmark.housing_simulation run \
+  --compiled outputs/compiled-pairs \
+  --out outputs/physical-runs \
+  --engine /path/to/energyplus \
+  --engine-sha256 ENGINE_BINARY_SHA256
+python -B -m benchmark.housing_simulation verify outputs/physical-runs
+```
 
-`make-demo`读取自备官方schema和EPW，创建一户完全人工的无居民、无目标设备世界和A=B请求。可按README从输入生成一直跑到SQL回读；它证明工程链可独立执行，不验证有电器家庭或人类偏好。
+执行器保存两臂状态、原始 SQL、引擎日志和时间序列。轨迹回读排除预热期；评价区间及电量范围在回执中明确登记。失败条目保留在批次记录中。
 
-## 固定和重放
+## 6. 公共集成测试实例
 
-- 冻结源原件/EPW、请求、配置、候选顺序、包版本、依赖和引擎。当前匹配与几何选择是确定规则，不额外抽样；相同输入、代码与环境是复现条件。
-- 每次变化形成新输出目录，保留旧成功、失败、日志和警告。改变上游世界或请求后重新编译；跨输入复用必须另行提供完整模型身份与回执证据。
-- 同环境可检查IDF字节。跨Python/平台的浮点汇总格式或引擎数值可能不同，应明确容差、比较对象和预先固定规则；不将“几乎相同”伪装成字节一致。
-- 本包的`verify`核文件身份；完整研究还需要计量闭合、共同状态、服务恢复和敏感性等领域验收，随后才进入后果展示与人类评价。
+公共实例以合成材料、参考几何和无居民、无目标可控设备、A=B 的运行条件构建，不依赖研究家庭库。schema 与 EPW 由运行环境提供。
 
-旧规模实例的审计记录留在原研究目录，作为应用证据。它们不作为运行本包的依赖，也不被提升为通用方法的全部验证。
+```bash
+python -B -m benchmark.housing_simulation make-demo \
+  --schema /path/to/Energy+.schema.epJSON \
+  --weather /path/to/reference.epw \
+  --out outputs/demo-inputs
+python -B -m benchmark.housing_simulation compile \
+  --input outputs/demo-inputs/physics_job.json \
+  --out outputs/demo-models
+python -B -m benchmark.housing_simulation run \
+  --compiled outputs/demo-models \
+  --out outputs/demo-runs \
+  --engine /path/to/energyplus \
+  --engine-sha256 ENGINE_BINARY_SHA256
+```
+
+该实例覆盖输入构建、成对编译、引擎执行和 SQL 回读。其验证结论限定为工程集成，不扩展到目标设备性能或家庭服务有效性。
+
+## 7. 版本固定与复现判定
+
+一个可复现运行应保存代码版本、依赖环境、资源原件哈希、候选目录和次序、全部配置、实际模型、引擎哈希、日志及执行回执。匹配和几何使用确定性选择规则；当前实现不额外抽取家庭或随机变更住房条件。
+
+输入修订创建新输出目录。家庭、外壳、设备、占用、请求、天气、引擎或运行配置变更后，受影响模型需要重新编译和执行。历史产物只在完整身份和回执匹配时具备复用依据。
+
+同环境编译可按 IDF 字节判定一致性。跨环境比较应固定数值对象、容差和统计规则，分别报告文本差异与物理输出差异。领域验收项目及当前验证覆盖见[验证规范](VALIDATION.md)。

@@ -6,7 +6,7 @@
       "id": "dest_library",
       "url": "https://www.dest.net.cn/dxjzk",
       "kind": "author_distribution",
-      "access": "web page is dynamic; content claims grounded in local original files and publication abstract",
+      "access": "dynamic_author_catalogue;identity_supported_by_original_files_and_publisher_metadata",
       "supports": [
         "original model distribution and catalogue endpoint identity"
       ],
@@ -30,13 +30,13 @@
       "journal": "Building Simulation",
       "volume": 16,
       "pages": "1559–1582",
-      "access": "publisher metadata and abstract; full text not obtained in this task",
+      "access": "publisher_metadata_and_abstract;full_text_not_available",
       "supports": [
         "prototype stratification by climate, building type and standards era",
         "prototype use for reference building energy modeling"
       ],
       "not_identified": [
-        "our geometry grammar",
+        "project geometry grammar",
         "renovation prevalence",
         "derived household empirical calibration"
       ]
@@ -45,7 +45,7 @@
       "id": "cswd_source_record",
       "url": "https://bigladdersoftware.com/epx/docs/24-1/auxiliary-programs/references.html",
       "kind": "EnergyPlus24.1 manual source record",
-      "access": "read source entry naming China Meteorological Bureau and Tsinghua University, 2005",
+      "access": "EnergyPlus24.1_manual_source_attribution",
       "supports": [
         "CSWD attribution"
       ],
@@ -58,7 +58,7 @@
       "id": "tmyx_provider",
       "url": "https://climate.onebuilding.org/sources/default.html",
       "kind": "data producer method page",
-      "access": "provider page read",
+      "access": "producer_method_and_period_description",
       "supports": [
         "TMYx typical-year method",
         "ISD weather and ERA5 solar sources for stated release",
@@ -73,12 +73,12 @@
       "id": "ep_mass_conservation",
       "url": "https://bigladdersoftware.com/epx/docs/24-1/engineering-reference/zone-air-mass-flow-conservation.html",
       "kind": "EnergyPlus24.1 engineering reference",
-      "access": "manual mechanism read",
+      "access": "EnergyPlus24.1_engineering_reference",
       "supports": [
         "mixing and infiltration adjustment mechanisms for zone mass balance"
       ],
       "not_identified": [
-        "our selected ACH and door fractions are measured",
+        "empirical calibration of the specified ACH and door fractions",
         "pressure-based inter-room airflow validation"
       ]
     },
@@ -86,18 +86,17 @@
       "id": "pnnl_bath_exhaust",
       "url": "https://basc.pnnl.gov/resource-guides/bathroom-exhaust-fans",
       "kind": "DOE/PNNL reference guidance",
-      "access": "capacity and run-on guidance read",
+      "access": "producer_guidance_for_reference_capacity",
       "supports": [
         "50cfm intermittent bathroom exhaust as a reference capacity"
       ],
       "not_identified": [
         "Chinese code compliance",
-        "our20minute run-on duration",
+        "project20minute run-on duration",
         "national ventilation facilities prevalence"
       ]
     }
   ],
-  "bibtex_created_from_memory": false,
-  "literature_scope": "targeted verification of existing method sources;not a new systematic review",
-  "scope": "generic benchmark housing and simulation construction;cohort independent"
+  "scope": "reference dwelling construction and paired energy simulation",
+  "verification_scope": "targeted verification of building-model,weather and solver sources"
 }

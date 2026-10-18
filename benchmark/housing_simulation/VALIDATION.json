@@ -33,8 +33,6 @@
     "measured_household_or_appliance_validation_claimed": false
   },
   "new_production_households": 0,
-  "original_cohort_files_modified": false,
-  "full1000_resumed": false,
   "field_calibration_completed": false,
   "human_answers_created": 0,
   "engine_version": "EnergyPlus, Version 24.1.0-9d7789a3ac",
@@ -43,5 +41,6 @@
     "compiler_equivalence": "2376c645e1434559e3027c3fe5303bc798a33702034098a04546befd8e72a8c9",
     "controlled": "4b9bdbe68e4978f5a8b1eae03114626dd6809494e207f1afccec00f23bf7c43c",
     "synthetic": "72a5060b5b2c94d7a36e5f9c7b31b2fa6a4edd540e603cfa2bda70a2e3ee8d7a"
-  }
+  },
+  "production_data_modified": false
 }
