@@ -10,10 +10,11 @@
     "usage": "public integration scenario;not Chinese household climate validation"
   },
   "settings": {
-    "history_days": 7,
+    "history_days": 112,
     "tail_days": 9,
     "reference_ach": 0.35,
-    "portal_flow_scale": 1
+    "portal_flow_scale": 1,
+    "simulation_timestep_min": 5
   },
   "thermal_fractions": {
     "washer": [

@@ -104,7 +104,6 @@ def public_study(energyplus_dir,output,workers=3,weather=None,weather_metadata=N
     job=read(out/'worlds/physics_job.json');job['resource_root']=str(out/'worlds')
     states,edges=morris_design(plan)
     configs=[{'id':'history_'+str(h),'settings':{'history_days':h}}for h in plan['history_days']]
-    configs.extend([{'id':'tail_16','settings':{'tail_days':16}},{'id':'pressure_network','settings':{'airflow_model':'pressure_network'}},*states])
     def run(config):
         folder=out/config['id'];folder.mkdir();current=copy.deepcopy(job);current['settings'].update(config['settings']);save(folder/'job.json',current)
         compiled=compile_pairs(folder/'job.json',folder/'compiled')
@@ -120,22 +119,27 @@ def public_study(energyplus_dir,output,workers=3,weather=None,weather_metadata=N
         for name,result,checked in pool.map(run,configs):results[name]=result;audits[name]=checked
     comparisons={}
     for a,b in zip(plan['history_days'],plan['history_days'][1:]):comparisons[f'history_{a}_vs_{b}']=convergence(results['history_'+str(a)],results['history_'+str(b)])
-    history=None;hs=plan['history_days']
-    for i in range(len(hs)-2):
-        if all(comparisons[f'history_{hs[j]}_vs_{hs[j+1]}']['passed']for j in (i,i+1)):history=hs[i];break
-    if history is None:
-        config={'id':'history_168','settings':{'history_days':168}}
-        # Both case dates have168days of explicitly supplied calendars.
-        name,result,checked=run(config);results[name]=result;audits[name]=checked
-        comparisons['history_112_vs_168']=convergence(results['history_112'],result)
-        if comparisons['history_112_vs_168']['passed']:history=112
-    tail=convergence(summarize(out/'history_112',tail=True),summarize(out/'tail_16',tail=True),tail=True);comparisons['tail_9_vs_16']=tail
-    step=None;prior='history_112'
+    step=None;prior='history_112';history=None;tail={'passed':False}
+    # A step is admitted only when refinement, history and recovery all pass.
+    # If a candidate fails any gate, continue down the registered ladder.
     for a,b in zip(plan['simulation_timestep_min'],plan['simulation_timestep_min'][1:]):
         name,result,checked=run({'id':'timestep_'+str(b),'settings':{'simulation_timestep_min':b}});results[name]=result;audits[name]=checked
         comparison=convergence(results[prior],result);comparisons[f'timestep_{a}_vs_{b}']=comparison
-        if comparison['passed']:step=a;break
+        if comparison['passed']:
+            hname='history_168_step_'+str(a)
+            hname,hresult,hchecked=run({'id':hname,'settings':{'history_days':168,'simulation_timestep_min':a}});results[hname]=hresult;audits[hname]=hchecked
+            confirmed=convergence(results[prior],hresult);comparisons['deployed_history_112_vs_168_step_'+str(a)]=confirmed
+            if confirmed['passed']:
+                tname,tresult,tchecked=run({'id':'tail_16_step_'+str(a),'settings':{'history_days':112,'simulation_timestep_min':a,'tail_days':16}});results[tname]=tresult;audits[tname]=tchecked
+                tail=convergence(summarize(out/prior,tail=True),summarize(out/tname,tail=True),tail=True);comparisons['tail_9_vs_16_step_'+str(a)]=tail
+                if tail['passed']:step=a;history=112;ref_name=prior;break
         prior=name
+    if step is None:raise ValueError('combined solver/history/recovery ladder did not converge;retain all failed candidate outputs')
+    selected={'history_days':112,'simulation_timestep_min':step}
+    configurations=[{'id':'pressure_network','settings':{**selected,'airflow_model':'pressure_network'}},
+                    *[{**state,'settings':{**selected,**state['settings']}}for state in states]]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=workers)as pool:
+        for name,result,checked in pool.map(run,configurations):results[name]=result;audits[name]=checked
     elementary={case:{name:{metric:[]for metric in plan['morris']['outputs']}for name in plan['morris']['parameters']}for case in results['history_112']}
     for edge in edges:
         for case,parameters in elementary.items():
@@ -149,7 +153,7 @@ def public_study(energyplus_dir,output,workers=3,weather=None,weather_metadata=N
         'registered_plan_sha256':sha(out/'REGISTERED_PLAN.json'),'code_tree_sha256':digest({str(p.relative_to(HERE)):sha(p)for p in sorted(HERE.rglob('*.py'))}),
         'weather_sha256':sha(weather),'engine_sha256':sha(engine),'historical_cohort_required':False,'records':records,
         'simulated_arms':sum(2*r['case_count']for r in records),'numerical_convergence_passed':numerical_ok,
-        'selected_reference':{'history_days':history,'tail_days':9 if tail['passed']else None,'simulation_timestep_min':step},
+        'reference_configuration_id':ref_name,'sensitivity_numeric_settings':selected,'selected_reference':{'history_days':history,'tail_days':9 if tail['passed']else None,'simulation_timestep_min':step},
         'comparisons':comparisons,'morris_design':{'states':states,'edges':edges},'morris_screening':screening,'sensitivity_analysis_complete':sensitivity_valid,
         'paired_effects_B_minus_A_kWh':effects,'effect_sign_changes':{case:min(values.values())<0<max(values.values())for case,values in effects.items()},
         'empirical_Chinese_calibration_claimed':False,'population_generalization_claimed':False}

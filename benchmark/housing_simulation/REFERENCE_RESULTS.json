@@ -1,5 +1,6 @@
 {
-  "compiled_manifest_sha256": "e6ab2bfa4606f8245c4973d3b3435354775ca9a4709d3b108328133894f32dec",
+  "code_tree_sha256": "3f8be3e88cbc7fb8ab11b5e60d5148367243c914e83b54402d007999165f216f",
+  "compiled_manifest_sha256": "2d61fa822e8a9e15cb153290e124c6fb79976e4f7e10e6ec25da9baed61462d8",
   "date": "2026-10-19",
   "empirical_calibration_claimed": false,
   "engine": {
@@ -9,8 +10,6 @@
   },
   "human_acceptance_inferred": false,
   "independent_execution": {
-    "PYTHONPATH_cleared": true,
-    "clean_venv": true,
     "dependencies": {
       "attrs": "26.1.0",
       "jsonschema": "4.26.0",
@@ -30,25 +29,26 @@
     ]
   },
   "input_files": {
-    "ASSUMPTIONS.json": "dab083cdbadfcdec7fd4f5214b422eb0f772efe33b625838e2951d0b977a4172",
-    "FIELD_MAP.json": "70a63764592041148cb33003f746bdfae67b852af234e42e4e11f338e16319d1",
-    "WORLD.schema.json": "f54bd7f58e77cbaa318cecdf1a4ed700ae72b1e39182b124eef15319c2313f6b",
-    "examples/shell_batch.json": "b6e9832790102c839fd16305ebbcafef5d49919b1bbb8f4f9ea79b0476752b68",
+    "ASSUMPTIONS.json": "a3aa5844cd1f8370b6e22c123ac2c3577740823f003cb26a310324bfe90dd731",
+    "FIELD_MAP.json": "b2c99121aedf006234ed026f5ad1e98e2c2ebcf3edc73fa5d30b10efdf05a7b2",
+    "STUDY_PLAN.json": "c75acc0a8c365d582c0577116a9df1ed929754d75fb3f08880ca1223c003b7f1",
+    "WORLD.schema.json": "d0d281dd82fc69ac50cc1cfb9d3658ed7e0236570d2a83d91c25e13b6e76053d",
+    "examples/shell_batch.json": "8ad7f4f64b13e1a1f85ce88349fba2d7ad12e3d5f3c71a96ec5f99cb03e5a01e",
     "examples/synthetic_assembly.json": "02c535e113144a431d4824d730ead49ca838b2fd7e3a2a77d1dd4c48c8cedaed",
-    "examples/world_batch.json": "1c4e168b46e5ecf49994f0f354524d81334f41c9fb54564b4d16947fd3642962"
+    "examples/world_batch.json": "f9ccdaef68275a70d12c4bc42d3ea75b4e47d1063a52694293ec569bdf5cf3f7"
   },
   "models": {
     "example-family-summer": {
-      "A": "0df8a1bb0d24b4b23499096a623464b64e89ee29a17497ba513294daccc8fcb5",
-      "B": "bb77726dea9752bd445c5adac50409c47d3016fc05f70abc9c4565d68295d2c5"
+      "A": "748dcd5fa494c433e3cdf95dab892cf570ced59497eab02ddc1649d7f565614f",
+      "B": "56fa5f029a56e9817630a9362e7c72214e0c99c6728898cde63d5d3b496ae9f8"
     },
     "example-shared-summer": {
-      "A": "2d64a0cdc716fdad32e0712597d5f66e84eb1daa3ba793a4e00dff8bd01fdd5b",
-      "B": "f3f30d3bd1a3631ac1cad4e13ca3a231bddf51101d4a1fe8e0547ccf2c4e9597"
+      "A": "542013d0d1f8166b72cd6093e4dd32b6660ce3ee968f9e23942f148646c7aea2",
+      "B": "43df09adfdfecaced4964ac9e84dcd86596b704bd0d5b2f6d8f229795d88e2b1"
     },
     "example-studio-summer": {
-      "A": "43bd18c66f2f0ee7afbd1c548c3e23319c420bb67348ae430f080e79990fa0e4",
-      "B": "e9a371112f5bbc618078119266d62114a1a9216db0cebd3495bf9782dd6095fb"
+      "A": "4980d5aa7906ab1a3e03907b0e444e6d44af0fedfc22d2a2424963bd23a95425",
+      "B": "b4d8ea1b12e6d22bab6e68edfacf0c29db26192d8a722a266cbd7c6f2a7b3769"
     }
   },
   "passed": true,
@@ -87,12 +87,12 @@
       "details": {
         "A_EV_balance_error_kWh": -1.8474111129762605e-13,
         "A_HVAC_energy_kWh": {
-          "ac": 56.5903597028224
+          "ac": 56.39737349590006
         },
         "A_expected_service_needs": 27,
-        "A_facility_kWh": 201.10492788695703,
-        "A_facility_peak_timestep_W": 9514.821488701087,
-        "A_meter_max_error_J": 9.313225746154785e-10,
+        "A_facility_kWh": 203.4383024797572,
+        "A_facility_peak_timestep_W": 9464.80463899459,
+        "A_meter_max_error_J": 1.862645149230957e-09,
         "A_program_max_error_J": {
           "dishwasher": 0.0,
           "dryer": 0.0,
@@ -101,72 +101,72 @@
         "A_service_batches": 27,
         "A_water_services": [
           {
-            "delivered_mass_kg": 24.997450000000022,
-            "minimum_outlet_C": 54.89830213025185,
+            "delivered_mass_kg": 24.99745,
+            "minimum_outlet_C": 54.876898865343364,
             "need_id": "2025-07-15:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 53.49365065620833,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 54.15438573476392,
             "need_id": "2025-07-16:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 53.61336215740882,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 53.59607243072553,
             "need_id": "2025-07-17:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 53.652329811482254,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 53.66499908663874,
             "need_id": "2025-07-18:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 53.70230085038675,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 53.70844083287298,
             "need_id": "2025-07-19:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997450000000022,
-            "minimum_outlet_C": 53.69501943022981,
+            "delivered_mass_kg": 24.997450000000004,
+            "minimum_outlet_C": 53.664334386049504,
             "need_id": "2025-07-20:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997450000000022,
-            "minimum_outlet_C": 53.56329961614097,
+            "delivered_mass_kg": 24.99745,
+            "minimum_outlet_C": 53.54628878526922,
             "need_id": "2025-07-21:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997450000000022,
-            "minimum_outlet_C": 53.83056612933467,
+            "delivered_mass_kg": 24.99745,
+            "minimum_outlet_C": 53.48355216250033,
             "need_id": "2025-07-22:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997450000000022,
-            "minimum_outlet_C": 53.9355038828273,
+            "delivered_mass_kg": 24.997449999999983,
+            "minimum_outlet_C": 53.48511089984636,
             "need_id": "2025-07-23:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -175,11 +175,11 @@
         ],
         "B_EV_balance_error_kWh": -1.8474111129762605e-13,
         "B_HVAC_energy_kWh": {
-          "ac": 56.304251461576904
+          "ac": 56.046182146459614
         },
         "B_expected_service_needs": 27,
-        "B_facility_kWh": 200.77911483835683,
-        "B_facility_peak_timestep_W": 9515.328071337835,
+        "B_facility_kWh": 203.04036858609663,
+        "B_facility_peak_timestep_W": 9465.285977486488,
         "B_meter_max_error_J": 9.313225746154785e-10,
         "B_program_max_error_J": {
           "dishwasher": 0.0,
@@ -189,72 +189,72 @@
         "B_service_batches": 27,
         "B_water_services": [
           {
-            "delivered_mass_kg": 24.997449999999986,
-            "minimum_outlet_C": 54.73215666313352,
+            "delivered_mass_kg": 24.997449999999994,
+            "minimum_outlet_C": 54.72338568416218,
             "need_id": "2025-07-15:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 53.47357391762224,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 53.47824217766761,
             "need_id": "2025-07-16:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 53.60699216129639,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 53.59259498091816,
             "need_id": "2025-07-17:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 53.641927936232534,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 53.65944590746675,
             "need_id": "2025-07-18:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 53.70499229574414,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 53.693027625344584,
             "need_id": "2025-07-19:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997450000000022,
-            "minimum_outlet_C": 53.70069446446087,
+            "delivered_mass_kg": 24.997450000000004,
+            "minimum_outlet_C": 53.70459617051155,
             "need_id": "2025-07-20:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997450000000022,
-            "minimum_outlet_C": 53.52837691400332,
+            "delivered_mass_kg": 24.99745,
+            "minimum_outlet_C": 53.549437129351844,
             "need_id": "2025-07-21:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997450000000022,
-            "minimum_outlet_C": 53.977178289410986,
+            "delivered_mass_kg": 24.99745,
+            "minimum_outlet_C": 53.48709478246725,
             "need_id": "2025-07-22:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997450000000022,
-            "minimum_outlet_C": 53.48018450288194,
+            "delivered_mass_kg": 24.997449999999983,
+            "minimum_outlet_C": 53.47956566326317,
             "need_id": "2025-07-23:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -265,48 +265,48 @@
         "pre_notice_max_absolute_error": 0.0,
         "recovery_state_differences": {
           "Water Heater Final Temperature Node 1|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.028486346278880543,
-            "terminal_difference_C": -0.002785746467679928
+            "last24h_mean_absolute_difference_C": 0.013207404802277741,
+            "terminal_difference_C": -0.003847173954063976
           },
           "Water Heater Final Temperature Node 2|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.028565365693082285,
-            "terminal_difference_C": -0.002785746467679928
+            "last24h_mean_absolute_difference_C": 0.013206806930418757,
+            "terminal_difference_C": -0.003847173954063976
           },
           "Water Heater Final Temperature Node 3|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.028848756104101782,
-            "terminal_difference_C": -0.002785746467679928
+            "last24h_mean_absolute_difference_C": 0.013204126448703453,
+            "terminal_difference_C": -0.003847173954063976
           },
           "Water Heater Final Temperature Node 4|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.02958849083348398,
-            "terminal_difference_C": -0.002785746467679928
+            "last24h_mean_absolute_difference_C": 0.013195155316473972,
+            "terminal_difference_C": -0.003847173954063976
           },
           "Water Heater Final Temperature Node 5|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.030245707964292476,
-            "terminal_difference_C": -0.002785746467679928
+            "last24h_mean_absolute_difference_C": 0.013169510301025965,
+            "terminal_difference_C": -0.003847173954063976
           },
           "Water Heater Final Temperature Node 6|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.03325754974456125,
-            "terminal_difference_C": -0.00035974382612380396
+            "last24h_mean_absolute_difference_C": 0.012328245133944815,
+            "terminal_difference_C": -0.0038226365025622044
           },
           "Water Heater Tank Temperature|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.028767620649837164,
-            "terminal_difference_C": -0.0023834895261813926
+            "last24h_mean_absolute_difference_C": 0.013517707735347932,
+            "terminal_difference_C": -0.0038446663754427846
           },
           "Zone Mean Air Temperature|COMBINED_BED_LIVING": {
-            "last24h_mean_absolute_difference_C": 7.267925456281669e-07,
+            "last24h_mean_absolute_difference_C": 1.1950430743744455e-08,
             "terminal_difference_C": 3.552713678800501e-15
           },
           "Zone Mean Air Temperature|CORRIDOR": {
-            "last24h_mean_absolute_difference_C": 0.0010475733185866993,
-            "terminal_difference_C": 0.0008256908513288863
+            "last24h_mean_absolute_difference_C": 0.0009583859932095824,
+            "terminal_difference_C": 0.0008579838209072932
           },
           "Zone Mean Air Temperature|KITCHEN": {
-            "last24h_mean_absolute_difference_C": 0.0012406470350801386,
-            "terminal_difference_C": 0.0009199943519426768
+            "last24h_mean_absolute_difference_C": 0.0011737075791319945,
+            "terminal_difference_C": 0.0009388671919090541
           },
           "Zone Mean Air Temperature|WASHROOM": {
-            "last24h_mean_absolute_difference_C": 0.0014177919531947038,
-            "terminal_difference_C": 0.0008526930797359
+            "last24h_mean_absolute_difference_C": 0.0012024260221985797,
+            "terminal_difference_C": 0.0008817012399298108
           }
         }
       },
@@ -347,11 +347,11 @@
       "details": {
         "A_EV_balance_error_kWh": -1.8474111129762605e-13,
         "A_HVAC_energy_kWh": {
-          "ac": 59.36516090753747
+          "ac": 56.70865742368686
         },
         "A_expected_service_needs": 27,
-        "A_facility_kWh": 220.08411031381024,
-        "A_facility_peak_timestep_W": 9401.55247581483,
+        "A_facility_kWh": 217.17466456032065,
+        "A_facility_peak_timestep_W": 9524.081271355702,
         "A_meter_max_error_J": 9.313225746154785e-10,
         "A_program_max_error_J": {
           "dishwasher": 0.0,
@@ -362,7 +362,7 @@
         "A_water_services": [
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.51445049519414,
+            "minimum_outlet_C": 54.54212329756883,
             "need_id": "2025-07-15:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -370,15 +370,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.72476026128208,
+            "minimum_outlet_C": 54.733133842834725,
             "need_id": "2025-07-15:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.58997950782094,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.59361355837477,
             "need_id": "2025-07-15:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -386,7 +386,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.6147245236365,
+            "minimum_outlet_C": 54.62459545509157,
             "need_id": "2025-07-16:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -394,7 +394,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.816718216275284,
+            "minimum_outlet_C": 54.8129667080197,
             "need_id": "2025-07-16:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -402,7 +402,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.67507211484623,
+            "minimum_outlet_C": 53.666935467064405,
             "need_id": "2025-07-16:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -410,7 +410,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.700090178671175,
+            "minimum_outlet_C": 54.73002052066499,
             "need_id": "2025-07-17:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -418,7 +418,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.899014139740466,
+            "minimum_outlet_C": 54.91719509892417,
             "need_id": "2025-07-17:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -426,7 +426,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.79468429412204,
+            "minimum_outlet_C": 53.81247700853825,
             "need_id": "2025-07-17:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -434,7 +434,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.76932295427417,
+            "minimum_outlet_C": 54.79197806823663,
             "need_id": "2025-07-18:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -442,7 +442,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.96947240554154,
+            "minimum_outlet_C": 54.99512973699415,
             "need_id": "2025-07-18:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -450,7 +450,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.862993795522286,
+            "minimum_outlet_C": 53.8899470566503,
             "need_id": "2025-07-18:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -458,7 +458,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.77554728783143,
+            "minimum_outlet_C": 54.77422263889665,
             "need_id": "2025-07-19:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -466,15 +466,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.99715112330516,
+            "minimum_outlet_C": 54.97717922057387,
             "need_id": "2025-07-19:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.94549364082579,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.935889875931096,
             "need_id": "2025-07-19:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -482,7 +482,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.75867630537472,
+            "minimum_outlet_C": 54.788115665091055,
             "need_id": "2025-07-20:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -490,15 +490,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.98078611271364,
+            "minimum_outlet_C": 54.989985174795606,
             "need_id": "2025-07-20:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.946843430111585,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.961432892127334,
             "need_id": "2025-07-20:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -506,7 +506,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.74230673387322,
+            "minimum_outlet_C": 54.7773856441237,
             "need_id": "2025-07-21:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -514,15 +514,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.94240231528935,
+            "minimum_outlet_C": 54.963717861547444,
             "need_id": "2025-07-21:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.82054627078146,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.842269546136656,
             "need_id": "2025-07-21:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -530,7 +530,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.69839575285062,
+            "minimum_outlet_C": 54.726506292561396,
             "need_id": "2025-07-22:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -538,15 +538,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.89679720243345,
+            "minimum_outlet_C": 54.91343757052235,
             "need_id": "2025-07-22:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.768349839826094,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.78482689446499,
             "need_id": "2025-07-22:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -554,7 +554,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.70788028642513,
+            "minimum_outlet_C": 54.72732548276769,
             "need_id": "2025-07-23:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -562,15 +562,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.90570556109246,
+            "minimum_outlet_C": 54.911601913032996,
             "need_id": "2025-07-23:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.77294445861229,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.77811993553574,
             "need_id": "2025-07-23:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -579,11 +579,11 @@
         ],
         "B_EV_balance_error_kWh": -1.8474111129762605e-13,
         "B_HVAC_energy_kWh": {
-          "ac": 58.95585776544605
+          "ac": 56.274442213642374
         },
         "B_expected_service_needs": 27,
-        "B_facility_kWh": 219.69701482244133,
-        "B_facility_peak_timestep_W": 9402.25053385237,
+        "B_facility_kWh": 216.75755182695872,
+        "B_facility_peak_timestep_W": 9524.783817762025,
         "B_meter_max_error_J": 9.313225746154785e-10,
         "B_program_max_error_J": {
           "dishwasher": 0.0,
@@ -593,16 +593,16 @@
         "B_service_batches": 27,
         "B_water_services": [
           {
-            "delivered_mass_kg": 24.997449999999994,
-            "minimum_outlet_C": 54.76982848146174,
+            "delivered_mass_kg": 24.99745,
+            "minimum_outlet_C": 54.78362055053417,
             "need_id": "2025-07-15:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997450000000004,
-            "minimum_outlet_C": 54.983326091382025,
+            "delivered_mass_kg": 24.99745,
+            "minimum_outlet_C": 54.98822833109742,
             "need_id": "2025-07-15:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -610,7 +610,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 54.86973137108225,
+            "minimum_outlet_C": 54.87720412932967,
             "need_id": "2025-07-15:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -618,7 +618,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.632253132843715,
+            "minimum_outlet_C": 54.64130109194876,
             "need_id": "2025-07-16:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -626,7 +626,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.833657221681705,
+            "minimum_outlet_C": 54.829678198800416,
             "need_id": "2025-07-16:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -634,7 +634,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.692300706910984,
+            "minimum_outlet_C": 53.68446315092186,
             "need_id": "2025-07-16:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -642,7 +642,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.72703648437917,
+            "minimum_outlet_C": 54.732135056163976,
             "need_id": "2025-07-17:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -650,7 +650,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.92649764759893,
+            "minimum_outlet_C": 54.91927374707623,
             "need_id": "2025-07-17:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -658,7 +658,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.82440326780953,
+            "minimum_outlet_C": 53.814670655558814,
             "need_id": "2025-07-17:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -666,7 +666,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.75360177273367,
+            "minimum_outlet_C": 54.783698477296255,
             "need_id": "2025-07-18:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -674,7 +674,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.97525704282387,
+            "minimum_outlet_C": 54.98667868898256,
             "need_id": "2025-07-18:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -682,7 +682,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.873362802971215,
+            "minimum_outlet_C": 53.880947957504816,
             "need_id": "2025-07-18:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -690,7 +690,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.775398145669755,
+            "minimum_outlet_C": 54.783761609835786,
             "need_id": "2025-07-19:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -698,15 +698,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.996967298591564,
+            "minimum_outlet_C": 54.98684171751408,
             "need_id": "2025-07-19:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.94437737873679,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.957927100438035,
             "need_id": "2025-07-19:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -714,7 +714,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.75298323629404,
+            "minimum_outlet_C": 54.811037841603124,
             "need_id": "2025-07-20:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -722,15 +722,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.974978850895276,
+            "minimum_outlet_C": 55.013231359477444,
             "need_id": "2025-07-20:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.92766548276171,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.92445695705298,
             "need_id": "2025-07-20:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -738,7 +738,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.76031336347843,
+            "minimum_outlet_C": 54.79411047013524,
             "need_id": "2025-07-21:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -746,15 +746,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.961322455976294,
+            "minimum_outlet_C": 54.997392473818735,
             "need_id": "2025-07-21:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.84213642769846,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.8816533744814,
             "need_id": "2025-07-21:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -762,7 +762,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.6905887710669,
+            "minimum_outlet_C": 54.733443236528416,
             "need_id": "2025-07-22:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -770,15 +770,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.88891413986471,
+            "minimum_outlet_C": 54.92044409604833,
             "need_id": "2025-07-22:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.758856034683454,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.79280180048146,
             "need_id": "2025-07-22:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -786,7 +786,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.70990159208555,
+            "minimum_outlet_C": 54.69843749816266,
             "need_id": "2025-07-23:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -794,15 +794,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.90775742677442,
+            "minimum_outlet_C": 54.88237607725891,
             "need_id": "2025-07-23:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.775058745263564,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.746264746162744,
             "need_id": "2025-07-23:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -813,56 +813,56 @@
         "pre_notice_max_absolute_error": 0.0,
         "recovery_state_differences": {
           "Water Heater Final Temperature Node 1|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.017684069766402712,
-            "terminal_difference_C": 0.0013950674389064943
+            "last24h_mean_absolute_difference_C": 0.025477092934768495,
+            "terminal_difference_C": -0.019090770397099277
           },
           "Water Heater Final Temperature Node 2|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.017682573166743057,
-            "terminal_difference_C": 0.0013950674389064943
+            "last24h_mean_absolute_difference_C": 0.025458675116984866,
+            "terminal_difference_C": -0.019090770397099277
           },
           "Water Heater Final Temperature Node 3|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.017679588442382696,
-            "terminal_difference_C": 0.0013950674389064943
+            "last24h_mean_absolute_difference_C": 0.02537667088000934,
+            "terminal_difference_C": -0.019090770397099277
           },
           "Water Heater Final Temperature Node 4|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.017672627769647953,
-            "terminal_difference_C": 0.0013950674389064943
+            "last24h_mean_absolute_difference_C": 0.025277298451730927,
+            "terminal_difference_C": -0.019090770397099277
           },
           "Water Heater Final Temperature Node 5|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.01766186077666834,
-            "terminal_difference_C": 0.0013950674389064943
+            "last24h_mean_absolute_difference_C": 0.025095613351906118,
+            "terminal_difference_C": -0.019090770397099277
           },
           "Water Heater Final Temperature Node 6|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.02136553407039537,
-            "terminal_difference_C": 0.0014002700228985532
+            "last24h_mean_absolute_difference_C": 0.029098630688936873,
+            "terminal_difference_C": -0.018979337937182095
           },
           "Water Heater Tank Temperature|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.01976024377182438,
-            "terminal_difference_C": 0.0013952291488479318
+            "last24h_mean_absolute_difference_C": 0.025946200439055822,
+            "terminal_difference_C": -0.01907926369213442
           },
           "Zone Mean Air Temperature|CORRIDOR": {
-            "last24h_mean_absolute_difference_C": 0.0025509495339958287,
-            "terminal_difference_C": 0.00238474116984122
+            "last24h_mean_absolute_difference_C": 0.0024646762254309815,
+            "terminal_difference_C": 0.0021925772988673486
           },
           "Zone Mean Air Temperature|KITCHEN": {
-            "last24h_mean_absolute_difference_C": 0.002544219713762446,
-            "terminal_difference_C": 0.0022372414424047804
+            "last24h_mean_absolute_difference_C": 0.00246793701154677,
+            "terminal_difference_C": 0.0020840777388890785
           },
           "Zone Mean Air Temperature|LIVING_HALL": {
-            "last24h_mean_absolute_difference_C": 0.0030322873431033338,
-            "terminal_difference_C": 0.0026563949714741852
+            "last24h_mean_absolute_difference_C": 0.0029581376366572976,
+            "terminal_difference_C": 0.0025262924192546166
           },
           "Zone Mean Air Temperature|PRIVATE_01": {
-            "last24h_mean_absolute_difference_C": 0.0031330499990461164,
-            "terminal_difference_C": 0.0026615950212196537
+            "last24h_mean_absolute_difference_C": 0.0030868207915616766,
+            "terminal_difference_C": 0.002678011993214824
           },
           "Zone Mean Air Temperature|PRIVATE_02": {
-            "last24h_mean_absolute_difference_C": 1.6082765822803916e-07,
-            "terminal_difference_C": 4.092726157978177e-12
+            "last24h_mean_absolute_difference_C": 3.076469750556359e-08,
+            "terminal_difference_C": 0.0
           },
           "Zone Mean Air Temperature|WASHROOM": {
-            "last24h_mean_absolute_difference_C": 0.0028784666253412164,
-            "terminal_difference_C": 0.0024446368969783805
+            "last24h_mean_absolute_difference_C": 0.002662262473671998,
+            "terminal_difference_C": 0.002038720558079632
           }
         }
       },
@@ -903,11 +903,11 @@
       "details": {
         "A_EV_balance_error_kWh": -1.8474111129762605e-13,
         "A_HVAC_energy_kWh": {
-          "ac": 61.55782626384772
+          "ac": 58.261479589317744
         },
         "A_expected_service_needs": 27,
-        "A_facility_kWh": 231.73662761062423,
-        "A_facility_peak_timestep_W": 9419.03013796716,
+        "A_facility_kWh": 226.52630813748897,
+        "A_facility_peak_timestep_W": 9509.348035284867,
         "A_meter_max_error_J": 9.313225746154785e-10,
         "A_program_max_error_J": {
           "dishwasher": 0.0,
@@ -918,7 +918,7 @@
         "A_water_services": [
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.61417542549145,
+            "minimum_outlet_C": 54.630877829387416,
             "need_id": "2025-07-15:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -926,15 +926,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.81864466012121,
+            "minimum_outlet_C": 54.821924924914576,
             "need_id": "2025-07-15:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 53.68468588568889,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 53.68600309788162,
             "need_id": "2025-07-15:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -942,7 +942,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.729413390783144,
+            "minimum_outlet_C": 54.7269154267678,
             "need_id": "2025-07-15:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -950,7 +950,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.70988377531641,
+            "minimum_outlet_C": 54.75416241660596,
             "need_id": "2025-07-16:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -958,7 +958,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.90982689894818,
+            "minimum_outlet_C": 54.94246025356277,
             "need_id": "2025-07-16:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -966,7 +966,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.81298012706566,
+            "minimum_outlet_C": 53.84573286150049,
             "need_id": "2025-07-16:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -974,7 +974,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.81406153910543,
+            "minimum_outlet_C": 54.83211897557606,
             "need_id": "2025-07-16:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -982,7 +982,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.77892358003383,
+            "minimum_outlet_C": 54.78606297627144,
             "need_id": "2025-07-17:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -990,7 +990,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.99832741376933,
+            "minimum_outlet_C": 54.9893003849149,
             "need_id": "2025-07-17:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -998,7 +998,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.951814417047785,
+            "minimum_outlet_C": 53.97399621022553,
             "need_id": "2025-07-17:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1006,7 +1006,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.7253994041736,
+            "minimum_outlet_C": 54.71382224729456,
             "need_id": "2025-07-17:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1014,7 +1014,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.78629963481562,
+            "minimum_outlet_C": 54.80271569790855,
             "need_id": "2025-07-18:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1022,7 +1022,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 55.006646498910136,
+            "minimum_outlet_C": 55.004725452389536,
             "need_id": "2025-07-18:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1030,7 +1030,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 54.044272919439265,
+            "minimum_outlet_C": 54.048345181251435,
             "need_id": "2025-07-18:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1038,31 +1038,31 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.75167460523832,
+            "minimum_outlet_C": 54.742921812135364,
             "need_id": "2025-07-18:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.76466502852118,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 54.80422876360724,
             "need_id": "2025-07-19:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.98165593284196,
+            "delivered_mass_kg": 24.99745000000001,
+            "minimum_outlet_C": 55.000905462788246,
             "need_id": "2025-07-19:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 54.11036216782054,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 54.12049644953646,
             "need_id": "2025-07-19:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1070,15 +1070,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.75244179116444,
+            "minimum_outlet_C": 54.7574317620018,
             "need_id": "2025-07-19:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997449999999994,
-            "minimum_outlet_C": 54.76509579359172,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 54.80771272208646,
             "need_id": "2025-07-20:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1086,15 +1086,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.98303996413423,
+            "minimum_outlet_C": 55.00623228335103,
             "need_id": "2025-07-20:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 54.12513197189318,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 54.12877160503963,
             "need_id": "2025-07-20:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1102,15 +1102,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.766830098860055,
+            "minimum_outlet_C": 54.77596747705751,
             "need_id": "2025-07-20:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997449999999994,
-            "minimum_outlet_C": 54.773278431893736,
+            "delivered_mass_kg": 24.99745,
+            "minimum_outlet_C": 54.810701383266284,
             "need_id": "2025-07-21:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1118,15 +1118,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.992829240733094,
+            "minimum_outlet_C": 55.01125320013704,
             "need_id": "2025-07-21:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 54.01850628827698,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 54.05036135346393,
             "need_id": "2025-07-21:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1134,7 +1134,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.784552107289244,
+            "minimum_outlet_C": 54.78993452930293,
             "need_id": "2025-07-21:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1142,7 +1142,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.78484578751501,
+            "minimum_outlet_C": 54.775184861786485,
             "need_id": "2025-07-22:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1150,7 +1150,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 55.004228801176,
+            "minimum_outlet_C": 54.97626915536971,
             "need_id": "2025-07-22:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1158,7 +1158,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.96457572891123,
+            "minimum_outlet_C": 53.92137721027402,
             "need_id": "2025-07-22:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1166,7 +1166,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.8059834909936,
+            "minimum_outlet_C": 54.783608902085376,
             "need_id": "2025-07-22:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1174,7 +1174,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.78558487606053,
+            "minimum_outlet_C": 54.777744406735565,
             "need_id": "2025-07-23:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1182,7 +1182,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 55.004355648480754,
+            "minimum_outlet_C": 54.97828030031012,
             "need_id": "2025-07-23:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1190,7 +1190,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.960178349167975,
+            "minimum_outlet_C": 53.92064412963916,
             "need_id": "2025-07-23:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1198,7 +1198,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.82129279930429,
+            "minimum_outlet_C": 54.800000252043446,
             "need_id": "2025-07-23:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1207,11 +1207,11 @@
         ],
         "B_EV_balance_error_kWh": -1.8474111129762605e-13,
         "B_HVAC_energy_kWh": {
-          "ac": 61.124490069187736
+          "ac": 57.80307054881028
         },
         "B_expected_service_needs": 27,
-        "B_facility_kWh": 231.31798766511315,
-        "B_facility_peak_timestep_W": 9419.635992268613,
+        "B_facility_kWh": 226.0822338601153,
+        "B_facility_peak_timestep_W": 9509.952825145097,
         "B_meter_max_error_J": 9.313225746154785e-10,
         "B_program_max_error_J": {
           "dishwasher": 0.0,
@@ -1222,31 +1222,31 @@
         "B_water_services": [
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.77870518227687,
+            "minimum_outlet_C": 54.792171718088554,
             "need_id": "2025-07-15:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997449999999994,
-            "minimum_outlet_C": 54.99096060068519,
+            "delivered_mass_kg": 24.99745,
+            "minimum_outlet_C": 54.99614408343736,
             "need_id": "2025-07-15:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 54.88045482974374,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 54.88768291805584,
             "need_id": "2025-07-15:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997450000000004,
-            "minimum_outlet_C": 54.67098092762352,
+            "delivered_mass_kg": 24.99745,
+            "minimum_outlet_C": 54.671481063035856,
             "need_id": "2025-07-15:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1254,7 +1254,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.73446682236893,
+            "minimum_outlet_C": 54.741390306308475,
             "need_id": "2025-07-16:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1262,7 +1262,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.935060094962914,
+            "minimum_outlet_C": 54.92945695254414,
             "need_id": "2025-07-16:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1270,7 +1270,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.83972175277626,
+            "minimum_outlet_C": 53.83063470334782,
             "need_id": "2025-07-16:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1278,7 +1278,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.831208914800555,
+            "minimum_outlet_C": 54.82361493857503,
             "need_id": "2025-07-16:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1286,7 +1286,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.77631886017494,
+            "minimum_outlet_C": 54.78563490050723,
             "need_id": "2025-07-17:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1294,7 +1294,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.99563009693455,
+            "minimum_outlet_C": 54.9888115723585,
             "need_id": "2025-07-17:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1302,7 +1302,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.93684785823193,
+            "minimum_outlet_C": 53.97272317235057,
             "need_id": "2025-07-17:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1310,7 +1310,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.723889178137725,
+            "minimum_outlet_C": 54.71364137072098,
             "need_id": "2025-07-17:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1318,7 +1318,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.785717622963695,
+            "minimum_outlet_C": 54.80946467175637,
             "need_id": "2025-07-18:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1326,7 +1326,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 55.00601725132646,
+            "minimum_outlet_C": 55.01154534994747,
             "need_id": "2025-07-18:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1334,7 +1334,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 54.039579789750725,
+            "minimum_outlet_C": 54.066442270687766,
             "need_id": "2025-07-18:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1342,31 +1342,31 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.751378006738335,
+            "minimum_outlet_C": 54.747091769151425,
             "need_id": "2025-07-18:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.76990725428968,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 54.81606614063364,
             "need_id": "2025-07-19:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.98696305914741,
+            "delivered_mass_kg": 24.99745000000001,
+            "minimum_outlet_C": 55.01289299856916,
             "need_id": "2025-07-19:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 54.13833186057049,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 54.146872470747724,
             "need_id": "2025-07-19:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1374,15 +1374,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.75567536027168,
+            "minimum_outlet_C": 54.764677007991,
             "need_id": "2025-07-19:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997449999999994,
-            "minimum_outlet_C": 54.76999015779798,
+            "delivered_mass_kg": 24.997449999999986,
+            "minimum_outlet_C": 54.80963013610183,
             "need_id": "2025-07-20:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1390,15 +1390,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.988001943710316,
+            "minimum_outlet_C": 55.00816459632613,
             "need_id": "2025-07-20:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 54.140748617806295,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 54.132370241581235,
             "need_id": "2025-07-20:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1406,15 +1406,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.769844992618175,
+            "minimum_outlet_C": 54.77716941833846,
             "need_id": "2025-07-20:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 24.997449999999994,
-            "minimum_outlet_C": 54.773680207731246,
+            "delivered_mass_kg": 24.99745,
+            "minimum_outlet_C": 54.80215723195132,
             "need_id": "2025-07-21:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1422,15 +1422,15 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.99322643136256,
+            "minimum_outlet_C": 55.00256498386213,
             "need_id": "2025-07-21:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
             "temperature_met": true
           },
           {
-            "delivered_mass_kg": 14.998470000000012,
-            "minimum_outlet_C": 54.02046182188574,
+            "delivered_mass_kg": 14.998470000000001,
+            "minimum_outlet_C": 54.02748572149983,
             "need_id": "2025-07-21:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1438,7 +1438,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.784824252770406,
+            "minimum_outlet_C": 54.78475789443404,
             "need_id": "2025-07-21:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1446,7 +1446,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.78196182126034,
+            "minimum_outlet_C": 54.79365407314893,
             "need_id": "2025-07-22:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1454,7 +1454,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 55.00128453275936,
+            "minimum_outlet_C": 54.995011412089156,
             "need_id": "2025-07-22:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1462,7 +1462,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.94691378145886,
+            "minimum_outlet_C": 53.96224234586904,
             "need_id": "2025-07-22:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1470,7 +1470,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.80424189954052,
+            "minimum_outlet_C": 54.7948541430153,
             "need_id": "2025-07-22:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1478,7 +1478,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.78561019058242,
+            "minimum_outlet_C": 54.77715602413079,
             "need_id": "2025-07-23:bath:adult1",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1486,7 +1486,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 55.00437513956207,
+            "minimum_outlet_C": 54.97767648788535,
             "need_id": "2025-07-23:bath:adult2",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1494,7 +1494,7 @@
           },
           {
             "delivered_mass_kg": 14.998470000000001,
-            "minimum_outlet_C": 53.96027161612541,
+            "minimum_outlet_C": 53.91895855492122,
             "need_id": "2025-07-23:bath:child",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 15,
@@ -1502,7 +1502,7 @@
           },
           {
             "delivered_mass_kg": 24.99745,
-            "minimum_outlet_C": 54.821317130708124,
+            "minimum_outlet_C": 54.79965195371316,
             "need_id": "2025-07-23:bath:neighbor",
             "quantity_met_with_density_tolerance": true,
             "requested_hot_outlet_liters": 25,
@@ -1513,64 +1513,64 @@
         "pre_notice_max_absolute_error": 0.0,
         "recovery_state_differences": {
           "Water Heater Final Temperature Node 1|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.0001559880415395022,
-            "terminal_difference_C": 3.823729770147111e-05
+            "last24h_mean_absolute_difference_C": 0.00941986759796334,
+            "terminal_difference_C": -0.0002547262019945151
           },
           "Water Heater Final Temperature Node 2|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.00015591720985972144,
-            "terminal_difference_C": 3.823729770147111e-05
+            "last24h_mean_absolute_difference_C": 0.009419341668912463,
+            "terminal_difference_C": -0.0002547262019945151
           },
           "Water Heater Final Temperature Node 3|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.00015587294376512913,
-            "terminal_difference_C": 3.823729770147111e-05
+            "last24h_mean_absolute_difference_C": 0.00941698905290843,
+            "terminal_difference_C": -0.0002547262019945151
           },
           "Water Heater Final Temperature Node 4|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.00015576929877426772,
-            "terminal_difference_C": 3.823729770147111e-05
+            "last24h_mean_absolute_difference_C": 0.009413212618308532,
+            "terminal_difference_C": -0.0002547262019945151
           },
           "Water Heater Final Temperature Node 5|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.00015559544708926905,
-            "terminal_difference_C": 3.823729770147111e-05
+            "last24h_mean_absolute_difference_C": 0.009404336140016777,
+            "terminal_difference_C": -0.0002547262019945151
           },
           "Water Heater Final Temperature Node 6|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.00015363709111223164,
-            "terminal_difference_C": 4.7480074300665365e-05
+            "last24h_mean_absolute_difference_C": 0.011522879764784881,
+            "terminal_difference_C": -0.00024436190628307486
           },
           "Water Heater Tank Temperature|REFERENCE_STORAGE_TANK": {
-            "last24h_mean_absolute_difference_C": 0.00021556172524809605,
-            "terminal_difference_C": 3.825000731438877e-05
+            "last24h_mean_absolute_difference_C": 0.00819048402329973,
+            "terminal_difference_C": -0.0002538615326486138
           },
           "Zone Mean Air Temperature|CORRIDOR": {
-            "last24h_mean_absolute_difference_C": 0.002414078398094451,
-            "terminal_difference_C": 0.002199353441106666
+            "last24h_mean_absolute_difference_C": 0.0024246947682714883,
+            "terminal_difference_C": 0.0022071394739917594
           },
           "Zone Mean Air Temperature|KITCHEN": {
-            "last24h_mean_absolute_difference_C": 0.00259757262583059,
-            "terminal_difference_C": 0.0022537168000837937
+            "last24h_mean_absolute_difference_C": 0.0026107778251378802,
+            "terminal_difference_C": 0.0022603431432060006
           },
           "Zone Mean Air Temperature|LIVING_HALL": {
-            "last24h_mean_absolute_difference_C": 0.0026454110118559904,
-            "terminal_difference_C": 0.0023280393552909118
+            "last24h_mean_absolute_difference_C": 0.0026625807878506683,
+            "terminal_difference_C": 0.002323106585119916
           },
           "Zone Mean Air Temperature|PRIVATE_01": {
-            "last24h_mean_absolute_difference_C": 0.0027132588136717433,
-            "terminal_difference_C": 0.002247975589654061
+            "last24h_mean_absolute_difference_C": 0.002753244615049752,
+            "terminal_difference_C": 0.0023460832917869823
           },
           "Zone Mean Air Temperature|PRIVATE_02": {
-            "last24h_mean_absolute_difference_C": 0.0026148906841724096,
-            "terminal_difference_C": 0.002145513949081135
+            "last24h_mean_absolute_difference_C": 0.0026459410341760727,
+            "terminal_difference_C": 0.0022251164026272363
           },
           "Zone Mean Air Temperature|PRIVATE_03": {
-            "last24h_mean_absolute_difference_C": 2.0289943651145373e-07,
-            "terminal_difference_C": 1.3578471680375515e-11
+            "last24h_mean_absolute_difference_C": 4.545020320594833e-08,
+            "terminal_difference_C": 3.552713678800501e-15
           },
           "Zone Mean Air Temperature|SHARED_STORAGE_03": {
-            "last24h_mean_absolute_difference_C": 0.0023689019635122982,
-            "terminal_difference_C": 0.0020513723749111534
+            "last24h_mean_absolute_difference_C": 0.0023780311934224287,
+            "terminal_difference_C": 0.0020544697030508985
           },
           "Zone Mean Air Temperature|WASHROOM": {
-            "last24h_mean_absolute_difference_C": 0.002690812000041065,
-            "terminal_difference_C": 0.0023173566161709402
+            "last24h_mean_absolute_difference_C": 0.0027017731012811807,
+            "terminal_difference_C": 0.0023202333789278384
           }
         }
       },
@@ -1589,6 +1589,6 @@
     "shells_file_hashes_identical": true,
     "worlds_file_hashes_identical": true
   },
-  "runs_manifest_sha256": "c1f291cb0578894a1c84339816a64e15dd94c6963a445b0da1211af737e79b10",
+  "runs_manifest_sha256": "9640e96c011d85bdae69d664fb559566907bd9747e6192483beed915b20c4003",
   "schema": "eb.housing_physics.audit.v1"
 }

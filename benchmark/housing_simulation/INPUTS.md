@@ -138,7 +138,7 @@ python -B -m benchmark.housing_simulation assemble \
 | `electrical_supply_W` | number | 住宅供电功率上界，W |
 | `exhaust_power_budget_W` | number | 供电筛查的排风功率预算，W |
 | `background` | object | `lighting_W_m2`、`misc_W_m2`、`refrigerator_W`、`cooking_W` |
-| `hot_water_minimum_C` | number | 参考热水出口最低服务温度，°C |
+| `hot_water_minimum_C` | number | 参考热水出口最低服务温度，°C；按10 min报告均值的最小值验收 |
 | `calendars` | object | 成员引用的工作日、周末及可选日期事件模板 |
 | `services` | object[] | 洗衣、干衣及洗碗的日常需求与执行时点 |
 | `controls` | object[] | 设备日常控制；热泵与水箱要求每日连续完整覆盖 |
@@ -146,7 +146,7 @@ python -B -m benchmark.housing_simulation assemble \
 | `cases` | object[] | 非空案例列表，含日期、服务位移及控制覆盖 |
 | `facility_reservations` | object | 可选；按日期声明的房间预约 |
 
-成员字段为`member_id`、`household_id`、`age_years`、`calendar_id`、`hot_water_liters`及`can_operate_asset_ids`。可选`metabolic_scale`满足`0 < value ≤ 2`，默认1，属于显式体量场景比例，不能由年龄隐式推算。`hot_water_liters`是每次洗浴的水箱出口热水量，单位L；零表示无该热水需求。全住宅每位成员恰好分配一个床位。睡眠组字段为`group_id`、`member_ids`、`capacity`、`bed_footprint_m`及可选`room_id`、`clearance_m`。
+成员字段为`member_id`、`household_id`、`age_years`、`calendar_id`、`hot_water_liters`及`can_operate_asset_ids`。可选`metabolic_scale`满足`0 < value ≤ 2`，默认1，属于显式体量场景比例，不能由年龄隐式推算。`hot_water_liters`是每次洗浴的水箱出口热水量，单位L；零表示无该热水需求。全住宅每位成员恰好分配一个床位。睡眠组字段为`group_id`、`member_ids`、`capacity`、`bed_footprint_m`及可选`room_id`、`clearance_m`。固定卧室应在睡眠组的`room_id`中声明；日历使用`$sleep`引用已分配卧室。日历中的字面房间仅接受一致性校验，不反向推断床位分配。
 
 设施字段为`fixture_id`、`kind`、`room_id`、`footprint_m`及可选`clearance_m`。床、设施、设备的`clearance_m=[left,bottom,right,top]`以m给出非负清空距离，默认四个零，随对象旋转；落地安装联合求解并保存本体与包络见证。已声明卫生间必须提供`toilet_reference`和`shower_reference`；厨房必须提供`sink_cooking_reference`和`refrigerator_reference`。设施是安装占地见证，排水网络和高度不在本接口中求解。
 
@@ -223,6 +223,8 @@ python -B -m benchmark.housing_simulation assemble \
 | `airflow_model` | `reference_mixing` | 或`pressure_network`；两种机制不叠加 |
 | `simulation_timestep_min` | 10 | 1、2、5、10；输出与行为仍为10 min |
 | `people_scale` / `lighting_scale` / `misc_scale` | 1 | `[0.5,2]`；物理敏感性比例 |
+
+上表为底层编译接口缺省值，保留显式数值配置的兼容入口。发布参考作业明确指定前史112天、尾期9天、求解步长5 min；本版收敛证据对应该参考配置。自定义研究应显式登记并验证数值配置，不因省略参数而自动获得参考验证结论。
 
 ### 6.2 家庭包
 

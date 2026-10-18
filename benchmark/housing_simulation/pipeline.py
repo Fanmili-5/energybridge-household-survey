@@ -296,9 +296,9 @@ def compile_pairs(config, output):
         raise ValueError('invalid history_days')
     if type(settings['tail_days']) is not int or settings['tail_days'] < 1:
         raise ValueError('invalid tail_days')
-    if not 0 < settings['reference_ach'] <= 3 or not .5<=settings['portal_flow_scale']<=2:
+    if any(type(settings[k])not in(int,float)or not math.isfinite(settings[k])for k in ('reference_ach','portal_flow_scale'))or not 0 < settings['reference_ach'] <= 3 or not .5<=settings['portal_flow_scale']<=2:
         raise ValueError('undeclared airflow settings')
-    if settings['simulation_timestep_min']not in (1,2,5,10)or settings['airflow_model']not in ('reference_mixing','pressure_network'):
+    if type(settings['simulation_timestep_min'])is not int or settings['simulation_timestep_min']not in (1,2,5,10)or settings['airflow_model']not in ('reference_mixing','pressure_network'):
         raise ValueError('unsupported solver timestep/airflow model')
     if any(type(settings[k])not in(int,float)or not math.isfinite(settings[k])or not .5<=settings[k]<=2 for k in ('people_scale','lighting_scale','misc_scale')):
         raise ValueError('internal gain scale outside declared study domain')

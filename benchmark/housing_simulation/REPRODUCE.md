@@ -8,7 +8,7 @@
 python -m venv .venv-housing
 source .venv-housing/bin/activate
 python -m pip install -r benchmark/housing_simulation/requirements.txt
-python -B -m unittest benchmark.housing_simulation.test_pipeline benchmark.housing_simulation.test_assembly benchmark.housing_simulation.test_review
+python -B -m unittest benchmark.housing_simulation.test_pipeline benchmark.housing_simulation.test_assembly benchmark.housing_simulation.test_review benchmark.housing_simulation.test_methods
 python -B -m benchmark.housing_simulation.verify_package
 ```
 
@@ -35,7 +35,7 @@ python -B -m benchmark.housing_simulation reproduce \
   --out /tmp/housing-custom-weather
 ```
 
-公开住宅分别为50 m²单人住宅、90 m²三人家庭，以及本户分配60 m²、含一名邻户居民的共享住宅。每个场景含六类可控设备、非空日历、洗衣—干衣依赖、热水需求、EV接插和行程。A/B在2025-07-15按公开请求改变运行时点和控制；前史7天，案例日起评价9天。中间层参考材料及设备数值属于公开工程测试设定，不作为中国住宅总体的实证样本。
+公开住宅分别为50 m²单人住宅、90 m²三人家庭，以及本户分配60 m²、含一名邻户居民的共享住宅。每个场景含六类可控设备、非空日历、洗衣—干衣依赖、热水需求、EV接插和行程。A/B在2025-07-15按公开请求改变运行时点和控制；前史112天，案例日起评价9天，求解步长5 min，行为和输出网格10 min。中间层参考材料及设备数值属于公开工程测试设定，不作为中国住宅总体的实证样本。
 
 成功标准是顶层及`audit/MANIFEST.json`中的`passed=true`。检查包括完整时间轴、设施电表闭合、程序电耗、服务取出、EV能量、热水供给、通知前轨迹及恢复状态。原始SQL与日志均在`runs/`下保留。
 

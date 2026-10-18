@@ -1,0 +1,295 @@
+{
+  "pressure_audit_sha256": "017e50c054ca9aed348eda1fa4a3ea89b4a2099c480389ac89c890f78e6319a3",
+  "records": [
+    {
+      "AFN_mass_balance": {
+        "A": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 10,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "combined_bed_living": 1.8279944248187838e-07,
+            "corridor": 2.966299778189331e-07,
+            "kitchen": 2.651667182496098e-07,
+            "washroom": 9.911561625695203e-08
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        },
+        "B": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 10,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "combined_bed_living": 1.9244819966617033e-07,
+            "corridor": 2.771615305134905e-07,
+            "kitchen": 2.638453731051982e-07,
+            "washroom": 1.0277005337206747e-07
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        }
+      },
+      "arms": {
+        "A": {
+          "difference_kWh": -7.2084294233089565,
+          "pressure_network_kWh": 196.22987305644824,
+          "reference_mixing_kWh": 203.4383024797572
+        },
+        "B": {
+          "difference_kWh": -7.090755022861856,
+          "pressure_network_kWh": 195.94961356323478,
+          "reference_mixing_kWh": 203.04036858609663
+        }
+      },
+      "id": "example-studio-summer",
+      "paired_effect_pressure_kWh": -0.2802594932134639,
+      "paired_effect_reference_kWh": -0.3979338936605643
+    },
+    {
+      "AFN_mass_balance": {
+        "A": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 10,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "combined_bed_living": 2.143239299298716e-07,
+            "corridor": 2.691868627546605e-07,
+            "kitchen": 1.9561366345483e-07,
+            "washroom": 1.0103528148147634e-07
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        },
+        "B": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 10,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "combined_bed_living": 2.1687472248621553e-07,
+            "corridor": 2.692511856198371e-07,
+            "kitchen": 1.9834567371868062e-07,
+            "washroom": 1.0108658483193311e-07
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        }
+      },
+      "arms": {
+        "A": {
+          "difference_kWh": -16.101456296908708,
+          "pressure_network_kWh": 200.54490485184516,
+          "reference_mixing_kWh": 216.64636114875387
+        },
+        "B": {
+          "difference_kWh": -16.100015184512955,
+          "pressure_network_kWh": 200.51421858421574,
+          "reference_mixing_kWh": 216.6142337687287
+        }
+      },
+      "id": "example-studio-winter",
+      "paired_effect_pressure_kWh": -0.030686267629420172,
+      "paired_effect_reference_kWh": -0.032127380025173125
+    },
+    {
+      "AFN_mass_balance": {
+        "A": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 14,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "corridor": 2.7939084226106387e-07,
+            "kitchen": 1.711869667408994e-07,
+            "living_hall": 1.6626910151170196e-07,
+            "private_01": 8.349968696336196e-08,
+            "private_02": 1.1696072747533398e-07,
+            "washroom": 8.540042802790415e-08
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        },
+        "B": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 14,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "corridor": 2.8525864445788987e-07,
+            "kitchen": 1.706854388383583e-07,
+            "living_hall": 1.6568165985084843e-07,
+            "private_01": 8.455200883384674e-08,
+            "private_02": 1.216611654081391e-07,
+            "washroom": 8.63289203144324e-08
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        }
+      },
+      "arms": {
+        "A": {
+          "difference_kWh": -4.863108678390887,
+          "pressure_network_kWh": 212.31155588192976,
+          "reference_mixing_kWh": 217.17466456032065
+        },
+        "B": {
+          "difference_kWh": -4.7134265462041185,
+          "pressure_network_kWh": 212.0441252807546,
+          "reference_mixing_kWh": 216.75755182695872
+        }
+      },
+      "id": "example-family-summer",
+      "paired_effect_pressure_kWh": -0.26743060117516393,
+      "paired_effect_reference_kWh": -0.41711273336193244
+    },
+    {
+      "AFN_mass_balance": {
+        "A": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 14,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "corridor": 1.2735447339935757e-07,
+            "kitchen": 9.337544251697416e-08,
+            "living_hall": 9.87909265712239e-08,
+            "private_01": 6.282535072949305e-08,
+            "private_02": 8.206984627382851e-08,
+            "washroom": 5.072130814919723e-08
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        },
+        "B": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 14,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "corridor": 1.2741275704636346e-07,
+            "kitchen": 9.337573407541822e-08,
+            "living_hall": 9.85993131169538e-08,
+            "private_01": 6.317133005931397e-08,
+            "private_02": 8.206885559873013e-08,
+            "washroom": 5.074594023246268e-08
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        }
+      },
+      "arms": {
+        "A": {
+          "difference_kWh": -21.044578845102023,
+          "pressure_network_kWh": 227.75317997753942,
+          "reference_mixing_kWh": 248.79775882264144
+        },
+        "B": {
+          "difference_kWh": -21.044213505247285,
+          "pressure_network_kWh": 227.70824408004145,
+          "reference_mixing_kWh": 248.75245758528874
+        }
+      },
+      "id": "example-family-winter",
+      "paired_effect_pressure_kWh": -0.04493589749796456,
+      "paired_effect_reference_kWh": -0.04530123735270308
+    },
+    {
+      "AFN_mass_balance": {
+        "A": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 18,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "corridor": 3.2834850540158084e-07,
+            "kitchen": 2.013967166647479e-07,
+            "living_hall": 4.634761767256801e-08,
+            "private_01": 5.366158173716884e-08,
+            "private_02": 4.126912810282616e-08,
+            "private_03": 8.574436127945244e-08,
+            "shared_storage_03": 5.505723947628674e-08,
+            "washroom": 5.665978042995734e-08
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        },
+        "B": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 18,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "corridor": 3.286103879929312e-07,
+            "kitchen": 2.0125534058029748e-07,
+            "living_hall": 8.7858729952775e-08,
+            "private_01": 5.479993722819573e-08,
+            "private_02": 4.693268176864237e-08,
+            "private_03": 1.0823194329493985e-07,
+            "shared_storage_03": 5.344290269267832e-08,
+            "washroom": 5.538727785442399e-08
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        }
+      },
+      "arms": {
+        "A": {
+          "difference_kWh": -2.3966419833899693,
+          "pressure_network_kWh": 224.129666154099,
+          "reference_mixing_kWh": 226.52630813748897
+        },
+        "B": {
+          "difference_kWh": -2.2663892053594736,
+          "pressure_network_kWh": 223.81584465475584,
+          "reference_mixing_kWh": 226.0822338601153
+        }
+      },
+      "id": "example-shared-summer",
+      "paired_effect_pressure_kWh": -0.31382149934316317,
+      "paired_effect_reference_kWh": -0.4440742773736588
+    },
+    {
+      "AFN_mass_balance": {
+        "A": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 18,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "corridor": 2.001567871792731e-07,
+            "kitchen": 1.2253334219503031e-07,
+            "living_hall": 2.0076004132729697e-07,
+            "private_01": 4.509348537292974e-08,
+            "private_02": 6.540393784372489e-08,
+            "private_03": 1.0571692878567907e-07,
+            "shared_storage_03": 6.167760775201148e-08,
+            "washroom": 6.139192549649026e-08
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        },
+        "B": {
+          "absolute_tolerance_kg_s": 1e-06,
+          "links_checked": 18,
+          "maximum_absolute_residual_kg_s_by_zone": {
+            "corridor": 2.0011978660305907e-07,
+            "kitchen": 1.225349852695956e-07,
+            "living_hall": 2.0072361228695712e-07,
+            "private_01": 4.53098528526894e-08,
+            "private_02": 6.571601556719722e-08,
+            "private_03": 1.0602180564988489e-07,
+            "shared_storage_03": 6.497587634558474e-08,
+            "washroom": 6.145710793514694e-08
+          },
+          "passed": true,
+          "relative_tolerance": 1e-05
+        }
+      },
+      "arms": {
+        "A": {
+          "difference_kWh": -18.243928749078407,
+          "pressure_network_kWh": 242.67207553944627,
+          "reference_mixing_kWh": 260.9160042885247
+        },
+        "B": {
+          "difference_kWh": -18.244646973479774,
+          "pressure_network_kWh": 242.6309237697246,
+          "reference_mixing_kWh": 260.8755707432044
+        }
+      },
+      "id": "example-shared-winter",
+      "paired_effect_pressure_kWh": -0.04115176972166523,
+      "paired_effect_reference_kWh": -0.040433545320297526
+    }
+  ],
+  "reference_audit_sha256": "47399ddea6b1fcdde452553630d96feb3064cea921d9ae33d9b3302d4e9c7c6a",
+  "schema": "eb.housing_simulation.model_comparison.v1",
+  "scope": "six public reference cases;structural diagnostic;no calibrated preference for either model",
+  "settings": {
+    "history_days": 112,
+    "simulation_timestep_min": 5,
+    "tail_days": 9
+  }
+}

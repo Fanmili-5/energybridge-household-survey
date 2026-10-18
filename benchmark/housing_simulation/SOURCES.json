@@ -212,7 +212,8 @@
         "national unit frequencies",
         "editable original coordinates or IDFs",
         "indoor-to-census gross factor1.18",
-        "equipment10W/m2 as additional miscellaneous load"
+        "equipment10W/m2 as additional miscellaneous load",
+        "project scaling around Table9 prototypes as the exact original training or validation domain"
       ],
       "doi": "10.1016/j.foar.2025.03.006",
       "authors": [

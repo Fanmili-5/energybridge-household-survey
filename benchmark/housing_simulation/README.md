@@ -47,10 +47,10 @@ python -B -m benchmark.housing_simulation reproduce \
 - [构造方法](METHOD.md)：算法、物理模型、外部依据与项目设定。
 - [数据接口规范](INPUTS.md)：必需字段、单位、状态及阶段契约。
 - [构建与复现指南](REPRODUCE.md)：公开实例、自定义批次与原生资源接入。
-- [验证规范](VALIDATION.md)与[验证记录](VALIDATION.json)：检查条件和实际覆盖范围。
+- [验证规范](VALIDATION.md)、[实际结果](RESULTS.md)与[验证记录](VALIDATION.json)：检查条件和实际覆盖范围。
 - [证据边界与追踪矩阵](EVIDENCE.md)：逐阶段输入、来源、项目规则、实现及验收对应关系。
 - [固定参数登记](ASSUMPTIONS.json)与[输入字段映射](FIELD_MAP.json)：参数性质及Schema字段覆盖。
-- [注册验证计划](STUDY_PLAN.json)与[敏感性/收敛结果](ROBUSTNESS_RESULTS.json)：参数域、判据、全部配置及实际结果。
+- [注册验证计划](STUDY_PLAN.json)、[协议修订记录](STUDY_PLAN_HISTORY.json)与[敏感性/收敛结果](ROBUSTNESS_RESULTS.json)：参数域、判据、全部配置及实际结果。
 - [整体审查记录](REVIEW.md)：本次发现、修订及验证范围。
 - [来源登记](SOURCES.json)、[规则与依据映射](RULES.json)、[代码来源映射](SOURCE_MAP.json)：证据支持范围及实现定位。
 - [公开家庭输入](examples/world_batch.json)与[机器可读输入规范](WORLD.schema.json)。
@@ -64,3 +64,5 @@ python -B -m benchmark.housing_simulation reproduce \
 中国资料用于DeST构造参照、广州户型有界约束和照明参考。活动散热、清空包络、整数规划与压力网络采用公开方法；面积换算、安装网格、日历和参数域等项目设定保留明确理由及边界，见[证据追踪](EVIDENCE.md#5-本次方法替代与保留设定)。
 
 项目设定逐项理由、替换方式与未覆盖限制见[设计决策登记](DESIGN_DECISIONS.md)。
+
+版本3.0.0保留`WORLD` v2的结构兼容性，但更新负荷和安装语义：活动散热替代统一功率，杂项默认待机为零，烹饪必须显式声明，联合布局替代顺序放置。既有作业重跑属于新模型配置，不能沿用旧版能量结论。公开前史更新为112天，求解步长按本版收敛结果登记。
