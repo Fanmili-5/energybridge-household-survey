@@ -1,0 +1,84 @@
+{
+  "schema": "eb.housing_shell.input.v1",
+  "assembly": {
+    "path": "synthetic_assembly.json",
+    "sha256": "02c535e113144a431d4824d730ead49ca838b2fd7e3a2a77d1dd4c48c8cedaed"
+  },
+  "height_m": 2.9,
+  "studio_shapes": [
+    [
+      4,
+      3,
+      1,
+      2.4,
+      0.5
+    ],
+    [
+      3.5,
+      4,
+      1,
+      2.4,
+      0.55
+    ]
+  ],
+  "gallery_shapes": [
+    [
+      2.8,
+      3,
+      1,
+      3.8,
+      0.5
+    ],
+    [
+      2.4,
+      3.4,
+      1,
+      3.8,
+      0.5
+    ],
+    [
+      2.2,
+      3,
+      1,
+      3.2,
+      0.5,
+      0.5
+    ]
+  ],
+  "households": [
+    {
+      "household_id": "example-studio",
+      "gross_area_m2": 50,
+      "natural_rooms": 1,
+      "shared_households": 1,
+      "facilities": {
+        "kitchen": "exclusive",
+        "toilet": "flush_sanitary",
+        "bathing_hot_water": "self_installed_heater"
+      }
+    },
+    {
+      "household_id": "example-family",
+      "gross_area_m2": 90,
+      "natural_rooms": 2,
+      "shared_households": 1,
+      "facilities": {
+        "kitchen": "exclusive",
+        "toilet": "flush_sanitary",
+        "bathing_hot_water": "self_installed_heater"
+      }
+    },
+    {
+      "household_id": "example-shared",
+      "gross_area_m2": 60,
+      "natural_rooms": 2,
+      "shared_households": 2,
+      "facilities": {
+        "kitchen": "shared",
+        "toilet": "flush_sanitary",
+        "bathing_hot_water": "self_installed_heater"
+      }
+    }
+  ],
+  "boundary_policy": "midfloor_north_south_reference"
+}

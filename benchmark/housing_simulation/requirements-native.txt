@@ -1,0 +1,4 @@
+# Optional original Access extraction reader; reviewed source revision.
+git+https://github.com/McSash/access_parser_c.git@93571d1bf45a1c72a4368a8b320c2c14ee44476f
+construct==2.10.70
+tabulate==0.9.0

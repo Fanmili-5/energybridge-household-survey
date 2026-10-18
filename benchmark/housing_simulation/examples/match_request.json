@@ -1,0 +1,13 @@
+{
+  "household_id": "example-family",
+  "province": "ExampleProvince",
+  "city": "ExampleCity",
+  "building_type_order": [
+    "slab",
+    "tower"
+  ],
+  "given_epoch_interval": [
+    1980,
+    1989
+  ]
+}
