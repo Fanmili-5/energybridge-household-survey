@@ -51,4 +51,5 @@ def code_hash():
 def physics_hash():
     files={name:sha(KERNEL/name)for name in ('core.py','compiler.py','thermal_environment.py')}
     files['THERMAL_ENVIRONMENT_POLICY.json']=sha(ROOT/'THERMAL_ENVIRONMENT_POLICY.json')
+    files['ASSUMPTIONS.json']=sha(KERNEL.parent/'ASSUMPTIONS.json')
     return digest(files)

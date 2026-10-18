@@ -113,14 +113,14 @@ python -B -m benchmark.housing_simulation assemble \
   --weather /path/to/weather.epw --out /tmp/worlds
 ```
 
-结构定义为[WORLD.schema.json](WORLD.schema.json)，完整非空输入见[world_batch.json](examples/world_batch.json)。`--shells`必须是通过清单核验的`build-shell`输出；家庭标识与外壳标识一致。天气是显式文件路径，复制后的字节哈希和实际LOCATION头写入装配清单，来源说明与实际文件身份分别保存。
+结构定义为[WORLD.schema.json](WORLD.schema.json)，完整非空输入见[world_batch.json](examples/world_batch.json)。`--shells`必须是通过清单核验的`build-shell`输出；家庭标识与外壳标识一致。天气是显式文件路径。创建世界输出前核验登记哈希、LOCATION范围、单一全年小时序列、时序连续性及干球温度有效值；结果保存为`inputs/weather_identity.json`。该检查不替代完整气象质量审查。v2新增必需天气登记及条件约束；v1作业须补齐字段并修改版本标识后提交。
 
 ### 5.1 作业配置
 
 | 字段 | 类型 | 定义 |
 | --- | --- | --- |
-| `schema` | string | 固定为`eb.housing_world.input.v1` |
-| `weather_source` | object | 数据提供方、来源URL、版本及用途说明；不替代实际文件哈希 |
+| `schema` | string | 固定为`eb.housing_world.input.v2` |
+| `weather_source` | object | 必需`provider`、`url`、`dataset`、`release`、`sha256`；可选`station`、`usage`。哈希必须与实际EPW相同，站号若声明须与LOCATION一致 |
 | `settings` | object | 必需：`history_days`、`tail_days`、`reference_ach`、`portal_flow_scale` |
 | `thermal_fractions` | object | washer/dryer/dishwasher/misc/refrigerator/cooking各自的`[latent,radiant,lost]`，各项0–1且和不超过1；剩余部分为对流 |
 | `households` | object[] | 非空家庭列表；全局家庭标识与案例标识唯一 |
@@ -163,15 +163,15 @@ python -B -m benchmark.housing_simulation assemble \
 | `water_heater` | 体积m³、高度m、加热功率W、最高温度°C、死区°C、面散热系数W/(m²·K)、效率、2–12个节点 | 电、水 |
 | `ev` | 充电功率kW、容量kWh、效率、目标与最低SOC、锚点初始电量kWh | 电、专用停车 |
 
-精确键名及数值边界由Schema和`assembly.bind_world`定义。储水箱与EV各至多一个；热泵可按房间配置多个。壁挂宽度检查不输出三维安装证明。
+精确键名及数值边界由Schema和`assembly.bind_world`定义。储水箱与EV各至多一个；热泵可按不同房间配置多个，同一热区至多一个独立控制的热泵。壁挂宽度检查不输出三维安装证明。
 
 ### 5.4 日历、服务与案例
 
-日历模板含`weekday`、`weekend`及可选`date_overrides[YYYY-MM-DD]`。事件字段为`start_min`、`end_min`、`location`、`room`、`activity`、`available_for_operation`。时间为当日分钟，按10 min对齐，采用左闭右开区间。每天恰好覆盖`[0,1440)`；在家事件绑定可访问房间，离家事件`room=null`。`sleep`、`bath`及`dinner`用于睡眠、独占洗浴与烹饪排风绑定。操作窗口必须由输入显式允许，睡眠和洗浴期间不得操作。
+日历模板含`weekday`、`weekend`及可选`date_overrides[YYYY-MM-DD]`。事件字段为`start_min`、`end_min`、`location`、`room`、`activity`、`available_for_operation`。时间为当日分钟，按10 min对齐，采用左闭右开区间。每天恰好覆盖`[0,1440)`；在家事件绑定可访问房间，离家事件`room=null`。`sleep`、`bath`及`dinner`用于睡眠、独占洗浴与烹饪排风绑定。操作窗口必须由输入显式允许，睡眠、包含`nap`的活动和洗浴期间不得操作。睡眠及午睡必须在本人已分配卧室，洗浴必须在实际卫生间，晚餐必须在家；有非零热水需求的成员所属家庭须具有水箱使用权。
 
 服务字段为`service_id`、`asset_id`、`kind`、`operator_id`、`start_min`、`duration_min`、`retrieval_min`、`release_min`、`deadline_min`及`weekdays`（0=周一）。装载在程序开始前10 min执行，取出持续10 min。干衣可通过`after_service_id`声明洗衣前序；前序必须取出完成后才能装载。日常服务与接插操作均接受人员、房间及设备冲突检查。
 
-案例字段为`case_id`、`date`、`service_shifts`及`control_overrides`。服务位移对同一需求的装载、程序、取出整体平移，需求释放与截止不变。控制种类分别为`ac_setpoint`、`tank_setpoint`、`ev_charge_window`，精确字段见Schema。通知时点固定为案例日起480 min；改变通知前事件的请求拒绝。EV接插和行程保持不变，仅允许调整充电窗口或目标SOC。B方案的执行失败作为结果保留，审计返回失败，不自动改写请求。
+案例字段为`case_id`、`date`、`service_shifts`及`control_overrides`。服务位移对同一需求的装载、程序、取出整体平移，需求释放与截止不变。控制种类分别为`ac_setpoint`、`tank_setpoint`、`ev_charge_window`，精确字段见Schema。通知时点固定为案例日起480 min；改变通知前事件的请求拒绝。EV接插和行程保持不变，仅允许调整充电窗口或目标SOC。每个EV控制窗口须完整位于同一物理连接段内；跨越出行断开的窗口拒绝。锚点首日拔插同样需要可用操作人，完整基线逐次出行均须保留最低SOC。B控制须有目标家庭授权成员，服务位移也仅允许目标家庭授权操作的服务；上下文住户的日常计划不由该请求改动。B方案的执行失败作为结果保留，审计返回失败，不自动改写请求。
 
 ### 5.5 产物与状态
 
@@ -258,7 +258,7 @@ python -B -m benchmark.housing_simulation assemble \
 | 回读 | `readback_or_engine_failed` | 执行、超时或轨迹检查失败 |
 | 批次传递 | `compile_failed` | 编译失败条目在执行批次中的保留状态 |
 
-设备服务失败保存在模型执行信息中，与引擎状态分别解释。`verify`校验清单登记文件的字节一致性；物理和服务验收见[验证规范](VALIDATION.md)。
+`RESULT.json`同时绑定SQL及TRACE文件哈希，审计再次验证回执。设施电量为全住宅口径，包含共享邻户及公共负荷，面积份额不构成电量分摊规则。设备服务失败保存在模型执行信息中，与引擎状态分别解释。`verify`校验清单登记文件的字节一致性；物理和服务验收见[验证规范](VALIDATION.md)。
 
 ## 8. 统一物理审计接口
 

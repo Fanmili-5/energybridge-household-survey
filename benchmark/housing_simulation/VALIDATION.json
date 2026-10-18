@@ -4,10 +4,18 @@
   "date": "2026-10-19",
   "empirical_calibration_completed": false,
   "evidence_file": "REFERENCE_RESULTS.json",
-  "evidence_sha256": "ccd7ba64744483c289d0ce3d54946e2ebcd072f8ba4e65d524e7996b79a2339e",
+  "evidence_sha256": "d384fa0c25a083c3384869352bf777bd81c3c6ff9e73e59e58e5daa42bca7b37",
   "human_acceptance_inferred": false,
   "human_answers_created": 0,
-  "package_version": "2.0.1",
+  "optional_native_regression": {
+    "all_five_used_opaque_construction_proofs_unchanged": true,
+    "parser_revision": "93571d1bf45a1c72a4368a8b320c2c14ee44476f",
+    "passed": true,
+    "private_source_required_only_for_optional_native_import": true,
+    "registered_original_Access_source_verified": true,
+    "scalar_window_proof_unchanged": true
+  },
+  "package_version": "2.1.0",
   "production_data_modified": false,
   "public_nonempty_reproduction": {
     "A_and_B_different": true,
@@ -29,7 +37,7 @@
     "engine_started": false,
     "historical_cohort_required": false,
     "passed": true,
-    "tests": 24
+    "tests": 40
   },
   "reproducibility": {
     "all_six_IDF_bytes_identical": true,
@@ -39,5 +47,13 @@
     "worlds_file_hashes_identical": true
   },
   "schema": "eb.housing_simulation.validation.v2",
+  "traceability": {
+    "assumption_groups": 12,
+    "evidence_boundary_document": "EVIDENCE.md",
+    "mapped_schema_properties": 220,
+    "review_document": "REVIEW.md",
+    "rules": 18,
+    "sources": 14
+  },
   "zero_warnings_claimed": false
 }

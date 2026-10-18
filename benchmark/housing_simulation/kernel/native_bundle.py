@@ -3,6 +3,8 @@
 Correct DeST namespaces:1 outer wall,2 inner wall,3 roof,4 ground,5 middle.
 Geometry, optical angular equivalence and actual code compliance are not claimed.
 """
+from ..policy import reference
+
 import hashlib,math
 from access_parser_c import AccessParser
 from .source_identity import PROVINCES
@@ -39,7 +41,7 @@ def extract(record):
         for j,x in enumerate(layers):
             m=mats[x['MATERIAL_ID']];v=[x['LENGTH']/1000,m['CONDUCTIVITY'],m['DENSITY'],m['SPECIFIC_HEAT']]
             if not all(math.isfinite(z)and z>0 for z in v):raise ValueError('BAD_NATIVE_MATERIAL_VECTOR')
-            name=f'{record["model_key"]}_{kind}_{j}';props.append(['Material',name,'MediumRough',*map(str,v),'.9','.7','.7']);layernames.append(name);vectors.append(v)
+            name=f'{record["model_key"]}_{kind}_{j}';props.append(['Material',name,reference('shell')['native_material_roughness'],*map(str,v),*map(str,reference('shell')['native_material_absorptance'])]);layernames.append(name);vectors.append(v)
         name=record['model_key']+'_'+kind;props.append(['Construction',name,*layernames]);names[kind]=name
         proof.append({'kind':kind,'native_enclosure_KIND':code,'native_used_struct_ID':sid,'native_layer_table':table+'_MATERIAL',
             'material_IDs':[x['MATERIAL_ID']for x in layers],'vectors_thickness_conductivity_density_specific_heat':vectors,
@@ -47,9 +49,9 @@ def extract(record):
     window=rows(db.parse_table('WINDOW'));types={x['ID']:x for x in rows(db.parse_table('WINDOW_TYPE_DATA'))};used={x['TYPE']for x in window}
     if len(used)!=1:raise ValueError('EXPLICIT_WINDOW_MAPPING_REQUIRED')
     t=types[next(iter(used))];u=float(t['K']);sc=float(t['SC']);vt=float(t['LIGHT_TRANS_RATIO'])
-    if not u>0 or not 0<=sc*.87<=1 or not 0<=vt<=1:raise ValueError('INVALID_USED_NATIVE_SCALAR_WINDOW')
+    if not u>0 or not 0<=sc*reference('glazing')['SC_to_SHGC']<=1 or not 0<=vt<=1:raise ValueError('INVALID_USED_NATIVE_SCALAR_WINDOW')
     name=record['model_key']+'_scalar_window';con=record['model_key']+'_window'
-    props += [['WindowMaterial:SimpleGlazingSystem',name,str(u),str(sc*.87),str(vt)],['Construction',con,name]];names['window']=con
+    props += [['WindowMaterial:SimpleGlazingSystem',name,str(u),str(sc*reference('glazing')['SC_to_SHGC']),str(vt)],['Construction',con,name]];names['window']=con
     updated={**record,'source_sha256':signature,'original_environment':env,'metadata_environment_inherited_for_download_planning':False,
         'native_original_available':True,'actual_environment_and_used_parameter_tables_verified':True,
         'coordinate_confirmed_WMO_station_candidates':stations}
@@ -58,7 +60,7 @@ def extract(record):
     bundle={'model_key':record['model_key'],'rows':props,'names':names,'source_path':str(source),'source_sha256':signature,'source_conversion_sha256':None,
         'exterior_thickness_m':proof[0]['thickness_m'],'interior_thickness_m':proof[1]['thickness_m'],
         'climate_identity':record['model_key']+'_native_parameter_reference','native_opaque_provenance':proof,
-        'scalar_window_provenance':{'type_ID':t['ID'],'type_NAME':t['NAME'],'U':u,'SC':sc,'visible':vt,'SC_to_SHGC':.87,
+        'scalar_window_provenance':{'type_ID':t['ID'],'type_NAME':t['NAME'],'U':u,'SC':sc,'visible':vt,'SC_to_SHGC':reference('glazing')['SC_to_SHGC'],
             'optical_pairs_quarantined':float(t['ENERGY_TRANS_RATIO'])+float(t['ENERGY_REFLECT_RATIO'])>1+1e-6 or vt+float(t['LIGHT_REFLECT_RATIO'])>1+1e-6,
             'angular_spectral_or_frame_boundary_equivalence_validated':False},
         'native_absorptance_or_roughness_measured':False,'actual_source_house_or_code_compliance':False}

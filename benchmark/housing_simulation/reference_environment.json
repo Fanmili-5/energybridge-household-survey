@@ -7,7 +7,7 @@
     "model": "one mass-and-energy-conserving ZoneCrossMixing per portal,delta_temperature0",
     "reference_open_m3_s_per_m2": 0.0625,
     "reference_closed_fraction": 0.05,
-    "reference_basis": "EnergyPlus24.1 I/O example0.1m3/s scaled by existing0.8x2.0m portal;closed fraction is an explicit sensitivity parameter,not empirical fit",
+    "reference_basis": "project-selected coefficient;EP manual0.1m3/s example demonstrates syntax only,not an empirical opening coefficient",
     "door_policy": "nonbedroom portals open;bedroom portals closed during any frozen A sleep/nap occupancy;washroom closed during frozen A sanitary occupancy;B does not control doors",
     "sensitivity_flow_scales": [
       0.5,
@@ -25,10 +25,10 @@
     "kitchen_policy": "same frozen A cooking intervals,plus20minutes overrun",
     "dryer_policy": "actual executed dry cycle;fan motor included in frozen dryer input power,no extra fan electricity",
     "outdoor_air_combination": "native ZoneAirMassFlowConservation with AddInfiltrationFlow;0.35ACH self-balanced base plus mass-required makeup;no direct outdoor ventilation object per exhaust room",
-    "flow_basis": "50/100cfm kitchen/bath reference capacities per DOE/PNNL;dryer100cfm and fan0.5W/cfm per NREL2010 House Simulation Protocols p16;these are declared reference facilities,not population estimates",
+    "flow_basis": "bath50cfm/kitchen100cfm adopted from separate PNNL reference guides;dryer100cfm and0.5W/cfm from House Simulation Protocols printed p16;overrun20min and total efficiency0.6 are project settings",
     "urls": [
       "https://basc.pnnl.gov/resource-guides/bathroom-exhaust-fans",
-      "https://www1.eere.energy.gov/buildings/publications/pdfs/building_america/es_v3_%20rev4_checklists.pdf",
+      "https://basc.pnnl.gov/resource-guides/kitchen-exhaust-fans",
       "https://www1.eere.energy.gov/buildings/publications/pdfs/building_america/house_simulation.pdf"
     ]
   },

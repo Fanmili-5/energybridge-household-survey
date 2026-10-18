@@ -19,12 +19,17 @@ class WorldAssemblyTests(unittest.TestCase):
         cls.temp=tempfile.TemporaryDirectory();cls.root=Path(cls.temp.name)
         cls.shells=cls.root/'shells';build_shell(HERE/'examples/shell_batch.json',cls.shells)
         cls.job=read(HERE/'examples/world_batch.json')
-        # Weather is only copied during assembly; compiler statistics require12months.
+        # Invented complete annual fixture; never used for EnergyPlus validation.
         cls.weather=cls.root/'test.epw'
-        header='LOCATION,Invented,Test,ZZZ,Synthetic,000000,0,0,0,0\n'+'header\n'*7
+        header='LOCATION,Invented,Test,ZZZ,Synthetic,000000,0,0,0,0\nDESIGN CONDITIONS,0\nTYPICAL/EXTREME PERIODS,0\nGROUND TEMPERATURES,0\nHOLIDAYS/DAYLIGHT SAVING,No,0,0,0\nCOMMENTS 1,Invented\nCOMMENTS 2,Unit fixture\nDATA PERIODS,1,1,Data,Wednesday,1/1,12/31\n'
         rows=[]
-        for month in range(1,13):rows.append(f'2025,{month},1,1,60,?,20,10,50\n')
+        for i in range(8760):
+            d=dt.datetime(2025,1,1)+dt.timedelta(hours=i)
+            row=[2025,d.month,d.day,d.hour+1,60,'?',20,10,50,101325]+[0]*25
+            rows.append(','.join(map(str,row))+'\n')
         cls.weather.write_text(header+''.join(rows))
+        cls.job['weather_source']={'provider':'Invented unit fixture','url':'https://example.invalid/epw','dataset':'synthetic','release':'v1','sha256':sha(cls.weather),'station':'000000'}
+
 
     @classmethod
     def tearDownClass(cls):cls.temp.cleanup()

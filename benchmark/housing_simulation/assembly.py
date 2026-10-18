@@ -5,6 +5,9 @@ import shutil
 from pathlib import Path
 
 from .components import heat_pump
+from .policy import fingerprint, reference
+
+INSTALL=reference('installation')
 from .kernel.core_tools import parse_idf
 from .pipeline import HERE, bound, digest, fresh, identifier, portable_gzip, read, save, seal, sha, verify
 
@@ -44,6 +47,7 @@ def indexed(items, key):
 def place(items, room):
     """Grid search with rotation; reserve an access strip, then disjoint rectangles."""
     x0, y0, x1, y1 = room['usable_rect_m']
+    grid=INSTALL['grid_m'];gap=INSTALL['gap_m']
     placed = []
     for item in items:
         w, h = item['footprint_m']
@@ -51,15 +55,15 @@ def place(items, room):
         found = None
         for width, depth in dict.fromkeys(((w, h), (h, w))):
             # Coordinates snap to a declared 0.1m grid relative to usable extent.
-            for iy in range(int((y1-y0)*10)+1):
-                y = y0 + .8 + iy / 10
-                for ix in range(int((x1-x0)*10)+1):
-                    x = x0 + ix / 10
+            for iy in range(int((y1-y0)/grid)+1):
+                y = y0 + INSTALL['access_strip_m'] + iy * grid
+                for ix in range(int((x1-x0)/grid)+1):
+                    x = x0 + ix * grid
                     rect = [x, y, x+width, y+depth]
                     if rect[2] > x1+1e-8 or rect[3] > y1+1e-8:
                         continue
-                    if all(rect[2]+.1 <= r['rect_m'][0]+1e-8 or r['rect_m'][2]+.1 <= rect[0]+1e-8 or
-                           rect[3]+.1 <= r['rect_m'][1]+1e-8 or r['rect_m'][3]+.1 <= rect[1]+1e-8 for r in placed):
+                    if all(rect[2]+gap <= r['rect_m'][0]+1e-8 or r['rect_m'][2]+gap <= rect[0]+1e-8 or
+                           rect[3]+gap <= r['rect_m'][1]+1e-8 or r['rect_m'][3]+gap <= rect[1]+1e-8 for r in placed):
                         found = {**item, 'room_id': room['room_id'], 'rect_m': rect}; break
                 if found: break
             if found: break
@@ -94,7 +98,7 @@ def bind_world(spec, layout):
             candidates = [r for r in candidates if r['room_id'] == group['room_id']]
         item = {'object_id': 'bed_' + gid, 'kind': 'bed', 'footprint_m': group['bed_footprint_m'], 'member_ids': mids}
         require(len(item['footprint_m']) == 2, 'bed footprint needs two dimensions')
-        require(min(item['footprint_m']) >= (.8 if group['capacity']==1 else 1.2) and max(item['footprint_m'])>=1.8,'bed dimensions below declared reference minimum')
+        require(min(item['footprint_m']) >= (INSTALL['single_bed_min_width_m'] if group['capacity']==1 else INSTALL['double_bed_min_width_m']) and max(item['footprint_m'])>=INSTALL['bed_min_length_m'],'bed dimensions below declared reference minimum')
         for room in candidates:
             rid = room['room_id']
             try: place(floor_items[rid] + [item], room)
@@ -173,12 +177,13 @@ def bind_world(spec, layout):
     placements = [p for rid in sorted(rooms) for p in place(floor_items[rid], rooms[rid])]
     wall = {}
     for d in assets.values():
-        if d['placement']=='wall': wall[d['room_id']] = wall.get(d['room_id'],0) + d['mount_width_m'] + .1
+        if d['placement']=='wall': wall[d['room_id']] = wall.get(d['room_id'],0) + d['mount_width_m'] + INSTALL['gap_m']
     for rid, width in wall.items():
-        rect=rooms[rid]['usable_rect_m']; require(width <= 2*((rect[2]-rect[0])+(rect[3]-rect[1]))-.8, 'wall mounting budget exceeded')
+        rect=rooms[rid]['usable_rect_m']; require(width <= 2*((rect[2]-rect[0])+(rect[3]-rect[1]))-INSTALL['access_strip_m'], 'wall mounting budget exceeded')
     supply = spec['electrical_supply_W']; number(supply, 'electrical_supply_W')
     background = spec['background']
     for k in ('lighting_W_m2','misc_W_m2','refrigerator_W','cooking_W'): number(background[k], k, 0, 10000, False)
+    require(not (background['refrigerator_W'] or background['cooking_W']) or roles['kitchen'] is not None,'positive food background requires declared kitchen')
     passive = sum(r['thermal_reference_area_m2'] for r in rooms.values())*(background['lighting_W_m2']+background['misc_W_m2'])+background['refrigerator_W']+background['cooking_W']
     passive += spec['exhaust_power_budget_W']; number(spec['exhaust_power_budget_W'],'exhaust_power_budget_W',0,10000,False)
     ventilation=read(HERE/'reference_environment.json')['spot_exhaust']
@@ -187,7 +192,7 @@ def bind_world(spec, layout):
     require(sum(d['parameters']['nameplate_W'] for d in assets.values())+passive <= supply, 'ELECTRICAL_NAMEPLATE_SUM_EXCEEDS_SUPPLY')
     for m in members.values():
         rights=m['can_operate_asset_ids']; require(set(rights) <= assets.keys(), 'unknown operator asset')
-        require(not rights or m['age_years']>=16, 'operator below declared reference age16')
+        require(not rights or m['age_years']>=INSTALL['operator_min_age_years'], 'operator below declared reference age16')
         require(all(m['household_id'] in assets[aid]['using_household_ids'] for aid in rights), 'operator lacks household asset access')
     layout['complete_household_energy_world'] = True; layout['actor_ready'] = True
     for h in layout['households']:
@@ -198,6 +203,7 @@ def bind_world(spec, layout):
             'routine':{'mixed_target_C':spec['hot_water_minimum_C']}, 'placements':placements,
             'installation_policy':'rectangular_grid_0.1m_gap_0.1m_access_strip_0.8m;wall_width_budget;not_code_compliance',
             'electrical':{'supply_W':supply,'nameplate_plus_background_W':sum(d['parameters']['nameplate_W']for d in assets.values())+passive},
+            'reference_assumptions_sha256':fingerprint(),
             'input_kind':'declared_reference_household;not_survey_observation'}
 
 
@@ -228,7 +234,13 @@ def calendar_for(member, day, spec, world):
             e['room_id']=rid
         else:require(e['location']=='away' and not e.get('room'), 'away event cannot bind a room')
         require(type(e['available_for_operation']) is bool, 'explicit operation availability required')
-        require(not e['available_for_operation'] or (e['location']=='home' and not e['activity'].startswith('sleep') and e['activity']!='bath'), 'invalid operation availability')
+        sleeping = e['activity'].startswith('sleep') or 'nap' in e['activity']
+        if sleeping:
+            require(e['location']=='home' and e['room_id']==world['sleep_room_by_member'][member['member_id']], 'sleep event must use assigned bedroom')
+        if e['activity']=='bath':
+            require(e['location']=='home' and e['room_id']==world['activity_contract']['room_map']['bath'], 'bath event must use sanitary room')
+        if e['activity']=='dinner':require(e['location']=='home', 'dinner background rule requires at-home meal')
+        require(not e['available_for_operation'] or (e['location']=='home' and not sleeping and e['activity']!='bath'), 'invalid operation availability')
         out.append(e)
     require(last==1440,'calendar must end at1440')
     return out
@@ -260,6 +272,7 @@ def build_pack(spec, world, shell, weather_sha):
           'background':spec['background'],'service_needs':[]}
     fields=read(HERE/'resources/schema_fields.json')
     pack['HVAC']=[heat_pump(d,fields)for d in assets.values()if d['kind']=='ac']
+    require(len({p['room_id']for p in pack['HVAC']})==len(pack['HVAC']), 'one independently controlled AC per thermal room supported')
     day=anchor
     while day<end:
         base=(day-anchor).days*1440
@@ -271,7 +284,9 @@ def build_pack(spec, world, shell, weather_sha):
                 if e['activity']=='bath':
                     require(mid not in baths,'one daily bath event per member supported'); baths[mid]=e['start_min']
                     if members[mid]['hot_water_liters']:
-                        require(any(d['kind']=='water_heater'for d in assets.values()),'hot-water need without installed tank')
+                        tank=next((d for d in assets.values()if d['kind']=='water_heater'),None)
+                        require(tank is not None,'hot-water need without installed tank')
+                        require(members[mid]['household_id']in tank['using_household_ids'],'hot-water asset access denied')
                         water.append({'need_id':str(day)+':bath:'+mid,'release_min':base+e['start_min'],'deadline_min':base+e['end_min'],
                                       'quantity':members[mid]['hot_water_liters'],'minimum_C':spec['hot_water_minimum_C'],'quantity_unit':'hot_outlet_liters'})
                 if e['activity']=='dinner':dinners[mid]=e['start_min']
@@ -308,6 +323,9 @@ def build_pack(spec, world, shell, weather_sha):
         require(ev['asset_id'] in members[mid]['can_operate_asset_ids'],'EV operator not authorized')
         plug=minute(r['plug_min'],'plug_min');unplug=minute(r['unplug_min'],'unplug_min')
         require(plug>=unplug+10 and plug<=1420,'EV reference connection must be overnight')
+        for c in spec['controls']:
+            if c['kind']=='ev_charge_window':
+                require(c['end_min']<=unplug or c['start_min']>=plug+10, 'EV control must fit one physical overnight connection')
         for trip in r['journeys']:
             minute(trip['departure_min'],'departure_min');number(trip['traction_kWh'],'traction_kWh')
             require(unplug+10<=trip['departure_min']<=plug,'trip overlaps physical EV connection')
@@ -319,12 +337,18 @@ def build_pack(spec, world, shell, weather_sha):
             for trip in r['journeys']:pack['journeys'].append({**trip,'absolute_departure_min':base+trip['departure_min']})
             for c in pack['days'][str(date)]['controls']:
                 if c['kind']=='ev_charge_window':c['need_id']=nid if c['start_min']-base>=plug else str(date-dt.timedelta(days=1))+':EV'
+        # The declared plugged anchor has an actual first-day unplug operation too.
+        initial_nid=str(anchor-dt.timedelta(days=1))+':EV'
+        pack['operations'].append({'operation_id':initial_nid+':EV_unplug','need_id':initial_nid,
+            'asset_id':ev['asset_id'],'room_id':'exterior','operator_id':mid,'kind':'EV_unplug',
+            'start_min':unplug,'end_min':unplug+10})
         energy=p['initial_energy_kwh'];trips={t['absolute_departure_min']:t for t in pack['journeys']}
         for t in range((end-anchor).days*1440):
             if t%10:continue
             states[t]=energy
             if t in trips:
                 require(energy+1e-8>=trips[t]['traction_kWh'],'baseline EV trip is unexecutable');energy-=trips[t]['traction_kWh']
+                require(energy+1e-8>=p['minimum_soc']*p['capacity_kwh'], 'baseline EV trip violates minimum reserve')
             local=t%1440;date=anchor+dt.timedelta(days=t//1440)
             cs=[c for c in pack['days'][str(date)]['controls']if c['kind']=='ev_charge_window'and c['start_min']<=t<c['end_min']]
             if cs and (local>=plug+10 or local<unplug):
@@ -347,6 +371,9 @@ def make_pair(case, spec, pack, states):
         require(sid not in seen and type(shift)is int and shift%10==0,'duplicate or invalid service shift');seen.add(sid)
         changed=[t for key in ('tasks','operations')for t in b[key]if t.get('service_id')==sid]
         require(changed,'shift references service absent on case date')
+        require(all(any(m['household_id']==spec['household_id']and t['asset_id']in m['can_operate_asset_ids']for m in pack['world']['members'])for t in changed),'target household lacks service authority')
+        roster={m['member_id']:m for m in pack['world']['members']}
+        require(all(roster[t['operator_id']]['household_id']==spec['household_id']for t in changed if 'operator_id'in t),'cannot shift context household operations')
         for t in changed:
             require(t['start_min']>=480 and t['start_min']+shift>=480,'intervention changes pre-notice events')
             t['start_min']+=shift;t['end_min']+=shift;interval(t)
@@ -354,6 +381,7 @@ def make_pair(case, spec, pack, states):
     seen_controls=[]
     for override in case['control_overrides']:
         control(override,assets);require(override['start_min']>=480,'control override before notice480')
+        require(any(m['household_id']==spec['household_id']and override['asset_id']in m['can_operate_asset_ids']for m in pack['world']['members']),'target household lacks control authority')
         require(all(c['asset_id']!=override['asset_id'] or c['end_min']<=override['start_min'] or c['start_min']>=override['end_min']for c in seen_controls),'overlapping control overrides')
         seen_controls.append(override)
         aid=override['asset_id'];new=[]
@@ -388,16 +416,16 @@ def assemble(config, shells, weather, output):
     require(not errors,'WORLD_SCHEMA:'+('/'.join(map(str,errors[0].absolute_path))+':'+errors[0].message if errors else ''))
     shell_manifest=verify(shells);shells=Path(shells).resolve();weather=Path(weather).resolve()
     shell_manifest_sha=sha(shells/'MANIFEST.json');weather_sha=sha(weather)
+    from .weather import inspect_weather
+    weather_report=inspect_weather(weather,job['weather_source'])
     households=indexed(job['households'],'household_id')
     require(households,'empty household batch')
     case_ids=[identifier(c['case_id'])for h in households.values()for c in h['cases']]
     require(len(case_ids)==len(set(case_ids)) and case_ids,'empty or duplicate global case ids')
     out=fresh(output);(out/'inputs').mkdir()
     save(out/'assembly_input.json',job)
-    header=weather.read_text().splitlines()[0].split(',')
-    require(header[0]=='LOCATION' and len(header)>=10,'invalid EPW location header')
-    weather_location={'city':header[1],'region':header[2],'country':header[3],'data_source':header[4],'station':header[5],
-                      'latitude':float(header[6]),'longitude':float(header[7]),'utc_offset':float(header[8])}
+    weather_location=weather_report['location']
+    save(out/'inputs/weather_identity.json',weather_report)
     (out/'inputs/schema_fields.json.gz').write_bytes(portable_gzip((HERE/'resources/schema_fields.json').read_bytes()))
     shutil.copyfile(weather,out/'inputs/weather.epw');shutil.copyfile(HERE/'reference_environment.json',out/'THERMAL_ENVIRONMENT_POLICY.json')
     # Background gains remain per-household; these rows only carry explicit heat fractions.

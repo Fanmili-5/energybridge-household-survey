@@ -435,6 +435,7 @@ def main():
     p.add_argument('--weather', type=Path, required=True); p.add_argument('--out', type=Path, required=True)
     p = sub.add_parser('audit'); p.add_argument('--compiled', type=Path, required=True); p.add_argument('--runs', type=Path, required=True); p.add_argument('--out', type=Path, required=True)
     p = sub.add_parser('reproduce'); p.add_argument('--energyplus-dir', type=Path, required=True); p.add_argument('--weather', type=Path)
+    p.add_argument('--weather-metadata', type=Path)
     p.add_argument('--out', type=Path, required=True)
     p = sub.add_parser('run'); p.add_argument('--compiled', type=Path, required=True); p.add_argument('--out', type=Path, required=True)
     p.add_argument('--engine', type=Path, required=True); p.add_argument('--engine-sha256', required=True); p.add_argument('--timeout', type=int, default=300)
@@ -454,7 +455,7 @@ def main():
             result=audit(args.compiled,args.runs,args.out)
         elif args.command == 'reproduce':
             from .validation import reproduce
-            result=reproduce(args.energyplus_dir,args.weather,args.out)
+            result=reproduce(args.energyplus_dir,args.weather,args.out,args.weather_metadata)
         elif args.command == 'run': result = run_pairs(args.compiled, args.out, args.engine, args.engine_sha256, args.timeout)
         else: result = verify(args.directory)
         display={k:v for k,v in result.items()if k!='files'}

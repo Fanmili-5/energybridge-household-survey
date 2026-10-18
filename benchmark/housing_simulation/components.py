@@ -2,6 +2,7 @@
 import copy
 
 from .pipeline import HERE, digest, read
+from .policy import reference
 
 
 def field_object(kind, values, fields):
@@ -31,7 +32,7 @@ def heat_pump(device, fields):
         i = fields[row[0]].index(key) + 1
         row.extend([''] * max(0, i + 1 - len(row)))
         row[i] = value
-    p = device['parameters']
+    p = device['parameters']; policy=reference('heat_pump')
     for r in rows:
         k = r[0]
         if k.startswith('Curve:'):
@@ -42,7 +43,7 @@ def heat_pump(device, fields):
             for key in ('cooling_supply_air_flow_rate', 'heating_supply_air_flow_rate', 'no_load_supply_air_flow_rate'):
                 put(r, key, p['air_flow_m3_s'])
             for key in ('cooling_outdoor_air_flow_rate', 'heating_outdoor_air_flow_rate', 'no_load_outdoor_air_flow_rate'):
-                put(r, key, 0)
+                put(r, key, policy['dedicated_outdoor_flow_m3_s'])
             put(r, 'supply_air_fan_operating_mode_schedule_name', schedules['fan_mode'])
         elif k == 'Fan:SystemModel':
             put(r, 'design_maximum_air_flow_rate', p['air_flow_m3_s'])
@@ -58,8 +59,8 @@ def heat_pump(device, fields):
             for key, value in {'gross_rated_heating_capacity': p['heating_capacity_W'],
                                'gross_rated_heating_cop': p['heating_COP'],
                                'rated_air_flow_rate': p['air_flow_m3_s'],
-                               'minimum_outdoor_dry_bulb_temperature_for_compressor_operation': -15,
-                               'crankcase_heater_capacity': 0,
+                               'minimum_outdoor_dry_bulb_temperature_for_compressor_operation': policy['minimum_compressor_outdoor_C'],
+                               'crankcase_heater_capacity': policy['crankcase_power_W'],
                                'resistive_defrost_heater_capacity': p['defrost_capacity_W']}.items():
                 put(r, key, value)
         elif k == 'Coil:Heating:Electric':
@@ -75,20 +76,20 @@ def heat_pump(device, fields):
 
 def standalone_tank(device, obj, peak):
     """Direct hot-outlet draw, with no invented mixing valve or plant pump."""
-    p = device['parameters']
+    p = device['parameters'];policy=reference('tank')
     return obj('WaterHeater:Stratified', {
         'name': 'reference_storage_tank', 'end_use_subcategory': 'target_electric_hot_water',
-        'tank_volume': p['volume_m3'], 'tank_height': p['height_m'], 'tank_shape': 'VerticalCylinder',
-        'maximum_temperature_limit': p['maximum_C'], 'heater_priority_control': 'MasterSlave',
+        'tank_volume': p['volume_m3'], 'tank_height': p['height_m'], 'tank_shape': policy['shape'],
+        'maximum_temperature_limit': p['maximum_C'], 'heater_priority_control': policy['control'],
         'heater_1_setpoint_temperature_schedule_name': 'tank_target',
         'heater_1_deadband_temperature_difference': p['deadband_C'],
-        'heater_1_capacity': p['heater_capacity_W'], 'heater_1_height': p['height_m'] * .1,
+        'heater_1_capacity': p['heater_capacity_W'], 'heater_1_height': p['height_m'] * policy['heater_height_fraction'],
         'heater_2_setpoint_temperature_schedule_name': 'tank_target',
-        'heater_2_capacity': 0, 'heater_2_height': 0,
+        'heater_2_capacity': policy['second_heater_capacity_W'], 'heater_2_height': 0,
         'heater_fuel_type': 'Electricity', 'heater_thermal_efficiency': p['efficiency'],
         'ambient_temperature_indicator': 'Zone', 'ambient_temperature_zone_name': device['room_id'],
         'uniform_skin_loss_coefficient_per_unit_area_to_ambient_temperature': p['skin_loss_W_m2K'],
-        'skin_loss_fraction_to_zone': 1, 'peak_use_flow_rate': peak,
+        'skin_loss_fraction_to_zone': policy['skin_loss_fraction_to_zone'], 'peak_use_flow_rate': peak,
         'use_flow_rate_fraction_schedule_name': 'water_draw', 'use_side_effectiveness': 1,
         'use_side_inlet_height': 0, 'use_side_outlet_height': p['height_m'],
         'number_of_nodes': p['number_of_nodes']})

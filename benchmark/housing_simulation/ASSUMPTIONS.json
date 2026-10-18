@@ -1,0 +1,205 @@
+{
+  "schema": "eb.housing_simulation.assumptions.v1",
+  "scope": "fixed reference profile;edits require a new model configuration and renewed validation",
+  "entries": [
+    {
+      "id": "people",
+      "values": {
+        "metabolic_W": 117.28,
+        "radiant_fraction": 0
+      },
+      "classification": "project_reference",
+      "implementation": "kernel/compiler.py:compile_model",
+      "meaning": "所有年龄共用的人体参考活动功率；不由年龄、工作或睡眠代谢实测推断。显热比例采用引擎autocalculate。",
+      "sources": []
+    },
+    {
+      "id": "background",
+      "values": {
+        "misc_unoccupied_fraction": 0.25,
+        "cooking_lead_min": 30,
+        "lighting_return_fraction": 0,
+        "lighting_radiant_fraction": 0.6,
+        "lighting_visible_fraction": 0.2,
+        "lighting_replaceable_fraction": 0
+      },
+      "classification": "project_reference",
+      "implementation": "kernel/compiler.py:compile_model",
+      "meaning": "有清醒人员时照明开启；杂项为无人25%、有人100%；晚餐前30分钟为整套住宅背景烹饪，非人员烹饪行为预测。",
+      "sources": []
+    },
+    {
+      "id": "heat_pump",
+      "values": {
+        "minimum_compressor_outdoor_C": -15,
+        "crankcase_power_W": 0,
+        "dedicated_outdoor_flow_m3_s": 0,
+        "off_heating_C": 5,
+        "off_cooling_C": 50
+      },
+      "classification": "project_reference_overrides",
+      "implementation": "components.py:heat_pump",
+      "meaning": "官方示例拓扑和曲线之外的项目改写；不是中国机型实测参数。",
+      "sources": []
+    },
+    {
+      "id": "tank",
+      "values": {
+        "shape": "VerticalCylinder",
+        "control": "MasterSlave",
+        "heater_height_fraction": 0.1,
+        "second_heater_capacity_W": 0,
+        "skin_loss_fraction_to_zone": 1,
+        "draw_normalization_m3_s": 0.000141975,
+        "off_setpoint_C": 10
+      },
+      "classification": "project_reference",
+      "implementation": "components.py:standalone_tank",
+      "meaning": "单加热器立式分层水箱；归一化流量与分数相乘恢复请求热水出口流量，不是出水能力上限。",
+      "sources": []
+    },
+    {
+      "id": "shell",
+      "values": {
+        "floor_core_m": 0.12,
+        "floor_conductivity_W_mK": 1.74,
+        "floor_density_kg_m3": 2500,
+        "floor_cp_J_kgK": 920,
+        "floor_thermal_absorptance": 0.9,
+        "floor_solar_absorptance": 0.7,
+        "floor_visible_absorptance": 0.7,
+        "door_R_m2K_W": 0.2,
+        "door_width_m": 0.8,
+        "entry_width_m": 0.9,
+        "door_height_m": 2,
+        "door_bottom_m": 0.01,
+        "window_height_m": 1.2,
+        "window_bottom_m": 0.8,
+        "selected_face_WWR": 0.25,
+        "native_material_roughness": "MediumRough",
+        "native_material_absorptance": [
+          0.9,
+          0.7,
+          0.7
+        ]
+      },
+      "classification": "project_reference",
+      "implementation": "kernel/shell.py:model",
+      "meaning": "中间层混凝土芯层、门窗构造及几何为项目固定参照；源楼板芯层被替换，不作为DeST原件全保真模型。原生提取的材料粗糙度与热/太阳/可见光吸收率采用所列项目默认值，不作为原件实测属性。",
+      "sources": []
+    },
+    {
+      "id": "glazing",
+      "values": {
+        "SC_to_SHGC": 0.87
+      },
+      "classification": "project_conversion_approximation",
+      "implementation": "kernel/native_bundle.py:extract",
+      "meaning": "来源窗SC转换为简化SHGC的标量近似；不声称角度与光谱等价。",
+      "sources": []
+    },
+    {
+      "id": "time",
+      "values": {
+        "timestep_min": 10,
+        "notice_min": 480,
+        "model_target_year": 2026,
+        "minimum_request_end_min": 1920,
+        "recovery_days": 7,
+        "default_history_days": 112,
+        "default_tail_days": 8,
+        "maximum_replay_days": 365
+      },
+      "classification": "project_protocol",
+      "implementation": "kernel/compiler.py:compile_model",
+      "meaning": "10分钟固定协议；原始人类日历独立于映射模拟年份；完整前史与恢复不得截断。",
+      "sources": []
+    },
+    {
+      "id": "installation",
+      "values": {
+        "grid_m": 0.1,
+        "gap_m": 0.1,
+        "access_strip_m": 0.8,
+        "single_bed_min_width_m": 0.8,
+        "double_bed_min_width_m": 1.2,
+        "bed_min_length_m": 1.8,
+        "operator_min_age_years": 16
+      },
+      "classification": "project_reference",
+      "implementation": "assembly.py:bind_world",
+      "meaning": "参考矩形安装筛查及操作资格；不构成施工规范或行为统计。",
+      "sources": []
+    },
+    {
+      "id": "acceptance",
+      "values": {
+        "pre_notice_absolute_error": 1e-06,
+        "meter_absolute_J": 0.001,
+        "meter_relative": 1e-08,
+        "program_absolute_J": 0.001,
+        "ev_meter_kWh": 1e-07,
+        "ev_balance_kWh": 1e-08,
+        "water_temperature_C": 1e-05,
+        "water_mass_volume_fraction": 0.03,
+        "zone_recovery_C": 0.1,
+        "tank_recovery_C": 0.5
+      },
+      "classification": "project_numerical_acceptance",
+      "implementation": "validation.py:audit",
+      "meaning": "数值与服务验收门槛；不作为人体舒适或人类接受标准。",
+      "sources": []
+    },
+    {
+      "id": "airflow",
+      "values": {
+        "base_ACH": 0.35,
+        "portal_open_m3_s_m2": 0.0625,
+        "portal_closed_fraction": 0.05,
+        "bathroom_cfm": 50,
+        "kitchen_cfm": 100,
+        "dryer_cfm": 100,
+        "background_fan_W_cfm": 0.5,
+        "run_on_min": 20,
+        "background_fan_total_efficiency": 0.6
+      },
+      "classification": "adopted_reference_and_project_assumptions",
+      "implementation": "kernel/thermal_environment.py:add_environment",
+      "meaning": "实际执行值由reference_environment.json及作业配置绑定。手册0.1m³/s为语法示例；门户系数及关闭比例由项目选择。外部参考不证明中国住宅渗透或设施普及率。",
+      "sources": [
+        "ep_mass_conservation",
+        "pnnl_bath_exhaust",
+        "nrel_house_simulation_2010",
+        "pnnl_kitchen_exhaust"
+      ]
+    },
+    {
+      "id": "upstream_components",
+      "values": {
+        "resource": "resources/heat_pump.json",
+        "schema_resource": "resources/schema_fields.json"
+      },
+      "classification": "versioned_upstream_example",
+      "implementation": "components.py:heat_pump",
+      "meaning": "未覆盖字段继承公开官方示例或引擎缺省；示例曲线不是目标家庭设备校准。源文件与子集哈希由来源和包清单绑定。",
+      "sources": [
+        "energyplus24_pthp",
+        "energyplus24_forced_air"
+      ]
+    },
+    {
+      "id": "public_fixture",
+      "values": {
+        "shell_input": "examples/shell_batch.json",
+        "world_input": "examples/world_batch.json",
+        "material_input": "examples/synthetic_assembly.json"
+      },
+      "classification": "synthetic_test_inputs",
+      "implementation": "validation.py:reproduce",
+      "meaning": "公开材料、尺寸、人员、设备、日历及控制均为项目构造实例；只有默认EPW及引擎组件属于外部来源。",
+      "sources": [
+        "energyplus24_public_weather"
+      ]
+    }
+  ]
+}

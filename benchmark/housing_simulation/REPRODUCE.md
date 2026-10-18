@@ -8,7 +8,7 @@
 python -m venv .venv-housing
 source .venv-housing/bin/activate
 python -m pip install -r benchmark/housing_simulation/requirements.txt
-python -B -m unittest benchmark.housing_simulation.test_pipeline benchmark.housing_simulation.test_assembly
+python -B -m unittest benchmark.housing_simulation.test_pipeline benchmark.housing_simulation.test_assembly benchmark.housing_simulation.test_review
 python -B -m benchmark.housing_simulation.verify_package
 ```
 
@@ -25,7 +25,15 @@ python -B -m benchmark.housing_simulation reproduce \
 python -B -m benchmark.housing_simulation verify /tmp/housing-public-001
 ```
 
-该命令只读取本模块的公开配置、组件资源和引擎发行包，不读取历史家庭目录。默认EPW为发行包内`USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw`，文件SHA-256为`3cc3dc0c7bcc93e7203e8d9aab657d384315f5a0c86cdede23f792d437a0309f`。可通过`--weather`显式替换；更换后构成新的气象配置，不能直接对照默认实例数值。
+该命令只读取本模块的公开配置、组件资源和引擎发行包，不读取历史家庭目录。默认EPW为发行包内`USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw`，文件SHA-256为`3cc3dc0c7bcc93e7203e8d9aab657d384315f5a0c86cdede23f792d437a0309f`。替换天气须同时提供`--weather`与`--weather-metadata`；元数据结构见[weather_source.template.json](examples/weather_source.template.json)。模板占位值必须替换为实际提供方、数据集、发行版本、URL及文件SHA-256，可选站号也须与实际LOCATION一致。仅替换文件且沿用默认Chicago登记会在构造前拒绝。更换后构成新的气象配置，不能直接对照默认实例数值。
+
+```bash
+python -B -m benchmark.housing_simulation reproduce \
+  --energyplus-dir /path/to/EnergyPlus-24-1-0 \
+  --weather /path/to/registered.epw \
+  --weather-metadata /path/to/weather_source.json \
+  --out /tmp/housing-custom-weather
+```
 
 公开住宅分别为50 m²单人住宅、90 m²三人家庭，以及本户分配60 m²、含一名邻户居民的共享住宅。每个场景含六类可控设备、非空日历、洗衣—干衣依赖、热水需求、EV接插和行程。A/B在2025-07-15按公开请求改变运行时点和控制；前史7天，案例日起评价9天。中间层参考材料及设备数值属于公开工程测试设定，不作为中国住宅总体的实证样本。
 
@@ -91,6 +99,6 @@ python -B -m benchmark.housing_simulation.export_resources \
 
 ## 6. 独立性与复现判定
 
-可仅复制`benchmark/__init__.py`及`benchmark/housing_simulation/`到空目录，再执行第1、2节；持续集成采用该方式运行物理实例。`SOURCE_MAP.json`中的历史路径仅记录代码出处，不参与运行资源解析。
+可仅复制`benchmark/__init__.py`及`benchmark/housing_simulation/`到空目录，再执行第1、2节；持续集成采用该方式运行物理实例。`SOURCE_MAP.json`中的历史路径仅记录代码出处，不参与运行资源解析。`verify_package`另行检查来源标识、代码符号、文档锚点及Schema字段映射的闭合。
 
 相同输入和环境下，外壳、家庭世界、配对请求和IDF应重复生成相同字节。SQL内部记录、引擎日志时间与绝对作业路径不要求字节相同；物理轨迹按`VALIDATION.md`中数值条件比较。不同平台分别登记引擎与依赖版本，不预先声称全部浮点轨迹逐字节相同。
