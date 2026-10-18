@@ -1,0 +1,15 @@
+{
+  "references": [
+    {
+      "id": "example-slab-2001",
+      "province": "ExampleProvince",
+      "city": "ExampleCity",
+      "building_type": "slab",
+      "catalogue_interval": [
+        2001,
+        2009
+      ],
+      "admitted": true
+    }
+  ]
+}

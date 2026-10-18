@@ -1,0 +1,95 @@
+{
+  "rows": [
+    [
+      "Material",
+      "exterior_material",
+      "MediumRough",
+      0.24,
+      0.8,
+      1800,
+      900,
+      0.9,
+      0.7,
+      0.7
+    ],
+    [
+      "Construction",
+      "exterior_construction",
+      "exterior_material"
+    ],
+    [
+      "Material",
+      "interior_material",
+      "MediumRough",
+      0.1,
+      0.8,
+      1800,
+      900,
+      0.9,
+      0.7,
+      0.7
+    ],
+    [
+      "Construction",
+      "interior_construction",
+      "interior_material"
+    ],
+    [
+      "Material",
+      "floor_finish",
+      "MediumRough",
+      0.0225,
+      0.8,
+      1000,
+      1000,
+      0.9,
+      0.7,
+      0.7
+    ],
+    [
+      "Material",
+      "floor_core",
+      "MediumRough",
+      0.12,
+      1.74,
+      2500,
+      920,
+      0.9,
+      0.7,
+      0.7
+    ],
+    [
+      "Construction",
+      "floor_construction",
+      "floor_finish",
+      "floor_core",
+      "floor_finish"
+    ],
+    [
+      "WindowMaterial:SimpleGlazingSystem",
+      "window_material",
+      2.8,
+      0.5,
+      0.7
+    ],
+    [
+      "Construction",
+      "window_construction",
+      "window_material"
+    ]
+  ],
+  "names": {
+    "exterior": "exterior_construction",
+    "interior": "interior_construction",
+    "floor": "floor_construction",
+    "window": "window_construction"
+  },
+  "exterior_thickness_m": 0.24,
+  "interior_thickness_m": 0.1,
+  "source_sha256": "c31464bb1ae6e11803df57a07e16deecf69c43f0590ea103de237c4093fa20e1",
+  "climate_identity": "synthetic_test_fixture_not_Chinese_stock",
+  "provenance": {
+    "kind": "synthetic_test_fixture",
+    "not_an_authoritative_reference": true
+  }
+}

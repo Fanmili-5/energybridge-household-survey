@@ -1,0 +1,54 @@
+{
+  "schema": "eb.reference_thermal_environment.v61",
+  "scope": "explicit reference facilities for the supplied households;not measured Chinese door behavior,ventilation compliance or additional appliance ownership",
+  "frozen_before_new_results": true,
+  "portals": {
+    "source": "unchanged world.layout.access;only declared physically adjacent portals",
+    "model": "one mass-and-energy-conserving ZoneCrossMixing per portal,delta_temperature0",
+    "reference_open_m3_s_per_m2": 0.0625,
+    "reference_closed_fraction": 0.05,
+    "reference_basis": "EnergyPlus24.1 I/O example0.1m3/s scaled by existing0.8x2.0m portal;closed fraction is an explicit sensitivity parameter,not empirical fit",
+    "door_policy": "nonbedroom portals open;bedroom portals closed during any frozen A sleep/nap occupancy;washroom closed during frozen A sanitary occupancy;B does not control doors",
+    "sensitivity_flow_scales": [
+      0.5,
+      2.0
+    ],
+    "url": "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-airflow.html#zonecrossmixing"
+  },
+  "spot_exhaust": {
+    "bathroom_cfm": 50,
+    "kitchen_cfm": 100,
+    "dryer_cfm": 100,
+    "background_fan_W_per_cfm": 0.5,
+    "background_fan_total_efficiency": 0.6,
+    "bathroom_policy": "frozen A sanitary occupancy or booked bathing,plus20minutes overrun",
+    "kitchen_policy": "same frozen A cooking intervals,plus20minutes overrun",
+    "dryer_policy": "actual executed dry cycle;fan motor included in frozen dryer input power,no extra fan electricity",
+    "outdoor_air_combination": "native ZoneAirMassFlowConservation with AddInfiltrationFlow;0.35ACH self-balanced base plus mass-required makeup;no direct outdoor ventilation object per exhaust room",
+    "flow_basis": "50/100cfm kitchen/bath reference capacities per DOE/PNNL;dryer100cfm and fan0.5W/cfm per NREL2010 House Simulation Protocols p16;these are declared reference facilities,not population estimates",
+    "urls": [
+      "https://basc.pnnl.gov/resource-guides/bathroom-exhaust-fans",
+      "https://www1.eere.energy.gov/buildings/publications/pdfs/building_america/es_v3_%20rev4_checklists.pdf",
+      "https://www1.eere.energy.gov/buildings/publications/pdfs/building_america/house_simulation.pdf"
+    ]
+  },
+  "saturation": "report100%RH and duration unchanged;no clipping,postprocessing temperature correction or automatic dehumidifier",
+  "source_device_power_and_heat_fractions": "unchanged EB reference",
+  "A_B_source_requests_modified": false,
+  "makeup_air": {
+    "root_zone": "declared corridor/entry",
+    "route": "shortest connected paths using unchanged world.layout.access",
+    "model": "Fan:ZoneExhaust + directed ZoneMixing;AdjustMixingOnly,AddInfiltrationFlow,MixingSourceZonesOnly",
+    "flow_rates": "unchanged V59 bath50,kitchen100,dryer100cfm",
+    "door_assumption": "existing passive open/closed two-way reference exchange retained;mechanical transfer route is an explicitly provided reference makeup path,not a pressure or door-opening prediction",
+    "no_fitting_to_room_temperature": true,
+    "no_added_heating_or_temperature_clipping": true,
+    "uncertainty": "test portal0.5/2x,leakage0.175/0.7ACH and alternate history;earlier direct-outdoor model retained as a structural diagnostic,not mixed into current baseline",
+    "sources": [
+      "https://bigladdersoftware.com/epx/docs/24-1/engineering-reference/zone-air-mass-flow-conservation.html",
+      "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-fans.html",
+      "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-airflow.html#zoneairmassflowconservation"
+    ]
+  },
+  "configuration_origin": "frozen reviewed airflow kernel;numeric parameters unchanged in portable packaging"
+}

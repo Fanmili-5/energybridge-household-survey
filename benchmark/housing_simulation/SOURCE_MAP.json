@@ -1,0 +1,61 @@
+{
+  "schema": "eb.housing_simulation.kernel_sources.v1",
+  "sources": [
+    {
+      "source_path": "docs/research/collection-adjustment-20260930/household1000/household_master_v33_20261016/code/geometry.py",
+      "source_sha256": "40dcdd9e710c4e1af1b783c87dbdb448d8c1f0e1d9a92cd291620633b36ee02d"
+    },
+    {
+      "source_path": "docs/research/collection-adjustment-20260930/household1000/household_master_v33_20261016/code/surface_merge.py",
+      "source_sha256": "74e3913b6f345b83c279a1a578d717b8d0e7d74493a6592640ad893765bd62d5"
+    },
+    {
+      "source_path": "docs/research/collection-adjustment-20260930/household1000/idf_joint_production_20261005/code/compile_reference_idfs.py",
+      "source_sha256": "284a62af4c0d563772501b06d212fd682ba816c41fa631dcc4ac1eec3a8b6581"
+    },
+    {
+      "source_path": "docs/research/collection-adjustment-20260930/household1000/unified_physics50_v84_AC_sleep_20261018/code/compiler.py",
+      "source_sha256": "c7284a01e3ab945e4de51ba8f789ebb1d8bebe20b10748d91e3e1349aadf829b"
+    },
+    {
+      "source_path": "docs/research/collection-adjustment-20260930/household1000/unified_physics50_v84_AC_sleep_20261018/code/thermal_environment.py",
+      "source_sha256": "cb381c2f190bf109097a41f756be953ebcffaaf0be9b3b9b67a5f8c65be5866f"
+    },
+    {
+      "source_path": "docs/research/collection-adjustment-20260930/household1000/unified_physics50_v84_AC_sleep_20261018/code/core.py",
+      "source_sha256": "2aa4e66c95be5a6961171ff4aaadf40de4ad37424ee889e201ad2af82d0dab11"
+    },
+    {
+      "source_path": "docs/research/collection-adjustment-20260930/household1000/household_master_v33_20261016/code/native_bundle.py",
+      "source_sha256": "071b3072e3b953456e1c26d55df1d35e55c49cb2a1f1811172e8840c46699beb"
+    },
+    {
+      "source_path": "docs/research/collection-adjustment-20260930/household1000/household_master_v33_20261016/code/model_matching.py",
+      "source_sha256": "049d46ccdf8cee5cf892446b5631c8fa00c35f09e65907f2c9966df6646e4d23"
+    },
+    {
+      "source_path": "docs/research/collection-adjustment-20260930/household1000/unified_physics50_v84_AC_sleep_20261018/THERMAL_ENVIRONMENT_POLICY.json",
+      "source_sha256": "c479ac524f25ec76a27e988944d4d708559c9971c99b6c496d101228ec7ad47a"
+    }
+  ],
+  "transformations": [
+    "remove geometry common-star import; all required inputs are arguments",
+    "extract shell area3/points_flat/model and contiguous face merge",
+    "inject shell assembly/height; replace historical admission-file dependency with explicit120mm RC policy",
+    "physics relative imports and resource root supplied by per-process EB_HOUSING_INPUT_ROOT",
+    "package code hashes replace historical stage code paths;physical schedule and device equations unchanged",
+    "native extraction uses package-relative province aliases;source table equations unchanged"
+  ],
+  "kernel_files": {
+    "__init__.py": "f45e77cbda2b4a8adbce11ebd4dc59970914188fc60113833495d5d29bf06332",
+    "compiler.py": "4f318bd306868ee857e57da591ee4134cd5befcae45c9a92ef52f74cd5f8d73e",
+    "core.py": "d89bce504198d966bf078fea3123aedfd8679d46f3c1ba3208611e2b81cf9c1d",
+    "core_tools.py": "5e39a8aac787d42c2bc301e5b4eb03300718af989ace0729c1c796777d5ba7a4",
+    "faces.py": "57a902e41d5e1d4e34e37b2a0b87c6beaf4de43f5290cfb5fc5c5a46bf181029",
+    "geometry.py": "f732cb21cfe138e58ee532f76d9fa5e68f4e06a3f5b83a720989d3aa97cb12fd",
+    "native_bundle.py": "eb7d33f1cad2db7f28b48fa378b678479107c56ea966293391a0d4c6552bb550",
+    "shell.py": "f4c59698da6bae09908835a097b2c954a50a8556b43a5787cfb8fc9311eabd65",
+    "source_identity.py": "2af2e8b0d51033329045e7dfc9b5f31da72677470e4ee20bca1598344fa01e6e",
+    "thermal_environment.py": "386c10d07ce5447b657e92754fd201c3fc63c53f162ff89b622b34faf8616d4f"
+  }
+}

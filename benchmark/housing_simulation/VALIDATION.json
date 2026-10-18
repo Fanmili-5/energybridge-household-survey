@@ -1,0 +1,47 @@
+{
+  "schema": "eb.housing_simulation.validation.v1",
+  "date": "2026-10-19",
+  "public_unit_tests": {
+    "passed": true,
+    "tests": 8,
+    "cohort_or_engine_required": false
+  },
+  "original_native_extraction": {
+    "passed": true,
+    "files": 1,
+    "source_hash_bound": true
+  },
+  "same_environment_compiler_equivalence": {
+    "passed": true,
+    "arms": 4,
+    "all_IDF_bytes_identical": true,
+    "archived_cross_environment_IDF_text_identity_claimed": false
+  },
+  "controlled_engine_integration": {
+    "passed": true,
+    "pairs": 2,
+    "engine_arms": 4,
+    "full10min_timelines_checked": true,
+    "all_logs_and_SQL_retained_locally": true,
+    "zero_warnings_claimed": false
+  },
+  "public_synthetic_integration": {
+    "passed": true,
+    "pairs": 1,
+    "engine_arms": 2,
+    "A_B_IDF_and_TRACE_identical": true,
+    "measured_household_or_appliance_validation_claimed": false
+  },
+  "new_production_households": 0,
+  "original_cohort_files_modified": false,
+  "full1000_resumed": false,
+  "field_calibration_completed": false,
+  "human_answers_created": 0,
+  "engine_version": "EnergyPlus, Version 24.1.0-9d7789a3ac",
+  "execution_report_hashes": {
+    "native": "cf9e2105e5969755e40b211cf76e8210209010058098b81fc83196832d2b852f",
+    "compiler_equivalence": "2376c645e1434559e3027c3fe5303bc798a33702034098a04546befd8e72a8c9",
+    "controlled": "4b9bdbe68e4978f5a8b1eae03114626dd6809494e207f1afccec00f23bf7c43c",
+    "synthetic": "72a5060b5b2c94d7a36e5f9c7b31b2fa6a4edd540e603cfa2bda70a2e3ee8d7a"
+  }
+}

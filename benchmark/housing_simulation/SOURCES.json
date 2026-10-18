@@ -1,0 +1,103 @@
+{
+  "schema": "eb.housing_simulation.sources.v1",
+  "checked_on": "2026-10-19",
+  "sources": [
+    {
+      "id": "dest_library",
+      "url": "https://www.dest.net.cn/dxjzk",
+      "kind": "author_distribution",
+      "access": "web page is dynamic; content claims grounded in local original files and publication abstract",
+      "supports": [
+        "original model distribution and catalogue endpoint identity"
+      ],
+      "not_identified": [
+        "national frequencies",
+        "target household as-built floorplans"
+      ]
+    },
+    {
+      "id": "an2023_prototypes",
+      "url": "https://link.springer.com/article/10.1007/s12273-023-1058-5",
+      "doi": "10.1007/s12273-023-1058-5",
+      "title": "Chinese prototype building models for simulating the energy performance of the nationwide building stock",
+      "authors": [
+        "Jingjing An",
+        "Yi Wu",
+        "Chenxi Gui",
+        "Da Yan"
+      ],
+      "year": 2023,
+      "journal": "Building Simulation",
+      "volume": 16,
+      "pages": "1559–1582",
+      "access": "publisher metadata and abstract; full text not obtained in this task",
+      "supports": [
+        "prototype stratification by climate, building type and standards era",
+        "prototype use for reference building energy modeling"
+      ],
+      "not_identified": [
+        "our geometry grammar",
+        "renovation prevalence",
+        "derived household empirical calibration"
+      ]
+    },
+    {
+      "id": "cswd_source_record",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/auxiliary-programs/references.html",
+      "kind": "EnergyPlus24.1 manual source record",
+      "access": "read source entry naming China Meteorological Bureau and Tsinghua University, 2005",
+      "supports": [
+        "CSWD attribution"
+      ],
+      "not_identified": [
+        "2025 observed weather",
+        "all local EPWs pass quality control"
+      ]
+    },
+    {
+      "id": "tmyx_provider",
+      "url": "https://climate.onebuilding.org/sources/default.html",
+      "kind": "data producer method page",
+      "access": "provider page read",
+      "supports": [
+        "TMYx typical-year method",
+        "ISD weather and ERA5 solar sources for stated release",
+        "multiple source periods"
+      ],
+      "not_identified": [
+        "which EPWs a future experiment actually selects",
+        "typical year reproduces an observed calendar year"
+      ]
+    },
+    {
+      "id": "ep_mass_conservation",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/engineering-reference/zone-air-mass-flow-conservation.html",
+      "kind": "EnergyPlus24.1 engineering reference",
+      "access": "manual mechanism read",
+      "supports": [
+        "mixing and infiltration adjustment mechanisms for zone mass balance"
+      ],
+      "not_identified": [
+        "our selected ACH and door fractions are measured",
+        "pressure-based inter-room airflow validation"
+      ]
+    },
+    {
+      "id": "pnnl_bath_exhaust",
+      "url": "https://basc.pnnl.gov/resource-guides/bathroom-exhaust-fans",
+      "kind": "DOE/PNNL reference guidance",
+      "access": "capacity and run-on guidance read",
+      "supports": [
+        "50cfm intermittent bathroom exhaust as a reference capacity"
+      ],
+      "not_identified": [
+        "Chinese code compliance",
+        "our20minute run-on duration",
+        "national ventilation facilities prevalence"
+      ]
+    }
+  ],
+  "bibtex_created_from_memory": false,
+  "literature_scope": "targeted verification of existing method sources;not a new systematic review",
+  "scope": "generic benchmark housing and simulation construction;cohort independent"
+}
