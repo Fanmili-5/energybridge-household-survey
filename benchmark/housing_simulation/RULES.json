@@ -164,6 +164,14 @@
       ],
       "implementation": "validation.py:reproduce",
       "documentation": "REPRODUCE.md#2"
+    },
+    {
+      "id": "EV-CONN-01",
+      "classification": "declared_initial_state_and_physical_operation_gate",
+      "rule": "可选显式EV连接以锚点已连接状态或原真实插拔为边界，不得重叠行程；未提供该字段时保留旧操作推导。",
+      "sources": [],
+      "implementation": "kernel/execution.py:explicit_EV_connections",
+      "documentation": "INPUTS.md#6.2"
     }
   ]
 }

@@ -2,7 +2,7 @@
 import copy
 import math
 from .common import digest
-from .model import apply, overlap, plan_commands, plan_hash, program_issues
+from .model import apply, chain_need_ids, overlap, plan_commands, plan_hash, program_issues
 
 DEFAULT_RULES = {
     'schema': 'eb.ab_generation.rules.v1', 'seed': 20261019, 'step_min': 10,
@@ -116,16 +116,19 @@ def program_candidates(context, device, rules):
     needs = [n for n in context['needs'] if n['asset_id'] == aid and n['kind'] in ('washer', 'dishwasher')]
     for need in needs:
         nid = need['need_id']
-        chain = [t for t in context['A']['tasks'] if t['need_id'] in (nid, nid + ':dry')]
+        if not any(t['need_id'] == nid for t in context['A']['tasks']):
+            continue
+        chain_ids = chain_need_ids(context['A'], nid)
+        chain = [t for t in context['A']['tasks'] if t['need_id'] in chain_ids]
         if not chain or min(t['start_min'] for t in chain) < context['decision_min'] or min(t['start_min'] for t in chain) >= context['horizon_min'][1]:
             continue
-        ops = [o for o in context['A']['operations'] if o['need_id'] == nid and o['kind'] in ('load', 'unload')]
-        if len(ops) != 2:
+        ops = [o for o in context['A']['operations'] if o['need_id'] in chain_ids and o['kind'] in ('load', 'unload')]
+        if not any(o['need_id'] == nid and o['kind'] == 'load' for o in ops) or not any(o['need_id'] == nid and o['kind'] == 'unload' for o in ops):
             unavailable.append({'asset_id': aid, 'need_id': nid, 'reason': 'INCOMPLETE_PROGRAM_CHAIN'})
             continue
-        params = device['parameters']
+        devices = {d['asset_id']: d for d in context['devices']}
         def profile(tasks):
-            return [{**t, 'power_kw': params.get(t['kind'], params)['power_kw']} for t in tasks]
+            return [{**t, 'power_kw': devices[t['asset_id']]['parameters'].get(t['kind'], devices[t['asset_id']]['parameters'])['power_kw']} for t in tasks]
         for delta in rules['program_shifts_min']:
             for handling in rules['handling_modes']:
                 if delta == 0:

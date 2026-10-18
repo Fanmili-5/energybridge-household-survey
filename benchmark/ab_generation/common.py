@@ -46,7 +46,7 @@ def code_hash():
 def seal(root, metadata):
     root = Path(root)
     files = {str(p.relative_to(root)): sha(p) for p in sorted(root.rglob('*'))
-             if p.is_file() and p.name != 'MANIFEST.json'}
+             if p.is_file() and p != root / 'MANIFEST.json'}
     save(root / 'MANIFEST.json', {**metadata, 'files': files})
 
 
@@ -57,7 +57,7 @@ def verify(root):
         if sha(bound(root, name)) != expected:
             raise ValueError('ARTIFACT_CHANGED:' + name)
     actual = {str(p.relative_to(root)) for p in root.rglob('*')
-              if p.is_file() and p.name != 'MANIFEST.json'}
+              if p.is_file() and p != root / 'MANIFEST.json'}
     if actual != set(manifest['files']):
         raise ValueError('ARTIFACT_SET_CHANGED')
     return manifest

@@ -58,6 +58,35 @@ def main():
     p.add_argument('--input', required=True)
     p.add_argument('--out', required=True)
     p.add_argument('--rules')
+    p = sub.add_parser('bind-life-worlds')
+    p.add_argument('--world-contracts', required=True)
+    p.add_argument('--shells', required=True)
+    p.add_argument('--out', required=True)
+    p = sub.add_parser('assemble-life')
+    p.add_argument('--life', required=True)
+    p.add_argument('--world-contracts', required=True)
+    p.add_argument('--shells', required=True)
+    p.add_argument('--weather', required=True)
+    p.add_argument('--experiments', required=True)
+    p.add_argument('--out', required=True)
+    p = sub.add_parser('reference-life')
+    p.add_argument('--assembled', required=True)
+    p.add_argument('--compiled', required=True)
+    p.add_argument('--runs', required=True)
+    p.add_argument('--out', required=True)
+    p = sub.add_parser('export-life')
+    p.add_argument('--assembled', required=True)
+    p.add_argument('--contexts', required=True)
+    p.add_argument('--generated', required=True)
+    p.add_argument('--policy', choices=DEFAULT_RULES['selection_policies'], required=True)
+    p.add_argument('--out', required=True)
+    p = sub.add_parser('reproduce-life')
+    p.add_argument('--input', default='benchmark/ab_generation/examples/life/life_batch.json')
+    p.add_argument('--world-contracts', default='benchmark/ab_generation/examples/life/world_contracts.json')
+    p.add_argument('--shell-config', default='benchmark/housing_simulation/examples/shell_batch.json')
+    p.add_argument('--experiments', default='benchmark/ab_generation/examples/life/experiments.json')
+    p.add_argument('--energyplus-dir', required=True)
+    p.add_argument('--out', required=True)
     p = sub.add_parser('verify')
     p.add_argument('directory')
     p = sub.add_parser('export-physics')
@@ -76,8 +105,30 @@ def main():
     p.add_argument('--out', required=True)
     p.add_argument('--reference-stage')
     p.add_argument('--imported')
+    p = sub.add_parser('build-life')
+    p.add_argument('--input', required=True)
+    p.add_argument('--out', required=True)
+    p.add_argument('--rules')
     args = parser.parse_args()
-    if args.command == 'import-current':
+    if args.command == 'bind-life-worlds':
+        from .life_physics import bind_life_worlds
+        result = bind_life_worlds(args.world_contracts, args.shells, args.out)
+    elif args.command == 'assemble-life':
+        from .life_physics import assemble_life
+        result = assemble_life(args.life, args.world_contracts, args.shells, args.weather, args.experiments, args.out)
+    elif args.command == 'reference-life':
+        from .life_physics import reference_life
+        result = reference_life(args.assembled, args.compiled, args.runs, args.out)
+    elif args.command == 'export-life':
+        from .life_physics import export_life
+        result = export_life(args.assembled, args.contexts, args.generated, args.policy, args.out)
+    elif args.command == 'reproduce-life':
+        from .life_physics import reproduce_life
+        result = reproduce_life(args.input, args.world_contracts, args.shell_config, args.experiments, args.energyplus_dir, args.out)
+    elif args.command == 'build-life':
+        from .life_pipeline import build_life
+        result = build_life(args.input, args.out, args.rules)
+    elif args.command == 'import-current':
         result = import_current(args.stage, args.out, args.limit, args.tariff, args.tariff_sha256)
         result = {k: v for k, v in result.items() if k != 'files'}
     elif args.command == 'generate':

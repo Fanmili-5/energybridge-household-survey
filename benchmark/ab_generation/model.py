@@ -71,7 +71,19 @@ def operation_issues(context, plan, changed_ids):
     return issues
 
 
-def program_issues(context, plan, need_id):
+def chain_need_ids(plan, need_id):
+    result = {need_id}
+    root_assets = {t['asset_id'] for t in plan['tasks'] if t['need_id'] == need_id}
+    # Legacy automatic combos use ':dry' without a second handling chain.
+    result.update(t['need_id'] for t in plan['tasks'] if t['need_id'] == need_id + ':dry' and t['asset_id'] in root_assets)
+    while True:
+        enlarged = result | {t['need_id'] for t in plan['tasks'] if t.get('depends_on_need_id') in result}
+        if enlarged == result:
+            return result
+        result = enlarged
+
+
+def _program_issues(context, plan, need_id):
     need = next(n for n in context['needs'] if n['need_id'] == need_id)
     chain = [t for t in plan['tasks'] if t['need_id'] in (need_id, need_id + ':dry')]
     handling = [o for o in plan['operations'] if o['need_id'] == need_id]
@@ -99,4 +111,23 @@ def program_issues(context, plan, need_id):
         end = retrieval['end_min'] if retrieval else context['horizon_min'][1]
         if overlap(load['start_min'], unload['end_min'], other['start_min'], end):
             issues.add('ASSET_HOLD_CONFLICT')
+    return sorted(issues)
+
+
+def program_issues(context, plan, need_id):
+    if not any(t['need_id'] == need_id for t in plan['tasks']) or not any(o['need_id'] == need_id and o['kind'] == 'load' for o in plan['operations']):
+        return ['INCOMPLETE_PROGRAM_CHAIN']
+    nids = chain_need_ids(plan, need_id)
+    issues = set()
+    handled = {o['need_id'] for o in plan['operations'] if o['kind'] == 'load'}
+    required = {need_id} | {t['need_id'] for t in plan['tasks'] if t['need_id'] in nids and t.get('depends_on_need_id')}
+    if required - handled:
+        issues.add('INCOMPLETE_PROGRAM_CHAIN')
+    for nid in nids & handled:
+        issues.update(_program_issues(context, plan, nid))
+        for task in (t for t in plan['tasks'] if t['need_id'] == nid and t.get('depends_on_need_id')):
+            parent = next((o for o in plan['operations'] if o['need_id'] == task['depends_on_need_id'] and o['kind'] == 'unload'), None)
+            load = next(o for o in plan['operations'] if o['need_id'] == nid and o['kind'] == 'load')
+            if parent is None or parent['end_min'] > load['start_min']:
+                issues.add('PREREQUISITE_NOT_COLLECTED')
     return sorted(issues)

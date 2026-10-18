@@ -1,4 +1,18 @@
 {
+  "kernel_files": {
+    "__init__.py": "f45e77cbda2b4a8adbce11ebd4dc59970914188fc60113833495d5d29bf06332",
+    "compiler.py": "a8464676c0a2f97445932e5861428d8ce212d906e64c3bc80e9f028155024dc9",
+    "core.py": "16aa3f3cc4e4facc4314737bc8d46939e887830f4547df9bd67d60e8f92b997f",
+    "core_tools.py": "5e39a8aac787d42c2bc301e5b4eb03300718af989ace0729c1c796777d5ba7a4",
+    "execution.py": "6177a1363b7ea1b4d665048e49f6fbf0653297faad25f6730af044a59af61520",
+    "faces.py": "57a902e41d5e1d4e34e37b2a0b87c6beaf4de43f5290cfb5fc5c5a46bf181029",
+    "geometry.py": "a8b2af617f6cdab2f02945849ac254b2fabcd3b1ce1fab26b94c67a0960aa024",
+    "native_bundle.py": "eb7d33f1cad2db7f28b48fa378b678479107c56ea966293391a0d4c6552bb550",
+    "shell.py": "f4c59698da6bae09908835a097b2c954a50a8556b43a5787cfb8fc9311eabd65",
+    "source_identity.py": "2af2e8b0d51033329045e7dfc9b5f31da72677470e4ee20bca1598344fa01e6e",
+    "thermal_environment.py": "386c10d07ce5447b657e92754fd201c3fc63c53f162ff89b622b34faf8616d4f"
+  },
+  "new_module_origin": "project-authored v2 assembly, component instantiation, schema, audit and public integration contracts;not extracted household data",
   "schema": "eb.housing_simulation.kernel_sources.v1",
   "sources": [
     {
@@ -47,20 +61,7 @@
     "v2 adds independent shell-to-world assembler and explicit public device/background parameters;official PTHP component subset and standalone stratified hot-outlet tank",
     "literal executor extracted into pure execution.py; explicit washer-output dependency added; legacy execution rules retained",
     "calendar generalization maps target year to2026, rejects leap-day and >365day intervals;history/recovery coverage cannot truncate",
-    "deterministic household ordering and canonical JSON serialization;content hash includes all module Python files"
-  ],
-  "kernel_files": {
-    "__init__.py": "f45e77cbda2b4a8adbce11ebd4dc59970914188fc60113833495d5d29bf06332",
-    "compiler.py": "83ff1a08510453ae9a7bcde9f21118ba34d0ffbb314df573d8aa79c55feb4206",
-    "core.py": "16aa3f3cc4e4facc4314737bc8d46939e887830f4547df9bd67d60e8f92b997f",
-    "core_tools.py": "5e39a8aac787d42c2bc301e5b4eb03300718af989ace0729c1c796777d5ba7a4",
-    "execution.py": "403f97cce7afbd9f8bd19b982534f4591011e1b8fb493c0561d7ad373daae782",
-    "faces.py": "57a902e41d5e1d4e34e37b2a0b87c6beaf4de43f5290cfb5fc5c5a46bf181029",
-    "geometry.py": "a8b2af617f6cdab2f02945849ac254b2fabcd3b1ce1fab26b94c67a0960aa024",
-    "native_bundle.py": "eb7d33f1cad2db7f28b48fa378b678479107c56ea966293391a0d4c6552bb550",
-    "shell.py": "f4c59698da6bae09908835a097b2c954a50a8556b43a5787cfb8fc9311eabd65",
-    "source_identity.py": "2af2e8b0d51033329045e7dfc9b5f31da72677470e4ee20bca1598344fa01e6e",
-    "thermal_environment.py": "386c10d07ce5447b657e92754fd201c3fc63c53f162ff89b622b34faf8616d4f"
-  },
-  "new_module_origin": "project-authored v2 assembly, component instantiation, schema, audit and public integration contracts;not extracted household data"
+    "deterministic household ordering and canonical JSON serialization;content hash includes all module Python files",
+    "accept explicit physical EV connections from life generator; verify known anchor state, original handling bounds and journey exclusion; legacy operation-derived connections unchanged"
+  ]
 }

@@ -59,3 +59,7 @@
 `export-physics`核验导入和生成清单、原始A、家庭、配对文件及天气，输出新资源目录与 `physics_job.json`。所选B、原A、需求及事件构成新的配对请求；旧B的分类、温度、SOC结果不继承为新结果。
 
 作业使用 `housing_simulation` 的 `compile`与 `run`接口，固定相同外壳、天气、前史、初态和恢复时域。资源原件的使用条件沿用其来源；公开仓库仅发布代码、合成示例与聚合验证，不将受控家庭或天气原件一并发布。
+
+## 6. 新生活生成接口
+
+`build-life`、`bind-life-worlds`、`assemble-life`、`reference-life`、`export-life`及 `reproduce-life`组成不依赖历史样本的入口，定义见 [LIFE_INPUTS.md](LIFE_INPUTS.md)。新A保留独立服务需求，原人工操作与独立烘干依赖进入B候选检查；EV锚点状态和原物理连接不通过虚构操作补齐。
