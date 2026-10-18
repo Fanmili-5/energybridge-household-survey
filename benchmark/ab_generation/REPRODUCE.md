@@ -28,7 +28,7 @@ python -B -m benchmark.ab_generation verify outputs/life-A
 
 该命令只依赖标准库，不读取历史家庭、事件或电价。空间资源及生活安排均为公开的声明式输入，参数含义见 `LIFE_METHOD.md`和 `LIFE_RULES.json`。
 
-安装住房模块依赖并准备官方EnergyPlus24.1后，执行：
+物理集成使用Python 3.12或以上；安装住房模块固定依赖并准备官方EnergyPlus24.1后，执行：
 
 ```bash
 python -m pip install -r benchmark/housing_simulation/requirements.txt

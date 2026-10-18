@@ -1,0 +1,8 @@
+{
+  "provider": "REPLACE_WITH_PROVIDER",
+  "url": "https://example.invalid/replace-with-source",
+  "dataset": "REPLACE_WITH_DATASET",
+  "release": "REPLACE_WITH_RELEASE",
+  "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "usage": "Registration template; replace every placeholder before execution."
+}

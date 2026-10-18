@@ -1,0 +1,1553 @@
+{
+  "schema": "eb.housing_simulation.field_map.v1",
+  "input_schema": "WORLD.schema.json",
+  "fields": [
+    {
+      "schema_pointer": "/properties/schema",
+      "rule_ids": [
+        "ASM-01"
+      ],
+      "evidence_class": "interface_contract"
+    },
+    {
+      "schema_pointer": "/properties/weather_source",
+      "rule_ids": [
+        "WEA-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/settings",
+      "rule_ids": [
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/thermal_fractions",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/households",
+      "rule_ids": [
+        "ASM-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/weather_source/properties/provider",
+      "rule_ids": [
+        "WEA-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/weather_source/properties/url",
+      "rule_ids": [
+        "WEA-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/weather_source/properties/dataset",
+      "rule_ids": [
+        "WEA-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/weather_source/properties/release",
+      "rule_ids": [
+        "WEA-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/weather_source/properties/usage",
+      "rule_ids": [
+        "WEA-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/weather_source/properties/station",
+      "rule_ids": [
+        "WEA-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/weather_source/properties/sha256",
+      "rule_ids": [
+        "WEA-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/settings/properties/history_days",
+      "rule_ids": [
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/settings/properties/tail_days",
+      "rule_ids": [
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/settings/properties/reference_ach",
+      "rule_ids": [
+        "ENV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/settings/properties/portal_flow_scale",
+      "rule_ids": [
+        "ENV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/thermal_fractions/properties/washer",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/thermal_fractions/properties/dryer",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/thermal_fractions/properties/dishwasher",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/thermal_fractions/properties/misc",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/thermal_fractions/properties/refrigerator",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/properties/thermal_fractions/properties/cooking",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/member/properties/member_id",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/member/properties/household_id",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/member/properties/age_years",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/member/properties/calendar_id",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/member/properties/hot_water_liters",
+      "rule_ids": [
+        "ASM-04",
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/member/properties/can_operate_asset_ids",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/sleep_group/properties/group_id",
+      "rule_ids": [
+        "ASM-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/sleep_group/properties/member_ids",
+      "rule_ids": [
+        "ASM-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/sleep_group/properties/capacity",
+      "rule_ids": [
+        "ASM-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/sleep_group/properties/bed_footprint_m",
+      "rule_ids": [
+        "ASM-01",
+        "ASM-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/sleep_group/properties/room_id",
+      "rule_ids": [
+        "ASM-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/fixture/properties/fixture_id",
+      "rule_ids": [
+        "ASM-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/fixture/properties/kind",
+      "rule_ids": [
+        "ASM-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/fixture/properties/room_id",
+      "rule_ids": [
+        "ASM-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/fixture/properties/footprint_m",
+      "rule_ids": [
+        "ASM-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/asset_id",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/kind",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/using_household_ids",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/parameters",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/connections",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/room",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/footprint_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/mount_width_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/parameters/properties/power_kw",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/properties/parameters/properties/nameplate_W",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/allOf/0/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/allOf/1/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/0/allOf/2/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/asset_id",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/kind",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/using_household_ids",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/parameters",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/connections",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/room",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/footprint_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/mount_width_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/parameters/properties/power_kw",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/properties/parameters/properties/nameplate_W",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/allOf/0/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/allOf/1/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/1/allOf/2/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/asset_id",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/kind",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/using_household_ids",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/parameters",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/connections",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/room",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/footprint_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/mount_width_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/parameters/properties/power_kw",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/properties/parameters/properties/nameplate_W",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/allOf/0/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/allOf/1/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/2/allOf/2/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/asset_id",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/kind",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/using_household_ids",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/connections",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/room",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/footprint_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/mount_width_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters/properties/nameplate_W",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters/properties/cooling_capacity_W",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters/properties/heating_capacity_W",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters/properties/cooling_COP",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters/properties/heating_COP",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters/properties/air_flow_m3_s",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters/properties/fan_power_W",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters/properties/fan_pressure_Pa",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters/properties/sensible_heat_ratio",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters/properties/supplemental_capacity_W",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/properties/parameters/properties/defrost_capacity_W",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/allOf/0/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/allOf/1/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/3/allOf/2/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/asset_id",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/kind",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/using_household_ids",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/parameters",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/connections",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/room",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/footprint_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/mount_width_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/parameters/properties/nameplate_W",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/parameters/properties/volume_m3",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/parameters/properties/height_m",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/parameters/properties/heater_capacity_W",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/parameters/properties/maximum_C",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/parameters/properties/deadband_C",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/parameters/properties/skin_loss_W_m2K",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/parameters/properties/efficiency",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/properties/parameters/properties/number_of_nodes",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/allOf/0/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/allOf/1/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/4/allOf/2/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/asset_id",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/kind",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/using_household_ids",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/parameters",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/connections",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/room",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/footprint_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/mount_width_m",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/parameters/properties/nameplate_W",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/parameters/properties/charger_kw",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/parameters/properties/capacity_kwh",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/parameters/properties/efficiency",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/parameters/properties/target_soc",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/parameters/properties/minimum_soc",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/properties/parameters/properties/initial_energy_kwh",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/allOf/0/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/allOf/1/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/device/oneOf/5/allOf/2/if/properties/placement",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/0/properties/asset_id",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/0/properties/kind",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/0/properties/start_min",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/0/properties/end_min",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/0/properties/heating_setpoint_C",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/0/properties/cooling_setpoint_C",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/0/properties/fan_operating_mode",
+      "rule_ids": [
+        "DEV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/1/properties/asset_id",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/1/properties/kind",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/1/properties/start_min",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/1/properties/end_min",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/1/properties/value_C",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/2/properties/asset_id",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/2/properties/kind",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/2/properties/start_min",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/2/properties/end_min",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/control/oneOf/2/properties/stop_at_target_soc",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/event/properties/start_min",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/event/properties/end_min",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/event/properties/location",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/event/properties/room",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/event/properties/activity",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/event/properties/available_for_operation",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/event/allOf/0/if/properties/location",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/event/allOf/0/then/properties/room",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/event/allOf/0/else/properties/room",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/event/allOf/0/else/properties/available_for_operation",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/calendar/properties/weekday",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/calendar/properties/weekend",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/calendar/properties/date_overrides",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/service/properties/service_id",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/service/properties/asset_id",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/service/properties/kind",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/service/properties/operator_id",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/service/properties/start_min",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/service/properties/duration_min",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/service/properties/retrieval_min",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/service/properties/release_min",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/service/properties/deadline_min",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/service/properties/weekdays",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/service/properties/after_service_id",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/case/properties/case_id",
+      "rule_ids": [
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/case/properties/date",
+      "rule_ids": [
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/case/properties/service_shifts",
+      "rule_ids": [
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/case/properties/control_overrides",
+      "rule_ids": [
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/case/properties/service_shifts/items/properties/service_id",
+      "rule_ids": [
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/case/properties/service_shifts/items/properties/shift_min",
+      "rule_ids": [
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/connection/properties/operator_id",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/connection/properties/plug_min",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/connection/properties/unplug_min",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/connection/properties/anchor_state",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/connection/properties/journeys",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/connection/properties/journeys/items/properties/departure_min",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/connection/properties/journeys/items/properties/traction_kWh",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/household_id",
+      "rule_ids": [
+        "ASM-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/anchor",
+      "rule_ids": [
+        "CAL-01",
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/end_exclusive",
+      "rule_ids": [
+        "CAL-01",
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/members",
+      "rule_ids": [
+        "ASM-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/sleep_groups",
+      "rule_ids": [
+        "ASM-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/fixtures",
+      "rule_ids": [
+        "ASM-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/devices",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/electrical_supply_W",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/exhaust_power_budget_W",
+      "rule_ids": [
+        "ASM-03",
+        "ENV-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/background",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/hot_water_minimum_C",
+      "rule_ids": [
+        "DEV-02"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/calendars",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/services",
+      "rule_ids": [
+        "EXE-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/controls",
+      "rule_ids": [
+        "DEV-01",
+        "DEV-02",
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/ev_connection",
+      "rule_ids": [
+        "DEV-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/cases",
+      "rule_ids": [
+        "PAIR-01"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/facility_reservations",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/background/properties/lighting_W_m2",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/background/properties/misc_W_m2",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/background/properties/refrigerator_W",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/background/properties/cooking_W",
+      "rule_ids": [
+        "DEV-03"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/facility_reservations/additionalProperties/items/properties/room_id",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/facility_reservations/additionalProperties/items/properties/start_min",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/facility_reservations/additionalProperties/items/properties/end_min",
+      "rule_ids": [
+        "ASM-04"
+      ],
+      "evidence_class": "declared_input"
+    }
+  ]
+}

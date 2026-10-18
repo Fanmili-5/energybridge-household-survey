@@ -75,7 +75,7 @@ def execute(pack,pair,plan,lo,hi):
         else:
             not_run.update(t['task_id']for t in tasks);failed_ops.add(load['operation_id'])
         if unload and not collected:failed_ops.add(unload['operation_id'])
-        if end>=480:batch.append({'need_id':nid,'program_executed':ran,'collected':collected,'reasons':sorted(reasons|set(bad[unload['operation_id']]if unload else ['NO_RETRIEVAL_IN_HORIZON'])),
+        if end>=lo and first<hi:batch.append({'need_id':nid,'program_executed':ran,'collected':collected,'reasons':sorted(reasons|set(bad[unload['operation_id']]if unload else ['NO_RETRIEVAL_IN_HORIZON'])),
                                  'requested_program_end_min':end,'requested_retrieval_end_min':unload['end_min']if unload else None})
     failed_ops.update(k for k,v in bad.items()if v)
     return {'tasks':[t for t in plan['tasks']if t['task_id']not in not_run],

@@ -10,7 +10,19 @@
         "an2023_prototypes"
       ],
       "implementation": "kernel/native_bundle.py:extract",
-      "documentation": "METHOD.md#2"
+      "documentation": "METHOD.md#2-原型匹配",
+      "source_relations": [
+        {
+          "source_id": "dest_library",
+          "role": "primary_data_catalog",
+          "supports": "提供DeST典型建筑原件及目录；材料参数须由已登记原件实际外键提取，不提供总体权重。"
+        },
+        {
+          "source_id": "an2023_prototypes",
+          "role": "background_only",
+          "supports": "气候、建筑类型与标准年代的典型原型框架背景；不证明本模块几何及参数替换规则。"
+        }
+      ]
     },
     {
       "id": "REF-02",
@@ -20,18 +32,43 @@
         "an2023_prototypes"
       ],
       "implementation": "pipeline.py:match",
-      "documentation": "METHOD.md#2"
+      "documentation": "METHOD.md#2-原型匹配",
+      "source_relations": [
+        {
+          "source_id": "an2023_prototypes",
+          "role": "background_only",
+          "supports": "原型参照框架背景；同城过滤、区间距离、指定优先与哈希并列均由项目定义。"
+        }
+      ]
     },
     {
       "id": "WEA-01",
       "classification": "source_identity_and_project_threshold",
-      "rule": "EPW固定来源与文件哈希；原生接入核验站号、坐标与5km项目身份阈值。",
+      "rule": "EPW固定来源与文件哈希；原生接入核验站号、坐标与5km项目身份阈值。世界装配绑定登记SHA/站号，要求全年小时序列及有效干球温度。",
       "sources": [
         "cswd_source_record",
-        "tmyx_provider"
+        "tmyx_provider",
+        "energyplus24_epw"
       ],
       "implementation": "kernel/native_bundle.py:extract",
-      "documentation": "METHOD.md#3"
+      "documentation": "METHOD.md#3-原生参数与气象身份",
+      "source_relations": [
+        {
+          "source_id": "cswd_source_record",
+          "role": "dataset_origin",
+          "supports": "EnergyPlus手册对CSWD资料来源的归属说明；不替代实际文件身份或气象质量检查。"
+        },
+        {
+          "source_id": "tmyx_provider",
+          "role": "provider_method",
+          "supports": "提供方对TMYx生成方法及资料时期的说明；不证明住宅站点代表性或5km项目阈值。"
+        },
+        {
+          "source_id": "energyplus24_epw",
+          "role": "format_only",
+          "supports": "LOCATION、时刻及干球字段约定；全年小时准入和5km阈值为项目规则。"
+        }
+      ]
     },
     {
       "id": "GEO-01",
@@ -39,7 +76,8 @@
       "rule": "明确矩形公寓语法、层高与中间层边界；求根满足本户分配面积，共享面积守恒。",
       "sources": [],
       "implementation": "kernel/geometry.py:sized",
-      "documentation": "METHOD.md#4"
+      "documentation": "METHOD.md#4-面积约束与参考外壳",
+      "source_relations": []
     },
     {
       "id": "ASM-01",
@@ -47,7 +85,8 @@
       "rule": "完整物理住户名册及每成员唯一床位；每组一个本户独占卧室；不推断共享住户人数。",
       "sources": [],
       "implementation": "assembly.py:bind_world",
-      "documentation": "METHOD.md#5"
+      "documentation": "METHOD.md#5-家庭世界自动装配",
+      "source_relations": []
     },
     {
       "id": "ASM-02",
@@ -55,7 +94,8 @@
       "rule": "0.1m搜索网格、0.1m矩形间距、0.8m通行带；单/双人床短边至少0.8/1.2m、长边1.8m；壁挂宽度预算。",
       "sources": [],
       "implementation": "assembly.py:place",
-      "documentation": "METHOD.md#5"
+      "documentation": "METHOD.md#5-家庭世界自动装配",
+      "source_relations": []
     },
     {
       "id": "ASM-03",
@@ -63,15 +103,17 @@
       "rule": "资产房间使用权、显式接线/给排水/排风等连接；铭牌与背景功率预算不超过供电声明。",
       "sources": [],
       "implementation": "assembly.py:bind_world",
-      "documentation": "INPUTS.md#5"
+      "documentation": "INPUTS.md#5-家庭世界装配接口",
+      "source_relations": []
     },
     {
       "id": "ASM-04",
       "classification": "declared_input_and_project_gate",
-      "rule": "完整逐日日历、家庭资产授权、年龄至少16岁及显式可操作窗口；洗浴独占。",
+      "rule": "完整逐日日历、家庭资产授权、年龄至少16岁及显式可操作窗口；洗浴独占。睡眠与洗浴绑定指定房间；热水按资产使用家庭授权。",
       "sources": [],
       "implementation": "assembly.py:build_pack",
-      "documentation": "METHOD.md#5"
+      "documentation": "METHOD.md#5-家庭世界自动装配",
+      "source_relations": []
     },
     {
       "id": "EXE-01",
@@ -79,18 +121,31 @@
       "rule": "装载/取出10min；失败装载不运行，失败取出持续占用；洗衣前序取出后才可装载干衣；无自动修复。",
       "sources": [],
       "implementation": "kernel/execution.py:execute",
-      "documentation": "METHOD.md#6"
+      "documentation": "METHOD.md#6-家庭物理模型与成对编译",
+      "source_relations": []
     },
     {
       "id": "DEV-01",
       "classification": "official_mechanism_with_declared_parameters",
-      "rule": "官方PTHP Zone1拓扑与性能曲线；容量、COP、风量与功率来自输入；无本地设备校准含义。",
+      "rule": "官方PTHP Zone1拓扑与性能曲线；容量、COP、风量与功率来自输入；无本地设备校准含义。每个热区至多一个独立控制热泵。",
       "sources": [
         "energyplus24_pthp",
         "energyplus24_forced_air"
       ],
       "implementation": "components.py:heat_pump",
-      "documentation": "METHOD.md#5"
+      "documentation": "METHOD.md#5-家庭世界自动装配",
+      "source_relations": [
+        {
+          "source_id": "energyplus24_pthp",
+          "role": "versioned_example",
+          "supports": "固定24.1 Zone1热泵拓扑、字段及性能曲线；额定参数由输入覆盖，不构成中国机型标定。"
+        },
+        {
+          "source_id": "energyplus24_forced_air",
+          "role": "mechanism",
+          "supports": "PTHP、风机与DX盘管对象接口及计算语义；不确定目标设备容量、COP或专用新风设定。"
+        }
+      ]
     },
     {
       "id": "DEV-02",
@@ -100,7 +155,14 @@
         "energyplus24_storage"
       ],
       "implementation": "components.py:standalone_tank",
-      "documentation": "METHOD.md#5"
+      "documentation": "METHOD.md#5-家庭世界自动装配",
+      "source_relations": [
+        {
+          "source_id": "energyplus24_storage",
+          "role": "mechanism",
+          "supports": "分层储水器独立使用侧放水及节点计算接口；体积、效率、散热、安装和服务阈值由输入/项目指定。"
+        }
+      ]
     },
     {
       "id": "DEV-03",
@@ -108,15 +170,17 @@
       "rule": "定功率程序、显式内热比例及背景功率；不从原型来源推导设备拥有率或日常功率。",
       "sources": [],
       "implementation": "kernel/compiler.py:compile_model",
-      "documentation": "METHOD.md#6"
+      "documentation": "METHOD.md#6-家庭物理模型与成对编译",
+      "source_relations": []
     },
     {
       "id": "DEV-04",
       "classification": "project_energy_model",
-      "rule": "连续EV电池能量账；充电受接插、效率、功率和目标SOC约束，出行耗能与最低储备显式提供。",
+      "rule": "连续EV电池能量账；充电受接插、效率、功率和目标SOC约束，出行耗能与最低储备显式提供。控制不得跨物理接插区间；首日拔插和全年基线最低储备均检查。",
       "sources": [],
       "implementation": "kernel/compiler.py:ev_delivery",
-      "documentation": "METHOD.md#6"
+      "documentation": "METHOD.md#6-家庭物理模型与成对编译",
+      "source_relations": []
     },
     {
       "id": "ENV-01",
@@ -124,18 +188,43 @@
       "rule": "质量流量平衡、门户交换、排风与补风；0.35ACH、关闭比例、排风容量及延时为固定参考配置。",
       "sources": [
         "ep_mass_conservation",
-        "pnnl_bath_exhaust"
+        "pnnl_bath_exhaust",
+        "pnnl_kitchen_exhaust",
+        "nrel_house_simulation_2010"
       ],
       "implementation": "kernel/thermal_environment.py:add_environment",
-      "documentation": "METHOD.md#6"
+      "documentation": "METHOD.md#6-家庭物理模型与成对编译",
+      "source_relations": [
+        {
+          "source_id": "ep_mass_conservation",
+          "role": "mechanism",
+          "supports": "分区质量流量平衡及渗透补风机制；不确定门户系数、0.35ACH或门开启行为。"
+        },
+        {
+          "source_id": "pnnl_bath_exhaust",
+          "role": "reference_capacity",
+          "supports": "采用间歇浴室50cfm参照；不声称中国法规符合性、住宅设施普及率或20min延时依据。"
+        },
+        {
+          "source_id": "pnnl_kitchen_exhaust",
+          "role": "reference_capacity",
+          "supports": "100cfm间歇厨房排风参照"
+        },
+        {
+          "source_id": "nrel_house_simulation_2010",
+          "role": "reference_capacity",
+          "supports": "100cfm干衣排风与0.5W/cfm背景风机"
+        }
+      ]
     },
     {
       "id": "PAIR-01",
       "classification": "project_experimental_control",
-      "rule": "A/B共用物理世界、天气和前史；通知时点480min，区间外恢复A；前史与至少7天恢复必须完整。",
+      "rule": "A/B共用物理世界、天气和前史；通知时点480min，区间外恢复A；前史与至少7天恢复必须完整。B请求只作用于目标家庭获授权资产及其自身操作。",
       "sources": [],
       "implementation": "kernel/compiler.py:compile_model",
-      "documentation": "METHOD.md#6"
+      "documentation": "METHOD.md#6-家庭物理模型与成对编译",
+      "source_relations": []
     },
     {
       "id": "CAL-01",
@@ -143,17 +232,25 @@
       "rule": "目标年映射2026，月日保持；运行<=365天且无2月29日；人类日历独立保存。",
       "sources": [],
       "implementation": "kernel/compiler.py:compile_model",
-      "documentation": "METHOD.md#6"
+      "documentation": "METHOD.md#6-家庭物理模型与成对编译",
+      "source_relations": []
     },
     {
       "id": "VAL-01",
       "classification": "project_engineering_acceptance",
-      "rule": "固定版本引擎与SQL回读；计量、服务、共同前史、能量与恢复容差按验证规范执行。",
+      "rule": "固定版本引擎与SQL回读；计量、服务、共同前史、能量与恢复容差按验证规范执行。 期内完成但允许截止跨越仿真末端的服务也纳入预期集合，保留原独立截止。",
       "sources": [
         "energyplus24_release"
       ],
       "implementation": "validation.py:audit",
-      "documentation": "VALIDATION.md#3"
+      "documentation": "VALIDATION.md#3-公开端到端物理验证",
+      "source_relations": [
+        {
+          "source_id": "energyplus24_release",
+          "role": "version_identity",
+          "supports": "固定官方24.1发行、引擎及平台归档身份；计量、服务与恢复容差由项目制定。"
+        }
+      ]
     },
     {
       "id": "PUB-01",
@@ -163,7 +260,14 @@
         "energyplus24_public_weather"
       ],
       "implementation": "validation.py:reproduce",
-      "documentation": "REPRODUCE.md#2"
+      "documentation": "REPRODUCE.md#2-公开端到端实例",
+      "source_relations": [
+        {
+          "source_id": "energyplus24_public_weather",
+          "role": "versioned_weather_fixture",
+          "supports": "固定官方发行包内Chicago TMY3字节及站点，用于公开集成验证；不代表中国住宅天气。"
+        }
+      ]
     },
     {
       "id": "EV-CONN-01",
@@ -171,7 +275,8 @@
       "rule": "可选显式EV连接以锚点已连接状态或原真实插拔为边界，不得重叠行程；未提供该字段时保留旧操作推导。",
       "sources": [],
       "implementation": "kernel/execution.py:explicit_EV_connections",
-      "documentation": "INPUTS.md#6.2"
+      "documentation": "INPUTS.md#62-家庭包",
+      "source_relations": []
     }
   ]
 }

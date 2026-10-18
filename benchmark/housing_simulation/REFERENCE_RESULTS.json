@@ -1,5 +1,5 @@
 {
-  "compiled_manifest_sha256": "2ca91182e06e775efe64d388b7804a9b6d26daa51a5030203b297291a8c07472",
+  "compiled_manifest_sha256": "e6ab2bfa4606f8245c4973d3b3435354775ca9a4709d3b108328133894f32dec",
   "date": "2026-10-19",
   "empirical_calibration_claimed": false,
   "engine": {
@@ -30,23 +30,25 @@
     ]
   },
   "input_files": {
-    "WORLD.schema.json": "a486a06facd2ae267aeff9b51d726edc90031d049566664dbdfe618245150deb",
+    "ASSUMPTIONS.json": "dab083cdbadfcdec7fd4f5214b422eb0f772efe33b625838e2951d0b977a4172",
+    "FIELD_MAP.json": "70a63764592041148cb33003f746bdfae67b852af234e42e4e11f338e16319d1",
+    "WORLD.schema.json": "f54bd7f58e77cbaa318cecdf1a4ed700ae72b1e39182b124eef15319c2313f6b",
     "examples/shell_batch.json": "b6e9832790102c839fd16305ebbcafef5d49919b1bbb8f4f9ea79b0476752b68",
     "examples/synthetic_assembly.json": "02c535e113144a431d4824d730ead49ca838b2fd7e3a2a77d1dd4c48c8cedaed",
-    "examples/world_batch.json": "25b3c825c198b42215d12e084671c012b3c6e9e499271b317b12ffe81fdf9345"
+    "examples/world_batch.json": "1c4e168b46e5ecf49994f0f354524d81334f41c9fb54564b4d16947fd3642962"
   },
   "models": {
     "example-family-summer": {
-      "A": "8f434d4e35faec159febb7af7f547710d91a3d7388848690d113f8885589a74c",
-      "B": "8489ea8586ddf3c74f0ae31aa0602d5057dd7a11464f05129d80e381ad80daa9"
+      "A": "0df8a1bb0d24b4b23499096a623464b64e89ee29a17497ba513294daccc8fcb5",
+      "B": "bb77726dea9752bd445c5adac50409c47d3016fc05f70abc9c4565d68295d2c5"
     },
     "example-shared-summer": {
-      "A": "91cc33e42ba6b728767ba172df40304a32eeae956d03e6ac696d984327c1cb70",
-      "B": "0a8432a9b33b88b92910a09186401757849bf8dd4a7ded68cdd56a86ef65b610"
+      "A": "2d64a0cdc716fdad32e0712597d5f66e84eb1daa3ba793a4e00dff8bd01fdd5b",
+      "B": "f3f30d3bd1a3631ac1cad4e13ca3a231bddf51101d4a1fe8e0547ccf2c4e9597"
     },
     "example-studio-summer": {
-      "A": "9591f557d8f1e129bc771cf376896cd1a49ee7b75d4b4aa8aec75ff2ec8ccd04",
-      "B": "36e49a0972b9f8921b2afe5152c6e202a00b3087cd9ad9df8eeed19e7714b011"
+      "A": "43bd18c66f2f0ee7afbd1c548c3e23319c420bb67348ae430f080e79990fa0e4",
+      "B": "e9a371112f5bbc618078119266d62114a1a9216db0cebd3495bf9782dd6095fb"
     }
   },
   "passed": true,
@@ -60,6 +62,9 @@
         "A_hot_water_service": true,
         "A_meter_closure": true,
         "A_program_energy": true,
+        "A_required_tank_nodes": true,
+        "A_required_zone_channels": true,
+        "A_service_completeness": true,
         "A_service_execution": true,
         "B_EV_balance": true,
         "B_EV_meter": true,
@@ -68,6 +73,9 @@
         "B_hot_water_service": true,
         "B_meter_closure": true,
         "B_program_energy": true,
+        "B_required_tank_nodes": true,
+        "B_required_zone_channels": true,
+        "B_service_completeness": true,
         "B_service_execution": true,
         "EV_terminal_state_equal": true,
         "pre_notice_trajectory_equal": true,
@@ -81,6 +89,7 @@
         "A_HVAC_energy_kWh": {
           "ac": 56.5903597028224
         },
+        "A_expected_service_needs": 27,
         "A_facility_kWh": 201.10492788695703,
         "A_facility_peak_timestep_W": 9514.821488701087,
         "A_meter_max_error_J": 9.313225746154785e-10,
@@ -168,6 +177,7 @@
         "B_HVAC_energy_kWh": {
           "ac": 56.304251461576904
         },
+        "B_expected_service_needs": 27,
         "B_facility_kWh": 200.77911483835683,
         "B_facility_peak_timestep_W": 9515.328071337835,
         "B_meter_max_error_J": 9.313225746154785e-10,
@@ -312,6 +322,9 @@
         "A_hot_water_service": true,
         "A_meter_closure": true,
         "A_program_energy": true,
+        "A_required_tank_nodes": true,
+        "A_required_zone_channels": true,
+        "A_service_completeness": true,
         "A_service_execution": true,
         "B_EV_balance": true,
         "B_EV_meter": true,
@@ -320,6 +333,9 @@
         "B_hot_water_service": true,
         "B_meter_closure": true,
         "B_program_energy": true,
+        "B_required_tank_nodes": true,
+        "B_required_zone_channels": true,
+        "B_service_completeness": true,
         "B_service_execution": true,
         "EV_terminal_state_equal": true,
         "pre_notice_trajectory_equal": true,
@@ -333,6 +349,7 @@
         "A_HVAC_energy_kWh": {
           "ac": 59.36516090753747
         },
+        "A_expected_service_needs": 27,
         "A_facility_kWh": 220.08411031381024,
         "A_facility_peak_timestep_W": 9401.55247581483,
         "A_meter_max_error_J": 9.313225746154785e-10,
@@ -564,6 +581,7 @@
         "B_HVAC_energy_kWh": {
           "ac": 58.95585776544605
         },
+        "B_expected_service_needs": 27,
         "B_facility_kWh": 219.69701482244133,
         "B_facility_peak_timestep_W": 9402.25053385237,
         "B_meter_max_error_J": 9.313225746154785e-10,
@@ -860,6 +878,9 @@
         "A_hot_water_service": true,
         "A_meter_closure": true,
         "A_program_energy": true,
+        "A_required_tank_nodes": true,
+        "A_required_zone_channels": true,
+        "A_service_completeness": true,
         "A_service_execution": true,
         "B_EV_balance": true,
         "B_EV_meter": true,
@@ -868,6 +889,9 @@
         "B_hot_water_service": true,
         "B_meter_closure": true,
         "B_program_energy": true,
+        "B_required_tank_nodes": true,
+        "B_required_zone_channels": true,
+        "B_service_completeness": true,
         "B_service_execution": true,
         "EV_terminal_state_equal": true,
         "pre_notice_trajectory_equal": true,
@@ -881,6 +905,7 @@
         "A_HVAC_energy_kWh": {
           "ac": 61.55782626384772
         },
+        "A_expected_service_needs": 27,
         "A_facility_kWh": 231.73662761062423,
         "A_facility_peak_timestep_W": 9419.03013796716,
         "A_meter_max_error_J": 9.313225746154785e-10,
@@ -1184,6 +1209,7 @@
         "B_HVAC_energy_kWh": {
           "ac": 61.124490069187736
         },
+        "B_expected_service_needs": 27,
         "B_facility_kWh": 231.31798766511315,
         "B_facility_peak_timestep_W": 9419.635992268613,
         "B_meter_max_error_J": 9.313225746154785e-10,
@@ -1563,6 +1589,6 @@
     "shells_file_hashes_identical": true,
     "worlds_file_hashes_identical": true
   },
-  "runs_manifest_sha256": "f8f8a4732dfeef58f03527a5bc3124949bdef21938796f91d0f04b64c82530ca",
+  "runs_manifest_sha256": "c1f291cb0578894a1c84339816a64e15dd94c6963a445b0da1211af737e79b10",
   "schema": "eb.housing_physics.audit.v1"
 }

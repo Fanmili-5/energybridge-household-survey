@@ -1,14 +1,88 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/Fanmili-5/energybridge-household-survey/benchmark/housing_simulation/WORLD.schema.json",
-  "title": "Housing world assembly input v1",
+  "title": "Housing world assembly input v2",
   "type": "object",
   "properties": {
     "schema": {
-      "const": "eb.housing_world.input.v1"
+      "const": "eb.housing_world.input.v2",
+      "x-rule-ids": [
+        "ASM-01"
+      ],
+      "x-evidence-class": "interface_contract"
     },
     "weather_source": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1,
+          "x-rule-ids": [
+            "WEA-01"
+          ],
+          "x-evidence-class": "declared_input"
+        },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "x-rule-ids": [
+            "WEA-01"
+          ],
+          "x-evidence-class": "declared_input"
+        },
+        "dataset": {
+          "type": "string",
+          "minLength": 1,
+          "x-rule-ids": [
+            "WEA-01"
+          ],
+          "x-evidence-class": "declared_input"
+        },
+        "release": {
+          "type": "string",
+          "minLength": 1,
+          "x-rule-ids": [
+            "WEA-01"
+          ],
+          "x-evidence-class": "declared_input"
+        },
+        "usage": {
+          "type": "string",
+          "minLength": 1,
+          "x-rule-ids": [
+            "WEA-01"
+          ],
+          "x-evidence-class": "declared_input"
+        },
+        "station": {
+          "type": "string",
+          "minLength": 1,
+          "x-rule-ids": [
+            "WEA-01"
+          ],
+          "x-evidence-class": "declared_input"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "x-rule-ids": [
+            "WEA-01"
+          ],
+          "x-evidence-class": "declared_input"
+        }
+      },
+      "required": [
+        "provider",
+        "url",
+        "dataset",
+        "release",
+        "sha256"
+      ],
+      "additionalProperties": false,
+      "x-rule-ids": [
+        "WEA-01"
+      ],
+      "x-evidence-class": "declared_input"
     },
     "settings": {
       "type": "object",
@@ -16,24 +90,40 @@
         "history_days": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 350
+          "maximum": 350,
+          "x-rule-ids": [
+            "PAIR-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "tail_days": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 365
+          "maximum": 365,
+          "x-rule-ids": [
+            "PAIR-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "reference_ach": {
           "type": "number",
           "exclusiveMinimum": 0,
-          "maximum": 3
+          "maximum": 3,
+          "x-rule-ids": [
+            "ENV-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "portal_flow_scale": {
           "enum": [
             0.5,
             1,
             2
-          ]
+          ],
+          "x-rule-ids": [
+            "ENV-01"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -42,7 +132,11 @@
         "reference_ach",
         "portal_flow_scale"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "x-rule-ids": [
+        "PAIR-01"
+      ],
+      "x-evidence-class": "declared_input"
     },
     "thermal_fractions": {
       "type": "object",
@@ -55,7 +149,11 @@
             "maximum": 1
           },
           "minItems": 3,
-          "maxItems": 3
+          "maxItems": 3,
+          "x-rule-ids": [
+            "DEV-03"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "dryer": {
           "type": "array",
@@ -65,7 +163,11 @@
             "maximum": 1
           },
           "minItems": 3,
-          "maxItems": 3
+          "maxItems": 3,
+          "x-rule-ids": [
+            "DEV-03"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "dishwasher": {
           "type": "array",
@@ -75,7 +177,11 @@
             "maximum": 1
           },
           "minItems": 3,
-          "maxItems": 3
+          "maxItems": 3,
+          "x-rule-ids": [
+            "DEV-03"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "misc": {
           "type": "array",
@@ -85,7 +191,11 @@
             "maximum": 1
           },
           "minItems": 3,
-          "maxItems": 3
+          "maxItems": 3,
+          "x-rule-ids": [
+            "DEV-03"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "refrigerator": {
           "type": "array",
@@ -95,7 +205,11 @@
             "maximum": 1
           },
           "minItems": 3,
-          "maxItems": 3
+          "maxItems": 3,
+          "x-rule-ids": [
+            "DEV-03"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "cooking": {
           "type": "array",
@@ -105,7 +219,11 @@
             "maximum": 1
           },
           "minItems": 3,
-          "maxItems": 3
+          "maxItems": 3,
+          "x-rule-ids": [
+            "DEV-03"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -116,14 +234,22 @@
         "refrigerator",
         "cooking"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "x-rule-ids": [
+        "DEV-03"
+      ],
+      "x-evidence-class": "declared_input"
     },
     "households": {
       "type": "array",
       "items": {
         "$ref": "#/$defs/household"
       },
-      "minItems": 1
+      "minItems": 1,
+      "x-rule-ids": [
+        "ASM-01"
+      ],
+      "x-evidence-class": "declared_input"
     }
   },
   "required": [
@@ -140,24 +266,47 @@
       "properties": {
         "member_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "household_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "age_years": {
           "type": "number",
           "minimum": 0,
-          "maximum": 120
+          "maximum": 120,
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "year"
         },
         "calendar_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "hot_water_liters": {
           "type": "number",
-          "minimum": 0
+          "minimum": 0,
+          "x-rule-ids": [
+            "ASM-04",
+            "DEV-02"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "L"
         },
         "can_operate_asset_ids": {
           "type": "array",
@@ -166,7 +315,11 @@
             "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
           },
           "minItems": 0,
-          "uniqueItems": true
+          "uniqueItems": true,
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -184,7 +337,11 @@
       "properties": {
         "group_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "ASM-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "member_ids": {
           "type": "array",
@@ -193,12 +350,20 @@
             "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
           },
           "minItems": 1,
-          "uniqueItems": true
+          "uniqueItems": true,
+          "x-rule-ids": [
+            "ASM-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "capacity": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 2
+          "maximum": 2,
+          "x-rule-ids": [
+            "ASM-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "bed_footprint_m": {
           "type": "array",
@@ -207,11 +372,21 @@
             "exclusiveMinimum": 0
           },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "x-rule-ids": [
+            "ASM-01",
+            "ASM-02"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "m"
         },
         "room_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "ASM-01"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -227,7 +402,11 @@
       "properties": {
         "fixture_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "ASM-02"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "kind": {
           "enum": [
@@ -236,11 +415,19 @@
             "sink_cooking_reference",
             "refrigerator_reference",
             "other_reference"
-          ]
+          ],
+          "x-rule-ids": [
+            "ASM-02"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "room_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "ASM-02"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "footprint_m": {
           "type": "array",
@@ -249,7 +436,12 @@
             "exclusiveMinimum": 0
           },
           "minItems": 2,
-          "maxItems": 2
+          "maxItems": 2,
+          "x-rule-ids": [
+            "ASM-02"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "m"
         }
       },
       "required": [
@@ -267,17 +459,28 @@
           "properties": {
             "asset_id": {
               "type": "string",
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "kind": {
-              "const": "washer"
+              "const": "washer",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "placement": {
               "enum": [
                 "floor",
-                "wall",
-                "exterior"
-              ]
+                "wall"
+              ],
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "using_household_ids": {
               "type": "array",
@@ -286,25 +489,43 @@
                 "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "parameters": {
               "type": "object",
               "properties": {
                 "power_kw": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-03"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "kW"
                 },
                 "nameplate_W": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-03"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 }
               },
               "required": [
                 "power_kw",
                 "nameplate_W"
               ],
-              "additionalProperties": false
+              "additionalProperties": false,
+              "x-rule-ids": [
+                "DEV-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "connections": {
               "type": "array",
@@ -319,11 +540,19 @@
                 ]
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "room": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "footprint_m": {
               "type": "array",
@@ -332,11 +561,21 @@
                 "exclusiveMinimum": 0
               },
               "minItems": 2,
-              "maxItems": 2
+              "maxItems": 2,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             },
             "mount_width_m": {
               "type": "number",
-              "exclusiveMinimum": 0
+              "exclusiveMinimum": 0,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             }
           },
           "required": [
@@ -347,24 +586,119 @@
             "parameters",
             "connections"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "floor",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "footprint_m"
+                ],
+                "not": {
+                  "required": [
+                    "mount_width_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "wall",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "mount_width_m"
+                ],
+                "not": {
+                  "required": [
+                    "footprint_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "exterior",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "room"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "footprint_m"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "mount_width_m"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
         },
         {
           "type": "object",
           "properties": {
             "asset_id": {
               "type": "string",
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "kind": {
-              "const": "dryer"
+              "const": "dryer",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "placement": {
               "enum": [
                 "floor",
-                "wall",
-                "exterior"
-              ]
+                "wall"
+              ],
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "using_household_ids": {
               "type": "array",
@@ -373,25 +707,43 @@
                 "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "parameters": {
               "type": "object",
               "properties": {
                 "power_kw": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-03"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "kW"
                 },
                 "nameplate_W": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-03"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 }
               },
               "required": [
                 "power_kw",
                 "nameplate_W"
               ],
-              "additionalProperties": false
+              "additionalProperties": false,
+              "x-rule-ids": [
+                "DEV-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "connections": {
               "type": "array",
@@ -406,11 +758,19 @@
                 ]
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "room": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "footprint_m": {
               "type": "array",
@@ -419,11 +779,21 @@
                 "exclusiveMinimum": 0
               },
               "minItems": 2,
-              "maxItems": 2
+              "maxItems": 2,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             },
             "mount_width_m": {
               "type": "number",
-              "exclusiveMinimum": 0
+              "exclusiveMinimum": 0,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             }
           },
           "required": [
@@ -434,24 +804,119 @@
             "parameters",
             "connections"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "floor",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "footprint_m"
+                ],
+                "not": {
+                  "required": [
+                    "mount_width_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "wall",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "mount_width_m"
+                ],
+                "not": {
+                  "required": [
+                    "footprint_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "exterior",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "room"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "footprint_m"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "mount_width_m"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
         },
         {
           "type": "object",
           "properties": {
             "asset_id": {
               "type": "string",
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "kind": {
-              "const": "dishwasher"
+              "const": "dishwasher",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "placement": {
               "enum": [
                 "floor",
-                "wall",
-                "exterior"
-              ]
+                "wall"
+              ],
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "using_household_ids": {
               "type": "array",
@@ -460,25 +925,43 @@
                 "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "parameters": {
               "type": "object",
               "properties": {
                 "power_kw": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-03"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "kW"
                 },
                 "nameplate_W": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-03"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 }
               },
               "required": [
                 "power_kw",
                 "nameplate_W"
               ],
-              "additionalProperties": false
+              "additionalProperties": false,
+              "x-rule-ids": [
+                "DEV-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "connections": {
               "type": "array",
@@ -493,11 +976,19 @@
                 ]
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "room": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "footprint_m": {
               "type": "array",
@@ -506,11 +997,21 @@
                 "exclusiveMinimum": 0
               },
               "minItems": 2,
-              "maxItems": 2
+              "maxItems": 2,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             },
             "mount_width_m": {
               "type": "number",
-              "exclusiveMinimum": 0
+              "exclusiveMinimum": 0,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             }
           },
           "required": [
@@ -521,24 +1022,119 @@
             "parameters",
             "connections"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "floor",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "footprint_m"
+                ],
+                "not": {
+                  "required": [
+                    "mount_width_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "wall",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "mount_width_m"
+                ],
+                "not": {
+                  "required": [
+                    "footprint_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "exterior",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "room"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "footprint_m"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "mount_width_m"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
         },
         {
           "type": "object",
           "properties": {
             "asset_id": {
               "type": "string",
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "kind": {
-              "const": "ac"
+              "const": "ac",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "placement": {
               "enum": [
                 "floor",
-                "wall",
-                "exterior"
-              ]
+                "wall"
+              ],
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "using_household_ids": {
               "type": "array",
@@ -547,54 +1143,109 @@
                 "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "parameters": {
               "type": "object",
               "properties": {
                 "nameplate_W": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-01"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 },
                 "cooling_capacity_W": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-01"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 },
                 "heating_capacity_W": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-01"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 },
                 "cooling_COP": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-01"
+                  ],
+                  "x-evidence-class": "declared_input"
                 },
                 "heating_COP": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-01"
+                  ],
+                  "x-evidence-class": "declared_input"
                 },
                 "air_flow_m3_s": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-01"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "m3/s"
                 },
                 "fan_power_W": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-01"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 },
                 "fan_pressure_Pa": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-01"
+                  ],
+                  "x-evidence-class": "declared_input"
                 },
                 "sensible_heat_ratio": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-01"
+                  ],
+                  "x-evidence-class": "declared_input"
                 },
                 "supplemental_capacity_W": {
                   "type": "number",
-                  "minimum": 0
+                  "minimum": 0,
+                  "x-rule-ids": [
+                    "DEV-01"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 },
                 "defrost_capacity_W": {
                   "type": "number",
-                  "minimum": 0
+                  "minimum": 0,
+                  "x-rule-ids": [
+                    "DEV-01"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 }
               },
               "required": [
@@ -610,7 +1261,11 @@
                 "supplemental_capacity_W",
                 "defrost_capacity_W"
               ],
-              "additionalProperties": false
+              "additionalProperties": false,
+              "x-rule-ids": [
+                "DEV-01"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "connections": {
               "type": "array",
@@ -625,11 +1280,19 @@
                 ]
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "room": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "footprint_m": {
               "type": "array",
@@ -638,11 +1301,21 @@
                 "exclusiveMinimum": 0
               },
               "minItems": 2,
-              "maxItems": 2
+              "maxItems": 2,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             },
             "mount_width_m": {
               "type": "number",
-              "exclusiveMinimum": 0
+              "exclusiveMinimum": 0,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             }
           },
           "required": [
@@ -653,24 +1326,119 @@
             "parameters",
             "connections"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "floor",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "footprint_m"
+                ],
+                "not": {
+                  "required": [
+                    "mount_width_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "wall",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "mount_width_m"
+                ],
+                "not": {
+                  "required": [
+                    "footprint_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "exterior",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "room"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "footprint_m"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "mount_width_m"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
         },
         {
           "type": "object",
           "properties": {
             "asset_id": {
               "type": "string",
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "kind": {
-              "const": "water_heater"
+              "const": "water_heater",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "placement": {
               "enum": [
                 "floor",
-                "wall",
-                "exterior"
-              ]
+                "wall"
+              ],
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "using_household_ids": {
               "type": "array",
@@ -679,46 +1447,93 @@
                 "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "parameters": {
               "type": "object",
               "properties": {
                 "nameplate_W": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-02"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 },
                 "volume_m3": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-02"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "m3"
                 },
                 "height_m": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-02"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "m"
                 },
                 "heater_capacity_W": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-02"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 },
                 "maximum_C": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-02"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "degC"
                 },
                 "deadband_C": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-02"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "degC"
                 },
                 "skin_loss_W_m2K": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-02"
+                  ],
+                  "x-evidence-class": "declared_input"
                 },
                 "efficiency": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-02"
+                  ],
+                  "x-evidence-class": "declared_input"
                 },
                 "number_of_nodes": {
-                  "type": "number",
-                  "exclusiveMinimum": 0
+                  "type": "integer",
+                  "minimum": 2,
+                  "maximum": 12,
+                  "x-rule-ids": [
+                    "DEV-02"
+                  ],
+                  "x-evidence-class": "declared_input"
                 }
               },
               "required": [
@@ -732,7 +1547,11 @@
                 "efficiency",
                 "number_of_nodes"
               ],
-              "additionalProperties": false
+              "additionalProperties": false,
+              "x-rule-ids": [
+                "DEV-02"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "connections": {
               "type": "array",
@@ -747,11 +1566,19 @@
                 ]
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "room": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "footprint_m": {
               "type": "array",
@@ -760,11 +1587,21 @@
                 "exclusiveMinimum": 0
               },
               "minItems": 2,
-              "maxItems": 2
+              "maxItems": 2,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             },
             "mount_width_m": {
               "type": "number",
-              "exclusiveMinimum": 0
+              "exclusiveMinimum": 0,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             }
           },
           "required": [
@@ -775,24 +1612,116 @@
             "parameters",
             "connections"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "floor",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "footprint_m"
+                ],
+                "not": {
+                  "required": [
+                    "mount_width_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "wall",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "mount_width_m"
+                ],
+                "not": {
+                  "required": [
+                    "footprint_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "exterior",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "room"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "footprint_m"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "mount_width_m"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
         },
         {
           "type": "object",
           "properties": {
             "asset_id": {
               "type": "string",
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "kind": {
-              "const": "ev"
+              "const": "ev",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "placement": {
-              "enum": [
-                "floor",
-                "wall",
-                "exterior"
-              ]
+              "const": "exterior",
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "using_household_ids": {
               "type": "array",
@@ -801,38 +1730,74 @@
                 "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "parameters": {
               "type": "object",
               "properties": {
                 "nameplate_W": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-04"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "W"
                 },
                 "charger_kw": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-04"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "kW"
                 },
                 "capacity_kwh": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-04"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "kWh"
                 },
                 "efficiency": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-04"
+                  ],
+                  "x-evidence-class": "declared_input"
                 },
                 "target_soc": {
                   "type": "number",
-                  "exclusiveMinimum": 0
+                  "exclusiveMinimum": 0,
+                  "x-rule-ids": [
+                    "DEV-04"
+                  ],
+                  "x-evidence-class": "declared_input"
                 },
                 "minimum_soc": {
                   "type": "number",
-                  "minimum": 0
+                  "minimum": 0,
+                  "x-rule-ids": [
+                    "DEV-04"
+                  ],
+                  "x-evidence-class": "declared_input"
                 },
                 "initial_energy_kwh": {
                   "type": "number",
-                  "minimum": 0
+                  "minimum": 0,
+                  "x-rule-ids": [
+                    "DEV-04"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "kWh"
                 }
               },
               "required": [
@@ -844,7 +1809,11 @@
                 "minimum_soc",
                 "initial_energy_kwh"
               ],
-              "additionalProperties": false
+              "additionalProperties": false,
+              "x-rule-ids": [
+                "DEV-04"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "connections": {
               "type": "array",
@@ -859,11 +1828,19 @@
                 ]
               },
               "minItems": 1,
-              "uniqueItems": true
+              "uniqueItems": true,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "room": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "footprint_m": {
               "type": "array",
@@ -872,11 +1849,21 @@
                 "exclusiveMinimum": 0
               },
               "minItems": 2,
-              "maxItems": 2
+              "maxItems": 2,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             },
             "mount_width_m": {
               "type": "number",
-              "exclusiveMinimum": 0
+              "exclusiveMinimum": 0,
+              "x-rule-ids": [
+                "ASM-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m"
             }
           },
           "required": [
@@ -887,7 +1874,91 @@
             "parameters",
             "connections"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "floor",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "footprint_m"
+                ],
+                "not": {
+                  "required": [
+                    "mount_width_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "wall",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "room",
+                  "mount_width_m"
+                ],
+                "not": {
+                  "required": [
+                    "footprint_m"
+                  ]
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "placement": {
+                    "const": "exterior",
+                    "x-rule-ids": [
+                      "ASM-03"
+                    ],
+                    "x-evidence-class": "declared_input"
+                  }
+                }
+              },
+              "then": {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "room"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "footprint_m"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "mount_width_m"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ]
         }
       ]
     },
@@ -898,34 +1969,66 @@
           "properties": {
             "asset_id": {
               "type": "string",
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+              "x-rule-ids": [
+                "DEV-01"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "kind": {
-              "const": "ac_setpoint"
+              "const": "ac_setpoint",
+              "x-rule-ids": [
+                "DEV-01"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "start_min": {
               "type": "integer",
               "minimum": 0,
               "maximum": 1440,
-              "multipleOf": 10
+              "multipleOf": 10,
+              "x-rule-ids": [
+                "DEV-01"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "min"
             },
             "end_min": {
               "type": "integer",
               "minimum": 0,
               "maximum": 1440,
-              "multipleOf": 10
+              "multipleOf": 10,
+              "x-rule-ids": [
+                "DEV-01"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "min"
             },
             "heating_setpoint_C": {
-              "type": "number"
+              "type": "number",
+              "x-rule-ids": [
+                "DEV-01"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "degC"
             },
             "cooling_setpoint_C": {
-              "type": "number"
+              "type": "number",
+              "x-rule-ids": [
+                "DEV-01"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "degC"
             },
             "fan_operating_mode": {
               "enum": [
                 0,
                 1
-              ]
+              ],
+              "x-rule-ids": [
+                "DEV-01"
+              ],
+              "x-evidence-class": "declared_input"
             }
           },
           "required": [
@@ -944,25 +2047,48 @@
           "properties": {
             "asset_id": {
               "type": "string",
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+              "x-rule-ids": [
+                "DEV-02"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "kind": {
-              "const": "tank_setpoint"
+              "const": "tank_setpoint",
+              "x-rule-ids": [
+                "DEV-02"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "start_min": {
               "type": "integer",
               "minimum": 0,
               "maximum": 1440,
-              "multipleOf": 10
+              "multipleOf": 10,
+              "x-rule-ids": [
+                "DEV-02"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "min"
             },
             "end_min": {
               "type": "integer",
               "minimum": 0,
               "maximum": 1440,
-              "multipleOf": 10
+              "multipleOf": 10,
+              "x-rule-ids": [
+                "DEV-02"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "min"
             },
             "value_C": {
-              "type": "number"
+              "type": "number",
+              "x-rule-ids": [
+                "DEV-02"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "degC"
             }
           },
           "required": [
@@ -979,26 +2105,48 @@
           "properties": {
             "asset_id": {
               "type": "string",
-              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+              "x-rule-ids": [
+                "DEV-04"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "kind": {
-              "const": "ev_charge_window"
+              "const": "ev_charge_window",
+              "x-rule-ids": [
+                "DEV-04"
+              ],
+              "x-evidence-class": "declared_input"
             },
             "start_min": {
               "type": "integer",
               "minimum": 0,
               "maximum": 1440,
-              "multipleOf": 10
+              "multipleOf": 10,
+              "x-rule-ids": [
+                "DEV-04"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "min"
             },
             "end_min": {
               "type": "integer",
               "minimum": 0,
               "maximum": 1440,
-              "multipleOf": 10
+              "multipleOf": 10,
+              "x-rule-ids": [
+                "DEV-04"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "min"
             },
             "stop_at_target_soc": {
               "type": "number",
-              "exclusiveMinimum": 0
+              "exclusiveMinimum": 0,
+              "x-rule-ids": [
+                "DEV-04"
+              ],
+              "x-evidence-class": "declared_input"
             }
           },
           "required": [
@@ -1019,32 +2167,58 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 1440,
-          "multipleOf": 10
+          "multipleOf": 10,
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "min"
         },
         "end_min": {
           "type": "integer",
           "minimum": 0,
           "maximum": 1440,
-          "multipleOf": 10
+          "multipleOf": 10,
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "min"
         },
         "location": {
           "enum": [
             "home",
             "away"
-          ]
+          ],
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "room": {
           "type": [
             "string",
             "null"
-          ]
+          ],
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "activity": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "available_for_operation": {
-          "type": "boolean"
+          "type": "boolean",
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -1055,7 +2229,52 @@
         "activity",
         "available_for_operation"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "location": {
+                "const": "home",
+                "x-rule-ids": [
+                  "ASM-04"
+                ],
+                "x-evidence-class": "declared_input"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "room": {
+                "type": "string",
+                "minLength": 1,
+                "x-rule-ids": [
+                  "ASM-04"
+                ],
+                "x-evidence-class": "declared_input"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "room": {
+                "type": "null",
+                "x-rule-ids": [
+                  "ASM-04"
+                ],
+                "x-evidence-class": "declared_input"
+              },
+              "available_for_operation": {
+                "const": false,
+                "x-rule-ids": [
+                  "ASM-04"
+                ],
+                "x-evidence-class": "declared_input"
+              }
+            }
+          }
+        }
+      ]
     },
     "calendar": {
       "type": "object",
@@ -1065,14 +2284,22 @@
           "items": {
             "$ref": "#/$defs/event"
           },
-          "minItems": 1
+          "minItems": 1,
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "weekend": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/event"
           },
-          "minItems": 1
+          "minItems": 1,
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "date_overrides": {
           "type": "object",
@@ -1082,7 +2309,14 @@
               "$ref": "#/$defs/event"
             },
             "minItems": 1
-          }
+          },
+          "propertyNames": {
+            "format": "date"
+          },
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -1096,52 +2330,93 @@
       "properties": {
         "service_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "asset_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "kind": {
           "enum": [
             "washer",
             "dryer",
             "dishwasher"
-          ]
+          ],
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "operator_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "start_min": {
           "type": "integer",
           "minimum": 0,
           "maximum": 1440,
-          "multipleOf": 10
+          "multipleOf": 10,
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "min"
         },
         "duration_min": {
           "type": "integer",
           "minimum": 0,
           "maximum": 1440,
-          "multipleOf": 10
+          "multipleOf": 10,
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "min"
         },
         "retrieval_min": {
           "type": "integer",
           "minimum": 0,
           "maximum": 1440,
-          "multipleOf": 10
+          "multipleOf": 10,
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "min"
         },
         "release_min": {
           "type": "integer",
           "minimum": 0,
           "maximum": 1440,
-          "multipleOf": 10
+          "multipleOf": 10,
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "min"
         },
         "deadline_min": {
           "type": "integer",
           "minimum": 0,
           "maximum": 1440,
-          "multipleOf": 10
+          "multipleOf": 10,
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "min"
         },
         "weekdays": {
           "type": "array",
@@ -1151,11 +2426,19 @@
             "maximum": 6
           },
           "minItems": 1,
-          "uniqueItems": true
+          "uniqueItems": true,
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "after_service_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -1177,11 +2460,19 @@
       "properties": {
         "case_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "PAIR-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "date": {
           "type": "string",
-          "format": "date"
+          "format": "date",
+          "x-rule-ids": [
+            "PAIR-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "service_shifts": {
           "type": "array",
@@ -1190,13 +2481,22 @@
             "properties": {
               "service_id": {
                 "type": "string",
-                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+                "x-rule-ids": [
+                  "PAIR-01"
+                ],
+                "x-evidence-class": "declared_input"
               },
               "shift_min": {
                 "type": "integer",
                 "multipleOf": 10,
                 "minimum": -1440,
-                "maximum": 1440
+                "maximum": 1440,
+                "x-rule-ids": [
+                  "PAIR-01"
+                ],
+                "x-evidence-class": "declared_input",
+                "x-unit": "min"
               }
             },
             "required": [
@@ -1205,14 +2505,22 @@
             ],
             "additionalProperties": false
           },
-          "minItems": 0
+          "minItems": 0,
+          "x-rule-ids": [
+            "PAIR-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "control_overrides": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/control"
           },
-          "minItems": 0
+          "minItems": 0,
+          "x-rule-ids": [
+            "PAIR-01"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -1228,22 +2536,40 @@
       "properties": {
         "operator_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "DEV-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "plug_min": {
           "type": "integer",
           "minimum": 0,
           "maximum": 1440,
-          "multipleOf": 10
+          "multipleOf": 10,
+          "x-rule-ids": [
+            "DEV-04"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "min"
         },
         "unplug_min": {
           "type": "integer",
           "minimum": 0,
           "maximum": 1440,
-          "multipleOf": 10
+          "multipleOf": 10,
+          "x-rule-ids": [
+            "DEV-04"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "min"
         },
         "anchor_state": {
-          "const": "plugged"
+          "const": "plugged",
+          "x-rule-ids": [
+            "DEV-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "journeys": {
           "type": "array",
@@ -1254,11 +2580,20 @@
                 "type": "integer",
                 "minimum": 0,
                 "maximum": 1440,
-                "multipleOf": 10
+                "multipleOf": 10,
+                "x-rule-ids": [
+                  "DEV-04"
+                ],
+                "x-evidence-class": "declared_input",
+                "x-unit": "min"
               },
               "traction_kWh": {
                 "type": "number",
-                "exclusiveMinimum": 0
+                "exclusiveMinimum": 0,
+                "x-rule-ids": [
+                  "DEV-04"
+                ],
+                "x-evidence-class": "declared_input"
               }
             },
             "required": [
@@ -1267,7 +2602,11 @@
             ],
             "additionalProperties": false
           },
-          "minItems": 1
+          "minItems": 1,
+          "x-rule-ids": [
+            "DEV-04"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [
@@ -1284,70 +2623,131 @@
       "properties": {
         "household_id": {
           "type": "string",
-          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+          "x-rule-ids": [
+            "ASM-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "anchor": {
           "type": "string",
-          "format": "date"
+          "format": "date",
+          "x-rule-ids": [
+            "CAL-01",
+            "PAIR-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "end_exclusive": {
           "type": "string",
-          "format": "date"
+          "format": "date",
+          "x-rule-ids": [
+            "CAL-01",
+            "PAIR-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "members": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/member"
           },
-          "minItems": 1
+          "minItems": 1,
+          "x-rule-ids": [
+            "ASM-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "sleep_groups": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/sleep_group"
           },
-          "minItems": 1
+          "minItems": 1,
+          "x-rule-ids": [
+            "ASM-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "fixtures": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/fixture"
           },
-          "minItems": 0
+          "minItems": 0,
+          "x-rule-ids": [
+            "ASM-02"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "devices": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/device"
           },
-          "minItems": 0
+          "minItems": 0,
+          "x-rule-ids": [
+            "ASM-03"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "electrical_supply_W": {
           "type": "number",
-          "exclusiveMinimum": 0
+          "exclusiveMinimum": 0,
+          "x-rule-ids": [
+            "ASM-03"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "W"
         },
         "exhaust_power_budget_W": {
           "type": "number",
-          "minimum": 0
+          "minimum": 0,
+          "x-rule-ids": [
+            "ASM-03",
+            "ENV-01"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "W"
         },
         "background": {
           "type": "object",
           "properties": {
             "lighting_W_m2": {
               "type": "number",
-              "minimum": 0
+              "minimum": 0,
+              "x-rule-ids": [
+                "DEV-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m2"
             },
             "misc_W_m2": {
               "type": "number",
-              "minimum": 0
+              "minimum": 0,
+              "x-rule-ids": [
+                "DEV-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "m2"
             },
             "refrigerator_W": {
               "type": "number",
-              "minimum": 0
+              "minimum": 0,
+              "x-rule-ids": [
+                "DEV-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "W"
             },
             "cooking_W": {
               "type": "number",
-              "minimum": 0
+              "minimum": 0,
+              "x-rule-ids": [
+                "DEV-03"
+              ],
+              "x-evidence-class": "declared_input",
+              "x-unit": "W"
             }
           },
           "required": [
@@ -1356,41 +2756,72 @@
             "refrigerator_W",
             "cooking_W"
           ],
-          "additionalProperties": false
+          "additionalProperties": false,
+          "x-rule-ids": [
+            "DEV-03"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "hot_water_minimum_C": {
-          "type": "number"
+          "type": "number",
+          "x-rule-ids": [
+            "DEV-02"
+          ],
+          "x-evidence-class": "declared_input",
+          "x-unit": "degC"
         },
         "calendars": {
           "type": "object",
           "minProperties": 1,
           "additionalProperties": {
             "$ref": "#/$defs/calendar"
-          }
+          },
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "services": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/service"
           },
-          "minItems": 0
+          "minItems": 0,
+          "x-rule-ids": [
+            "EXE-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "controls": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/control"
           },
-          "minItems": 0
+          "minItems": 0,
+          "x-rule-ids": [
+            "DEV-01",
+            "DEV-02",
+            "DEV-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "ev_connection": {
-          "$ref": "#/$defs/connection"
+          "$ref": "#/$defs/connection",
+          "x-rule-ids": [
+            "DEV-04"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "cases": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/case"
           },
-          "minItems": 1
+          "minItems": 1,
+          "x-rule-ids": [
+            "PAIR-01"
+          ],
+          "x-evidence-class": "declared_input"
         },
         "facility_reservations": {
           "type": "object",
@@ -1401,19 +2832,33 @@
               "properties": {
                 "room_id": {
                   "type": "string",
-                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$",
+                  "x-rule-ids": [
+                    "ASM-04"
+                  ],
+                  "x-evidence-class": "declared_input"
                 },
                 "start_min": {
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 1440,
-                  "multipleOf": 10
+                  "multipleOf": 10,
+                  "x-rule-ids": [
+                    "ASM-04"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "min"
                 },
                 "end_min": {
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 1440,
-                  "multipleOf": 10
+                  "multipleOf": 10,
+                  "x-rule-ids": [
+                    "ASM-04"
+                  ],
+                  "x-evidence-class": "declared_input",
+                  "x-unit": "min"
                 }
               },
               "required": [
@@ -1424,7 +2869,14 @@
               "additionalProperties": false
             },
             "minItems": 0
-          }
+          },
+          "propertyNames": {
+            "format": "date"
+          },
+          "x-rule-ids": [
+            "ASM-04"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [

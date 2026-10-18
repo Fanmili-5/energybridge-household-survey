@@ -93,10 +93,12 @@ def build_days(spec, world):
                     rid = resolve_room(row['room'], mid, world)
                     require(rid in rooms and member['household_id'] in rooms[rid]['using_household_ids'], 'CALENDAR_ROOM_ACCESS_DENIED')
                     row['room_id'] = rid
+                    if row['activity'].startswith('sleep') or row['activity'] == 'nap':
+                        require(rid == world['sleep_room_by_member'][mid], 'SLEEP_REQUIRES_ASSIGNED_BEDROOM')
                 else:
                     require(row['location'] == 'away' and not row.get('room'), 'INVALID_AWAY_LOCATION')
                     row['room_id'] = None
-                require(not row['available_for_operation'] or (row['location'] == 'home' and not row['activity'].startswith('sleep') and row['activity'] not in ('bath', 'care')), 'INVALID_HANDLING_AVAILABILITY')
+                require(not row['available_for_operation'] or (row['location'] == 'home' and not row['activity'].startswith('sleep') and row['activity'] not in ('nap', 'bath', 'care')), 'INVALID_HANDLING_AVAILABILITY')
                 if row['activity'] == 'dinner':
                     meals[mid] = row['end_min']
                 if row['activity'] == 'bath':

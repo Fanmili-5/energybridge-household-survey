@@ -12,6 +12,9 @@ from functools import lru_cache
 from .core import *
 from .thermal_environment import add_environment
 from .execution import execute, explicit_EV_connections
+from ..policy import reference, fingerprint
+
+PEOPLE=reference('people');BG=reference('background');HP=reference('heat_pump');TANK=reference('tank');TIME=reference('time')
 
 @lru_cache(maxsize=1)
 def fields():return read(ROOT/'inputs/schema_fields.json.gz')
@@ -199,8 +202,8 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
     date=dt.date.fromisoformat(pair['date']);start=date-dt.timedelta(days=history_days)
     available_start=dt.date.fromisoformat(pack['anchor'])
     if start<available_start:raise ValueError('INSUFFICIENT_HISTORY_CALENDAR')
-    last_change=last_actual_request_change(pair);last_request=max(1920,last_change or 1920)
-    tail_end=max(tail_days*1440,last_request+7*1440)
+    last_change=last_actual_request_change(pair);last_request=max(TIME['minimum_request_end_min'],last_change or TIME['minimum_request_end_min'])
+    tail_end=max(tail_days*1440,last_request+TIME['recovery_days']*1440)
     end=date+dt.timedelta(days=math.ceil(tail_end/1440))
     if end>dt.date.fromisoformat(pack['end_exclusive']):raise ValueError('INSUFFICIENT_RECOVERY_CALENDAR')
     lo=(start-date).days*1440;hi=(end-date).days*1440
@@ -208,13 +211,13 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
     plan=merged_plan(pack,pair,side,lo,hi);executed=execute(pack,pair,plan,lo,hi)
     rows=[copy.deepcopy(r)for r in pack['shell_rows']if r[0]not in('RunPeriod','Timestep','SimulationControl')and not r[0].startswith('Output:')]
     wall_repairs=reverse_paired_constructions(rows)
-    if len(days)>365 or any(d.month==2 and d.day==29 for d in days):
+    if len(days)>TIME['maximum_replay_days'] or any(d.month==2 and d.day==29 for d in days):
         raise ValueError('RUN_REQUIRES_NONLEAP_INTERVAL_AT_MOST365DAYS')
     # Reference weather years2025..2027 are non-leap; retain the human calendar separately.
-    year_shift=2026-date.year
+    year_shift=TIME['model_target_year']-date.year
     rows +=[['Timestep',6],['SimulationControl','No','No','No','No','Yes'],
              ['RunPeriod','unified_AB',start.month,start.day,start.year+year_shift,(end-dt.timedelta(days=1)).month,(end-dt.timedelta(days=1)).day,(end-dt.timedelta(days=1)).year+year_shift,dt.date(start.year+year_shift,start.month,start.day).strftime('%A'),'No','No','No','Yes','Yes'],
-             ['ScheduleTypeLimits','any','','','Continuous'],['Schedule:Constant','always','any',1],['Schedule:Constant','zero','any',0],['Schedule:Constant','dual','any',4],['Schedule:Constant','metabolic','any',117.28]]
+             ['ScheduleTypeLimits','any','','','Continuous'],['Schedule:Constant','always','any',1],['Schedule:Constant','zero','any',0],['Schedule:Constant','dual','any',4],['Schedule:Constant','metabolic','any',PEOPLE['metabolic_W']]]
     rooms=[r['room_id']for r in pack['world']['layout']['rooms']];assets={d['asset_id']:d for d in pack['world']['parameter_pack']['devices']}
     controls=collections.defaultdict(list)
     for c in plan['controls']:controls[(c['asset_id'],c['kind'])].append(c)
@@ -230,10 +233,11 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
                 c=lookup.get(t)
                 if key=='available':return int(c is not None)
                 if key=='fan_mode':return c.get('fan_operating_mode',0)if c else 0
-                return c['heating_setpoint_C']if c and key=='heat_sp'else 5 if key=='heat_sp'else c['cooling_setpoint_C']if c else 50
-            rows.append(schedule(name,series(value),5 if key=='heat_sp'else 50 if key=='cool_sp'else 0))
+                return c['heating_setpoint_C']if c and key=='heat_sp'else HP['off_heating_C'] if key=='heat_sp'else c['cooling_setpoint_C']if c else HP['off_cooling_C']
+            rows.append(schedule(name,series(value),HP['off_heating_C'] if key=='heat_sp'else HP['off_cooling_C'] if key=='cool_sp'else 0))
         equipment_names[aid]=package['equipment_name'].upper()
     for room,ps in zones.items():
+        if len(ps)>1:raise ValueError('MULTIPLE_INDEPENDENT_AC_IN_ONE_ZONE_UNSUPPORTED')
         prefix='zone_'+digest(room)[:10]
         rows +=[['NodeList',prefix+'_supply']+[p['zone_supply_node']for p in ps],['NodeList',prefix+'_return']+[p['zone_return_node']for p in ps]]
         eq=['ZoneHVAC:EquipmentList',prefix+'_equipment','SequentialLoad']
@@ -249,9 +253,9 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
         pp[day],aa[day]=day_people(pack,day,ops,rooms)
     for room in rooms:
         name='people_'+digest(room)[:10];rows.append(schedule(name,{d:pp[d][room]for d in days}))
-        rows.append(obj('People',{'name':name,'zone_or_zonelist_or_space_or_spacelist_name':room,'number_of_people_schedule_name':name,'number_of_people_calculation_method':'People','number_of_people':1,'fraction_radiant':0,'sensible_heat_fraction':'autocalculate','activity_level_schedule_name':'metabolic','enable_ashrae_55_comfort_warnings':'No'}))
+        rows.append(obj('People',{'name':name,'zone_or_zonelist_or_space_or_spacelist_name':room,'number_of_people_schedule_name':name,'number_of_people_calculation_method':'People','number_of_people':1,'fraction_radiant':PEOPLE['radiant_fraction'],'sensible_heat_fraction':'autocalculate','activity_level_schedule_name':'metabolic','enable_ashrae_55_comfort_warnings':'No'}))
     # Explicit common benchmark boundary, rather than an accidental perfectly
-    # sealed dwelling. Historical BA reference, not a local compliance/measurement.
+    # sealed dwelling. Project reference, not local compliance or measurement.
     reference_ach=float(os.environ.get('EB_REFERENCE_ACH','.35'))
     if not 0<reference_ach<=3:raise ValueError('INVALID_REFERENCE_AIR_EXCHANGE')
     for room in rooms:
@@ -278,9 +282,9 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
     for room in pack['world']['layout']['rooms']:
         rid=room['room_id'];area=room['thermal_reference_area_m2'];key=digest(rid)[:10]
         light='lighting_'+key;rows.append(schedule(light,{d:[int(v>0)for v in aa[d][rid]]for d in days}))
-        rows.append(['Lights',light+'_equipment',rid,light,'LightingLevel',lighting_density*area,'','','0','0.6','0.2','0','background_lighting'])
+        rows.append(['Lights',light+'_equipment',rid,light,'LightingLevel',lighting_density*area,'','',BG['lighting_return_fraction'],BG['lighting_radiant_fraction'],BG['lighting_visible_fraction'],BG['lighting_replaceable_fraction'],'background_lighting'])
         misc='misc_'+key;source=gains['IECC_Adj1'.lower()]
-        rows.append(schedule(misc,{d:[.25+.75*int(v>0)for v in aa[d][rid]]for d in days}))
+        rows.append(schedule(misc,{d:[BG['misc_unoccupied_fraction']+(1-BG['misc_unoccupied_fraction'])*int(v>0)for v in aa[d][rid]]for d in days}))
         density=background['misc_W_m2']if background else float(source[6])
         rows.append(['ElectricEquipment',misc+'_equipment',rid,misc,'EquipmentLevel',density*area,'','',*source[8:11],'background_plugs'])
     kitchen=next((r['room_id']for r in pack['world']['layout']['rooms']if r['census_room_class']=='kitchen'),rooms[0])
@@ -291,7 +295,7 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
             sch=name+'_schedule'
             def meal(t,d,l):
                 dinners=pack['days'][str(d)]['family']['member_dinners_min'].values()
-                return int(any(a-30<=l<a for a in dinners))
+                return int(any(a-BG['cooking_lead_min']<=l<a for a in dinners))
             rows.append(schedule(sch,series(meal)))
         watts=background[kind+'_W']if background else float(source[5])
         rows.append(['ElectricEquipment',name,kitchen,sch,'EquipmentLevel',watts,'','',*source[8:11],'background_'+kind])
@@ -306,11 +310,11 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
     water_needs=[];tank_name=None
     if tank:
         cs=controls[(tank['asset_id'],'tank_setpoint')];lookup={t:c for c in cs for t in range(max(lo,c['start_min']),min(hi,c['end_min']),10)}
-        rows.append(schedule('tank_target',series(lambda t,d,l:lookup[t]['value_C']if t in lookup else 10),10))
+        rows.append(schedule('tank_target',series(lambda t,d,l:lookup[t]['value_C']if t in lookup else TANK['off_setpoint_C']),TANK['off_setpoint_C']))
         for d in days:
             off=(d-date).days*1440;origin=offset(str(d),pack['anchor'])
             water_needs.extend({**n,'release_min':n['release_min']-origin+off,'deadline_min':n['deadline_min']-origin+off}for n in pack['days'][str(d)]['water_needs'])
-        peak=.000141975
+        peak=TANK['draw_normalization_m3_s']
         rows.append(schedule('water_draw',series(lambda t,d,l:sum(n['quantity']/((n['deadline_min']-n['release_min'])*60)/1000/peak for n in water_needs if n['release_min']<=t<n['deadline_min']))))
         if pack.get('hot_water_model')!='standalone_hot_outlet':
             rows.append(['Schedule:Constant','mixed_target','any',pack['world']['routine']['mixed_target_C']])
@@ -368,18 +372,20 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
           'actual_intervention_end_min':last_change,
           'nonleap_weather_year_shift':year_shift,'original_human_calendar_dates_preserved':True,
           'derived_interzone_layer_order_repairs':wall_repairs,
-          'water_mains':stat,'equipment_meter_mapping':asset_meters,'HVAC_equipment_mapping':equipment_names,
+          'reference_assumptions_sha256':fingerprint(),'water_mains':stat,'equipment_meter_mapping':asset_meters,'HVAC_equipment_mapping':equipment_names,
           'reference_air_changes_per_hour':reference_ach,
           'thermal_environment':environment,
-          'air_exchange_scope':'fixed passive-equivalent reference;NREL/TP-550-35567 historical0.35ACH condition;not measured Chinese leakage or a transplanted native AFN',
+          'air_exchange_scope':'project-selected fixed passive-equivalent reference;not measured Chinese leakage or a transplanted native AFN',
           'tank_name':tank_name,'water_needs':water_needs,'execution':executed,'EV_grid_steps':[[t,v]for t,v in sorted(evsteps.items())if 480<=t<hi],
           'EV':evtrace,
+          'energy_meter_scope':'whole_physical_dwelling_including_shared_context;not_target_household_submeter',
           'human_acceptance':None,'schedules_modified':False,
           'reference_background':{'policy':'explicit project background parameters and heat fractions'if background else 'legacy pinned EB reference gains','parameters':background},
           'hot_water_model':pack.get('hot_water_model','native_mixed_water_plant'),
           'world_assembly':{'declared_residents':len(pack['world'].get('members',[])),
                             'declared_devices':len(assets),'source_input_kind':pack['world'].get('input_kind','external_physics_pack'),
-                            'electrical_supply_W':pack['world'].get('electrical',{}).get('supply_W')},
+                            'electrical_supply_W':pack['world'].get('electrical',{}).get('supply_W'),
+                            'room_ids':rooms,'tank_nodes':tank['parameters']['number_of_nodes']if tank else 0},
           'service_needs':[{**n,'release_min':n['release_min']-offset(pair['date'],pack['anchor']),
                             'deadline_min':n['deadline_min']-offset(pair['date'],pack['anchor'])}for n in pack.get('service_needs',[])]}
     save(folder/'INPUT.json.gz',meta)

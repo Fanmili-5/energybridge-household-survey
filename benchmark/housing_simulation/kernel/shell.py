@@ -5,6 +5,9 @@ Rectangular corridor/studio geometry; midfloor north/south exposure only.
 import copy,math
 from collections import defaultdict
 from .faces import merge
+from ..policy import reference, fingerprint
+
+REF=reference('shell')
 
 def area3(v):
     sums=[sum(a[1]*b[2]-a[2]*b[1] for a,b in zip(v,v[1:]+v[:1])),sum(a[2]*b[0]-a[0]*b[2] for a,b in zip(v,v[1:]+v[:1])),sum(a[0]*b[1]-a[1]*b[0] for a,b in zip(v,v[1:]+v[:1]))]
@@ -17,10 +20,10 @@ def model(world,assembly,height=2.9,fixture=False,delta=3):
     rooms={x['room_id']:x for x in world['rooms']};a=assembly;cons=copy.deepcopy(a['names'])
     material_rows=copy.deepcopy(a['rows'])
     old_floor=next(r for r in material_rows if r[0]=='Construction' and r[1]==cons['floor'])
-    # Preserve the native source and its numeric audit. The native floor's
-    # middle layer is fibreboard, so its RC name cannot authorize RC identity.
+    # Preserve native extraction evidence; generated midfloor uses an explicit
+    # reference core without assigning an unverified source material identity.
     core='Reference_RC_core_120mm';floor='Reference_RC_midfloor'
-    material_rows += [['Material',core,'MediumRough','.12','1.74','2500','920','.9','.7','.7'],
+    material_rows += [['Material',core,'MediumRough',REF['floor_core_m'],REF['floor_conductivity_W_mK'],REF['floor_density_kg_m3'],REF['floor_cp_J_kgK'],REF['floor_thermal_absorptance'],REF['floor_solar_absorptance'],REF['floor_visible_absorptance']],
                       ['Construction',floor,old_floor[2],core,old_floor[-1]]]
     cons['floor']=floor
     # Compile only the dependency closure of actually used constructions.
@@ -31,7 +34,7 @@ def model(world,assembly,height=2.9,fixture=False,delta=3):
     if fixture:
         for r in material_rows:
             if r[0].lower()=='material':r[7]='0.00000001';r[8]='0';r[9]='0'
-    props=material_rows+[['Material:NoMass','ReferenceDoorR','Smooth','.2','.9','.7','.7'],['Construction','ReferenceDoor','ReferenceDoorR']]
+    props=material_rows+[['Material:NoMass','ReferenceDoorR','Smooth',REF['door_R_m2K_W'],'.9','.7','.7'],['Construction','ReferenceDoor','ReferenceDoorR']]
     if fixture:props[-2][4]='0.00000001'
     rows=[['Version','24.1'],['Building','Declared_reference_geometry','0','Suburbs',
         '.00001' if fixture else '.04','.0001' if fixture else '.4','FullExterior','100' if fixture else '25','60' if fixture else '6'],
@@ -93,17 +96,17 @@ def model(world,assembly,height=2.9,fixture=False,delta=3):
         candidates=[w for w in walls if w['zone']==access['from'] and w['peer_zone']=='corridor' and math.dist(w['vertices'][0][:2],w['vertices'][1][:2])>=.9]
         if not candidates:raise ValueError('declared_portal_not_on_IDF_common_wall')
         f=max(candidates,key=lambda w:area3(w['vertices']));partner=next(w for w in walls if w['name']==f['peer'])
-        n='door_'+access['from'];aperture(f,.8,2.,n,'Door','ReferenceDoor',.01,n+'_peer')
-        aperture(partner,.8,2.,n+'_peer','Door','ReferenceDoor',.01,n)
+        n='door_'+access['from'];aperture(f,REF['door_width_m'],REF['door_height_m'],n,'Door','ReferenceDoor',REF['door_bottom_m'],n+'_peer')
+        aperture(partner,REF['door_width_m'],REF['door_height_m'],n+'_peer','Door','ReferenceDoor',REF['door_bottom_m'],n)
     entrance=max([w for w in walls if w['zone']=='corridor' and w['side']=='east' and w['bc']=='Outdoors'],key=lambda w:area3(w['vertices']))
-    aperture(entrance,.9,2.,'entry_door','Door','ReferenceDoor',.01)
+    aperture(entrance,REF['entry_width_m'],REF['door_height_m'],'entry_door','Door','ReferenceDoor',REF['door_bottom_m'])
     if not fixture:
         for name in rooms:
             ext=[w for w in walls if w['zone']==name and w['bc']=='Outdoors' and w['side'] in ['north','south']]
             if not ext:continue
             f=max(ext,key=lambda w:area3(w['vertices']));L=math.dist(f['vertices'][0][:2],f['vertices'][1][:2])
-            width=min(L-.2,area3(f['vertices'])*.25/1.2)
-            if width>.15:aperture(f,width,1.2,'window_'+name,'Window',cons['window'])
+            width=min(L-.2,area3(f['vertices'])*REF['selected_face_WWR']/REF['window_height_m'])
+            if width>.15:aperture(f,width,REF['window_height_m'],'window_'+name,'Window',cons['window'],REF['window_bottom_m'])
     if fixture:
         rows += [['SurfaceProperty:OtherSideCoefficients','Guard','18','20','1','0','0','0','0','','No','24',''],
                  ['Schedule:Constant','HeatingControl','','1'],['Schedule:Constant','CellTemperature','',20+delta],
@@ -134,14 +137,14 @@ def model(world,assembly,height=2.9,fixture=False,delta=3):
           ['Output:Variable','*','Zone Ideal Loads Supply Air Sensible Heating Rate','Hourly']]
     metadata={'surfaces':floors+walls,'openings':openings,'source_assemblies_sha256':a['source_sha256'],
       'source_envelope_identity':a['climate_identity'],'source_geometry_preserved':False,
-      'floor_material_policy':'native_fibreboard_core_not_admitted_as_RC; replace_with_declared_RC_reference',
+      'floor_material_policy':'replace_native_floor_core_with_declared_RC_reference;not_source_material_identification',
       'material_semantic_admission_sha256':'explicit_120mm_RC_reference_in_this_kernel',
-      'floor_core_thickness_design_m':.12,'floor_total_thickness_design_m':sum(float(r[3])for r in material_rows if r[0]=='Material'and r[1]in next(c[2:]for c in material_rows if c[0]=='Construction'and c[1]==floor)),
-      'RC_reference_source_material_id':837899393,'floor_parameters_are_not_stock_or_asbuilt_observations':True,
+      'floor_core_thickness_design_m':REF['floor_core_m'],'floor_total_thickness_design_m':sum(float(r[3])for r in material_rows if r[0]=='Material'and r[1]in next(c[2:]for c in material_rows if c[0]=='Construction'and c[1]==floor)),
+      'reference_assumptions_sha256':fingerprint(),'floor_parameters_are_not_stock_or_asbuilt_observations':True,
       'geometry_is_engineering_reference':True,'floor_and_side_neighbor_policy':'midfloor_north_south_exposed_east_west_zero_flux_except_gallery_entry; explicit_scenario',
       'windows':'new_reference_WWR0_25_on_selected_north_south_faces; not_observed_source_windows',
-      'door_R_m2K_per_W':.2,'door_R_is_engineering_reference_not_observed':True,
-      'door_bottom_elevation_reference_m':.01,
+      'door_R_m2K_per_W':REF['door_R_m2K_W'],'door_R_is_engineering_reference_not_observed':True,
+      'door_bottom_elevation_reference_m':REF['door_bottom_m'],
       'door_bottom_policy':'explicit10mm_reference_threshold; avoid_flush_subsurface_base_edge_shadow_geometry_warning; not_observed_source_threshold',
       'centerline_surface_geometry_convention':True,'Zone_floor_area_and_air_volume_use_computed_usable_area':True,
       'actual_household_appliance_instances_or_HVAC_installed':False,'fixture_is_household_device':False,

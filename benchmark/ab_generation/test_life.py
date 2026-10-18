@@ -179,6 +179,12 @@ class LifeTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'UNKNOWN_LIFE_INPUT_FIELD'):
             self.plan()
 
+    def test_nap_never_creates_an_operator_window(self):
+        event = next(e for e in self.spec['member_calendars']['adult1']['weekday'] if e['available_for_operation'])
+        event.update(activity='nap', room='$sleep')
+        with self.assertRaisesRegex(ValueError, 'INVALID_HANDLING_AVAILABILITY'):
+            self.plan()
+
     def test_batch_binds_world_bytes_and_output_is_immutable(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

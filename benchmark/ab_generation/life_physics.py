@@ -90,10 +90,12 @@ def assemble_life(life_dir, world_contracts, shells, weather, experiments, out):
     from benchmark.housing_simulation.assembly import bind_world
     from benchmark.housing_simulation.pipeline import HERE, portable_gzip
     from benchmark.housing_simulation.validation import check_baseline
+    from benchmark.housing_simulation.weather import inspect_weather
     life_dir, world_contracts, shells, weather, experiments, out = map(Path, (life_dir, world_contracts, shells, weather, experiments, out))
     lm, sm = verify(life_dir), verify(shells)
     static, ex = read(world_contracts), read(experiments)
     require(ex['schema'] == 'eb.life_A_experiments.v1', 'UNKNOWN_EXPERIMENT_SCHEMA')
+    weather_report = inspect_weather(weather, ex['weather_source'])
     norm = read(life_dir / 'WORLD_INPUT.json')
     require(norm['source_world_contract_sha256'] == sha(world_contracts), 'SPATIAL_WORLD_CONTRACT_CHANGED')
     raw = {s['household_id']: s for s in static['households']}
@@ -104,6 +106,7 @@ def assemble_life(life_dir, world_contracts, shells, weather, experiments, out):
     shell_status = {r['household_id']: r['status'] for r in sm['records']}
     out.mkdir(parents=True, exist_ok=False)
     (out / 'inputs').mkdir()
+    save(out / 'inputs/weather_identity.json', weather_report)
     (out / 'inputs/schema_fields.json.gz').write_bytes(portable_gzip((HERE / 'resources/schema_fields.json').read_bytes()))
     shutil.copyfile(weather, out / 'inputs/weather.epw')
     shutil.copyfile(HERE / 'reference_environment.json', out / 'THERMAL_ENVIRONMENT_POLICY.json')
@@ -146,7 +149,8 @@ def assemble_life(life_dir, world_contracts, shells, weather, experiments, out):
     verify(life_dir); verify(shells)
     seal(out, {'schema': 'eb.life_A_physics.assembly.v1', 'life_manifest_sha256': sha(life_dir / 'MANIFEST.json'),
                'shell_manifest_sha256': sha(shells / 'MANIFEST.json'), 'world_contracts_sha256': sha(world_contracts),
-               'experiments_sha256': sha(experiments), 'weather_sha256': sha(weather), 'records': records,
+               'experiments_sha256': sha(experiments), 'weather_sha256': sha(weather),
+               'weather_registration_verified': True, 'records': records,
                'case_count': len(pairs), 'historical_cohort_required': False})
     return {'records': records, 'case_count': len(pairs)}
 

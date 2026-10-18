@@ -156,6 +156,46 @@
       "not_identified": [
         "Chinese household climate calibration"
       ]
+    },
+    {
+      "id": "energyplus24_epw",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/auxiliary-programs/energyplus-weather-file-epw-data-dictionary.html",
+      "kind": "official_versioned_format",
+      "supports": [
+        "EPW LOCATION bounds,hour/minute convention,dry-bulb missing value and bounds"
+      ],
+      "not_identified": [
+        "project admission of only single full-year hourly files",
+        "provider authority of an arbitrary user-supplied EPW"
+      ]
+    },
+    {
+      "id": "nrel_house_simulation_2010",
+      "url": "https://www1.eere.energy.gov/buildings/publications/pdfs/building_america/house_simulation.pdf",
+      "title": "Building America House Simulation Protocols",
+      "kind": "primary_technical_report",
+      "locator": "printed page16,PDF page23",
+      "supports": [
+        "100cfm reference dryer exhaust",
+        "0.50W/cfm kitchen and bathroom fan efficiency as power per flow"
+      ],
+      "not_identified": [
+        "50/100cfm kitchen/bath sizing in this project",
+        "20minute overrun",
+        "Chinese equipment or building compliance"
+      ]
+    },
+    {
+      "id": "pnnl_kitchen_exhaust",
+      "url": "https://basc.pnnl.gov/resource-guides/kitchen-exhaust-fans",
+      "kind": "DOE_PNNL_reference_guidance",
+      "supports": [
+        "100cfm intermittent kitchen exhaust reference"
+      ],
+      "not_identified": [
+        "Chinese code compliance",
+        "actual target household exhaust rate"
+      ]
     }
   ],
   "scope": "reference dwelling construction and paired energy simulation",

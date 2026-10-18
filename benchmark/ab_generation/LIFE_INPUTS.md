@@ -80,7 +80,7 @@ python -B -m benchmark.ab_generation assemble-life \
   --experiments EXPERIMENTS.json --out outputs/life-physics
 ```
 
-实验格式为 `eb.life_A_experiments.v1`，包含住房编译设置及 `{case_id,household_id,date,decision_min,horizon_min,events,tariff,assignment}`列表。本物理接口沿用明确的08:00通知及其后24小时主区间，前史与尾期由设置给定；A本身没有这些事件、电价或案例选择输入。
+实验格式为 `eb.life_A_experiments.v1`，包含住房编译设置、`weather_source`登记及 `{case_id,household_id,date,decision_min,horizon_min,events,tariff,assignment}`列表。天气登记必须提供 `provider,url,dataset,release,sha256`，可指定站号；装配前核对实际EPW字节、站点和完整逐时年覆盖，不能只填一个天气文件名。本物理接口沿用明确的08:00通知及其后24小时主区间，前史与尾期由设置给定；A本身没有这些事件、电价、天气登记或案例选择输入。
 
 4. 以住房模块的 `compile/run/audit`执行A=B基线，再执行：
 
