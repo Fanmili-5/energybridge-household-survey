@@ -155,6 +155,13 @@ class ReadbackReviewTests(unittest.TestCase):
             result=self.fixture(Path(t),lambda m,tr:m['execution'].update(batches=[]))
             self.assertFalse(result['passed']);self.assertFalse(result['records'][0]['checks']['A_service_completeness'])
 
+    def test_completed_service_keeps_its_deadline_beyond_run_boundary(self):
+        def extend(meta, trace):
+            meta['service_needs'][0]['deadline_min'] = meta['run_interval_min'][1] + 1440
+            meta['execution']['tasks'][0]['need_id'] = 'wash'
+        with tempfile.TemporaryDirectory() as temp:
+            self.assertTrue(self.fixture(Path(temp), extend)['passed'])
+
     def test_wrong_units_cannot_pass(self):
         with tempfile.TemporaryDirectory()as t:
             result=self.fixture(Path(t),lambda m,tr:tr['Zone Mean Air Temperature|ROOM'].update(unit='K'))

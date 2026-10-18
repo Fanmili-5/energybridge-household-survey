@@ -11,7 +11,7 @@ import math
 from functools import lru_cache
 from .core import *
 from .thermal_environment import add_environment
-from .execution import execute
+from .execution import execute, explicit_EV_connections
 from ..policy import reference, fingerprint
 
 PEOPLE=reference('people');BG=reference('background');HP=reference('heat_pump');TANK=reference('tank');TIME=reference('time')
@@ -150,8 +150,11 @@ def ev_delivery(pack,pair,side,plan,lo,hi):
             for t in range(max(lo,a),min(480,z),10):steps[t]=steps.get(t,0)+event['battery_kWh']/(z-a)*10/ref['efficiency']
     device=next(d for d in pack['world']['parameter_pack']['devices']if 'ev'in d['types']);par=device['parameters']
     energy=ref['initial_energy_kWh'];initial=energy;trips={x['absolute_departure_min']-base:x for x in pack['journeys']};triprows=[]
-    unplug={o['need_id']:o for o in pack['operations']if o['kind']=='EV_unplug'}
-    connections={o['need_id']:(o['end_min']-base,unplug[o['need_id']]['start_min']-base)for o in pack['operations']if o['kind']=='EV_plug'}
+    if 'EV_physical_connections' in pack:
+        connections=explicit_EV_connections(pack,base)
+    else:
+        unplug={o['need_id']:o for o in pack['operations']if o['kind']=='EV_unplug'}
+        connections={o['need_id']:(o['end_min']-base,unplug[o['need_id']]['start_min']-base)for o in pack['operations']if o['kind']=='EV_plug'}
     controls=[c for c in plan['controls']if c['kind']=='ev_charge_window'];trace=[];stop=None
     for t in range(480,hi+1,10):
         trip=trips.get(t)

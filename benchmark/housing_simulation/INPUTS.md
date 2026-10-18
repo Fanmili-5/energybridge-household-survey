@@ -235,9 +235,12 @@ python -B -m benchmark.housing_simulation assemble \
 | `HVAC` | 已安装空调对象、节点、设备名和控制日程名 |
 | `tasks`、`operations` | 程序任务与人工操作 |
 | `journeys`、`EV_battery_energy_events` | 行程及连续电池事件 |
+| `EV_physical_connections`（可选） | 显式物理连接区间；生活生成接口使用，旧包继续按原插拔操作推导 |
 | `weather`、`weather_sha256` | EPW 相对资源根目录的路径及哈希 |
 
 `days[date]` 包含 `calendars`、`operator_windows`、`family.bath_times_min`、`family.member_dinners_min`、`shared.member_calendars`、`shared.facility_reservations` 和 `controls`；启用热水服务时另含 `water_needs`。输入不依赖固定年份；实际运行区间须不含2月29日且不超过365天，完整覆盖前史及恢复期。
+
+`EV_physical_connections` 的每项包含唯一 `need_id`、已安装 `asset_id`、相对家庭 `anchor` 的 `start_min/end_min` 及 `origin`。区间位于10分钟网格、不得重叠或穿过行程。`origin=given_anchor_connection` 仅可从0开始，表示声明的初始已连接状态；其余开始边界须有真实 `EV_plug` 操作结束，离开前的结束边界须有 `EV_unplug` 操作开始。家庭覆盖末端可保持连接。该字段只声明物理连接，不能代替充电控制、电池账本或出发能量检查；实现为 `kernel/execution.py:explicit_EV_connections`，编译器据此设置原生充电连接窗口。
 
 ### 6.3 配对请求
 

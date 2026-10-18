@@ -7,6 +7,34 @@ def overlap(a,z,b,y):
     return max(a,b)<min(z,y)
 
 
+def explicit_EV_connections(pack, base):
+    """Validate given anchor state and subsequent literal plug/unplug bounds."""
+    rows = sorted(pack['EV_physical_connections'], key=lambda c: c['start_min'])
+    assets = {d['asset_id'] for d in pack['world']['parameter_pack']['devices'] if d['kind'] == 'ev'}
+    limit = (dt.date.fromisoformat(pack['end_exclusive']) - dt.date.fromisoformat(pack['anchor'])).days * 1440
+    if len({r['need_id'] for r in rows}) != len(rows):
+        raise ValueError('DUPLICATE_EV_PHYSICAL_CONNECTION')
+    for index, row in enumerate(rows):
+        if row['asset_id'] not in assets:
+            raise ValueError('EV_CONNECTION_ASSET_NOT_INSTALLED')
+        a, z = row['start_min'], row['end_min']
+        if type(a) is not int or type(z) is not int or a % 10 or z % 10 or not 0 <= a <= z <= limit:
+            raise ValueError('INVALID_EV_PHYSICAL_CONNECTION_INTERVAL')
+        if index and rows[index - 1]['end_min'] > a:
+            raise ValueError('OVERLAPPING_EV_PHYSICAL_CONNECTIONS')
+        if a == 0:
+            if row['origin'] != 'given_anchor_connection':
+                raise ValueError('EV_ANCHOR_CONNECTION_MUST_BE_DECLARED')
+        elif not any(o['kind'] == 'EV_plug' and o['asset_id'] == row['asset_id'] and o['need_id'] == row['need_id'] and o['end_min'] == a for o in pack['operations']):
+            raise ValueError('EV_CONNECTION_HAS_NO_ORIGINAL_PLUG')
+        if z < limit and not any(o['kind'] == 'EV_unplug' and o['asset_id'] == row['asset_id'] and o['need_id'] == row['need_id'] and o['start_min'] == z for o in pack['operations']):
+            raise ValueError('EV_CONNECTION_HAS_NO_ORIGINAL_UNPLUG')
+        for trip in pack['journeys']:
+            if overlap(a, z, trip['absolute_departure_min'], trip['absolute_arrival_min']):
+                raise ValueError('EV_CONNECTION_OVERLAPS_GIVEN_JOURNEY')
+    return {c['need_id']: (c['start_min'] - base, c['end_min'] - base) for c in rows}
+
+
 def execute(pack,pair,plan,lo,hi):
     """Literal operation executor, including failed loads and occupied machines."""
     date=dt.date.fromisoformat(pair['date']);bad=collections.defaultdict(set);bookings=collections.defaultdict(list)

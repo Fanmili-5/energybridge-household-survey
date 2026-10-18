@@ -94,6 +94,11 @@ def audit(compiled, runs, output):
                                                 for aid,key in meta['HVAC_equipment_mapping'].items()}
                 needs={n['need_id']:n for n in meta.get('service_needs',[])}
                 expected_needs={n['need_id']for n in needs.values()if 0<=n['release_min']<n['deadline_min']<=hi}
+                # A service can finish inside the run although its allowed deadline
+                # extends beyond the run. Keep that independent deadline unchanged.
+                planned_inside={t['need_id'] for t in meta['execution']['tasks']
+                                if t.get('need_id') in needs and 0<=t['end_min']<hi}
+                expected_needs |= planned_inside
                 relevant=[b for b in meta['execution']['batches']if 0<=b['requested_program_end_min']<hi]
                 observed=[b['need_id']for b in relevant]
                 checks[side+'_service_completeness']=set(observed)==expected_needs and len(observed)==len(expected_needs)

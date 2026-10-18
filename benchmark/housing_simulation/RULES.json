@@ -238,7 +238,7 @@
     {
       "id": "VAL-01",
       "classification": "project_engineering_acceptance",
-      "rule": "固定版本引擎与SQL回读；计量、服务、共同前史、能量与恢复容差按验证规范执行。",
+      "rule": "固定版本引擎与SQL回读；计量、服务、共同前史、能量与恢复容差按验证规范执行。 期内完成但允许截止跨越仿真末端的服务也纳入预期集合，保留原独立截止。",
       "sources": [
         "energyplus24_release"
       ],
@@ -268,6 +268,15 @@
           "supports": "固定官方发行包内Chicago TMY3字节及站点，用于公开集成验证；不代表中国住宅天气。"
         }
       ]
+    },
+    {
+      "id": "EV-CONN-01",
+      "classification": "declared_initial_state_and_physical_operation_gate",
+      "rule": "可选显式EV连接以锚点已连接状态或原真实插拔为边界，不得重叠行程；未提供该字段时保留旧操作推导。",
+      "sources": [],
+      "implementation": "kernel/execution.py:explicit_EV_connections",
+      "documentation": "INPUTS.md#62-家庭包",
+      "source_relations": []
     }
   ]
 }
