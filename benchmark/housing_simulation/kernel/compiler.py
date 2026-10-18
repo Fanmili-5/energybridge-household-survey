@@ -11,6 +11,7 @@ import math
 from functools import lru_cache
 from .core import *
 from .thermal_environment import add_environment
+from .execution import execute
 
 @lru_cache(maxsize=1)
 def fields():return read(ROOT/'inputs/schema_fields.json.gz')
@@ -107,47 +108,6 @@ def merged_plan(pack,pair,side,lo,hi):
     for key in result:result[key].sort(key=lambda x:(x['start_min'],x.get('operation_id',x.get('task_id',x.get('need_id','')))))
     return result
 
-def execute(pack,pair,plan,lo,hi):
-    """Literal operation executor, including failed loads and occupied machines."""
-    date=dt.date.fromisoformat(pair['date']);bad=collections.defaultdict(set);bookings=collections.defaultdict(list)
-    for op in plan['operations']:
-        daydate=date+dt.timedelta(days=op['start_min']//1440);d=pack['days'].get(str(daydate));local=op['start_min']%1440
-        if d is None or not any(a<=local and local+10<=b for a,b in d['operator_windows'].get(op['operator_id'],[])):
-            bad[op['operation_id']].add('OPERATOR_UNAVAILABLE')
-        if d:
-            blocked=[(x['room_id'],x['start_min'],x['end_min'])for x in d['shared']['facility_reservations']]
-            bath=pack['world']['activity_contract']['room_map']['bath']
-            blocked +=[(bath,t,t+10)for t in d['family']['bath_times_min'].values()]
-            if any(r==op['room_id']and overlap(local,local+10,a,b)for r,a,b in blocked):bad[op['operation_id']].add('FACILITY_RESERVED')
-        for minute in range(op['start_min'],op['end_min'],10):
-            bookings[('operator',op['operator_id'],minute)].append(op['operation_id'])
-            if not op['kind'].startswith('EV_'):bookings[('room',op['room_id'],minute)].append(op['operation_id'])
-    for key,ids in bookings.items():
-        if len(ids)>1:
-            for oid in ids:bad[oid].add(key[0].upper()+'_DOUBLE_BOOKED')
-    holds=collections.defaultdict(list);batch=[];not_run=set();failed_ops=set();needs={n['need_id']:n for n in pair['needs_A']}
-    unloads={o['need_id']:o for o in plan['operations']if o['kind']=='unload'}
-    for load in (o for o in plan['operations']if o['kind']=='load'):
-        nid=load['need_id'];tasks=[t for t in plan['tasks']if t['need_id']in(nid,nid+':dry')];unload=unloads.get(nid)
-        if not tasks:continue
-        first=min(t['start_min']for t in tasks);end=max(t['end_min']for t in tasks)
-        reasons=set(bad[load['operation_id']])
-        if nid in needs and load['start_min']<needs[nid]['release_min']:reasons.add('LOAD_BEFORE_SERVICE_RELEASE')
-        if first<load['end_min']:reasons.add('PROGRAM_BEFORE_LOADING')
-        if any(overlap(load['start_min'],max(end,unload['end_min']if unload else hi),a,b)for a,b in holds[load['asset_id']]):reasons.add('ASSET_STILL_OCCUPIED')
-        ran=not reasons
-        collected=ran and unload is not None and not bad[unload['operation_id']]and unload['start_min']>=end
-        if ran:holds[load['asset_id']].append((load['start_min'],unload['end_min']if collected else hi))
-        else:
-            not_run.update(t['task_id']for t in tasks);failed_ops.add(load['operation_id'])
-        if unload and not collected:failed_ops.add(unload['operation_id'])
-        if end>=480:batch.append({'need_id':nid,'program_executed':ran,'collected':collected,'reasons':sorted(reasons|set(bad[unload['operation_id']]if unload else ['NO_RETRIEVAL_IN_HORIZON'])),
-                                 'requested_program_end_min':end,'requested_retrieval_end_min':unload['end_min']if unload else None})
-    failed_ops.update(k for k,v in bad.items()if v)
-    return {'tasks':[t for t in plan['tasks']if t['task_id']not in not_run],
-            'operations':[o for o in plan['operations']if o['operation_id']not in failed_ops],
-            'batches':batch,'operation_failures':{k:sorted(v)for k,v in bad.items()if v},
-            'dropped_program_ids':sorted(not_run),'automatic_repair':False}
 
 def day_people(pack,date,ops,rooms):
     d=pack['days'][str(date)];people={r:[0.]*144 for r in rooms};awake={r:[0.]*144 for r in rooms}
@@ -234,20 +194,21 @@ def last_actual_request_change(pair):
 
 def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
     date=dt.date.fromisoformat(pair['date']);start=date-dt.timedelta(days=history_days)
-    available_start=dt.date.fromisoformat(pack['anchor']);start=max(start,available_start)
+    available_start=dt.date.fromisoformat(pack['anchor'])
+    if start<available_start:raise ValueError('INSUFFICIENT_HISTORY_CALENDAR')
     last_change=last_actual_request_change(pair);last_request=max(1920,last_change or 1920)
     tail_end=max(tail_days*1440,last_request+7*1440)
     end=date+dt.timedelta(days=math.ceil(tail_end/1440))
-    end=min(end,dt.date.fromisoformat(pack['end_exclusive']))
+    if end>dt.date.fromisoformat(pack['end_exclusive']):raise ValueError('INSUFFICIENT_RECOVERY_CALENDAR')
     lo=(start-date).days*1440;hi=(end-date).days*1440
     days=[start+dt.timedelta(days=i)for i in range((end-start).days)]
     plan=merged_plan(pack,pair,side,lo,hi);executed=execute(pack,pair,plan,lo,hi)
     rows=[copy.deepcopy(r)for r in pack['shell_rows']if r[0]not in('RunPeriod','Timestep','SimulationControl')and not r[0].startswith('Output:')]
     wall_repairs=reverse_paired_constructions(rows)
-    # Fixed mapping for EVERY history length: original2024/25/26 -> model2025/26/27.
-    # The three non-leap years avoid CSWD day-count loss without confounding a
-    # history-length comparison by changing the target's astronomical year.
-    year_shift=1
+    if len(days)>365 or any(d.month==2 and d.day==29 for d in days):
+        raise ValueError('RUN_REQUIRES_NONLEAP_INTERVAL_AT_MOST365DAYS')
+    # Reference weather years2025..2027 are non-leap; retain the human calendar separately.
+    year_shift=2026-date.year
     rows +=[['Timestep',6],['SimulationControl','No','No','No','No','Yes'],
              ['RunPeriod','unified_AB',start.month,start.day,start.year+year_shift,(end-dt.timedelta(days=1)).month,(end-dt.timedelta(days=1)).day,(end-dt.timedelta(days=1)).year+year_shift,dt.date(start.year+year_shift,start.month,start.day).strftime('%A'),'No','No','No','Yes','Yes'],
              ['ScheduleTypeLimits','any','','','Continuous'],['Schedule:Constant','always','any',1],['Schedule:Constant','zero','any',0],['Schedule:Constant','dual','any',4],['Schedule:Constant','metabolic','any',117.28]]
@@ -309,14 +270,16 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
             rows.append(['ElectricEquipment',equip,device['room_id'],name,'EquipmentLevel',watts,'','',*source[8:11],kind])
             asset_meters[equip.upper()]={'asset_id':aid,'kind':kind,'watts':watts,'thermal_fractions':source[8:11]}
     # EB prototype background powers/fractions are explicit common A/B conditions.
-    lighting_density=sum(float(r[6])for r in native()['gains']if r[0]=='Lights')
+    background=pack.get('background')
+    lighting_density=background['lighting_W_m2']if background else sum(float(r[6])for r in native()['gains']if r[0]=='Lights')
     for room in pack['world']['layout']['rooms']:
         rid=room['room_id'];area=room['thermal_reference_area_m2'];key=digest(rid)[:10]
         light='lighting_'+key;rows.append(schedule(light,{d:[int(v>0)for v in aa[d][rid]]for d in days}))
         rows.append(['Lights',light+'_equipment',rid,light,'LightingLevel',lighting_density*area,'','','0','0.6','0.2','0','background_lighting'])
         misc='misc_'+key;source=gains['IECC_Adj1'.lower()]
         rows.append(schedule(misc,{d:[.25+.75*int(v>0)for v in aa[d][rid]]for d in days}))
-        rows.append(['ElectricEquipment',misc+'_equipment',rid,misc,'EquipmentLevel',float(source[6])*area,'','',*source[8:11],'background_plugs'])
+        density=background['misc_W_m2']if background else float(source[6])
+        rows.append(['ElectricEquipment',misc+'_equipment',rid,misc,'EquipmentLevel',density*area,'','',*source[8:11],'background_plugs'])
     kitchen=next((r['room_id']for r in pack['world']['layout']['rooms']if r['census_room_class']=='kitchen'),rooms[0])
     for kind,native_name in [('refrigerator','refrigerator1'),('cooking','electric_range1')]:
         source=gains[native_name];name='background_'+kind
@@ -327,7 +290,8 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
                 dinners=pack['days'][str(d)]['family']['member_dinners_min'].values()
                 return int(any(a-30<=l<a for a in dinners))
             rows.append(schedule(sch,series(meal)))
-        rows.append(['ElectricEquipment',name,kitchen,sch,'EquipmentLevel',float(source[5]),'','',*source[8:11],'background_'+kind])
+        watts=background[kind+'_W']if background else float(source[5])
+        rows.append(['ElectricEquipment',name,kitchen,sch,'EquipmentLevel',watts,'','',*source[8:11],'background_'+kind])
     # EV stays outside dwelling heat balance; EP meters delivered AC grid energy.
     ev=pair['EV_continuous_reference'];evsteps,evtrace=ev_delivery(pack,pair,side,plan,lo,hi)
     if ev['status']!='not_installed':
@@ -345,10 +309,14 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
             water_needs.extend({**n,'release_min':n['release_min']-origin+off,'deadline_min':n['deadline_min']-origin+off}for n in pack['days'][str(d)]['water_needs'])
         peak=.000141975
         rows.append(schedule('water_draw',series(lambda t,d,l:sum(n['quantity']/((n['deadline_min']-n['release_min'])*60)/1000/peak for n in water_needs if n['release_min']<=t<n['deadline_min']))))
-        rows.append(['Schedule:Constant','mixed_target','any',pack['world']['routine']['mixed_target_C']])
+        if pack.get('hot_water_model')!='standalone_hot_outlet':
+            rows.append(['Schedule:Constant','mixed_target','any',pack['world']['routine']['mixed_target_C']])
         types={'Branch','BranchList','Connector:Splitter','Connector:Mixer','ConnectorList','Pipe:Adiabatic','Pump:VariableSpeed','PlantLoop','PlantEquipmentList','PlantEquipmentOperation:HeatingLoad','PlantEquipmentOperationSchemes','SetpointManager:Scheduled','WaterUse:Equipment','WaterUse:Connections','WaterHeater:Stratified'}
         mapping={'EWH_Setpoint_Control':'tank_target','EWH_Availability_Control':'always','BA_shower_sch':'water_draw','BA_sink_sch':'zero','BA_bath_sch':'zero','SSBWaterTempSchedule':'mixed_target'}
-        for source in native()['tank']:
+        if pack.get('hot_water_model')=='standalone_hot_outlet':
+            from ..components import standalone_tank
+            rows.append(standalone_tank(tank,obj,peak));tank_name='REFERENCE_STORAGE_TANK'
+        for source in ([] if pack.get('hot_water_model')=='standalone_hot_outlet' else native()['tank']):
             if source[0]not in types or source[1].startswith('Air Loop'):continue
             r=[mapping.get(x,x.replace('_unit1','_v58'))for x in source]
             if r[0]=='WaterHeater:Stratified':
@@ -361,7 +329,6 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
     stat=weather_statistics(str(ROOT/pack['weather']))
     rows.append(['Site:WaterMainsTemperature','Correlation','',stat['annual_average_C'],stat['monthly_mean_range_C']])
     variables=['Zone Mean Air Temperature','Zone Air Relative Humidity','Zone Mean Radiant Temperature','Zone People Occupant Count',
-               'Zone Combined Outdoor Air Changes per Hour','Zone Combined Outdoor Air Fan Electricity Energy',
                'Zone Mixing Standard Density Volume Flow Rate','Zone Mean Air Humidity Ratio',
                'Fan Electricity Energy','Zone Air Mass Balance Supply Mass Flow Rate',
                'Zone Air Mass Balance Exhaust Mass Flow Rate','Zone Air Mass Balance Return Mass Flow Rate',
@@ -373,8 +340,10 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
                'Electric Equipment Electricity Energy','Lights Electricity Energy','Site Mains Water Temperature']
     if ev['status']!='not_installed':variables.append('Exterior Equipment Electricity Energy')
     if tank:
-        variables +=['Water Heater Electricity Energy','Pump Electricity Energy','Water Heater Tank Temperature',
-                     'Water Heater Use Side Outlet Temperature','Water Use Equipment Mixed Water Temperature','Water Use Equipment Total Volume']
+        variables +=['Water Heater Electricity Energy','Water Heater Tank Temperature','Water Heater Use Side Mass Flow Rate',
+                     'Water Heater Use Side Outlet Temperature']
+        if pack.get('hot_water_model')!='standalone_hot_outlet':
+            variables+=['Pump Electricity Energy','Water Use Equipment Mixed Water Temperature','Water Use Equipment Total Volume']
         variables +=[f'Water Heater Final Temperature Node {i}'for i in range(1,tank['parameters']['number_of_nodes']+1)]
     for v in variables:rows.append(['Output:Variable','*',v,'Timestep','report_target_and_recovery'])
     meters=['Electricity:Facility','Electricity:HVAC','InteriorEquipment:Electricity','InteriorLights:Electricity']
@@ -403,6 +372,12 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
           'tank_name':tank_name,'water_needs':water_needs,'execution':executed,'EV_grid_steps':[[t,v]for t,v in sorted(evsteps.items())if 480<=t<hi],
           'EV':evtrace,
           'human_acceptance':None,'schedules_modified':False,
-          'reference_background':'pinned EB heat fractions,powers and lighting density;dated occupancy/meal conditions,not measured household gains'}
+          'reference_background':{'policy':'explicit project background parameters and heat fractions'if background else 'legacy pinned EB reference gains','parameters':background},
+          'hot_water_model':pack.get('hot_water_model','native_mixed_water_plant'),
+          'world_assembly':{'declared_residents':len(pack['world'].get('members',[])),
+                            'declared_devices':len(assets),'source_input_kind':pack['world'].get('input_kind','external_physics_pack'),
+                            'electrical_supply_W':pack['world'].get('electrical',{}).get('supply_W')},
+          'service_needs':[{**n,'release_min':n['release_min']-offset(pair['date'],pack['anchor']),
+                            'deadline_min':n['deadline_min']-offset(pair['date'],pack['anchor'])}for n in pack.get('service_needs',[])]}
     save(folder/'INPUT.json.gz',meta)
     return ROOT/pack['weather'],meta

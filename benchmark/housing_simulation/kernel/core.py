@@ -1,4 +1,4 @@
-"""Portable, content-bound A46/B57 physical replay. No generation imports."""
+"""Portable, content-bound household physics; no historical cohort imports."""
 import datetime as dt
 import gzip
 import hashlib
@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(os.environ['EB_HOUSING_INPUT_ROOT']).resolve()
 KERNEL = Path(__file__).resolve().parent
-VERSION = 'eb.unified_physics50.v61'
+VERSION = 'eb.housing_physics.v2'
 
 def read(path):
     p = Path(path)
@@ -29,6 +29,7 @@ def save(path, x):
     data = (canonical(x) + '\n').encode()
     if p.suffix == '.gz':
         data = gzip.compress(data, compresslevel=6, mtime=0)
+        data = data[:9]+b'\xff'+data[10:]
     tmp = p.with_name(p.name + '.tmp.' + str(os.getpid()))
     tmp.write_bytes(data)
     tmp.replace(p)
@@ -44,7 +45,8 @@ def overlap(a, z, b, y):
     return max(a, b) < min(z, y)
 
 def code_hash():
-    return digest({p.name: sha(p) for p in sorted(KERNEL.glob('*.py'))})
+    root=KERNEL.parent
+    return digest({str(p.relative_to(root)):sha(p) for p in sorted(root.rglob('*.py'))})
 
 def physics_hash():
     files={name:sha(KERNEL/name)for name in ('core.py','compiler.py','thermal_environment.py')}

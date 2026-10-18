@@ -1,0 +1,1450 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Fanmili-5/energybridge-household-survey/benchmark/housing_simulation/WORLD.schema.json",
+  "title": "Housing world assembly input v1",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "eb.housing_world.input.v1"
+    },
+    "weather_source": {
+      "type": "object"
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "history_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 350
+        },
+        "tail_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 365
+        },
+        "reference_ach": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 3
+        },
+        "portal_flow_scale": {
+          "enum": [
+            0.5,
+            1,
+            2
+          ]
+        }
+      },
+      "required": [
+        "history_days",
+        "tail_days",
+        "reference_ach",
+        "portal_flow_scale"
+      ],
+      "additionalProperties": false
+    },
+    "thermal_fractions": {
+      "type": "object",
+      "properties": {
+        "washer": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "dryer": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "dishwasher": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "misc": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "refrigerator": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "cooking": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "washer",
+        "dryer",
+        "dishwasher",
+        "misc",
+        "refrigerator",
+        "cooking"
+      ],
+      "additionalProperties": false
+    },
+    "households": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/household"
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "schema",
+    "weather_source",
+    "settings",
+    "thermal_fractions",
+    "households"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "member": {
+      "type": "object",
+      "properties": {
+        "member_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "household_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "age_years": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 120
+        },
+        "calendar_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "hot_water_liters": {
+          "type": "number",
+          "minimum": 0
+        },
+        "can_operate_asset_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "member_id",
+        "household_id",
+        "age_years",
+        "calendar_id",
+        "hot_water_liters",
+        "can_operate_asset_ids"
+      ],
+      "additionalProperties": false
+    },
+    "sleep_group": {
+      "type": "object",
+      "properties": {
+        "group_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "member_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "capacity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "bed_footprint_m": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "room_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        }
+      },
+      "required": [
+        "group_id",
+        "member_ids",
+        "capacity",
+        "bed_footprint_m"
+      ],
+      "additionalProperties": false
+    },
+    "fixture": {
+      "type": "object",
+      "properties": {
+        "fixture_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "kind": {
+          "enum": [
+            "toilet_reference",
+            "shower_reference",
+            "sink_cooking_reference",
+            "refrigerator_reference",
+            "other_reference"
+          ]
+        },
+        "room_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "footprint_m": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "fixture_id",
+        "kind",
+        "room_id",
+        "footprint_m"
+      ],
+      "additionalProperties": false
+    },
+    "device": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+            },
+            "kind": {
+              "const": "washer"
+            },
+            "placement": {
+              "enum": [
+                "floor",
+                "wall",
+                "exterior"
+              ]
+            },
+            "using_household_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "power_kw": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "nameplate_W": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                }
+              },
+              "required": [
+                "power_kw",
+                "nameplate_W"
+              ],
+              "additionalProperties": false
+            },
+            "connections": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "electricity",
+                  "water",
+                  "drain",
+                  "exhaust",
+                  "outdoor_heat_exchange",
+                  "dedicated_parking"
+                ]
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "room": {
+              "type": "string",
+              "minLength": 1
+            },
+            "footprint_m": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "mount_width_m": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "asset_id",
+            "kind",
+            "placement",
+            "using_household_ids",
+            "parameters",
+            "connections"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+            },
+            "kind": {
+              "const": "dryer"
+            },
+            "placement": {
+              "enum": [
+                "floor",
+                "wall",
+                "exterior"
+              ]
+            },
+            "using_household_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "power_kw": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "nameplate_W": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                }
+              },
+              "required": [
+                "power_kw",
+                "nameplate_W"
+              ],
+              "additionalProperties": false
+            },
+            "connections": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "electricity",
+                  "water",
+                  "drain",
+                  "exhaust",
+                  "outdoor_heat_exchange",
+                  "dedicated_parking"
+                ]
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "room": {
+              "type": "string",
+              "minLength": 1
+            },
+            "footprint_m": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "mount_width_m": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "asset_id",
+            "kind",
+            "placement",
+            "using_household_ids",
+            "parameters",
+            "connections"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+            },
+            "kind": {
+              "const": "dishwasher"
+            },
+            "placement": {
+              "enum": [
+                "floor",
+                "wall",
+                "exterior"
+              ]
+            },
+            "using_household_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "power_kw": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "nameplate_W": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                }
+              },
+              "required": [
+                "power_kw",
+                "nameplate_W"
+              ],
+              "additionalProperties": false
+            },
+            "connections": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "electricity",
+                  "water",
+                  "drain",
+                  "exhaust",
+                  "outdoor_heat_exchange",
+                  "dedicated_parking"
+                ]
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "room": {
+              "type": "string",
+              "minLength": 1
+            },
+            "footprint_m": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "mount_width_m": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "asset_id",
+            "kind",
+            "placement",
+            "using_household_ids",
+            "parameters",
+            "connections"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+            },
+            "kind": {
+              "const": "ac"
+            },
+            "placement": {
+              "enum": [
+                "floor",
+                "wall",
+                "exterior"
+              ]
+            },
+            "using_household_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "nameplate_W": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "cooling_capacity_W": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "heating_capacity_W": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "cooling_COP": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "heating_COP": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "air_flow_m3_s": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "fan_power_W": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "fan_pressure_Pa": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "sensible_heat_ratio": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "supplemental_capacity_W": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "defrost_capacity_W": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "nameplate_W",
+                "cooling_capacity_W",
+                "heating_capacity_W",
+                "cooling_COP",
+                "heating_COP",
+                "air_flow_m3_s",
+                "fan_power_W",
+                "fan_pressure_Pa",
+                "sensible_heat_ratio",
+                "supplemental_capacity_W",
+                "defrost_capacity_W"
+              ],
+              "additionalProperties": false
+            },
+            "connections": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "electricity",
+                  "water",
+                  "drain",
+                  "exhaust",
+                  "outdoor_heat_exchange",
+                  "dedicated_parking"
+                ]
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "room": {
+              "type": "string",
+              "minLength": 1
+            },
+            "footprint_m": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "mount_width_m": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "asset_id",
+            "kind",
+            "placement",
+            "using_household_ids",
+            "parameters",
+            "connections"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+            },
+            "kind": {
+              "const": "water_heater"
+            },
+            "placement": {
+              "enum": [
+                "floor",
+                "wall",
+                "exterior"
+              ]
+            },
+            "using_household_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "nameplate_W": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "volume_m3": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "height_m": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "heater_capacity_W": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "maximum_C": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "deadband_C": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "skin_loss_W_m2K": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "efficiency": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "number_of_nodes": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                }
+              },
+              "required": [
+                "nameplate_W",
+                "volume_m3",
+                "height_m",
+                "heater_capacity_W",
+                "maximum_C",
+                "deadband_C",
+                "skin_loss_W_m2K",
+                "efficiency",
+                "number_of_nodes"
+              ],
+              "additionalProperties": false
+            },
+            "connections": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "electricity",
+                  "water",
+                  "drain",
+                  "exhaust",
+                  "outdoor_heat_exchange",
+                  "dedicated_parking"
+                ]
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "room": {
+              "type": "string",
+              "minLength": 1
+            },
+            "footprint_m": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "mount_width_m": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "asset_id",
+            "kind",
+            "placement",
+            "using_household_ids",
+            "parameters",
+            "connections"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+            },
+            "kind": {
+              "const": "ev"
+            },
+            "placement": {
+              "enum": [
+                "floor",
+                "wall",
+                "exterior"
+              ]
+            },
+            "using_household_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "nameplate_W": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "charger_kw": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "capacity_kwh": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "efficiency": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "target_soc": {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                "minimum_soc": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "initial_energy_kwh": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "nameplate_W",
+                "charger_kw",
+                "capacity_kwh",
+                "efficiency",
+                "target_soc",
+                "minimum_soc",
+                "initial_energy_kwh"
+              ],
+              "additionalProperties": false
+            },
+            "connections": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "electricity",
+                  "water",
+                  "drain",
+                  "exhaust",
+                  "outdoor_heat_exchange",
+                  "dedicated_parking"
+                ]
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "room": {
+              "type": "string",
+              "minLength": 1
+            },
+            "footprint_m": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "minItems": 2,
+              "maxItems": 2
+            },
+            "mount_width_m": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "asset_id",
+            "kind",
+            "placement",
+            "using_household_ids",
+            "parameters",
+            "connections"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "control": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+            },
+            "kind": {
+              "const": "ac_setpoint"
+            },
+            "start_min": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1440,
+              "multipleOf": 10
+            },
+            "end_min": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1440,
+              "multipleOf": 10
+            },
+            "heating_setpoint_C": {
+              "type": "number"
+            },
+            "cooling_setpoint_C": {
+              "type": "number"
+            },
+            "fan_operating_mode": {
+              "enum": [
+                0,
+                1
+              ]
+            }
+          },
+          "required": [
+            "asset_id",
+            "kind",
+            "start_min",
+            "end_min",
+            "heating_setpoint_C",
+            "cooling_setpoint_C",
+            "fan_operating_mode"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+            },
+            "kind": {
+              "const": "tank_setpoint"
+            },
+            "start_min": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1440,
+              "multipleOf": 10
+            },
+            "end_min": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1440,
+              "multipleOf": 10
+            },
+            "value_C": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "asset_id",
+            "kind",
+            "start_min",
+            "end_min",
+            "value_C"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "asset_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+            },
+            "kind": {
+              "const": "ev_charge_window"
+            },
+            "start_min": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1440,
+              "multipleOf": 10
+            },
+            "end_min": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1440,
+              "multipleOf": 10
+            },
+            "stop_at_target_soc": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          },
+          "required": [
+            "asset_id",
+            "kind",
+            "start_min",
+            "end_min",
+            "stop_at_target_soc"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "event": {
+      "type": "object",
+      "properties": {
+        "start_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1440,
+          "multipleOf": 10
+        },
+        "end_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1440,
+          "multipleOf": 10
+        },
+        "location": {
+          "enum": [
+            "home",
+            "away"
+          ]
+        },
+        "room": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "activity": {
+          "type": "string",
+          "minLength": 1
+        },
+        "available_for_operation": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "start_min",
+        "end_min",
+        "location",
+        "room",
+        "activity",
+        "available_for_operation"
+      ],
+      "additionalProperties": false
+    },
+    "calendar": {
+      "type": "object",
+      "properties": {
+        "weekday": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/event"
+          },
+          "minItems": 1
+        },
+        "weekend": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/event"
+          },
+          "minItems": 1
+        },
+        "date_overrides": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/event"
+            },
+            "minItems": 1
+          }
+        }
+      },
+      "required": [
+        "weekday",
+        "weekend"
+      ],
+      "additionalProperties": false
+    },
+    "service": {
+      "type": "object",
+      "properties": {
+        "service_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "asset_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "kind": {
+          "enum": [
+            "washer",
+            "dryer",
+            "dishwasher"
+          ]
+        },
+        "operator_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "start_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1440,
+          "multipleOf": 10
+        },
+        "duration_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1440,
+          "multipleOf": 10
+        },
+        "retrieval_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1440,
+          "multipleOf": 10
+        },
+        "release_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1440,
+          "multipleOf": 10
+        },
+        "deadline_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1440,
+          "multipleOf": 10
+        },
+        "weekdays": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "after_service_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        }
+      },
+      "required": [
+        "service_id",
+        "asset_id",
+        "kind",
+        "operator_id",
+        "start_min",
+        "duration_min",
+        "retrieval_min",
+        "release_min",
+        "deadline_min",
+        "weekdays"
+      ],
+      "additionalProperties": false
+    },
+    "case": {
+      "type": "object",
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "service_shifts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "service_id": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+              },
+              "shift_min": {
+                "type": "integer",
+                "multipleOf": 10,
+                "minimum": -1440,
+                "maximum": 1440
+              }
+            },
+            "required": [
+              "service_id",
+              "shift_min"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0
+        },
+        "control_overrides": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/control"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "case_id",
+        "date",
+        "service_shifts",
+        "control_overrides"
+      ],
+      "additionalProperties": false
+    },
+    "connection": {
+      "type": "object",
+      "properties": {
+        "operator_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "plug_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1440,
+          "multipleOf": 10
+        },
+        "unplug_min": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1440,
+          "multipleOf": 10
+        },
+        "anchor_state": {
+          "const": "plugged"
+        },
+        "journeys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "departure_min": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1440,
+                "multipleOf": 10
+              },
+              "traction_kWh": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            },
+            "required": [
+              "departure_min",
+              "traction_kWh"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "operator_id",
+        "plug_min",
+        "unplug_min",
+        "anchor_state",
+        "journeys"
+      ],
+      "additionalProperties": false
+    },
+    "household": {
+      "type": "object",
+      "properties": {
+        "household_id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+        },
+        "anchor": {
+          "type": "string",
+          "format": "date"
+        },
+        "end_exclusive": {
+          "type": "string",
+          "format": "date"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/member"
+          },
+          "minItems": 1
+        },
+        "sleep_groups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sleep_group"
+          },
+          "minItems": 1
+        },
+        "fixtures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fixture"
+          },
+          "minItems": 0
+        },
+        "devices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/device"
+          },
+          "minItems": 0
+        },
+        "electrical_supply_W": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "exhaust_power_budget_W": {
+          "type": "number",
+          "minimum": 0
+        },
+        "background": {
+          "type": "object",
+          "properties": {
+            "lighting_W_m2": {
+              "type": "number",
+              "minimum": 0
+            },
+            "misc_W_m2": {
+              "type": "number",
+              "minimum": 0
+            },
+            "refrigerator_W": {
+              "type": "number",
+              "minimum": 0
+            },
+            "cooking_W": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "lighting_W_m2",
+            "misc_W_m2",
+            "refrigerator_W",
+            "cooking_W"
+          ],
+          "additionalProperties": false
+        },
+        "hot_water_minimum_C": {
+          "type": "number"
+        },
+        "calendars": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/calendar"
+          }
+        },
+        "services": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/service"
+          },
+          "minItems": 0
+        },
+        "controls": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/control"
+          },
+          "minItems": 0
+        },
+        "ev_connection": {
+          "$ref": "#/$defs/connection"
+        },
+        "cases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/case"
+          },
+          "minItems": 1
+        },
+        "facility_reservations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "room_id": {
+                  "type": "string",
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,120}$"
+                },
+                "start_min": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1440,
+                  "multipleOf": 10
+                },
+                "end_min": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1440,
+                  "multipleOf": 10
+                }
+              },
+              "required": [
+                "room_id",
+                "start_min",
+                "end_min"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 0
+          }
+        }
+      },
+      "required": [
+        "household_id",
+        "anchor",
+        "end_exclusive",
+        "members",
+        "sleep_groups",
+        "fixtures",
+        "devices",
+        "electrical_supply_W",
+        "exhaust_power_budget_W",
+        "background",
+        "hot_water_minimum_C",
+        "calendars",
+        "services",
+        "controls",
+        "cases"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

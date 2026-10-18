@@ -48,8 +48,14 @@ def read(path):
 def save(path, value):
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
-    raw = (json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + '\n').encode()
-    p.write_bytes(gzip.compress(raw, mtime=0) if p.suffix == '.gz' else raw)
+    raw = (json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False) + '\n').encode()
+    p.write_bytes(portable_gzip(raw) if p.suffix == '.gz' else raw)
+
+
+def portable_gzip(raw):
+    data=gzip.compress(raw,mtime=0)
+    # CPython3.11/3.12 delegate OS-byte selection to zlib; normalize that header.
+    return data[:9]+b'\xff'+data[10:]
 
 
 def bound(root, item):
@@ -77,7 +83,7 @@ def fresh(path):
 
 def seal(folder, data):
     data['files'] = {str(p.relative_to(folder)): sha(p) for p in sorted(folder.rglob('*'))
-                     if p.is_file() and p.name != 'MANIFEST.json'}
+                     if p.is_file() and p != folder / 'MANIFEST.json'}
     save(folder / 'MANIFEST.json', data)
     return data
 
@@ -86,6 +92,8 @@ def verify(folder):
     folder = Path(folder).resolve()
     data = read(folder / 'MANIFEST.json')
     failures = []
+    actual={str(p.relative_to(folder))for p in folder.rglob('*')if p.is_file()and p!=folder/'MANIFEST.json'}
+    failures.extend(sorted(actual-set(data['files'])))
     for rel, expected in data['files'].items():
         p = (folder / rel).resolve()
         if not p.is_relative_to(folder) or not p.is_file() or sha(p) != expected:
@@ -158,6 +166,9 @@ def build_shell(config, output):
     if not hh or len({identifier(h['household_id']) for h in hh}) != len(hh):
         raise ValueError('empty batch or duplicate household ids')
     out = fresh(output)
+    save(out/'_inputs/assembly.json',a)
+    recipe={**job,'assembly':{'path':'assembly.json','sha256':sha(out/'_inputs/assembly.json')}}
+    save(out/'_inputs/shell.json',recipe)
     records = []
     for h in hh:
         hid = h['household_id']
@@ -299,10 +310,15 @@ def compile_pairs(config, output):
             raise ValueError('household/pair identity mismatch')
         if not {'A', 'B', 'schedule_hashes', 'date'} <= set(pair):
             raise ValueError('incomplete A/B input')
-        # The preserved kernel's calendar mapping currently supports this range.
+        if pack['world'].get('input_kind','').startswith('declared_reference_household'):
+            if any(pair['schedule_hashes'][s]!=digest(pair[s])for s in ('A','B')) or pair['source_pair_sha256']!=digest({k:v for k,v in pair.items()if k!='source_pair_sha256'}):
+                raise ValueError('assembled pair internal hash mismatch')
         start, end = dt.date.fromisoformat(pack['anchor']), dt.date.fromisoformat(pack['end_exclusive'])
-        if start.year != 2024 or end.year != 2026 or not start <= dt.date.fromisoformat(pair['date']) < end:
-            raise ValueError('kernel calendar domain requires2024/25/26 reference schedule coverage')
+        date=dt.date.fromisoformat(pair['date'])
+        if not start <= date < end:
+            raise ValueError('case date outside declared calendar')
+        if date-dt.timedelta(days=settings['history_days'])<start:
+            raise ValueError('insufficient history calendar; implicit truncation is not admitted')
         weather = bound(root, {'path': pack['weather'], 'sha256': pack['weather_sha256']})
         inputs.append((item, pack_path, pair_path, weather))
     out = fresh(output)
@@ -415,6 +431,11 @@ def main():
     for command in ('extract-native', 'build-shell', 'compile'):
         p = sub.add_parser(command); p.add_argument('--input', type=Path, required=True); p.add_argument('--out', type=Path, required=True)
     p = sub.add_parser('verify'); p.add_argument('directory', type=Path)
+    p = sub.add_parser('assemble'); p.add_argument('--input', type=Path, required=True); p.add_argument('--shells', type=Path, required=True)
+    p.add_argument('--weather', type=Path, required=True); p.add_argument('--out', type=Path, required=True)
+    p = sub.add_parser('audit'); p.add_argument('--compiled', type=Path, required=True); p.add_argument('--runs', type=Path, required=True); p.add_argument('--out', type=Path, required=True)
+    p = sub.add_parser('reproduce'); p.add_argument('--energyplus-dir', type=Path, required=True); p.add_argument('--weather', type=Path)
+    p.add_argument('--out', type=Path, required=True)
     p = sub.add_parser('run'); p.add_argument('--compiled', type=Path, required=True); p.add_argument('--out', type=Path, required=True)
     p.add_argument('--engine', type=Path, required=True); p.add_argument('--engine-sha256', required=True); p.add_argument('--timeout', type=int, default=300)
     args = parser.parse_args()
@@ -425,10 +446,21 @@ def main():
         elif args.command == 'extract-native': result = extract_native(args.input.resolve(), args.out)
         elif args.command == 'build-shell': result = build_shell(args.input.resolve(), args.out)
         elif args.command == 'compile': result = compile_pairs(args.input.resolve(), args.out)
+        elif args.command == 'assemble':
+            from .assembly import assemble
+            result=assemble(args.input.resolve(),args.shells,args.weather,args.out)
+        elif args.command == 'audit':
+            from .validation import audit
+            result=audit(args.compiled,args.runs,args.out)
+        elif args.command == 'reproduce':
+            from .validation import reproduce
+            result=reproduce(args.energyplus_dir,args.weather,args.out)
         elif args.command == 'run': result = run_pairs(args.compiled, args.out, args.engine, args.engine_sha256, args.timeout)
         else: result = verify(args.directory)
-        print(json.dumps({k: v for k, v in result.items() if k != 'files'}, ensure_ascii=False, indent=2))
-        return int(any(r.get('status') in ('rejected', 'failed', 'compile_failed', 'engine_failed', 'readback_or_engine_failed')
+        display={k:v for k,v in result.items()if k!='files'}
+        if 'records'in display:display['records']=[{k:v for k,v in r.items()if k not in ('checks','details')}for r in display['records']]
+        print(json.dumps(display, ensure_ascii=False, indent=2))
+        return int(result.get('passed') is False or any(r.get('status') in ('rejected', 'failed', 'compile_failed', 'engine_failed', 'readback_or_engine_failed')
                        for r in result.get('records', [])))
     except (OSError, ValueError, KeyError, TypeError, ImportError, subprocess.SubprocessError) as e:
         print(json.dumps({'status': 'failed', 'reason': str(e)}, ensure_ascii=False), file=sys.stderr)

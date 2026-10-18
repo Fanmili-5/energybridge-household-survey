@@ -2,7 +2,7 @@
 
 ## 1. 通用约定
 
-本规范定义原型匹配、原生提取、外壳生成和配对仿真的数据接口。各阶段采用独立配置文件，批次规模由输入列表长度确定。
+本规范定义原型匹配、原生提取、外壳生成、家庭世界装配和配对仿真的数据接口。各阶段采用独立配置文件，批次规模由输入列表长度确定。
 
 | 项目 | 约定 |
 | --- | --- |
@@ -14,7 +14,7 @@
 | 资源引用 | `{path, sha256}`；路径解析后须位于声明的资源根目录内 |
 | 输出版本 | 每次执行使用新目录；阶段清单保存已登记产物哈希 |
 
-字段表为输入规范。当前实现执行哈希、路径、标识、部分数值及运行依赖检查，未配置覆盖所有嵌套字段的 JSON Schema 验证器。设备特定字段的完整性由编译器在执行时检查。
+家庭装配输入先按`WORLD.schema.json`执行JSON Schema 2020-12结构验证，随后执行跨字段、房间使用权、安装与服务约束检查。未知字段、重复标识、非有限数值及超域条件返回明确错误。其他阶段执行各自的路径、哈希、标识和物理参数检查。
 
 ## 2. 原型匹配接口
 
@@ -105,18 +105,79 @@ OUTPUT_DIRECTORY/
 
 可执行配置见 [shell_batch.json](examples/shell_batch.json)。
 
-## 5. 家庭世界集成接口
+## 5. 家庭世界装配接口
 
-外壳产物进入物理编译前，集成阶段应完成以下绑定：
+```bash
+python -B -m benchmark.housing_simulation assemble \
+  --input world_batch.json --shells /tmp/shells \
+  --weather /path/to/weather.epw --out /tmp/worlds
+```
 
-1. 将 `layout.json` 写入家庭世界的 `world.layout`，保留房间及共享标识。
-2. 完成成员房间分配、床位与通行、照护及设备安装检查。
-3. 为设备资产绑定房间、参数、供电范围及使用与控制权限。
-4. 生成完整成员日历、操作人员窗口、设施预约及服务需求。
-5. 将已核验外壳转换为 `shell_rows`，同时记录原外壳字节哈希。
-6. 导入策略模块提供的 A/B 请求，并核对家庭、资产、需求和日期标识。
+结构定义为[WORLD.schema.json](WORLD.schema.json)，完整非空输入见[world_batch.json](examples/world_batch.json)。`--shells`必须是通过清单核验的`build-shell`输出；家庭标识与外壳标识一致。天气是显式文件路径，复制后的字节哈希和实际LOCATION头写入装配清单，来源说明与实际文件身份分别保存。
 
-当前包接收上述完整家庭世界，未提供从一般人口画像到该结构的自动装配器。`make-demo`仅实现无居民、无目标可控设备的最小集成测试实例。带设备的集成验证使用受控上游家庭包，结果见[验证规范](VALIDATION.md)。
+### 5.1 作业配置
+
+| 字段 | 类型 | 定义 |
+| --- | --- | --- |
+| `schema` | string | 固定为`eb.housing_world.input.v1` |
+| `weather_source` | object | 数据提供方、来源URL、版本及用途说明；不替代实际文件哈希 |
+| `settings` | object | 必需：`history_days`、`tail_days`、`reference_ach`、`portal_flow_scale` |
+| `thermal_fractions` | object | washer/dryer/dishwasher/misc/refrigerator/cooking各自的`[latent,radiant,lost]`，各项0–1且和不超过1；剩余部分为对流 |
+| `households` | object[] | 非空家庭列表；全局家庭标识与案例标识唯一 |
+
+### 5.2 家庭契约
+
+| 字段 | 类型 | 定义 |
+| --- | --- | --- |
+| `household_id` | string | 目标家庭及外壳标识 |
+| `anchor`、`end_exclusive` | ISO date | 完整日历区间，终点不含；长度1–730天 |
+| `members` | object[] | 整个物理住宅内的完整名册，包含共享邻户 |
+| `sleep_groups` | object[] | 一或二人睡眠组、参考床尺寸与可选指定卧室 |
+| `fixtures` | object[] | 便器、淋浴、厨房台及冰箱等矩形参考包络 |
+| `devices` | object[] | 资产、类别、使用家庭、安装、服务连接与物理参数 |
+| `electrical_supply_W` | number | 住宅供电功率上界，W |
+| `exhaust_power_budget_W` | number | 供电筛查的排风功率预算，W |
+| `background` | object | `lighting_W_m2`、`misc_W_m2`、`refrigerator_W`、`cooking_W` |
+| `hot_water_minimum_C` | number | 参考热水出口最低服务温度，°C |
+| `calendars` | object | 成员引用的工作日、周末及可选日期事件模板 |
+| `services` | object[] | 洗衣、干衣及洗碗的日常需求与执行时点 |
+| `controls` | object[] | 设备日常控制；热泵与水箱要求每日连续完整覆盖 |
+| `ev_connection` | object | 安装EV时必需：操作人、每日接插时点、初始连接状态及行程 |
+| `cases` | object[] | 非空案例列表，含日期、服务位移及控制覆盖 |
+| `facility_reservations` | object | 可选；按日期声明的房间预约 |
+
+成员字段为`member_id`、`household_id`、`age_years`、`calendar_id`、`hot_water_liters`及`can_operate_asset_ids`。`hot_water_liters`是每次洗浴的水箱出口热水量，单位L；零表示无该热水需求。全住宅每位成员恰好分配一个床位。睡眠组字段为`group_id`、`member_ids`、`capacity`、`bed_footprint_m`及可选`room_id`。
+
+设施字段为`fixture_id`、`kind`、`room_id`、`footprint_m`。已声明卫生间必须提供`toilet_reference`和`shower_reference`；厨房必须提供`sink_cooking_reference`和`refrigerator_reference`。设施是安装占地见证，排水网络和高度不在本接口中求解。
+
+### 5.3 资产与参数
+
+通用字段为`asset_id`、`kind`、`using_household_ids`、`placement`、`parameters`和`connections`。落地设备另需`room`、`footprint_m`，壁挂设备另需`room`、`mount_width_m`，EV使用`placement=exterior`。每个资产均声明`parameters.nameplate_W`。
+
+房间可使用具体标识，或`$living`、`$kitchen`、`$bath`、`$sleep:member_id`选择器。公共选择器按功能优先级和房间标识确定；最终房间写入输出。使用家庭必须有对应房间使用权。
+
+| `kind` | 专用参数 | 必需服务连接 |
+| --- | --- | --- |
+| `washer` / `dryer` / `dishwasher` | `power_kw` | 电；洗衣/洗碗另需水与排水；干衣另需排风 |
+| `ac` | 冷/热容量W、冷/热COP、风量m³/s、风机功率W及压升Pa、显热比、补热及除霜功率W | 电、室外换热 |
+| `water_heater` | 体积m³、高度m、加热功率W、最高温度°C、死区°C、面散热系数W/(m²·K)、效率、2–12个节点 | 电、水 |
+| `ev` | 充电功率kW、容量kWh、效率、目标与最低SOC、锚点初始电量kWh | 电、专用停车 |
+
+精确键名及数值边界由Schema和`assembly.bind_world`定义。储水箱与EV各至多一个；热泵可按房间配置多个。壁挂宽度检查不输出三维安装证明。
+
+### 5.4 日历、服务与案例
+
+日历模板含`weekday`、`weekend`及可选`date_overrides[YYYY-MM-DD]`。事件字段为`start_min`、`end_min`、`location`、`room`、`activity`、`available_for_operation`。时间为当日分钟，按10 min对齐，采用左闭右开区间。每天恰好覆盖`[0,1440)`；在家事件绑定可访问房间，离家事件`room=null`。`sleep`、`bath`及`dinner`用于睡眠、独占洗浴与烹饪排风绑定。操作窗口必须由输入显式允许，睡眠和洗浴期间不得操作。
+
+服务字段为`service_id`、`asset_id`、`kind`、`operator_id`、`start_min`、`duration_min`、`retrieval_min`、`release_min`、`deadline_min`及`weekdays`（0=周一）。装载在程序开始前10 min执行，取出持续10 min。干衣可通过`after_service_id`声明洗衣前序；前序必须取出完成后才能装载。日常服务与接插操作均接受人员、房间及设备冲突检查。
+
+案例字段为`case_id`、`date`、`service_shifts`及`control_overrides`。服务位移对同一需求的装载、程序、取出整体平移，需求释放与截止不变。控制种类分别为`ac_setpoint`、`tank_setpoint`、`ev_charge_window`，精确字段见Schema。通知时点固定为案例日起480 min；改变通知前事件的请求拒绝。EV接插和行程保持不变，仅允许调整充电窗口或目标SOC。B方案的执行失败作为结果保留，审计返回失败，不自动改写请求。
+
+### 5.5 产物与状态
+
+保存可重用的`assembly_input.json`快照；每户输出`households/<id>/world.json`和`physics.json.gz`；每案例输出`pairs/<case>.json.gz`；批次输出可直接提交`compile`的`physics_job.json`。世界文件保存床位与设施安装见证、解析后的资产和成员、供电账目及项目规则身份。
+
+`assembled`表示该户通过结构、空间、权限、供电及完整基线执行检查。`rejected`保留家庭标识及原因，并计入`households_requested`。失败家庭不进入编译队列；任一拒绝均使CLI返回非零退出码。批次结构错误在创建输出前返回；资源读取失败返回非零退出码，并保留已创建的诊断目录。所有阶段输出目录必须不存在。
 
 ## 6. 配对物理编译接口
 
@@ -155,7 +216,7 @@ OUTPUT_DIRECTORY/
 
 | 运行参数 | 默认值 | 接口约束 |
 | --- | ---: | --- |
-| `history_days` | 112 | 非负整数；实际前史可被输入起点截断 |
+| `history_days` | 112 | 非负整数；输入必须完整覆盖请求前史，装配接口要求至少1天 |
 | `tail_days` | 8 | 正整数；实际尾期还受最后请求及可用终点约束 |
 | `reference_ach` | 0.35 | `0 < value ≤ 3` |
 | `portal_flow_scale` | 1.0 | `0.5`、`1.0`、`2.0` |
@@ -176,7 +237,7 @@ OUTPUT_DIRECTORY/
 | `journeys`、`EV_battery_energy_events` | 行程及连续电池事件 |
 | `weather`、`weather_sha256` | EPW 相对资源根目录的路径及哈希 |
 
-`days[date]` 包含 `calendars`、`operator_windows`、`family.bath_times_min`、`family.member_dinners_min`、`shared.member_calendars`、`shared.facility_reservations` 和 `controls`；启用热水服务时另含 `water_needs`。当前参考日程覆盖 2024/2025/2026 年。
+`days[date]` 包含 `calendars`、`operator_windows`、`family.bath_times_min`、`family.member_dinners_min`、`shared.member_calendars`、`shared.facility_reservations` 和 `controls`；启用热水服务时另含 `water_needs`。输入不依赖固定年份；实际运行区间须不含2月29日且不超过365天，完整覆盖前史及恢复期。
 
 ### 6.3 配对请求
 
@@ -198,3 +259,12 @@ OUTPUT_DIRECTORY/
 | 批次传递 | `compile_failed` | 编译失败条目在执行批次中的保留状态 |
 
 设备服务失败保存在模型执行信息中，与引擎状态分别解释。`verify`校验清单登记文件的字节一致性；物理和服务验收见[验证规范](VALIDATION.md)。
+
+## 8. 统一物理审计接口
+
+```bash
+python -B -m benchmark.housing_simulation audit \
+  --compiled /tmp/compiled --runs /tmp/runs --out /tmp/audit
+```
+
+审计验证编译清单与运行清单绑定，输出`MANIFEST.json`中的`passed`、逐案例`checks`及`details`。失败返回非零退出码。服务失败与引擎失败分别记录；引擎运行完成不等价于家庭服务完成。检查公式和容差见[验证规范](VALIDATION.md)。

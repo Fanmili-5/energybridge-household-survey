@@ -88,7 +88,7 @@ def make(profile,facet,assembly,s,shape,check=True):
    'census_toilet_facility_reference_present':old_name=='toilet' and facet['toilet']!='none','physical_toilet_fixture_geometry_instantiated':False,'toilet_facility_reference_class':facet['toilet'] if old_name=='toilet' else None,
    'bathing_service_type':facet['bathing_hot_water'] if old_name=='toilet' else None})
  polygons=[box(*rr['gross_rect_m']) for rr in rooms];union=unary_union(polygons);assert abs(sum(p.area for p in polygons)-union.area)<1e-7 and abs(union.area-W*D)<1e-7
- allocated={h:sum(rr['gross_area_m2']*rr['area_allocation_fractions'].get(h,0) for rr in rooms) for h in set(h for rr in rooms for h in rr['area_allocation_fractions'])}
+ allocated={h:sum(rr['gross_area_m2']*rr['area_allocation_fractions'].get(h,0) for rr in rooms) for h in sorted(set(h for rr in rooms for h in rr['area_allocation_fractions']))}
  assert abs(sum(allocated.values())-W*D)<1e-7
  corridor=next(rr for rr in rooms if rr['room_id']=='corridor');access=[]
  for rr in rooms:

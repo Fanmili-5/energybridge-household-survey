@@ -1,74 +1,56 @@
-# 住宅模型生成与配对能源仿真
+# 住房与仿真场景生成
 
-## 概述
+本模块提供 benchmark 物理环境的独立构造流程：建筑参数参照、面积约束外壳、家庭世界自动装配、A/B 模型编译、EnergyPlus 执行与物理审计。输入规模由住宅与案例列表确定；运行不需要历史家庭样本、已有物理包或生产批次目录。
 
-`housing_simulation` 是家庭能源偏好 benchmark 的物理环境构造模块。模块根据住宅面积、房间数、共享条件、建筑参数参照和设备控制请求，生成参考住宅外壳及 A/B 配对 EnergyPlus 模型，并保存仿真轨迹、执行日志和文件校验清单。
+`assemble` 将外壳与显式家庭契约转换为完整物理输入，绑定全部居住成员、床位、设施、设备、房间使用权、操作权限、逐日位置、服务依赖及控制。`reproduce` 以公开配置连续执行全部阶段，无须手工编写内部家庭物理包。
 
-模块采用配置驱动的批处理接口，住宅数量和方案数量分别由 `households`、`pairs` 输入列表确定。家庭人口抽样、态度类别及 A/B 策略生成由上游模块负责；本模块负责建筑参数处理、参考几何生成、物理模型编译与数值执行。
+## 运行
 
-## 系统组成
-
-| 组件 | 职责 | 主要产物 |
-| --- | --- | --- |
-| 原型匹配 | 根据地区、建筑类型和目录年代选择参数参照，记录年代差异 | 原型标识、候选数量、参照情景 |
-| 原生参数提取 | 读取 DeST 实际使用的构造、材料和窗参数，核验气象站身份 | `reference.json`、`assembly.json` |
-| 参考外壳生成 | 在给定面积和房间条件下生成参考平面与多热区外壳 | `layout.json`、`shell.idf`、几何元数据 |
-| A/B 模型编译 | 将完整家庭世界、日程及控制请求编译为配对物理模型 | 两臂 `model.idf`、`INPUT.json.gz` |
-| 仿真执行与回读 | 使用固定引擎运行模型，读取电表和热环境轨迹 | 原始 SQL、`TRACE.json.gz`、执行回执 |
-| 产物核验 | 校验已登记产物的内容哈希 | 文件一致性检查结果 |
-
-外壳生成与家庭物理编译采用独立接口。前者输出几何和围护结构；后者接收已完成成员、设备安装、操作权限及服务需求绑定的家庭世界。两者之间的家庭世界装配属于集成接口，当前版本未提供自动装配命令。
-
-## 安装
-
-运行环境为 Python 3.10 或更高版本。几何计算依赖 SciPy 和 Shapely；原生 Access 提取使用可选解析器；仿真执行要求 EnergyPlus `24.1.0-9d7789a3ac`。
+在仓库根目录执行，使用 Python 3.12–3.14 和 [EnergyPlus 24.1.0](https://github.com/NatLabRockies/EnergyPlus/releases/tag/v24.1.0)。
 
 ```bash
+python -m venv .venv-housing
+source .venv-housing/bin/activate
 python -m pip install -r benchmark/housing_simulation/requirements.txt
+python -B -m benchmark.housing_simulation reproduce \
+  --energyplus-dir /path/to/EnergyPlus-24-1-0 \
+  --out /tmp/housing-reproduction
 ```
 
-原生提取依赖及引擎配置见[复现指南](REPRODUCE.md)。
+默认天气取自该引擎发行包的 Chicago TMY3 文件。公开实例包括单人住宅、三人家庭及包含一名邻户居民的共享住宅，均装配洗衣机、干衣机、洗碗机、热泵、储水式电热水器和 EV。三对 A/B 的程序时间及控制不同。该实例用于验证生成与执行流程；中国建筑参数与气象资源的使用见[构造方法](METHOD.md)和[复现指南](REPRODUCE.md)。
 
-## 快速开始
+成功执行后，`MANIFEST.json` 的 `passed` 为 `true`，并生成下列目录。命令失败时返回非零退出码，已产生的失败记录保留。
 
-在仓库根目录执行参考外壳示例：
+| 目录 | 内容 |
+| --- | --- |
+| `shells/` | 面积账目、参考布局、外壳 IDF |
+| `worlds/` | 成员与安装绑定、完整家庭物理包、A/B 请求、编译作业 |
+| `compiled/` | 每臂 IDF、执行计划、设备计量映射与输入回执 |
+| `runs/` | 原始引擎日志、SQL、10 min 轨迹与运行结果 |
+| `audit/` | 计量闭合、程序电耗、服务完成、EV、热水、共同前史和恢复检查 |
 
-```bash
-python -B -m benchmark.housing_simulation build-shell \
-  --input benchmark/housing_simulation/examples/shell_batch.json \
-  --out outputs/housing-example
-python -B -m benchmark.housing_simulation verify outputs/housing-example
-```
+## 接口与实现
 
-示例包含三个合成住宅条件，覆盖开间、独立家庭住宅和共享住宅。材料与尺寸为接口测试参数。输出保留每个输入条目的成功状态或拒绝原因；输出目录须为新目录。
+| 命令 | 实现 | 职责 |
+| --- | --- | --- |
+| `match` / `extract-native` | `pipeline.py`、`kernel/native_bundle.py` | 确定性参照选择、原件与气象身份核验、构造提取 |
+| `build-shell` | `kernel/geometry.py`、`kernel/shell.py` | 面积约束、使用权份额和多热区外壳 |
+| `assemble` | `assembly.py`、`WORLD.schema.json` | 家庭契约校验、空间装配、逐日场景与基线执行检查 |
+| `compile` | `components.py`、`kernel/compiler.py`、`kernel/execution.py` | 设备实例化、A/B 请求覆盖、物理执行语义 |
+| `run` / `audit` | `pipeline.py`、`validation.py` | 固定引擎执行、SQL 回读及物理审计 |
+| `reproduce` / `verify` | `validation.py`、`pipeline.py` | 公开端到端复现、阶段产物完整性检查 |
 
-完整工程示例使用自行准备的官方 schema 和 EPW：
+## 技术文件
 
-```bash
-python -B -m benchmark.housing_simulation make-demo \
-  --schema /path/to/Energy+.schema.epJSON \
-  --weather /path/to/reference.epw \
-  --out outputs/physics-demo-inputs
-python -B -m benchmark.housing_simulation compile \
-  --input outputs/physics-demo-inputs/physics_job.json \
-  --out outputs/physics-demo-models
-python -B -m benchmark.housing_simulation run \
-  --compiled outputs/physics-demo-models \
-  --out outputs/physics-demo-runs \
-  --engine /path/to/energyplus \
-  --engine-sha256 ENGINE_BINARY_SHA256
-```
+- [构造方法](METHOD.md)：算法、物理模型、外部依据与项目设定。
+- [数据接口规范](INPUTS.md)：必需字段、单位、状态及阶段契约。
+- [构建与复现指南](REPRODUCE.md)：公开实例、自定义批次与原生资源接入。
+- [验证规范](VALIDATION.md)与[验证记录](VALIDATION.json)：检查条件和实际覆盖范围。
+- [来源登记](SOURCES.json)、[规则与依据映射](RULES.json)、[代码来源映射](SOURCE_MAP.json)：证据支持范围及实现定位。
+- [公开家庭输入](examples/world_batch.json)与[机器可读输入规范](WORLD.schema.json)。
 
-该示例采用无居民、无目标可控设备、A=B 的集成测试条件，用于验证输入生成、模型编译、引擎执行及 SQL 回读。带设备家庭的输入结构见[接口规范](INPUTS.md)。
+## 支持范围
 
-## 技术文档
+外壳为单层矩形参考公寓，采用中间层与南北暴露边界。家庭装配支持全部共享住户名册、每个睡眠组一张参考床、矩形设施与落地设备安装、壁挂宽度预算、声明的接线与管线条件、一个储水箱及一辆 EV。物理模型覆盖声明的人员与设备负荷；原型频率、设备拥有率、照护行为、住宅实测参数和人类接受标签不由该流程估计。
 
-- [构造方法](METHOD.md)：原型选择、参数转换、面积约束、物理编译及建模假设。
-- [接口规范](INPUTS.md)：字段定义、单位、路径规则、输入依赖及输出状态。
-- [复现指南](REPRODUCE.md)：资源准备、执行顺序、版本固定及产物核验。
-- [验证规范](VALIDATION.md)：检查范围、判定条件及已完成的验证记录。
-- [来源注册表](SOURCES.json)与[源码映射](SOURCE_MAP.json)：外部依据、使用范围及算法来源。
-
-## 适用范围
-
-当前外壳生成器支持单层矩形参考公寓，采用中间层、南北暴露的边界条件。物理编译器支持既定参考日历及设备协议。建筑参数来源、研究者设定、数值仿真结果分别记录；模型的实测校准和最终 benchmark 的领域验收按[验证规范](VALIDATION.md)执行。
+无法满足床位、安装、访问权限、供电或基线执行约束的住宅保留为 `rejected`。参考规则的适用边界及未建模条件在方法与验证文件中逐项声明。

@@ -95,6 +95,67 @@
         "project20minute run-on duration",
         "national ventilation facilities prevalence"
       ]
+    },
+    {
+      "id": "energyplus24_release",
+      "url": "https://github.com/NatLabRockies/EnergyPlus/releases/tag/v24.1.0",
+      "kind": "official_software_release",
+      "supports": [
+        "EnergyPlus24.1.0-9d7789a3ac version identity",
+        "official platform archives and release checksums"
+      ],
+      "linux_ubuntu22_x86_64_archive_sha256": "5a1d30c3bd1a304741c495a683c7d6ffd8c07d00dd06783e543b50a631c29017"
+    },
+    {
+      "id": "energyplus24_pthp",
+      "url": "https://github.com/NatLabRockies/EnergyPlus/blob/v24.1.0/testfiles/PackagedTerminalHeatPump.idf",
+      "kind": "official_example_from_versioned_distribution",
+      "source_idf_sha256": "8ec79076fd535c4192de135aa784e4d496a5a39567db21e04224c95c6063e90a",
+      "source_schema_sha256": "d94276ce43d7673d752392f1d1fbc0f66884700ecbbba12d50bfa5f8c709bc72",
+      "bundled_subset": "resources/heat_pump.json",
+      "extraction": "export_resources.export",
+      "supports": [
+        "Zone1 PTHP component topology and performance curves",
+        "official IDF schema field order"
+      ],
+      "not_identified": [
+        "Chinese split-air-conditioner performance calibration",
+        "household equipment ownership"
+      ]
+    },
+    {
+      "id": "energyplus24_forced_air",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-zone-forced-air-units.html",
+      "kind": "official_versioned_manual",
+      "supports": [
+        "PackagedTerminalHeatPump object and schedule interfaces"
+      ]
+    },
+    {
+      "id": "energyplus24_storage",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-water-heaters.html",
+      "kind": "official_versioned_manual",
+      "supports": [
+        "standalone stratified tank with scheduled hot-outlet flow",
+        "node temperatures, use-side flow and energy reporting"
+      ],
+      "not_identified": [
+        "mixing valve or mixed shower water delivery",
+        "actual household tank capacity or efficiency"
+      ]
+    },
+    {
+      "id": "energyplus24_public_weather",
+      "url": "https://github.com/NatLabRockies/EnergyPlus/tree/v24.1.0/weather",
+      "kind": "official_distribution_weather",
+      "supports": [
+        "public Chicago TMY3 integration input identity"
+      ],
+      "file": "WeatherData/USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
+      "sha256": "3cc3dc0c7bcc93e7203e8d9aab657d384315f5a0c86cdede23f792d437a0309f",
+      "not_identified": [
+        "Chinese household climate calibration"
+      ]
     }
   ],
   "scope": "reference dwelling construction and paired energy simulation",

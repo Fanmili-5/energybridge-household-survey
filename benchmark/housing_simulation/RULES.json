@@ -1,0 +1,169 @@
+{
+  "schema": "eb.housing_simulation.rules.v1",
+  "rules": [
+    {
+      "id": "REF-01",
+      "classification": "source_supported_reference",
+      "rule": "DeST原件提供建筑参数参照；目录不估计总体频率。",
+      "sources": [
+        "dest_library",
+        "an2023_prototypes"
+      ],
+      "implementation": "kernel/native_bundle.py:extract",
+      "documentation": "METHOD.md#2"
+    },
+    {
+      "id": "REF-02",
+      "classification": "project_selection_rule",
+      "rule": "同省市、准入与建筑类型优先序过滤后，最小年代区间距离；指定优先项和SHA-256确定并列。",
+      "sources": [
+        "an2023_prototypes"
+      ],
+      "implementation": "pipeline.py:match",
+      "documentation": "METHOD.md#2"
+    },
+    {
+      "id": "WEA-01",
+      "classification": "source_identity_and_project_threshold",
+      "rule": "EPW固定来源与文件哈希；原生接入核验站号、坐标与5km项目身份阈值。",
+      "sources": [
+        "cswd_source_record",
+        "tmyx_provider"
+      ],
+      "implementation": "kernel/native_bundle.py:extract",
+      "documentation": "METHOD.md#3"
+    },
+    {
+      "id": "GEO-01",
+      "classification": "project_geometry_rule",
+      "rule": "明确矩形公寓语法、层高与中间层边界；求根满足本户分配面积，共享面积守恒。",
+      "sources": [],
+      "implementation": "kernel/geometry.py:sized",
+      "documentation": "METHOD.md#4"
+    },
+    {
+      "id": "ASM-01",
+      "classification": "project_contract",
+      "rule": "完整物理住户名册及每成员唯一床位；每组一个本户独占卧室；不推断共享住户人数。",
+      "sources": [],
+      "implementation": "assembly.py:bind_world",
+      "documentation": "METHOD.md#5"
+    },
+    {
+      "id": "ASM-02",
+      "classification": "project_installation_assumption",
+      "rule": "0.1m搜索网格、0.1m矩形间距、0.8m通行带；单/双人床短边至少0.8/1.2m、长边1.8m；壁挂宽度预算。",
+      "sources": [],
+      "implementation": "assembly.py:place",
+      "documentation": "METHOD.md#5"
+    },
+    {
+      "id": "ASM-03",
+      "classification": "declared_input_and_project_gate",
+      "rule": "资产房间使用权、显式接线/给排水/排风等连接；铭牌与背景功率预算不超过供电声明。",
+      "sources": [],
+      "implementation": "assembly.py:bind_world",
+      "documentation": "INPUTS.md#5"
+    },
+    {
+      "id": "ASM-04",
+      "classification": "declared_input_and_project_gate",
+      "rule": "完整逐日日历、家庭资产授权、年龄至少16岁及显式可操作窗口；洗浴独占。",
+      "sources": [],
+      "implementation": "assembly.py:build_pack",
+      "documentation": "METHOD.md#5"
+    },
+    {
+      "id": "EXE-01",
+      "classification": "project_execution_semantics",
+      "rule": "装载/取出10min；失败装载不运行，失败取出持续占用；洗衣前序取出后才可装载干衣；无自动修复。",
+      "sources": [],
+      "implementation": "kernel/execution.py:execute",
+      "documentation": "METHOD.md#6"
+    },
+    {
+      "id": "DEV-01",
+      "classification": "official_mechanism_with_declared_parameters",
+      "rule": "官方PTHP Zone1拓扑与性能曲线；容量、COP、风量与功率来自输入；无本地设备校准含义。",
+      "sources": [
+        "energyplus24_pthp",
+        "energyplus24_forced_air"
+      ],
+      "implementation": "components.py:heat_pump",
+      "documentation": "METHOD.md#5"
+    },
+    {
+      "id": "DEV-02",
+      "classification": "official_mechanism_with_declared_parameters",
+      "rule": "独立分层储水箱，按热水出口L直接放水；不含混水阀，温度与体积按请求核对。",
+      "sources": [
+        "energyplus24_storage"
+      ],
+      "implementation": "components.py:standalone_tank",
+      "documentation": "METHOD.md#5"
+    },
+    {
+      "id": "DEV-03",
+      "classification": "project_reference_model",
+      "rule": "定功率程序、显式内热比例及背景功率；不从原型来源推导设备拥有率或日常功率。",
+      "sources": [],
+      "implementation": "kernel/compiler.py:compile_model",
+      "documentation": "METHOD.md#6"
+    },
+    {
+      "id": "DEV-04",
+      "classification": "project_energy_model",
+      "rule": "连续EV电池能量账；充电受接插、效率、功率和目标SOC约束，出行耗能与最低储备显式提供。",
+      "sources": [],
+      "implementation": "kernel/compiler.py:ev_delivery",
+      "documentation": "METHOD.md#6"
+    },
+    {
+      "id": "ENV-01",
+      "classification": "official_mechanism_with_project_reference",
+      "rule": "质量流量平衡、门户交换、排风与补风；0.35ACH、关闭比例、排风容量及延时为固定参考配置。",
+      "sources": [
+        "ep_mass_conservation",
+        "pnnl_bath_exhaust"
+      ],
+      "implementation": "kernel/thermal_environment.py:add_environment",
+      "documentation": "METHOD.md#6"
+    },
+    {
+      "id": "PAIR-01",
+      "classification": "project_experimental_control",
+      "rule": "A/B共用物理世界、天气和前史；通知时点480min，区间外恢复A；前史与至少7天恢复必须完整。",
+      "sources": [],
+      "implementation": "kernel/compiler.py:compile_model",
+      "documentation": "METHOD.md#6"
+    },
+    {
+      "id": "CAL-01",
+      "classification": "project_calendar_mapping",
+      "rule": "目标年映射2026，月日保持；运行<=365天且无2月29日；人类日历独立保存。",
+      "sources": [],
+      "implementation": "kernel/compiler.py:compile_model",
+      "documentation": "METHOD.md#6"
+    },
+    {
+      "id": "VAL-01",
+      "classification": "project_engineering_acceptance",
+      "rule": "固定版本引擎与SQL回读；计量、服务、共同前史、能量与恢复容差按验证规范执行。",
+      "sources": [
+        "energyplus24_release"
+      ],
+      "implementation": "validation.py:audit",
+      "documentation": "VALIDATION.md#3"
+    },
+    {
+      "id": "PUB-01",
+      "classification": "public_integration_fixture",
+      "rule": "默认Chicago TMY3与合成住宅仅用于独立生成验证；不声称中国住宅总体代表性。",
+      "sources": [
+        "energyplus24_public_weather"
+      ],
+      "implementation": "validation.py:reproduce",
+      "documentation": "REPRODUCE.md#2"
+    }
+  ]
+}

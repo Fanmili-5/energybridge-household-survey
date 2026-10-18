@@ -20,7 +20,44 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - run: python -m pip install -r benchmark/housing_simulation/requirements.txt
-      - run: python -B -m unittest benchmark.housing_simulation.test_pipeline
+      - run: python -B -m unittest benchmark.housing_simulation.test_pipeline benchmark.housing_simulation.test_assembly
       - run: python -B -m benchmark.housing_simulation.verify_package
+
+  physical-reproduction:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r benchmark/housing_simulation/requirements.txt
+      - name: Install pinned official EnergyPlus release
+        shell: bash
+        run: |
+          curl -fL --retry 3 -o "$RUNNER_TEMP/energyplus.tar.gz" \
+            https://github.com/NatLabRockies/EnergyPlus/releases/download/v24.1.0/EnergyPlus-24.1.0-9d7789a3ac-Linux-Ubuntu22.04-x86_64.tar.gz
+          echo "5a1d30c3bd1a304741c495a683c7d6ffd8c07d00dd06783e543b50a631c29017  $RUNNER_TEMP/energyplus.tar.gz" | sha256sum --check
+          mkdir "$RUNNER_TEMP/energyplus"
+          tar -xzf "$RUNNER_TEMP/energyplus.tar.gz" -C "$RUNNER_TEMP/energyplus" --strip-components=1
+      - name: Reproduce with only the standalone package
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/independent/benchmark"
+          cp benchmark/__init__.py "$RUNNER_TEMP/independent/benchmark/"
+          cp -R benchmark/housing_simulation "$RUNNER_TEMP/independent/benchmark/"
+          cd "$RUNNER_TEMP/independent"
+          python -B -m benchmark.housing_simulation reproduce \
+            --energyplus-dir "$RUNNER_TEMP/energyplus" --out "$RUNNER_TEMP/housing-results"
+          python -B -m benchmark.housing_simulation verify "$RUNNER_TEMP/housing-results"
+          python -B -m benchmark.housing_simulation.export_resources \
+            --energyplus-dir "$RUNNER_TEMP/energyplus" --out "$RUNNER_TEMP/official-components"
+          diff -qr benchmark/housing_simulation/resources "$RUNNER_TEMP/official-components"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: housing-physical-reproduction
+          path: ${{ runner.temp }}/housing-results
+          retention-days: 14

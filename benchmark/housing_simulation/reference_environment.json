@@ -33,7 +33,7 @@
     ]
   },
   "saturation": "report100%RH and duration unchanged;no clipping,postprocessing temperature correction or automatic dehumidifier",
-  "source_device_power_and_heat_fractions": "unchanged EB reference",
+  "source_device_power_and_heat_fractions": "new assembled worlds: explicit per-input powers and reference fractions; legacy external packs: pinned EB reference",
   "A_B_source_requests_modified": false,
   "makeup_air": {
     "root_zone": "declared corridor/entry",
