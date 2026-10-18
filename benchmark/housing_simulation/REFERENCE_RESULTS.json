@@ -1,5 +1,5 @@
 {
-  "compiled_manifest_sha256": "822e530d4d5967443494add29064860b8c78c77d777369cc7ef7a0f50c68e48d",
+  "compiled_manifest_sha256": "2ca91182e06e775efe64d388b7804a9b6d26daa51a5030203b297291a8c07472",
   "date": "2026-10-19",
   "empirical_calibration_claimed": false,
   "engine": {
@@ -1563,6 +1563,6 @@
     "shells_file_hashes_identical": true,
     "worlds_file_hashes_identical": true
   },
-  "runs_manifest_sha256": "ee8744114f9c79db66796a7f82586489ac415665f58421c1e37dc3f06d08c500",
+  "runs_manifest_sha256": "f8f8a4732dfeef58f03527a5bc3124949bdef21938796f91d0f04b64c82530ca",
   "schema": "eb.housing_physics.audit.v1"
 }

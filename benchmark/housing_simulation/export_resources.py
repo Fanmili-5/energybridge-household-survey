@@ -1,12 +1,11 @@
 """Recreate the bundled official component subset from an EnergyPlus24.1 install."""
 import argparse
-import gzip
 import json
 from pathlib import Path
 import shutil
 
 from .kernel.core_tools import parse_idf
-from .pipeline import fresh, portable_gzip, read, sha
+from .pipeline import fresh, read, sha
 
 
 def export(energyplus_dir, output):
@@ -15,7 +14,7 @@ def export(energyplus_dir, output):
     if sha(schema)!='d94276ce43d7673d752392f1d1fbc0f66884700ecbbba12d50bfa5f8c709bc72':raise ValueError('official schema hash mismatch')
     out=fresh(output)
     fields={k:v['legacy_idd']['fields']for k,v in read(schema)['properties'].items()if 'fields'in v.get('legacy_idd',{})}
-    (out/'schema_fields.json.gz').write_bytes(portable_gzip((json.dumps(fields,sort_keys=True,separators=(',',':'))+'\n').encode()))
+    (out/'schema_fields.json').write_text(json.dumps(fields,sort_keys=True,separators=(',',':'))+'\n')
     kinds={'ZoneHVAC:PackagedTerminalHeatPump','Fan:SystemModel','Coil:Cooling:DX:SingleSpeed','Coil:Heating:DX:SingleSpeed','Coil:Heating:Electric','OutdoorAir:Mixer'}
     rows=[r for r in parse_idf(idf.read_text())if(r[0]in kinds and r[1].startswith('Zone1'))or r[0].startswith('Curve:')]
     data={'schema':'eb.housing_components.energyplus24.1.v1',

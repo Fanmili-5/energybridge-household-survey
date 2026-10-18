@@ -80,7 +80,7 @@ python -B -m benchmark.housing_simulation extract-native \
 
 ## 5. 官方组件资源重建
 
-包内`resources/heat_pump.json`为官方PTHP示例的Zone1组件及性能曲线子集，`schema_fields.json.gz`为官方schema的IDF字段序列。无需运行引擎即可编译模型。重建命令如下：
+包内`resources/heat_pump.json`为官方PTHP示例的Zone1组件及性能曲线子集，`schema_fields.json`为官方schema的IDF字段序列。无需运行引擎即可编译模型。重建命令如下：
 
 ```bash
 python -B -m benchmark.housing_simulation.export_resources \

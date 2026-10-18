@@ -6,7 +6,7 @@ from pathlib import Path
 
 from .components import heat_pump
 from .kernel.core_tools import parse_idf
-from .pipeline import HERE, bound, digest, fresh, identifier, read, save, seal, sha, verify
+from .pipeline import HERE, bound, digest, fresh, identifier, portable_gzip, read, save, seal, sha, verify
 
 KINDS = {'washer', 'dryer', 'dishwasher', 'ac', 'water_heater', 'ev'}
 CONTROL_KIND = {'ac': 'ac_setpoint', 'water_heater': 'tank_setpoint', 'ev': 'ev_charge_window'}
@@ -258,7 +258,7 @@ def build_pack(spec, world, shell, weather_sha):
           'weather':'inputs/weather.epw','weather_sha256':weather_sha,'shell_rows':parse_idf(shell.read_text()),
           'source_shell_sha256':sha(shell),'hot_water_model':'standalone_hot_outlet',
           'background':spec['background'],'service_needs':[]}
-    fields=read(HERE/'resources/schema_fields.json.gz')
+    fields=read(HERE/'resources/schema_fields.json')
     pack['HVAC']=[heat_pump(d,fields)for d in assets.values()if d['kind']=='ac']
     day=anchor
     while day<end:
@@ -398,7 +398,7 @@ def assemble(config, shells, weather, output):
     require(header[0]=='LOCATION' and len(header)>=10,'invalid EPW location header')
     weather_location={'city':header[1],'region':header[2],'country':header[3],'data_source':header[4],'station':header[5],
                       'latitude':float(header[6]),'longitude':float(header[7]),'utc_offset':float(header[8])}
-    for name in ('schema_fields.json.gz',):shutil.copyfile(HERE/'resources'/name,out/'inputs'/name)
+    (out/'inputs/schema_fields.json.gz').write_bytes(portable_gzip((HERE/'resources/schema_fields.json').read_bytes()))
     shutil.copyfile(weather,out/'inputs/weather.epw');shutil.copyfile(HERE/'reference_environment.json',out/'THERMAL_ENVIRONMENT_POLICY.json')
     # Background gains remain per-household; these rows only carry explicit heat fractions.
     gains=[['Lights','reference_light','','','Watts/Area','',1]]

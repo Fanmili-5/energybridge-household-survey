@@ -4,10 +4,10 @@
   "date": "2026-10-19",
   "empirical_calibration_completed": false,
   "evidence_file": "REFERENCE_RESULTS.json",
-  "evidence_sha256": "f713b4c04419810fd144d14427786d739115211241aa144d06e05ba6fc5a5de4",
+  "evidence_sha256": "ccd7ba64744483c289d0ce3d54946e2ebcd072f8ba4e65d524e7996b79a2339e",
   "human_acceptance_inferred": false,
   "human_answers_created": 0,
-  "package_version": "2.0.0",
+  "package_version": "2.0.1",
   "production_data_modified": false,
   "public_nonempty_reproduction": {
     "A_and_B_different": true,
