@@ -88,7 +88,7 @@ def main():
     p.add_argument('--energyplus-dir', required=True)
     p.add_argument('--out', required=True)
     p = sub.add_parser('reproduce-strategies')
-    p.add_argument('--input', default='benchmark/ab_generation/examples/life/life_batch.json')
+    p.add_argument('--input', default='benchmark/ab_generation/examples/strategy_review/life_batch.json')
     p.add_argument('--world-contracts', default='benchmark/ab_generation/examples/life/world_contracts.json')
     p.add_argument('--shell-config', default='benchmark/housing_simulation/examples/shell_batch.json')
     p.add_argument('--experiments', default='benchmark/ab_generation/examples/strategy_review/experiments.json')

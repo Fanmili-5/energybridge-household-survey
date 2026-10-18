@@ -55,6 +55,11 @@
         "kitchen": "exclusive",
         "toilet": "flush_sanitary",
         "bathing_hot_water": "self_installed_heater"
+      },
+      "geometry_reference": {
+        "profile_id": "xia2025_P1",
+        "source_area_to_model_gross_factor": 1.18,
+        "mapping_rationale": "Declared reference conversion for allocated building gross vs paper indoor area;not measured common-area fraction. Whole shared dwelling is compared,not target household alone."
       }
     },
     {
@@ -66,6 +71,11 @@
         "kitchen": "exclusive",
         "toilet": "flush_sanitary",
         "bathing_hot_water": "self_installed_heater"
+      },
+      "geometry_reference": {
+        "profile_id": "xia2025_P3",
+        "source_area_to_model_gross_factor": 1.18,
+        "mapping_rationale": "Declared reference conversion for allocated building gross vs paper indoor area;not measured common-area fraction. Whole shared dwelling is compared,not target household alone."
       }
     },
     {
@@ -77,6 +87,11 @@
         "kitchen": "shared",
         "toilet": "flush_sanitary",
         "bathing_hot_water": "self_installed_heater"
+      },
+      "geometry_reference": {
+        "profile_id": "xia2025_P6",
+        "source_area_to_model_gross_factor": 1.18,
+        "mapping_rationale": "Declared reference conversion for allocated building gross vs paper indoor area;not measured common-area fraction. Whole shared dwelling is compared,not target household alone."
       }
     }
   ],

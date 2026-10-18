@@ -4,18 +4,23 @@
   "date": "2026-10-19",
   "empirical_calibration_completed": false,
   "evidence_file": "REFERENCE_RESULTS.json",
-  "evidence_sha256": "d384fa0c25a083c3384869352bf777bd81c3c6ff9e73e59e58e5daa42bca7b37",
+  "evidence_sha256": "7045e62cc4bcb8898b99d0dfbee27ef05c16d1c821eaaa8e0d4b00714d1fae53",
   "human_acceptance_inferred": false,
   "human_answers_created": 0,
-  "optional_native_regression": {
-    "all_five_used_opaque_construction_proofs_unchanged": true,
-    "parser_revision": "93571d1bf45a1c72a4368a8b320c2c14ee44476f",
+  "life_AB_integration": {
+    "manifest_sha256": "047b3d914f54bed25f0da9e29b7b9402abef84b31a5a2dbf8e6f9d8f8eed702f",
     "passed": true,
-    "private_source_required_only_for_optional_native_import": true,
-    "registered_original_Access_source_verified": true,
-    "scalar_window_proof_unchanged": true
+    "physical_arms": 12,
+    "public_tests": 44
   },
-  "package_version": "2.1.0",
+  "local_study_execution": {
+    "fresh_execution_command": "python -B -m benchmark.housing_simulation study --energyplus-dir PATH --out NEW_DIRECTORY",
+    "model_matched_reused_arms": 72,
+    "new_engine_arms": 192,
+    "schema": "eb.model_matched_execution_reuse.v1",
+    "thresholds_relaxed": false
+  },
+  "package_version": "3.0.0",
   "production_data_modified": false,
   "public_nonempty_reproduction": {
     "A_and_B_different": true,
@@ -37,7 +42,7 @@
     "engine_started": false,
     "historical_cohort_required": false,
     "passed": true,
-    "tests": 40
+    "tests": 50
   },
   "reproducibility": {
     "all_six_IDF_bytes_identical": true,
@@ -46,14 +51,35 @@
     "shells_file_hashes_identical": true,
     "worlds_file_hashes_identical": true
   },
-  "schema": "eb.housing_simulation.validation.v2",
+  "robustness": {
+    "Morris_complete": true,
+    "all_configuration_audits_passed": true,
+    "convergence_passed": true,
+    "effect_sign_changes": {
+      "example-family-summer": false,
+      "example-family-winter": false,
+      "example-shared-summer": false,
+      "example-shared-winter": false,
+      "example-studio-summer": false,
+      "example-studio-winter": false
+    },
+    "passed": true,
+    "registered_plan_sha256": "c75acc0a8c365d582c0577116a9df1ed929754d75fb3f08880ca1223c003b7f1",
+    "results_sha256": "027d0a226cd78144d12627e4f0e405d2ebca05d867433e15f6f2bb1216f31a85",
+    "selected_reference": {
+      "history_days": 112,
+      "simulation_timestep_min": 5,
+      "tail_days": 9
+    },
+    "simulated_arms": 264
+  },
+  "schema": "eb.housing_simulation.validation.v3",
   "traceability": {
-    "assumption_groups": 12,
-    "evidence_boundary_document": "EVIDENCE.md",
-    "mapped_schema_properties": 220,
-    "review_document": "REVIEW.md",
-    "rules": 18,
-    "sources": 14
+    "assumption_groups": 15,
+    "design_decisions": "DESIGN_DECISIONS.md",
+    "mapped_schema_properties": 236,
+    "rules": 23,
+    "sources": 24
   },
   "zero_warnings_claimed": false
 }

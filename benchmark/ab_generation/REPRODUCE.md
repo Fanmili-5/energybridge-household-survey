@@ -39,7 +39,7 @@ python -B -m benchmark.ab_generation verify outputs/life-AB
 
 该流程重新生成空间绑定、整月A、A=B基线和当前A参考，并分别执行三种B规则及完整后果回读。默认三个公开家庭及芝加哥典型年天气仅用于数值集成，不代表中国家庭校准。所有规模来自配置。
 
-完整策略复核及冬季制热探针：
+完整策略复核及冬季制热探针使用专门的长日历输入，沿用住房v3的112日前史、5分钟求解、10分钟行为/报告和9日尾期：
 
 ```bash
 python -B -m benchmark.ab_generation reproduce-strategies \
@@ -102,7 +102,7 @@ python -B -m benchmark.housing_simulation verify outputs/ab-runs
 
 物理环境另按住房模块安装依赖。当前集成使用EnergyPlus `24.1.0-9d7789a3ac`，每案沿用原A回执的实际前史及尾期；实际尾期还随最后请求延展。不同前史/尾期的案例自动分成多个 `physics_job_history_*_tail_*.json`，清单见 `JOBS.json`；单一设置时使用 `physics_job.json`。原日历不足时拒绝，不能隐式截断或补出日程。所有新请求都重新编译，不复用旧B物理结果。
 
-仿真后使用住房模块 `audit`生成审查，再用 `report-physics --input JOB --compiled COMPILED --runs RUNS --audit AUDIT --imported outputs/ab-import --out REPORT_DIRECTORY`回读后果。旧版可传 `--reference-stage PATH_TO_AC84_STAGE`比较共有A通道；新生活流程使用 `--reference-runs BASELINE_RUNS`核对完整当前A轨迹。报告不触发重选或修复。
+仿真后使用住房模块 `audit`生成审查，再用 `report-physics --input JOB --compiled COMPILED --runs RUNS --audit AUDIT --imported outputs/ab-import --out REPORT_DIRECTORY`回读后果。旧版可传 `--reference-stage PATH_TO_AC84_STAGE`比较共有A通道；住房v3改变模型后这项比较可能失败，此时只保留诊断，不算闭环验收；新生活流程使用 `--reference-runs BASELINE_RUNS`核对完整当前A轨迹。报告不触发重选或修复。
 
 ## 5. 结果解读及版本变更
 

@@ -90,12 +90,26 @@
     },
     {
       "id": "ASM-02",
-      "classification": "project_installation_assumption",
-      "rule": "0.1m搜索网格、0.1m矩形间距、0.8m通行带；单/双人床短边至少0.8/1.2m、长边1.8m；壁挂宽度预算。",
-      "sources": [],
-      "implementation": "assembly.py:place",
+      "classification": "published_clearance_method_with_project_MILP_formulation",
+      "rule": "显式安装包络、0.1m网格、旋转和通行带联合MILP；穷举合法睡眠房间分配；区分网格无解与求解未完成。",
+      "sources": [
+        "merrell2011_clearance",
+        "scipy_milp"
+      ],
+      "implementation": "installation.py:place",
       "documentation": "METHOD.md#5-家庭世界自动装配",
-      "source_relations": []
+      "source_relations": [
+        {
+          "source_id": "merrell2011_clearance",
+          "role": "method_only",
+          "supports": "对象清空包络与流通约束；尺寸/0.8m带/0.1m网格及间距为项目设定。"
+        },
+        {
+          "source_id": "scipy_milp",
+          "role": "solver_interface",
+          "supports": "整数规划及明确求解状态；不证明现实施工可行性。"
+        }
+      ]
     },
     {
       "id": "ASM-03",
@@ -266,6 +280,104 @@
           "source_id": "energyplus24_public_weather",
           "role": "versioned_weather_fixture",
           "supports": "固定官方发行包内Chicago TMY3字节及站点，用于公开集成验证；不代表中国住宅天气。"
+        }
+      ]
+    },
+    {
+      "id": "GEO-02",
+      "classification": "external_method_with_declared_project_scope",
+      "rule": "完整物理住宅对照广州八类户型卧室数与面积缩放；面积口径换算必须显式声明，原始坐标和全国权重不作推断。",
+      "sources": [
+        "xia2025_units"
+      ],
+      "implementation": "geometry_reference.py:check_geometry_reference",
+      "documentation": "METHOD.md#4-面积约束与参考外壳",
+      "source_relations": [
+        {
+          "source_id": "xia2025_units",
+          "role": "bounded_method_support",
+          "supports": "Guangzhou eight reference unit areas/bedroom counts；支持范围及不支持事项见SOURCES.json。"
+        }
+      ]
+    },
+    {
+      "id": "LOAD-01",
+      "classification": "external_method_with_declared_project_scope",
+      "rule": "活动代谢采用官方成人参照；照明采用中国住宅论文6W/m2；烹饪日历显式给定，杂项待机不得隐式补齐。",
+      "sources": [
+        "energyplus24_internal_gains",
+        "xia2025_units",
+        "hu2019_occupancy"
+      ],
+      "implementation": "loads.py:metabolic_watts",
+      "documentation": "METHOD.md#5-家庭世界自动装配",
+      "source_relations": [
+        {
+          "source_id": "energyplus24_internal_gains",
+          "role": "bounded_method_support",
+          "supports": "activity-dependent metabolic reference schedule；支持范围及不支持事项见SOURCES.json。"
+        },
+        {
+          "source_id": "xia2025_units",
+          "role": "bounded_method_support",
+          "supports": "Guangzhou eight reference unit areas/bedroom counts；支持范围及不支持事项见SOURCES.json。"
+        },
+        {
+          "source_id": "hu2019_occupancy",
+          "role": "bounded_method_support",
+          "supports": "Chinese four-city room occupancy clustering/template rationale；支持范围及不支持事项见SOURCES.json。"
+        }
+      ]
+    },
+    {
+      "id": "ENV-02",
+      "classification": "external_method_with_declared_project_scope",
+      "rule": "原生压力网络作为结构替代；不叠加规定流量交换；4Pa等效泄漏与门系数为显式场景，方向流量核验逐区质量守恒。",
+      "sources": [
+        "energyplus24_afn",
+        "energyplus24_afn_source",
+        "nist_contam34"
+      ],
+      "implementation": "kernel/pressure_network.py:add_pressure_network",
+      "documentation": "METHOD.md#6-家庭物理模型与成对编译",
+      "source_relations": [
+        {
+          "source_id": "energyplus24_afn",
+          "role": "bounded_method_support",
+          "supports": "wind/buoyancy pressure network,crack and simple opening mechanics；支持范围及不支持事项见SOURCES.json。"
+        },
+        {
+          "source_id": "energyplus24_afn_source",
+          "role": "bounded_method_support",
+          "supports": "exhaust node traversal and fan component validation;fan-first node ordering needed by this24.1 fixture；支持范围及不支持事项见SOURCES.json。"
+        },
+        {
+          "source_id": "nist_contam34",
+          "role": "bounded_method_support",
+          "supports": "multizone pressure-based airflow modeling；支持范围及不支持事项见SOURCES.json。"
+        }
+      ]
+    },
+    {
+      "id": "VAL-02",
+      "classification": "external_method_with_declared_project_scope",
+      "rule": "先登记六案例敏感性与前史/恢复/求解步长收敛；报告模型差异、全部失败及效应符号，不要求B恒优。",
+      "sources": [
+        "morris1991",
+        "judkoff1995_bestest"
+      ],
+      "implementation": "robustness.py:public_study",
+      "documentation": "VALIDATION.md#6-敏感性与数值收敛",
+      "source_relations": [
+        {
+          "source_id": "morris1991",
+          "role": "bounded_method_support",
+          "supports": "elementary-effects global screening design；支持范围及不支持事项见SOURCES.json。"
+        },
+        {
+          "source_id": "judkoff1995_bestest",
+          "role": "bounded_method_support",
+          "supports": "comparative and diagnostic simulation validation rationale；支持范围及不支持事项见SOURCES.json。"
         }
       ]
     },

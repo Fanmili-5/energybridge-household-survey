@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-19",
+  "queries": [
+    "Richardson Thomson Infield Clifford 2010 Domestic electricity use high resolution energy demand model Loughborough pdf",
+    "Richardson Thomson Infield 2008 high resolution domestic building occupancy model pdf Loughborough",
+    "site.openstudio-hpxml.readthedocs.io occupancy schedules appliances stochastic infiltration ANSI RESNET 301",
+    "site.nist.gov CONTAM airflow multizone user guide large openings infiltration model",
+    "\"Stochastic simulation of occupant-driven energy use\"",
+    "\"A high-resolution domestic building occupancy model\" Richardson repository",
+    "\"Domestic electricity use\" \"2010.03.023\" pdf",
+    "site.bigladdersoftware.com/epx/docs/24-1 \"People\" \"Activity Level\" \"Radiant\"",
+    "Merrell Schkufza Koltun 2010 computer generated residential building layouts Stanford pdf",
+    "Interactive Furniture Layout Using Interior Design Guidelines Merrell 2011 Stanford pdf",
+    "EnergyPlus 24.1 People activity level schedule radiant fraction sensible heat sleep",
+    "Judkoff Neymark 1995 BESTEST building energy simulation test diagnostic method NREL 6231",
+    "Morris 1991 factorial sampling plans preliminary computational experiments sensitivity official paper",
+    "Saltelli 2010 variance based sensitivity analysis model output design estimator total sensitivity index author pdf",
+    "site.bigladdersoftware.com/epx/docs/24-1 airflownetwork detailed opening leakage effective leakage area",
+    "\"Stochastic simulation of occupant-driven\" Chen NREL pdf 2022 119890",
+    "\"Computer-Generated Residential Building Layouts\" \"pdf\" merrell",
+    "\"Room-level domestic occupancy simulation model using time use survey data\"",
+    "Hendron Burch 2007 Development Standardized Domestic Hot Water Event Schedules Residential Buildings NREL pdf",
+    "site.stats.gov.cn 第三次全国时间利用调查 公报 2024 2025 10分钟",
+    "site.nrel.gov EVI Pro charging model travel battery state charge NHTS publication",
+    "site.research-hub.nlr.gov \"Tool for Generating Realistic Residential Hot Water Event Schedules\"",
+    "site.developers.google.com optimization \"add_no_overlap_2d\"",
+    "site.research-hub.nlr.gov \"Chinese Prototype Building Models\" An 2023",
+    "\"s12273-023-1058-5\" \"lighting\"",
+    "\"s12273-023-1058-5\" \"infiltration\"",
+    "\"Chinese prototype building models\" \"occupancy\" \"Table\"",
+    "\"Investigation and analysis of Chinese residential building occupancy\" 2019 193 289 304",
+    "\"A statistical quantitative analysis\" \"occupancy patterns\" Liu Hu Yan 112842",
+    "\"Developing a bottom-up approach to assess energy challenges\" authors pdf"
+  ],
+  "screening": "primary publisher/author/institution sources; bibliographic duplicates merged by DOI or title; no stable total-hit count claimed",
+  "not_selected_as_direct_parameters": [
+    "Merrell2010 computer-graphics layout realism is not thermal/Chinese stock validation",
+    "Sood room-level HMM requires target data and independent location validation",
+    "EVI-Pro mobility parameters are US-context; keep declared-trip ledger for current benchmark",
+    "Liu2023 and other Chinese studies not used for unexamined numeric parameter claims"
+  ],
+  "unavailable_full_text": [
+    "An2023 publisher PDF returned404; use abstract scope only",
+    "Several ScienceDirect pages returned403; distinguish accessible abstracts/author manuscripts from full-text parameter evidence"
+  ]
+}

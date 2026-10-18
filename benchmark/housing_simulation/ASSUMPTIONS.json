@@ -5,27 +5,35 @@
     {
       "id": "people",
       "values": {
-        "metabolic_W": 117.28,
-        "radiant_fraction": 0
+        "activity_W": {
+          "sleep": 72,
+          "seated": 108,
+          "standing": 126,
+          "cooking": 171,
+          "handling": 180
+        },
+        "radiant_fraction": 0.3,
+        "public_child_scale": 0.75
       },
-      "classification": "project_reference",
+      "classification": "adopted_official_activity_reference",
       "implementation": "kernel/compiler.py:compile_model",
-      "meaning": "所有年龄共用的人体参考活动功率；不由年龄、工作或睡眠代谢实测推断。显热比例采用引擎autocalculate。",
-      "sources": []
+      "meaning": "EnergyPlus24.1按ASHRAE成人1.8m2参照活动表；活动分类映射及显式metabolic_scale为项目场景选择，不能解释为全龄中国人群标定。 公开儿童0.75是用于体量差异的场景比例，未按年龄回归；people_scale0.8–1.2检验全体缩放敏感性，不能替代儿童特定敏感性。",
+      "sources": [
+        "energyplus24_internal_gains"
+      ]
     },
     {
       "id": "background",
       "values": {
-        "misc_unoccupied_fraction": 0.25,
-        "cooking_lead_min": 30,
         "lighting_return_fraction": 0,
         "lighting_radiant_fraction": 0.6,
         "lighting_visible_fraction": 0.2,
-        "lighting_replaceable_fraction": 0
+        "lighting_replaceable_fraction": 0,
+        "standby_fraction_default": 0
       },
       "classification": "project_reference",
       "implementation": "kernel/compiler.py:compile_model",
-      "meaning": "有清醒人员时照明开启；杂项为无人25%、有人100%；晚餐前30分钟为整套住宅背景烹饪，非人员烹饪行为预测。",
+      "meaning": "照明与可切换杂项由显式清醒在场触发，烹饪只由cooking活动触发；常开冰箱另列，杂项待机须显式声明，不能由晚餐前30min或无人25%推断。",
       "sources": []
     },
     {
@@ -124,12 +132,17 @@
         "single_bed_min_width_m": 0.8,
         "double_bed_min_width_m": 1.2,
         "bed_min_length_m": 1.8,
-        "operator_min_age_years": 16
+        "operator_min_age_years": 16,
+        "solver_node_limit": 100000,
+        "assignment_limit": 10000
       },
-      "classification": "project_reference",
-      "implementation": "assembly.py:bind_world",
-      "meaning": "参考矩形安装筛查及操作资格；不构成施工规范或行为统计。",
-      "sources": []
+      "classification": "published_clearance_method_with_project_envelopes",
+      "implementation": "installation.py:place",
+      "meaning": "矩形净空包络与联合MILP；网格、间距和通行带仍为固定研究参照。无解仅指声明的离散约束模型；求解限制单独标记unresolved。",
+      "sources": [
+        "merrell2011_clearance",
+        "scipy_milp"
+      ]
     },
     {
       "id": "acceptance",
@@ -196,10 +209,59 @@
       },
       "classification": "synthetic_test_inputs",
       "implementation": "validation.py:reproduce",
-      "meaning": "公开材料、尺寸、人员、设备、日历及控制均为项目构造实例；只有默认EPW及引擎组件属于外部来源。",
+      "meaning": "公开材料、人员、设备、日历及控制为项目场景；照明6W/m2及户型有界参考采用Xia2025，面积换算1.18和儿童体量0.75明确为项目选择。",
       "sources": [
-        "energyplus24_public_weather"
+        "energyplus24_public_weather",
+        "xia2025_units"
       ]
+    },
+    {
+      "id": "pressure_network",
+      "classification": "official_pressure_model_with_project_reference_parameters",
+      "values": {
+        "reference_pressure_Pa": 4,
+        "reference_density_kg_m3": 1.2,
+        "flow_exponent": 0.65,
+        "door_closed_coefficient_kg_s_m_Pan": 0.001,
+        "door_discharge_coefficient": 0.6,
+        "fan_off_coefficient_kg_s_Pan": 0.0001,
+        "exhaust_strip_height_m": 0.3
+      },
+      "implementation": "kernel/pressure_network.py:add_pressure_network",
+      "sources": [
+        "energyplus24_afn",
+        "nist_contam34"
+      ],
+      "meaning": "压差关系按官方AFN；4Pa等效流量、门缝与开口系数、低层风压参照及风机关闭漏风均为研究配置。不能将reference_ach解释为AFN运行时实际ACH，不能解释为中国气密性测量。"
+    },
+    {
+      "id": "geometry_mapping",
+      "values": {
+        "public_source_to_model_area_factor": 1.18,
+        "admitted_mapping_factor": [
+          1,
+          1.5
+        ]
+      },
+      "classification": "project_reference_with_bounded_external_method",
+      "implementation": "geometry_reference.py:check_geometry_reference",
+      "sources": [
+        "xia2025_units"
+      ],
+      "meaning": "论文室内面积与调查分配建筑面积口径不同，必须由上游解释换算；1.18只是公开场景构造选择，边界[1,1.5]为准入范围而非中国测量区间。"
+    },
+    {
+      "id": "robustness_protocol",
+      "values": {
+        "registered_plan": "STUDY_PLAN.json"
+      },
+      "classification": "project_reference_with_bounded_external_method",
+      "implementation": "robustness.py:public_study",
+      "sources": [
+        "morris1991",
+        "judkoff1995_bestest"
+      ],
+      "meaning": "Morris检验独立物理比例，不把人口相关性假设为独立；数值阈值、范围、r=2及案例选择均为先验工程协议，非文献提供的可信区间。"
     }
   ]
 }

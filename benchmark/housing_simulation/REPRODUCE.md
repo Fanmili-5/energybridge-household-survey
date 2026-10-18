@@ -8,7 +8,7 @@
 python -m venv .venv-housing
 source .venv-housing/bin/activate
 python -m pip install -r benchmark/housing_simulation/requirements.txt
-python -B -m unittest benchmark.housing_simulation.test_pipeline benchmark.housing_simulation.test_assembly benchmark.housing_simulation.test_review
+python -B -m unittest benchmark.housing_simulation.test_pipeline benchmark.housing_simulation.test_assembly benchmark.housing_simulation.test_review benchmark.housing_simulation.test_methods
 python -B -m benchmark.housing_simulation.verify_package
 ```
 
@@ -35,7 +35,7 @@ python -B -m benchmark.housing_simulation reproduce \
   --out /tmp/housing-custom-weather
 ```
 
-公开住宅分别为50 m²单人住宅、90 m²三人家庭，以及本户分配60 m²、含一名邻户居民的共享住宅。每个场景含六类可控设备、非空日历、洗衣—干衣依赖、热水需求、EV接插和行程。A/B在2025-07-15按公开请求改变运行时点和控制；前史7天，案例日起评价9天。中间层参考材料及设备数值属于公开工程测试设定，不作为中国住宅总体的实证样本。
+公开住宅分别为50 m²单人住宅、90 m²三人家庭，以及本户分配60 m²、含一名邻户居民的共享住宅。每个场景含六类可控设备、非空日历、洗衣—干衣依赖、热水需求、EV接插和行程。A/B在2025-07-15按公开请求改变运行时点和控制；前史112天，案例日起评价9天，求解步长5 min，行为和输出网格10 min。中间层参考材料及设备数值属于公开工程测试设定，不作为中国住宅总体的实证样本。
 
 成功标准是顶层及`audit/MANIFEST.json`中的`passed=true`。检查包括完整时间轴、设施电表闭合、程序电耗、服务取出、EV能量、热水供给、通知前轨迹及恢复状态。原始SQL与日志均在`runs/`下保留。
 
@@ -102,3 +102,18 @@ python -B -m benchmark.housing_simulation.export_resources \
 可仅复制`benchmark/__init__.py`及`benchmark/housing_simulation/`到空目录，再执行第1、2节；持续集成采用该方式运行物理实例。`SOURCE_MAP.json`中的历史路径仅记录代码出处，不参与运行资源解析。`verify_package`另行检查来源标识、代码符号、文档锚点及Schema字段映射的闭合。
 
 相同输入和环境下，外壳、家庭世界、配对请求和IDF应重复生成相同字节。SQL内部记录、引擎日志时间与绝对作业路径不要求字节相同；物理轨迹按`VALIDATION.md`中数值条件比较。不同平台分别登记引擎与依赖版本，不预先声称全部浮点轨迹逐字节相同。
+
+## 7. 注册敏感性与收敛矩阵
+
+运行前审查`STUDY_PLAN.json`；修改后构成新的研究配置，须保留新计划与结果。输出目录必须不存在：
+
+```bash
+python -B -m benchmark.housing_simulation study \
+  --energyplus-dir /path/to/EnergyPlus-24-1-0 \
+  --workers 3 --out /tmp/housing-study-001
+python -B -m benchmark.housing_simulation verify /tmp/housing-study-001
+```
+
+该命令自动从公开输入生成三个住宅的夏、冬六案例，完成前史、恢复期、求解步长、气流结构和Morris参数矩阵。`REPORT.json`提供全部比较、选定数值配置、敏感性及符号变化；`passed=false`或异常均使命令非零退出。不得仅使用部分通过配置作为完整验证。更换中国EPW时追加第2节的`--weather`及`--weather-metadata`，元数据和文件哈希必须一致。
+
+发布结果只覆盖已运行的参考住宅及参数域。新增任意数量住宅沿用相同输入接口和自动装配流程；上游仍须提供人员、设备、日历、服务及共享住户，不自动从面积生成全国统计人口，也不承诺所有输入都能通过空间和服务约束。

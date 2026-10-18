@@ -138,7 +138,7 @@ python -B -m benchmark.housing_simulation assemble \
 | `electrical_supply_W` | number | 住宅供电功率上界，W |
 | `exhaust_power_budget_W` | number | 供电筛查的排风功率预算，W |
 | `background` | object | `lighting_W_m2`、`misc_W_m2`、`refrigerator_W`、`cooking_W` |
-| `hot_water_minimum_C` | number | 参考热水出口最低服务温度，°C |
+| `hot_water_minimum_C` | number | 参考热水出口最低服务温度，°C；按10 min报告均值的最小值验收 |
 | `calendars` | object | 成员引用的工作日、周末及可选日期事件模板 |
 | `services` | object[] | 洗衣、干衣及洗碗的日常需求与执行时点 |
 | `controls` | object[] | 设备日常控制；热泵与水箱要求每日连续完整覆盖 |
@@ -146,9 +146,9 @@ python -B -m benchmark.housing_simulation assemble \
 | `cases` | object[] | 非空案例列表，含日期、服务位移及控制覆盖 |
 | `facility_reservations` | object | 可选；按日期声明的房间预约 |
 
-成员字段为`member_id`、`household_id`、`age_years`、`calendar_id`、`hot_water_liters`及`can_operate_asset_ids`。`hot_water_liters`是每次洗浴的水箱出口热水量，单位L；零表示无该热水需求。全住宅每位成员恰好分配一个床位。睡眠组字段为`group_id`、`member_ids`、`capacity`、`bed_footprint_m`及可选`room_id`。
+成员字段为`member_id`、`household_id`、`age_years`、`calendar_id`、`hot_water_liters`及`can_operate_asset_ids`。可选`metabolic_scale`满足`0 < value ≤ 2`，默认1，属于显式体量场景比例，不能由年龄隐式推算。`hot_water_liters`是每次洗浴的水箱出口热水量，单位L；零表示无该热水需求。全住宅每位成员恰好分配一个床位。睡眠组字段为`group_id`、`member_ids`、`capacity`、`bed_footprint_m`及可选`room_id`、`clearance_m`。固定卧室应在睡眠组的`room_id`中声明；日历使用`$sleep`引用已分配卧室。日历中的字面房间仅接受一致性校验，不反向推断床位分配。
 
-设施字段为`fixture_id`、`kind`、`room_id`、`footprint_m`。已声明卫生间必须提供`toilet_reference`和`shower_reference`；厨房必须提供`sink_cooking_reference`和`refrigerator_reference`。设施是安装占地见证，排水网络和高度不在本接口中求解。
+设施字段为`fixture_id`、`kind`、`room_id`、`footprint_m`及可选`clearance_m`。床、设施、设备的`clearance_m=[left,bottom,right,top]`以m给出非负清空距离，默认四个零，随对象旋转；落地安装联合求解并保存本体与包络见证。已声明卫生间必须提供`toilet_reference`和`shower_reference`；厨房必须提供`sink_cooking_reference`和`refrigerator_reference`。设施是安装占地见证，排水网络和高度不在本接口中求解。
 
 ### 5.3 资产与参数
 
@@ -167,7 +167,7 @@ python -B -m benchmark.housing_simulation assemble \
 
 ### 5.4 日历、服务与案例
 
-日历模板含`weekday`、`weekend`及可选`date_overrides[YYYY-MM-DD]`。事件字段为`start_min`、`end_min`、`location`、`room`、`activity`、`available_for_operation`。时间为当日分钟，按10 min对齐，采用左闭右开区间。每天恰好覆盖`[0,1440)`；在家事件绑定可访问房间，离家事件`room=null`。`sleep`、`bath`及`dinner`用于睡眠、独占洗浴与烹饪排风绑定。操作窗口必须由输入显式允许，睡眠、包含`nap`的活动和洗浴期间不得操作。睡眠及午睡必须在本人已分配卧室，洗浴必须在实际卫生间，晚餐必须在家；有非零热水需求的成员所属家庭须具有水箱使用权。
+日历模板含`weekday`、`weekend`及可选`date_overrides[YYYY-MM-DD]`。事件字段为`start_min`、`end_min`、`location`、`room`、`activity`、`available_for_operation`。时间为当日分钟，按10 min对齐，采用左闭右开区间。每天恰好覆盖`[0,1440)`；在家事件绑定可访问房间，离家事件`room=null`。`sleep`、`bath`、`dinner`及`cooking`分别表示睡眠、独占洗浴、晚餐和显式烹饪；`cooking`必须在家且位于厨房，并驱动烹饪与排风。操作窗口必须由输入显式允许，睡眠、包含`nap`的活动和洗浴期间不得操作。睡眠及午睡必须在本人已分配卧室，洗浴必须在实际卫生间，晚餐必须在家；有非零热水需求的成员所属家庭须具有水箱使用权。
 
 服务字段为`service_id`、`asset_id`、`kind`、`operator_id`、`start_min`、`duration_min`、`retrieval_min`、`release_min`、`deadline_min`及`weekdays`（0=周一）。装载在程序开始前10 min执行，取出持续10 min。干衣可通过`after_service_id`声明洗衣前序；前序必须取出完成后才能装载。日常服务与接插操作均接受人员、房间及设备冲突检查。
 
@@ -219,7 +219,12 @@ python -B -m benchmark.housing_simulation assemble \
 | `history_days` | 112 | 非负整数；输入必须完整覆盖请求前史，装配接口要求至少1天 |
 | `tail_days` | 8 | 正整数；实际尾期还受最后请求及可用终点约束 |
 | `reference_ach` | 0.35 | `0 < value ≤ 3` |
-| `portal_flow_scale` | 1.0 | `0.5`、`1.0`、`2.0` |
+| `portal_flow_scale` | 1.0 | 连续`[0.5,2]`，只缩放规定混合模型 |
+| `airflow_model` | `reference_mixing` | 或`pressure_network`；两种机制不叠加 |
+| `simulation_timestep_min` | 10 | 1、2、5、10；输出与行为仍为10 min |
+| `people_scale` / `lighting_scale` / `misc_scale` | 1 | `[0.5,2]`；物理敏感性比例 |
+
+上表为底层编译接口缺省值，保留显式数值配置的兼容入口。发布参考作业明确指定前史112天、尾期9天、求解步长5 min；本版收敛证据对应该参考配置。自定义研究应显式登记并验证数值配置，不因省略参数而自动获得参考验证结论。
 
 ### 6.2 家庭包
 
@@ -273,3 +278,11 @@ python -B -m benchmark.housing_simulation audit \
 ```
 
 审计验证编译清单与运行清单绑定，输出`MANIFEST.json`中的`passed`、逐案例`checks`及`details`。失败返回非零退出码。服务失败与引擎失败分别记录；引擎运行完成不等价于家庭服务完成。检查公式和容差见[验证规范](VALIDATION.md)。
+
+## 9. 来源约束与研究接口
+
+外壳的每个住宅可声明`geometry_reference={profile_id,source_area_to_model_gross_factor,mapping_rationale}`。`profile_id`来自`geometry_references.json`；换算因子[1,1.5]，理由至少10字符。完整住宅卧室数和线性尺度[0.8,1.2]分别校验。输出保存原始来源、目录SHA、面积口径、映射理由、计算比例及适用域；无声明则标记项目参数化几何。
+
+`background`增加可选`misc_standby_fraction∈[0,1]`（默认0）及说明字段`reference_note`。照明、杂项、冰箱、烹饪和程序设备分别记账；论文总设备密度不得不经去重地当作额外杂项输入。
+
+`study --energyplus-dir PATH --out NEW_DIRECTORY [--workers 1..3] [--weather EPW --weather-metadata JSON]`从公开外壳和世界输入构造六案例并运行注册矩阵。输出`REGISTERED_PLAN.json`、每配置的编译/SQL/审计、`REPORT.json`及总清单。`REPORT.passed`必须同时满足全部物理/服务门槛、完整敏感性计算及数值收敛；结构模型差异和效应符号变化保留为结果。

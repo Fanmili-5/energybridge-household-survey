@@ -151,7 +151,8 @@ class WorldAssemblyTests(unittest.TestCase):
         s=self.spec();s['cases'][0]['date']='2025-01-02';pack,pairs=self.pack(s)
         with self.assertRaisesRegex(ValueError,'outside supplied calendar'):check_baseline(pack,pairs,self.job['settings'])
         s=self.spec();s['anchor']='2024-01-01';s['end_exclusive']='2025-01-01';s['cases'][0]['date']='2024-03-01';pack,pairs=self.pack(s)
-        with self.assertRaisesRegex(ValueError,'nonleap'):check_baseline(pack,pairs,self.job['settings'])
+        # Isolate leap-day rejection from the longer public reference history.
+        with self.assertRaisesRegex(ValueError,'nonleap'):check_baseline(pack,pairs,{**self.job['settings'],'history_days':7})
 
     def test_public_worlds_compile_without_engine_or_cohort(self):
         with tempfile.TemporaryDirectory()as t:

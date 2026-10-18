@@ -10,10 +10,11 @@
     "usage": "public integration scenario;not Chinese household climate validation"
   },
   "settings": {
-    "history_days": 7,
+    "history_days": 112,
     "tail_days": 9,
     "reference_ach": 0.35,
-    "portal_flow_scale": 1
+    "portal_flow_scale": 1,
+    "simulation_timestep_min": 5
   },
   "thermal_fractions": {
     "washer": [
@@ -66,7 +67,8 @@
             "ac",
             "tank",
             "ev"
-          ]
+          ],
+          "metabolic_scale": 1
         }
       ],
       "sleep_groups": [
@@ -79,6 +81,12 @@
           "bed_footprint_m": [
             0.9,
             2
+          ],
+          "clearance_m": [
+            0.3,
+            0,
+            0.3,
+            0
           ]
         }
       ],
@@ -90,6 +98,12 @@
           "footprint_m": [
             0.65,
             0.75
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         },
         {
@@ -99,6 +113,12 @@
           "footprint_m": [
             0.8,
             0.8
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         },
         {
@@ -108,6 +128,12 @@
           "footprint_m": [
             1.2,
             0.6
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         },
         {
@@ -117,6 +143,12 @@
           "footprint_m": [
             0.6,
             0.6
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         }
       ],
@@ -141,6 +173,12 @@
             "electricity",
             "water",
             "drain"
+          ],
+          "clearance_m": [
+            0,
+            0.4,
+            0,
+            0
           ]
         },
         {
@@ -162,6 +200,12 @@
           "connections": [
             "electricity",
             "exhaust"
+          ],
+          "clearance_m": [
+            0,
+            0.4,
+            0,
+            0
           ]
         },
         {
@@ -184,6 +228,12 @@
             "electricity",
             "water",
             "drain"
+          ],
+          "clearance_m": [
+            0,
+            0.4,
+            0,
+            0
           ]
         },
         {
@@ -263,10 +313,12 @@
       "electrical_supply_W": 24000,
       "exhaust_power_budget_W": 300,
       "background": {
-        "lighting_W_m2": 2,
+        "lighting_W_m2": 6,
         "misc_W_m2": 1,
         "refrigerator_W": 60,
-        "cooking_W": 1200
+        "cooking_W": 1200,
+        "misc_standby_fraction": 0,
+        "reference_note": "Lighting6W/m2 adopted from Xia2025 sec2.2.3;other powers are synthetic declared loads. Paper10W/m2 total equipment is not added as miscellaneous power."
       },
       "hot_water_minimum_C": 40,
       "calendars": {
@@ -298,6 +350,22 @@
             },
             {
               "start_min": 1080,
+              "end_min": 1100,
+              "location": "home",
+              "room": "$living",
+              "activity": "home_idle",
+              "available_for_operation": true
+            },
+            {
+              "start_min": 1100,
+              "end_min": 1120,
+              "location": "home",
+              "room": "$kitchen",
+              "activity": "cooking",
+              "available_for_operation": false
+            },
+            {
+              "start_min": 1120,
               "end_min": 1140,
               "location": "home",
               "room": "$living",
@@ -372,6 +440,22 @@
             },
             {
               "start_min": 1080,
+              "end_min": 1100,
+              "location": "home",
+              "room": "$living",
+              "activity": "home_idle",
+              "available_for_operation": true
+            },
+            {
+              "start_min": 1100,
+              "end_min": 1120,
+              "location": "home",
+              "room": "$kitchen",
+              "activity": "cooking",
+              "available_for_operation": false
+            },
+            {
+              "start_min": 1120,
               "end_min": 1140,
               "location": "home",
               "room": "$living",
@@ -1046,7 +1130,8 @@
             "ac",
             "tank",
             "ev"
-          ]
+          ],
+          "metabolic_scale": 1
         },
         {
           "member_id": "adult2",
@@ -1061,7 +1146,8 @@
             "ac",
             "tank",
             "ev"
-          ]
+          ],
+          "metabolic_scale": 1
         },
         {
           "member_id": "child",
@@ -1069,7 +1155,8 @@
           "age_years": 10,
           "calendar_id": "child",
           "hot_water_liters": 15,
-          "can_operate_asset_ids": []
+          "can_operate_asset_ids": [],
+          "metabolic_scale": 0.75
         }
       ],
       "sleep_groups": [
@@ -1083,6 +1170,12 @@
           "bed_footprint_m": [
             1.5,
             2
+          ],
+          "clearance_m": [
+            0.3,
+            0,
+            0.3,
+            0
           ]
         },
         {
@@ -1094,6 +1187,12 @@
           "bed_footprint_m": [
             0.9,
             2
+          ],
+          "clearance_m": [
+            0.3,
+            0,
+            0.3,
+            0
           ]
         }
       ],
@@ -1105,6 +1204,12 @@
           "footprint_m": [
             0.65,
             0.75
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         },
         {
@@ -1114,6 +1219,12 @@
           "footprint_m": [
             0.8,
             0.8
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         },
         {
@@ -1123,6 +1234,12 @@
           "footprint_m": [
             1.2,
             0.6
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         },
         {
@@ -1132,6 +1249,12 @@
           "footprint_m": [
             0.6,
             0.6
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         }
       ],
@@ -1156,6 +1279,12 @@
             "electricity",
             "water",
             "drain"
+          ],
+          "clearance_m": [
+            0,
+            0.4,
+            0,
+            0
           ]
         },
         {
@@ -1177,6 +1306,12 @@
           "connections": [
             "electricity",
             "exhaust"
+          ],
+          "clearance_m": [
+            0,
+            0.4,
+            0,
+            0
           ]
         },
         {
@@ -1199,6 +1334,12 @@
             "electricity",
             "water",
             "drain"
+          ],
+          "clearance_m": [
+            0,
+            0.4,
+            0,
+            0
           ]
         },
         {
@@ -1278,10 +1419,12 @@
       "electrical_supply_W": 24000,
       "exhaust_power_budget_W": 300,
       "background": {
-        "lighting_W_m2": 2,
+        "lighting_W_m2": 6,
         "misc_W_m2": 1,
         "refrigerator_W": 60,
-        "cooking_W": 1200
+        "cooking_W": 1200,
+        "misc_standby_fraction": 0,
+        "reference_note": "Lighting6W/m2 adopted from Xia2025 sec2.2.3;other powers are synthetic declared loads. Paper10W/m2 total equipment is not added as miscellaneous power."
       },
       "hot_water_minimum_C": 40,
       "calendars": {
@@ -1313,6 +1456,22 @@
             },
             {
               "start_min": 1080,
+              "end_min": 1100,
+              "location": "home",
+              "room": "$living",
+              "activity": "home_idle",
+              "available_for_operation": true
+            },
+            {
+              "start_min": 1100,
+              "end_min": 1120,
+              "location": "home",
+              "room": "$kitchen",
+              "activity": "cooking",
+              "available_for_operation": false
+            },
+            {
+              "start_min": 1120,
               "end_min": 1140,
               "location": "home",
               "room": "$living",
@@ -1387,6 +1546,22 @@
             },
             {
               "start_min": 1080,
+              "end_min": 1100,
+              "location": "home",
+              "room": "$living",
+              "activity": "home_idle",
+              "available_for_operation": true
+            },
+            {
+              "start_min": 1100,
+              "end_min": 1120,
+              "location": "home",
+              "room": "$kitchen",
+              "activity": "cooking",
+              "available_for_operation": false
+            },
+            {
+              "start_min": 1120,
               "end_min": 1140,
               "location": "home",
               "room": "$living",
@@ -2061,7 +2236,8 @@
             "ac",
             "tank",
             "ev"
-          ]
+          ],
+          "metabolic_scale": 1
         },
         {
           "member_id": "adult2",
@@ -2076,7 +2252,8 @@
             "ac",
             "tank",
             "ev"
-          ]
+          ],
+          "metabolic_scale": 1
         },
         {
           "member_id": "child",
@@ -2084,7 +2261,8 @@
           "age_years": 10,
           "calendar_id": "child",
           "hot_water_liters": 15,
-          "can_operate_asset_ids": []
+          "can_operate_asset_ids": [],
+          "metabolic_scale": 0.75
         },
         {
           "member_id": "neighbor",
@@ -2097,7 +2275,8 @@
             "dryer",
             "dishwasher",
             "tank"
-          ]
+          ],
+          "metabolic_scale": 1
         }
       ],
       "sleep_groups": [
@@ -2111,6 +2290,12 @@
           "bed_footprint_m": [
             1.5,
             2
+          ],
+          "clearance_m": [
+            0.3,
+            0,
+            0.3,
+            0
           ]
         },
         {
@@ -2122,6 +2307,12 @@
           "bed_footprint_m": [
             0.9,
             2
+          ],
+          "clearance_m": [
+            0.3,
+            0,
+            0.3,
+            0
           ]
         },
         {
@@ -2133,6 +2324,12 @@
           "bed_footprint_m": [
             0.9,
             2
+          ],
+          "clearance_m": [
+            0.3,
+            0,
+            0.3,
+            0
           ]
         }
       ],
@@ -2144,6 +2341,12 @@
           "footprint_m": [
             0.65,
             0.75
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         },
         {
@@ -2153,6 +2356,12 @@
           "footprint_m": [
             0.8,
             0.8
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         },
         {
@@ -2162,6 +2371,12 @@
           "footprint_m": [
             1.2,
             0.6
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         },
         {
@@ -2171,6 +2386,12 @@
           "footprint_m": [
             0.6,
             0.6
+          ],
+          "clearance_m": [
+            0,
+            0.3,
+            0,
+            0
           ]
         }
       ],
@@ -2196,6 +2417,12 @@
             "electricity",
             "water",
             "drain"
+          ],
+          "clearance_m": [
+            0,
+            0.4,
+            0,
+            0
           ]
         },
         {
@@ -2218,6 +2445,12 @@
           "connections": [
             "electricity",
             "exhaust"
+          ],
+          "clearance_m": [
+            0,
+            0.4,
+            0,
+            0
           ]
         },
         {
@@ -2241,6 +2474,12 @@
             "electricity",
             "water",
             "drain"
+          ],
+          "clearance_m": [
+            0,
+            0.4,
+            0,
+            0
           ]
         },
         {
@@ -2321,10 +2560,12 @@
       "electrical_supply_W": 24000,
       "exhaust_power_budget_W": 300,
       "background": {
-        "lighting_W_m2": 2,
+        "lighting_W_m2": 6,
         "misc_W_m2": 1,
         "refrigerator_W": 60,
-        "cooking_W": 1200
+        "cooking_W": 1200,
+        "misc_standby_fraction": 0,
+        "reference_note": "Lighting6W/m2 adopted from Xia2025 sec2.2.3;other powers are synthetic declared loads. Paper10W/m2 total equipment is not added as miscellaneous power."
       },
       "hot_water_minimum_C": 40,
       "calendars": {
@@ -2356,6 +2597,22 @@
             },
             {
               "start_min": 1080,
+              "end_min": 1100,
+              "location": "home",
+              "room": "$living",
+              "activity": "home_idle",
+              "available_for_operation": true
+            },
+            {
+              "start_min": 1100,
+              "end_min": 1120,
+              "location": "home",
+              "room": "$kitchen",
+              "activity": "cooking",
+              "available_for_operation": false
+            },
+            {
+              "start_min": 1120,
               "end_min": 1140,
               "location": "home",
               "room": "$living",
@@ -2430,6 +2687,22 @@
             },
             {
               "start_min": 1080,
+              "end_min": 1100,
+              "location": "home",
+              "room": "$living",
+              "activity": "home_idle",
+              "available_for_operation": true
+            },
+            {
+              "start_min": 1100,
+              "end_min": 1120,
+              "location": "home",
+              "room": "$kitchen",
+              "activity": "cooking",
+              "available_for_operation": false
+            },
+            {
+              "start_min": 1120,
               "end_min": 1140,
               "location": "home",
               "room": "$living",

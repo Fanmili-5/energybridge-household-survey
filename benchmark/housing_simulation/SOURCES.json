@@ -196,8 +196,172 @@
         "Chinese code compliance",
         "actual target household exhaust rate"
       ]
+    },
+    {
+      "id": "xia2025_units",
+      "url": "https://www.sciencedirect.com/science/article/pii/S209526352500041X",
+      "title": "Developing a bottom-up approach to assess energy challenges in urban residential buildings of China",
+      "kind": "primary_method_or_versioned_documentation",
+      "access": "publisher full PDF;Table9,Table4,section2.2.3",
+      "supports": [
+        "Guangzhou eight reference unit areas/bedroom counts",
+        "plan linear scale design interval0.8–1.2",
+        "lighting6W/m2 adopted reference"
+      ],
+      "not_identified": [
+        "national unit frequencies",
+        "editable original coordinates or IDFs",
+        "indoor-to-census gross factor1.18",
+        "equipment10W/m2 as additional miscellaneous load",
+        "project scaling around Table9 prototypes as the exact original training or validation domain"
+      ],
+      "doi": "10.1016/j.foar.2025.03.006",
+      "authors": [
+        "Dawei Xia",
+        "Zhuotong Wu",
+        "Yukai Zou",
+        "Ruijun Chen",
+        "Siwei Lou"
+      ],
+      "year": 2025,
+      "journal": "Frontiers of Architectural Research",
+      "volume": 14,
+      "pages": "1810–1833",
+      "fulltext_url": "https://jf2.hep.com.cn/a6848bbcf98241fe97ddb172727178c5.pdf"
+    },
+    {
+      "id": "hu2019_occupancy",
+      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0378778818338593",
+      "title": "Investigation and analysis of Chinese residential building occupancy with large-scale questionnaire surveys",
+      "kind": "primary_method_or_versioned_documentation",
+      "access": "publisher abstract;no numeric template parameter extraction",
+      "supports": [
+        "Chinese four-city room occupancy clustering/template rationale"
+      ],
+      "not_identified": [
+        "our complete member calendars or frequencies",
+        "authority and joint-member trajectories"
+      ],
+      "doi": "10.1016/j.enbuild.2019.04.007"
+    },
+    {
+      "id": "energyplus24_internal_gains",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-internal-gains-people-lights-other.html",
+      "title": "EnergyPlus24.1 People and internal gains",
+      "kind": "primary_method_or_versioned_documentation",
+      "access": "official complete versioned manual;adult1.8m2 activity table",
+      "supports": [
+        "activity-dependent metabolic reference schedule",
+        "automatic sensible/latent calculation",
+        "radiant fraction0.30 default"
+      ],
+      "not_identified": [
+        "all-age Chinese metabolic calibration",
+        "child scale0.75 or our activity-label mapping"
+      ]
+    },
+    {
+      "id": "merrell2011_clearance",
+      "url": "https://vladlen.info/papers/furniture.pdf",
+      "title": "Interactive Furniture Layout Using Interior Design Guidelines",
+      "kind": "primary_method_or_versioned_documentation",
+      "access": "author full paper;clearance and circulation terms",
+      "supports": [
+        "object-specific clearance envelopes and circulation constraints as layout methods"
+      ],
+      "not_identified": [
+        "project grid,strip,gap or manufacturer installation dimensions",
+        "Chinese construction compliance"
+      ]
+    },
+    {
+      "id": "scipy_milp",
+      "url": "https://docs.scipy.org/doc/scipy-1.17.0/reference/generated/scipy.optimize.milp.html",
+      "title": "SciPy1.17 milp",
+      "kind": "primary_method_or_versioned_documentation",
+      "access": "official versioned API;HiGHS status interface",
+      "supports": [
+        "mixed integer linear programming API",
+        "optimal,infeasible and unresolved status distinction"
+      ],
+      "not_identified": [
+        "continuous geometry or real-world infeasibility proof"
+      ]
+    },
+    {
+      "id": "energyplus24_afn",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-airflow-network.html",
+      "title": "EnergyPlus24.1 AirflowNetwork",
+      "kind": "primary_method_or_versioned_documentation",
+      "access": "official versioned complete reference",
+      "supports": [
+        "wind/buoyancy pressure network,crack and simple opening mechanics",
+        "native exhaust fan links and directional outputs"
+      ],
+      "not_identified": [
+        "chosen Chinese leakage coefficients",
+        "model equivalence with prescribed mixing"
+      ]
+    },
+    {
+      "id": "energyplus24_afn_source",
+      "url": "https://github.com/NatLabRockies/EnergyPlus/blob/v24.1.0/src/EnergyPlus/AirflowNetwork/src/Solver.cpp",
+      "title": "EnergyPlus24.1 Solver::validate_exhaust_fan_input",
+      "kind": "primary_method_or_versioned_documentation",
+      "access": "official versioned source code",
+      "supports": [
+        "exhaust node traversal and fan component validation;fan-first node ordering needed by this24.1 fixture"
+      ],
+      "not_identified": [
+        "changing PTHP required node topology",
+        "whole HVAC distribution validation"
+      ]
+    },
+    {
+      "id": "nist_contam34",
+      "url": "https://www.nist.gov/publications/contam-user-guide-and-program-documentation-version-34",
+      "title": "CONTAM User Guide and Program Documentation Version3.4",
+      "kind": "primary_method_or_versioned_documentation",
+      "access": "NIST primary technical report",
+      "supports": [
+        "multizone pressure-based airflow modeling"
+      ],
+      "not_identified": [
+        "this project numeric leakage or Chinese airtightness"
+      ],
+      "doi": "10.6028/NIST.TN.1887r1"
+    },
+    {
+      "id": "morris1991",
+      "url": "https://doi.org/10.1080/00401706.1991.10484804",
+      "title": "Factorial Sampling Plans for Preliminary Computational Experiments",
+      "kind": "primary_method_or_versioned_documentation",
+      "access": "primary method metadata and method definition",
+      "supports": [
+        "elementary-effects global screening design"
+      ],
+      "not_identified": [
+        "two-trajectory precision or our parameter ranges",
+        "empirical uncertainty probabilities"
+      ],
+      "doi": "10.1080/00401706.1991.10484804"
+    },
+    {
+      "id": "judkoff1995_bestest",
+      "url": "https://doi.org/10.2172/90674",
+      "title": "International Energy Agency Building Energy Simulation Test(BESTEST)and Diagnostic Method",
+      "kind": "primary_method_or_versioned_documentation",
+      "access": "primary technical report",
+      "supports": [
+        "comparative and diagnostic simulation validation rationale"
+      ],
+      "not_identified": [
+        "claim that this module passed the official BESTEST suite",
+        "project convergence thresholds"
+      ],
+      "doi": "10.2172/90674"
     }
   ],
   "scope": "reference dwelling construction and paired energy simulation",
-  "verification_scope": "targeted verification of building-model,weather and solver sources"
+  "verification_scope": "targeted source/method review;full-text access limitations recorded;not exhaustive systematic review"
 }

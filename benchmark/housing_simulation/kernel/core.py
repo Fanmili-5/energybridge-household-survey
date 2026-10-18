@@ -49,7 +49,8 @@ def code_hash():
     return digest({str(p.relative_to(root)):sha(p) for p in sorted(root.rglob('*.py'))})
 
 def physics_hash():
-    files={name:sha(KERNEL/name)for name in ('core.py','compiler.py','thermal_environment.py')}
+    files={name:sha(KERNEL/name)for name in ('core.py','compiler.py','thermal_environment.py','pressure_network.py','execution.py')}
     files['THERMAL_ENVIRONMENT_POLICY.json']=sha(ROOT/'THERMAL_ENVIRONMENT_POLICY.json')
+    files['loads.py']=sha(KERNEL.parent/'loads.py')
     files['ASSUMPTIONS.json']=sha(KERNEL.parent/'ASSUMPTIONS.json')
     return digest(files)

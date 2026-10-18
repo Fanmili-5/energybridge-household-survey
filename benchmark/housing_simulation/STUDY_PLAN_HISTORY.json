@@ -1,0 +1,292 @@
+{
+  "schema": "eb.housing_simulation.study_protocol_history.v1",
+  "thresholds_unchanged": true,
+  "factor_ranges_unchanged": true,
+  "refinement_ladder_unchanged": true,
+  "revision_reason": "After coarse-history diagnostics,require long-history and recovery confirmation at the admitted solver step before sensitivity;no effect-direction or tolerance fitting.",
+  "records": [
+    {
+      "revision": 1,
+      "sha256": "7910397a6773cdaee1e1e0dd062d9b7da8e7d8e282cfbc5fa2204487f29f9503",
+      "plan": {
+        "comparison": {
+          "common_interval_min": 12960,
+          "effect_absolute_kWh": 0.02,
+          "effect_relative": 0.1,
+          "history_selection": "shortest history with two consecutive finer comparisons passing;otherwise112 requires112vs168extension",
+          "per_arm_energy_relative": 0.01,
+          "tail_selection": "9days only if9vs16 cumulative paired effect and existing recovery gates pass",
+          "tank_mean_absolute_C": 0.5,
+          "timestep_selection": "coarsest step passing comparison to next finer step;evaluate sequentially10vs5,5vs2,2vs1 until passed;finest1alone is not proof",
+          "zone_mean_absolute_C": 0.1
+        },
+        "history_days": [
+          7,
+          28,
+          56,
+          112
+        ],
+        "max_workers": 3,
+        "morris": {
+          "levels": 4,
+          "limits": "small screening design;not total-order Sobol,not calibrated uncertainty probabilities,not demographic independence",
+          "method": "Morris1991 elementary effects;independent physical scenario scales only",
+          "normalized_step": 0.6666666666666666,
+          "outputs": [
+            "A_kWh",
+            "B_kWh",
+            "B_minus_A_kWh"
+          ],
+          "parameters": {
+            "lighting_scale": [
+              0.8,
+              1.2
+            ],
+            "misc_scale": [
+              0.5,
+              1.5
+            ],
+            "people_scale": [
+              0.8,
+              1.2
+            ],
+            "portal_flow_scale": [
+              0.5,
+              2.0
+            ],
+            "reference_ach": [
+              0.175,
+              0.7
+            ]
+          },
+          "seed": 20261019,
+          "success": "all planned simulations pass physical/service gates;complete finite elementary effects;sign changes are reported,never discarded",
+          "trajectories": 2
+        },
+        "paper_support_does_not_validate_chosen_thresholds": true,
+        "pressure_network": {
+          "AFN_zone_balance_absolute_kg_s": 1e-06,
+          "AFN_zone_balance_relative": 1e-05,
+          "agreement_required": false,
+          "compare_to_reference_mixing": true,
+          "reason": "structural alternatives need physical gates;difference is model uncertainty,not numerical nonconvergence"
+        },
+        "reference": {
+          "airflow_model": "reference_mixing",
+          "history_days": 112,
+          "simulation_timestep_min": 10,
+          "tail_days": 9
+        },
+        "registered_on": "2026-10-19",
+        "registration_stage": "before robustness matrix engine execution;development smoke tests excluded",
+        "run_timeout_s": 300,
+        "schema": "eb.housing_simulation.study_plan.v1",
+        "scope": "3 declared dwellings x summer2025-07-15/winter2025-11-15;public Chicago TMY3;no China climate or population calibration claimed",
+        "simulation_timestep_min": [
+          10,
+          5,
+          2,
+          1
+        ],
+        "tail_days": [
+          9,
+          16
+        ],
+        "thresholds_are_project_acceptance_criteria": true
+      }
+    },
+    {
+      "revision": 2,
+      "sha256": "9922a72c33fed3d550ea76c7fbf8843fd03ff04ff32cdbce825fa42e6e850a1a",
+      "plan": {
+        "comparison": {
+          "common_interval_min": 12960,
+          "effect_absolute_kWh": 0.02,
+          "effect_relative": 0.1,
+          "history_selection": "initial7/28/56/112diagnostics and112vs168extension;deployed conservative112requires112vs168 at selected solver step",
+          "per_arm_energy_relative": 0.01,
+          "tail_selection": "9days only if9vs16 cumulative paired effect and existing recovery gates pass",
+          "tank_mean_absolute_C": 0.5,
+          "timestep_selection": "coarsest step passing comparison to next finer step;evaluate sequentially10vs5,5vs2,2vs1 until passed;finest1alone is not proof",
+          "zone_mean_absolute_C": 0.1
+        },
+        "history_days": [
+          7,
+          28,
+          56,
+          112
+        ],
+        "max_workers": 3,
+        "morris": {
+          "levels": 4,
+          "limits": "small screening design;not total-order Sobol,not calibrated uncertainty probabilities,not demographic independence",
+          "method": "Morris1991 elementary effects;independent physical scenario scales only",
+          "normalized_step": 0.6666666666666666,
+          "numeric_configuration": "conservative112day history and selected converged solver step;tail9confirmed against16",
+          "outputs": [
+            "A_kWh",
+            "B_kWh",
+            "B_minus_A_kWh"
+          ],
+          "parameters": {
+            "lighting_scale": [
+              0.8,
+              1.2
+            ],
+            "misc_scale": [
+              0.5,
+              1.5
+            ],
+            "people_scale": [
+              0.8,
+              1.2
+            ],
+            "portal_flow_scale": [
+              0.5,
+              2.0
+            ],
+            "reference_ach": [
+              0.175,
+              0.7
+            ]
+          },
+          "seed": 20261019,
+          "success": "all planned simulations pass physical/service gates;complete finite elementary effects;sign changes are reported,never discarded",
+          "trajectories": 2
+        },
+        "paper_support_does_not_validate_chosen_thresholds": true,
+        "pressure_network": {
+          "AFN_zone_balance_absolute_kg_s": 1e-06,
+          "AFN_zone_balance_relative": 1e-05,
+          "agreement_required": false,
+          "compare_to_reference_mixing": true,
+          "reason": "structural alternatives need physical gates;difference is model uncertainty,not numerical nonconvergence"
+        },
+        "protocol_revision": {
+          "acceptance_thresholds_unchanged": true,
+          "reason": "Avoid interpreting a coarse-step sensitivity matrix as numerically confirmed at a finer selected step.",
+          "v2": "Run sensitivity only after solver selection;confirm112vs168 and9vs16 at selected step;deploy conservative112day history rather than short screening candidate."
+        },
+        "reference": {
+          "airflow_model": "reference_mixing",
+          "history_days": 112,
+          "simulation_timestep_min": 10,
+          "tail_days": 9
+        },
+        "registered_on": "2026-10-19",
+        "registration_stage": "v1 thresholds/ranges registered before matrix;v2 scheduling confirmation registered before final matrix;development history diagnostics available;no thresholds relaxed",
+        "run_timeout_s": 300,
+        "schema": "eb.housing_simulation.study_plan.v1",
+        "scope": "3 declared dwellings x summer2025-07-15/winter2025-11-15;public Chicago TMY3;no China climate or population calibration claimed",
+        "simulation_timestep_min": [
+          10,
+          5,
+          2,
+          1
+        ],
+        "tail_days": [
+          9,
+          16
+        ],
+        "thresholds_are_project_acceptance_criteria": true
+      }
+    },
+    {
+      "revision": 3,
+      "sha256": "c75acc0a8c365d582c0577116a9df1ed929754d75fb3f08880ca1223c003b7f1",
+      "plan": {
+        "comparison": {
+          "common_interval_min": 12960,
+          "effect_absolute_kWh": 0.02,
+          "effect_relative": 0.1,
+          "history_selection": "initial7/28/56/112diagnostics and112vs168extension;deployed conservative112requires112vs168 at selected solver step",
+          "per_arm_energy_relative": 0.01,
+          "tail_selection": "9days only if9vs16 cumulative paired effect and existing recovery gates pass",
+          "tank_mean_absolute_C": 0.5,
+          "timestep_selection": "coarsest candidate passing next-finer comparison AND112vs168history AND9vs16tail;otherwise continue10->5->2->1;1alone is not proof",
+          "zone_mean_absolute_C": 0.1
+        },
+        "history_days": [
+          7,
+          28,
+          56,
+          112
+        ],
+        "max_workers": 3,
+        "morris": {
+          "levels": 4,
+          "limits": "small screening design;not total-order Sobol,not calibrated uncertainty probabilities,not demographic independence",
+          "method": "Morris1991 elementary effects;independent physical scenario scales only",
+          "normalized_step": 0.6666666666666666,
+          "numeric_configuration": "conservative112day history and selected converged solver step;tail9confirmed against16",
+          "outputs": [
+            "A_kWh",
+            "B_kWh",
+            "B_minus_A_kWh"
+          ],
+          "parameters": {
+            "lighting_scale": [
+              0.8,
+              1.2
+            ],
+            "misc_scale": [
+              0.5,
+              1.5
+            ],
+            "people_scale": [
+              0.8,
+              1.2
+            ],
+            "portal_flow_scale": [
+              0.5,
+              2.0
+            ],
+            "reference_ach": [
+              0.175,
+              0.7
+            ]
+          },
+          "seed": 20261019,
+          "success": "all planned simulations pass physical/service gates;complete finite elementary effects;sign changes are reported,never discarded",
+          "trajectories": 2
+        },
+        "paper_support_does_not_validate_chosen_thresholds": true,
+        "pressure_network": {
+          "AFN_zone_balance_absolute_kg_s": 1e-06,
+          "AFN_zone_balance_relative": 1e-05,
+          "agreement_required": false,
+          "compare_to_reference_mixing": true,
+          "reason": "structural alternatives need physical gates;difference is model uncertainty,not numerical nonconvergence"
+        },
+        "protocol_revision": {
+          "acceptance_thresholds_unchanged": true,
+          "reason": "Avoid interpreting a coarse-step sensitivity matrix as numerically confirmed at a finer selected step.",
+          "v2": "Run sensitivity only after solver selection;confirm112vs168 and9vs16 at selected step;deploy conservative112day history rather than short screening candidate.",
+          "v3": "Admit a candidate step only if refinement,112vs168history and9vs16recovery all pass;continue finer on any candidate failure;only then start sensitivity."
+        },
+        "reference": {
+          "airflow_model": "reference_mixing",
+          "history_days": 112,
+          "simulation_timestep_min": 10,
+          "tail_days": 9
+        },
+        "registered_on": "2026-10-19",
+        "registration_stage": "thresholds/ranges registered before matrix;v3 combined admission registered before finer-step/history outcomes;development coarse-history diagnostics available;no tolerance relaxed",
+        "run_timeout_s": 300,
+        "schema": "eb.housing_simulation.study_plan.v1",
+        "scope": "3 declared dwellings x summer2025-07-15/winter2025-11-15;public Chicago TMY3;no China climate or population calibration claimed",
+        "simulation_timestep_min": [
+          10,
+          5,
+          2,
+          1
+        ],
+        "tail_days": [
+          9,
+          16
+        ],
+        "thresholds_are_project_acceptance_criteria": true
+      }
+    }
+  ]
+}
