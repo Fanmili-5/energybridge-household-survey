@@ -240,6 +240,9 @@ def thermal_candidates(context, device, rules):
     kind = 'ac_setpoint' if family == 'ac' else 'tank_setpoint'
     reference = context['reference'].get('thermal', {}).get(aid)
     if reference is None:
+        if context['reference']['information_set']['mode'] == 'offline_unexecuted_A_plan':
+            from .plan_only import thermal_plan_candidates
+            return thermal_plan_candidates(context, device, rules)
         return [], [{'asset_id': aid, 'reason': 'CURRENT_A_THERMAL_REFERENCE_UNAVAILABLE'}]
     state = {x['minute']: x for x in reference}
     baseline = [c for c in context['A']['controls'] if c['asset_id'] == aid and c['kind'] == kind]

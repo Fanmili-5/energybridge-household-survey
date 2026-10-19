@@ -2,7 +2,7 @@
   "EP_runs": 0,
   "date": "2026-10-19",
   "dependencies": {
-    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "f0f41a70348abcb13512a3f5b4439dd59aec467febd0ace280ab47f1f6b9ca2a",
+    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "c5bd9505c1602a947a98a686a0728e459c8cc4a5da355191d6b02c8bf750aae9",
     "benchmark/ab_generation/__init__.py": "a591d8b46bebc41f63b28f301f0ff891926009485a02f0cbf5fb65a20fb130dc",
     "benchmark/ab_generation/__main__.py": "7d5c7922190df9a0616976ea903b3025df6939b9854db73605078242f6b96fea",
     "benchmark/ab_generation/audit_design.py": "c965f65e50ff7a2d874fe6040c18fd5f5c4b0bb8a64f4eebe5e0725754036d09",
@@ -11,8 +11,8 @@
     "benchmark/ab_generation/examples/life/life_batch.json": "ef5acb1daa1484c85cdd15ef9dea04842f85c21aac06e42c8f774377a37718d8",
     "benchmark/ab_generation/examples/life/world_contracts.json": "b801f89ce3e9e28990f767414d3c993394d2af1a54050d0d38c5d3d70dc9a276",
     "benchmark/ab_generation/export.py": "e7cad3276a325abb416011c44034d61c57279095f0fbecfb350efb46d87f7e3f",
-    "benchmark/ab_generation/generate.py": "96e9f6886392684e70ede17c49c385700944edb1e79d38cafb9575cdab457cb3",
-    "benchmark/ab_generation/information.py": "82e6090f65fc33dcbcbc9e501626dd45edde74d0548dcb5fa8a55815541f1608",
+    "benchmark/ab_generation/generate.py": "65365a03a578c3e5cddcbd96a7d4b091b6adabf11566aaa7b797868921467f9a",
+    "benchmark/ab_generation/information.py": "f95de4d10fc3087e418b65af9c737ed8630386cbd599fb86020076c25851e6d1",
     "benchmark/ab_generation/legacy.py": "2f89e69ae310b9bfcf1a74202401343e73363509dc4cd9d60aba597d95b75845",
     "benchmark/ab_generation/life.py": "60d0294fdd648423c8addfb925597a045ac12d842ef43ad79c6c8f8818125a76",
     "benchmark/ab_generation/life_physics.py": "be5d27e8d3cb9060072f19a983875c22479398658e014d3d9e7c1f40238956f3",
@@ -72,7 +72,9 @@
     "benchmark/ab_generation/test_gap_review.py": "b549bc6d2c980418b231570a8cf78148a62118f92f2f94b5bda7553a2ac85983",
     "benchmark/ab_generation/sampling_index.py": "171d68dfb97e8883951ecc9de9fdec7dbea5eda78876cc5ad857ffcd54b51bf3",
     "benchmark/ab_generation/static_sampling.py": "83a2f631f88fdb9436487207f2dbeae646bf9769014e50354389d48b3bb0a965",
-    "benchmark/ab_generation/test_static_sampling.py": "9da25b2c9b7af419f4dffd2546446cf523d6c63ad725ae52b3471153d85565fc"
+    "benchmark/ab_generation/test_static_sampling.py": "9da25b2c9b7af419f4dffd2546446cf523d6c63ad725ae52b3471153d85565fc",
+    "benchmark/ab_generation/plan_only.py": "49e00b9961708f00ca4e6efafb932cb198c30cbe8f2e89974131ac4158f22f79",
+    "benchmark/ab_generation/test_plan_only.py": "fea09f6a180b5463988fa9e6a91f7691f919cb735b09c75a8c0bad966646ab8a"
   },
   "existing_data_migrated": false,
   "files": {

@@ -44,3 +44,7 @@ python -B benchmark/collector/test_protocol.py
 当前不是已完成真实标签、独立测试集和模型成绩的论文benchmark发布。具体划分与正式评测指标待确认冻结，工程测试与物理参考不能替代真人理解和研究有效性。
 
 [完整基准入口](benchmark/README.md) · [旧主说明归档](docs/history/README_BEFORE_REFERENCE50_20261017.md)
+
+## 三条主线接入既定问卷
+
+[统一项目入口](benchmark/project/README.md)把家庭与设备、生活A/B、住房配置接到已定v69问卷。公开六户37个A/B资料包含探索、无效和A=B样本；后果逐项标为“未计算”。保留原布局、题项及评分规则，提供本机只读预览和可复现命令，不跑仿真、不改线上采集或1000户状态。[接口契约](benchmark/project/INTERFACES.md)明确当前已接通与后续待补边界。

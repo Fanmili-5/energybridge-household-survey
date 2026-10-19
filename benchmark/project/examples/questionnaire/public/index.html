@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>家庭用电安排 · v69资料预览</title>
+  <link rel="stylesheet" href="view.css">
+  <script src="required-response.js" defer></script><script src="preview-client.js" defer></script><script src="view.js" defer></script>
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><span class="brand">EnergyBridge<span>家庭用电研究</span></span><span class="badge">v69 · 资料预览</span></div></header>
+<main>
+  <div class="page-heading">
+    <div><p class="eyebrow">家庭用电安排 / 每日评价</p><h1>这份调整，适合这户家庭吗？</h1><p class="intro">代入给定家庭，看看安排变了什么，再作出选择。</p></div>
+    <nav class="selectors" aria-label="选择家庭和日期"><label for="household" hidden>家庭<select id="household" disabled></select></label><label for="case-date">正在查看的日期<select id="case-date" disabled></select></label></nav>
+  </div>
+  <div class="collection-toolbar" hidden><span id="collection-progress"></span><div><button id="collection-logout" class="text-button" type="button">退出</button><button id="collection-withdraw" class="text-button" type="button">撤回答卷</button></div></div>
+  <p id="load-status" role="status"></p>
+  <article id="task" hidden>
+    <section class="panel family-panel" aria-labelledby="family-heading"><div class="section-head"><span class="section-index">01</span><div><p class="eyebrow">家庭背景</p><h2 id="family-heading">先认识这户人家</h2></div></div><div id="family"></div></section>
+    <section class="panel changes-panel" aria-labelledby="change-heading"><div class="section-head"><span class="section-index">02</span><div><p class="eyebrow">A / B 对照</p><h2 id="change-heading">用电安排，哪里变了？</h2></div></div><p class="section-note">A为原安排，B为本次建议。下面只列发生变化的电器。</p><div id="vpp-request" class="request-note"></div><div id="changes"></div><details id="plans-details"><summary>查看完整A/B排程<span aria-hidden="true">＋</span></summary><div id="plans"></div></details></section>
+    <section class="panel effects-panel" aria-labelledby="impact-heading"><div class="section-head"><span class="section-index">03</span><div><p class="eyebrow">用电与生活</p><h2 id="impact-heading">这些变化，会带来什么？</h2></div></div><p class="section-note">分别看用电量、室温、任务完成和VPP响应。</p><div id="impacts"></div><p class="simulation-note">实际用电、室温、任务完成与VPP响应均未计算。时间和设定值属于计划，不能当作实际后果。</p></section>
+    <section class="panel answer-panel" aria-labelledby="answer-heading"><div class="section-head"><span class="section-index">04</span><div><p class="eyebrow">你的判断</p><h2 id="answer-heading">这份调整合适吗？</h2></div></div>
+      <form id="response-form">
+        <fieldset><legend>按这户家庭的情况，是否接受原样执行B？</legend><div class="decision-options"><label class="choice"><input type="radio" name="decision" value="accept" required><span>接受B方案</span></label><label class="choice"><input type="radio" name="decision" value="reject" required><span>不接受B方案</span></label></div></fieldset>
+        <div class="score-heading"><h3>按家庭角色，评价这次调整</h3><p>四项均评价B相对A的调整是否适合这户家庭：1分很不合适，5分很合适，可填一位小数。VPP是否达标单独记录。</p></div>
+        <div class="rating-grid">
+          <label for="score"><span>响应安排<small>通知和操作是否适合这户家庭</small></span><input id="score" name="score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
+          <label for="comfort_score"><span>舒适与生活<small>室温与生活变化是否适合这户家庭</small></span><input id="comfort_score" name="comfort_score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
+          <label for="energy_score"><span>用电安排<small>用电量变化是否适合这户家庭</small></span><input id="energy_score" name="energy_score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
+          <label for="vpp_score"><span>VPP配合<small>这种配合方式是否适合这户家庭</small></span><input id="vpp_score" name="vpp_score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
+        </div>
+        <label class="field reason-label" for="reason">最主要的原因<span class="required-note">必填</span><textarea id="reason" name="reason" required maxlength="4000" rows="3" placeholder="哪些改变适合或不适合这户家庭？"></textarea></label>
+        <div class="form-actions"><button type="submit" id="submit-answer" disabled>提交答卷 <span aria-hidden="true">→</span></button><button type="button" id="clear-response" class="secondary">撤销未提交修改</button></div><button id="next-question" class="secondary next-button" type="button" hidden>下一题</button><p id="response-status" role="status" aria-live="polite"></p>
+      </form><p class="save-note">此处只预览既定问卷，填写内容仅作本机交互检查，不保存为正式答卷。</p>
+    </section>
+  </article>
+</main><footer>请按给定家庭角色作答。展示结果不会改变现实电器的设置。</footer>
+</body></html>

@@ -311,6 +311,21 @@
         "NISTIR7878",
         "StatCanProbability2021"
       ]
+    },
+    {
+      "id": "AB-27",
+      "classification": "explicit_unexecuted_plan_exploration_boundary",
+      "implementation": "information.py:checked_information;plan_only.py:thermal_plan_candidates",
+      "parameters": [
+        "thermal_delta_C",
+        "thermal_duration_min",
+        "step_min"
+      ],
+      "rule": "Only explicit offline_unexecuted_A_plan may propose thermal alternatives without native A states;all remain exploratory with unknown energy/headroom;occupied/control windows and authority still bound proposals;original oracle mode unchanged",
+      "sources": [
+        "original_EB",
+        "EnergyPlus241Thermostats"
+      ]
     }
   ],
   "schema": "eb.ab_strategy.rule_registry.v2"
