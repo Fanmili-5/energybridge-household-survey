@@ -64,6 +64,16 @@ def audit(compiled, runs, output):
                     for variable in ('Zone Mean Air Temperature','Zone Mean Radiant Temperature','Zone Air Relative Humidity','Zone People Occupant Count'):
                         values(variable,room.upper())
                 checks[side+'_required_zone_channels']=True
+                comfort=[]
+                for need in meta.get('comfort_requirements',[]):
+                    a,z=max(0,need['release_min']),min(hi,need['deadline_min'])
+                    if a>=z:continue
+                    band=need['temperature_band_C'];temperatures=values('Zone Mean Air Temperature',need['room_id'].upper())
+                    outside=None if band is None else sum(10 for t in range(a,z,10)if not band[0]<=temperatures[t]<=band[1])
+                    comfort.append({'need_id':need['need_id'],'declared_band_C':band,'outside_declared_band_min':outside})
+                known=[r for r in comfort if r['declared_band_C'] is not None]
+                if known:checks[side+'_declared_comfort']=all(r['outside_declared_band_min']==0 for r in known)
+                details[side+'_independent_comfort']={'status':'known_requirements'if known else 'unknown'if comfort else 'not_declared','records':comfort}
                 environment=meta.get('thermal_environment',{})
                 if environment.get('model')=='native_EnergyPlus_AirflowNetwork':
                     from .robustness import airflow_balance
@@ -118,6 +128,7 @@ def audit(compiled, runs, output):
                     requested=dict(meta['EV_grid_steps'])
                     checks[side+'_EV_meter']=all(abs(actual[t]/3600000-requested.get(t,0))<TOL['ev_meter_kWh'] for t in expected if t>=480)
                     checks[side+'_EV_balance']=abs(ev['energy_balance_error_kWh'])<TOL['ev_balance_kWh'] and ev['stop_at_unexecutable_trip_min']is None and all(x['unserved_traction_kWh']<TOL['ev_balance_kWh'] and x['minimum_reserve_shortfall_kWh']<TOL['ev_balance_kWh'] for x in ev['trips'])
+                    checks[side+'_EV_departure_target']=all(x['target_shortfall_kWh']<TOL['ev_balance_kWh'] for x in ev['trips']if x.get('departure_target_applicable',True))
                     details[side+'_EV_balance_error_kWh']=ev['energy_balance_error_kWh']
                 if meta['tank_name'] and meta.get('hot_water_model')=='standalone_hot_outlet':
                     temp=values('Water Heater Use Side Outlet Temperature',meta['tank_name'])

@@ -11,7 +11,7 @@ import math
 from functools import lru_cache
 from .core import *
 from .thermal_environment import add_environment
-from .execution import execute, explicit_EV_connections
+from .execution import execute, explicit_EV_connections, departure_target_times
 from ..policy import reference, fingerprint
 from ..loads import metabolic_watts, cooking_minutes
 
@@ -163,13 +163,16 @@ def ev_delivery(pack,pair,side,plan,lo,hi):
     else:
         unplug={o['need_id']:o for o in pack['operations']if o['kind']=='EV_unplug'}
         connections={o['need_id']:(o['end_min']-base,unplug[o['need_id']]['start_min']-base)for o in pack['operations']if o['kind']=='EV_plug'}
+    target_times=departure_target_times(connections,trips)
     controls=[c for c in plan['controls']if c['kind']=='ev_charge_window'];trace=[];stop=None
     for t in range(480,hi+1,10):
         trip=trips.get(t)
         if trip:
             before=energy;required=trip['traction_kWh'];deficit=max(0,required-before)
             triprows.append({'departure_min':t,'pre_trip_kWh':before,'post_trip_kWh':max(0,before-required),'traction_kWh':required,
-                             'target_shortfall_kWh':max(0,ref['target_SOC']*ref['capacity_kWh']-before),
+                             'departure_target_applicable':t in target_times,
+                             'required_departure_target_SOC':ref['target_SOC']if t in target_times else None,
+                             'target_shortfall_kWh':max(0,ref['target_SOC']*ref['capacity_kWh']-before)if t in target_times else None,
                              'minimum_reserve_shortfall_kWh':max(0,ref['minimum_SOC']*ref['capacity_kWh']-max(0,before-required)),
                              'unserved_traction_kWh':deficit})
             energy=max(0,energy-required)
@@ -356,6 +359,7 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
                'Zone Infiltration Mass Flow Rate','Zone Infiltration Air Change Rate',
                'Zone Outdoor Air Drybulb Temperature','Zone Outdoor Air Wetbulb Temperature',
                'Zone Packaged Terminal Heat Pump Electricity Energy',
+               'Cooling Coil Electricity Energy','Heating Coil Electricity Energy',
                'Electric Equipment Electricity Energy','Lights Electricity Energy','Site Mains Water Temperature']
     if ev['status']!='not_installed':variables.append('Exterior Equipment Electricity Energy')
     if tank:
@@ -385,6 +389,9 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
           'nonleap_weather_year_shift':year_shift,'original_human_calendar_dates_preserved':True,
           'derived_interzone_layer_order_repairs':wall_repairs,
           'reference_assumptions_sha256':fingerprint(),'water_mains':stat,'equipment_meter_mapping':asset_meters,'HVAC_equipment_mapping':equipment_names,
+          'HVAC_component_mapping':{p['asset_id']:{'cooling':[r[1].upper()for r in p['rows']if r[0].startswith('Coil:Cooling:')],
+                                                  'heating':[r[1].upper()for r in p['rows']if r[0].startswith('Coil:Heating:')]}
+                                    for p in pack['HVAC']},
           'reference_air_changes_per_hour':reference_ach,
           'thermal_environment':environment,
           'air_exchange_scope':os.environ.get('EB_AIRFLOW_MODEL','reference_mixing')+';declared scenario parameters,not measured Chinese calibration',
@@ -392,6 +399,7 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
           'EV':evtrace,
           'energy_meter_scope':'whole_physical_dwelling_including_shared_context;not_target_household_submeter',
           'human_acceptance':None,'schedules_modified':False,
+          'comfort_requirements':[n for n in pair['needs_A']if n.get('kind')=='comfort'],
           'internal_gains':{'method':'activity_resolved_official_adult_reference_with_declared_member_scale','activity_W':PEOPLE['activity_W'],'radiant_fraction':PEOPLE['radiant_fraction'],'people_scale':float(os.environ.get('EB_PEOPLE_SCALE','1')),'lighting_scale':float(os.environ.get('EB_LIGHTING_SCALE','1')),'misc_scale':float(os.environ.get('EB_MISC_SCALE','1'))},
           'reference_background':{'policy':'explicit project background parameters and heat fractions'if background else 'legacy pinned EB reference gains','parameters':background},
           'hot_water_model':pack.get('hot_water_model','native_mixed_water_plant'),

@@ -5,7 +5,7 @@
 环境：Python 3.9或以上，标准库。无需现有1000户、许可调查、天气文件或API。仓库根目录运行：
 
 ```bash
-python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life -v
+python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review -v
 python -B -m benchmark.ab_generation generate \
   --input benchmark/ab_generation/examples/batch.json \
   --rules benchmark/ab_generation/examples/rules.json \
@@ -37,7 +37,22 @@ python -B -m benchmark.ab_generation reproduce-life \
 python -B -m benchmark.ab_generation verify outputs/life-AB
 ```
 
-该流程重新生成空间绑定、整月A、A=B基线、当前A运行参考、B候选与配对模型，保存引擎、服务、电量、SOC和恢复审查。默认三个公开家庭及芝加哥典型年天气仅用于数值集成，不代表中国家庭校准。所有规模来自配置。
+该流程重新生成空间绑定、整月A、A=B基线和当前A参考，并分别执行三种B规则及完整后果回读。默认三个公开家庭及芝加哥典型年天气仅用于数值集成，不代表中国家庭校准。所有规模来自配置。
+
+完整策略复核及冬季制热探针使用专门的长日历输入，沿用住房v3的112日前史、5分钟求解、10分钟行为/报告和9日尾期：
+
+```bash
+python -B -m benchmark.ab_generation reproduce-strategies \
+  --energyplus-dir /path/to/EnergyPlus-24-1-0 --out outputs/strategy-review
+python -B -m benchmark.ab_generation verify outputs/strategy-review
+python -B -m benchmark.ab_generation reproduce-strategies \
+  --input benchmark/ab_generation/examples/strategy_review/winter_life_batch.json \
+  --experiments benchmark/ab_generation/examples/strategy_review/winter_experiments.json \
+  --plan benchmark/ab_generation/examples/strategy_review/winter_plan.json \
+  --energyplus-dir /path/to/EnergyPlus-24-1-0 --out outputs/winter-review
+```
+
+计划在B执行前保存为 `REVIEW_PLAN.json`。完整计划包括同A三策略、四类设备、联合和明确预设的EV出发目标失败；若该失败没被检出，或还出现其他失败，复核不算通过。每组保存编译、运行、审查和完整报告。冬季个体温度偏好明确未知，检查范围限于原生制热证据与执行。CI使用固定官方Linux引擎重跑这两项公开流程。
 
 使用自有家庭时通过 `--input`、`--world-contracts`、`--shell-config`和 `--experiments`提供相应输入；分阶段接口及资源文件哈希规则见 `LIFE_INPUTS.md`。原始家庭或新生成A不能仅因增加了模板字段就复用旧轨迹。
 
@@ -61,7 +76,7 @@ python -B -m benchmark.ab_generation verify outputs/ab-candidates
 
 `--limit N`仅用于明确标记的小批检查。不传时按输入清单全部导入，代码不固定50户或500组。电价参数可省略，此时费用排序明确不可用。当前适配器接受原实验的 `daily_periods` 格式，每段字段为 `start_min,end_min,CNY_per_kWh`；它不是实时电价抓取器。既有电价是共用实验情境，不是每户真实电价。
 
-旧B逐案保存在 `legacy/`，新上下文保存在 `contexts/`。既有A=B及指定失败从原命令分配元数据继承，不根据新仿真结果重新分组。导入目录的完整清单约束所有登记文件。
+旧B逐案保存在 `legacy/`，新v2上下文保存在 `contexts/`。新导入明确权限、原A46项目程序约束及原计量口径；旧A缺少原生模式通道时记录模式不可用。既有A=B及指定失败从原命令分配元数据继承，不根据新仿真结果重新分组。旧规范目录不得原地补字段后沿用旧清单，应新建导入目录。
 
 ## 4. 历史输入配对物理验证
 
@@ -70,8 +85,9 @@ python -B -m benchmark.ab_generation verify outputs/ab-candidates
 ```bash
 python -B -m benchmark.ab_generation export-physics \
   --stage PATH_TO_AC84_STAGE \
+  --annual-A-root PATH_TO_ORIGINAL_ANNUAL_A_DIRECTORY \
   --imported outputs/ab-import --generated outputs/ab-candidates \
-  --case ordinary-v6-0011__2025-01-22 \
+  --case ordinary-v6-0054__2025-02-15 \
   --policy known_profile_vpp --out outputs/ab-physics-inputs
 python -B -m benchmark.housing_simulation compile \
   --input outputs/ab-physics-inputs/physics_job.json \
@@ -82,9 +98,11 @@ python -B -m benchmark.housing_simulation run \
 python -B -m benchmark.housing_simulation verify outputs/ab-runs
 ```
 
+原年度A目录内各户文件须与家庭包登记的原SHA相符，提供完整跟随期独立需求；没有文件即拒绝，不从排程反推。每房间多套独立AC的旧世界不在当前内核范围，不能用这些案例演示成功交接。
+
 物理环境另按住房模块安装依赖。当前集成使用EnergyPlus `24.1.0-9d7789a3ac`，每案沿用原A回执的实际前史及尾期；实际尾期还随最后请求延展。不同前史/尾期的案例自动分成多个 `physics_job_history_*_tail_*.json`，清单见 `JOBS.json`；单一设置时使用 `physics_job.json`。原日历不足时拒绝，不能隐式截断或补出日程。所有新请求都重新编译，不复用旧B物理结果。
 
-仿真后使用住房模块 `audit`生成服务、能量与恢复审查，再用本模块 `report-physics --input JOB --compiled COMPILED --runs RUNS --audit AUDIT --out REPORT_DIRECTORY`回读实际VPP、服务及连续EV结果。可选 `--reference-stage PATH_TO_AC84_STAGE`比较新A与既有当前A轨迹。报告不触发重选或修复。
+仿真后使用住房模块 `audit`生成审查，再用 `report-physics --input JOB --compiled COMPILED --runs RUNS --audit AUDIT --imported outputs/ab-import --out REPORT_DIRECTORY`回读后果。旧版可传 `--reference-stage PATH_TO_AC84_STAGE`比较共有A通道；住房v3改变模型后这项比较可能失败，此时只保留诊断，不算闭环验收；新生活流程使用 `--reference-runs BASELINE_RUNS`核对完整当前A轨迹。报告不触发重选或修复。
 
 ## 5. 结果解读及版本变更
 

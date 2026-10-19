@@ -354,12 +354,15 @@ def build_pack(spec, world, shell, weather_sha):
             'asset_id':ev['asset_id'],'room_id':'exterior','operator_id':mid,'kind':'EV_unplug',
             'start_min':unplug,'end_min':unplug+10})
         energy=p['initial_energy_kwh'];trips={t['absolute_departure_min']:t for t in pack['journeys']}
+        home_departure=min(t['departure_min']for t in r['journeys'])if r['journeys']else None
         for t in range((end-anchor).days*1440):
             if t%10:continue
             states[t]=energy
             if t in trips:
+                before=energy
                 require(energy+1e-8>=trips[t]['traction_kWh'],'baseline EV trip is unexecutable');energy-=trips[t]['traction_kWh']
                 require(energy+1e-8>=p['minimum_soc']*p['capacity_kwh'], 'baseline EV trip violates minimum reserve')
+                if t%1440==home_departure:require(before+1e-8>=p['target_soc']*p['capacity_kwh'],'baseline home departure target unmet')
             local=t%1440;date=anchor+dt.timedelta(days=t//1440)
             cs=[c for c in pack['days'][str(date)]['controls']if c['kind']=='ev_charge_window'and c['start_min']<=t<c['end_min']]
             if cs and (local>=plug+10 or local<unplug):

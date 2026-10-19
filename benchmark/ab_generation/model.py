@@ -42,6 +42,18 @@ def apply(plan, patches):
                 if hi < row['end_min']:
                     new.append({**row, 'start_min': hi})
             result['controls'] = new
+        elif patch['type'] == 'control_pause':
+            new = []
+            for row in result['controls']:
+                lo, hi = max(row['start_min'], patch['start_min']), min(row['end_min'], patch['end_min'])
+                if any(row.get(k) != patch[k] for k in ('asset_id', 'kind', 'need_id')) or lo >= hi:
+                    new.append(row)
+                    continue
+                if row['start_min'] < lo:
+                    new.append({**row, 'end_min': lo})
+                if hi < row['end_min']:
+                    new.append({**row, 'start_min': hi})
+            result['controls'] = new
         else:
             raise ValueError('UNKNOWN_PATCH_TYPE')
     return plan_commands(result)
@@ -54,6 +66,13 @@ def operation_issues(context, plan, changed_ids):
         if op['operation_id'] not in changed_ids:
             continue
         a, z = op['start_min'], op['end_min']
+        original = next((r for r in context['A']['operations'] if r['operation_id'] == op['operation_id']), None)
+        contract = context.get('authority')
+        if contract and original != op:
+            if op['operator_id'] in contract['immutable_operator_ids']:
+                issues.add('CONTEXT_OPERATOR_IMMUTABLE')
+            if op['operator_id'] not in contract['assets'][op['asset_id']]['authorized_operator_ids']:
+                issues.add('OPERATOR_NOT_AUTHORIZED_FOR_ASSET')
         windows = context['operator_windows'].get(op['operator_id'], [])
         if not any(left <= a and z <= right for left, right in windows):
             issues.add('OPERATOR_UNAVAILABLE')
@@ -94,6 +113,15 @@ def _program_issues(context, plan, need_id):
     load, unload = loads[0], unloads[0]
     issues = operation_issues(context, plan, {o['operation_id'] for o in handling})
     first, finish = min(t['start_min'] for t in chain), max(t['end_min'] for t in chain)
+    preload = first - load['end_min']
+    if need.get('timer_allowed') is False and preload != 0:
+        issues.add('TIMER_NOT_AVAILABLE')
+    if preload > need.get('maximum_preload_wait_min', float('inf')):
+        issues.add('PRELOAD_WAIT_EXCEEDED')
+    if 'machine_windows_min' in need and not any(
+            a <= first % 1440 and (finish - 1) % 1440 < z and first // 1440 == (finish - 1) // 1440
+            for a, z in need['machine_windows_min']):
+        issues.add('MACHINE_WINDOW_VIOLATED')
     if load['start_min'] < need['release_min']:
         issues.add('LOAD_BEFORE_RELEASE')
     if load['end_min'] > first:
@@ -130,4 +158,26 @@ def program_issues(context, plan, need_id):
             load = next(o for o in plan['operations'] if o['need_id'] == nid and o['kind'] == 'load')
             if parent is None or parent['end_min'] > load['start_min']:
                 issues.add('PREREQUISITE_NOT_COLLECTED')
+    return sorted(issues)
+
+
+def request_issues(context, plan):
+    """A request may move commands, not identities, actors, durations or the past."""
+    issues = set()
+    for key, ident in (('tasks', 'task_id'), ('operations', 'operation_id')):
+        before = {r[ident]: r for r in context['A'][key]}; after = {r[ident]: r for r in plan[key]}
+        if before.keys() != after.keys() or len(after) != len(plan[key]):
+            issues.add('REQUEST_CHANGES_ORIGINAL_ROW_SET')
+        for rid in before.keys() & after.keys():
+            a, b = before[rid], after[rid]
+            if {k: v for k, v in a.items() if k not in ('start_min', 'end_min')} != {k: v for k, v in b.items() if k not in ('start_min', 'end_min')} or a['end_min'] - a['start_min'] != b['end_min'] - b['start_min']:
+                issues.add('REQUEST_CHANGES_ORIGINAL_RESOURCE_OR_DURATION')
+            if min(a['start_min'], b['start_min']) < context['decision_min'] and a != b:
+                issues.add('REQUEST_REWRITES_PREDECISION_COMMAND')
+    def state(rows, t):
+        return sorted((r['asset_id'], r['kind'], digest({k: v for k, v in r.items() if k not in ('start_min', 'end_min', '_ab_control_id')})) for r in rows if r['start_min'] <= t < r['end_min'])
+    old, new = context['A']['controls'], plan['controls']
+    boundaries = {r[k] for r in old + new for k in ('start_min', 'end_min') if r[k] < context['decision_min']}
+    if any(state(old, t) != state(new, t) for t in boundaries):
+        issues.add('REQUEST_REWRITES_PREDECISION_CONTROL')
     return sorted(issues)

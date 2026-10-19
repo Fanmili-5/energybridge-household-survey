@@ -249,6 +249,8 @@ python -B -m benchmark.housing_simulation assemble \
 
 ### 6.3 配对请求
 
+`needs_A`可带独立温度要求：`kind=comfort`、`room_id`、相对案例日期的 `release_min/deadline_min`及 `temperature_band_C`。范围为 `null`表示未知，不从控制设定补齐。编译器将这些要求传给物理审查，与程序及EV出发目标分别核对。
+
 配对包包含 `case_id`、`household_id`、`date`、`source_pair_sha256`、`schedule_hashes`、`needs_A`、`EV_continuous_reference`，以及 `A`、`B` 各自的 `tasks`、`operations`、`controls`。
 
 家庭包任务时间相对 `anchor`，配对请求时间相对 `date`，单位均为 min。资产、任务、操作及需求标识必须与家庭世界一致。`EV_continuous_reference.status=not_installed` 表示无 EV；已安装设备的特定字段由对应设备协议定义。

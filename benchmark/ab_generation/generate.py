@@ -14,12 +14,14 @@ DEFAULT_RULES = {
     'thermal_active_min_kWh': 0.001,
     'selection_policies': ['least_disruption', 'known_profile_cost', 'known_profile_vpp'],
     'joint_family_limit': 2,
+    'prediction_rank_cost_quantum': 1e-9,
+    'prediction_rank_event_kWh_quantum': 1e-9,
 }
 
 
 def binding(context):
     base = copy.deepcopy({k: v for k, v in context.items()
-                          if k not in ('reference', 'tariff', 'events', 'assignment', 'retained_B_request')})
+                          if k not in ('reference', 'tariff', 'tariff_provenance', 'events', 'event_meter_scope', 'assignment', 'retained_B_request')})
     base['A'] = plan_commands(base['A'])
     for row in base['A']['controls']:
         row.pop('_ab_control_id', None)
@@ -28,12 +30,25 @@ def binding(context):
 
 
 def validate(context, rules):
-    if context.get('schema') != 'eb.ab_generation.context.v1':
+    if context.get('schema') not in ('eb.ab_generation.context.v1', 'eb.ab_generation.context.v2'):
         raise ValueError('UNKNOWN_CONTEXT_SCHEMA')
+    if set(context) - {'schema', 'case_id', 'household_id', 'date', 'decision_min', 'horizon_min', 'A', 'needs', 'devices', 'operator_windows', 'occupancy', 'reservations', 'events', 'event_meter_scope', 'tariff', 'tariff_provenance', 'authority', 'assignment', 'source', 'reference', 'retained_B_request'}:
+        raise ValueError('UNKNOWN_OR_DOWNSTREAM_CONTEXT_FIELD')
+    if not context.get('authority'):
+        raise ValueError('RESOURCE_CONTRACT_REQUIRED;reimport_legacy_context')
+    if context['authority'].get('schema') != 'eb.ab_authority.v1' or any(type(v['target_control_authorized']) is not bool for v in context['authority']['assets'].values()):
+        raise ValueError('INVALID_AUTHORITY_CONTRACT')
+    for n in context['needs']:
+        if n['kind'] in ('washer', 'dryer', 'dishwasher') and not {'timer_allowed', 'maximum_preload_wait_min', 'machine_windows_min'} <= n.keys():
+            raise ValueError('PROGRAM_CAPABILITY_CONTRACT_REQUIRED')
     if set(rules) != set(DEFAULT_RULES) or rules.get('schema') != DEFAULT_RULES['schema']:
         raise ValueError('UNKNOWN_RULE_KEYS_OR_SCHEMA')
     if rules['step_min'] != 10:
         raise ValueError('ONLY_10_MINUTE_GRID_SUPPORTED')
+    if type(rules['seed']) is not int or type(rules['thermal_active_min_kWh']) not in (int, float) or not math.isfinite(rules['thermal_active_min_kWh']) or rules['thermal_active_min_kWh'] < 0:
+        raise ValueError('INVALID_SEED_OR_ACTIVITY_THRESHOLD')
+    if any(type(v) not in (int, float) or not math.isfinite(v) for v in rules['thermal_delta_C']):
+        raise ValueError('INVALID_THERMAL_DOSE')
     for key in ('program_shifts_min', 'thermal_duration_min', 'ev_delays_min'):
         if not rules[key] or any(type(v) is not int or v % 10 for v in rules[key]):
             raise ValueError('INVALID_TIME_GRID:' + key)
@@ -45,9 +60,15 @@ def validate(context, rules):
         raise ValueError('UNKNOWN_SELECTION_POLICY')
     if type(rules['joint_family_limit']) is not int or not 1 <= rules['joint_family_limit'] <= 2:
         raise ValueError('JOINT_FAMILY_LIMIT_MUST_BE_1_OR_2')
+    if any(type(rules[k]) not in (int, float) or not math.isfinite(rules[k]) or rules[k] <= 0 for k in ('prediction_rank_cost_quantum', 'prediction_rank_event_kWh_quantum')):
+        raise ValueError('INVALID_PREDICTION_RANK_RESOLUTION')
     ids = [d['asset_id'] for d in context['devices']]
     if len(ids) != len(set(ids)):
         raise ValueError('DUPLICATE_ASSET')
+    if context.get('authority') and set(context['authority']['assets']) != set(ids):
+        raise ValueError('INCOMPLETE_ASSET_AUTHORITY')
+    if context.get('event_meter_scope', 'whole_physical_dwelling') not in ('whole_physical_dwelling', 'modeled_controlled_equipment'):
+        raise ValueError('INVALID_EVENT_TARGET_OR_SCOPE')
     if context['decision_min'] % 10 or context['horizon_min'][0] > context['decision_min']:
         raise ValueError('INVALID_DECISION')
     for kind, ident in [('tasks', 'task_id'), ('operations', 'operation_id')]:
@@ -60,7 +81,21 @@ def validate(context, rules):
                 raise ValueError('INVALID_PLAN_ROW')
     if context['reference']['binding'] != binding(context):
         raise ValueError('STALE_A_REFERENCE')
+    for rows in context['reference'].get('thermal', {}).values():
+        if len({r['minute'] for r in rows}) != len(rows):
+            raise ValueError('DUPLICATE_REFERENCE_TIME')
+        if any(type(r['minute']) is not int or r['minute'] % 10 or
+               any(type(r[k]) not in (int, float) or not math.isfinite(r[k]) for k in ('temperature_C', 'electric_kWh', 'headroom_kWh'))
+               or r['electric_kWh'] < 0 or r['headroom_kWh'] < 0 for r in rows):
+            raise ValueError('INVALID_THERMAL_REFERENCE')
+    charging = context['reference'].get('ev_charging_steps', [])
+    if len({(r['need_id'], r['start_min']) for r in charging}) != len(charging):
+        raise ValueError('DUPLICATE_EV_REFERENCE_STEP')
+    if len({e['event_id'] for e in context['events']}) != len(context['events']):
+        raise ValueError('DUPLICATE_EVENT_ID')
     for e in context['events']:
+        if type(e['target_kw']) not in (int, float) or not math.isfinite(e['target_kw']) or e['target_kw'] < 0 or e.get('meter_scope', 'whole_physical_dwelling') not in ('whole_physical_dwelling', 'modeled_controlled_equipment'):
+            raise ValueError('INVALID_EVENT_TARGET_OR_SCOPE')
         if not (context['decision_min'] <= e['start_min'] < e['end_min'] <= context['horizon_min'][1]) or e['direction'] not in ('up', 'down') or e['start_min'] % 10 or e['end_min'] % 10:
             raise ValueError('INVALID_FROZEN_EVENT')
     if context.get('assignment', {}).get('mode', 'fresh_candidates') not in ('fresh_candidates', 'identical_control', 'preserved_failure_replay'):
@@ -68,6 +103,8 @@ def validate(context, rules):
     if context.get('assignment', {}).get('mode') == 'preserved_failure_replay' and 'retained_B_request' not in context:
         raise ValueError('ORIGINAL_FAILURE_REQUEST_REQUIRED')
     tariff = sorted(context['tariff'], key=lambda x: x['start_min'])
+    if any(type(r[k]) is not int or r[k] % 10 for r in tariff for k in ('start_min', 'end_min')) or any(type(r['price_per_kWh']) not in (int, float) or not math.isfinite(r['price_per_kWh']) for r in tariff):
+        raise ValueError('INVALID_TARIFF_GRID_OR_PRICE')
     if any(r['start_min'] >= r['end_min'] for r in tariff) or any(a['end_min'] > b['start_min'] for a, b in zip(tariff, tariff[1:])):
         raise ValueError('INVALID_TARIFF_INTERVALS')
     # The same resource's control rows must define an unambiguous baseline.
@@ -101,6 +138,7 @@ def candidate(context, family, asset, factors, patches, issues, profiles=None):
         events = [{'event_id': e['event_id'], 'delta_kWh': event_energy(b, e) - event_energy(a, e)} for e in context['events']]
         ca, cb = cost(a, context['tariff']), cost(b, context['tariff'])
         metrics = {'delta_cost': cb - ca if ca is not None and cb is not None else None,
+                   'profiles': {'A': a, 'B': b},
                    'event_delta_kWh': events,
                    'aligned_event_kWh': sum(x['delta_kWh'] * (1 if e['direction'] == 'up' else -1) for x, e in zip(events, context['events'])),
                    'prediction_scope': 'commanded_constant_power_profile;not_final_executed_outcome'}
@@ -163,94 +201,115 @@ def thermal_candidates(context, device, rules):
     for event in context['events']:
         for direction in rules['thermal_request_directions']:
             wanted = event['direction'] if direction == 'aligned' else ('up' if event['direction'] == 'down' else 'down')
-            possible = []
-            for t in range(event['start_min'], event['end_min'], 10):
-                a, r = control(t), state.get(t)
-                if a is None or r is None:
+            axes = ('heating', 'cooling') if family == 'ac' else ('tank',)
+            for axis in axes:
+                possible = []
+                for t in range(event['start_min'], event['end_min'], 10):
+                    a, r = control(t), state.get(t)
+                    if a is None or r is None:
+                        continue
+                    if family == 'ac' and not any(l <= t and t + 10 <= h for l, h in context['occupancy'].get(device['room_id'], [])):
+                        continue
+                    active = r.get('axis_electric_kWh', {}).get(axis) if family == 'ac' else r['electric_kWh']
+                    if wanted == 'down' and (active is None or active <= rules['thermal_active_min_kWh']):
+                        continue
+                    if wanted == 'up' and r['headroom_kWh'] <= rules['thermal_active_min_kWh']:
+                        continue
+                    possible.append(t)
+                if not possible:
+                    unavailable.append({'asset_id': aid, 'event_id': event['event_id'], 'direction': direction,
+                                        'thermal_axis': axis, 'reason': 'CURRENT_A_MODE_UNAVAILABLE' if family == 'ac' and wanted == 'down' and any('axis_electric_kWh' not in r for r in reference) else 'NO_CURRENT_A_OPERATING_HEADROOM'})
                     continue
-                if family == 'ac' and not any(l <= t and t + 10 <= h for l, h in context['occupancy'].get(device['room_id'], [])):
-                    continue
-                if wanted == 'down' and r['electric_kWh'] <= rules['thermal_active_min_kWh']:
-                    continue
-                if wanted == 'up' and r['headroom_kWh'] <= rules['thermal_active_min_kWh']:
-                    continue
-                possible.append(t)
-            if not possible:
-                unavailable.append({'asset_id': aid, 'event_id': event['event_id'], 'direction': direction, 'reason': 'NO_CURRENT_A_OPERATING_HEADROOM'})
-                continue
-            for duration in rules['thermal_duration_min']:
-                # Prefer a contiguous occupied/permission interval; never join across gaps.
-                starts = []
-                for lo in possible:
-                    hi = lo
-                    while hi < min(event['end_min'], lo + duration) and control(hi) is not None and hi in state:
-                        if family == 'ac' and not any(l <= hi and hi + 10 <= h for l, h in context['occupancy'].get(device['room_id'], [])):
-                            break
-                        hi += 10
-                    starts.append((lo, hi))
-                lo, hi = min(starts, key=lambda x: (-(x[1] - x[0]), x[0]))
-                for delta in rules['thermal_delta_C']:
-                    patches, issues = [], []
-                    axis = 'tank' if family != 'ac' else ('heating' if abs(state[lo]['temperature_C'] - control(lo)['heating_setpoint_C']) < abs(state[lo]['temperature_C'] - control(lo)['cooling_setpoint_C']) else 'cooling')
-                    change = delta * (1 if (axis in ('heating', 'tank')) == (wanted == 'up') else -1)
-                    for a in baseline:
-                        begin, end = max(lo, a['start_min']), min(hi, a['end_min'])
-                        if begin >= end:
-                            continue
-                        if family == 'ac':
-                            key = axis + '_setpoint_C'
-                            values = {key: a[key] + change}
-                            if axis == 'cooling' and 'value_C' in a:
-                                values['value_C'] = values[key]
-                            heat = values.get('heating_setpoint_C', a['heating_setpoint_C'])
-                            cool = values.get('cooling_setpoint_C', a['cooling_setpoint_C'])
-                            if heat >= cool:
-                                issues.append('THERMOSTAT_DEADBAND_INVERTED')
-                        else:
-                            values = {'value_C': a['value_C'] + change}
-                            if not 10 <= values['value_C'] <= device['parameters']['maximum_C']:
-                                issues.append('SETPOINT_OUTSIDE_HARDWARE_RANGE')
-                        patches.append({'type': 'control_interval', 'asset_id': aid, 'kind': kind,
-                                        'start_min': begin, 'end_min': end, 'values': values})
-                    factors = {'event_id': event['event_id'], 'direction': direction, 'thermal_axis': axis,
-                               'setpoint_delta_C': delta, 'requested_duration_min': duration,
-                               'available_duration_min': hi - lo, 'manual_change_min': 0,
-                               'program_shift_min': 0, 'baseline_restored_after_min': hi}
-                    rows.append(candidate(context, family, aid, factors, patches, issues))
+                for duration in rules['thermal_duration_min']:
+                    starts = []
+                    for lo in possible:
+                        hi = lo
+                        while hi < min(event['end_min'], lo + duration) and control(hi) is not None and hi in state:
+                            if family == 'ac' and not any(l <= hi and hi + 10 <= h for l, h in context['occupancy'].get(device['room_id'], [])):
+                                break
+                            hi += 10
+                        starts.append((lo, hi))
+                    lo, hi = min(starts, key=lambda x: (-(x[1] - x[0]), x[0]))
+                    for delta in rules['thermal_delta_C']:
+                        patches, issues = [], []
+                        change = delta * (1 if (axis in ('heating', 'tank')) == (wanted == 'up') else -1)
+                        for a in baseline:
+                            begin, end = max(lo, a['start_min']), min(hi, a['end_min'])
+                            if begin >= end:
+                                continue
+                            if family == 'ac':
+                                key = axis + '_setpoint_C'; values = {key: a[key] + change}
+                                if axis == 'cooling' and 'value_C' in a:
+                                    values['value_C'] = values[key]
+                                heat = values.get('heating_setpoint_C', a['heating_setpoint_C'])
+                                cool = values.get('cooling_setpoint_C', a['cooling_setpoint_C'])
+                                if heat >= cool:
+                                    issues.append('THERMOSTAT_DEADBAND_INVERTED')
+                                if not 5 <= heat <= 35 or not 15 <= cool <= 40:
+                                    issues.append('SETPOINT_OUTSIDE_REFERENCE_RANGE')
+                            else:
+                                values = {'value_C': a['value_C'] + change}
+                                if not 10 <= values['value_C'] <= device['parameters']['maximum_C']:
+                                    issues.append('SETPOINT_OUTSIDE_HARDWARE_RANGE')
+                            patches.append({'type': 'control_interval', 'asset_id': aid, 'kind': kind,
+                                            'start_min': begin, 'end_min': end, 'values': values})
+                        active_minutes = sum(10 for t in range(lo, hi, 10) if (state[t].get('axis_electric_kWh', {}).get(axis, 0) if family == 'ac' else state[t]['electric_kWh']) > rules['thermal_active_min_kWh'])
+                        factors = {'event_id': event['event_id'], 'direction': direction, 'thermal_axis': axis,
+                                   'setpoint_delta_C': delta, 'requested_duration_min': duration,
+                                   'available_duration_min': hi - lo, 'A_active_support_min': active_minutes,
+                                   'available_duration_scope': 'continuous_command_permission;A_can_cycle',
+                                   'opportunity_evidence': 'current_A_axis_load' if wanted == 'down' else 'nominal_headroom_search;response_unconfirmed',
+                                   'manual_change_min': 0, 'program_shift_min': 0, 'baseline_restored_after_min': hi}
+                        rows.append(candidate(context, family, aid, factors, patches, issues))
     return rows, unavailable
 
 
 def ev_candidates(context, device, rules):
-    aid, rows = device['asset_id'], []
-    for a in context['A']['controls']:
-        if a['asset_id'] != aid or a['kind'] != 'ev_charge_window' or a['start_min'] < context['decision_min'] or a['start_min'] >= context['horizon_min'][1]:
+    aid, rows, unavailable = device['asset_id'], [], []
+    groups = {}
+    for c in context['A']['controls']:
+        if c['asset_id'] == aid and c['kind'] == 'ev_charge_window':
+            groups.setdefault(c['need_id'], []).append(c)
+    for nid, controls in sorted(groups.items()):
+        steps = [s for s in context['reference'].get('ev_charging_steps', [])
+                 if s['need_id'] == nid and s['grid_kWh'] > 0 and s['start_min'] >= context['decision_min']]
+        if not steps or not any(s['start_min'] < context['horizon_min'][1] for s in steps):
             continue
-        steps = [s for s in context['reference'].get('ev_charging_steps', []) if s['need_id'] == a['need_id'] and s['grid_kWh'] > 0]
-        if not steps:
-            continue  # Idle permission tails are not charging opportunities.
+        anchor = min(s['start_min'] for s in steps)
+        end = max(c['end_min'] for c in controls)
+        before = [{**s, 'power_kw': s['grid_kWh'] * 60 / (s['end_min'] - s['start_min'])} for s in steps]
+        power = device['parameters'].get('charger_kw')
+        if power is None or power <= 0:
+            unavailable.append({'asset_id': aid, 'need_id': nid, 'reason': 'EV_CHARGER_RATING_NOT_DECLARED'})
+            continue
         for delay in rules['ev_delays_min']:
-            new = {**a, 'start_min': a['start_min'] + delay}
-            if 'actual_charge_end_min' in new:
-                new['actual_charge_end_min'] += delay
-            if new['start_min'] >= new['end_min']:
-                continue
-            issues = []
-            if max(s['end_min'] for s in steps) + delay > a['end_min']:
-                issues.append('CHARGE_EXCEEDS_ORIGINAL_CONNECTION')
-            patches = [{'type': 'rows', 'collection': 'controls', 'identity': '_ab_control_id',
-                        'rows': [{**new, '_ab_control_id': a['_ab_control_id']}]}]
-            before = [{**s, 'power_kw': s['grid_kWh'] * 60 / (s['end_min'] - s['start_min'])} for s in steps]
-            after = [{**s, 'start_min': s['start_min'] + delay, 'end_min': s['end_min'] + delay} for s in before]
-            factors = {'need_id': a['need_id'], 'ev_delay_min': delay, 'manual_change_min': 0,
+            resume = anchor + delay; remaining = sum(s['grid_kWh'] for s in steps)
+            after = []
+            for t in range(resume, end, 10):
+                if not any(c['start_min'] <= t and t + 10 <= c['end_min'] for c in controls):
+                    continue
+                amount = min(power / 6, remaining)
+                if amount > 1e-10:
+                    after.append({'start_min': t, 'end_min': t + 10, 'power_kw': amount * 6})
+                    remaining -= amount
+                if remaining <= 1e-10:
+                    break
+            issues = ['CHARGE_EXCEEDS_ORIGINAL_CONNECTION'] if remaining > 1e-8 else []
+            patches = [{'type': 'control_pause', 'asset_id': aid, 'kind': 'ev_charge_window',
+                        'need_id': nid, 'start_min': anchor, 'end_min': resume}]
+            factors = {'need_id': nid, 'ev_delay_min': delay, 'manual_change_min': 0,
                        'program_shift_min': 0, 'setpoint_delta_C': 0, 'requested_duration_min': 0,
-                       'original_connection_end_min': a['end_min'], 'full_continuous_SOC_validation': 'pending_paired_execution'}
+                       'original_connection_end_min': end, 'pause_interval_min': [anchor, resume],
+                       'remaining_A_grid_kWh': sum(s['grid_kWh'] for s in steps),
+                       'prediction_energy_shortfall_kWh': max(0, remaining),
+                       'full_continuous_SOC_validation': 'pending_paired_execution'}
             rows.append(candidate(context, 'ev', aid, factors, patches, issues, (before, after)))
-    return rows, []
+    return rows, unavailable
 
 
 def disruption(row):
     f = row['factors']
-    return (f['manual_change_min'], f['setpoint_delta_C'] * f['requested_duration_min'],
+    return (f['manual_change_min'], f['setpoint_delta_C'] * f.get('available_duration_min', f['requested_duration_min']),
             abs(f['program_shift_min']) + f.get('ev_delay_min', 0))
 
 
@@ -265,6 +324,9 @@ def generate(context, rules=None):
         row['_ab_control_id'] = digest(row)
     candidates, unavailable = [], []
     for d in sorted(context['devices'], key=lambda x: x['asset_id']):
+        if context.get('authority') and not context['authority']['assets'][d['asset_id']]['target_control_authorized']:
+            unavailable.append({'asset_id': d['asset_id'], 'reason': 'TARGET_CONTROL_NOT_AUTHORIZED'})
+            continue
         types = set(d['types'])
         fn = program_candidates if types & {'washer', 'dishwasher'} else ev_candidates if 'ev' in types else thermal_candidates if types & {'ac', 'water_heater'} else None
         if fn:
@@ -274,19 +336,19 @@ def generate(context, rules=None):
     candidates.sort(key=lambda x: x['id'])
     selections = {}
     eligible = [x for x in candidates if not x['static_issues']]
-    assignment = context.get('assignment', {'mode': 'fresh_candidates'})
+    assignment = {'mode': 'fresh_candidates', **context.get('assignment', {})}
     for policy in rules['selection_policies']:
         pool = eligible
         if policy == 'known_profile_cost':
             pool = [x for x in pool if x['prediction']['delta_cost'] is not None]
         if policy == 'known_profile_vpp':
-            pool = [x for x in pool if x['prediction']['aligned_event_kWh'] is not None]
+            pool = [x for x in pool if context['events'] and x['prediction']['aligned_event_kWh'] is not None]
         def key(row):
             tie = digest([rules['seed'], context['case_id'], policy, row['id']])
             if policy == 'known_profile_cost':
-                return (row['prediction']['delta_cost'], disruption(row), tie)
+                return (round(row['prediction']['delta_cost'] / rules['prediction_rank_cost_quantum']), disruption(row), tie)
             if policy == 'known_profile_vpp':
-                return (-row['prediction']['aligned_event_kWh'], disruption(row), tie)
+                return (-round(row['prediction']['aligned_event_kWh'] / rules['prediction_rank_event_kWh_quantum']), disruption(row), tie)
             return (disruption(row), tie)
         if assignment['mode'] == 'identical_control':
             selected, status = [], 'assigned_identical_control'
@@ -302,6 +364,10 @@ def generate(context, rules=None):
         for c in plan['controls']:
             c.pop('_ab_control_id', None)
         selections[policy] = {'candidate_ids': [x['id'] for x in selected], 'status': status,
+                              'selection_domain': 'single_device_command_changing_candidates',
+                              'selected_prediction': selected[0]['prediction'] if selected else None,
+                              'selected_disruption': list(disruption(selected[0])) if selected else None,
+                              'baseline_outside_option': {'delta_cost': 0, 'aligned_event_kWh': 0, 'disruption': [0, 0, 0]},
                               'plan_B': plan, 'B_commands_sha256': plan_hash(plan),
                               'actual_outcomes': None, 'human_acceptance': None}
     # A joint request is a separate experimental candidate; detect new conflicts,
@@ -325,13 +391,15 @@ def generate(context, rules=None):
                     if row['family'] in ('washer', 'dishwasher'):
                         issues.extend(program_issues(context, plan, row['factors']['need_id']))
                 joint.append({'candidate_ids': [left['id'], right['id']], 'patches': patches,
+                              'id': digest({'binding': context['reference']['binding'], 'children': [left['id'], right['id']]})[:24],
                               'static_issues': sorted(set(issues)), 'actual_outcomes': None,
                               'status': 'joint_request_failure_retained' if issues else 'joint_static_check_passed'})
-    return {'schema': 'eb.ab_generation.result.v1', 'case_id': context['case_id'],
+    return {'schema': 'eb.ab_generation.result.v2', 'case_id': context['case_id'],
             'binding': context['reference']['binding'], 'A_commands_sha256': a_hash,
             'context_sha256': input_context_sha256,
             'reference_sha256': digest(context['reference']), 'rules_sha256': digest(rules),
             'assignment': assignment, 'candidates': candidates, 'unavailable': unavailable,
+            'resource_authority_status': 'declared',
             'selections': selections, 'joint_candidates': joint,
             'paired_execution_status': 'not_run', 'human_acceptance': None,
             'final_B_outcomes_used_for_selection': False}

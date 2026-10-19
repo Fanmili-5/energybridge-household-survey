@@ -463,6 +463,9 @@ def generate_household(spec, world, rules=None):
                         'preferred_start_min': base + p['preferred_start_min'][daytype],
                         'quantity': quantity, 'unit': 'kg' if p['trigger'] == 'textile' else 'declared_dinner_participants',
                         'maximum_retrieval_wait_min': p['maximum_retrieval_wait_min'],
+                        'maximum_preload_wait_min': p['maximum_preload_wait_min'],
+                        'timer_allowed': p['timer_allowed'], 'machine_windows_min': p['machine_windows_min'],
+                        'constraint_origin': 'declared_life_service_policy',
                         'origin': 'declared_daily_textile_inventory' if p['trigger'] == 'textile' else 'dated_dinner_completion',
                         'service_policy_id': p['service_id']}
                 requirements.append(need)
@@ -475,6 +478,8 @@ def generate_household(spec, world, rules=None):
                                   'asset_id': child['asset_id'], 'depends_on_need_id': nid,
                                   'deadline_min': release + child['deadline_after_release_min'],
                                   'maximum_retrieval_wait_min': child['maximum_retrieval_wait_min'],
+                                  'maximum_preload_wait_min': child['maximum_preload_wait_min'],
+                                  'timer_allowed': child['timer_allowed'], 'machine_windows_min': child['machine_windows_min'],
                                   'preferred_start_min': base + child['preferred_start_min'][daytype],
                                   'service_policy_id': child['service_id'], 'origin': 'same_declared_textile_service_dependency'}
                     requirements.append(child_need)

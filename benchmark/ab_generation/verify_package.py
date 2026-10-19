@@ -16,7 +16,8 @@ def main():
         raise ValueError('PACKAGE_INVENTORY_CHANGED')
     sources = read(root / 'SOURCES.json')
     source_ids = {s['key'] for s in sources['papers']} | {s['id'] for s in sources['implementation_sources']}
-    for rule in read(root / 'LIFE_RULES.json')['rules']:
+    source_ids |= {s['key'] for s in sources.get('review_process_sources', [])}
+    for rule in read(root / 'LIFE_RULES.json')['rules'] + read(root / 'STRATEGY_RULES.json')['rules']:
         if not set(rule['sources']) <= source_ids:
             raise ValueError('UNKNOWN_RULE_SOURCE:' + rule['id'])
         for implementation in rule['implementation'].split(';'):

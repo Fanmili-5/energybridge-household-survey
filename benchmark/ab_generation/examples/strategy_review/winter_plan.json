@@ -1,0 +1,1 @@
+{"comparison_case_ids":[],"departure_target_failure_probe":false,"policies":[],"probe_axes":{"ac":"heating"},"probe_case_ids":["winter-heating-probe"],"probe_directions":{"ac":"aligned"},"probe_families":["ac"],"schema":"eb.ab_strategy_review.v1","scope":"native winter heating evidence and full physical execution;comfort preference remains unknown"}

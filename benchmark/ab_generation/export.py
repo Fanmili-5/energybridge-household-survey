@@ -3,10 +3,30 @@ import copy
 import shutil
 from pathlib import Path
 from .common import bound, digest, read, save, seal, sha, verify
-from .model import apply, plan_hash
+from .model import apply, plan_hash, request_issues
 
 
-def export_physics(stage, imported, generated, case_ids, policy, out, candidate_id=None):
+def attach_legacy_requirements(pack, annual_path):
+    if 'service_needs' in pack:
+        return pack
+    if annual_path is None:
+        raise ValueError('FULL_SERVICE_REQUIREMENTS_REQUIRED;pass_annual_A_root')
+    if sha(annual_path) != pack['source_annual_A_sha256']:
+        raise ValueError('ANNUAL_A_SOURCE_CHANGED')
+    annual = read(annual_path)
+    if annual['household_id'] != pack['household_id'] or annual['anchor'] != pack['anchor'] or annual['end_exclusive'] != pack['end_exclusive']:
+        raise ValueError('ANNUAL_A_IDENTITY_MISMATCH')
+    if digest(annual['tasks']) != digest(pack['tasks']) or digest(annual['operations']) != digest(pack['operations']):
+        raise ValueError('ANNUAL_A_PROGRAMS_CHANGED')
+    pack = copy.deepcopy(pack)
+    pack['service_needs'] = [copy.deepcopy(n) for d in annual['days'].values() for n in d['needs']
+                             if n['kind'] in ('washer', 'dishwasher')]
+    pack['AB_service_needs_source'] = {'annual_A_sha256': sha(annual_path),
+                                      'coordinate_system': 'original_household_anchor', 'requirements_redefined': False}
+    return pack
+
+
+def export_physics(stage, imported, generated, case_ids, policy, out, candidate_id=None, annual_A_root=None):
     stage, imported, generated, out = map(Path, (stage, imported, generated, out))
     incoming, produced = verify(imported), verify(generated)
     if incoming['source_manifest_sha256'] != sha(stage / 'INPUT_MANIFEST.json'):
@@ -53,18 +73,28 @@ def export_physics(stage, imported, generated, case_ids, policy, out, candidate_
             selection = {'status': 'explicit_predeclared_candidate_probe', 'candidate_ids': [candidate_id], 'plan_B': plan}
         if selection['status'] == 'no_comparable_opportunity':
             raise ValueError('NO_SELECTED_REQUEST:' + case_id)
+        if selection['status'] != 'original_failure_request_preserved' and request_issues(context, selection['plan_B']):
+            raise ValueError('REQUEST_CHANGED_FROZEN_IDENTITIES_OR_PAST')
+        if selection.get('B_commands_sha256', plan_hash(selection['plan_B'])) != plan_hash(selection['plan_B']):
+            raise ValueError('SELECTED_B_HASH_CHANGED')
         home = next(r for r in source['records'] if r['household_id'] == row['household_id'])
         packpath, pairpath = bound(stage, home['path']), bound(stage, row['source_pair'])
         if sha(packpath) != context['source']['household_sha256'] or sha(pairpath) != context['source']['pair_sha256']:
             raise ValueError('ORIGINAL_INPUT_CHANGED')
         pack, old = read(packpath), read(pairpath)
+        zones = [d['room_id'] for d in pack['world']['parameter_pack']['devices'] if 'ac' in d['types']]
+        if len(zones) != len(set(zones)):
+            raise ValueError('LEGACY_WORLD_UNSUPPORTED:MULTIPLE_INDEPENDENT_AC_IN_ONE_ZONE')
         if plan_hash(old['A']) != result['A_commands_sha256']:
             raise ValueError('EXPORTED_A_CHANGED')
+        annual_path = bound(annual_A_root, pack['household_id'] + '.json.gz') if annual_A_root else None
+        pack = attach_legacy_requirements(pack, annual_path)
         pair = {k: copy.deepcopy(old[k]) for k in ('case_id', 'household_id', 'date', 'decision_min', 'A', 'needs_A', 'EV_continuous_reference', 'VPP_events')}
         pair['B'] = selection['plan_B']
         pair['needs_B'] = copy.deepcopy(pair['needs_A'])
         pair['schedule_hashes'] = {s: digest({k: pair[s][k] for k in ('tasks', 'operations', 'controls')}) for s in ('A', 'B')}
         pair['AB_generation'] = {'schema': result['schema'], 'rules_sha256': result['rules_sha256'],
+                                 'event_meter_scope': context['event_meter_scope'],
                                  'reference_sha256': result['reference_sha256'], 'policy': 'explicit_candidate_probe' if candidate_id else policy,
                                  'candidate_ids': selection['candidate_ids'], 'status': selection['status'],
                                  'legacy_pair_sha256': context['source']['pair_sha256'],
