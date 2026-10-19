@@ -64,6 +64,13 @@ def audit():
     if any(r['exact_value_from_paper'] is not False or not all(r.get(k) for k in ('purpose','origin','boundary'))
            for r in collection['defaults'].values()):
         raise ValueError('INCOMPLETE_COLLECTION_PARAMETER_BASIS')
+    from .collection_admission import ENGINEERING_ISSUES, SERVICE_ISSUES
+    admission=collection['admission_rules']
+    if (admission['engineering_checks']!=sorted(ENGINEERING_ISSUES)
+            or admission['retained_service_checks']!=sorted(SERVICE_ISSUES)
+            or any(admission[k] is not False for k in ('category_proportions_prescribed',
+                'admission_labels_rewarded','replacement_after_failure'))):
+        raise ValueError('UNREVIEWED_COLLECTION_ADMISSION_RULE')
     schema = register['life_schema_parameters']
     path = bound(package, schema['path'])
     if sha(path) != schema['sha256'] or schema_fields(read(path)) != schema['fields']:

@@ -5,7 +5,6 @@ from .common import canonical,digest
 
 CORE = {
     'intensity':['small','medium','large','mixed'],
-    'admission':['plan_valid','diagnostic','control'],
     'event':['reduction','zero','increase','unknown','unknown_with_known_reduction'],
     'manual':['changed','unchanged'],
     'thermal_direction':['aligned','opposing'],
@@ -13,6 +12,14 @@ CORE = {
 
 
 def assignment_frame(rows,config):
+    dated=defaultdict(list)
+    for r in rows:
+        if r.get('engineering_issues') or r.get('engineering_diagnostic'):
+            raise ValueError('ENGINEERING_DIAGNOSTIC_NOT_COLLECTION_ELIGIBLE')
+        dated[(r['household_id'],r['date'])].append(r)
+    for pool in dated.values():
+        if any(r['features']['device_count']=='0' for r in pool) and any(r['features']['device_count']!='0' for r in pool):
+            raise ValueError('CONTROL_NOT_ELIGIBLE_WHEN_CHANGED_REQUEST_EXISTS')
     cells=defaultdict(list)
     for r in rows:
         if r['actual_outcomes'] is not None or r['human_acceptance'] is not None or r['actual_results_used_for_selection'] is not False:
@@ -45,9 +52,12 @@ def goals(rows,households):
                 tag=axis+'='+level
                 out.append({'id':h+'::'+tag,'household':h,'tag':tag,
                     'available_household_days':len({r['date'] for r in hh if tag in r['tags']})})
-    # Multi-label accounting: a case can witness several factors, never several
-    # independent executions. Every available composition/interaction gets a goal.
-    for tag in sorted({t for r in rows for t in r['tags'] if '|' in t or t.startswith(('composition=','mechanism=','service_slack='))}):
+    # Admission labels are reports, never quotas or a coverage reward. Control
+    # remains a scarcity fallback, not a requested household/batch witness.
+    for tag in sorted({t for r in rows for t in r['tags']
+                       if ('|' in t or t.startswith(('composition=','mechanism=','service_slack=')))
+                       and 'admission=' not in t and 'control' not in t
+                       and 'device_count=0' not in t}):
         out.append({'id':'batch::'+tag,'household':None,'tag':tag,
             'available_household_days':len({(r['household_id'],r['date']) for r in rows if tag in r['tags']})})
     return out
@@ -109,10 +119,12 @@ def assign(rows,config):
             'proven_optimal':x.status==0,'mip_gap':None if getattr(x,'mip_gap',None) is None else float(x.mip_gap),
             'node_count':int(getattr(x,'mip_node_count',0) or 0)}
     duplicates=Counter((r['household_id'],r['near_duplicate_key']) for r in selected)
-    return {'schema':'eb.collection.assignment.v1','selected_ids':[r['id'] for r in selected],
+    return {'schema':'eb.collection.assignment.v2','selected_ids':[r['id'] for r in selected],
         'coverage':coverage,'required_deficits':sum(r['deficit'] for r in coverage),
         'near_duplicate_excess':sum(max(0,v-1) for v in duplicates.values()),
         'frame':frame,'solver':{'method':'two_stage_lexicographic_MILP','scipy_version':scipy.__version__,
             'coverage':status(a),'repeat_and_tie':status(b),'node_limit_per_stage':config['solver_node_limit']},
         'outcomes_used':False,'population_representativeness_claim':False,
+        'category_proportions_prescribed':False,'admission_labels_rewarded':False,
+        'control_policy':'only_if_no_changed_request_in_declared_daily_domain',
         'reselection_after_physical_or_human_results':False}

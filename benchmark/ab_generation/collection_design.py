@@ -10,7 +10,7 @@ from .power import site_capacity
 
 
 DEFAULT = {
-    'schema': 'eb.collection.design.v1', 'seed': 20261020,
+    'schema': 'eb.collection.design.v2', 'seed': 20261020,
     'first_date': '2025-07-15', 'days': 10, 'households': [],
     'event': {'event_id': 'fixed-vpp-18-19', 'start_min': 1080, 'end_min': 1140,
               'direction': 'down', 'target_kw': 1.5},
@@ -57,6 +57,11 @@ def working_context(context):
     lo, hi = context['horizon_min']
     keep = {r['need_id'] for k in ('tasks', 'operations') for r in context['A'][k]
             if r['end_min'] > lo and r['start_min'] < hi}
+    # An EV can remain plugged in throughout the entire case without a plug or
+    # unplug operation inside it. Preserve the original endpoint operations of
+    # every overlapping connection, rather than inventing a missing connection.
+    keep |= {r['need_id'] for r in context['A']['controls'] if r['kind']=='ev_charge_window'
+             and r['end_min']>lo and r['start_min']<hi}
     while True:
         enlarged = keep | {r['need_id'] for r in context['A']['tasks'] if r.get('depends_on_need_id') in keep}
         enlarged |= {r['depends_on_need_id'] for r in context['A']['tasks'] if r['need_id'] in keep and r.get('depends_on_need_id')}

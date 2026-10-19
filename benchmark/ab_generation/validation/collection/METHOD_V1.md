@@ -1,0 +1,91 @@
+# 每户十天的A/B采集算法：计划层试点规范
+
+本规范对应 `collection*.py` 和 `examples/collection/design.json`。它是用于家庭立场判断、接受/评分/解释采集的合成提案生成器，不是原EB控制器输出，也不以预先预测的接受率或成功率为目标。原有三策略、长尾批次、失败记录及v69接口保持独立。未改线上问卷，不执行EnergyPlus，不启动50+950户生产。
+
+## 1. 输入、实验单位和来源
+
+每户十天采用十个**分别对照当天A的反事实案例**，不把上一题B执行后的状态带入下一题。原A本身来自连续生活日历；跨午夜的EV、程序链和服务尾段仍在同一道题内检查。同户回答不宣称统计独立。决策时刻沿用项目上下文08:00，B不能改已经发生的命令。
+
+固定输入包括家庭、设备能力及授权、完整生活A、需求与服务期限、人员/房间窗口、EV解析充电参考、给定住宅功率契约及实验电价。家庭态度用于呈现背景，不用于预先预测接受度、筛出“用户应该喜欢”的B。真实家庭缺失字段不得以合成默认值冒充实测；本轮只用原有六个公开合成家庭。
+
+事件固定为半开区间 `[18:00,19:00)`，与原EB固定提交版本 `2b17ae63e613da776c93e900f5dace50d63a88a8` 的 `run_manifest.py` 默认值一致。1.5kW是项目请求目标，不是计算得到的交付量。旧v69预览的18:10—19:10保留原版绑定，不能仅改标签伪装成新事件。
+
+完整未来A仅是明确声明的离线实验条件，不是实时预知能力。`offline_unexecuted_A_plan` 禁止填写热状态轨迹或人的回答。`PRE_GENERATION.json`在B生成前固定配置、代码摘要和A侧来源文件摘要；生成过程不读取旧B目录、问卷答案、IDF或物理结果。已有源A复现只调用公开家庭与生活生成，不调用旧B生成或引擎。
+
+## 2. 可改范围与机会识别
+
+程序设备保持任务身份、操作者、衣物量、程序时长和功率曲线。可以整链移时、仅移动启动，或在既有日历内分别安排装载/运行/取出。没有预约能力时必须装好即启动。独立烘干可独立调整，依赖洗衣的烘干保持关联链。不能为了B多样性换设备、少洗衣物、删除服务或新增授权。
+
+EV仅在原充电连接/权限内推迟恢复，保留原能量需求、行程、充电能力和插拔操作。本版不支持V2G、任意调功、外部充电或完整SOC反馈控制；这些不作为已有覆盖。名义补能可行性不等于实际出发SOC保证。
+
+空调与热水箱支持事件内设定调整，以及30分钟事前调节加事件内调整，到期由原A自动恢复。事前温控以事件时段的服务设定为参考，而非把40℃等离家退让值当成舒适目标；原始命令最大变化和服务参考变化分别记录。制冷/制热轴由实验配置声明，不能据此声称设备实际处于该模式。当前六户夏季配置只请求制冷，不计为冬季制热覆盖。空调事件段要求房间占用，事前预调允许无人时段但要求原设备控制区间存在。
+
+机会至少分开三件事：设备/动作能否提出、计划是否满足约束、VPP小时是否存在已知负荷变化。已知程序/EV按 `integral(P_A-P_B,18:00,19:00)` 分为减少、零、增加。联合方案保留已知部分的解析贡献与热控未知标志，不将未知设备当作零贡献，不把全天轨迹L1非零当成VPP响应。温控设定改变的实际负荷、室温、热水和恢复反弹全部未知。
+
+## 3. 候选域和幅度
+
+机器启动按10分钟网格从给定释放时间到服务期限/观察尾段推导；不是固定±120分钟半径。原始边界附近的一格请求也进入诊断目录。早于决策、改变身份/权限/过去的请求不得借“负例”标签进入目录。
+
+每个机器启动分别产生原装取不动、整链移位，以及装/取日历域20%、50%、90%分位和最接近原A四个构造见证。装/取时间允许集合有空洞时，取真实可用时间点，不在空洞内插值；关联烘干按前置取出完成后再装载。**装取是有界构造搜索，不是完整CSP穷举**；缺少见证不能证明整个自由装取空间不可行。
+
+EV候选加入充电恢复域的20%、50%、90%分位、轻微延迟、19:00、最晚可补足附近及一格短缺诊断。当前连接的完整剩余A补能需求始终保留，不能因展示窗口而裁掉未来电量。生成范围限定在原连接结束与案例尾段的较早者，但**服务余量按原连接结束计算，观察窗口余量另外记录**。例如周五的连接延续至周一时，周六早晨不能被当成车辆出发期限。需要超出案例尾段才能核对的请求隔离并注明“不是已确认的出发失败”，不混入补能失败长尾。
+
+默认空调服务偏移0.5/1/2℃，水箱1/3/5℃，持续20/40/60分钟，幅度、时长、方向分别变化。保留响应方向相反的请求。硬件/参考设定范围检查与实际舒适判断分开。
+
+所有数值登记于 `COLLECTION_PARAMETERS.json`、`PARAMETERS.json` 和设计文件。它们是人工实验/数值设置，不是论文原值、自然家庭分布或安全标准。程序小≤30分钟、中30—90分钟之间、大≥90分钟；EV同时记录暂停长度和剩余余量；温控按公开物理单位水平分层。真实连续值、相对位置、人工操作变化始终保留。相对高分位不能把唯一10分钟机会解释为绝对大幅改变。相同代表合并，不用三种标签复制同一个B。
+
+## 4. 联合和无效样本
+
+单位是资产上的独立服务任务或温控轴。同一任务的不同变体互斥；不同批次可以联合。实际改变设备数和独立单位数分别记录，不能把依赖洗衣的烘干夸成第二个独立机会。
+
+单位子集按所有可用阶数分层轮转，不设置两台上限。每个子集默认六轮：前两轮从单项计划有效域取不同确定性见证，其后从包括诊断在内的完整代表域取值。所有完整联合请求重新检查冲突，失败仍留在目录。预算192是人工计算预算；按设备阶数轮转避免二阶组合先耗尽预算。所有子集都访问过只表示存在性覆盖，不代表高阶剂量完全穷举。
+
+共同检查身份/授权/过去、人工时间、房间、装载先后、最大等待、关联任务、服务期限、温控范围、EV名义补能和住宅功率。保守功率包络超限只表示未获包络认证；已知计划功率超限也是模型计划结果，不能冒充实际断路器跳闸。
+
+共享场景中的不可移动他户操作者与未授权操作属于硬准入门槛，即使它是在关联烘干的装取检查中出现，也必须隔离保存原请求及原因，不能仅标为普通诊断后参加取样。本次自查曾发现这一漏洞，修复及开发版本保留情况见验证文档。
+
+保留计划无效、零事件贡献、负方向、A=B及温控未知请求；不采用收益最优、Pareto前沿或预期接受度筛选。无效提案的约束原因用于研究审查，不把虚构结果或预设人类评分写入样本。A自身已有缺陷也不能归因为B导致。
+
+## 5. 十天整数分配及去重
+
+生成目录固定后，使用实际的SciPy/HiGHS混合整数规划，而非仅在文档中声称CP-SAT。每户每日恰好一个候选；没有跨日期调换A或生活条件的变量。
+
+第一阶段最小化覆盖目标缺额：每户的可用设备数量、幅度、准入、事件类型、人工变化、温控方向各争取一个见证；批次的机制、组成、服务余量和指定两轴交互各争取一个见证。不可用目标仍列缺额，不通过放宽A实现。目标是一种公开的benchmark实验设计，不是人口抽样权重。
+
+第二阶段锁定第一阶段已取得的整数覆盖数，再减少同户近似重复，用固定种子哈希顺序作小权重平局处理。平局权重总贡献小于0.25，不能抵消一个重复惩罚。节点预算、库版本、状态及最优性间隙公开；预算耗尽不宣称全局不可行或最优。求解器只使用覆盖和约束元数据，不读取B物理结果或人的答案。
+
+相同背景下的相同规范命令按摘要合并。表示顺序、相邻同值控制分段和内部ID不创造新方案。生成器仍保留每个被评估的不同无效请求；完全相同执行只计一次。
+
+近似重复签名保留基线A、星期、日历窗口、设备、需求、期限、电价、授权、功率契约、不确定状态及请求机制/剂量/方向/时长。日期和ID本身不创造新取舍。仅对分配求解中的相同语义单元取固定数量代表，完整目录保留，并证明公开覆盖标签及家庭日资格集合没有因代表压缩丢失。这个压缩不保证所有连续剂量上的最优性。
+
+同一B可以覆盖多个因素，但仍只是一条样本。覆盖分母按具有候选的家庭日统计，不按某户的海量近似候选计算。没有足够机会时允许必要重复/A=B，报告重复和缺额；不能为满足十题而制造不存在的设备机会。50与950以后可使用相同接口与规则分别分配；本次没有执行它们，也未验证该规模性能。
+
+## 6. 验证与复现
+
+```bash
+python -m pip install -r benchmark/ab_generation/collection-requirements.txt
+python -B -m benchmark.ab_generation.collection prepare-source --out /tmp/collection-A
+python -B -m benchmark.ab_generation.collection build --source-project /tmp/collection-A --out /tmp/collection-pilot
+python -B -m benchmark.ab_generation.collection recheck --root /tmp/collection-pilot
+python -B -m benchmark.ab_generation.collection replay --root /tmp/collection-pilot
+python -B -m benchmark.ab_generation.validation.collection.baseline_audit --root /tmp/collection-pilot --out /tmp/collection-A-review.json
+python -B -m benchmark.ab_generation.validation.collection.independent_review --root /tmp/collection-pilot --out /tmp/collection-independent-review.json
+python -B -m benchmark.ab_generation.validation.collection.ev_windows --root /tmp/collection-pilot --out /tmp/collection-EV-window-review.json
+python -B -m benchmark.ab_generation.collection sensitivity --root /tmp/collection-pilot --out /tmp/collection-probe
+```
+
+所有输出目录必须不存在。原完整A、候选目录、完整A/B、预登记文件和审查均写入独立构建产物；公开 `PUBLIC_SAMPLES.json` 是注明时间范围的展示投影，不冒充完整轨迹。重新审查从完整A物化B、重算约束和已知事件积分，并对字面B重算改变设备、人工变化、准入、热控未知与事件标签。还检查覆盖表回读及锁定运行环境下的整数分配回放；不承诺未锁版本的求解器在所有平局下选择相同案例。
+
+敏感性协议在运行前固定：每户第一工作日与第一周末、原预算/预算减半/预算加倍/另一组分位/更强热控请求五种配置。源A不变，逐个方案分类变化如实报告；抽取每个准入×设备数量×事件标签的确定性见证重新检查完整A。它不替换原取样，也不证明物理或偏好稳健。
+
+程序审查通过、目标覆盖通过、全交互覆盖和物理/人类验证是独立结论。不能把软件通过写成全部B可执行、全部因素覆盖或benchmark最终有效。
+
+## 7. 科研与算法依据的采用范围
+
+- 原EB固定版本：`energybridge/simulation/appliance_sim.py`、`benchmark/run_manifest.py`、`docs/ADAPTIVE_HARNESS_ARCHITECTURE.md`。支持程序模型、18—19事件、事件核算以及提案/执行/后果/用户判断分离；不证明我们的采集分布有效。
+- El Makroum et al. (2026), *Load scheduling optimization for user-centric residential demand response leveraging time use surveys*, DOI [10.1016/j.apenergy.2025.127080](https://doi.org/10.1016/j.apenergy.2025.127080)。采用活动、便利性、缓冲区及服务窗口思想；未照搬其优化模型、权重或奥地利实证效果。可核查[机构记录](https://repositum.tuwien.at/handle/20.500.12708/228812)。
+- Wen et al. (2025), *Can reduction of local carbon emissions motivate participation in demand-side flexibility programs?*, DOI [10.1016/j.apenergy.2025.125610](https://doi.org/10.1016/j.apenergy.2025.125610)。支持多属性多水平情境和有限答题负担；本方法不是其正交设计，不沿用接受率，不声称十题或温控幅度来自该论文。
+- Hao et al. (2013), *A generalized battery model of a collection of thermostatically controlled loads for providing ancillary service*, DOI [10.1109/Allerton.2013.6736573](https://doi.org/10.1109/Allerton.2013.6736573)。支持状态、死区和热惯性决定响应；不提供本项目温度剂量，也不验证本项目家庭舒适。
+- Lei et al. (2007), [IPOG](https://www.nist.gov/publications/ipog-general-strategy-t-way-software-testing)，DOI10.1109/ECBS.2007.47；Kuhn et al. (2012), [NIST IR7878](https://csrc.nist.gov/pubs/ir/7878/final)，DOI10.6028/NIST.IR.7878。采用有限因素交互和覆盖计量思想；实现是项目分层有界生成，不声称实现IPOG或完整覆盖数组。
+- [SciPy `milp`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.milp.html)与HiGHS：实际整数分配工具，运行固定SciPy1.17.1；公开求解状态，不将求解器最优性解释为问卷效度。
+- Kassis, Agarwal, He, Patel & Brueckner (2026), *Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents*, [10.48550/arXiv.2609.00065](https://doi.org/10.48550/arXiv.2609.00065)，当前记录核查2026-10-20。用于本次证据分离和方法自查辅助；不是设备规则、剂量或性能的科研依据。

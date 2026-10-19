@@ -14,6 +14,7 @@ from .energy import task_power
 from .generate import event_energy
 from .model import apply, chain_need_ids, overlap
 from .sampling import command_hash
+from .collection_admission import program_construction_issues, engineering_issues
 
 
 def _profile(c, tasks):
@@ -107,7 +108,13 @@ def _raw_programs(c, d, config):
                 manual=[abs(o['start_min']-original[o['operation_id']]['start_min']) for o in moved]
                 patches=[{'type':'rows','collection':'tasks','identity':'task_id','rows':shifted},
                          {'type':'rows','collection':'operations','identity':'operation_id','rows':moved}]
+                # The ordinary variant domain is constrained by precedence,
+                # readiness and timer capability at construction, not by a later
+                # success filter. Keep the excluded raw request in its own ledger.
+                construction = program_construction_issues(c,shifted,moved)
                 yield {'unit':unit,'family':need['kind'],'asset_id':d['asset_id'],'service_need_id':nid,'mechanism':mechanism,
+                    'construction_route':'engineering_diagnostic' if construction else 'collection_request',
+                    'construction_issues':construction,
                     'branch':'earlier' if delta<0 else 'later','needs':[nid],'patches':patches,
                     'profiles':{'A':_profile(c,tasks),'B':_profile(c,shifted)},
                     'magnitude':{'dose_coordinate':max([abs(delta)]+manual),'machine_shift_min':abs(delta),
@@ -222,6 +229,11 @@ def _finish(c,raw,config):
     if bh==command_hash(c['A']):
         return None
     check=sorted(set(check+raw.get('extra_issues',[])))
+    logic=engineering_issues(c,b,raw['needs'],check+raw.get('construction_issues',[]))
+    if logic:
+        return {'engineering_diagnostic':True,'engineering_issues':logic,
+                'issues':sorted(set(check+logic)),'request':raw,
+                'request_sha256':digest(raw),'repaired':False,'replacement_generated':False}
     known=0. if raw['profiles'] is None else event_energy(raw['profiles']['A'],config['event'])-event_energy(raw['profiles']['B'],config['event'])
     row={**raw,'issues':check,'power_status':power['status'],'unknown_thermal_response':raw['profiles'] is None,
          'known_event_reduction_kWh':known,'working_B_sha256':bh,
@@ -256,6 +268,14 @@ def _request(c,children,config):
     identities=[(p['collection'],r[p['identity']]) for p in patches if p['type']=='rows' for r in p['rows']]
     if len(identities)!=len(set(identities)):
         check=sorted(set(check+['OVERLAPPING_PATCH_IDENTITIES']))
+    logic=engineering_issues(c,apply(c['A'],patches),
+        sorted({n for r in children for n in r['needs']}),check)
+    if logic:
+        return {'engineering_diagnostic':True,'engineering_issues':logic,
+            'issues':sorted(set(check+logic)),'request':{'patches':patches,
+                'component_ids':[r['id'] for r in children]},
+            'request_sha256':digest([r['id'] for r in children]),
+            'repaired':False,'replacement_generated':False}
     changed=set()
     for r in children:
         for p in r['patches']:
@@ -274,6 +294,7 @@ def _request(c,children,config):
         'known_event_reduction_kWh':sum(r['known_event_reduction_kWh'] for r in children),
         'unknown_thermal_response':any(r['unknown_thermal_response'] for r in children),
         'actual_outcomes':None,'human_acceptance':None,'actual_results_used_for_selection':False}
+    row['engineering_issues']=[]
     row['working_B_sha256']=command_hash(apply(c['A'],patches))
     row['id']=digest({'binding':c['reference']['binding'],'B':row['working_B_sha256']})
     row['tags']=tags(row);row['near_duplicate_key']=semantic_signature(c,row)
@@ -295,7 +316,13 @@ def presence_subsets(keys,budget):
 
 def generate_day(context,config):
     validate_context(context); before=digest(context); c=working_context(context)
-    singles={}; gaps=[];evaluated=0;quarantined={}
+    baseline_needs={t['need_id'] for t in c['A']['tasks'] if c['decision_min']<=t['start_min']<1440}
+    baseline_needs={n['need_id'] for n in c['needs'] if n['need_id'] in baseline_needs}
+    baseline_check,_,_=issues(c,[],baseline_needs)
+    baseline_logic=engineering_issues(c,c['A'],baseline_needs,baseline_check)
+    if baseline_logic:
+        raise ValueError('BASELINE_ENGINEERING_ERROR;A_NOT_MODIFIED:'+','.join(baseline_logic))
+    singles={}; gaps=[];evaluated=0;quarantined={};engineering={}
     for d in sorted(c['devices'],key=lambda d:d['asset_id']):
         if not c['authority']['assets'][d['asset_id']]['target_control_authorized']:
             gaps.append({'asset_id':d['asset_id'],'reason':'NOT_AUTHORIZED'});continue
@@ -307,13 +334,21 @@ def generate_day(context,config):
             if row and row.get('quarantined'):
                 quarantined.setdefault(row['request_sha256'],row)
                 continue
+            if row and row.get('engineering_diagnostic'):
+                engineering.setdefault(row['request_sha256'],row)
+                continue
             if row:
                 singles.setdefault(row['id'],row);count+=1
         if not count:
             gaps.append({'asset_id':d['asset_id'],'reason':'DEPENDENCY_ONLY' if types=={'dryer'} else 'NO_REQUEST_IN_DECLARED_DAILY_DOMAIN'})
     atomic=sorted(singles.values(),key=lambda r:r['id']);annotate_doses(atomic,config)
-    rows={r['id']:_request(c,[r],config) for r in atomic}
-    control=_request(c,[],config);rows[control['id']]=control
+    rows={}
+    for r in atomic:
+        candidate=_request(c,[r],config)
+        if candidate.get('engineering_diagnostic'):
+            raise ValueError('ATOMIC_CONSTRUCTION_ADMISSION_MISMATCH')
+        rows[candidate['id']]=candidate
+    control=_request(c,[],config)
     groups=defaultdict(list)
     for r in atomic:
         groups[r['unit']].append(r)
@@ -333,7 +368,7 @@ def generate_day(context,config):
     # Every size gets a turn, then every subset, then further dose combinations.
     # The entire evaluated catalogue (including newly arising joint failures) stays.
     ordered=presence_subsets(keys,config['joint_budget'])
-    attempts=0;observed=set()
+    attempts=0;observed=set();attempted_subsets=set()
     for trial in range(config['joint_trials_per_subset']):
         for subset in ordered:
             if attempts>=config['joint_budget']:
@@ -348,17 +383,31 @@ def generate_day(context,config):
                 if trial<2 and valid:
                     pool=valid
                 children.append(pool[(trial*(j+1)+j)%len(pool)])
-            row=_request(c,children,config);rows.setdefault(row['id'],row);attempts+=1;observed.add(subset)
+            row=_request(c,children,config)
+            if row.get('engineering_diagnostic'):
+                engineering.setdefault(row['request_sha256'],row)
+            else:
+                rows.setdefault(row['id'],row)
+                observed.add(subset)
+            # A structural conflict consumes its scheduled attempt. No retry,
+            # alternative children, successful replacement or outcome reroll.
+            attempts+=1;attempted_subsets.add(subset)
         if attempts>=config['joint_budget']:
             break
     if digest(context)!=before:
         raise ValueError('COLLECTION_MUTATED_A_INPUT')
-    return {'schema':'eb.collection.day.v1','context_sha256':before,'A_commands_sha256':command_hash(context['A']),
+    if not rows:
+        control['fallback_reason']='no_change_in_declared_construction_domain;not_global_no_opportunity_proof'
+        rows[control['id']]=control
+    return {'schema':'eb.collection.day.v2','context_sha256':before,'A_commands_sha256':command_hash(context['A']),
         'rows':sorted(rows.values(),key=lambda r:r['id']),'quarantined_requests':list(quarantined.values()),
+        'engineering_diagnostics':list(engineering.values()),'control_record':control,
+        'engineering_diagnostics_retained':len(engineering),'no_retries_or_replacements':True,
         'gaps':gaps,'evaluated_atomic_requests':evaluated,
         'atomic_unique':len(atomic),'joint_evaluations':attempts,
         'joint_subset_required':required_subsets,'joint_subset_observed':len(observed),
-        'joint_search_status':'budget_limited' if len(observed)<required_subsets else 'presence_covered;higher_order_doses_not_exhaustive',
+        'joint_subset_attempted':len(attempted_subsets),
+        'joint_search_status':'eligible_presence_missing;not_infeasibility_proof' if len(observed)<required_subsets else 'eligible_presence_covered;higher_order_doses_not_exhaustive',
         'retimed_handling_search':'three_calendar_quantiles_plus_nearest_A;not_exhaustive_CSP',
         'invalid_retained':sum(bool(r['issues']) for r in rows.values()),
         'physical_status':'not_run','B_outcomes_used':False,'A_input_unchanged':True}

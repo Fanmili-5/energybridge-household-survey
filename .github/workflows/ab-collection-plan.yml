@@ -18,7 +18,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -r benchmark/ab_generation/collection-requirements.txt
-      - run: python -B -m unittest benchmark.ab_generation.test_collection benchmark.ab_generation.test_generation benchmark.ab_generation.test_plan_only -v
+      - run: python -B -m unittest benchmark.ab_generation.test_collection benchmark.ab_generation.validation.collection_v2.test_independent_logic benchmark.ab_generation.test_generation benchmark.ab_generation.test_plan_only -v
       - name: Reproduce six source families, sixty independent daily plans; no engine
         run: |
           python -B -m benchmark.ab_generation.collection prepare-source --out "$RUNNER_TEMP/collection-A"
@@ -28,3 +28,4 @@ jobs:
           python -B -m benchmark.ab_generation.validation.collection.baseline_audit --root "$RUNNER_TEMP/collection-pilot" --out "$RUNNER_TEMP/baseline-A-review.json"
           python -B -m benchmark.ab_generation.validation.collection.independent_review --root "$RUNNER_TEMP/collection-pilot" --out "$RUNNER_TEMP/independent-review.json"
           python -B -m benchmark.ab_generation.validation.collection.ev_windows --root "$RUNNER_TEMP/collection-pilot" --out "$RUNNER_TEMP/ev-windows-review.json"
+          python -B -m benchmark.ab_generation.validation.collection_v2.independent_logic --root "$RUNNER_TEMP/collection-pilot" --out "$RUNNER_TEMP/independent-logic.json"
