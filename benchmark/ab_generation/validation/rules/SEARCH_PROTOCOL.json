@@ -1,0 +1,21 @@
+{
+  "review_type": "targeted method and source verification,not exhaustive systematic review",
+  "date": "2026-10-19",
+  "questions": [
+    "service-constrained activity-to-appliance generation",
+    "thermostatic state and deadband limits on flexibility opportunities",
+    "outcome-blind stratification of supported,uncertain,ineffective and failed roleplay proposals"
+  ],
+  "sources": [
+    "existing hash-bound Chen2022,ElMakroum2026,Wen2025 papers",
+    "primary journal/author repositories for thermostatic-control algorithms",
+    "EnergyPlus24.1 component documentation",
+    "NIST finite interaction coverage"
+  ],
+  "inclusion": "primary methods with identifiable control/state assumptions;explicit project settings separated",
+  "exclusion": "secondary summaries as evidence;transferred household acceptance rates;claims that synthetic load ratings prove delivered flexibility",
+  "planned_queries": [
+    "Mathieu Koch Callaway 2013 state estimation control electric loads energy imbalance thermostatically controlled loads",
+    "water heater stratified thermostat deadband sensor height EnergyPlus24.1"
+  ]
+}

@@ -23,7 +23,7 @@
 | `assignment` | `fresh_candidates`、`identical_control`或 `preserved_failure_replay` |
 | `retained_B_request` | 仅指定历史失败回放分支使用的原请求，不读其实际后果 |
 
-`reference.binding`保存A命令和物理上下文摘要。`thermal`按资产保存时步温度、电耗与名义余量；AC新增 `axis_electric_kWh`，来自原生制热/制冷线圈。缺少模式证据时不猜测降载轴。`ev_charging_steps`是当前A的实际网侧充电步骤；同一需求/时步不得重复。
+`reference.binding`保存A命令和物理上下文摘要。`thermal`按资产保存时步温度、电耗与名义余量；新生活水箱参考另含前一报告边界的`node_temperatures_C`全节点向量及其时间说明；向量有则须长度匹配硬件且数值有限，缺失时不伪造状态支持。AC新增 `axis_electric_kWh`，来自原生制热/制冷线圈。缺少模式证据时不猜测降载轴。`ev_charging_steps`是当前A的实际网侧充电步骤；同一需求/时步不得重复。
 
 `reference.information_set`必须明确`offline_full_A_counterfactual`或手写测试的`synthetic_interface_fixture`、完整所供A区间、未来A可用、B最终后果/答卷不可用、无实时部署声明和空预测器。范围须覆盖主区间及所供热/EV参照，不得把含尾期的EV参照缩称24小时信息。新生活参考另存`baseline_admission`审查SHA；`reference-life`必传`--audit`，核对服务/物理审查及编译/运行身份。定义见[OFFLINE_EXPERIMENT.md](OFFLINE_EXPERIMENT.md)。
 
@@ -33,13 +33,13 @@
 
 ## 3. 候选与选择
 
-结果包含 `candidates,unavailable,selections,joint_candidates`。单候选保存稳定身份、因素、补丁、`static_issues`和预测；已知程序/EV预测保存A/B负荷剖面供复核，热响应预测为未知。实际后果和人类接受值不写入候选排序。
+结果包含 `candidates,unavailable,selections,joint_candidates,device_opportunity_inventory`。清单逐资产报告候选数、静态通过且有依据数、探索数、依赖链专属状态及缺失原因。单候选保存稳定身份、因素、补丁、`static_issues`和预测；每项另有`opportunity.status,basis,actual_response_confirmed`，程序/EV含逐资产解析L1，热项含采样A阈值见证。已知程序/EV预测保存A/B负荷剖面供复核，热响应预测为未知。实际后果和人类接受值不写入候选排序。
 
 补丁类型为既有行替换、明确温控区间，以及EV的 `control_pause`。暂停只移除原许可的特定部分，保留原间隙和通知前命令。不得借补丁新增帮手、换资产或缩短非中断程序。
 
-三种规则各返回 `candidate_ids,status,plan_B,B_commands_sha256`、预测和命令扰动。比较域为单设备且有命令变化的替代方案；`baseline_outside_option`另列不改变A的零增量。`no_comparable_opportunity`表示没有该规则的可比候选，不是假造一个有交付响应的B。无事件时VPP规则不可比较。
+三种规则各返回 `candidate_ids,status,plan_B,B_commands_sha256`、预测和命令扰动。比较域为静态通过、机制supported的单设备替代方案；`baseline_outside_option`另列不改变A的零增量。`no_comparable_opportunity`表示没有该规则的可比候选，不是假造一个有交付响应的B。无事件时VPP规则不可比较。
 
-联合请求保留独立 `id`、子候选身份及组合后的静态检查。常规三规则未自动选择联合最优；公开复核可按冻结计划选择联合探针并执行。
+联合请求保留独立 `id`、子候选身份及组合后的静态检查；`opportunity.children,joint_support`逐子请求保留机制依据，分为all_supported/mixed/all_exploratory。常规三规则未自动选择联合最优；公开复核可按冻结计划选择联合探针并执行。
 
 ## 4. 物理交接
 
@@ -55,6 +55,7 @@
 
 报告包含：
 
+- `request_opportunity`及`targeted_response`：逐目标电量剖面L1、峰值差、温度/SOC差、实际执行时点和全部/部分/无变化类型；数值变化不是人的可感知阈值；
 - 每事件净住宅电表和所建模可控设备小计、所声明口径的目标是否满足；
 - 主24小时与主区间加跟随期的电量和明确币种电费；缺价保持未知；
 - 实际执行、人工时刻变化、交付、预装/取出等待和截止；

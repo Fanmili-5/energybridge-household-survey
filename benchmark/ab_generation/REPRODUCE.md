@@ -7,7 +7,7 @@
 环境：Python 3.9或以上，标准库。无需现有1000户、许可调查、天气文件或API。仓库根目录运行：
 
 ```bash
-python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling -v
+python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity -v
 python -B -m benchmark.ab_generation generate \
   --input benchmark/ab_generation/examples/batch.json \
   --rules benchmark/ab_generation/examples/rules.json \
@@ -118,11 +118,12 @@ A、生活资源、模型或天气改变时重新获取当前A参考；规则、
 
 ```sh
 python -B -m benchmark.ab_generation sample-tail \
-  --contexts benchmark/ab_generation/validation/tail/frozen_contexts \
+  --contexts benchmark/ab_generation/validation/rules/frozen_contexts \
+  --plan benchmark/ab_generation/examples/rule_review/plan.json \
   --out /absolute/path/frozen-tail-sample
 ```
 
-将输出所选记录的 `sample_id`、`stratum`、`B_commands_sha256` 与公开 `validation/tail/SELECTION.json` 对照。精确运行环境是Python3.14.3；跨Python版本比较命令与配额，候选预测的浮点细节及别名不作为跨版本字节一致承诺。重新跑引擎会生成新A回执，样本可随上下文哈希改变，但仍须满足同一覆盖合同。
+将输出所选记录的 `sample_id`、`stratum`、`B_commands_sha256` 与公开 `validation/rules/SELECTION.json` 对照。精确运行环境是Python3.14.3；跨Python版本比较命令与配额，候选预测的浮点细节及别名不作为跨版本字节一致承诺。重新跑引擎会生成新A回执，样本可随上下文哈希改变，但仍须满足同一覆盖合同。
 
 先按本页 `reproduce-strategies` 命令生成公共合成A参考目录 `life-results`。也可显式复用同引擎、完整哈希绑定且审查通过的既有A参考；这不代表新做了A标定。采样不读取原目录中的任何已执行B。
 
@@ -142,3 +143,24 @@ python -B -m benchmark.ab_generation verify /absolute/path/tail-results
 第一条命令供仅构造样本时使用；第二条自带同样的封存采样，再执行，两个输出目录必须全新。`sample/PLAN.json`、`CATALOGUE.json.gz`、`SELECTION.json` 和全部规则变体在第一个B运行前固定。每个可执行样本单独导出、编译和运行A/B，避免同案号多B混淆；静态诊断不执行。`OBSERVATIONS.json`、各执行目录及 `RESULT.json` 保留失败与未知；`COVERAGE.md` 列验收表。验收失败返回非零状态；不得依据这些结果换种子或重抽成功B。
 
 CI在原夏季公共复现后增跑该长尾命令，沿用同一基线，不启动1000户或线上问卷。已发布小规模回执见 `TAIL_VALIDATION.json`、`TAIL_VALIDATION.md`、`validation/tail/`；原生SQL/轨迹保存在本地封存证据和CI短期artifact，永久再生依据是公开输入、代码版本、引擎与命令。
+
+## 当前生成规则与覆盖验收
+
+当前规则使用新节点参考及逐设备依据。历史tail回执不改写，不能用新算法重建旧候选ID。上面的冻结帧命令比较当前`validation/rules/SELECTION.json`；原执行时选择另存`PHYSICAL_SAMPLE_SELECTION.json`，代码差异及命令/IDF等价证明见`validation/rules/EQUIVALENCE.json`。
+
+```bash
+python -B -m benchmark.ab_generation reproduce-tail \
+  --reference-root /absolute/path/life-results \
+  --plan benchmark/ab_generation/examples/rule_review/plan.json \
+  --energyplus-dir /path/to/EnergyPlus-24-1-0 --out /absolute/path/rule-results
+python -B -m benchmark.ab_generation reproduce-tail \
+  --reference-root /absolute/path/winter-results \
+  --plan benchmark/ab_generation/examples/rule_review/winter_plan.json \
+  --energyplus-dir /path/to/EnergyPlus-24-1-0 --out /absolute/path/rule-winter-results
+python -B -m benchmark.ab_generation reproduce-strategies \
+  --experiments benchmark/ab_generation/examples/rule_review/weekend_experiments.json \
+  --plan benchmark/ab_generation/examples/rule_review/weekend_plan.json \
+  --energyplus-dir /path/to/EnergyPlus-24-1-0 --out /absolute/path/rule-weekend-results
+```
+
+各输出目录必须全新。先按既有夏季、冬季命令生成基线参考；新参考自动含原生水箱节点。每个长尾计划在第一个B执行前封存。验收失败时保留整批，不换种子、不调配额补成功样本。当前30个新引擎臂的来源、版本及范围见[RULES_VALIDATION.md](RULES_VALIDATION.md)。

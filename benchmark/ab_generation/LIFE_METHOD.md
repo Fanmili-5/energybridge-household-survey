@@ -1,5 +1,7 @@
 # 从生活安排到日常方案A
 
+当前生成规则修订见[GENERATION_RULES.md](GENERATION_RULES.md)，逐设备响应和覆盖验证见[RULES_VALIDATION.md](RULES_VALIDATION.md)。下文历史验证数量仍指其原版本，不作为本轮新运行回执。
+
 A的目的为提供无本次VPP干预的日常参照，B是后续独立评价的具体提案；原EB对应和未实现部分见[DESIGN.md](DESIGN.md)。完整未来A只作为[离线实验条件](OFFLINE_EXPERIMENT.md)，新生活A必须有绑定且通过的服务/物理审查才能进入`reference-life --audit`。逐参数来源与人工设定见[PARAMETERS.md](PARAMETERS.md)。
 
 ## 1. 方法定义与边界

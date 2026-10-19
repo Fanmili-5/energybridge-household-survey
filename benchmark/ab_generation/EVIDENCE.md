@@ -10,6 +10,7 @@
 | 费用与生活安排需要分维度考虑 | [El Makroum等机构记录](https://repositum.tuwien.at/handle/20.500.12708/228812)，时间使用与负荷调度方法；先前已阅PDF SHA登记 | 机制依据；确切权重、剂量和三排序均自设。此次机构记录可访问，出版社403、项目下载未成功，不冒称重新取得全文 |
 | 情境因素与主观参与判断分开测量 | [Wen等正式PDF](https://pure.hw.ac.uk/ws/portalfiles/portal/147868180/1-s2.0-S030626192500340X-main.pdf)第3节factorial stated-preference design | 研究设计依据；英国项目选择不直接验证中国家庭24小时提案，也不提供本项目接受率/角色比例 |
 | 装取链、原连接和控制习惯的项目沿革 | [九项历史源登记](SOURCES.json)、[原设计稿](provenance/REUSABLE_AB_CONTRACT.json) | 六份此前仅本地的原文已补公开路径；属于项目规则，历史代码不能作为新入口执行 |
+| 热可调性须考虑温度、启停和死区 | [Hao等作者稿](https://borhanji.com/my_papers/Allerton2013_TCL.pdf)§III、§V及[实验室记录](https://certs.lbl.gov/publications/generalized-battery-model-collection.html)；EnergyPlus24.1原生水箱/温控定义 | 支持状态依赖机理；全节点充分界限和窗口代表由本项目推导，未实现论文聚合控制器，不能保证B实际响应 |
 | 电耗、温度与服务后果须执行后核对 | [住房来源](../housing_simulation/SOURCES.json)、EnergyPlus24.1原生输出、完整A/B时间轴 | 数值依据；名义功率不是增量响应，仿真不等于现场校准 |
 | 证据、反例和结论范围分别记录 | [Scientific Agent Skills](https://arxiv.org/abs/2609.00065)，当前记录2026-09-02 v2 | 复核流程来源，不是能源模型、许可或人类有效性的证据 |
 
@@ -25,3 +26,5 @@
 ## 长尾采样与覆盖的新增证据
 
 事前独占分层、家庭/户内无放回取样、命令去重与失败准入已落实，算法与人工参数边界见 `TAIL_METHOD.md`。最终38次引擎运行的全部结果和开发缺额回执见 `TAIL_VALIDATION.md`；费用增加、反向/无效响应、服务失败均保留。有限目录仍有未覆盖交互，不声称人口分布或完整长尾验证。加拿大统计局与NIST依据已登记；科研审查流程继续引用Kassis等（当前arXiv版本已核查）。
+
+当前规则对应的30个新引擎臂、逐设备无效/部分/失败保留及覆盖缺额见[RULES_VALIDATION.md](RULES_VALIDATION.md)，不替换上述历史38臂回执。新增来源全文/元数据核对和未取得全文的排除记录见[RESEARCH_REVIEW.json](validation/rules/RESEARCH_REVIEW.json)。

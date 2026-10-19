@@ -7714,6 +7714,448 @@
         }
       ],
       "sha256": "217c595c6343a516afb272e81a9cc46fb6d90a28961cd093c17734e5c5f23cdd"
+    },
+    {
+      "path": "examples/rule_review/plan.json",
+      "sha256": "2349246b1f396326ed5c0996d910a01b00482128d89f2539506b76b9b9da04b6",
+      "quantitative_fields": [
+        {
+          "path_pattern": "/response_checks/maximum_supported_no_response_fraction",
+          "occurrences": 1,
+          "values": [
+            0.5
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/seed",
+          "occurrences": 1,
+          "values": [
+            20261019
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/strata/*/households",
+          "occurrences": 14,
+          "values": [
+            1
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/strata/*/per_household",
+          "occurrences": 14,
+          "values": [
+            1
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/strata/*/required",
+          "occurrences": 14,
+          "values": [
+            true,
+            false
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/variants/*/overrides/ev_delays_min/*",
+          "occurrences": 1,
+          "values": [
+            810
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        }
+      ]
+    },
+    {
+      "path": "examples/rule_review/weekend_experiments.json",
+      "sha256": "a1dcbb4d9aceddf6ea33b11b6317668dc0ee7be7f0b22e8d690833847abe159a",
+      "quantitative_fields": [
+        {
+          "path_pattern": "/records/*/decision_min",
+          "occurrences": 1,
+          "values": [
+            480
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/records/*/events/*/end_min",
+          "occurrences": 1,
+          "values": [
+            1150
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/records/*/events/*/start_min",
+          "occurrences": 1,
+          "values": [
+            1090
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/records/*/events/*/target_kw",
+          "occurrences": 1,
+          "values": [
+            1.0
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/records/*/horizon_min/*",
+          "occurrences": 2,
+          "values": [
+            480,
+            1920
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/records/*/tariff/*/end_min",
+          "occurrences": 60,
+          "values": [
+            -8870,
+            -8780,
+            -8640,
+            -7430,
+            -7340,
+            -7200,
+            -5990,
+            -5900,
+            -5760,
+            -4550,
+            -4460,
+            -4320,
+            -3110,
+            -3020,
+            -2880,
+            -1670,
+            -1580,
+            -1440,
+            -230,
+            -140,
+            0,
+            1210,
+            1300,
+            1440,
+            2650,
+            2740,
+            2880,
+            4090,
+            4180,
+            4320,
+            5530,
+            5620,
+            5760,
+            6970,
+            7060,
+            7200,
+            8410,
+            8500,
+            8640,
+            9850,
+            9940,
+            10080,
+            11290,
+            11380,
+            11520,
+            12730,
+            12820,
+            12960,
+            14170,
+            14260,
+            14400,
+            15610,
+            15700,
+            15840,
+            17050,
+            17140,
+            17280,
+            18490,
+            18580,
+            18720
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/records/*/tariff/*/price_per_kWh",
+          "occurrences": 60,
+          "values": [
+            0.617,
+            0.307
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/records/*/tariff/*/start_min",
+          "occurrences": 60,
+          "values": [
+            -10080,
+            -8870,
+            -8780,
+            -8640,
+            -7430,
+            -7340,
+            -7200,
+            -5990,
+            -5900,
+            -5760,
+            -4550,
+            -4460,
+            -4320,
+            -3110,
+            -3020,
+            -2880,
+            -1670,
+            -1580,
+            -1440,
+            -230,
+            -140,
+            0,
+            1210,
+            1300,
+            1440,
+            2650,
+            2740,
+            2880,
+            4090,
+            4180,
+            4320,
+            5530,
+            5620,
+            5760,
+            6970,
+            7060,
+            7200,
+            8410,
+            8500,
+            8640,
+            9850,
+            9940,
+            10080,
+            11290,
+            11380,
+            11520,
+            12730,
+            12820,
+            12960,
+            14170,
+            14260,
+            14400,
+            15610,
+            15700,
+            15840,
+            17050,
+            17140,
+            17280,
+            18490,
+            18580
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/records/*/tariff_provenance/experimental_scenario",
+          "occurrences": 1,
+          "values": [
+            true
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/settings/history_days",
+          "occurrences": 1,
+          "values": [
+            112
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/settings/portal_flow_scale",
+          "occurrences": 1,
+          "values": [
+            1
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/settings/reference_ach",
+          "occurrences": 1,
+          "values": [
+            0.35
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/settings/simulation_timestep_min",
+          "occurrences": 1,
+          "values": [
+            5
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/settings/tail_days",
+          "occurrences": 1,
+          "values": [
+            9
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        }
+      ]
+    },
+    {
+      "path": "examples/rule_review/weekend_plan.json",
+      "sha256": "8571e40366b299ebfd6e15317b35d9e563b67fd9ea770bd240c5fe5d9f2fd467",
+      "quantitative_fields": [
+        {
+          "path_pattern": "/departure_target_failure_probe",
+          "occurrences": 1,
+          "values": [
+            false
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/joint_probe",
+          "occurrences": 1,
+          "values": [
+            false
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        }
+      ]
+    },
+    {
+      "path": "examples/rule_review/winter_plan.json",
+      "sha256": "fc336b6cdfc1bbe21a6a7515ba8dda6e55bd4e63d2e722cd40cdfdcccd0ff278",
+      "quantitative_fields": [
+        {
+          "path_pattern": "/response_checks/maximum_supported_no_response_fraction",
+          "occurrences": 1,
+          "values": [
+            0.5
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/seed",
+          "occurrences": 1,
+          "values": [
+            20261019
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/strata/*/households",
+          "occurrences": 1,
+          "values": [
+            1
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/strata/*/per_household",
+          "occurrences": 1,
+          "values": [
+            1
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        },
+        {
+          "path_pattern": "/strata/*/required",
+          "occurrences": 1,
+          "values": [
+            true
+          ],
+          "origin": "project pre-readback engineering scenario and coverage design;not household population frequencies",
+          "purpose_and_boundary": "fixed small roleplay support/exploration/failure/control scenarios,weather/interface settings delegated to registered physics;half no-response gate is a declared majority criterion,not empirical frequency;EV810min is a declared boundary test",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
+        }
+      ]
     }
   ],
   "legacy_constraints": [
@@ -7744,7 +8186,8 @@
     "10_min_step_energy": "kW/6 kWh, W/6000 kWh are grid conversions",
     "energy_float_tolerances": "1e-10 kWh allocation stop;1e-8 kWh shortfall comparison in generate.py:ev_candidates are project numerical guards,not a household permission or meter certification",
     "audit_tolerances": "physical acceptance tolerances belong to hash-bound housing configuration and audit;never reuse as human satisfaction thresholds",
-    "tail_prediction_sign": "1e-9 cost/event sign threshold in sampling.py is project floating-point reporting resolution;not significance,comfort or success threshold"
+    "tail_prediction_sign": "1e-9 cost/event sign threshold in sampling.py is project floating-point reporting resolution;not significance,comfort or success threshold",
+    "generation_evidence": "opportunity.py EPSILON1e-9 kWh/C is numerical only;effects.py 1e-9 kWh and 1e-7 C or battery kWh are numerical readback guards,not human salience"
   },
   "unverified": [
     "empirical time diaries and device measurements",
@@ -7759,12 +8202,16 @@
       "axis",
       "composition",
       "cost_sign",
+      "day_type",
       "direction",
       "dose",
       "duration",
+      "event_direction",
       "event_sign",
       "family",
       "handling",
+      "joint_support",
+      "opportunity",
       "scope"
     ],
     "exact_value_from_paper": false,
@@ -7785,6 +8232,22 @@
     "stratum_overlap": "first_match_owns_all_matching_units_before_sampling",
     "stress_expected_checks": [
       "B_EV_departure_target"
+    ]
+  },
+  "opportunity_algorithm_settings": {
+    "implementation": [
+      "opportunity.py",
+      "effects.py",
+      "generate.py"
+    ],
+    "meaning": "project numerical and deterministic mechanism screens;not human indifference thresholds;never use final B or answers",
+    "profile_difference_epsilon_kWh": 1e-09,
+    "readback_energy_epsilon_kWh": 1e-09,
+    "readback_state_epsilon": 1e-07,
+    "state_witness_epsilon_C": 1e-09,
+    "window_representatives": [
+      "longest_then_earliest",
+      "supported_first_then_longest_then_earliest"
     ]
   }
 }

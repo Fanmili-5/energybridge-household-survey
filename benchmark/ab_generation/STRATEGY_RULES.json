@@ -57,7 +57,7 @@
         "thermal_duration_min",
         "thermal_request_directions"
       ],
-      "rule": "Nominal headroom and permission duration do not guarantee delivered response",
+      "rule": "Nominal headroom alone stays exploratory;sampled state and shifted native thresholds screen support;retain earliest and supported window representatives",
       "sources": [
         "housing_simulation"
       ]
@@ -84,7 +84,7 @@
         "prediction_rank_cost_quantum",
         "prediction_rank_event_kWh_quantum"
       ],
-      "rule": "Compare three policies on the same changing-command pool;report unchanged A separately",
+      "rule": "Three single-device policy comparisons use the same static-valid mechanism-supported pool;all exploratory candidates remain in the roleplay catalogue",
       "sources": [
         "ElMakroum2026TimeUseDR"
       ]
@@ -270,6 +270,46 @@
       "rule": "Report required quota deficits and uncovered finite-catalogue marginal/pairwise cells;no automatic N/A pass",
       "sources": [
         "NISTIR7878"
+      ]
+    },
+    {
+      "classification": "state_aware_project_mechanism_screen",
+      "id": "AB-24",
+      "implementation": "opportunity.py:thermal_evidence;generate.py:thermal_candidates",
+      "parameters": [
+        "thermal_delta_C",
+        "thermal_duration_min",
+        "thermal_active_min_kWh"
+      ],
+      "rule": "Thermal support uses A state/native-axis activity and shifted threshold witnesses;stratified tank all-node bounds,not mean-as-sensor;missing witnesses stay exploratory",
+      "sources": [
+        "Hao2013TCL",
+        "EnergyPlus241Thermostats"
+      ]
+    },
+    {
+      "classification": "time_resolved_profile_and_joint_evidence",
+      "id": "AB-25",
+      "implementation": "opportunity.py:profile_evidence;opportunity.py:joint_evidence",
+      "parameters": [],
+      "rule": "Per-target analytic time-profile L1 supports program/EV changes;each joint child keeps independent evidence;one supported child cannot upgrade the other",
+      "sources": [
+        "ElMakroum2026TimeUseDR",
+        "Hao2013TCL"
+      ]
+    },
+    {
+      "classification": "roleplay_coverage_and_falsifiable_readback",
+      "id": "AB-26",
+      "implementation": "effects.py:targeted_response;sampling.py:response_coverage",
+      "parameters": [
+        "response_checks"
+      ],
+      "rule": "Freeze support/exploration/conflict/failure/control strata before B;read back every target;batch deficits and majority no-response fail without dropping or replacing selected samples",
+      "sources": [
+        "Wen2025FlexibilityAcceptance",
+        "NISTIR7878",
+        "StatCanProbability2021"
       ]
     }
   ],

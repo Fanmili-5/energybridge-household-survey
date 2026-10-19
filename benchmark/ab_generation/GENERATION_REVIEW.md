@@ -1,5 +1,7 @@
 # A/B生成合理性与覆盖审查（2026-10-19）
 
+当前生成规则修订见[GENERATION_RULES.md](GENERATION_RULES.md)，逐设备响应和覆盖验证见[RULES_VALIDATION.md](RULES_VALIDATION.md)。下文历史验证数量仍指其原版本，不作为本轮新运行回执。
+
 范围为生活安排→独立需求→A→可调机会→多种B→实际后果，服务于后续benchmark问卷的情景供给。本审查只检查生成设计、依据和覆盖，不扩展模型评分或线上问卷。
 
 ## 电器与生活约束

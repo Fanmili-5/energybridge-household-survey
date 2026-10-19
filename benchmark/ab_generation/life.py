@@ -80,6 +80,7 @@ def build_days(spec, world):
         day, base = anchor + dt.timedelta(days=i), i * 1440
         calendars, windows, reservations, meals, water = {}, {}, [], {}, []
         for mid, member in sorted(members.items()):
+            positive(member['hot_water_liters'], 'hot_water_liters', True)
             source = dated(spec['member_calendars'][mid], day)
             cal, previous = [], 0
             for original in source:
@@ -297,6 +298,14 @@ def mobility(spec, world, scheduler):
     require(len(evs) == 1, 'ONE_EV_SUPPORTED')
     device, contract = evs[0], spec['mobility']
     aid, p = device['asset_id'], device['parameters']
+    for key in ('capacity_kwh', 'charger_kw', 'efficiency'):
+        positive(p[key], key)
+    for key in ('minimum_soc', 'target_soc'):
+        positive(p[key], key, True)
+    require(p['efficiency'] <= 1 and 0 <= p['minimum_soc'] <= p['target_soc'] <= 1,
+            'INVALID_EV_EFFICIENCY_OR_SOC_BOUNDS')
+    positive(p['initial_energy_kwh'], 'initial_energy_kwh', True)
+    require(p['initial_energy_kwh'] <= p['capacity_kwh'], 'EV_INITIAL_ENERGY_EXCEEDS_CAPACITY')
     require(contract['anchor_state'] == 'plugged', 'KNOWN_EV_ANCHOR_CONNECTION_REQUIRED')
     mid = contract['operator_id']
     require(mid in scheduler.members and scheduler.allowed(scheduler.members[mid], aid), 'EV_HANDLER_NOT_AUTHORIZED')
@@ -392,6 +401,10 @@ def generate_household(spec, world, rules=None):
     if tanks:
         require(len(tanks) == 1, 'ONE_TANK_SUPPORTED')
         tank, policy = tanks[0], spec['tank_policy']
+        for key in ('heater_capacity_W', 'efficiency', 'volume_m3', 'height_m', 'deadband_C'):
+            positive(tank['parameters'][key], 'tank_' + key)
+        require(type(tank['parameters']['number_of_nodes']) is int and tank['parameters']['number_of_nodes'] > 0,
+                'INVALID_TANK_NODE_COUNT')
         require(policy['asset_id'] == tank['asset_id'] and all(type(policy[k]) in (int, float) and math.isfinite(policy[k])
                 and 10 <= policy[k] <= tank['parameters']['maximum_C'] for k in ('target_C', 'setback_C')), 'INVALID_TANK_POLICY')
         require(policy['mode'] in ('continuous', 'before_draws'), 'UNKNOWN_TANK_HABIT')
@@ -416,6 +429,15 @@ def generate_household(spec, world, rules=None):
         require(set(p) == fields, 'UNKNOWN_OR_INCOMPLETE_SERVICE_POLICY_FIELD')
         require(p['asset_id'] in scheduler.assets and scheduler.assets[p['asset_id']]['kind'] == p['kind'], 'PROGRAM_ASSET_MISMATCH')
         require(p['kind'] in ('washer', 'dryer', 'dishwasher'), 'UNSUPPORTED_PROGRAM_KIND')
+        hardware = scheduler.assets[p['asset_id']]['parameters']
+        positive(hardware.get('power_kw'), 'program_power_kw')
+        if 'nameplate_W' in hardware:
+            positive(hardware['nameplate_W'], 'program_nameplate_W')
+            require(hardware['power_kw'] * 1000 <= hardware['nameplate_W'] + 1e-9, 'PROGRAM_POWER_EXCEEDS_NAMEPLATE')
+        if p['trigger'] == 'textile' and 'capacity_kg' in hardware:
+            positive(p['capacity_kg'], 'batch_capacity_kg')
+            positive(hardware['capacity_kg'], 'hardware_capacity_kg')
+            require(p['capacity_kg'] <= hardware['capacity_kg'], 'BATCH_CAPACITY_EXCEEDS_HARDWARE')
         for key in ('duration_min', 'maximum_preload_wait_min', 'maximum_retrieval_wait_min', 'deadline_after_release_min'):
             minute(p[key], key)
         require(p['duration_min'] > 0 and p['deadline_after_release_min'] > 0 and type(p['timer_allowed']) is bool, 'INVALID_PROGRAM_CAPABILITY')

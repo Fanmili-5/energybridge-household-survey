@@ -197,7 +197,11 @@ def context_from_A(pair, pack, meta, trace, experiment, source):
             fan_energy = {}
             temperature = trace_values(trace, 'Water Heater Tank Temperature', meta['tank_name'])
             capacity = device['parameters']['heater_capacity_W'] / device['parameters']['efficiency']
+        nodes = ([trace_values(trace, 'Water Heater Final Temperature Node ' + str(i), meta['tank_name'])
+                  for i in range(1, meta['world_assembly']['tank_nodes'] + 1)] if kind == 'water_heater' else [])
         thermal[aid] = [{'minute': t, 'temperature_C': temperature[t - 10],
+                         **({'node_temperatures_C': [n[t - 10] for n in nodes],
+                             'node_reference': 'all_native_end_nodes_at_previous_report_boundary;not_mean_as_sensor'} if nodes else {}),
                          'electric_kWh': max(0, energy[t] - fan_energy.get(t, 0)) / 3600000,
                          **({'axis_electric_kWh': {axis: sum(c[t] for c in channels) / 3600000
                                                   for axis, channels in modes.items()},
@@ -325,7 +329,8 @@ def export_life(assembled, contexts, generated, policy, out, case_ids=None, requ
                 for c in plan['controls']:
                     c.pop('_ab_control_id', None)
                 selected = {'status': 'predeclared_failure_probe' if allowed else 'explicit_predeclared_candidate_probe',
-                            'candidate_ids': probe.get('candidate_ids', [probe['id']]), 'plan_B': plan}
+                            'candidate_ids': probe.get('candidate_ids', [probe['id']]), 'plan_B': plan,
+                            'opportunity': probe['opportunity']}
         require(selected['status'] != 'no_comparable_opportunity', 'NO_B_OPPORTUNITY:' + case_id)
         pair = read(bound(assembled, item['pair']['path']))
         require(plan_hash(pair['A']) == result['A_commands_sha256'], 'FROZEN_A_CHANGED')
@@ -336,6 +341,7 @@ def export_life(assembled, contexts, generated, policy, out, case_ids=None, requ
         pair['AB_generation'] = {'policy': ('failure_probe' if override and override.get('expected_static_issues') else 'explicit_candidate_probe') if override else policy, 'candidate_ids': selected['candidate_ids'], 'rules_sha256': result['rules_sha256'],
                                  'information_set': result['information_set'], 'proposal_purpose': result['proposal_purpose'],
                                  'baseline_admission': result['baseline_admission'],
+                                 'opportunity': selected.get('opportunity'),
                                  'event_meter_scope': context['event_meter_scope'],
                                  'reference_sha256': result['reference_sha256'], 'status': selected['status']}
         pair.pop('source_pair_sha256', None); pair['source_pair_sha256'] = digest(pair)

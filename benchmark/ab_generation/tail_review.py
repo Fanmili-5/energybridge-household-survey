@@ -74,6 +74,13 @@ def reproduce_tail(reference_root, plan_path, energyplus_dir, out):
     lines += ['', 'Diagnostic rows verify static rejection only. All other rows require bound native readback.',
               'Benefits, event success and human acceptance are not selection or ordinary admission conditions.',
               'Marginal/pairwise coverage is measured over this finite catalogue; no complete covering-array or population claim.', '']
+    response = result['response_coverage']
+    lines += ['## Per-target response coverage', '',
+              'Patterns: ' + str(response['patterns']),
+              'Changed device kinds: ' + str(response['actual_changed_kind_counts']),
+              'Missing required kinds: ' + str(response['missing_changed_kinds']),
+              'Screen-supported targets without observed response: ' + str(response['supported_no_response_fraction']),
+              'All samples, including ineffective and failed requests, remain in RESULT.json. No replacement.', '']
     (out / 'COVERAGE.md').write_text('\n'.join(lines))
     seal(out, {'schema': result['schema'], 'code_sha256': code_hash(), 'passed': result['passed'],
                'engine_arms': arms, 'selection_manifest_sha256': sha(out / 'sample/MANIFEST.json')})
