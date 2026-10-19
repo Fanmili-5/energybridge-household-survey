@@ -376,5 +376,31 @@
     ],
     "adoption": "finite interaction design,household-first strata and cumulative resource checks;not full IPOG,uniform-sampling proof or population validation",
     "project_settings": "22strata,18required,one household/request per stratum,seed20261019,explicit capacity stress whitelist;all predeclared and not paper constants"
+  },
+  "gap_supplement": {
+    "method": "GAP_METHOD.md",
+    "implementation": [
+      "gap_review.py",
+      "generate.py:program_domain_coverage",
+      "joint_tail.py",
+      "model.py:first-retrieval index and isolated literal patches;constraint semantics unchanged"
+    ],
+    "evidence": [
+      "validation/gap_supplement/DIAGNOSIS.json",
+      "validation/gap_supplement/A_STATUS.json",
+      "validation/gap_supplement/STATIC_GENERATION.json",
+      "validation/gap_supplement/GENERATION_EQUIVALENCE.json",
+      "validation/gap_supplement/PROJECTION_CHECK.json",
+      "validation/gap_supplement/WINTER_PLAN_CANDIDATES.json"
+    ],
+    "scientific_basis": [
+      "ApaydinOzkan2021",
+      "LeiIPOG2007",
+      "NISTSP800142",
+      "EnergyPlus241Thermostats"
+    ],
+    "manual_choices": "10-minute full grid within +/-120 minutes;32768 budget;3 fixed A scenarios;10 strata and quotas;winter date;not paper estimates",
+    "authority": "same original task identities,actors,programs,durations,energy and authority;no new permissions",
+    "verification_boundary": "static plan checks and raw candidate interaction receipts only;formal deduplicated sample coverage incomplete;new B physics deferred and not required;existing winter A failure retained,not a static-plan veto;no success replacement"
   }
 }

@@ -1,0 +1,1 @@
+{"information":"A-stage only;two unique synthetic households;two summer inputs unchanged plus one winter date;earlier B results not read","records":[{"id":"summer_base_grid","path":"summer_base_grid"},{"id":"summer_multibatch_grid","path":"summer_multibatch_grid"},{"id":"winter_heating_grid","path":"winter_heating_grid"}],"schema":"eb.ab_joint_tail.references.v1"}

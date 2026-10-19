@@ -49,7 +49,8 @@ def frame(reference_root, references_path, plan_path, out, frozen_contexts=False
             rows = catalogue(contexts, {variant['id']: results}, plan.get('stress_admissions'))
             for case_id, result in results.items():
                 generation.append({'reference_id': ref['id'], 'variant': variant['id'], 'case_id': case_id,
-                                   'coverage': result['joint_search_coverage']})
+                                   'coverage': result['joint_search_coverage'],
+                                   'program_shift_domain': result['program_shift_domain']})
             for row in rows:
                 for alias in row['aliases']:
                     alias.update(reference_id=ref['id'], generated_path=rel)

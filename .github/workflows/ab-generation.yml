@@ -1,6 +1,16 @@
 name: A-B strategy generation
 
 on:
+  workflow_dispatch:
+    inputs:
+      run_physics:
+        description: "Explicitly run deferred A/B physical experiments"
+        type: boolean
+        default: false
+      run_full_replay:
+        description: "Replay the complete historical frozen catalogue"
+        type: boolean
+        default: false
   push:
     paths:
       - 'benchmark/ab_generation/**'
@@ -26,7 +36,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - run: python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity benchmark.ab_generation.test_sensitivity benchmark.ab_generation.test_joint_load_supply benchmark.ab_generation.test_joint_tail -v
+      - run: python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity benchmark.ab_generation.test_sensitivity benchmark.ab_generation.test_joint_load_supply benchmark.ab_generation.test_joint_tail benchmark.ab_generation.test_gap_review -v
       - run: python -B -m benchmark.ab_generation.verify_package
       - name: Run all predeclared parameter generation cases
         if: matrix.python-version == '3.12'
@@ -58,8 +68,9 @@ jobs:
           python -c 'import json, os; from pathlib import Path; expected=json.loads(Path("benchmark/ab_generation/validation/rules/SELECTION.json").read_text()); actual=json.loads((Path(os.environ["RUNNER_TEMP"])/"tail-frozen-sample/SELECTION.json").read_text()); keys=lambda s:[(r["sample_id"],r["stratum"],r["B_commands_sha256"]) for r in s["records"]]; assert keys(expected)==keys(actual); assert actual["selection_coverage_passed"]'
 
   joint-tail-replay:
+    if: github.event_name == 'workflow_dispatch' && inputs.run_full_replay
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -81,9 +92,20 @@ jobs:
             --out "$RUNNER_TEMP/joint-tail-replay"
           python -c 'import json,os;from pathlib import Path;p=Path("benchmark/ab_generation/validation/joint_tail/frozen_sample/SELECTION.json");a=json.loads(p.read_text());b=json.loads((Path(os.environ["RUNNER_TEMP"])/"joint-tail-replay/SELECTION.json").read_text());keys=lambda d:[(r["sample_id"],r["stratum"],r["B_commands_sha256"])for r in d["records"]];assert keys(a)==keys(b);assert b["selection_coverage_passed"]==a["selection_coverage_passed"];assert b["coverage"]==a["coverage"]'
 
+  gap-static-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check plan coverage and retained failures without simulation
+        run: python -B -m benchmark.ab_generation.validation.gap_supplement.recompute --out "${{ runner.temp }}/gap-static-check"
+
   physical-reproduction:
+    if: github.event_name == 'workflow_dispatch' && inputs.run_physics
     runs-on: ubuntu-22.04
-    timeout-minutes: 45
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

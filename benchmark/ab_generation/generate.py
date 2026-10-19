@@ -27,6 +27,22 @@ DEFAULT_RULES = {
 }
 
 
+def program_domain_coverage(rules):
+    """Report holes in the declared shift radius, independently of feasibility.
+
+    Sparse doses remain reproducible experimental designs. Their empty strata
+    cannot establish that the underlying 10-minute scheduling grid is infeasible.
+    """
+    shifts = set(rules['program_shifts_min']) - {0}
+    radius = max(map(abs, shifts), default=0)
+    required = {v for v in range(-radius, radius + 1, rules['step_min']) if v}
+    return {'step_min': rules['step_min'], 'radius_min': radius,
+            'declared_shifts_min': sorted(shifts), 'missing_grid_shifts_min': sorted(required - shifts),
+            'complete_within_radius': required <= shifts,
+            'scope': 'shift doses only;rigid chain/timer modes;not unrestricted handling schedules',
+            'B_outcomes_used': False}
+
+
 def binding(context):
     base = copy.deepcopy({k: v for k, v in context.items()
                           if k not in ('reference', 'tariff', 'tariff_provenance', 'events', 'event_meter_scope', 'assignment', 'retained_B_request')})
@@ -466,6 +482,7 @@ def generate(context, rules=None):
             'context_sha256': input_context_sha256,
             'reference_sha256': digest(context['reference']), 'rules_sha256': digest(rules),
             'assignment': assignment, 'candidates': candidates, 'unavailable': unavailable,
+            'program_shift_domain': program_domain_coverage(rules),
             'resource_authority_status': 'declared',
             'selections': selections, 'joint_candidates': joint, 'joint_search_coverage': joint_coverage,
             'paired_execution_status': 'not_run', 'human_acceptance': None,
