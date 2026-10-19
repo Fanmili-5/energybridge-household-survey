@@ -94,6 +94,8 @@ def export_physics(stage, imported, generated, case_ids, policy, out, candidate_
         pair['needs_B'] = copy.deepcopy(pair['needs_A'])
         pair['schedule_hashes'] = {s: digest({k: pair[s][k] for k in ('tasks', 'operations', 'controls')}) for s in ('A', 'B')}
         pair['AB_generation'] = {'schema': result['schema'], 'rules_sha256': result['rules_sha256'],
+                                 'information_set': result['information_set'], 'proposal_purpose': result['proposal_purpose'],
+                                 'baseline_admission': result['baseline_admission'],
                                  'event_meter_scope': context['event_meter_scope'],
                                  'reference_sha256': result['reference_sha256'], 'policy': 'explicit_candidate_probe' if candidate_id else policy,
                                  'candidate_ids': selection['candidate_ids'], 'status': selection['status'],

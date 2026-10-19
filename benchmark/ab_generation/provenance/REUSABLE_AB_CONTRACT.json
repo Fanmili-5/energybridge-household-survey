@@ -1,0 +1,157 @@
+{
+  "schema": "eb.proposed_reusable_AB_contract.v1",
+  "status": "design_specification_only;production_generator_not_refactored_or_run",
+  "active_validation_scope": {
+    "households": 50,
+    "cases": 500,
+    "source_A": "A46-AC84",
+    "source_B": "B60-AC84",
+    "master1000_execution": "paused"
+  },
+  "immutable_user_choices": {
+    "all_installed_functional_classes_daily_service_requests": true,
+    "stable_habits_allowed": true,
+    "master_identical_command_cases": 100,
+    "B_failure_and_opposing_requests_preserved": true,
+    "B_saving_or_target_success_or_human_acceptance_required": false,
+    "no_extra_plug_unplug_or_invented_visits": true,
+    "subset50_counts": [
+      5,
+      15,
+      16,
+      5,
+      4,
+      5
+    ],
+    "new950_excludes_original50": true,
+    "no_answers_prefilled": true
+  },
+  "input_contract": {
+    "experiment_spec": [
+      "release_id",
+      "seed",
+      "household_ids",
+      "case_dates",
+      "daily_service_condition",
+      "case_design_assignment",
+      "generation_mode",
+      "VPP_scene_mode",
+      "device_native_dose_config",
+      "model_and_weather_and_initialization",
+      "tariff_and_recovery_horizon"
+    ],
+    "world": [
+      "household_members",
+      "rooms_and_user_rights",
+      "devices_and_room_assignment",
+      "hardware_envelopes",
+      "human_capabilities",
+      "shared_resources",
+      "given_role_policy"
+    ],
+    "life_context": [
+      "member_calendars",
+      "actual_room_occupancy",
+      "journeys_and_vehicle_connections",
+      "service_requirements",
+      "given_thermostat_habits"
+    ],
+    "unknown_preferences": "null;never infer household preferred times from A feasibility alone"
+  },
+  "objects": {
+    "service_requirement": "independent service,quantity,release,deadline;comfort target only when given",
+    "thermostat_policy": "declared household control habit;separate from actual room presence",
+    "plan_A": "tasks,manual_operations,automatic_controls;not a source of subjective preferences",
+    "A_operating_reference": "current A forecast plus model,weather,initial_state and forecaster hashes",
+    "opportunity_catalogue": "A operating/service opportunity,original resource bounds and source hashes",
+    "frozen_scenario": "external_event or resource_conditioned_joint_scene;all construction dependencies recorded",
+    "plan_B": "explicit experiment mechanism and native device requests;actual executable differences from current A",
+    "execution_outcomes": "service completion,occupied temperature,continuous_SOC,VPP,electricity,recovery;not acceptance",
+    "pricing_and_questionnaire_package": "bound A/B,outcomes,tariff,display contract;blank response fields"
+  },
+  "modes": {
+    "fresh_generation": {
+      "order": [
+        "world_and_life",
+        "independent_service_requirements",
+        "plan_A",
+        "current_A_forecast",
+        "opportunities",
+        "scenario_and_B_design",
+        "frozen_B",
+        "paired_execution",
+        "costs_and_questionnaire"
+      ],
+      "on_A_change": "invalidate all downstream derived references;do not reuse parent A forecast"
+    },
+    "fixed_intervention_replay": {
+      "order": [
+        "world_and_life",
+        "updated_plan_A",
+        "frozen_old_intervention",
+        "replayed_plan_B",
+        "current_difference_and_validity_assessment",
+        "paired_execution",
+        "costs_and_questionnaire"
+      ],
+      "on_A_change": "preserve intervention assignment but recompute all current-context claims and outcomes;old opportunity evidence is provenance only",
+      "current50_uses_this_mode": true
+    }
+  },
+  "VPP_scene_modes": {
+    "external_event": "freeze event before household opportunities;no shifting clocks to fill missing opportunity",
+    "resource_conditioned_joint_scene": "construct scene from A resources and declared action/dose design;freeze jointly before final B simulation;not observed dispatch frequency"
+  },
+  "device_action_contracts": {
+    "washer_dishwasher": "noninterruptible whole programme chain;loader/run/retrieval,full occupation,operator,wait,deadline;manual burden is a separate axis",
+    "AC": "actual occupancy,comfort need,habit permission,command setpoints and measured temperature remain distinct;restore baseline outside intervention",
+    "water_heater": "actual draw need,water delivery and heater state/headroom;setpoint change is not guaranteed electricity or comfort effect",
+    "EV": "original travel,target and plug/unplug fixed;control inside real connection;continuous SOC and later recovery checked"
+  },
+  "selection_information_policy": {
+    "allowed": [
+      "current A forecast",
+      "original calendars and hardware",
+      "declared programme/EV candidate-effect prediction",
+      "declared experimental design and deterministic seed"
+    ],
+    "not_used_for_postselection": [
+      "final paired EnergyPlus saving or success",
+      "final cost advantage",
+      "human scores or acceptance"
+    ],
+    "required_disclosure": "B60 does use candidate-effect prediction;do not describe it as entirely outcome-blind"
+  },
+  "failure_policy": {
+    "data_or_model_construction_error": "repair upstream in new recorded run;never label it a valid B preference case",
+    "designed_or_joint_request_failure": "keep proposal and its execution consequences;no successful replacement",
+    "no_realized_effect": "record separately from identical commands;do not manufacture manual actions",
+    "soft_household_preference_violation": "retain for human judgment;not an automatic data validity filter"
+  },
+  "dependency_key_fields": [
+    "world_hash",
+    "life_context_hash",
+    "requirement_hash",
+    "thermostat_policy_hash",
+    "A_schedule_hash",
+    "model_hash",
+    "weather_hash",
+    "initialization_hash",
+    "A_forecast_hash",
+    "opportunity_rules_hash",
+    "experiment_assignment_hash",
+    "frozen_event_hash",
+    "B_request_hash",
+    "execution_hash",
+    "tariff_hash",
+    "display_contract_hash"
+  ],
+  "migration_plan": [
+    "normalize input/output objects and mode semantics",
+    "extract existing stable rules into one configured entry",
+    "reproduce same50 without silently changing experiment factors",
+    "separate scientific rule changes into new version",
+    "compare fixed cases plus all50 without outcome-based filtering",
+    "expand master only after later authorization"
+  ]
+}

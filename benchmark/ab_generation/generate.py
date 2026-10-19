@@ -2,6 +2,7 @@
 import copy
 import math
 from .common import digest
+from .information import PROPOSAL_PURPOSE, checked_information
 from .model import apply, chain_need_ids, overlap, plan_commands, plan_hash, program_issues
 
 DEFAULT_RULES = {
@@ -30,8 +31,8 @@ def binding(context):
 
 
 def validate(context, rules):
-    if context.get('schema') not in ('eb.ab_generation.context.v1', 'eb.ab_generation.context.v2'):
-        raise ValueError('UNKNOWN_CONTEXT_SCHEMA')
+    if context.get('schema') != 'eb.ab_generation.context.v3':
+        raise ValueError('UNKNOWN_CONTEXT_SCHEMA;v1_v2_require_explicit_reimport_for_information_contract')
     if set(context) - {'schema', 'case_id', 'household_id', 'date', 'decision_min', 'horizon_min', 'A', 'needs', 'devices', 'operator_windows', 'occupancy', 'reservations', 'events', 'event_meter_scope', 'tariff', 'tariff_provenance', 'authority', 'assignment', 'source', 'reference', 'retained_B_request'}:
         raise ValueError('UNKNOWN_OR_DOWNSTREAM_CONTEXT_FIELD')
     if not context.get('authority'):
@@ -81,6 +82,9 @@ def validate(context, rules):
                 raise ValueError('INVALID_PLAN_ROW')
     if context['reference']['binding'] != binding(context):
         raise ValueError('STALE_A_REFERENCE')
+    if set(context['reference']) - {'binding', 'thermal', 'ev_charging_steps', 'provenance', 'information_set', 'baseline_admission'}:
+        raise ValueError('UNKNOWN_OR_DOWNSTREAM_REFERENCE_FIELD')
+    checked_information(context)
     for rows in context['reference'].get('thermal', {}).values():
         if len({r['minute'] for r in rows}) != len(rows):
             raise ValueError('DUPLICATE_REFERENCE_TIME')
@@ -394,7 +398,10 @@ def generate(context, rules=None):
                               'id': digest({'binding': context['reference']['binding'], 'children': [left['id'], right['id']]})[:24],
                               'static_issues': sorted(set(issues)), 'actual_outcomes': None,
                               'status': 'joint_request_failure_retained' if issues else 'joint_static_check_passed'})
-    return {'schema': 'eb.ab_generation.result.v2', 'case_id': context['case_id'],
+    return {'schema': 'eb.ab_generation.result.v3', 'case_id': context['case_id'],
+            'information_set': checked_information(context),
+            'baseline_admission': copy.deepcopy(context['reference'].get('baseline_admission')),
+            'proposal_purpose': copy.deepcopy(PROPOSAL_PURPOSE),
             'binding': context['reference']['binding'], 'A_commands_sha256': a_hash,
             'context_sha256': input_context_sha256,
             'reference_sha256': digest(context['reference']), 'rules_sha256': digest(rules),

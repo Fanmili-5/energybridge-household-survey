@@ -1,0 +1,67 @@
+{
+  "schema": "eb.ab_original_design_sources.v1",
+  "commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "checked_date": "2026-10-19",
+  "identity_basis": "git show pinned objects;sha256 agrees with public UPSTREAM_TRACKED_FILES.json",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "a7265aaab5ec14f7a536f856287acfe007c0575c4031415db54cf7cba65e603f",
+      "git_blob": "11684cef58456f8097c76b349bb73c8f2bb61786",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/README.md",
+      "supports": "complete consent-aware loop; no_dr reference; algorithms and roleplay are separate",
+      "adoption": "semantic design reference;no upstream code copied in this change"
+    },
+    {
+      "path": "docs/ADAPTIVE_HARNESS_ARCHITECTURE.md",
+      "sha256": "6307d48757556f3a340a5385aa24ee3f535a4d01f16cb03d397e33e2003d3ef7",
+      "git_blob": "3ebbb301b55c1b081d5e39a7316a27125997a568",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/docs/ADAPTIVE_HARNESS_ARCHITECTURE.md",
+      "supports": "ordinary event-free routine, observable information, proposal/validation/consent/execution/outcome separation, open base-model planning",
+      "adoption": "semantic design reference;no upstream code copied in this change"
+    },
+    {
+      "path": "human_survey_materials/README.md",
+      "sha256": "5d94f2771e81f6dda8645535b2f81e5ce218aa47e15670b1df25cc77022613af",
+      "git_blob": "be39c7f9ffbc48d0e5311c8dd47b63f6f85adcc8",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/human_survey_materials/README.md",
+      "supports": "roleplay calibration purpose and two-stage human judgment",
+      "adoption": "semantic design reference;no upstream code copied in this change"
+    },
+    {
+      "path": "human_survey_materials/questionnaires/strategy_presentation_protocol.md",
+      "sha256": "9cafe4ad82fb18638a8d6377467c3b5a852e37159816cd7d34360145bea3682e",
+      "git_blob": "450a41eb08d9b713a87216a44e3bbcd6b60d9563",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/human_survey_materials/questionnaires/strategy_presentation_protocol.md",
+      "supports": "real controller actions only; method provenance and explanation treatment",
+      "adoption": "semantic design reference;no upstream code copied in this change"
+    },
+    {
+      "path": "human_survey_materials/questionnaires/roleplay_vpp_feedback_zh.md",
+      "sha256": "b4399545478b79a0a4a9321ea2838248b91fe93ae27cd5a6956f8bc6d92a0669",
+      "git_blob": "cfdd9889e469ed64e88da5fcea0dfc00eb21e3b2",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/human_survey_materials/questionnaires/roleplay_vpp_feedback_zh.md",
+      "supports": "willingness before outcome and satisfaction after choice-matched branch",
+      "adoption": "semantic design reference;no upstream code copied in this change"
+    },
+    {
+      "path": "energybridge/skills/strategy_generator.py",
+      "sha256": "8d6bebdb60b2cbaebae31840672de4b8e6616520c7ff3cf854c6d099e815a5d6",
+      "git_blob": "40efc71c7d8969f68159cfd46a142308447c9004",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/skills/strategy_generator.py",
+      "supports": "one deterministic skill, not the entire adaptive EB planner; numeric defaults not imported",
+      "adoption": "semantic design reference;no upstream code copied in this change"
+    },
+    {
+      "path": "energybridge/quantification/counterfactual_baseline.py",
+      "sha256": "aca398f6da4573f7c3e33de6304969f8949c1f4f852d648536814f1cd99a857b",
+      "git_blob": "c5e6419a6b025b6856401caf6ee26bc754286928",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/quantification/counterfactual_baseline.py",
+      "supports": "counterfactual baseline module; this project uses a separately generated paired A",
+      "adoption": "semantic design reference;no upstream code copied in this change"
+    }
+  ],
+  "license_file_at_pinned_commit": null,
+  "reuse_license_verified": false,
+  "current_upstream_HEAD_not_used_as_pinned_evidence": true
+}

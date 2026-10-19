@@ -55,8 +55,13 @@ def summarize(job_path, compiled, runs, audit, out, reference_stage=None, import
         pair = read(pair_path); rid = entry['id']; context = contexts.get(pair['case_id'])
         if context and (plan_hash(pair['A']) != context['reference']['binding']['A_commands_sha256'] or pair['VPP_events'] != context['events']):
             raise ValueError('PRICING_CONTEXT_MISMATCH')
+        if context and pair['AB_generation'].get('information_set') != context['reference'].get('information_set'):
+            raise ValueError('REPORT_INFORMATION_CONDITION_MISMATCH')
         check = audits.get(rid, {'status': 'missing', 'checks': {}, 'details': {}})
         row = {'case_id': pair['case_id'], 'policy': pair['AB_generation']['policy'],
+               'information_set': pair['AB_generation'].get('information_set'),
+               'proposal_purpose': pair['AB_generation'].get('proposal_purpose'),
+               'baseline_admission': pair['AB_generation'].get('baseline_admission'),
                'request_status': pair['AB_generation']['status'], 'engine_arms': 2,
                'A_reference_comparison': {'status': 'not_requested', 'passed': None},
                'audit_status': check['status'], 'failed_checks': [k for k, v in check['checks'].items() if not v],
@@ -91,7 +96,7 @@ def summarize(job_path, compiled, runs, audit, out, reference_stage=None, import
             row['unverified_outcomes_are_not_zero'] = True
         rows.append(row)
     out.mkdir(parents=True, exist_ok=False)
-    save(out / 'REPORT.json', {'schema': 'eb.ab_generation.physical_report.v2', 'records': rows,
+    save(out / 'REPORT.json', {'schema': 'eb.ab_generation.physical_report.v3', 'records': rows,
                               'whole500_physical_acceptance': False, 'human_acceptance_inferred': False})
     seal(out, {'job_sha256': sha(job_path), 'compiled_manifest_sha256': sha(compiled / 'MANIFEST.json'),
                'runs_manifest_sha256': sha(runs / 'MANIFEST.json'), 'audit_manifest_sha256': sha(audit / 'MANIFEST.json')})

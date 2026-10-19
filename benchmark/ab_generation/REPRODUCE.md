@@ -1,5 +1,7 @@
 # 复现流程
 
+本版生成上下文/结果为v3，明确[完整A离线信息条件](OFFLINE_EXPERIMENT.md)及[合成提案目的](DESIGN.md)。旧v1/v2上下文须重建或重新只读导入；历史结果保持原版本。先执行`python -B -m benchmark.ab_generation.audit_design`，核对公开来源、参数与授权登记。手工分阶段运行`reference-life`时必须提供`--audit BASELINE_AUDIT`；完整复现命令自动传入并核对基线审查。
+
 ## 1. 公开示例
 
 环境：Python 3.9或以上，标准库。无需现有1000户、许可调查、天气文件或API。仓库根目录运行：

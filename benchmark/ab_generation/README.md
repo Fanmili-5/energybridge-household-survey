@@ -1,12 +1,14 @@
 # A/B策略生成
 
+设计目的与原EB的逐项对应见[DESIGN.md](DESIGN.md)。A是无本次VPP干预的日常参照，B是供独立判断的合成提案；本实现先读取完整未来A，属于[离线反事实实验](OFFLINE_EXPERIMENT.md)，没有实时预测器。来源、参数和授权分别登记于[SOURCES.json](SOURCES.json)、[PARAMETERS.json](PARAMETERS.json)和[AUTHORIZATION.json](AUTHORIZATION.json)。
+
 本模块提供“生活安排→独立服务需求→日常A→当前A运行参考→B候选→配对仿真”的可复现流程。生活生成接收已绑定的家庭世界、逐日活动及声明的习惯，自动生成完整人工操作、机器程序与控制命令。
 
 B阶段核验家庭与A的版本，读取当前A的运行参考，在原生活资源内枚举程序移时、人工装取、温控及EV请求，并在最终配对仿真前选择B。批次规模由输入决定，代码没有固定家庭数量、家庭ID或历史目录。
 
 ## 系统边界
 
-生活生成接口为 `eb.life_to_A.v1`，固定A后的B候选为 `eb.ab_generation.frozen_A.v2`，规范上下文为 `context.v2`。v2要求明确权限、程序能力和等待约束；缺少这些信息的旧上下文须重新只读导入。公开示例不替换已发布数据或线上问卷。
+生活生成接口为 `eb.life_to_A.v1`，固定A后的B候选为 `eb.ab_generation.frozen_A.v3`，规范上下文为 `context.v3`。v3要求资源契约及完整A离线信息集合；v1/v2上下文须重新只读导入或重建。新生活A参考还须有绑定且通过的基线服务/物理审查。公开示例不替换已发布数据或线上问卷。
 
 | 阶段 | 实现 | 产物 |
 |---|---|---|
@@ -47,6 +49,8 @@ python -B -m benchmark.ab_generation reproduce-strategies \
 第一条命令只使用Python标准库。第二条使用住房模块的固定依赖和官方引擎资源，执行同A同事件的三策略、设备与联合探针，以及明确预设的EV失败。`reproduce-life`保留较小的默认三策略集成入口。冬季制热检查和完整参数见复现指南。
 
 ## 技术文档
+
+- [目的与原EB对应](DESIGN.md)、[证据采用范围](EVIDENCE.md)、[完整A离线实验](OFFLINE_EXPERIMENT.md)、[参数说明](PARAMETERS.md)及[本次验证](DESIGN_VALIDATION.md)：当前v3的正式设计与审查入口。
 
 - [生活到A方法](LIFE_METHOD.md)、[生活接口](LIFE_INPUTS.md)及[规则注册](LIFE_RULES.json)：需求形成、排程、控制和失败政策。
 - [第二主线复核](REVIEW.md)及[策略规则](STRATEGY_RULES.json)：问题、修正、反例、来源和适用边界。

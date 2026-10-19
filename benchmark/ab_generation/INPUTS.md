@@ -2,7 +2,7 @@
 
 ## 1. 版本与单位
 
-规范上下文为 `eb.ab_generation.context.v2`，生成结果为 `eb.ab_generation.result.v2`，包阶段为 `eb.ab_generation.frozen_A.v2`，物理报告为 `eb.ab_generation.physical_report.v2`。批次容器沿用 `eb.ab_generation.batch.v1`。v1上下文只有补齐明确资源契约后才可作为过渡输入；缺失时拒绝并要求重新导入，不默认赋予权限或定时能力。
+规范上下文为 `eb.ab_generation.context.v3`，生成结果为 `eb.ab_generation.result.v3`，包阶段为 `eb.ab_generation.frozen_A.v3`，物理报告为 `eb.ab_generation.physical_report.v3`。批次容器沿用 `eb.ab_generation.batch.v1`。v1/v2上下文须重建或重新只读导入；不自动补权限、设备能力或离线信息声明。
 
 时间为相对案例日期的整数分钟，采用10分钟网格；负值表示通知前/前一日期。功率kW，电量kWh，温度°C，电价为显式币种每kWh。原始轨迹能耗J在回读时转换，不能直接与kWh相加。
 
@@ -24,6 +24,10 @@
 | `retained_B_request` | 仅指定历史失败回放分支使用的原请求，不读其实际后果 |
 
 `reference.binding`保存A命令和物理上下文摘要。`thermal`按资产保存时步温度、电耗与名义余量；AC新增 `axis_electric_kWh`，来自原生制热/制冷线圈。缺少模式证据时不猜测降载轴。`ev_charging_steps`是当前A的实际网侧充电步骤；同一需求/时步不得重复。
+
+`reference.information_set`必须明确`offline_full_A_counterfactual`或手写测试的`synthetic_interface_fixture`、完整所供A区间、未来A可用、B最终后果/答卷不可用、无实时部署声明和空预测器。范围须覆盖主区间及所供热/EV参照，不得把含尾期的EV参照缩称24小时信息。新生活参考另存`baseline_admission`审查SHA；`reference-life`必传`--audit`，核对服务/物理审查及编译/运行身份。定义见[OFFLINE_EXPERIMENT.md](OFFLINE_EXPERIMENT.md)。
+
+`information_set,proposal_purpose`随物理交接进入回读报告。后者明确合成反事实提案、非原EB控制器输出，接受和满意度未知；生成排序不是人的效用估计。
 
 控制权限不等于人在家。共享上下文成员仍进入占用与仿真，但其操作不能由目标家庭的B移动。原A46的720分钟预装及06:30—23:30窗口在导入器中明示为继承的项目假设，未表述为实测设备规格。
 

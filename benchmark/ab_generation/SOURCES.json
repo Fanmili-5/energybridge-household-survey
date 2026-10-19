@@ -1,1 +1,214 @@
-{"date":"2026-10-19","implementation":"portable_declared_life_to_A_and_frozen_A_candidate_stages;not_a_byte_identical_refactor_of_legacy_generators","implementation_sources":[{"id":"legacy_A46","pins":"legacy_source_pins:normal_A_v46_20261017","supports":"service release, handling, noninterruptible execution and continuous EV ledger; new deterministic scheduler is a project rule"},{"id":"legacy_AC84","pins":"legacy_source_pins:unified_physics50_v84_AC_sleep_20261018","supports":"separation of room use and control habit; no population parameter calibration"},{"id":"housing_simulation","path":"../housing_simulation/SOURCES.json","supports":"official EnergyPlus components and shared physical execution/audit interface"}],"inherited_contract":{"path":"artifacts/ab_pipeline_review_20261019/REUSABLE_AB_CONTRACT.json","status":"prior_design_specification;implemented_subset_disclosed_in_METHOD.md"},"legacy_source_pins":[{"path":"docs/research/collection-adjustment-20260930/household1000/normal_A_v46_20261017/code/design.py","sha256":"6e03bf793a315d8aeb35d9e2f6aaeec84e7be85fe1d4dcac4b2a9251c83eed8f"},{"path":"docs/research/collection-adjustment-20260930/household1000/normal_A_v46_20261017/code/generate.py","sha256":"e06d1524a759f54ec00ad545ff19094bed26af9fc9865941effcfce9e4846c6f"},{"path":"docs/research/collection-adjustment-20260930/household1000/candidate_B_v60_20261018/code/common.py","sha256":"76608e3da8e588ba13939683a1be956d564a7743e363672cb2eb6646b4c3a33a"},{"path":"docs/research/collection-adjustment-20260930/household1000/candidate_B_v60_20261018/code/generate.py","sha256":"22f794b6c5ac019ea4ff162fe5fd86807769125164d9694ecd0ca080a476ec53"},{"path":"docs/research/collection-adjustment-20260930/household1000/candidate_B_v60_20261018/code/opportunities.py","sha256":"230792cd1d44a84c2bf4d6bcebf4e729e54d627e362173df969bac75d3f299d6"},{"path":"docs/research/collection-adjustment-20260930/household1000/candidate_B_v60_20261018/code/scenarios.py","sha256":"f9a6de66d1f78818c2d7f84733c455e2db00eef6f431cf67b1447fb23a37e473"},{"path":"docs/research/collection-adjustment-20260930/household1000/unified_physics50_v84_AC_sleep_20261018/code/generate_ac_habits.py","sha256":"4c78ec3525c0473dde99b864acaf2c8cc0bf764f165160ab3c12a468e2da7d03"},{"path":"docs/research/collection-adjustment-20260930/household1000/unified_physics50_v84_AC_sleep_20261018/AC_HABIT_RULES.json","sha256":"5f3424efcc9d1c37646527b759594dd811c68ac530cc04903cae0c6a55ec1f52"},{"path":"docs/research/collection-adjustment-20260930/household1000/normal_A_v46_20261017/code/scheduler.py","sha256":"c5935507f761569ae98377635ba168372ed9422347847496f96fd81537e1a039"}],"life_generation":{"A_inputs_exclude":["VPP","tariff","B","final_outcomes","human_answers"],"exact_diaries_and_parameters":"declared scenarios; not population statistics or direct paper parameter transfer","housing_interface":"explicit original EV connections and given anchor state without fabricated visits","implementation":["life.py","life_pipeline.py","life_physics.py"],"method":"LIFE_METHOD.md","rules":"LIFE_RULES.json"},"papers":[{"boundary":"not a reproduction of the paper optimizer;group time-use profiles are not individual preferences","doi":"10.1016/j.apenergy.2025.127080","inherited_reading_status":"publisher_open_access_PDF_read;methods_results_discussion_limitations_checked","key":"ElMakroum2026TimeUseDR","method_use":"construct alternatives before comparing costs and scheduling tradeoffs","reviewed_document_sha256":"a8586b5d6e80c6964cbf6cc74f1a1df5b700b8d115980879662b92fdc3409661","url":"https://pedvolution.eu/?download_id=5754&sdm_process_download=1"},{"boundary":"author manuscript examined;no Chinese household parameter calibration transferred","doi":"10.1016/j.apenergy.2022.119890","inherited_reading_status":"author_full_manuscript_read;published_identity_verified;final_VOR_line_by_line_not_compared","key":"Chen2022StochasticStock","method_use":"separate occupant activities,service needs and machine energy","reviewed_document_sha256":"5616fe111cf8d68629273009e42fb8b1719f55fcfb42b68061e4e7fb4792fa41","url":"https://arxiv.org/pdf/2111.01881"},{"boundary":"no human acceptance rates transferred;physical outcomes must be computed","doi":"10.1016/j.apenergy.2025.125610","inherited_reading_status":"publisher_PDF_read;methods_results_and_limitations_reviewed","key":"Wen2025FlexibilityAcceptance","method_use":"predeclared factors and human judgments of flexibility scenarios","reviewed_document_sha256":"54e27271de061e0093cc15cd82e06794b37e2ff1f6d1a15a05d4494dca14488e","url":"https://pure.hw.ac.uk/ws/portalfiles/portal/147868180/1-s2.0-S030626192500340X-main.pdf"}],"parameter_origin":"all_default_search_levels_and_ranking_rules_are_explicit_project_settings","review_native_measurements":{"native_dictionary_checked":"EnergyPlus24.1 eplusout.rdd;Cooling Coil Electricity Energy;Heating Coil Electricity Energy","scope":"actual component axis evidence;not temperature-distance inference or household calibration","url":"https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-zone-forced-air-units.html"},"review_process_sources":[{"authors":["Timothy Kassis","Vinayak Agarwal","Yuhuan He","Darshil Patel","Aubrey M. Brueckner"],"boundary":"workflow reference only;not evidence of energy model validity or performance","checked_version":"v2,2026-09-02;latest record checked 2026-10-19","doi":"10.48550/arXiv.2609.00065","key":"Kassis2026ScientificAgentSkills","method_use":"procedural evidence separation,negative controls,and scope calibration during this code review","title":"Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents","url":"https://arxiv.org/abs/2609.00065","year":2026}],"schema":"eb.ab_generation.sources.v1","version_migration":{"context":"v2 requires authority and program capabilities;old incomplete normalized contexts must be reimported","legacy_physics":"full hash-bound original annual requirements required;multi-independent-AC zones rejected","physical_report":"v2 binds all stages and reports both grid and equipment scopes","result":"v2 reports explicit conditional single-device selection and baseline outside option"}}
+{
+  "date": "2026-10-19",
+  "implementation": "portable_declared_life_to_A_and_frozen_A_candidate_stages;not_a_byte_identical_refactor_of_legacy_generators",
+  "implementation_sources": [
+    {
+      "id": "legacy_A46",
+      "pins": "legacy_source_pins:normal_A_v46_20261017",
+      "supports": "service release, handling, noninterruptible execution and continuous EV ledger; new deterministic scheduler is a project rule"
+    },
+    {
+      "id": "legacy_AC84",
+      "pins": "legacy_source_pins:unified_physics50_v84_AC_sleep_20261018",
+      "supports": "separation of room use and control habit; no population parameter calibration"
+    },
+    {
+      "id": "housing_simulation",
+      "path": "../housing_simulation/SOURCES.json",
+      "supports": "official EnergyPlus components and shared physical execution/audit interface"
+    },
+    {
+      "id": "original_EB",
+      "path": "provenance/ORIGINAL_EB.json",
+      "supports": "purpose and stage boundaries;not equivalence of our synthetic requests with original controller output"
+    }
+  ],
+  "inherited_contract": {
+    "path": "benchmark/ab_generation/provenance/REUSABLE_AB_CONTRACT.json",
+    "sha256": "e0c4228e22bc5766a566c2e22a57714181159e09d8f748a707f711bc31c862f5",
+    "status": "historical_design_specification;forecast_wording_superseded_by_OFFLINE_EXPERIMENT.md;implemented_subset_in_DESIGN.md"
+  },
+  "legacy_source_pins": [
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/normal_A_v46_20261017/code/design.py",
+      "sha256": "6e03bf793a315d8aeb35d9e2f6aaeec84e7be85fe1d4dcac4b2a9251c83eed8f",
+      "public_path": "docs/research/collection-adjustment-20260930/household1000/normal_A_v46_20261017/code/design.py",
+      "publication_status": "project_generated_historical_rule_source;reference_only_not_runtime_dependency"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/normal_A_v46_20261017/code/generate.py",
+      "sha256": "e06d1524a759f54ec00ad545ff19094bed26af9fc9865941effcfce9e4846c6f",
+      "public_path": "docs/research/collection-adjustment-20260930/household1000/normal_A_v46_20261017/code/generate.py",
+      "publication_status": "project_generated_historical_rule_source;reference_only_not_runtime_dependency"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/candidate_B_v60_20261018/code/common.py",
+      "sha256": "76608e3da8e588ba13939683a1be956d564a7743e363672cb2eb6646b4c3a33a",
+      "public_path": "benchmark/ab_generation/provenance/project_history/candidate_B_v60_20261018/code/common.py",
+      "publication_status": "project_generated_historical_rule_source;reference_only_not_runtime_dependency"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/candidate_B_v60_20261018/code/generate.py",
+      "sha256": "22f794b6c5ac019ea4ff162fe5fd86807769125164d9694ecd0ca080a476ec53",
+      "public_path": "benchmark/ab_generation/provenance/project_history/candidate_B_v60_20261018/code/generate.py",
+      "publication_status": "project_generated_historical_rule_source;reference_only_not_runtime_dependency"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/candidate_B_v60_20261018/code/opportunities.py",
+      "sha256": "230792cd1d44a84c2bf4d6bcebf4e729e54d627e362173df969bac75d3f299d6",
+      "public_path": "benchmark/ab_generation/provenance/project_history/candidate_B_v60_20261018/code/opportunities.py",
+      "publication_status": "project_generated_historical_rule_source;reference_only_not_runtime_dependency"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/candidate_B_v60_20261018/code/scenarios.py",
+      "sha256": "f9a6de66d1f78818c2d7f84733c455e2db00eef6f431cf67b1447fb23a37e473",
+      "public_path": "benchmark/ab_generation/provenance/project_history/candidate_B_v60_20261018/code/scenarios.py",
+      "publication_status": "project_generated_historical_rule_source;reference_only_not_runtime_dependency"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/unified_physics50_v84_AC_sleep_20261018/code/generate_ac_habits.py",
+      "sha256": "4c78ec3525c0473dde99b864acaf2c8cc0bf764f165160ab3c12a468e2da7d03",
+      "public_path": "benchmark/ab_generation/provenance/project_history/unified_physics50_v84_AC_sleep_20261018/code/generate_ac_habits.py",
+      "publication_status": "project_generated_historical_rule_source;reference_only_not_runtime_dependency"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/unified_physics50_v84_AC_sleep_20261018/AC_HABIT_RULES.json",
+      "sha256": "5f3424efcc9d1c37646527b759594dd811c68ac530cc04903cae0c6a55ec1f52",
+      "public_path": "benchmark/ab_generation/provenance/project_history/household1000/unified_physics50_v84_AC_sleep_20261018/AC_HABIT_RULES.json",
+      "publication_status": "project_generated_historical_rule_source;reference_only_not_runtime_dependency"
+    },
+    {
+      "path": "docs/research/collection-adjustment-20260930/household1000/normal_A_v46_20261017/code/scheduler.py",
+      "sha256": "c5935507f761569ae98377635ba168372ed9422347847496f96fd81537e1a039",
+      "public_path": "docs/research/collection-adjustment-20260930/household1000/normal_A_v46_20261017/code/scheduler.py",
+      "publication_status": "project_generated_historical_rule_source;reference_only_not_runtime_dependency"
+    }
+  ],
+  "life_generation": {
+    "A_inputs_exclude": [
+      "VPP",
+      "tariff",
+      "B",
+      "final_outcomes",
+      "human_answers"
+    ],
+    "exact_diaries_and_parameters": "declared scenarios; not population statistics or direct paper parameter transfer",
+    "housing_interface": "explicit original EV connections and given anchor state without fabricated visits",
+    "implementation": [
+      "life.py",
+      "life_pipeline.py",
+      "life_physics.py"
+    ],
+    "method": "LIFE_METHOD.md",
+    "rules": "LIFE_RULES.json"
+  },
+  "papers": [
+    {
+      "boundary": "not a reproduction of the paper optimizer;group time-use profiles are not individual preferences",
+      "doi": "10.1016/j.apenergy.2025.127080",
+      "inherited_reading_status": "publisher_open_access_PDF_read;methods_results_discussion_limitations_checked",
+      "key": "ElMakroum2026TimeUseDR",
+      "method_use": "construct alternatives before comparing costs and scheduling tradeoffs",
+      "reviewed_document_sha256": "a8586b5d6e80c6964cbf6cc74f1a1df5b700b8d115980879662b92fdc3409661",
+      "url": "https://pedvolution.eu/?download_id=5754&sdm_process_download=1",
+      "public_record_checked_date": "2026-10-19",
+      "title": "Load scheduling optimization for user-centric residential demand response leveraging time use surveys",
+      "authors": [
+        "Reda El Makroum",
+        "Sebastian Zwickl-Bernhard",
+        "Lukas Kranzl",
+        "Hans Auer"
+      ],
+      "year": 2026,
+      "public_record": "https://repositum.tuwien.at/handle/20.500.12708/228812",
+      "current_access_note": "TU Wien record verified;publisher403 and project download unavailable in this review;prior reviewedPDF hash retained"
+    },
+    {
+      "boundary": "author manuscript examined;no Chinese household parameter calibration transferred",
+      "doi": "10.1016/j.apenergy.2022.119890",
+      "inherited_reading_status": "author_full_manuscript_read;published_identity_verified;final_VOR_line_by_line_not_compared",
+      "key": "Chen2022StochasticStock",
+      "method_use": "separate occupant activities,service needs and machine energy",
+      "reviewed_document_sha256": "5616fe111cf8d68629273009e42fb8b1719f55fcfb42b68061e4e7fb4792fa41",
+      "url": "https://arxiv.org/pdf/2111.01881",
+      "public_record_checked_date": "2026-10-19",
+      "title": "Stochastic simulation of occupant-driven energy use in a bottom-up residential building stock model",
+      "authors": [
+        "Jianli Chen",
+        "Rajendra Adhikari",
+        "Eric Wilson",
+        "Joseph Robertson",
+        "Anthony Fontanini",
+        "Ben Polly",
+        "Opeoluwa Olawale"
+      ],
+      "year": 2022,
+      "public_record": "https://research-hub.nlr.gov/en/publications/stochastic-simulation-of-occupant-driven-energy-use-in-a-bottom-u-2/",
+      "author_manuscript_record": "https://arxiv.org/abs/2111.01881"
+    },
+    {
+      "boundary": "no human acceptance rates transferred;physical outcomes must be computed",
+      "doi": "10.1016/j.apenergy.2025.125610",
+      "inherited_reading_status": "publisher_PDF_read;methods_results_and_limitations_reviewed",
+      "key": "Wen2025FlexibilityAcceptance",
+      "method_use": "predeclared factors and human judgments of flexibility scenarios",
+      "reviewed_document_sha256": "54e27271de061e0093cc15cd82e06794b37e2ff1f6d1a15a05d4494dca14488e",
+      "url": "https://pure.hw.ac.uk/ws/portalfiles/portal/147868180/1-s2.0-S030626192500340X-main.pdf",
+      "public_record_checked_date": "2026-10-19",
+      "title": "Can reduction of local carbon emissions motivate participation in demand-side flexibility programs? Evidence from the United Kingdom",
+      "authors": [
+        "Cheng Wen",
+        "Shandelle Steadman",
+        "Muhammad Saad Rafaq",
+        "Paraskevi Vatougiou",
+        "Matthew Deakin"
+      ],
+      "year": 2025,
+      "public_record": "https://pure.hw.ac.uk/ws/portalfiles/portal/147868180/1-s2.0-S030626192500340X-main.pdf",
+      "current_access_note": "institutional publisherPDF accessed;CC BY4.0 statement on cover;no fullPDF redistribution in this change"
+    }
+  ],
+  "parameter_origin": "all_default_search_levels_and_ranking_rules_are_explicit_project_settings",
+  "review_native_measurements": {
+    "native_dictionary_checked": "EnergyPlus24.1 eplusout.rdd;Cooling Coil Electricity Energy;Heating Coil Electricity Energy",
+    "scope": "actual component axis evidence;not temperature-distance inference or household calibration",
+    "url": "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-zone-forced-air-units.html"
+  },
+  "review_process_sources": [
+    {
+      "authors": [
+        "Timothy Kassis",
+        "Vinayak Agarwal",
+        "Yuhuan He",
+        "Darshil Patel",
+        "Aubrey M. Brueckner"
+      ],
+      "boundary": "workflow reference only;not evidence of energy model validity or performance",
+      "checked_version": "v2,2026-09-02;latest record checked 2026-10-19",
+      "doi": "10.48550/arXiv.2609.00065",
+      "key": "Kassis2026ScientificAgentSkills",
+      "method_use": "procedural evidence separation,negative controls,and scope calibration during this code review",
+      "title": "Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents",
+      "url": "https://arxiv.org/abs/2609.00065",
+      "year": 2026
+    }
+  ],
+  "schema": "eb.ab_generation.sources.v1",
+  "version_migration": {
+    "context": "v3 requires declared resource contracts and explicit offline full-A information;v1/v2 must be rebuilt or reimported",
+    "legacy_physics": "full hash-bound original annual requirements required;multi-independent-AC zones rejected",
+    "physical_report": "v3 carries the generation information,purpose and baseline admission;older reports retain original schemas",
+    "result": "v3 carries offline information and synthetic proposal purpose;not originalEB controller output"
+  },
+  "offline_information": {
+    "contract": "eb.ab_information_set.v1",
+    "method": "OFFLINE_EXPERIMENT.md",
+    "complete_future_A_is_available": true,
+    "real_time_forecaster_implemented": false,
+    "post_selection_B_or_human_outcomes_used": false
+  },
+  "public_provenance_status": "all_9_legacy_pins_and_prior_contract_resolve_to_public_hash_bound_files;upstream_semantics_linked_at_pinned_commit",
+  "parameter_register": "PARAMETERS.json",
+  "authorization_register": "AUTHORIZATION.json",
+  "design_contract": "DESIGN.md"
+}

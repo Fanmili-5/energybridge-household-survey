@@ -39,6 +39,22 @@ class LifeTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'DOWNSTREAM_INFORMATION'):
                 generate_household(spec, self.world)
 
+    def test_tank_fallback_must_respect_same_hardware_limits_as_target(self):
+        for value in (-1, 1000, float('nan'), float('inf'), True):
+            self.spec['tank_policy']['setback_C'] = value
+            with self.assertRaisesRegex(ValueError, 'INVALID_TANK_POLICY'):
+                self.plan()
+
+    def test_temperature_interface_bounds_and_finiteness_are_enforced(self):
+        for key, value in [('heating_setpoint_C', 36), ('cooling_setpoint_C', 14),
+                           ('setback_cooling_C', float('nan'))]:
+            spec = copy.deepcopy(self.spec); spec['thermostat_policies'][0][key] = value
+            with self.assertRaisesRegex(ValueError, 'INVALID_THERMOSTAT_BAND'):
+                generate_household(spec, self.world)
+        self.spec['comfort_requirements'][0]['temperature_band_C'] = [-float('inf'), float('inf')]
+        with self.assertRaisesRegex(ValueError, 'INVALID_INDEPENDENT_COMFORT_BAND'):
+            self.plan()
+
     def test_no_hardcoded_household_identity(self):
         old, new = self.spec['household_id'], 'new-world-42'
         self.spec['household_id'] = new; self.world['household_id'] = new
@@ -206,7 +222,7 @@ class LifeTests(unittest.TestCase):
         windows = {}
         for d in p['days'].values():
             for mid, spans in d['operator_windows'].items(): windows.setdefault(mid, []).extend(spans)
-        c = {'schema': 'eb.ab_generation.context.v2', 'case_id': 'new-life-case', 'household_id': p['household_id'],
+        c = {'schema': 'eb.ab_generation.context.v3', 'case_id': 'new-life-case', 'household_id': p['household_id'],
              'date': p['anchor'], 'decision_min': 480, 'horizon_min': [480, 1920], 'A': p['A'],
              'needs': p['requirements'], 'devices': self.world['devices'], 'operator_windows': windows,
              'occupancy': {}, 'reservations': [], 'events': [], 'tariff': [], 'source': {'world': p['world_sha256']}}
@@ -214,7 +230,9 @@ class LifeTests(unittest.TestCase):
             d['asset_id']: {'authorized_operator_ids': [m['member_id'] for m in self.world['members'] if d['asset_id'] in m['can_operate_asset_ids']],
                             'target_control_authorized': True} for d in self.world['devices']},
             'immutable_operator_ids': [], 'origin': 'declared_test_world'}
-        c['reference'] = {'binding': binding(c), 'thermal': {}, 'ev_charging_steps': []}
+        from .information import information_set
+        c['reference'] = {'binding': binding(c), 'thermal': {}, 'ev_charging_steps': [],
+                          'information_set': information_set('synthetic_interface_fixture', c['decision_min'], c['horizon_min'])}
         return c
 
     def test_B_shifts_separate_dryer_tasks_and_real_handling_together(self):

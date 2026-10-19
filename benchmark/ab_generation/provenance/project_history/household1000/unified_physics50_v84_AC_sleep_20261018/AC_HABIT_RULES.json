@@ -1,0 +1,30 @@
+{
+  "schema": "eb.A46_B60.AC_habits50.v84",
+  "scope": "original same-master50 households and500 cases only",
+  "evidence": "EB family heat-pump always_avail and thermostat schedules provide continuous-thermostat capability;the following room routines are explicit benchmark scenario assumptions,not measured household behavior or inferred preferences",
+  "room_modes": {
+    "combined_bed_living": "home_continuous: maintain thermostat through household home periods,including sleep and kitchen/bathroom activities",
+    "living_day_room": "awake_home_continuous: maintain through household awake-at-home episodes,regardless of which room people temporarily use",
+    "separate_bedroom": "sleep_and_settled_sessions: retain sleep and original comfort coverage,extend from first to last settled room use inside each awake-at-home episode;short domestic excursions do not end a session"
+  },
+  "short_scheduled_whole_home_absence_hold_min": 90,
+  "bedroom_domestic_session_gap_hold_min": 60,
+  "existing_room_comfort_coverage_is_lower_bound": true,
+  "circulation": "retain original AC fan requests,including the declared daily60min;extended thermostat periods use automatic fan mode. This does not imply daily compressor demand.",
+  "setpoints": "retain A46 heating/cooling setpoints and deadband;no weather-outcome or price optimization",
+  "B": "rebase the original B60 executable AC setting changes onto the new common A thermostat routine;retain their exact clocks/settings and non-AC requests,including failures. VPP windows/targets remain the same controlled scenario;actual achievement is re-simulated,not guaranteed.",
+  "frozen_before_new_simulation": true,
+  "outside_habit_rules_are_not_population_estimates": true,
+  "no_new_other_device_tasks_operations_or_EV_handling": true,
+  "no_random_time_jitter_no_cost_or_outcome_selection": true,
+  "online_deployment": false,
+  "bedroom_short_absence_refinement": "Within a settled home-use session,bridge scheduled brief outside errands too;meal+brief errand is not two unrelated thermostat periods.",
+  "sleep_recognition": {
+    "sleep_activity_aliases": [
+      "sleep",
+      "sleep_rest"
+    ],
+    "scope": "same semantic sleep state for target members and auxiliary co-residents;all other activity semantics and existing habit thresholds unchanged",
+    "correction": "sleep was formerly excluded only for target calendar label sleep_rest;auxiliary sleep must not count as awake-at-home"
+  }
+}

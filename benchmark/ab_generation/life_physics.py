@@ -5,6 +5,7 @@ import shutil
 from pathlib import Path
 from .common import bound, digest, read, save, seal, sha, verify
 from .generate import binding
+from .information import information_set
 from .life import normalize_world, require
 from .model import apply, plan_commands, plan_hash, request_issues
 from .resources import authority
@@ -166,7 +167,7 @@ def context_from_A(pair, pack, meta, trace, experiment, source):
     base = (dt.date.fromisoformat(pair['date']) - dt.date.fromisoformat(pack['anchor'])).days * 1440
     windows, occupancy, reservations = collections_for_context(pack, pair['date'])
     devices = copy.deepcopy(pack['world']['parameter_pack']['devices'])
-    context = {'schema': 'eb.ab_generation.context.v2', 'case_id': pair['case_id'], 'household_id': pair['household_id'],
+    context = {'schema': 'eb.ab_generation.context.v3', 'case_id': pair['case_id'], 'household_id': pair['household_id'],
                'date': pair['date'], 'decision_min': 480, 'horizon_min': [480, 1920],
                'A': plan_commands(pair['A']), 'needs': pair['needs_A'], 'devices': devices,
                'operator_windows': windows, 'occupancy': occupancy, 'reservations': reservations,
@@ -210,6 +211,7 @@ def context_from_A(pair, pack, meta, trace, experiment, source):
             if c:
                 ev_steps.append({'need_id': c['need_id'], 'start_min': t, 'end_min': t + 10, 'grid_kWh': grid})
     context['reference'] = {'binding': binding(context), 'thermal': thermal, 'ev_charging_steps': ev_steps,
+                            'information_set': information_set('offline_full_A_counterfactual', context['decision_min'], source['initialization']['run_interval_min']),
                             'provenance': 'newly_generated_life_A;content_bound_current_A_execution;no_legacy_forecast'}
     return context
 
@@ -230,9 +232,29 @@ def collections_for_context(pack, date):
     return windows, {room: merge(spans) for room, spans in occupancy.items()}, reservations
 
 
-def reference_life(assembled, compiled, runs, out):
+def baseline_admission(compiled, runs, audit_directory):
+    require(audit_directory is not None, 'BASELINE_AUDIT_REQUIRED')
+    compiled, runs, audit_directory = map(Path, (compiled, runs, audit_directory))
+    cm, rm, am = verify(compiled), verify(runs), verify(audit_directory)
+    require(rm['compiled_manifest_sha256'] == sha(compiled / 'MANIFEST.json')
+            and am['compiled_manifest_sha256'] == sha(compiled / 'MANIFEST.json')
+            and am['runs_manifest_sha256'] == sha(runs / 'MANIFEST.json'), 'BASELINE_AUDIT_BINDING_MISMATCH')
+    required = {'A_complete_finite_timeline', 'A_service_execution', 'A_service_completeness',
+                'A_hot_water_service', 'A_EV_balance', 'A_EV_departure_target'}
+    require({r['id'] for r in am['records']} == {r['id'] for r in cm['records']}
+            and len(am['records']) == len(cm['records']) and am['records']
+            and am.get('schema') == 'eb.housing_physics.audit.v1'
+            and am['passed'] is True and all(required <= r['checks'].keys() and all(v is True for v in r['checks'].values())
+                                             for r in am['records']), 'BASELINE_AUDIT_NOT_PASSED')
+    return {'status': 'normal_A_service_and_physics_audit_passed',
+            'audit_manifest_sha256': sha(audit_directory / 'MANIFEST.json'),
+            'empirical_or_human_validity_inferred': False}
+
+
+def reference_life(assembled, compiled, runs, out, audit_directory=None):
     assembled, compiled, runs, out = map(Path, (assembled, compiled, runs, out))
     verify(assembled); cm, rm = verify(compiled), verify(runs)
+    admission = baseline_admission(compiled, runs, audit_directory)
     require(rm['compiled_manifest_sha256'] == sha(compiled / 'MANIFEST.json'), 'REFERENCE_RUN_COMPILER_MISMATCH')
     require(cm['input_sha256'] == sha(assembled / 'physics_job.json'), 'REFERENCE_COMPILER_REQUEST_MISMATCH')
     out.mkdir(parents=True, exist_ok=False)
@@ -250,12 +272,13 @@ def reference_life(assembled, compiled, runs, out):
                   'A_idf_sha256': meta['idf_sha256'], 'weather_sha256': pack['weather_sha256'],
                   'initialization': {'history_days': meta['history_days'], 'run_interval_min': meta['run_interval_min']}}
         context = context_from_A(pair, pack, meta, trace, item['experiment'], source)
+        context['reference']['baseline_admission'] = admission
         name = 'contexts/' + rid + '.json.gz'; save(out / name, context)
         records.append({'case_id': pair['case_id'], 'context': name, 'id': rid})
     save(out / 'BATCH.json', {'schema': 'eb.ab_generation.batch.v1', 'records': records})
     seal(out, {'schema': 'eb.life_current_A_reference.v1', 'assembled_manifest_sha256': sha(assembled / 'MANIFEST.json'),
                'compiled_manifest_sha256': sha(compiled / 'MANIFEST.json'), 'runs_manifest_sha256': sha(runs / 'MANIFEST.json'),
-               'cases': len(records), 'B_result_or_answer_read': False})
+               'cases': len(records), 'B_result_or_answer_read': False, 'baseline_admission': admission})
     return {'cases': len(records), 'current_A_reference_bound': True}
 
 
@@ -305,6 +328,8 @@ def export_life(assembled, contexts, generated, policy, out, case_ids=None, requ
         require(selected.get('B_commands_sha256', plan_hash(pair['B'])) == plan_hash(pair['B']), 'SELECTED_B_HASH_CHANGED')
         pair['schedule_hashes'] = {s: digest(pair[s]) for s in ('A', 'B')}
         pair['AB_generation'] = {'policy': ('failure_probe' if override and override.get('expected_static_issues') else 'explicit_candidate_probe') if override else policy, 'candidate_ids': selected['candidate_ids'], 'rules_sha256': result['rules_sha256'],
+                                 'information_set': result['information_set'], 'proposal_purpose': result['proposal_purpose'],
+                                 'baseline_admission': result['baseline_admission'],
                                  'event_meter_scope': context['event_meter_scope'],
                                  'reference_sha256': result['reference_sha256'], 'status': selected['status']}
         pair.pop('source_pair_sha256', None); pair['source_pair_sha256'] = digest(pair)

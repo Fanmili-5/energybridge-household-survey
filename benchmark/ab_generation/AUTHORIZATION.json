@@ -1,0 +1,83 @@
+{
+  "schema": "eb.ab_authorization_boundary.v1",
+  "review_date": "2026-10-19",
+  "review_scope": "repository publication and model information boundaries;not a legal opinion,ethics approval or new rights grant",
+  "entries": [
+    {
+      "id": "project_research_change",
+      "material": "new second-line code,project-generated historical rules,synthetic examples and documentation",
+      "basis": "user explicitly authorized second-line source/document alignment,validation and update main",
+      "permitted_here": "publish scoped research files after review;retain existing third-party notices",
+      "not_granted": "a blanket license over upstream material,participant data,online deployment or real device actuation",
+      "status": "authorized_task_scope;all-rights-title_not_independently_certified"
+    },
+    {
+      "id": "upstream_EB",
+      "material": "EnergyBridge fixed commit 2b17ae63e613da776c93e900f5dace50d63a88a8",
+      "basis": "public pinned Git objects and design links;no root LICENSE found at pinned commit",
+      "permitted_here": "link and describe design semantics;no new upstream code vendored by this change",
+      "not_granted": "unrestricted reuse,training rights or relicensing of upstream code/models/data",
+      "status": "reuse_license_not_verified;do_not_claim_open_source_license",
+      "source": "provenance/ORIGINAL_EB.json"
+    },
+    {
+      "id": "papers",
+      "material": "Chen2022,ElMakroum2026,Wen2025 and workflow reference",
+      "basis": "public author/publisher/institutional records and reviewed-version hashes",
+      "permitted_here": "link,attribute and explain limited methodological use;no full papers redistributed",
+      "not_granted": "transfer of empirical validity,household parameters,acceptance rates or all publication rights",
+      "status": "citations_and_links_only"
+    },
+    {
+      "id": "energyplus",
+      "material": "official24.1 components/schema retained by housing module",
+      "basis": "versioned source hashes,extraction commands and retained license",
+      "permitted_here": "use through existing public housing interface and notices",
+      "not_granted": "calibrated appliance performance or residential safety certification",
+      "status": "license_text_retained;existing_component_scope",
+      "source": "../housing_simulation/resources/ENERGYPLUS_LICENSE.txt"
+    },
+    {
+      "id": "weather",
+      "material": "Chicago official-distribution TMY3 reference;other catalog weather delegated",
+      "basis": "registered provider,url,station,release andSHA,downloaded by user runtime",
+      "permitted_here": "record source andhash;use as reference simulation weather",
+      "not_granted": "unconditional redistribution of all EPW/DDY or Chinese climate calibration",
+      "status": "raw_weather_not_newly_published;provider_terms_apply"
+    },
+    {
+      "id": "household_inputs",
+      "material": "three public synthetic households and old controlled50/500 inputs",
+      "basis": "current public synthetic inputs carry no human answers;old cohort not required for public replay",
+      "permitted_here": "public synthetic reference runs;local read-only audit of explicitly supplied legacy inputs",
+      "not_granted": "publication of controlled household packages,answer tables or upstream microdata under a new license",
+      "status": "synthetic_only_for_new_runs;controlled_inputs_not_added"
+    },
+    {
+      "id": "device_authority",
+      "material": "can_operate_asset_ids,using_household_ids,target_control_authorized",
+      "basis": "declared model resource contracts",
+      "permitted_here": "constrain synthetic command generation",
+      "not_granted": "real owner consent,landlord permission,clinical safety or external actuator access",
+      "status": "model_permission_only"
+    },
+    {
+      "id": "human_consent",
+      "material": "acceptance,explanations,satisfaction and role information",
+      "basis": "originalEB separates proposal/consent/execution/outcome;current generator stores unknown judgments",
+      "permitted_here": "counterfactual if-applied physical evidence and offline design review",
+      "not_granted": "pre-filled judgments,ethics clearance,participant recruitment or consent to new online survey",
+      "status": "not_inferred;human_validation_and_ethics_status_not_verified"
+    },
+    {
+      "id": "operational_scope",
+      "material": "online questionnaire and1000-household simulation",
+      "basis": "explicit user restriction",
+      "permitted_here": "preserve current production files and keep1000 simulation paused",
+      "not_granted": "deploy questionnaire,modify production responses or start1000-household physics",
+      "status": "unchanged_and_paused"
+    }
+  ],
+  "license_policy": "no unified repository license introduced;public visibility is not a blanket reuse license",
+  "licensing_reference": "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository"
+}
