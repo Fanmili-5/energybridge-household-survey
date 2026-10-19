@@ -62,7 +62,7 @@ EV电池能量账误差小于`1e-8 kWh`，无不可执行行程、未服务牵�
 
 在独立目录和干净依赖环境中从公开输入重复执行。比较外壳、家庭世界、配对请求及IDF字节；数值轨迹按上述容差检查。引擎日志中的时间和绝对路径，以及SQL内部记录，不作为跨运行逐字节复现要求。
 
-`PACKAGE_MANIFEST.json`固定发布文件，`SOURCE_MAP.json`记录历史代码出处和现行内核哈希，`RULES.json`将来源支持的机制、项目规则和显式输入区分登记。`FIELD_MAP.json`覆盖220个Schema属性路径，`ASSUMPTIONS.json`登记12组关键参数及性质。链接检查验证来源标识、实现符号和实际文档锚点；该结构检查不替代来源内容的人工判读，证据支持边界见[EVIDENCE.md](EVIDENCE.md)。官方组件可用`export_resources`重新提取并核对字节。
+`PACKAGE_MANIFEST.json`固定发布文件，`SOURCE_MAP.json`记录历史代码出处和现行内核哈希，`RULES.json`将来源支持的机制、项目规则和显式输入区分登记。`FIELD_MAP.json`覆盖236个Schema属性路径，`ASSUMPTIONS.json`登记15组关键参数及性质。链接检查验证来源标识、实现符号和实际文档锚点；该结构检查不替代来源内容的人工判读，证据支持边界见[EVIDENCE.md](EVIDENCE.md)。官方组件可用`export_resources`重新提取并核对字节。
 
 ## 5. 警告与适用边界
 
