@@ -94,9 +94,9 @@ def validate_plan(plan):
             require(type(value) in (int, float) and 0 <= value <= 1, 'INVALID_RESPONSE_FRACTION')
 
 
-def describe(context, plan_B, children, issues, unchanged=None, stress_admissions=None):
+def describe(context, plan_B, children, issues, unchanged=None, stress_admissions=None, _gate=None):
     allowed_stress = {'declared_EV_shortfall_stress'} if stress_admissions is None else set(stress_admissions)
-    gate = request_issues(context, plan_B)
+    gate = request_issues(context, plan_B) if _gate is None else list(_gate)
     families = sorted({r['family'] for r in children})
     # Authority and past/identity gates can never be waived by a stress label.
     authority = context['authority']['assets']
@@ -154,7 +154,7 @@ def describe(context, plan_B, children, issues, unchanged=None, stress_admission
     return features, issues
 
 
-def catalogue(contexts, results, stress_admissions=None):
+def catalogue(contexts, results, stress_admissions=None, indexed=True):
     """All variants and joint requests; no policy winner or physical B is an input."""
     unique = {}
     context_hashes = {k: digest(c) for k, c in contexts.items()}
@@ -170,6 +170,10 @@ def catalogue(contexts, results, stress_admissions=None):
             baseline = plan_commands(context['A'])
             for c in baseline['controls']:
                 c['_ab_control_id'] = digest(c)
+            if indexed:
+                from .sampling_index import CommandIndex
+                index = CommandIndex(context)
+                baseline = index.baseline
             singles = {r['id']: r for r in result['candidates']}
             mode = result['assignment']['mode']
             requests = []
@@ -182,9 +186,11 @@ def catalogue(contexts, results, stress_admissions=None):
                 # Frozen original failures remain diagnostic; never replaced by a new optimum.
                 requests = [({'patches': [], 'static_issues': ['PRESERVED_FAILURE_REQUIRES_ORIGINAL_AUDIT']}, [], {'preserved_failure': True})]
             for request, children, override in requests:
-                B = context['retained_B_request'] if mode == 'preserved_failure_replay' else apply(baseline, request['patches'])
-                B_hash = command_hash(B)
-                features, issues = describe(context, B, children, list(request['static_issues']), A_hashes[case_id] == B_hash, stress_admissions)
+                B = (context['retained_B_request'] if mode == 'preserved_failure_replay' else
+                     index.patch(request['patches']) if indexed else apply(baseline, request['patches']))
+                B_hash = index.command_hash(B) if indexed else command_hash(B)
+                gate = index.request_issues(B) if indexed else None
+                features, issues = describe(context, B, children, list(request['static_issues']), A_hashes[case_id] == B_hash, stress_admissions, _gate=gate)
                 ident = digest({'context_sha256': context_hashes[case_id], 'B_commands_sha256': B_hash})
                 alias = {'variant': variant, 'case_id': case_id, 'override': {**override, 'expected_static_issues': request['static_issues']},
                          'candidate_factors': [r['factors'] for r in children],

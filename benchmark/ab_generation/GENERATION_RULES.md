@@ -47,6 +47,8 @@
 
 ## roleplay覆盖与防退化
 
+新版最终静态取样与验收见 [FINAL_SAMPLING_METHOD.md](FINAL_SAMPLING_METHOD.md) 和 [GAP_VALIDATION.md](GAP_VALIDATION.md)。十层配额10/10；可用单轴/双轴水平组合218/421，缺203项。静态有效与冬季既有物理失败分开记录。下述实际响应门槛留待后续可选物理实验，本轮不执行、不作为计划验收条件。
+
 既有正式小型计划为[examples/joint_tail/plan.json](examples/joint_tail/plan.json)，历史计划为`examples/rule_review/plan.json`。缺额诊断后的新版本为[examples/gap_supplement/tail_plan.json](examples/gap_supplement/tail_plan.json)：完整24个非零10分钟档位，报告`program_shift_domain`及联合交互覆盖，旧六档只保留稀疏设计/历史复现用途。在第一个B运行前，封存完整目录、命令去重、种子、独占分层和家庭→请求两阶段抽样。覆盖设备、剂量、时长、方向、人工策略、预测费用符号，以及新增的`opportunity`和`joint_support`。记录还携带原实验日期的`day_type`与固定事件的`event_direction`；不得为填层改写生活日历或事件。保留缺额，不跨层换成成功B。
 
 计划明确包含有依据和探索性请求、不同任务数联合、同族多批、费用增加取舍、A=B对照、静态拒绝和声明的服务失败。执行后逐目标设备报告用电时点、实际执行时点、温度和SOC，给出`all_targeted_assets_change`、`mixed_target_response`、`no_target_response`和`identical_control`。只有EV变化的联合B不能当作热水器已有作用。相同案号下的原生B轨迹指纹另报，命令不同不自动算独立物理后果。

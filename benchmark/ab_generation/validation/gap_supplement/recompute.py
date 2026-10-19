@@ -66,12 +66,17 @@ def recompute(out):
         'original_batch_unchanged': unchanged, 'grid_gap_witnesses_present': witnesses,
         'projection_cross_check': read(folder / 'PROJECTION_CHECK.json')['passed'],
         'winter_static_candidates_present': winter_static, 'all_planned_scenarios_accounted': status['all_planned_accounted']}
+    from benchmark.ab_generation.static_sampling import recheck
+    final = recheck(folder / 'final_sample', Path(out) / 'final_sample')
+    checks['final_sampling_integrity'] = final['passed']
+    checks['final_required_strata_coverage'] = final['required_coverage_passed']
     result = {'schema': 'eb.ab_gap_static_check.v1', 'passed': all(checks.values()), 'checks': checks,
         'physics_required_for_plan_acceptance': False, 'new_physics_runs': 0, 'new_B_executed': False,
-        'formal_selection_completed': False, 'actual_response_coverage': 'deferred_unverified',
-        'deduplicated_stratified_sample_coverage': 'not_completed',
+        'formal_selection_completed': True, 'actual_response_coverage': 'deferred_unverified',
+        'deduplicated_stratified_sample_coverage': 'passed' if final['required_coverage_passed'] else 'deficits_retained',
+        'final_sampling_required_deficits': final['required_deficits'],
         'winter_physical_failure_retained': not status['all_planned_A_admitted'],
-        'scope': 'static plan regression plus bound receipt consistency;not proof of all scenarios, formal sample acceptance or physical performance'}
+        'scope': 'static plan regression, fixed final sampling and selected full-plan checks;not physical performance or all-scenario proof'}
     save(Path(out) / 'CHECKS.json', result)
     if not result['passed']:
         raise ValueError('GAP_STATIC_CHECK_FAILED;inspect_checks;do_not_reselect')

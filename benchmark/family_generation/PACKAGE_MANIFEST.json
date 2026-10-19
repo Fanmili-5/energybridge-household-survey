@@ -2,7 +2,7 @@
   "EP_runs": 0,
   "date": "2026-10-19",
   "dependencies": {
-    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "1e095a2818ffdadf990f5941c1c0d66e4ef2b2150467eff12234794e18ce6c5b",
+    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "f0f41a70348abcb13512a3f5b4439dd59aec467febd0ace280ab47f1f6b9ca2a",
     "benchmark/ab_generation/__init__.py": "a591d8b46bebc41f63b28f301f0ff891926009485a02f0cbf5fb65a20fb130dc",
     "benchmark/ab_generation/__main__.py": "7d5c7922190df9a0616976ea903b3025df6939b9854db73605078242f6b96fea",
     "benchmark/ab_generation/audit_design.py": "c965f65e50ff7a2d874fe6040c18fd5f5c4b0bb8a64f4eebe5e0725754036d09",
@@ -17,7 +17,7 @@
     "benchmark/ab_generation/life.py": "60d0294fdd648423c8addfb925597a045ac12d842ef43ad79c6c8f8818125a76",
     "benchmark/ab_generation/life_physics.py": "be5d27e8d3cb9060072f19a983875c22479398658e014d3d9e7c1f40238956f3",
     "benchmark/ab_generation/life_pipeline.py": "9b816b23176a794f7ded134a6054d700249c05645d3974e5b2f761d93e3b97cd",
-    "benchmark/ab_generation/model.py": "82bf3d1e51c75aae2a462765d522317a7b72cb423cbd60bce0fdbe47e0727beb",
+    "benchmark/ab_generation/model.py": "f61cc7a1901a9de1ac2290b537bad2b0afdf57746d1d3233f755846fe1d4604f",
     "benchmark/ab_generation/outcomes.py": "e48b4f3c9667c1074ff304a6a48c0bd2a0df23fa46205701f135b8929e5fe07f",
     "benchmark/ab_generation/resources.py": "f69ed4de35af8b9868e89a47fef861e62dfbe31b45f8026f311e4637472e1aab",
     "benchmark/ab_generation/review.py": "ad6629f60aa1f30ea707b98a8246f78ee20c02387c7ee5aa7ae2fae1820c1419",
@@ -54,7 +54,7 @@
     "benchmark/housing_simulation/worker.py": "d4e7df44895d8bfac5f509e6ec0d87ea36322a730d7161e804b8a4f9a30b8e69",
     "benchmark/ab_generation/effects.py": "ac82b254dbac5b9568ab91e16c60e70f048e13410ddcf94dd50dd3704ebafc5f",
     "benchmark/ab_generation/opportunity.py": "852f4446f913fa72d8e4ab649e0383cc7c55620ae9e6b6a36828cce3c2458259",
-    "benchmark/ab_generation/sampling.py": "830968309afbe818229b15f13b9a17f43188334d16277c026be43cab0e9be72d",
+    "benchmark/ab_generation/sampling.py": "2a45e4e74badc08a37f4189f471bad19fd3b4b315fd36c8462e5cd13c65e58cc",
     "benchmark/ab_generation/tail_review.py": "b77429766fc70df3ef4dee6ef7ffaaf83cac39e2f54cd6c6d986a3cb1035045b",
     "benchmark/ab_generation/test_opportunity.py": "3453ec4b62f508873f37fef42ca4b5d34adbc2d3c93639bcb15f1597dc0cc88a",
     "benchmark/ab_generation/test_sampling.py": "9ea95d22b08748fafb5558c09a8c1f150326087bcef203fe5e4f2cd42776dd45",
@@ -69,7 +69,10 @@
     "benchmark/ab_generation/joint_tail.py": "b4d8673f13ebf7f71ac1bace430fc0b5b5732ee3257db71563b8d5e74f9904f5",
     "benchmark/ab_generation/test_joint_tail.py": "3bead0287104b6f5fe44cd07e3e86944e24c2ec319baab78e4f692938235540e",
     "benchmark/ab_generation/gap_review.py": "192809276df11976faa73d80f9cd735cf91674043d510f5eba7379a1f4768761",
-    "benchmark/ab_generation/test_gap_review.py": "b549bc6d2c980418b231570a8cf78148a62118f92f2f94b5bda7553a2ac85983"
+    "benchmark/ab_generation/test_gap_review.py": "b549bc6d2c980418b231570a8cf78148a62118f92f2f94b5bda7553a2ac85983",
+    "benchmark/ab_generation/sampling_index.py": "171d68dfb97e8883951ecc9de9fdec7dbea5eda78876cc5ad857ffcd54b51bf3",
+    "benchmark/ab_generation/static_sampling.py": "83a2f631f88fdb9436487207f2dbeae646bf9769014e50354389d48b3bb0a965",
+    "benchmark/ab_generation/test_static_sampling.py": "9da25b2c9b7af419f4dffd2546446cf523d6c63ad725ae52b3471153d85565fc"
   },
   "existing_data_migrated": false,
   "files": {

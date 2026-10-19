@@ -5,7 +5,8 @@
 本轮只验收计划设计；以下命令不启动EnergyPlus，不需要新B结果。仓库根目录执行：
 
 ```bash
-python -B -m unittest benchmark.ab_generation.test_gap_review -v
+python -B -m unittest benchmark.ab_generation.test_gap_review benchmark.ab_generation.test_static_sampling -v
+python -B -m benchmark.ab_generation.static_sampling recheck --require-coverage --out outputs/final-static-check
 python -B -m benchmark.ab_generation.validation.gap_supplement.recompute --out outputs/gap-static-check
 python -B -m benchmark.ab_generation.audit_design
 ```
@@ -16,7 +17,15 @@ python -B -m benchmark.ab_generation.audit_design
 python -B -m benchmark.ab_generation.gap_review diagnose --out outputs/gap-diagnosis
 ```
 
-静态检查通过不表示正式样本10/10层通过或物理后果已验证。完整原始目录重建可以使用 `joint_tail frame-frozen`，但其命令规范化与去重耗时较长，本轮未完成最终取样，不能引用不存在的选择冻结或B回执。完整候选等价检查使用Python3.14.3；3.9和3.14均通过151项约束/接口检查，不承诺跨运行时浮点累计或哈希排序完全一致。
+新版最终静态样本已封存于 `validation/gap_supplement/final_sample`。上述 `recheck`只回放固定去重目录和已选计划，不生成新候选、不运行引擎。十层10/10达标，203个未覆盖交互仍列明；不等于物理后果已验证。Python3.9.6和3.14.3各156项检查通过。
+
+需要独立重建全目录时，使用公开三个A上下文，仅标准库即可：
+
+```bash
+python -B -m benchmark.ab_generation.static_sampling build --out outputs/final-static-rebuild
+```
+
+输出目录必须不存在；该命令按原配置枚举全部候选和联合，再做同一定义的指令规范化与分层，耗时高于固定回放，不使用EnergyPlus、住房包或真实住户数据。固定样本构建使用Python3.14.3；跨版本以封存JSON、选择身份和覆盖表比较，不承诺gzip容器字节或所有新生成浮点累计跨运行时完全一致。`--generated-index`可接收已封存生成结果的“情境ID/变体ID→路径”映射，逐项核对A和完整规则绑定；它复用候选，不是按B后果替换候选。
 
 后续若选择验证物理后果，可显式依次使用 `gap_review reference`、`gap_review prepare`、`joint_tail frame`、`joint_tail execute`，各命令的 `--help` 给出参数。它们不是本轮必跑步骤；A/A先导源码及身份分别由 `A_BUILD_SOURCE.json` 与 `A_BUILD_IDENTITY.json` 保存，旧冬季物理准入失败原样保留。任何后续B执行前须另行封存最终选择、代码身份、计划与种子，不能按结果重抽。
 
