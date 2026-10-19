@@ -1,0 +1,67 @@
+{
+  "EP_runs": 0,
+  "code_sha256": {
+    "__init__.py": "6f87ca4a1e4242f6e12a7a1b6fc6b3505dd5630bd1d5ea50c1c434f279786fc5",
+    "__main__.py": "10852a7f38e1bcbbc56212d558d4965b77aa0691c497abe2dc708aee1e62809c",
+    "audit_legacy.py": "79bd1744edccab83379d36139ddede1e83c426220fdcc9ed4a052d780b669c6b",
+    "connect.py": "5808a228f2c350047cebc45dd114d8f48675b3067ec27e6b600719e4b61f16ca",
+    "core.py": "e378ef7837e2177c68bf041d351c8af1390c3935ee61c32681734833d6b37b73",
+    "test_connection.py": "d70780c4b137aa11c3b45ccd2ba7ca2b65002809e41b7beed042f8d7df3c9899",
+    "test_generation.py": "7045ec02e1936a2deb07648901687341d29cc5f6e4b606ce8619acfd0611c8f8",
+    "verify_package.py": "375e2c252f154293742cd042671cded5a39e75e341ad46456c2f797abb8e0ab0"
+  },
+  "date": "2026-10-19",
+  "environment": {
+    "dependency_lock": "../housing_simulation/requirements.txt",
+    "python": "3.14.3"
+  },
+  "existing_data_migrated": false,
+  "human_answers_generated": 0,
+  "legacy_read_only": {
+    "binding_sha256": "7fd9045f046d2f7a9db82178cb4c4dabe416e759f2969b51871010b69e74ef5b",
+    "context_counts": {
+      "explicit_nonresident_guardian_households": 16,
+      "under6_households": 101
+    },
+    "households": 1000,
+    "report": "LEGACY_REVIEW.json",
+    "review_counts": {
+      "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED": 110,
+      "PARENT_RELATION_AGE_SUBTYPE_REVIEW": 4
+    },
+    "structural_errors": 0
+  },
+  "limitations": [
+    "No new EP,fees,VPP or human preference validation",
+    "Public reference pool has six declared synthetic scenarios;not population or full diversity validation",
+    "Legacy households were audited but not migrated or repaired;review flags remain",
+    "Existing 50/1000 household,AC84 and online data not replaced"
+  ],
+  "production_changes": false,
+  "public_integration": {
+    "byte_reproduction_verified_by_unit_test": true,
+    "clean_module_only_reproduction": {
+      "EP_runs": 0,
+      "historical_directories_present": false,
+      "housing_and_life_A_constructed": 6,
+      "passed": true,
+      "requested": 6
+    },
+    "connection_manifest_sha256": "b0f6091d25895b8d8e1bb7e24e9041eb1d4bd2878a7fa312a4ca664eb30f6952",
+    "failed_slots_retained_by_negative_test": true,
+    "families_constructed": 6,
+    "family_manifest_sha256": "187c199db1509378a522f7707d2bc4499c02dbb6541496d682800dd68531cab1",
+    "housing_and_life_A_constructed": 6,
+    "input": "examples/batch.json",
+    "requested": 6,
+    "shared_household_included": true
+  },
+  "schema": "eb.family_generation.validation.v1",
+  "tested_base_commit": "7b2c2a30943c6a3e45aa3b5e2d07e7307bc2b238",
+  "unit_and_connection_tests": {
+    "command": "python -B -m unittest benchmark.family_generation.test_generation benchmark.family_generation.test_connection -v",
+    "failures": 0,
+    "passed": true,
+    "tests": 20
+  }
+}

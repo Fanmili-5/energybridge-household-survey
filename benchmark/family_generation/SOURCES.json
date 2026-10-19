@@ -1,0 +1,43 @@
+{
+  "schema": "eb.family_generation.sources.v1",
+  "date": "2026-10-19",
+  "mode": "declared reference or authorized joint inputs;not population synthesis from public examples",
+  "EB": {
+    "role_source": "../household_archetypes/SOURCES.json",
+    "allocation": "../household_archetypes/ALLOCATION.md",
+    "acceptance_priors_are_labels": false
+  },
+  "external_preference_evidence": "../household_archetypes/EVIDENCE.md",
+  "housing_sources": "../housing_simulation/SOURCES.json",
+  "life_sources": "../ab_generation/SOURCES.json",
+  "public_reference_pool": {
+    "scope": "six designed synthetic reference scenarios derived from this project public integration inputs",
+    "file": "examples/REFERENCE_POOL.json",
+    "sha256": "85565584408192350d63f969688d483de4873176e88b5bfaa7b558573845822c",
+    "national_or_measured_households": false,
+    "sampling": "fixed-seed whole-record scenario sampling with replacement;no external survey weights applied"
+  },
+  "project_rules": {
+    "target_device_class_count": [
+      4,
+      6
+    ],
+    "AC_every_target_household": true,
+    "minimum_reference_parent_gap_years": 15,
+    "minimum_reference_partner_age_years": 18,
+    "minimum_operator_age_years": 16,
+    "minimum_resident_decision_maker_age_years": 18,
+    "thresholds_are_population_or_legal_findings": false
+  },
+  "origin_files_sha256": {
+    "benchmark/ab_generation/examples/life/world_contracts.json": "fea445a0cbabf07e715da2b628bc41dfd863f2f8c9b3d0376148de3f10b397e8",
+    "benchmark/ab_generation/examples/life/life_batch.json": "43e3d105f24ad840bde58b4b5c851ca231dddd94333bcf8a35c9c7b49729fef7",
+    "benchmark/housing_simulation/examples/shell_batch.json": "8ad7f4f64b13e1a1f85ce88349fba2d7ad12e3d5f3c71a96ec5f99cb03e5a01e",
+    "benchmark/housing_simulation/examples/synthetic_assembly.json": "02c535e113144a431d4824d730ead49ca838b2fd7e3a2a77d1dd4c48c8cedaed"
+  },
+  "legacy_source_review_sha256": {
+    "scripts/household_master.py": "49ec23ea2840ac0ae4476212f173b05e24e430770c83bb55f3b7ceab423e60c9",
+    "docs/research/collection-adjustment-20260930/household1000/household_master_v33_20261016/code/build_master.py": "8fe9c308081007942f70af96ee9797615ea7bee09b7beee249050ba743c0f8b4",
+    "docs/research/collection-adjustment-20260930/household1000/household_master_v33_20261016/code/integrity.py": "1d46596eb0b438790f695c7bcf1eb6837000584752e400f5c86c351892d6b40f"
+  }
+}

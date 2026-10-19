@@ -1,0 +1,480 @@
+{
+  "EP_runs": 0,
+  "binding_sha256": "7fd9045f046d2f7a9db82178cb4c4dabe416e759f2969b51871010b69e74ef5b",
+  "context_counts": {
+    "explicit_nonresident_guardian_households": 16,
+    "under6_households": 101
+  },
+  "households": 1000,
+  "production_changes": false,
+  "review_counts": {
+    "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED": 110,
+    "PARENT_RELATION_AGE_SUBTYPE_REVIEW": 4
+  },
+  "review_flags": [
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0010"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0011"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0013"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0017"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0026"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0037"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0038"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0047"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0048"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0049"
+    },
+    {
+      "code": "PARENT_RELATION_AGE_SUBTYPE_REVIEW",
+      "household_id": "ordinary-v6-0058",
+      "note": "Review threshold15 is a reference rule,not proof of biological parentage error;do not invent a step/adoption subtype"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0058"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0062"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0068"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0077"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0078"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0081"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0087"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0092"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0095"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0106"
+    },
+    {
+      "code": "PARENT_RELATION_AGE_SUBTYPE_REVIEW",
+      "household_id": "ordinary-v6-0109",
+      "note": "Review threshold15 is a reference rule,not proof of biological parentage error;do not invent a step/adoption subtype"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0122"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0133"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0134"
+    },
+    {
+      "code": "PARENT_RELATION_AGE_SUBTYPE_REVIEW",
+      "household_id": "ordinary-v6-0156",
+      "note": "Review threshold15 is a reference rule,not proof of biological parentage error;do not invent a step/adoption subtype"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0187"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0203"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0209"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0221"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0235"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0238"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0242"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0254"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0295"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0299"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0304"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0311"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0328"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0356"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0357"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0362"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0371"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0372"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0373"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0375"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0383"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0389"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0395"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0396"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0460"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0463"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0465"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0466"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0477"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0495"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0497"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0501"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0517"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0525"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0529"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0556"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0560"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0561"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0566"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0580"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0581"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0584"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0600"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0619"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0620"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0624"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0625"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0626"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0657"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0659"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0660"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0662"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0670"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0678"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0686"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0687"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0691"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0695"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0722"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0727"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0730"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0734"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0765"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0771"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0772"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0785"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0798"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0799"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0801"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0802"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0806"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0812"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0821"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0822"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0826"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0838"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0841"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0846"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0872"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0889"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0911"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0917"
+    },
+    {
+      "code": "PARENT_RELATION_AGE_SUBTYPE_REVIEW",
+      "household_id": "ordinary-v6-0939",
+      "note": "Review threshold15 is a reference rule,not proof of biological parentage error;do not invent a step/adoption subtype"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0954"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0956"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0968"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0977"
+    },
+    {
+      "code": "CURRENT_KERNEL_MULTIPLE_AC_ZONE_UNSUPPORTED",
+      "household_id": "ordinary-v6-0991"
+    }
+  ],
+  "schema": "eb.family_generation.legacy_audit.v1",
+  "scope": "Historical master facts and device/relationship consistency;not housing feasibility,all life days or physical/human validity",
+  "source_files_read_only": true,
+  "structural_errors": []
+}

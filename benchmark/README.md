@@ -15,6 +15,7 @@
 
 - [数据卡与使用边界](DATASET_CARD.md)
 - [数据如何生成](GENERATION.md)
+- [完整家庭生成、住房/生活连接与开源复现](family_generation/README.md)
 - [家庭六类偏好：方法、证据、配额和论文表述](household_archetypes/README.md)
 - [采集与质控协议](COLLECTION.md)
 - [评测协议与待冻结项](EVALUATION.md)

@@ -1,0 +1,48 @@
+name: Family generation
+
+on:
+  push:
+    paths:
+      - 'benchmark/family_generation/**'
+      - 'benchmark/household_archetypes/**'
+      - 'benchmark/housing_simulation/**'
+      - 'benchmark/ab_generation/**'
+      - '.github/workflows/family-generation.yml'
+  pull_request:
+    paths:
+      - 'benchmark/family_generation/**'
+      - 'benchmark/household_archetypes/**'
+      - 'benchmark/housing_simulation/**'
+      - 'benchmark/ab_generation/**'
+      - '.github/workflows/family-generation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-construction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      matrix:
+        python-version: ['3.12', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -r benchmark/housing_simulation/requirements.txt
+      - run: python -B -m benchmark.family_generation.verify_package
+      - run: python -B -m unittest benchmark.family_generation.test_generation benchmark.family_generation.test_connection -v
+      - name: Reproduce family to housing to life A without historical household data or EP
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/family-independent/benchmark"
+          cp benchmark/__init__.py "$RUNNER_TEMP/family-independent/benchmark/"
+          cp -R benchmark/family_generation benchmark/household_archetypes benchmark/housing_simulation benchmark/ab_generation "$RUNNER_TEMP/family-independent/benchmark/"
+          cd "$RUNNER_TEMP/family-independent"
+          python -B -m benchmark.family_generation generate --input benchmark/family_generation/examples/batch.json --out "$RUNNER_TEMP/families"
+          python -B -m benchmark.family_generation verify "$RUNNER_TEMP/families"
+          python -B -m benchmark.family_generation connect --families "$RUNNER_TEMP/families" --out "$RUNNER_TEMP/family-connected"
+          python -B -m benchmark.family_generation verify "$RUNNER_TEMP/family-connected"

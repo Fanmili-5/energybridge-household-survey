@@ -1,0 +1,5152 @@
+{
+  "assembly": {
+    "climate_identity": "synthetic_test_fixture_not_Chinese_stock",
+    "exterior_thickness_m": 0.24,
+    "interior_thickness_m": 0.1,
+    "names": {
+      "exterior": "exterior_construction",
+      "floor": "floor_construction",
+      "interior": "interior_construction",
+      "window": "window_construction"
+    },
+    "provenance": {
+      "kind": "synthetic_test_fixture",
+      "not_an_authoritative_reference": true
+    },
+    "rows": [
+      [
+        "Material",
+        "exterior_material",
+        "MediumRough",
+        0.24,
+        0.8,
+        1800,
+        900,
+        0.9,
+        0.7,
+        0.7
+      ],
+      [
+        "Construction",
+        "exterior_construction",
+        "exterior_material"
+      ],
+      [
+        "Material",
+        "interior_material",
+        "MediumRough",
+        0.1,
+        0.8,
+        1800,
+        900,
+        0.9,
+        0.7,
+        0.7
+      ],
+      [
+        "Construction",
+        "interior_construction",
+        "interior_material"
+      ],
+      [
+        "Material",
+        "floor_finish",
+        "MediumRough",
+        0.0225,
+        0.8,
+        1000,
+        1000,
+        0.9,
+        0.7,
+        0.7
+      ],
+      [
+        "Material",
+        "floor_core",
+        "MediumRough",
+        0.12,
+        1.74,
+        2500,
+        920,
+        0.9,
+        0.7,
+        0.7
+      ],
+      [
+        "Construction",
+        "floor_construction",
+        "floor_finish",
+        "floor_core",
+        "floor_finish"
+      ],
+      [
+        "WindowMaterial:SimpleGlazingSystem",
+        "window_material",
+        2.8,
+        0.5,
+        0.7
+      ],
+      [
+        "Construction",
+        "window_construction",
+        "window_material"
+      ]
+    ],
+    "source_sha256": "c31464bb1ae6e11803df57a07e16deecf69c43f0590ea103de237c4093fa20e1"
+  },
+  "population_prevalence_claim": false,
+  "schema": "eb.family_reference_pool.v1",
+  "shell_defaults": {
+    "boundary_policy": "midfloor_north_south_reference",
+    "gallery_shapes": [
+      [
+        2.8,
+        3,
+        1,
+        3.8,
+        0.5
+      ],
+      [
+        2.4,
+        3.4,
+        1,
+        3.8,
+        0.5
+      ],
+      [
+        2.2,
+        3,
+        1,
+        3.2,
+        0.5,
+        0.5
+      ]
+    ],
+    "height_m": 2.9,
+    "studio_shapes": [
+      [
+        4,
+        3,
+        1,
+        2.4,
+        0.5
+      ],
+      [
+        3.5,
+        4,
+        1,
+        2.4,
+        0.55
+      ]
+    ]
+  },
+  "templates": [
+    {
+      "eligible_archetypes": [
+        "A"
+      ],
+      "evidence_kind": "declared_synthetic_scenario",
+      "facts": {
+        "G": 1,
+        "N": 1,
+        "actual_preferences": null,
+        "care": [],
+        "context_household_ids": [],
+        "decision_maker_id": "adult1",
+        "income": null,
+        "members": [
+          {
+            "age_years": 36,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": 0,
+            "household_id": "example-studio",
+            "member_id": "adult1",
+            "sex": "male"
+          }
+        ],
+        "mobility_basis": "declared_resident_driver",
+        "relationships": []
+      },
+      "field_origins": {
+        "devices": "declared synthetic reference;not observed population data",
+        "housing": "declared synthetic reference;not observed population data",
+        "life": "declared synthetic reference;not observed population data",
+        "permissions": "declared synthetic reference;not observed population data",
+        "relationships": "declared synthetic reference;not observed population data",
+        "roster": "declared synthetic reference;not observed population data"
+      },
+      "life": {
+        "anchor": "2025-07-01",
+        "comfort_requirements": [
+          {
+            "asset_id": "ac",
+            "origin": "declared_reference_requirement",
+            "temperature_band_C": [
+              18.0,
+              28.0
+            ]
+          }
+        ],
+        "end_exclusive": "2025-08-01",
+        "hot_water_minimum_C": 40.0,
+        "household_id": "example-studio",
+        "member_calendars": {
+          "adult1": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          }
+        },
+        "mobility": {
+          "anchor_state": "plugged",
+          "journey_templates": {
+            "weekday": [
+              {
+                "arrival_min": 1080,
+                "departure_min": 480,
+                "traction_kWh": 8.0
+              }
+            ],
+            "weekend": []
+          },
+          "operator_id": "adult1"
+        },
+        "program_policies": [
+          {
+            "asset_id": "washer",
+            "capacity_kg": 5.0,
+            "daily_quantity_kg": 1.2,
+            "daily_service": true,
+            "deadline_after_release_min": 1440,
+            "duration_min": 60,
+            "initial_inventory_kg": 0.0,
+            "kind": "washer",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "no_arrival_release_min": 420,
+            "preferred_start_min": {
+              "weekday": 1100,
+              "weekend": 1100
+            },
+            "priority": 0,
+            "service_id": "laundry",
+            "timer_allowed": true,
+            "trigger": "textile"
+          },
+          {
+            "asset_id": "dishwasher",
+            "deadline_after_release_min": 360,
+            "duration_min": 40,
+            "kind": "dishwasher",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "preferred_start_min": {
+              "weekday": 1210,
+              "weekend": 1210
+            },
+            "priority": 2,
+            "service_id": "dishes",
+            "timer_allowed": true,
+            "trigger": "after_dinner"
+          }
+        ],
+        "tank_policy": {
+          "after_draw_hold_min": 60,
+          "asset_id": "tank",
+          "mode": "continuous",
+          "preheat_lead_min": 120,
+          "setback_C": 10.0,
+          "target_C": 55.0
+        },
+        "thermostat_policies": [
+          {
+            "asset_id": "ac",
+            "cooling_setpoint_C": 26.0,
+            "fan_operating_mode": 0,
+            "heating_setpoint_C": 20.0,
+            "hold_min": 20,
+            "mode": "occupied_with_hold",
+            "setback_cooling_C": 40.0,
+            "setback_heating_C": 5.0
+          }
+        ]
+      },
+      "shell": {
+        "facilities": {
+          "bathing_hot_water": "self_installed_heater",
+          "kitchen": "exclusive",
+          "toilet": "flush_sanitary"
+        },
+        "geometry_reference": {
+          "mapping_rationale": "Declared reference conversion for allocated building gross vs paper indoor area;not measured common-area fraction. Whole shared dwelling is compared,not target household alone.",
+          "profile_id": "xia2025_P1",
+          "source_area_to_model_gross_factor": 1.18
+        },
+        "gross_area_m2": 50,
+        "household_id": "example-studio",
+        "natural_rooms": 1,
+        "shared_households": 1
+      },
+      "source_reference": "Project public integration examples;scenario reference,not a sampled population household",
+      "template_id": "declared-A",
+      "world": {
+        "background": {
+          "cooking_W": 1200,
+          "lighting_W_m2": 2,
+          "misc_W_m2": 1,
+          "refrigerator_W": 60
+        },
+        "devices": [
+          {
+            "asset_id": "washer",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "washer",
+            "parameters": {
+              "nameplate_W": 500.0,
+              "power_kw": 0.5
+            },
+            "placement": "floor",
+            "room": "$living",
+            "using_household_ids": [
+              "example-studio"
+            ]
+          },
+          {
+            "asset_id": "dishwasher",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "dishwasher",
+            "parameters": {
+              "nameplate_W": 1000.0,
+              "power_kw": 1.0
+            },
+            "placement": "floor",
+            "room": "$kitchen",
+            "using_household_ids": [
+              "example-studio"
+            ]
+          },
+          {
+            "asset_id": "ac",
+            "connections": [
+              "electricity",
+              "outdoor_heat_exchange"
+            ],
+            "kind": "ac",
+            "mount_width_m": 0.9,
+            "parameters": {
+              "air_flow_m3_s": 0.2,
+              "cooling_COP": 3.2,
+              "cooling_capacity_W": 3500,
+              "defrost_capacity_W": 500,
+              "fan_power_W": 45,
+              "fan_pressure_Pa": 75,
+              "heating_COP": 3.0,
+              "heating_capacity_W": 3500,
+              "nameplate_W": 3500,
+              "sensible_heat_ratio": 0.75,
+              "supplemental_capacity_W": 1000
+            },
+            "placement": "wall",
+            "room": "$sleep:adult1",
+            "using_household_ids": [
+              "example-studio"
+            ]
+          },
+          {
+            "asset_id": "tank",
+            "connections": [
+              "electricity",
+              "water"
+            ],
+            "kind": "water_heater",
+            "mount_width_m": 0.6,
+            "parameters": {
+              "deadband_C": 2,
+              "efficiency": 1,
+              "heater_capacity_W": 2500,
+              "height_m": 1.2,
+              "maximum_C": 80,
+              "nameplate_W": 2500,
+              "number_of_nodes": 6,
+              "skin_loss_W_m2K": 0.8,
+              "volume_m3": 0.15
+            },
+            "placement": "wall",
+            "room": "$bath",
+            "using_household_ids": [
+              "example-studio"
+            ]
+          },
+          {
+            "asset_id": "ev",
+            "connections": [
+              "electricity",
+              "dedicated_parking"
+            ],
+            "kind": "ev",
+            "parameters": {
+              "capacity_kwh": 60,
+              "charger_kw": 7,
+              "efficiency": 0.9,
+              "initial_energy_kwh": 42,
+              "minimum_soc": 0.1,
+              "nameplate_W": 7000,
+              "target_soc": 0.7
+            },
+            "placement": "exterior",
+            "using_household_ids": [
+              "example-studio"
+            ]
+          }
+        ],
+        "electrical_supply_W": 24000,
+        "exhaust_power_budget_W": 300,
+        "fixtures": [
+          {
+            "fixture_id": "toilet",
+            "footprint_m": [
+              0.65,
+              0.75
+            ],
+            "kind": "toilet_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "shower",
+            "footprint_m": [
+              0.8,
+              0.8
+            ],
+            "kind": "shower_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "kitchen_counter",
+            "footprint_m": [
+              1.2,
+              0.6
+            ],
+            "kind": "sink_cooking_reference",
+            "room_id": "kitchen"
+          },
+          {
+            "fixture_id": "fridge",
+            "footprint_m": [
+              0.6,
+              0.6
+            ],
+            "kind": "refrigerator_reference",
+            "room_id": "kitchen"
+          }
+        ],
+        "hot_water_minimum_C": 40,
+        "household_id": "example-studio",
+        "members": [
+          {
+            "age_years": 36,
+            "calendar_id": "adult1",
+            "can_operate_asset_ids": [
+              "washer",
+              "dishwasher",
+              "ac",
+              "tank",
+              "ev"
+            ],
+            "hot_water_liters": 25,
+            "household_id": "example-studio",
+            "member_id": "adult1"
+          }
+        ],
+        "sleep_groups": [
+          {
+            "bed_footprint_m": [
+              0.9,
+              2
+            ],
+            "capacity": 1,
+            "group_id": "parents",
+            "member_ids": [
+              "adult1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "eligible_archetypes": [
+        "B"
+      ],
+      "evidence_kind": "declared_synthetic_scenario",
+      "facts": {
+        "G": 1,
+        "N": 1,
+        "actual_preferences": null,
+        "care": [],
+        "context_household_ids": [],
+        "decision_maker_id": "adult1",
+        "income": null,
+        "members": [
+          {
+            "age_years": 67,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": 0,
+            "household_id": "example-studio",
+            "member_id": "adult1",
+            "sex": "female"
+          }
+        ],
+        "mobility_basis": null,
+        "relationships": []
+      },
+      "field_origins": {
+        "devices": "declared synthetic reference;not observed population data",
+        "housing": "declared synthetic reference;not observed population data",
+        "life": "declared synthetic reference;not observed population data",
+        "permissions": "declared synthetic reference;not observed population data",
+        "relationships": "declared synthetic reference;not observed population data",
+        "roster": "declared synthetic reference;not observed population data"
+      },
+      "life": {
+        "anchor": "2025-07-01",
+        "comfort_requirements": [
+          {
+            "asset_id": "ac",
+            "origin": "declared_reference_requirement",
+            "temperature_band_C": [
+              18.0,
+              28.0
+            ]
+          }
+        ],
+        "end_exclusive": "2025-08-01",
+        "hot_water_minimum_C": 40.0,
+        "household_id": "example-studio",
+        "member_calendars": {
+          "adult1": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          }
+        },
+        "program_policies": [
+          {
+            "asset_id": "washer",
+            "capacity_kg": 5.0,
+            "daily_quantity_kg": 1.2,
+            "daily_service": true,
+            "deadline_after_release_min": 1440,
+            "duration_min": 60,
+            "initial_inventory_kg": 0.0,
+            "kind": "washer",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "no_arrival_release_min": 420,
+            "preferred_start_min": {
+              "weekday": 1100,
+              "weekend": 1100
+            },
+            "priority": 0,
+            "service_id": "laundry",
+            "timer_allowed": true,
+            "trigger": "textile"
+          },
+          {
+            "asset_id": "dryer",
+            "deadline_after_release_min": 1440,
+            "duration_min": 50,
+            "kind": "dryer",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "preferred_start_min": {
+              "weekday": 1190,
+              "weekend": 1190
+            },
+            "priority": 1,
+            "service_id": "drying",
+            "timer_allowed": true,
+            "trigger": "after_service",
+            "upstream_service_id": "laundry"
+          },
+          {
+            "asset_id": "dishwasher",
+            "deadline_after_release_min": 360,
+            "duration_min": 40,
+            "kind": "dishwasher",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "preferred_start_min": {
+              "weekday": 1210,
+              "weekend": 1210
+            },
+            "priority": 2,
+            "service_id": "dishes",
+            "timer_allowed": true,
+            "trigger": "after_dinner"
+          }
+        ],
+        "tank_policy": {
+          "after_draw_hold_min": 60,
+          "asset_id": "tank",
+          "mode": "continuous",
+          "preheat_lead_min": 120,
+          "setback_C": 10.0,
+          "target_C": 55.0
+        },
+        "thermostat_policies": [
+          {
+            "asset_id": "ac",
+            "cooling_setpoint_C": 26.0,
+            "fan_operating_mode": 0,
+            "heating_setpoint_C": 20.0,
+            "hold_min": 20,
+            "mode": "home_continuous",
+            "setback_cooling_C": 40.0,
+            "setback_heating_C": 5.0
+          }
+        ]
+      },
+      "shell": {
+        "facilities": {
+          "bathing_hot_water": "self_installed_heater",
+          "kitchen": "exclusive",
+          "toilet": "flush_sanitary"
+        },
+        "geometry_reference": {
+          "mapping_rationale": "Declared reference conversion for allocated building gross vs paper indoor area;not measured common-area fraction. Whole shared dwelling is compared,not target household alone.",
+          "profile_id": "xia2025_P1",
+          "source_area_to_model_gross_factor": 1.18
+        },
+        "gross_area_m2": 50,
+        "household_id": "example-studio",
+        "natural_rooms": 1,
+        "shared_households": 1
+      },
+      "source_reference": "Project public integration examples;scenario reference,not a sampled population household",
+      "template_id": "declared-B",
+      "world": {
+        "background": {
+          "cooking_W": 1200,
+          "lighting_W_m2": 2,
+          "misc_W_m2": 1,
+          "refrigerator_W": 60
+        },
+        "devices": [
+          {
+            "asset_id": "washer",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "washer",
+            "parameters": {
+              "nameplate_W": 500.0,
+              "power_kw": 0.5
+            },
+            "placement": "floor",
+            "room": "$living",
+            "using_household_ids": [
+              "example-studio"
+            ]
+          },
+          {
+            "asset_id": "dryer",
+            "connections": [
+              "electricity",
+              "exhaust"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "dryer",
+            "parameters": {
+              "nameplate_W": 1500.0,
+              "power_kw": 1.5
+            },
+            "placement": "floor",
+            "room": "$living",
+            "using_household_ids": [
+              "example-studio"
+            ]
+          },
+          {
+            "asset_id": "dishwasher",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "dishwasher",
+            "parameters": {
+              "nameplate_W": 1000.0,
+              "power_kw": 1.0
+            },
+            "placement": "floor",
+            "room": "$kitchen",
+            "using_household_ids": [
+              "example-studio"
+            ]
+          },
+          {
+            "asset_id": "ac",
+            "connections": [
+              "electricity",
+              "outdoor_heat_exchange"
+            ],
+            "kind": "ac",
+            "mount_width_m": 0.9,
+            "parameters": {
+              "air_flow_m3_s": 0.2,
+              "cooling_COP": 3.2,
+              "cooling_capacity_W": 3500,
+              "defrost_capacity_W": 500,
+              "fan_power_W": 45,
+              "fan_pressure_Pa": 75,
+              "heating_COP": 3.0,
+              "heating_capacity_W": 3500,
+              "nameplate_W": 3500,
+              "sensible_heat_ratio": 0.75,
+              "supplemental_capacity_W": 1000
+            },
+            "placement": "wall",
+            "room": "$sleep:adult1",
+            "using_household_ids": [
+              "example-studio"
+            ]
+          },
+          {
+            "asset_id": "tank",
+            "connections": [
+              "electricity",
+              "water"
+            ],
+            "kind": "water_heater",
+            "mount_width_m": 0.6,
+            "parameters": {
+              "deadband_C": 2,
+              "efficiency": 1,
+              "heater_capacity_W": 2500,
+              "height_m": 1.2,
+              "maximum_C": 80,
+              "nameplate_W": 2500,
+              "number_of_nodes": 6,
+              "skin_loss_W_m2K": 0.8,
+              "volume_m3": 0.15
+            },
+            "placement": "wall",
+            "room": "$bath",
+            "using_household_ids": [
+              "example-studio"
+            ]
+          }
+        ],
+        "electrical_supply_W": 24000,
+        "exhaust_power_budget_W": 300,
+        "fixtures": [
+          {
+            "fixture_id": "toilet",
+            "footprint_m": [
+              0.65,
+              0.75
+            ],
+            "kind": "toilet_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "shower",
+            "footprint_m": [
+              0.8,
+              0.8
+            ],
+            "kind": "shower_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "kitchen_counter",
+            "footprint_m": [
+              1.2,
+              0.6
+            ],
+            "kind": "sink_cooking_reference",
+            "room_id": "kitchen"
+          },
+          {
+            "fixture_id": "fridge",
+            "footprint_m": [
+              0.6,
+              0.6
+            ],
+            "kind": "refrigerator_reference",
+            "room_id": "kitchen"
+          }
+        ],
+        "hot_water_minimum_C": 40,
+        "household_id": "example-studio",
+        "members": [
+          {
+            "age_years": 67,
+            "calendar_id": "adult1",
+            "can_operate_asset_ids": [
+              "washer",
+              "dryer",
+              "dishwasher",
+              "ac",
+              "tank"
+            ],
+            "hot_water_liters": 25,
+            "household_id": "example-studio",
+            "member_id": "adult1"
+          }
+        ],
+        "sleep_groups": [
+          {
+            "bed_footprint_m": [
+              0.9,
+              2
+            ],
+            "capacity": 1,
+            "group_id": "parents",
+            "member_ids": [
+              "adult1"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "eligible_archetypes": [
+        "C"
+      ],
+      "evidence_kind": "declared_synthetic_scenario",
+      "facts": {
+        "G": 2,
+        "N": 3,
+        "actual_preferences": null,
+        "care": [],
+        "context_household_ids": [
+          "example-shared-aux-01"
+        ],
+        "decision_maker_id": "adult1",
+        "income": null,
+        "members": [
+          {
+            "age_years": 36,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": 0,
+            "household_id": "example-shared",
+            "member_id": "adult1",
+            "sex": "male"
+          },
+          {
+            "age_years": 35,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": 0,
+            "household_id": "example-shared",
+            "member_id": "adult2",
+            "sex": "female"
+          },
+          {
+            "age_years": 10,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": -1,
+            "household_id": "example-shared",
+            "member_id": "child",
+            "sex": "female"
+          },
+          {
+            "age_years": 28,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": 0,
+            "household_id": "example-shared-aux-01",
+            "member_id": "neighbor",
+            "sex": "male"
+          }
+        ],
+        "mobility_basis": null,
+        "relationships": [
+          {
+            "object": "adult2",
+            "subject": "adult1",
+            "type": "partner"
+          },
+          {
+            "object": "child",
+            "subject": "adult1",
+            "type": "parent"
+          },
+          {
+            "object": "child",
+            "subject": "adult2",
+            "type": "parent"
+          }
+        ]
+      },
+      "field_origins": {
+        "devices": "declared synthetic reference;not observed population data",
+        "housing": "declared synthetic reference;not observed population data",
+        "life": "declared synthetic reference;not observed population data",
+        "permissions": "declared synthetic reference;not observed population data",
+        "relationships": "declared synthetic reference;not observed population data",
+        "roster": "declared synthetic reference;not observed population data"
+      },
+      "life": {
+        "anchor": "2025-07-01",
+        "comfort_requirements": [
+          {
+            "asset_id": "ac",
+            "origin": "unknown_individual_preference",
+            "temperature_band_C": null
+          }
+        ],
+        "end_exclusive": "2025-08-01",
+        "hot_water_minimum_C": 40.0,
+        "household_id": "example-shared",
+        "member_calendars": {
+          "adult1": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          },
+          "adult2": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1270,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1280,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1270
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1280
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1270,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1280,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1270
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1280
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          },
+          "child": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1250,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1260,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1250
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1260
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1250,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1260,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1250
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1260
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          },
+          "neighbor": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1320,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1330,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1320
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1330
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1320,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1330,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1320
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1330
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          }
+        },
+        "program_policies": [
+          {
+            "asset_id": "washer",
+            "capacity_kg": 5.0,
+            "daily_quantity_kg": 1.2,
+            "daily_service": true,
+            "deadline_after_release_min": 1440,
+            "duration_min": 60,
+            "initial_inventory_kg": 0.0,
+            "kind": "washer",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "no_arrival_release_min": 420,
+            "preferred_start_min": {
+              "weekday": 1100,
+              "weekend": 1100
+            },
+            "priority": 0,
+            "service_id": "laundry",
+            "timer_allowed": true,
+            "trigger": "textile"
+          },
+          {
+            "asset_id": "dryer",
+            "deadline_after_release_min": 1440,
+            "duration_min": 50,
+            "kind": "dryer",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "preferred_start_min": {
+              "weekday": 1190,
+              "weekend": 1190
+            },
+            "priority": 1,
+            "service_id": "drying",
+            "timer_allowed": true,
+            "trigger": "after_service",
+            "upstream_service_id": "laundry"
+          },
+          {
+            "asset_id": "dishwasher",
+            "deadline_after_release_min": 360,
+            "duration_min": 40,
+            "kind": "dishwasher",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "preferred_start_min": {
+              "weekday": 1210,
+              "weekend": 1210
+            },
+            "priority": 2,
+            "service_id": "dishes",
+            "timer_allowed": true,
+            "trigger": "after_dinner"
+          }
+        ],
+        "tank_policy": {
+          "after_draw_hold_min": 60,
+          "asset_id": "tank",
+          "mode": "continuous",
+          "preheat_lead_min": 120,
+          "setback_C": 10.0,
+          "target_C": 55.0
+        },
+        "thermostat_policies": [
+          {
+            "asset_id": "ac",
+            "cooling_setpoint_C": 26.0,
+            "fan_operating_mode": 0,
+            "heating_setpoint_C": 20.0,
+            "hold_min": 20,
+            "mode": "occupied_with_hold",
+            "setback_cooling_C": 40.0,
+            "setback_heating_C": 5.0
+          }
+        ]
+      },
+      "shell": {
+        "facilities": {
+          "bathing_hot_water": "self_installed_heater",
+          "kitchen": "shared",
+          "toilet": "flush_sanitary"
+        },
+        "geometry_reference": {
+          "mapping_rationale": "Declared reference conversion for allocated building gross vs paper indoor area;not measured common-area fraction. Whole shared dwelling is compared,not target household alone.",
+          "profile_id": "xia2025_P6",
+          "source_area_to_model_gross_factor": 1.18
+        },
+        "gross_area_m2": 60,
+        "household_id": "example-shared",
+        "natural_rooms": 2,
+        "shared_households": 2
+      },
+      "source_reference": "Project public integration examples;scenario reference,not a sampled population household",
+      "template_id": "declared-C",
+      "world": {
+        "background": {
+          "cooking_W": 1200,
+          "lighting_W_m2": 2,
+          "misc_W_m2": 1,
+          "refrigerator_W": 60
+        },
+        "devices": [
+          {
+            "asset_id": "washer",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "washer",
+            "parameters": {
+              "nameplate_W": 500.0,
+              "power_kw": 0.5
+            },
+            "placement": "floor",
+            "room": "$living",
+            "using_household_ids": [
+              "example-shared",
+              "example-shared-aux-01"
+            ]
+          },
+          {
+            "asset_id": "dryer",
+            "connections": [
+              "electricity",
+              "exhaust"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "dryer",
+            "parameters": {
+              "nameplate_W": 1500.0,
+              "power_kw": 1.5
+            },
+            "placement": "floor",
+            "room": "$living",
+            "using_household_ids": [
+              "example-shared",
+              "example-shared-aux-01"
+            ]
+          },
+          {
+            "asset_id": "dishwasher",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "dishwasher",
+            "parameters": {
+              "nameplate_W": 1000.0,
+              "power_kw": 1.0
+            },
+            "placement": "floor",
+            "room": "$kitchen",
+            "using_household_ids": [
+              "example-shared",
+              "example-shared-aux-01"
+            ]
+          },
+          {
+            "asset_id": "ac",
+            "connections": [
+              "electricity",
+              "outdoor_heat_exchange"
+            ],
+            "kind": "ac",
+            "mount_width_m": 0.9,
+            "parameters": {
+              "air_flow_m3_s": 0.2,
+              "cooling_COP": 3.2,
+              "cooling_capacity_W": 3500,
+              "defrost_capacity_W": 500,
+              "fan_power_W": 45,
+              "fan_pressure_Pa": 75,
+              "heating_COP": 3.0,
+              "heating_capacity_W": 3500,
+              "nameplate_W": 3500,
+              "sensible_heat_ratio": 0.75,
+              "supplemental_capacity_W": 1000
+            },
+            "placement": "wall",
+            "room": "$sleep:adult1",
+            "using_household_ids": [
+              "example-shared"
+            ]
+          },
+          {
+            "asset_id": "tank",
+            "connections": [
+              "electricity",
+              "water"
+            ],
+            "kind": "water_heater",
+            "mount_width_m": 0.6,
+            "parameters": {
+              "deadband_C": 2,
+              "efficiency": 1,
+              "heater_capacity_W": 2500,
+              "height_m": 1.2,
+              "maximum_C": 80,
+              "nameplate_W": 2500,
+              "number_of_nodes": 6,
+              "skin_loss_W_m2K": 0.8,
+              "volume_m3": 0.15
+            },
+            "placement": "wall",
+            "room": "$bath",
+            "using_household_ids": [
+              "example-shared",
+              "example-shared-aux-01"
+            ]
+          }
+        ],
+        "electrical_supply_W": 24000,
+        "exhaust_power_budget_W": 300,
+        "fixtures": [
+          {
+            "fixture_id": "toilet",
+            "footprint_m": [
+              0.65,
+              0.75
+            ],
+            "kind": "toilet_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "shower",
+            "footprint_m": [
+              0.8,
+              0.8
+            ],
+            "kind": "shower_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "kitchen_counter",
+            "footprint_m": [
+              1.2,
+              0.6
+            ],
+            "kind": "sink_cooking_reference",
+            "room_id": "kitchen"
+          },
+          {
+            "fixture_id": "fridge",
+            "footprint_m": [
+              0.6,
+              0.6
+            ],
+            "kind": "refrigerator_reference",
+            "room_id": "kitchen"
+          }
+        ],
+        "hot_water_minimum_C": 40,
+        "household_id": "example-shared",
+        "members": [
+          {
+            "age_years": 36,
+            "calendar_id": "adult1",
+            "can_operate_asset_ids": [
+              "washer",
+              "dryer",
+              "dishwasher",
+              "ac",
+              "tank"
+            ],
+            "hot_water_liters": 25,
+            "household_id": "example-shared",
+            "member_id": "adult1"
+          },
+          {
+            "age_years": 35,
+            "calendar_id": "adult2",
+            "can_operate_asset_ids": [
+              "washer",
+              "dryer",
+              "dishwasher",
+              "ac",
+              "tank"
+            ],
+            "hot_water_liters": 25,
+            "household_id": "example-shared",
+            "member_id": "adult2"
+          },
+          {
+            "age_years": 10,
+            "calendar_id": "child",
+            "can_operate_asset_ids": [],
+            "hot_water_liters": 15,
+            "household_id": "example-shared",
+            "member_id": "child"
+          },
+          {
+            "age_years": 28,
+            "calendar_id": "neighbor",
+            "can_operate_asset_ids": [
+              "washer",
+              "dryer",
+              "dishwasher",
+              "tank"
+            ],
+            "hot_water_liters": 25,
+            "household_id": "example-shared-aux-01",
+            "member_id": "neighbor"
+          }
+        ],
+        "sleep_groups": [
+          {
+            "bed_footprint_m": [
+              1.5,
+              2
+            ],
+            "capacity": 2,
+            "group_id": "parents",
+            "member_ids": [
+              "adult1",
+              "adult2"
+            ]
+          },
+          {
+            "bed_footprint_m": [
+              0.9,
+              2
+            ],
+            "capacity": 1,
+            "group_id": "child",
+            "member_ids": [
+              "child"
+            ]
+          },
+          {
+            "bed_footprint_m": [
+              0.9,
+              2
+            ],
+            "capacity": 1,
+            "group_id": "neighbor",
+            "member_ids": [
+              "neighbor"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "eligible_archetypes": [
+        "D"
+      ],
+      "evidence_kind": "declared_synthetic_scenario",
+      "facts": {
+        "G": 2,
+        "N": 3,
+        "actual_preferences": null,
+        "care": [],
+        "context_household_ids": [],
+        "decision_maker_id": "adult1",
+        "income": null,
+        "members": [
+          {
+            "age_years": 36,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": 0,
+            "household_id": "example-family",
+            "member_id": "adult1",
+            "sex": "male"
+          },
+          {
+            "age_years": 35,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": 0,
+            "household_id": "example-family",
+            "member_id": "adult2",
+            "sex": "female"
+          },
+          {
+            "age_years": 10,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": -1,
+            "household_id": "example-family",
+            "member_id": "child",
+            "sex": "female"
+          }
+        ],
+        "mobility_basis": null,
+        "relationships": [
+          {
+            "object": "adult2",
+            "subject": "adult1",
+            "type": "partner"
+          },
+          {
+            "object": "child",
+            "subject": "adult1",
+            "type": "parent"
+          },
+          {
+            "object": "child",
+            "subject": "adult2",
+            "type": "parent"
+          }
+        ]
+      },
+      "field_origins": {
+        "devices": "declared synthetic reference;not observed population data",
+        "housing": "declared synthetic reference;not observed population data",
+        "life": "declared synthetic reference;not observed population data",
+        "permissions": "declared synthetic reference;not observed population data",
+        "relationships": "declared synthetic reference;not observed population data",
+        "roster": "declared synthetic reference;not observed population data"
+      },
+      "life": {
+        "anchor": "2025-07-01",
+        "comfort_requirements": [
+          {
+            "asset_id": "ac",
+            "origin": "unknown_individual_preference",
+            "temperature_band_C": null
+          }
+        ],
+        "end_exclusive": "2025-08-01",
+        "hot_water_minimum_C": 40.0,
+        "household_id": "example-family",
+        "member_calendars": {
+          "adult1": {
+            "date_overrides": {
+              "2025-07-16": [
+                {
+                  "activity": "sleep",
+                  "available_for_operation": false,
+                  "end_min": 420,
+                  "location": "home",
+                  "room": "$sleep",
+                  "start_min": 0
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 480,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 420
+                },
+                {
+                  "activity": "work_or_school",
+                  "available_for_operation": false,
+                  "end_min": 1100,
+                  "location": "away",
+                  "room": null,
+                  "start_min": 480
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 1140,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1100
+                },
+                {
+                  "activity": "dinner",
+                  "available_for_operation": false,
+                  "end_min": 1170,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1140
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 1290,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1170
+                },
+                {
+                  "activity": "bath",
+                  "available_for_operation": false,
+                  "end_min": 1300,
+                  "location": "home",
+                  "room": "$bath",
+                  "start_min": 1290
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 1380,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1300
+                },
+                {
+                  "activity": "sleep",
+                  "available_for_operation": false,
+                  "end_min": 1440,
+                  "location": "home",
+                  "room": "$sleep",
+                  "start_min": 1380
+                }
+              ]
+            },
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          },
+          "adult2": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1270,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1280,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1270
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1280
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1270,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1280,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1270
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1280
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          },
+          "child": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1250,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1260,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1250
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1260
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1250,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1260,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1250
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1260
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          }
+        },
+        "program_policies": [
+          {
+            "asset_id": "washer",
+            "capacity_kg": 5.0,
+            "daily_quantity_kg": 1.2,
+            "daily_service": true,
+            "deadline_after_release_min": 1440,
+            "duration_min": 60,
+            "initial_inventory_kg": 0.0,
+            "kind": "washer",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "no_arrival_release_min": 420,
+            "preferred_start_min": {
+              "weekday": 1100,
+              "weekend": 1100
+            },
+            "priority": 0,
+            "service_id": "laundry",
+            "timer_allowed": true,
+            "trigger": "textile"
+          },
+          {
+            "asset_id": "dishwasher",
+            "deadline_after_release_min": 360,
+            "duration_min": 40,
+            "kind": "dishwasher",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "preferred_start_min": {
+              "weekday": 1210,
+              "weekend": 1210
+            },
+            "priority": 2,
+            "service_id": "dishes",
+            "timer_allowed": true,
+            "trigger": "after_dinner"
+          }
+        ],
+        "tank_policy": {
+          "after_draw_hold_min": 60,
+          "asset_id": "tank",
+          "mode": "continuous",
+          "preheat_lead_min": 120,
+          "setback_C": 10.0,
+          "target_C": 55.0
+        },
+        "thermostat_policies": [
+          {
+            "asset_id": "ac",
+            "cooling_setpoint_C": 26.0,
+            "fan_operating_mode": 0,
+            "heating_setpoint_C": 20.0,
+            "hold_min": 20,
+            "mode": "occupied_with_hold",
+            "setback_cooling_C": 40.0,
+            "setback_heating_C": 5.0
+          }
+        ]
+      },
+      "shell": {
+        "facilities": {
+          "bathing_hot_water": "self_installed_heater",
+          "kitchen": "exclusive",
+          "toilet": "flush_sanitary"
+        },
+        "geometry_reference": {
+          "mapping_rationale": "Declared reference conversion for allocated building gross vs paper indoor area;not measured common-area fraction. Whole shared dwelling is compared,not target household alone.",
+          "profile_id": "xia2025_P3",
+          "source_area_to_model_gross_factor": 1.18
+        },
+        "gross_area_m2": 90,
+        "household_id": "example-family",
+        "natural_rooms": 2,
+        "shared_households": 1
+      },
+      "source_reference": "Project public integration examples;scenario reference,not a sampled population household",
+      "template_id": "declared-D",
+      "world": {
+        "background": {
+          "cooking_W": 1200,
+          "lighting_W_m2": 2,
+          "misc_W_m2": 1,
+          "refrigerator_W": 60
+        },
+        "devices": [
+          {
+            "asset_id": "washer",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "washer",
+            "parameters": {
+              "nameplate_W": 500.0,
+              "power_kw": 0.5
+            },
+            "placement": "floor",
+            "room": "$living",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "dishwasher",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "dishwasher",
+            "parameters": {
+              "nameplate_W": 1000.0,
+              "power_kw": 1.0
+            },
+            "placement": "floor",
+            "room": "$kitchen",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "ac",
+            "connections": [
+              "electricity",
+              "outdoor_heat_exchange"
+            ],
+            "kind": "ac",
+            "mount_width_m": 0.9,
+            "parameters": {
+              "air_flow_m3_s": 0.2,
+              "cooling_COP": 3.2,
+              "cooling_capacity_W": 3500,
+              "defrost_capacity_W": 500,
+              "fan_power_W": 45,
+              "fan_pressure_Pa": 75,
+              "heating_COP": 3.0,
+              "heating_capacity_W": 3500,
+              "nameplate_W": 3500,
+              "sensible_heat_ratio": 0.75,
+              "supplemental_capacity_W": 1000
+            },
+            "placement": "wall",
+            "room": "$sleep:adult1",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "tank",
+            "connections": [
+              "electricity",
+              "water"
+            ],
+            "kind": "water_heater",
+            "mount_width_m": 0.6,
+            "parameters": {
+              "deadband_C": 2,
+              "efficiency": 1,
+              "heater_capacity_W": 2500,
+              "height_m": 1.2,
+              "maximum_C": 80,
+              "nameplate_W": 2500,
+              "number_of_nodes": 6,
+              "skin_loss_W_m2K": 0.8,
+              "volume_m3": 0.15
+            },
+            "placement": "wall",
+            "room": "$bath",
+            "using_household_ids": [
+              "example-family"
+            ]
+          }
+        ],
+        "electrical_supply_W": 24000,
+        "exhaust_power_budget_W": 300,
+        "fixtures": [
+          {
+            "fixture_id": "toilet",
+            "footprint_m": [
+              0.65,
+              0.75
+            ],
+            "kind": "toilet_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "shower",
+            "footprint_m": [
+              0.8,
+              0.8
+            ],
+            "kind": "shower_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "kitchen_counter",
+            "footprint_m": [
+              1.2,
+              0.6
+            ],
+            "kind": "sink_cooking_reference",
+            "room_id": "kitchen"
+          },
+          {
+            "fixture_id": "fridge",
+            "footprint_m": [
+              0.6,
+              0.6
+            ],
+            "kind": "refrigerator_reference",
+            "room_id": "kitchen"
+          }
+        ],
+        "hot_water_minimum_C": 40,
+        "household_id": "example-family",
+        "members": [
+          {
+            "age_years": 36,
+            "calendar_id": "adult1",
+            "can_operate_asset_ids": [
+              "washer",
+              "dishwasher",
+              "ac",
+              "tank"
+            ],
+            "hot_water_liters": 25,
+            "household_id": "example-family",
+            "member_id": "adult1"
+          },
+          {
+            "age_years": 35,
+            "calendar_id": "adult2",
+            "can_operate_asset_ids": [
+              "washer",
+              "dishwasher",
+              "ac",
+              "tank"
+            ],
+            "hot_water_liters": 25,
+            "household_id": "example-family",
+            "member_id": "adult2"
+          },
+          {
+            "age_years": 10,
+            "calendar_id": "child",
+            "can_operate_asset_ids": [],
+            "hot_water_liters": 15,
+            "household_id": "example-family",
+            "member_id": "child"
+          }
+        ],
+        "sleep_groups": [
+          {
+            "bed_footprint_m": [
+              1.5,
+              2
+            ],
+            "capacity": 2,
+            "group_id": "parents",
+            "member_ids": [
+              "adult1",
+              "adult2"
+            ]
+          },
+          {
+            "bed_footprint_m": [
+              0.9,
+              2
+            ],
+            "capacity": 1,
+            "group_id": "child",
+            "member_ids": [
+              "child"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "eligible_archetypes": [
+        "E"
+      ],
+      "evidence_kind": "declared_synthetic_scenario",
+      "facts": {
+        "G": 2,
+        "N": 3,
+        "actual_preferences": null,
+        "care": [
+          {
+            "basis": "declared_reference_support",
+            "caregiver_id": "adult1",
+            "dependent_ids": [
+              "child"
+            ]
+          }
+        ],
+        "context_household_ids": [],
+        "decision_maker_id": "adult1",
+        "income": null,
+        "members": [
+          {
+            "age_years": 36,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": 0,
+            "household_id": "example-family",
+            "member_id": "adult1",
+            "sex": "male"
+          },
+          {
+            "age_years": 35,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": 0,
+            "household_id": "example-family",
+            "member_id": "adult2",
+            "sex": "female"
+          },
+          {
+            "age_years": 10,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": -1,
+            "household_id": "example-family",
+            "member_id": "child",
+            "sex": "female"
+          }
+        ],
+        "mobility_basis": null,
+        "relationships": [
+          {
+            "object": "adult2",
+            "subject": "adult1",
+            "type": "partner"
+          },
+          {
+            "object": "child",
+            "subject": "adult1",
+            "type": "parent"
+          },
+          {
+            "object": "child",
+            "subject": "adult2",
+            "type": "parent"
+          }
+        ]
+      },
+      "field_origins": {
+        "devices": "declared synthetic reference;not observed population data",
+        "housing": "declared synthetic reference;not observed population data",
+        "life": "declared synthetic reference;not observed population data",
+        "permissions": "declared synthetic reference;not observed population data",
+        "relationships": "declared synthetic reference;not observed population data",
+        "roster": "declared synthetic reference;not observed population data"
+      },
+      "life": {
+        "anchor": "2025-07-01",
+        "comfort_requirements": [
+          {
+            "asset_id": "ac",
+            "origin": "unknown_individual_preference",
+            "temperature_band_C": null
+          }
+        ],
+        "end_exclusive": "2025-08-01",
+        "hot_water_minimum_C": 40.0,
+        "household_id": "example-family",
+        "member_calendars": {
+          "adult1": {
+            "date_overrides": {
+              "2025-07-16": [
+                {
+                  "activity": "sleep",
+                  "available_for_operation": false,
+                  "end_min": 420,
+                  "location": "home",
+                  "room": "$sleep",
+                  "start_min": 0
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 480,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 420
+                },
+                {
+                  "activity": "work_or_school",
+                  "available_for_operation": false,
+                  "end_min": 1100,
+                  "location": "away",
+                  "room": null,
+                  "start_min": 480
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 1140,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1100
+                },
+                {
+                  "activity": "dinner",
+                  "available_for_operation": false,
+                  "end_min": 1170,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1140
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 1290,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1170
+                },
+                {
+                  "activity": "bath",
+                  "available_for_operation": false,
+                  "end_min": 1300,
+                  "location": "home",
+                  "room": "$bath",
+                  "start_min": 1290
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 1380,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1300
+                },
+                {
+                  "activity": "sleep",
+                  "available_for_operation": false,
+                  "end_min": 1440,
+                  "location": "home",
+                  "room": "$sleep",
+                  "start_min": 1380
+                }
+              ]
+            },
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          },
+          "adult2": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1270,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1280,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1270
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1280
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1270,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1280,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1270
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1280
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          },
+          "child": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1250,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1260,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1250
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1260
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1250,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1260,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1250
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1260
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          }
+        },
+        "program_policies": [
+          {
+            "asset_id": "washer",
+            "capacity_kg": 5.0,
+            "daily_quantity_kg": 1.2,
+            "daily_service": true,
+            "deadline_after_release_min": 1440,
+            "duration_min": 60,
+            "initial_inventory_kg": 0.0,
+            "kind": "washer",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "no_arrival_release_min": 420,
+            "preferred_start_min": {
+              "weekday": 1100,
+              "weekend": 1100
+            },
+            "priority": 0,
+            "service_id": "laundry",
+            "timer_allowed": true,
+            "trigger": "textile"
+          },
+          {
+            "asset_id": "dryer",
+            "deadline_after_release_min": 1440,
+            "duration_min": 50,
+            "kind": "dryer",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "preferred_start_min": {
+              "weekday": 1190,
+              "weekend": 1190
+            },
+            "priority": 1,
+            "service_id": "drying",
+            "timer_allowed": true,
+            "trigger": "after_service",
+            "upstream_service_id": "laundry"
+          },
+          {
+            "asset_id": "dishwasher",
+            "deadline_after_release_min": 360,
+            "duration_min": 40,
+            "kind": "dishwasher",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "preferred_start_min": {
+              "weekday": 1210,
+              "weekend": 1210
+            },
+            "priority": 2,
+            "service_id": "dishes",
+            "timer_allowed": true,
+            "trigger": "after_dinner"
+          }
+        ],
+        "tank_policy": {
+          "after_draw_hold_min": 60,
+          "asset_id": "tank",
+          "mode": "continuous",
+          "preheat_lead_min": 120,
+          "setback_C": 10.0,
+          "target_C": 55.0
+        },
+        "thermostat_policies": [
+          {
+            "asset_id": "ac",
+            "cooling_setpoint_C": 26.0,
+            "fan_operating_mode": 0,
+            "heating_setpoint_C": 20.0,
+            "hold_min": 20,
+            "mode": "occupied_with_hold",
+            "setback_cooling_C": 40.0,
+            "setback_heating_C": 5.0
+          }
+        ]
+      },
+      "shell": {
+        "facilities": {
+          "bathing_hot_water": "self_installed_heater",
+          "kitchen": "exclusive",
+          "toilet": "flush_sanitary"
+        },
+        "geometry_reference": {
+          "mapping_rationale": "Declared reference conversion for allocated building gross vs paper indoor area;not measured common-area fraction. Whole shared dwelling is compared,not target household alone.",
+          "profile_id": "xia2025_P3",
+          "source_area_to_model_gross_factor": 1.18
+        },
+        "gross_area_m2": 90,
+        "household_id": "example-family",
+        "natural_rooms": 2,
+        "shared_households": 1
+      },
+      "source_reference": "Project public integration examples;scenario reference,not a sampled population household",
+      "template_id": "declared-E",
+      "world": {
+        "background": {
+          "cooking_W": 1200,
+          "lighting_W_m2": 2,
+          "misc_W_m2": 1,
+          "refrigerator_W": 60
+        },
+        "devices": [
+          {
+            "asset_id": "washer",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "washer",
+            "parameters": {
+              "nameplate_W": 500.0,
+              "power_kw": 0.5
+            },
+            "placement": "floor",
+            "room": "$living",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "dryer",
+            "connections": [
+              "electricity",
+              "exhaust"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "dryer",
+            "parameters": {
+              "nameplate_W": 1500.0,
+              "power_kw": 1.5
+            },
+            "placement": "floor",
+            "room": "$living",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "dishwasher",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "dishwasher",
+            "parameters": {
+              "nameplate_W": 1000.0,
+              "power_kw": 1.0
+            },
+            "placement": "floor",
+            "room": "$kitchen",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "ac",
+            "connections": [
+              "electricity",
+              "outdoor_heat_exchange"
+            ],
+            "kind": "ac",
+            "mount_width_m": 0.9,
+            "parameters": {
+              "air_flow_m3_s": 0.2,
+              "cooling_COP": 3.2,
+              "cooling_capacity_W": 3500,
+              "defrost_capacity_W": 500,
+              "fan_power_W": 45,
+              "fan_pressure_Pa": 75,
+              "heating_COP": 3.0,
+              "heating_capacity_W": 3500,
+              "nameplate_W": 3500,
+              "sensible_heat_ratio": 0.75,
+              "supplemental_capacity_W": 1000
+            },
+            "placement": "wall",
+            "room": "$sleep:adult1",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "tank",
+            "connections": [
+              "electricity",
+              "water"
+            ],
+            "kind": "water_heater",
+            "mount_width_m": 0.6,
+            "parameters": {
+              "deadband_C": 2,
+              "efficiency": 1,
+              "heater_capacity_W": 2500,
+              "height_m": 1.2,
+              "maximum_C": 80,
+              "nameplate_W": 2500,
+              "number_of_nodes": 6,
+              "skin_loss_W_m2K": 0.8,
+              "volume_m3": 0.15
+            },
+            "placement": "wall",
+            "room": "$bath",
+            "using_household_ids": [
+              "example-family"
+            ]
+          }
+        ],
+        "electrical_supply_W": 24000,
+        "exhaust_power_budget_W": 300,
+        "fixtures": [
+          {
+            "fixture_id": "toilet",
+            "footprint_m": [
+              0.65,
+              0.75
+            ],
+            "kind": "toilet_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "shower",
+            "footprint_m": [
+              0.8,
+              0.8
+            ],
+            "kind": "shower_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "kitchen_counter",
+            "footprint_m": [
+              1.2,
+              0.6
+            ],
+            "kind": "sink_cooking_reference",
+            "room_id": "kitchen"
+          },
+          {
+            "fixture_id": "fridge",
+            "footprint_m": [
+              0.6,
+              0.6
+            ],
+            "kind": "refrigerator_reference",
+            "room_id": "kitchen"
+          }
+        ],
+        "hot_water_minimum_C": 40,
+        "household_id": "example-family",
+        "members": [
+          {
+            "age_years": 36,
+            "calendar_id": "adult1",
+            "can_operate_asset_ids": [
+              "washer",
+              "dryer",
+              "dishwasher",
+              "ac",
+              "tank"
+            ],
+            "hot_water_liters": 25,
+            "household_id": "example-family",
+            "member_id": "adult1"
+          },
+          {
+            "age_years": 35,
+            "calendar_id": "adult2",
+            "can_operate_asset_ids": [
+              "washer",
+              "dryer",
+              "dishwasher",
+              "ac",
+              "tank"
+            ],
+            "hot_water_liters": 25,
+            "household_id": "example-family",
+            "member_id": "adult2"
+          },
+          {
+            "age_years": 10,
+            "calendar_id": "child",
+            "can_operate_asset_ids": [],
+            "hot_water_liters": 15,
+            "household_id": "example-family",
+            "member_id": "child"
+          }
+        ],
+        "sleep_groups": [
+          {
+            "bed_footprint_m": [
+              1.5,
+              2
+            ],
+            "capacity": 2,
+            "group_id": "parents",
+            "member_ids": [
+              "adult1",
+              "adult2"
+            ]
+          },
+          {
+            "bed_footprint_m": [
+              0.9,
+              2
+            ],
+            "capacity": 1,
+            "group_id": "child",
+            "member_ids": [
+              "child"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "eligible_archetypes": [
+        "F"
+      ],
+      "evidence_kind": "declared_synthetic_scenario",
+      "facts": {
+        "G": 2,
+        "N": 3,
+        "actual_preferences": null,
+        "care": [],
+        "context_household_ids": [],
+        "decision_maker_id": "adult1",
+        "income": null,
+        "members": [
+          {
+            "age_years": 36,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": 0,
+            "household_id": "example-family",
+            "member_id": "adult1",
+            "sex": "male"
+          },
+          {
+            "age_years": 35,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": 0,
+            "household_id": "example-family",
+            "member_id": "adult2",
+            "sex": "female"
+          },
+          {
+            "age_years": 10,
+            "employment_status": "unknown",
+            "evidence_kind": "declared_synthetic_scenario",
+            "generation_level": -1,
+            "household_id": "example-family",
+            "member_id": "child",
+            "sex": "female"
+          }
+        ],
+        "mobility_basis": "declared_resident_driver",
+        "relationships": [
+          {
+            "object": "adult2",
+            "subject": "adult1",
+            "type": "partner"
+          },
+          {
+            "object": "child",
+            "subject": "adult1",
+            "type": "parent"
+          },
+          {
+            "object": "child",
+            "subject": "adult2",
+            "type": "parent"
+          }
+        ]
+      },
+      "field_origins": {
+        "devices": "declared synthetic reference;not observed population data",
+        "housing": "declared synthetic reference;not observed population data",
+        "life": "declared synthetic reference;not observed population data",
+        "permissions": "declared synthetic reference;not observed population data",
+        "relationships": "declared synthetic reference;not observed population data",
+        "roster": "declared synthetic reference;not observed population data"
+      },
+      "life": {
+        "anchor": "2025-07-01",
+        "comfort_requirements": [
+          {
+            "asset_id": "ac",
+            "origin": "unknown_individual_preference",
+            "temperature_band_C": null
+          }
+        ],
+        "end_exclusive": "2025-08-01",
+        "hot_water_minimum_C": 40.0,
+        "household_id": "example-family",
+        "member_calendars": {
+          "adult1": {
+            "date_overrides": {
+              "2025-07-16": [
+                {
+                  "activity": "sleep",
+                  "available_for_operation": false,
+                  "end_min": 420,
+                  "location": "home",
+                  "room": "$sleep",
+                  "start_min": 0
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 480,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 420
+                },
+                {
+                  "activity": "work_or_school",
+                  "available_for_operation": false,
+                  "end_min": 1100,
+                  "location": "away",
+                  "room": null,
+                  "start_min": 480
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 1140,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1100
+                },
+                {
+                  "activity": "dinner",
+                  "available_for_operation": false,
+                  "end_min": 1170,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1140
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 1290,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1170
+                },
+                {
+                  "activity": "bath",
+                  "available_for_operation": false,
+                  "end_min": 1300,
+                  "location": "home",
+                  "room": "$bath",
+                  "start_min": 1290
+                },
+                {
+                  "activity": "home_idle",
+                  "available_for_operation": true,
+                  "end_min": 1380,
+                  "location": "home",
+                  "room": "$living",
+                  "start_min": 1300
+                },
+                {
+                  "activity": "sleep",
+                  "available_for_operation": false,
+                  "end_min": 1440,
+                  "location": "home",
+                  "room": "$sleep",
+                  "start_min": 1380
+                }
+              ]
+            },
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1290,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1300,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1290
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1300
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          },
+          "adult2": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1270,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1280,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1270
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1280
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1270,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1280,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1270
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1280
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          },
+          "child": {
+            "weekday": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "work_or_school",
+                "available_for_operation": false,
+                "end_min": 1080,
+                "location": "away",
+                "room": null,
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1250,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1260,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1250
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1260
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ],
+            "weekend": [
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 420,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 0
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 480,
+                "location": "home",
+                "room": "$living",
+                "start_min": 420
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1080,
+                "location": "home",
+                "room": "$living",
+                "start_min": 480
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1140,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1080
+              },
+              {
+                "activity": "dinner",
+                "available_for_operation": false,
+                "end_min": 1170,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1140
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1250,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1170
+              },
+              {
+                "activity": "bath",
+                "available_for_operation": false,
+                "end_min": 1260,
+                "location": "home",
+                "room": "$bath",
+                "start_min": 1250
+              },
+              {
+                "activity": "home_idle",
+                "available_for_operation": true,
+                "end_min": 1380,
+                "location": "home",
+                "room": "$living",
+                "start_min": 1260
+              },
+              {
+                "activity": "sleep",
+                "available_for_operation": false,
+                "end_min": 1440,
+                "location": "home",
+                "room": "$sleep",
+                "start_min": 1380
+              }
+            ]
+          }
+        },
+        "mobility": {
+          "anchor_state": "plugged",
+          "journey_templates": {
+            "date_overrides": {
+              "2025-07-16": [
+                {
+                  "arrival_min": 1100,
+                  "departure_min": 480,
+                  "traction_kWh": 8.0
+                }
+              ]
+            },
+            "weekday": [
+              {
+                "arrival_min": 1080,
+                "departure_min": 480,
+                "traction_kWh": 8.0
+              }
+            ],
+            "weekend": []
+          },
+          "operator_id": "adult1"
+        },
+        "program_policies": [
+          {
+            "asset_id": "washer",
+            "capacity_kg": 5.0,
+            "daily_quantity_kg": 1.2,
+            "daily_service": true,
+            "deadline_after_release_min": 1440,
+            "duration_min": 60,
+            "initial_inventory_kg": 0.0,
+            "kind": "washer",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "no_arrival_release_min": 420,
+            "preferred_start_min": {
+              "weekday": 1100,
+              "weekend": 1100
+            },
+            "priority": 0,
+            "service_id": "laundry",
+            "timer_allowed": true,
+            "trigger": "textile"
+          },
+          {
+            "asset_id": "dryer",
+            "deadline_after_release_min": 1440,
+            "duration_min": 50,
+            "kind": "dryer",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "preferred_start_min": {
+              "weekday": 1190,
+              "weekend": 1190
+            },
+            "priority": 1,
+            "service_id": "drying",
+            "timer_allowed": true,
+            "trigger": "after_service",
+            "upstream_service_id": "laundry"
+          },
+          {
+            "asset_id": "dishwasher",
+            "deadline_after_release_min": 360,
+            "duration_min": 40,
+            "kind": "dishwasher",
+            "machine_windows_min": [
+              [
+                420,
+                1410
+              ]
+            ],
+            "maximum_preload_wait_min": 180,
+            "maximum_retrieval_wait_min": 180,
+            "preferred_start_min": {
+              "weekday": 1210,
+              "weekend": 1210
+            },
+            "priority": 2,
+            "service_id": "dishes",
+            "timer_allowed": true,
+            "trigger": "after_dinner"
+          }
+        ],
+        "tank_policy": {
+          "after_draw_hold_min": 60,
+          "asset_id": "tank",
+          "mode": "continuous",
+          "preheat_lead_min": 120,
+          "setback_C": 10.0,
+          "target_C": 55.0
+        },
+        "thermostat_policies": [
+          {
+            "asset_id": "ac",
+            "cooling_setpoint_C": 26.0,
+            "fan_operating_mode": 0,
+            "heating_setpoint_C": 20.0,
+            "hold_min": 20,
+            "mode": "occupied_with_hold",
+            "setback_cooling_C": 40.0,
+            "setback_heating_C": 5.0
+          }
+        ]
+      },
+      "shell": {
+        "facilities": {
+          "bathing_hot_water": "self_installed_heater",
+          "kitchen": "exclusive",
+          "toilet": "flush_sanitary"
+        },
+        "geometry_reference": {
+          "mapping_rationale": "Declared reference conversion for allocated building gross vs paper indoor area;not measured common-area fraction. Whole shared dwelling is compared,not target household alone.",
+          "profile_id": "xia2025_P3",
+          "source_area_to_model_gross_factor": 1.18
+        },
+        "gross_area_m2": 90,
+        "household_id": "example-family",
+        "natural_rooms": 2,
+        "shared_households": 1
+      },
+      "source_reference": "Project public integration examples;scenario reference,not a sampled population household",
+      "template_id": "declared-F",
+      "world": {
+        "background": {
+          "cooking_W": 1200,
+          "lighting_W_m2": 2,
+          "misc_W_m2": 1,
+          "refrigerator_W": 60
+        },
+        "devices": [
+          {
+            "asset_id": "washer",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "washer",
+            "parameters": {
+              "nameplate_W": 500.0,
+              "power_kw": 0.5
+            },
+            "placement": "floor",
+            "room": "$living",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "dryer",
+            "connections": [
+              "electricity",
+              "exhaust"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "dryer",
+            "parameters": {
+              "nameplate_W": 1500.0,
+              "power_kw": 1.5
+            },
+            "placement": "floor",
+            "room": "$living",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "dishwasher",
+            "connections": [
+              "electricity",
+              "water",
+              "drain"
+            ],
+            "footprint_m": [
+              0.6,
+              0.65
+            ],
+            "kind": "dishwasher",
+            "parameters": {
+              "nameplate_W": 1000.0,
+              "power_kw": 1.0
+            },
+            "placement": "floor",
+            "room": "$kitchen",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "ac",
+            "connections": [
+              "electricity",
+              "outdoor_heat_exchange"
+            ],
+            "kind": "ac",
+            "mount_width_m": 0.9,
+            "parameters": {
+              "air_flow_m3_s": 0.2,
+              "cooling_COP": 3.2,
+              "cooling_capacity_W": 3500,
+              "defrost_capacity_W": 500,
+              "fan_power_W": 45,
+              "fan_pressure_Pa": 75,
+              "heating_COP": 3.0,
+              "heating_capacity_W": 3500,
+              "nameplate_W": 3500,
+              "sensible_heat_ratio": 0.75,
+              "supplemental_capacity_W": 1000
+            },
+            "placement": "wall",
+            "room": "$sleep:adult1",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "tank",
+            "connections": [
+              "electricity",
+              "water"
+            ],
+            "kind": "water_heater",
+            "mount_width_m": 0.6,
+            "parameters": {
+              "deadband_C": 2,
+              "efficiency": 1,
+              "heater_capacity_W": 2500,
+              "height_m": 1.2,
+              "maximum_C": 80,
+              "nameplate_W": 2500,
+              "number_of_nodes": 6,
+              "skin_loss_W_m2K": 0.8,
+              "volume_m3": 0.15
+            },
+            "placement": "wall",
+            "room": "$bath",
+            "using_household_ids": [
+              "example-family"
+            ]
+          },
+          {
+            "asset_id": "ev",
+            "connections": [
+              "electricity",
+              "dedicated_parking"
+            ],
+            "kind": "ev",
+            "parameters": {
+              "capacity_kwh": 60,
+              "charger_kw": 7,
+              "efficiency": 0.9,
+              "initial_energy_kwh": 42,
+              "minimum_soc": 0.1,
+              "nameplate_W": 7000,
+              "target_soc": 0.7
+            },
+            "placement": "exterior",
+            "using_household_ids": [
+              "example-family"
+            ]
+          }
+        ],
+        "electrical_supply_W": 24000,
+        "exhaust_power_budget_W": 300,
+        "fixtures": [
+          {
+            "fixture_id": "toilet",
+            "footprint_m": [
+              0.65,
+              0.75
+            ],
+            "kind": "toilet_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "shower",
+            "footprint_m": [
+              0.8,
+              0.8
+            ],
+            "kind": "shower_reference",
+            "room_id": "washroom"
+          },
+          {
+            "fixture_id": "kitchen_counter",
+            "footprint_m": [
+              1.2,
+              0.6
+            ],
+            "kind": "sink_cooking_reference",
+            "room_id": "kitchen"
+          },
+          {
+            "fixture_id": "fridge",
+            "footprint_m": [
+              0.6,
+              0.6
+            ],
+            "kind": "refrigerator_reference",
+            "room_id": "kitchen"
+          }
+        ],
+        "hot_water_minimum_C": 40,
+        "household_id": "example-family",
+        "members": [
+          {
+            "age_years": 36,
+            "calendar_id": "adult1",
+            "can_operate_asset_ids": [
+              "washer",
+              "dryer",
+              "dishwasher",
+              "ac",
+              "tank",
+              "ev"
+            ],
+            "hot_water_liters": 25,
+            "household_id": "example-family",
+            "member_id": "adult1"
+          },
+          {
+            "age_years": 35,
+            "calendar_id": "adult2",
+            "can_operate_asset_ids": [
+              "washer",
+              "dryer",
+              "dishwasher",
+              "ac",
+              "tank",
+              "ev"
+            ],
+            "hot_water_liters": 25,
+            "household_id": "example-family",
+            "member_id": "adult2"
+          },
+          {
+            "age_years": 10,
+            "calendar_id": "child",
+            "can_operate_asset_ids": [],
+            "hot_water_liters": 15,
+            "household_id": "example-family",
+            "member_id": "child"
+          }
+        ],
+        "sleep_groups": [
+          {
+            "bed_footprint_m": [
+              1.5,
+              2
+            ],
+            "capacity": 2,
+            "group_id": "parents",
+            "member_ids": [
+              "adult1",
+              "adult2"
+            ]
+          },
+          {
+            "bed_footprint_m": [
+              0.9,
+              2
+            ],
+            "capacity": 1,
+            "group_id": "child",
+            "member_ids": [
+              "child"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "world_defaults": {
+    "schema": "eb.life_world_contracts.v1",
+    "settings": {
+      "history_days": 7,
+      "portal_flow_scale": 1,
+      "reference_ach": 0.35,
+      "tail_days": 9
+    },
+    "thermal_fractions": {
+      "cooking": [
+        0,
+        0.3,
+        0.2
+      ],
+      "dishwasher": [
+        0,
+        0.3,
+        0.2
+      ],
+      "dryer": [
+        0,
+        0.1,
+        0.8
+      ],
+      "misc": [
+        0,
+        0.5,
+        0
+      ],
+      "refrigerator": [
+        0,
+        0.5,
+        0
+      ],
+      "washer": [
+        0,
+        0.3,
+        0.2
+      ]
+    },
+    "weather_source": {
+      "distribution": "EnergyPlus24.1 WeatherData",
+      "reference_file": "USA_IL_Chicago-OHare.Intl.AP.725300_TMY3.epw",
+      "url": "https://energyplus.net/weather",
+      "usage": "public integration scenario;not Chinese household climate validation"
+    }
+  }
+}

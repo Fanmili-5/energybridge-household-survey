@@ -1,0 +1,11 @@
+{
+  "schema": "eb.family_generation.input.v1",
+  "total": 6,
+  "subset_size": 6,
+  "seed": 20261019,
+  "prefix": "family-demo",
+  "pool": {
+    "path": "REFERENCE_POOL.json",
+    "sha256": "85565584408192350d63f969688d483de4873176e88b5bfaa7b558573845822c"
+  }
+}

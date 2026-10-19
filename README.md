@@ -18,6 +18,10 @@
 
 [完整生成规则](benchmark/GENERATION.md) · [数据卡](benchmark/DATASET_CARD.md) · [采集质控](benchmark/COLLECTION.md) · [评测边界](benchmark/EVALUATION.md) · [复现步骤](benchmark/REPRODUCTION.md)
 
+## 家庭生成与上下游连接
+
+[家庭生成模块](benchmark/family_generation/README.md)公开完整联合参考情境、EB实验配额、成员/关系/设备/权限契约和同源子集的可运行入口，可连接住房与生活A。代码、合成示例、许可、输入锁、反例测试及历史1000户只读审查分别提供。公开六条情境用于接口验证，不是人口样本；旧50/1000户未迁移，尚存的关系与内核兼容边界如实列出。
+
 ## 家庭六类偏好方法
 
 [第一条方法主线 v1](benchmark/household_archetypes/README.md)固定EB六类的来源，逐类区分外部问卷依据、实验设定与实际验证结果，公开EB实验构成的配额计算、原始输入版本/哈希、离线重放及论文方法表述。外部调查支持相关特征与部分组合，不代表完整六类或人口比例已验证；拟议配额尚未应用于现有50/1000户，当前家庭、排程、仿真、费用和线上版本保持，1000户仿真继续暂停。

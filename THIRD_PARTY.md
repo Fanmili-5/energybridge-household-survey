@@ -15,3 +15,5 @@
 
 
 当前参考基准的输入边界见`benchmark/DATASET_CARD.md`。生成源码包含既有PsychroLib参考实现，保留其原版权及MIT许可；源目录相邻许可文件按`benchmark/generation/SOURCE_CATALOG.json`一并保留。当前代码可见性不为所有研究输入统一授予新许可。
+
+新家庭生成模块的新增代码、方法文档及声明的合成参考示例按其[模块MIT许可](benchmark/family_generation/LICENSE)发布；未重新许可EB、第三方调查、住房/仿真模块或受控家庭输入。公开参考池由本项目公开接口示例构造，来源逐项记录于[家庭模块SOURCES](benchmark/family_generation/SOURCES.json)。个体调查原件、真人答卷及凭据不在该模块发布范围。
