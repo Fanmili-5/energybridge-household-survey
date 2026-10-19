@@ -2,7 +2,6 @@ name: Housing simulation construction
 
 on:
   push:
-    branches: [main]
     paths:
       - 'benchmark/housing_simulation/**'
       - '.github/workflows/housing-simulation.yml'
@@ -28,7 +27,7 @@ jobs:
 
   physical-reproduction:
     runs-on: ubuntu-22.04
-    timeout-minutes: 180
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
