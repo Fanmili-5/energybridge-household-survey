@@ -26,7 +26,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - run: python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity benchmark.ab_generation.test_sensitivity -v
+      - run: python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity benchmark.ab_generation.test_sensitivity benchmark.ab_generation.test_joint_load_supply -v
       - run: python -B -m benchmark.ab_generation.verify_package
       - name: Run all predeclared parameter generation cases
         if: matrix.python-version == '3.12'
@@ -53,7 +53,7 @@ jobs:
           python -B -m benchmark.ab_generation verify "$RUNNER_TEMP/life-example"
           python -B -m benchmark.ab_generation sample-tail \
             --contexts benchmark/ab_generation/validation/rules/frozen_contexts \
-            --plan benchmark/ab_generation/examples/rule_review/plan.json \
+            --plan benchmark/ab_generation/examples/compatibility/rule_review_v1.json \
             --out "$RUNNER_TEMP/tail-frozen-sample"
           python -c 'import json, os; from pathlib import Path; expected=json.loads(Path("benchmark/ab_generation/validation/rules/SELECTION.json").read_text()); actual=json.loads((Path(os.environ["RUNNER_TEMP"])/"tail-frozen-sample/SELECTION.json").read_text()); keys=lambda s:[(r["sample_id"],r["stratum"],r["B_commands_sha256"]) for r in s["records"]]; assert keys(expected)==keys(actual); assert actual["selection_coverage_passed"]'
 

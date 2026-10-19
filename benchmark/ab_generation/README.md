@@ -72,3 +72,5 @@ python -B -m benchmark.ab_generation reproduce-strategies \
 方法见 [TAIL_METHOD.md](TAIL_METHOD.md)，计划见 [examples/tail/plan.json](examples/tail/plan.json)。目录按实际命令去重，分层按事前顺序独占，再按家庭、户内请求两阶段无放回取样。全体候选及联合冲突保留；最终费用、事件成功和人的回答不参与取样。正常B、声明的EV失败压力、不可执行静态诊断和数据/模型错误分开验收。
 
 `sample-tail` 只构造并封存样本；`reproduce-tail` 复用已绑定的A参考，执行所选B并输出覆盖表、全部已选结果和未覆盖的单/双因素组合。缺失必验机会或执行错误导致验收失败，不自动换成成功B。命令与结果见 [REPRODUCE.md](REPRODUCE.md) 和 [TAIL_VALIDATION.md](TAIL_VALIDATION.md)。当前规则验收使用 [examples/rule_review/plan.json](examples/rule_review/plan.json)，另有冬季与周末补充计划；[本轮验证](RULES_VALIDATION.md)逐项列出已测范围和缺口。不推算真实长尾比例或人的接受率。
+
+当前修订：[联合搜索、批次能耗与住宅功率](JOINT_LOAD_SUPPLY.md)，取消两族上限；保留同族多批、无效请求及服务失败。程序设备仍用完整周期的等效功率，覆盖须区分任务约束与服务后果，不能仅数设备名称。

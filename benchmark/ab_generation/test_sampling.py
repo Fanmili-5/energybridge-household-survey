@@ -57,7 +57,7 @@ class TailSamplingTests(unittest.TestCase):
         self.assertEqual(2 * sum(len(r['aliases']) for r in once), sum(len(r['aliases']) for r in twice))
 
     def test_full_joint_product_contains_more_than_optimal_representatives(self):
-        result = generate(self.c)
+        result = generate(self.c, {'joint_family_limit': 2})
         eligible = [r for r in result['candidates'] if not r['static_issues']]
         expected = {frozenset((a['id'], b['id'])) for a in eligible for b in eligible
                     if a['family'] != b['family'] and a['asset_id'] != b['asset_id']}

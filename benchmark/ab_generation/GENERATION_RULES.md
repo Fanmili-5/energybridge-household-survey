@@ -1,3 +1,5 @@
+当前联合搜索、批次能耗与供电约束修订见[JOINT_LOAD_SUPPLY.md](JOINT_LOAD_SUPPLY.md)。下文两类联合说明及已有运行数量属于对应历史回执，显式旧规则可回放。
+
 # 面向用户roleplay的A/B生成规则
 
 本次修正规则和算法，服务于后续角色扮演情景供给。普通提案、探索性请求、无效响应和服务失败均可提供不同生活取舍。没有把物理成功当作接受答案，也没有按执行结果挑选更好的B。源码为`life.py`、`opportunity.py`、`generate.py`、`sampling.py`，实际逐设备回读为`effects.py`。

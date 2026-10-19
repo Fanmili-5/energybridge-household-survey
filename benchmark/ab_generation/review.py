@@ -52,7 +52,9 @@ def reproduce_strategies(input_path, world_contracts, shell_config, experiments,
                      and aa['records'][0]['checks'].get('B_EV_balance') is True
                      and binding_passed)
         else:
-            valid = aa['passed'] and binding_passed
+            from .sampling import SERVICE_FAILURES
+            failures = {k for r in aa['records'] for k, v in r['checks'].items() if not v}
+            valid = not failures - SERVICE_FAILURES and binding_passed
         assessments.append({'stage': label, 'passed_expected_checks': valid, 'cases': len(data['records']),
                             'report_sha256': sha(report / 'REPORT.json'), 'records': data['records']})
     execute('baseline', out / 'assembled')

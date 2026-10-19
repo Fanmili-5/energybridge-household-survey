@@ -84,6 +84,9 @@ def audit():
     validate_plan(read(package / 'examples/tail/plan.json'))
     tail = register['tail_algorithm_settings']
     evidence = register['opportunity_algorithm_settings']
+    load = register.get('load_energy_model')
+    if not load or sha(package / load['path']) != load['sha256'] or sha(package / load['source_csv']) != load['source_csv_sha256']:
+        raise ValueError('UNREVIEWED_LOAD_ENERGY_MODEL')
     if (evidence['profile_difference_epsilon_kWh'] != EPSILON or evidence['state_witness_epsilon_C'] != EPSILON
             or evidence['readback_energy_epsilon_kWh'] != ENERGY_EPSILON_KWH or evidence['readback_state_epsilon'] != STATE_EPSILON):
         raise ValueError('UNREVIEWED_OPPORTUNITY_NUMERICAL_GUARD')

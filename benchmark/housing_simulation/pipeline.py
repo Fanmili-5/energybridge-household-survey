@@ -382,6 +382,29 @@ def sql_trace(path, history_days, native_step=10):
     return channels
 
 
+def native_site_power(path, history_days, hi, native_step):
+    """Read solver-step facility demand before ten-minute report aggregation."""
+    with sqlite3.connect(path) as db:
+        query = '''SELECT t.SimulationDays,t.Hour,t.Minute,t.Interval,r.Value,d.Units
+        FROM ReportData r JOIN ReportDataDictionary d USING(ReportDataDictionaryIndex)
+        JOIN Time t USING(TimeIndex) JOIN EnvironmentPeriods e USING(EnvironmentPeriodIndex)
+        WHERE COALESCE(t.WarmupFlag,0)=0 AND e.EnvironmentType=3 AND t.SimulationDays>=?
+        AND lower(d.Name)='electricity:facility' AND d.IsMeter=1 ORDER BY t.TimeIndex'''
+        rows = list(db.execute(query, (history_days + 1,)))
+    values = []
+    for day, hour, minute, interval, value, unit in rows:
+        t = (day - history_days - 1) * 1440 + hour * 60 + minute - interval
+        if not 0 <= t < hi:
+            continue
+        if unit != 'J' or interval != native_step or value is None or not math.isfinite(value) or value < 0:
+            raise ValueError('INVALID_NATIVE_SITE_POWER')
+        values.append([t, value / (60 * interval)])
+    if [t for t, v in values] != list(range(0, hi, native_step)):
+        raise ValueError('MISSING_OR_DUPLICATE_NATIVE_SITE_POWER')
+    return {'native_step_min': native_step, 'values_W': values, 'peak_W': max(v for t, v in values),
+            'scope': 'native_solver_interval_mean_real_power;not_inrush_current_or_breaker_trip'}
+
+
 def run_pairs(compiled, output, engine, engine_sha, timeout):
     compiled = Path(compiled).resolve()
     m = verify(compiled)

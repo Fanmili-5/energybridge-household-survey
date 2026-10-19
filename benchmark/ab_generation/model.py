@@ -190,3 +190,19 @@ def request_issues(context, plan):
     if past_changes(context['A']['controls']) != past_changes(plan['controls']):
         issues.add('REQUEST_REWRITES_PREDECISION_CONTROL')
     return sorted(issues)
+
+
+def control_issues(context, plan):
+    """Check final combined thresholds, including jointly inverted heat/cool bands."""
+    devices = {d['asset_id']: d for d in context['devices']}
+    issues = set()
+    for c in plan['controls']:
+        if c['kind'] == 'ac_setpoint':
+            heat, cool = c['heating_setpoint_C'], c['cooling_setpoint_C']
+            if heat >= cool:
+                issues.add('THERMOSTAT_DEADBAND_INVERTED')
+            if not 5 <= heat <= 35 or not 15 <= cool <= 40:
+                issues.add('SETPOINT_OUTSIDE_REFERENCE_RANGE')
+        elif c['kind'] == 'tank_setpoint' and not 10 <= c['value_C'] <= devices[c['asset_id']]['parameters']['maximum_C']:
+            issues.add('SETPOINT_OUTSIDE_HARDWARE_RANGE')
+    return sorted(issues)

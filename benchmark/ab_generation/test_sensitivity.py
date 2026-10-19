@@ -45,9 +45,10 @@ class SensitivityTests(unittest.TestCase):
         self.assertTrue(all(m['checks'].values())); self.assertEqual('A_constructed', a['status'])
         self.assertEqual(0, m['cycles'].get('washer', 0)); self.assertEqual(0, m['cycles'].get('dryer', 0))
 
-    def test_daily_fixed_cycle_and_full_batch_are_distinct_assumptions(self):
+    def test_daily_fixed_cycle_load_energy_and_full_batch_are_distinct(self):
         _, low = self.generated('textile_kg_low'); _, high = self.generated('textile_kg_high')
-        self.assertEqual(low['washer_kWh'], high['washer_kWh'])
+        self.assertEqual(low['cycles']['washer'], high['cycles']['washer'])
+        self.assertLess(low['washer_kWh'], high['washer_kWh'])
         self.assertLess(low['served_textile_kg'], high['served_textile_kg'])
         _, low_batch = self.generated('full_batch_low'); _, high_batch = self.generated('full_batch_high')
         self.assertLess(low_batch['cycles'].get('washer', 0), high_batch['cycles'].get('washer', 0))

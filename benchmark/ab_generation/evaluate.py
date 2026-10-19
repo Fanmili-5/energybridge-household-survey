@@ -62,6 +62,7 @@ def summarize(job_path, compiled, runs, audit, out, reference_stage=None, import
                'information_set': pair['AB_generation'].get('information_set'),
                'proposal_purpose': pair['AB_generation'].get('proposal_purpose'),
                'baseline_admission': pair['AB_generation'].get('baseline_admission'),
+               'site_capacity_assessment': pair['AB_generation'].get('site_capacity_assessment'),
                'request_status': pair['AB_generation']['status'], 'engine_arms': 2,
                'A_reference_comparison': {'status': 'not_requested', 'passed': None},
                'audit_status': check['status'], 'failed_checks': [k for k, v in check['checks'].items() if not v],

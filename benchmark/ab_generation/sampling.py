@@ -15,7 +15,7 @@ from .opportunity import EPSILON as PROFILE_EPSILON
 
 FEATURES = {'family', 'scope', 'admission', 'direction', 'cost_sign', 'event_sign', 'handling', 'axis', 'dose', 'composition', 'duration', 'opportunity', 'joint_support', 'day_type', 'event_direction'}
 SERVICE_FAILURES = {'B_EV_departure_target', 'B_hot_water_service',
-                    'B_service_execution', 'B_service_completeness'}
+                    'B_service_execution', 'B_service_completeness', 'B_declared_comfort', 'B_electrical_supply'}
 STRESS_STATIC = ['CHARGE_EXCEEDS_ORIGINAL_CONNECTION']
 SIGN_EPSILON = 1e-9
 
@@ -112,13 +112,13 @@ def describe(context, plan_B, children, issues, unchanged=None):
     def combined(key, default):
         values = {r['factors'][key] for r in children if key in r['factors']}
         return next(iter(values)) if len(values) == 1 else 'mixed' if values else default
-    features = {'family': 'control' if unchanged else families[0] if len(families) == 1 else 'joint',
-                'scope': 'control' if unchanged else 'single' if len(families) == 1 else 'joint',
+    features = {'family': 'control' if unchanged else families[0] if len(children) == 1 else 'joint',
+                'scope': 'control' if unchanged else 'single' if len(children) == 1 else 'joint',
                 'admission': admission, 'direction': combined('direction', 'not_thermal'),
                 'handling': combined('handling_mode', 'not_program'), 'axis': combined('thermal_axis', 'not_thermal'),
                 'cost_sign': sign(sum(r['prediction']['delta_cost'] for r in children) if known else None),
                 'event_sign': sign(sum(r['prediction']['aligned_event_kWh'] for r in children) if event_known else None)}
-    features['dose'] = ('control' if unchanged else 'joint' if len(families) != 1 else
+    features['dose'] = ('control' if unchanged else 'joint' if len(children) != 1 else
                         'thermal_' + format(max(r['factors']['setpoint_delta_C'] for r in children), 'g') + 'C'
                         if families[0] in ('ac', 'water_heater') else
                         'EV_' + str(max(r['factors']['ev_delay_min'] for r in children)) + 'min'

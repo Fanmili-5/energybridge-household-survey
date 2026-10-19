@@ -8,6 +8,7 @@ import copy
 import datetime as dt
 import math
 from .common import digest
+from .energy import batch_energy
 
 LIFE_VERSION = 'eb.life_to_A.v1'
 LIFE_RULES = {'step_min': 10, 'operation_duration_min': 10, 'seed': 20261019,
@@ -50,7 +51,8 @@ def normalize_world(world):
             'members': copy.deepcopy(world['members']),
             'devices': copy.deepcopy(world['parameter_pack']['devices']),
             'sleep_room_by_member': world['sleep_room_by_member'],
-            'room_map': world['activity_contract']['room_map']}
+            'room_map': world['activity_contract']['room_map'],
+            **({'electrical': copy.deepcopy(world['electrical'])} if 'electrical' in world else {})}
 
 
 def resolve_room(key, member_id, world):
@@ -139,6 +141,8 @@ class Scheduler:
         self.asset_holds = collections.defaultdict(list)
         self.slots_by_asset = {}
         self.limit = len(days) * 1440
+        self.known_power_W = collections.defaultdict(float)
+        self.supply_W = world.get('electrical', {}).get('supply_W')
 
     def allowed(self, member, aid):
         return aid in member['can_operate_asset_ids'] and member['household_id'] in self.assets[aid]['using_household_ids']
@@ -180,6 +184,14 @@ class Scheduler:
         aid, nid = need['asset_id'], need['need_id']
         release, deadline = max(need['release_min'], earliest or 0), min(need['deadline_min'], self.limit)
         duration = policy['duration_min']
+        try:
+            energy = batch_energy(need, policy, self.assets[aid]['parameters'])
+        except ValueError as error:
+            if str(error) != 'BATCH_ENERGY_EXCEEDS_NAMEPLATE_DURATION':
+                raise
+            return {'need_id': nid, 'status': 'unserved', 'reason': str(error)}
+        watts = energy.get('power_kw', self.assets[aid]['parameters']['power_kw']) * 1000
+        power_blocked = False
         loads = self.slots(aid, release, deadline - duration)
         unloads = self.slots(aid, release + duration + 10, deadline)
         best = None
@@ -200,6 +212,9 @@ class Scheduler:
                 continue
             if any(max(load[0], a) < min(unload[0] + 10, z) for a, z in self.asset_holds[aid]):
                 continue
+            if self.supply_W and any(self.known_power_W[t] + watts > self.supply_W + 1e-6 for t in range(start, start + duration, 10)):
+                power_blocked = True
+                continue
             preferred = need['preferred_start_min']
             cost = (self.rules['start_deviation_weight'] * abs(start - preferred)
                     + self.rules['preload_wait_weight'] * (start - load[0] - 10)
@@ -208,15 +223,17 @@ class Scheduler:
             if best is None or item < best:
                 best = item
         if best is None:
-            return {'need_id': nid, 'status': 'unserved', 'reason': 'NO_JOINT_LOAD_RUN_RETRIEVE'}
+            return {'need_id': nid, 'status': 'unserved', 'reason': 'NO_CUMULATIVE_POWER_SLOT' if power_blocked else 'NO_JOINT_LOAD_RUN_RETRIEVE'}
         _, start, load, unload = best
         self.reserve(aid, nid, 'load', load)
         self.reserve(aid, nid, 'unload', unload)
         task = {'task_id': nid, 'need_id': nid, 'asset_id': aid, 'kind': need['kind'],
-                'start_min': start, 'end_min': start + duration}
+                'start_min': start, 'end_min': start + duration, **energy}
         if need.get('depends_on_need_id'):
             task['depends_on_need_id'] = need['depends_on_need_id']
         self.tasks.append(task)
+        for t in range(start, start + duration, 10):
+            self.known_power_W[t] += watts
         self.asset_holds[aid].append((load[0], unload[0] + 10))
         return {'need_id': nid, 'status': 'scheduled', 'program_start_min': start,
                 'program_end_min': start + duration, 'load_min': load[0],
@@ -389,6 +406,13 @@ def generate_household(spec, world, rules=None):
     days = build_days(spec, world)
     scheduler = Scheduler(world, days, rules)
     ev = mobility(spec, world, scheduler)  # Fixed real visits reserve resources first.
+    ev_device = next((d for d in world['devices'] if d['kind'] == 'ev'), None)
+    for event in ev['charge_events']:
+        watts = event['battery_kWh'] / ev_device['parameters']['efficiency'] * 6000
+        for t in range(event['start_min'], event['end_min'], 10):
+            scheduler.known_power_W[t] += watts
+        if scheduler.supply_W and watts > scheduler.supply_W + 1e-6:
+            ev['failures'].append({'need_id': event['need_id'], 'status': 'unserved', 'reason': 'EV_KNOWN_POWER_EXCEEDS_SUPPLY'})
     controls, comfort = thermostat_controls(spec, world, days)
     controls += ev['controls']
     tanks = [d for d in world['devices'] if d['kind'] == 'water_heater']
@@ -426,7 +450,8 @@ def generate_household(spec, world, rules=None):
         fields = {'service_id', 'asset_id', 'kind', 'trigger', 'duration_min', 'preferred_start_min', 'maximum_preload_wait_min',
                   'maximum_retrieval_wait_min', 'deadline_after_release_min', 'machine_windows_min', 'timer_allowed', 'priority'}
         fields |= {'daily_quantity_kg', 'capacity_kg', 'initial_inventory_kg', 'daily_service', 'no_arrival_release_min'} if p['trigger'] == 'textile' else {'upstream_service_id'} if p['trigger'] == 'after_service' else set()
-        require(set(p) == fields, 'UNKNOWN_OR_INCOMPLETE_SERVICE_POLICY_FIELD')
+        require(set(p) - {'energy_model'} == fields, 'UNKNOWN_OR_INCOMPLETE_SERVICE_POLICY_FIELD')
+        require(p.get('energy_model', 'load_curve') in ('load_curve', 'legacy_constant_power'), 'UNKNOWN_BATCH_ENERGY_MODEL')
         require(p['asset_id'] in scheduler.assets and scheduler.assets[p['asset_id']]['kind'] == p['kind'], 'PROGRAM_ASSET_MISMATCH')
         require(p['kind'] in ('washer', 'dryer', 'dishwasher'), 'UNSUPPORTED_PROGRAM_KIND')
         hardware = scheduler.assets[p['asset_id']]['parameters']
@@ -499,6 +524,8 @@ def generate_household(spec, world, rules=None):
                         'constraint_origin': 'declared_life_service_policy',
                         'origin': 'declared_daily_textile_inventory' if p['trigger'] == 'textile' else 'dated_dinner_completion',
                         'service_policy_id': p['service_id']}
+                if p['trigger'] == 'textile':
+                    need['batch_capacity_kg'] = p['capacity_kg']
                 requirements.append(need)
                 result = scheduler.program(need, p)
                 ledger.append(result)
@@ -526,6 +553,9 @@ def generate_household(spec, world, rules=None):
                   'operations': sorted(scheduler.operations, key=lambda x: (x['start_min'], x['operation_id'])),
                   'controls': sorted(controls, key=lambda x: (x['start_min'], x['asset_id']))},
             'service_ledger': ledger, 'unserved': failures, 'remaining_unallocated_textile_kg': inventory,
+            'electrical_plan_check': {'supply_W': scheduler.supply_W,
+                'known_program_EV_peak_W': max(scheduler.known_power_W.values(), default=0),
+                'scope': 'known_batch_mean_and_EV_charge;thermal_and_background_require_bound_or_native_A_admission'},
             'EV': ev, 'status': 'needs_unserved' if failures else 'A_constructed',
             'B_events_prices_or_answers_used': False,
             'field_calibration_claimed': False, 'human_acceptance': None}
