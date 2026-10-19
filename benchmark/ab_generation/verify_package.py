@@ -15,6 +15,8 @@ def main():
     if inventory != set(manifest['files']):
         raise ValueError('PACKAGE_INVENTORY_CHANGED')
     sources = read(root / 'SOURCES.json')
+    from .audit_design import audit
+    audit()
     source_ids = {s['key'] for s in sources['papers']} | {s['id'] for s in sources['implementation_sources']}
     source_ids |= {s['key'] for s in sources.get('review_process_sources', [])}
     for rule in read(root / 'LIFE_RULES.json')['rules'] + read(root / 'STRATEGY_RULES.json')['rules']:

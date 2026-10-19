@@ -1,5 +1,7 @@
 # 第二主线复核
 
+后续“原EB目的、公开来源与离线条件”复核新增[DESIGN.md](DESIGN.md)、[EVIDENCE.md](EVIDENCE.md)、[OFFLINE_EXPERIMENT.md](OFFLINE_EXPERIMENT.md)、[参数登记](PARAMETERS.json)和[授权登记](AUTHORIZATION.json)。上下文/结果升为v3：缺少完整未来A信息声明的旧输入拒绝复用，新生活参考必须附有绑定且通过的服务/物理审查。此次还补齐水箱回退温度硬件上限、温控Schema边界一致性及非有限温度拒绝。先前验证证据保留原始版本，本次结果另记于`DESIGN_VALIDATION.md`。
+
 复核从已给定生活到A开始，重点检查当前A证据、资源内的调整、事前取舍和实际后果。保留的基础包括独立需求、真实装取、当前A绑定、失败留痕及不生成真人接受标签。本次修正不改线上问卷或原生产家庭包。
 
 ## 1. 已修正的问题

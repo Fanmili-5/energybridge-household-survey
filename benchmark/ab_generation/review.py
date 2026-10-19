@@ -56,7 +56,7 @@ def reproduce_strategies(input_path, world_contracts, shell_config, experiments,
         assessments.append({'stage': label, 'passed_expected_checks': valid, 'cases': len(data['records']),
                             'report_sha256': sha(report / 'REPORT.json'), 'records': data['records']})
     execute('baseline', out / 'assembled')
-    reference_life(out / 'assembled', out / 'baseline_compiled', out / 'baseline_runs', out / 'contexts')
+    reference_life(out / 'assembled', out / 'baseline_compiled', out / 'baseline_runs', out / 'contexts', out / 'baseline_audit')
     build_batch(out / 'contexts/BATCH.json', out / 'candidates')
     batch = read(out / 'contexts/BATCH.json'); generation = verify(out / 'candidates')
     contexts = {r['case_id']: read(out / 'contexts' / r['context']) for r in batch['records']}

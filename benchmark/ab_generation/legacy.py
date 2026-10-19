@@ -7,6 +7,7 @@ import lzma
 from pathlib import Path
 from .common import bound, digest, read, save, seal, sha
 from .generate import binding
+from .information import information_set
 from .model import plan_commands
 from .resources import authority, legacy_program_constraints
 
@@ -54,7 +55,7 @@ def extract(pack, pair, physics, trace, source):
         mode = 'identical_control'
     else:
         mode = 'fresh_candidates'
-    context = {'schema': 'eb.ab_generation.context.v2', 'case_id': pair['case_id'],
+    context = {'schema': 'eb.ab_generation.context.v3', 'case_id': pair['case_id'],
                'household_id': pair['household_id'], 'date': pair['date'],
                'decision_min': pair['decision_min'], 'horizon_min': [480, 1920],
                'A': plan_commands(pair['A']), 'needs': legacy_program_constraints(pair['needs_A']),
@@ -90,6 +91,7 @@ def extract(pack, pair, physics, trace, source):
                          'temperature_C': temps[t - 10]}
                         for t in range(480, 1920, 10) if t in energy and t - 10 in temps]
     context['reference'] = {'binding': binding(context), 'thermal': thermal,
+                            'information_set': information_set('offline_full_A_counterfactual', context['decision_min'], source['initialization']['run_interval_min']),
                             'ev_charging_steps': pair['EV_continuous_reference'].get('A', {}).get('charging_steps', []),
                             'provenance': 'current_A_only_simulation;legacy_B_trace_not_read'}
     return context

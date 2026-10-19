@@ -19,6 +19,68 @@ class StrategyReviewTests(unittest.TestCase):
         self.c['reference']['binding'] = binding(self.c)
         return generate(self.c)
 
+    def test_information_privilege_must_be_explicit_and_not_called_real_time(self):
+        del self.c['reference']['information_set']
+        with self.assertRaisesRegex(ValueError, 'INFORMATION_SET_REQUIRED'):
+            self.result()
+        self.setUp()
+        self.c['reference']['information_set']['mode'] = 'real_time_forecast'
+        with self.assertRaisesRegex(ValueError, 'UNSUPPORTED_INFORMATION_MODE'):
+            self.result()
+
+    def test_no_B_outcome_answers_or_integer_boolean_in_information_claims(self):
+        for key, value in [('final_B_outcomes_available', True), ('human_answers_available', True),
+                           ('real_time_deployment_claim', True), ('future_A_available', 1)]:
+            self.setUp()
+            self.c['reference']['information_set'][key] = value
+            with self.assertRaisesRegex(ValueError, 'INFORMATION_SET_CONTRADICTION'):
+                self.result()
+
+    def test_reference_tail_cannot_be_hidden_by_primary_24h_disclosure(self):
+        self.c['reference']['ev_charging_steps'].append(
+            {'need_id': 'future-connection', 'start_min': 2000, 'end_min': 2010, 'grid_kWh': 1})
+        with self.assertRaisesRegex(ValueError, 'A_INFORMATION_COVERAGE_UNDERSTATED'):
+            self.result()
+        self.c['reference']['information_set']['A_reference_span_min'][1] = 2010
+        self.assertTrue(self.result()['information_set']['future_A_available'])
+
+    def test_information_condition_changes_no_command_and_infers_no_consent(self):
+        first = self.result()
+        self.c['reference']['information_set']['mode'] = 'offline_full_A_counterfactual'
+        second = self.result()
+        self.assertEqual(first['candidates'], second['candidates'])
+        self.assertEqual(first['selections'], second['selections'])
+        self.assertIsNone(second['proposal_purpose']['human_satisfaction'])
+        self.assertFalse(second['proposal_purpose']['original_EnergyBridge_controller_output'])
+
+    def test_public_parameter_and_source_basis_is_closed(self):
+        from .audit_design import audit
+        self.assertTrue(audit()['passed'])
+
+    def test_new_life_A_admission_requires_bound_passing_service_audit(self):
+        from .life_physics import baseline_admission
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); compiled, runs, audits = (root / name for name in ('compiled', 'runs', 'audit'))
+            for path in (compiled, runs, audits):
+                path.mkdir()
+            seal(compiled, {'records': [{'id': 'case'}]})
+            seal(runs, {'compiled_manifest_sha256': sha(compiled / 'MANIFEST.json')})
+            checks = {k: True for k in ('A_complete_finite_timeline', 'A_service_execution', 'A_service_completeness',
+                                        'A_hot_water_service', 'A_EV_balance', 'A_EV_departure_target')}
+            checks['A_service_execution'] = False
+            metadata = {'schema': 'eb.housing_physics.audit.v1', 'records': [{'id': 'case', 'checks': checks}], 'passed': False,
+                        'compiled_manifest_sha256': sha(compiled / 'MANIFEST.json'),
+                        'runs_manifest_sha256': sha(runs / 'MANIFEST.json')}
+            seal(audits, metadata)
+            with self.assertRaisesRegex(ValueError, 'BASELINE_AUDIT_NOT_PASSED'):
+                baseline_admission(compiled, runs, audits)
+            metadata['passed'] = True; metadata['records'][0]['checks']['A_service_execution'] = True
+            seal(audits, metadata)
+            self.assertEqual('normal_A_service_and_physics_audit_passed', baseline_admission(compiled, runs, audits)['status'])
+            metadata['runs_manifest_sha256'] = '0' * 64; seal(audits, metadata)
+            with self.assertRaisesRegex(ValueError, 'BASELINE_AUDIT_BINDING_MISMATCH'):
+                baseline_admission(compiled, runs, audits)
+
     def test_timer_and_preload_limits_survive_into_B(self):
         need = next(n for n in self.c['needs'] if n['kind'] == 'washer')
         start = min(t['start_min'] for t in self.c['A']['tasks'] if t['need_id'] == need['need_id'])
@@ -67,6 +129,7 @@ class StrategyReviewTests(unittest.TestCase):
         control = next(c for c in self.c['A']['controls'] if c['kind'] == 'ev_charge_window')
         control.update(start_min=450, end_min=1440)
         self.c['reference']['ev_charging_steps'] = [{'need_id': control['need_id'], 'start_min': t, 'end_min': t + 10, 'grid_kWh': 1} for t in range(450, 540, 10)]
+        self.c['reference']['information_set']['A_reference_span_min'][0] = 450
         rows = [r for r in self.result()['candidates'] if r['family'] == 'ev']
         self.assertTrue(rows)
         for r in rows:

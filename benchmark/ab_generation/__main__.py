@@ -14,6 +14,7 @@ def build_batch(input_path, out, rules_path=None):
     rules = {**DEFAULT_RULES, **(read(rules_path) if rules_path else {})}
     out.mkdir(parents=True, exist_ok=False)
     records, counts, families, gaps, assignments = [], collections.Counter(), collections.Counter(), collections.Counter(), collections.Counter()
+    information_modes = collections.Counter()
     ids = [r['case_id'] for r in batch['records']]
     if len(ids) != len(set(ids)):
         raise ValueError('DUPLICATE_CASE_ID')
@@ -22,6 +23,7 @@ def build_batch(input_path, out, rules_path=None):
         if context['case_id'] != row['case_id']:
             raise ValueError('CASE_ID_MISMATCH')
         result = generate(context, rules)
+        information_modes[result['information_set']['mode']] += 1
         path = 'cases/' + digest(row['case_id'])[:24] + '.json.gz'
         save(out / path, result)
         counts['cases'] += 1
@@ -35,6 +37,7 @@ def build_batch(input_path, out, rules_path=None):
         records.append({'case_id': row['case_id'], 'path': path, 'input_context_sha256': digest(context)})
     save(out / 'RULES.json', rules)
     summary = {'schema': VERSION, 'counts': dict(counts), 'candidate_family_counts': dict(families),
+               'information_modes': dict(information_modes), 'real_time_forecaster_implemented': False,
                'unavailable_reasons': dict(gaps), 'assignments': dict(assignments),
                'paired_simulations_started': 0, 'human_answers_created': 0,
                'production_inputs_modified': False, 'master1000_simulation': 'paused',
@@ -73,6 +76,7 @@ def main():
     p.add_argument('--assembled', required=True)
     p.add_argument('--compiled', required=True)
     p.add_argument('--runs', required=True)
+    p.add_argument('--audit', required=True)
     p.add_argument('--out', required=True)
     p = sub.add_parser('export-life')
     p.add_argument('--assembled', required=True)
@@ -128,7 +132,7 @@ def main():
         result = assemble_life(args.life, args.world_contracts, args.shells, args.weather, args.experiments, args.out)
     elif args.command == 'reference-life':
         from .life_physics import reference_life
-        result = reference_life(args.assembled, args.compiled, args.runs, args.out)
+        result = reference_life(args.assembled, args.compiled, args.runs, args.out, args.audit)
     elif args.command == 'export-life':
         from .life_physics import export_life
         result = export_life(args.assembled, args.contexts, args.generated, args.policy, args.out)

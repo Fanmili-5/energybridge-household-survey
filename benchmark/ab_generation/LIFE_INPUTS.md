@@ -89,7 +89,7 @@ python -B -m benchmark.ab_generation assemble-life \
 ```bash
 python -B -m benchmark.ab_generation reference-life \
   --assembled outputs/life-physics --compiled BASELINE_COMPILED \
-  --runs BASELINE_RUNS --out outputs/life-contexts
+  --runs BASELINE_RUNS --audit BASELINE_AUDIT --out outputs/life-contexts
 python -B -m benchmark.ab_generation generate \
   --input outputs/life-contexts/BATCH.json --out outputs/life-B-candidates
 python -B -m benchmark.ab_generation export-life \

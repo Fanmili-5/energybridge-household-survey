@@ -1,5 +1,7 @@
 # 验证范围与结果
 
+当前v3的原EB目的、公开来源、完整A离线条件及重新执行结果见[DESIGN_VALIDATION.md](DESIGN_VALIDATION.md)。下文保留此前版本及其原始验证范围，不将历史42臂重复算作本次新执行。
+
 验证日期：2026-10-19。本次复核覆盖“声明生活→独立需求→A→当前A证据→实际可调机会→事前取舍的B→统一执行与后果回读”。机器回执为[VALIDATION.json](VALIDATION.json)，完整数值结果为[STRATEGY_RESULTS.json](STRATEGY_RESULTS.json)。这是公开合成情境中的实现与数值验证，未完成实测家庭校准或人类偏好验证。
 
 ## 1. 软件、输入与确定性

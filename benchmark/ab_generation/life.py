@@ -234,8 +234,10 @@ def thermostat_controls(spec, world, days):
         require(policy['mode'] in ('occupied_with_hold', 'home_continuous', 'continuous'), 'UNKNOWN_THERMOSTAT_HABIT')
         require(type(policy['fan_operating_mode']) is int and policy['fan_operating_mode'] in (0, 1), 'INVALID_FAN_MODE')
         minute(policy['hold_min'], 'hold_min')
-        require(5 <= policy['heating_setpoint_C'] < policy['cooling_setpoint_C'] <= 40, 'INVALID_THERMOSTAT_BAND')
-        require(5 <= policy['setback_heating_C'] < policy['setback_cooling_C'] <= 40, 'INVALID_SETBACK_BAND')
+        for heat, cool in [('heating_setpoint_C', 'cooling_setpoint_C'), ('setback_heating_C', 'setback_cooling_C')]:
+            require(all(type(policy[k]) in (int, float) and math.isfinite(policy[k]) for k in (heat, cool))
+                    and 5 <= policy[heat] <= 35 and 15 <= policy[cool] <= 40 and policy[heat] < policy[cool],
+                    'INVALID_THERMOSTAT_BAND:' + heat)
         room = assets[aid]['room_id']
         occupants = set()
         for day in days.values():
@@ -261,7 +263,8 @@ def thermostat_controls(spec, world, days):
     for requirement in spec['comfort_requirements']:
         aid = requirement['asset_id']; require(aid in covered, 'COMFORT_REQUIRES_INSTALLED_AC')
         band = requirement['temperature_band_C']
-        require(band is None or (len(band) == 2 and band[0] < band[1]), 'INVALID_INDEPENDENT_COMFORT_BAND')
+        require(band is None or (len(band) == 2 and all(type(t) in (int, float) and math.isfinite(t) for t in band)
+                                and band[0] < band[1]), 'INVALID_INDEPENDENT_COMFORT_BAND')
         room = assets[aid]['room_id']
         for day in days.values():
             spans = merge([[day['base_min'] + e['start_min'], day['base_min'] + e['end_min']]
@@ -367,11 +370,13 @@ def generate_household(spec, world, rules=None):
     spec, world = copy.deepcopy(spec), copy.deepcopy(world)
     rules = {**LIFE_RULES, **(rules or {})}
     require(set(rules) == set(LIFE_RULES) and rules['step_min'] == rules['operation_duration_min'] == 10, 'UNKNOWN_OR_UNSUPPORTED_LIFE_RULES')
+    require(type(rules['seed']) is int, 'INVALID_LIFE_SEED')
     require(all(type(rules[k]) in (int, float) and math.isfinite(rules[k]) and rules[k] >= 0 for k in ('start_deviation_weight', 'preload_wait_weight', 'retrieval_wait_weight')), 'INVALID_SCHEDULING_WEIGHT')
     require(spec['household_id'] == world['household_id'], 'LIFE_WORLD_ID_MISMATCH')
     require(not set(spec) & {'B', 'events', 'VPP_events', 'tariff', 'human_answers', 'acceptance'}, 'DOWNSTREAM_INFORMATION_IN_A_INPUT')
     require(set(spec) <= {'household_id', 'anchor', 'end_exclusive', 'member_calendars', 'hot_water_minimum_C', 'program_policies', 'thermostat_policies', 'comfort_requirements', 'tank_policy', 'mobility', 'facility_reservations', 'provenance'}, 'UNKNOWN_LIFE_INPUT_FIELD')
-    require(10 <= spec['hot_water_minimum_C'] <= 60, 'INVALID_HOT_WATER_SERVICE_TEMPERATURE')
+    require(type(spec['hot_water_minimum_C']) in (int, float) and math.isfinite(spec['hot_water_minimum_C'])
+            and 10 <= spec['hot_water_minimum_C'] <= 60, 'INVALID_HOT_WATER_SERVICE_TEMPERATURE')
     days = build_days(spec, world)
     scheduler = Scheduler(world, days, rules)
     ev = mobility(spec, world, scheduler)  # Fixed real visits reserve resources first.
@@ -387,7 +392,8 @@ def generate_household(spec, world, rules=None):
     if tanks:
         require(len(tanks) == 1, 'ONE_TANK_SUPPORTED')
         tank, policy = tanks[0], spec['tank_policy']
-        require(policy['asset_id'] == tank['asset_id'] and 10 <= policy['target_C'] <= tank['parameters']['maximum_C'], 'INVALID_TANK_POLICY')
+        require(policy['asset_id'] == tank['asset_id'] and all(type(policy[k]) in (int, float) and math.isfinite(policy[k])
+                and 10 <= policy[k] <= tank['parameters']['maximum_C'] for k in ('target_C', 'setback_C')), 'INVALID_TANK_POLICY')
         require(policy['mode'] in ('continuous', 'before_draws'), 'UNKNOWN_TANK_HABIT')
         minute(policy['preheat_lead_min'], 'preheat_lead')
         minute(policy['after_draw_hold_min'], 'tank_hold')
