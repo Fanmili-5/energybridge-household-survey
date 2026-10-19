@@ -6,10 +6,13 @@
   const $=id=>document.getElementById(id);
   const keys=['decision','score','comfort_score','energy_score','vpp_score','reason'];
   let current=null,saved=null;
+  const pending=()=>!current||current.outcome_status==='not_computed';
+  const pendingMessage='资料预览：实际后果未计算，评价暂不可填写或提交；请不要猜测评分。没有保存正式答卷。';
   function raw(){
     return Object.fromEntries(keys.map(key=>[key,key==='decision' ? document.querySelector('input[name="decision"]:checked')?.value||null : $(key).value]));
   }
   function ready(){
+    if(pending()){$('submit-answer').disabled=true;return;}
     try {root.EBSimple50.answer(raw());$('submit-answer').disabled=false;}
     catch {$('submit-answer').disabled=true;}
   }
@@ -24,11 +27,14 @@
   root.EBCollection={
     onCaseShown(caseData){
       current=caseData;saved=null;fill(null);
-      $('response-status').textContent='资料预览：后果未计算；可检查填写交互，内容不会提交到正式采集库。';
+      $('response-form').querySelectorAll('input,textarea,select,button').forEach(el=>{el.disabled=pending();});
+      ready();
+      $('response-status').textContent=pending()?pendingMessage:'资料预览：填写只在当前页面检查，不会提交到正式采集库。';
     },
     observeSchedule(){},
-    revert(){fill(saved);$('response-status').textContent='已撤销本题未确认修改；没有写入正式答卷。';},
+    revert(){fill(saved);$('response-status').textContent=pending()?pendingMessage:'已撤销本题未确认修改；没有写入正式答卷。';},
     submit(){
+      if(pending())throw Error('OUTCOMES_NOT_COMPUTED: evaluation is unavailable in this preview');
       const response=root.EBSimple50.answer(raw());
       // In-memory only, scoped to this exact displayed case. Never a human label.
       saved={...response};

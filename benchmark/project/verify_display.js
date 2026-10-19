@@ -16,6 +16,9 @@ for(const row of index.cases){
   }
   assert.equal((shown.impacts.match(/未计算/g)||[]).length,8);
   assert.ok(!/已列任务均完成|0\/0|已达标|达到目标|无有人时记录/.test(shown.impacts));
+  assert.match(shown.request,/这是请求目标，实际响应未计算/);
+  assert.match(shown.schedule,/允许充电不表示全程充电/);
+  assert.match(shown.schedule,/不是实际室温或出水温度/);
   assert.deepEqual(c.impact,null);assert.deepEqual(c.VPP_results,null);assert.deepEqual(c.response,null);
   models[c.case_id]=shown;
 }

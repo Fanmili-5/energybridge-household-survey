@@ -59,6 +59,40 @@ class ProjectTests(unittest.TestCase):
             self.assertNotIn('workbench',html)
             subprocess.run(['node','--check',str(folder/'public/view.js')],check=True,capture_output=True)
 
+    def test_pending_results_cannot_elicit_answers(self):
+        subprocess.run(['node',str(HERE/'test_preview_client.js')],check=True,capture_output=True)
+
+    def test_concrete_household_materials_explain_commands_without_claiming_results(self):
+        root=HERE/'examples/questionnaire'; index=read(root/'public/index.json')
+        row=next(r for r in index['cases'] if r['case_id'].endswith('3c33405006eea121bdeb45e0d92f12733fb0805451f9471ae2a271d675e4c943'))
+        case=read(root/'public'/row['path']);text=''.join(case['project_presentation']['family_lines'])
+        for item in ['36岁男','建筑面积50.0㎡','可用面积42.0㎡','起居兼卧室','室外专用车位',
+                     '19:00—19:30 晚餐','次日07:00—次日08:00','次日08:00出发',
+                     '充电窗口在次日07:50结束','不是已达到的电量','衣物量1.2 kg']:
+            self.assertIn(item,text)
+        shown=read(root/'DISPLAY_MODELS.json')[case['case_id']]
+        self.assertIn('这是请求目标，实际响应未计算',shown['request'])
+        self.assertIn('制冷设定26℃',shown['schedule']);self.assertIn('水箱加热设定55℃',shown['schedule'])
+        self.assertIn('允许充电不表示全程充电',shown['schedule'])
+        self.assertIn('其他设备沿用A',shown['changes'])
+        self.assertLess(shown['changes'].index('装入衣物 18:10'),shown['changes'].index('洗衣运行 18:20'))
+        washer=lambda side:[r for r in case['plans'][side]['tasks'] if r['kind']=='washer']
+        a,b=washer('A'),washer('B');self.assertEqual(len(a),1);self.assertEqual(len(b),1)
+        self.assertEqual(b[0]['start_min']-a[0]['start_min'],40)
+        self.assertEqual({k:v for k,v in a[0].items() if k not in ['start_min','end_min']},
+                         {k:v for k,v in b[0].items() if k not in ['start_min','end_min']})
+
+    def test_invalid_timer_plan_shows_unchanged_handling_context(self):
+        root=HERE/'examples/questionnaire';index=read(root/'public/index.json')
+        row=next(r for r in index['cases'] if r['case_id'].endswith('5b0eca5c2828aaf50539511b09452738192d8d1fdf3725e4684d2a08c0c7e9bb'))
+        shown=read(root/'DISPLAY_MODELS.json')[row['case_id']]['changes']
+        # The invalid B still runs before load. Show both literally rather than
+        # hiding unchanged load/unload behind the full-schedule disclosure.
+        self.assertIn('装入餐具 20:00–20:10',shown)
+        self.assertIn('洗碗机运行 18:30–19:10',shown)
+        self.assertIn('取出餐具 20:50–21:00',shown)
+        self.assertNotIn('应拒绝',shown)
+
     def test_generated_family_context_keeps_identity_and_has_no_thermal_trace(self):
         from benchmark.family_generation.core import generate
         from benchmark.family_generation.connect import connect

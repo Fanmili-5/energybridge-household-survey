@@ -43,6 +43,7 @@ jobs:
           python -B -m benchmark.project questionnaire --project "$RUNNER_TEMP/eb-project" --out "$RUNNER_TEMP/eb-v69"
           python -B -m benchmark.project verify-questionnaire "$RUNNER_TEMP/eb-v69"
           node benchmark/project/verify_display.js "$RUNNER_TEMP/eb-v69"
+          python -B -m benchmark.project.walkthrough --project "$RUNNER_TEMP/eb-project" --questionnaire "$RUNNER_TEMP/eb-v69"
           python - <<'PY'
           import json, os
           from pathlib import Path

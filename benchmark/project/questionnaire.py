@@ -4,6 +4,8 @@ The signed production collector stays byte-identical. Preview rendering adds
 only explicit pending-data branches and case-ID routing for same-day variants.
 """
 import copy
+import datetime
+import re
 import subprocess
 from pathlib import Path
 from benchmark.ab_generation.common import bound, digest, read, save, seal, sha, verify
@@ -11,11 +13,27 @@ from .pipeline import HERE, check
 
 COLLECTOR = HERE.parent / 'collector'
 UI = 'eb.questionnaire50.collection.v69'
-ADAPTER = 'eb.project.v69_preview_adapter.v1'
+ADAPTER = 'eb.project.v69_preview_adapter.v2'
 GROUPS = ('tasks', 'operations', 'controls')
 KINDS = {'washer': '洗衣', 'dryer': '烘干', 'dishwasher': '洗碗', 'ev': '车辆充电', 'water_heater': '热水', 'ac': '空调'}
-ACTIVITIES = {'sleep': '睡眠', 'work_or_school': '外出工作或学习', 'home_idle': '在家可安排家务', 'dinner': '晚餐', 'bath': '洗澡', 'care': '照护'}
+DEVICE_NAMES = {**KINDS, 'washer': '洗衣机', 'dryer': '烘干机', 'dishwasher': '洗碗机', 'water_heater': '电热水器', 'ev': '电动车'}
+ACTIVITIES = {'sleep': '睡眠', 'work_or_school': '外出工作或学习', 'home_idle': '在家活动', 'dinner': '晚餐', 'bath': '洗澡', 'care': '照护'}
 RELATIONS = {'partner': '伴侣', 'parent': '家长', 'sibling': '兄弟姐妹'}
+ROOMS = {'combined_bed_living': '起居兼卧室', 'corridor': '走廊', 'kitchen': '厨房',
+         'washroom': '卫生间', 'living_hall': '起居厅', 'living': '起居室',
+         'living_room': '起居室', 'bedroom': '卧室', 'utility_niche': '家务区',
+         'external_dedicated_ev_bay': '室外专用车位'}
+
+
+def room_name(room):
+    if room in ROOMS:
+        return ROOMS[room]
+    for pattern, label in [(r'private_0*(\d+)', '房间'), (r'shared_storage_0*(\d+)', '共用储物间'),
+                           (r'bedroom[_-]?0*(\d+)', '卧室'), (r'service[_-]?0*(\d+)', '家务区')]:
+        match = re.fullmatch(pattern, room or '')
+        if match:
+            return label + match.group(1)
+    return room or '位置未指定'
 
 
 def time(t):
@@ -101,19 +119,37 @@ def profile_and_lines(family, household, context):
         lines.append('给定照护关系：%s照护%s。' %
                      (names[care['caregiver_id']], '、'.join(names[mid] for mid in care['dependent_ids'])))
     for mid, calendar in household['calendars'].items():
-        lines.append(names[mid] + '今天：' + '；'.join('%s—%s %s' %
-            (time(r['start_min']), time(r['end_min']), ACTIVITIES.get(r['activity'], '已声明活动')) for r in calendar) + '。')
+        fixed = [r for r in calendar if not r['available_for_operation']]
+        lines.append(names[mid] + '今天的固定安排：' + '；'.join('%s—%s %s' %
+            (time(r['start_min']), time(r['end_min']), ACTIVITIES.get(r['activity'], '已声明活动')) for r in fixed) + '。')
+        windows = [(max(0, lo), min(1920, hi)) for lo, hi in context['operator_windows'].get(mid, [])
+                   if lo < 1920 and hi > 0]
+        lines.append(names[mid] + '可手动操作设备的时段：' + ('；'.join('%s—%s' %
+            (time(lo), time(hi)) for lo, hi in windows) or '未声明') + '。其余时段不能默认有人装入、取出或插拔。')
+    mobility = family['life'].get('mobility')
+    if mobility:
+        journeys = []
+        for offset in (0, 1):
+            date = datetime.date.fromisoformat(context['date']) + datetime.timedelta(days=offset)
+            template = 'weekday' if date.weekday() < 5 else 'weekend'
+            for journey in mobility['journey_templates'][template]:
+                departure, arrival = (offset * 1440 + journey[k] for k in ('departure_min', 'arrival_min'))
+                if departure <= 1920 and arrival > 480:
+                    journeys.append('%s出发、%s返回' % (time(departure), time(arrival)))
+        if journeys:
+            lines.append('车辆行程（给定安排）：' + '；'.join(journeys) + '。')
     active = {r['need_id'] for g in ('tasks', 'operations') for r in household['A'][g]}
     for n in context['needs']:
         if n['kind'] == 'water_heater' and n['release_min'] < 1920 and n['deadline_min'] > 480:
             lines.append('热水需求：%s—%s，%s需%g升热水，情境给定最低%g℃；实际交付未计算。' %
                          (time(n['release_min']), time(n['deadline_min']), names[n['requester']], n['quantity'], n['minimum_C']))
         if n['need_id'] in active and n['release_min'] < 1920 and n['deadline_min'] > 480:
-            text = '%s需求：%s后可安排，须在%s前交付' % (KINDS.get(n['kind'], n['kind']), time(n['release_min']), time(n['deadline_min']))
+            text = '%s需求：%s后可安排，须在%s前完成' % (KINDS.get(n['kind'], n['kind']), time(n['release_min']), time(n['deadline_min']))
             if n.get('unit') == 'kg':
                 text += '，衣物量%g kg' % n['quantity']
             if 'required_departure_soc' in n:
-                text += '，出发目标电量%g%%' % (100 * n['required_departure_soc'])
+                text = '车辆充电需求：%s后可充电，充电窗口在%s结束；目标电量%g%%，不是已达到的电量' % (
+                    time(n['release_min']), time(n['deadline_min']), 100 * n['required_departure_soc'])
             lines.append(text + '。')
     for requirement in family['life']['comfort_requirements']:
         band = requirement['temperature_band_C']
@@ -121,15 +157,23 @@ def profile_and_lines(family, household, context):
                      if band is not None else '本情境未给定个人舒适温度范围，不能从角色名称补造；实际室温未计算。')
     by_asset = {d['asset_id']: d for d in household['devices']}
     for m in members:
-        allowed = sorted({KINDS.get(by_asset[a]['kind'], by_asset[a]['kind']) for a in m['can_operate_asset_ids'] if a in by_asset})
+        allowed = sorted({DEVICE_NAMES.get(by_asset[a]['kind'], by_asset[a]['kind']) for a in m['can_operate_asset_ids'] if a in by_asset})
         lines.append('%s有权操作：%s。' % (names[m['member_id']], '、'.join(allowed) or '本次没有已声明授权的设备'))
     lines.append('整套参考住房：建筑面积%.1f㎡、可用面积%.1f㎡、住宅共%d户；由参考房型匹配，不是实测户型。' %
                  (household['housing']['gross_area_m2'], household['housing']['usable_area_m2'], household['housing']['shared_households']))
+    lines.append('房间：' + '、'.join(room_name(r['room_id']) for r in household['housing']['rooms']) + '。')
     devices = copy.deepcopy(household['devices'])
     for device in devices:
         if device['room_id'] is None and device.get('placement') == 'exterior' and device['kind'] == 'ev':
             device.update(source_room_id=None, room_id='external_dedicated_ev_bay',
                           room_projection='v69_display_name_for_declared_exterior_EV_location;not_new_geometry')
+    locations = {}
+    for device in devices:
+        locations.setdefault(room_name(device['room_id']), []).append(DEVICE_NAMES.get(device['kind'], device['kind']))
+    lines.append('设备位置：' + '；'.join(place + '：' + '、'.join(kinds) for place, kinds in locations.items()) + '。')
+    if any(d['kind'] == 'washer' and d['room_id'] == 'combined_bed_living' and
+           {'water', 'drain', 'electricity'} <= set(d.get('connections', [])) for d in devices):
+        lines.append('本参考情境把洗衣设备放在起居兼卧室，已给定供水、排水和供电连接；噪声影响未提供。')
     profile = {'schema': 'eb.project.v69_profile.v1', 'household_id': hid, 'province': '公开合成情境 · 地区未指定',
         'members_count': facts['N'], 'generations': facts['G'], 'household_area_m2': household['housing']['gross_area_m2'],
         'area_scope': 'whole_reference_dwelling;not_household_allocated_area',
@@ -153,8 +197,10 @@ def preview_assets(out):
         '50户正式问卷': 'v69 · 资料预览',
         'src="collection-client.js"': 'src="preview-client.js"',
         '<div class="collection-toolbar">': '<div class="collection-toolbar" hidden>',
-        '结果为仿真估算。用电减少可能伴随任务未完成；费用与补偿未计算。': '实际用电、室温、任务完成与VPP响应均未计算。时间和设定值属于计划，不能当作实际后果。',
-        '草稿自动保存。提交后生成回执；凭恢复码可换设备续填。': '此处只预览既定问卷，填写内容仅作本机交互检查，不保存为正式答卷。',
+        '代入给定家庭，看看安排变了什么，再作出选择。': '代入给定家庭，核对生活安排和调整内容。本页实际后果尚未计算，评价暂不可填写。',
+        '结果为仿真估算。用电减少可能伴随任务未完成；费用与补偿未计算。': '实际用电、室温、任务完成、电网响应、费用与补偿均未计算。时间和设定值属于计划，不能当作实际后果。',
+        '<form id="response-form">': '<p class="save-note">实际后果尚未计算，暂不能填写或提交评价。下方保留既定问卷题目供核对，请不要猜测评分。</p><form id="response-form">',
+        '草稿自动保存。提交后生成回执；凭恢复码可换设备续填。': '此处只预览既定问卷，不保存草稿或正式答卷。',
     }
     for old, new in replacements.items():
         if html.count(old) != 1:
@@ -164,11 +210,12 @@ def preview_assets(out):
     js = (COLLECTOR / 'view.js').read_text()
     guards = {
         'function familyLines(c,p) {': 'if(c.project_presentation) return c.project_presentation.family_lines;',
+        'function requestModel(c){': "if(c.project_presentation) return [m('p','电网用电调整邀请（VPP请求）','request-title'),m('p',c.VPP_requests.length?c.VPP_requests.map(x=>`${span(x)}，希望相对A${c.project_presentation.event_meter_scope==='whole_physical_dwelling'?'整套住宅':''}平均${x.direction==='up'?'增加':'降低'}用电功率${num(x.target_kw)}kW`).join('；'):'本题没有电网调整邀请','request-events'),m('p',`通知时间：${[...new Set(c.VPP_requests.map(x=>time(x.notification_min)))].join('、')||'未设置'}。这是请求目标，实际响应未计算。`,'request-notice')];",
         'function temperatureEffect(c,p) {': "if(c.outcome_status==='not_computed') return {label:'室温',lead:'未计算',lines:[],selectedRooms:[]};",
         'function serviceEffect(c) {': "if(c.outcome_status==='not_computed') return {label:'任务完成',lead:'未计算',lines:[]};",
         'function vppEffect(c) {': "if(c.outcome_status==='not_computed') return {label:'VPP响应',lead:'未计算',lines:[]};",
         'function effects(c,p) {': "if(c.outcome_status==='not_computed') return ['用电','室温','任务完成','VPP响应'].map(label=>({label,lead:'未计算',lines:[]}));",
-        'function impactModel(c,p){': "if(c.outcome_status==='not_computed') return ['用电量','有人时的室温','生活任务是否完成','VPP响应'].map(label=>m('div',null,'impact-card',[m('div',null,'impact-title',[m('h3',label)]),m('div',null,'metric-pair',[metricCell('A','未计算'),metricCell('B','未计算')]),m('p','尚未运行仿真；这里不能判断实际后果。','effect-detail')]));",
+        'function impactModel(c,p){': "if(c.outcome_status==='not_computed') return ['用电量','有人时的室温','生活任务是否完成','电网响应（VPP）'].map(label=>m('div',null,'impact-card',[m('div',null,'impact-title',[m('h3',label)]),m('div',null,'metric-pair',[metricCell('A','未计算'),metricCell('B','未计算')]),m('p','尚无实际后果数据，不能从计划直接判断。','effect-detail')]));",
     }
     for anchor, code in guards.items():
         if js.count(anchor) != 1:
@@ -177,6 +224,18 @@ def preview_assets(out):
     # v69's production bank has one B/day. The project can have several B/day.
     # Use immutable case IDs for selection; do not relabel variants as new dates.
     pairs = {
+        '`制热${num(x[key],1)}℃`': '`制热设定${num(x[key],1)}℃`',
+        '`制冷${num(x[key]??x.value_C,1)}℃`': '`制冷设定${num(x[key]??x.value_C,1)}℃`',
+        '`加热目标${num(x.value_C,1)}℃`': '`水箱加热设定${num(x.value_C,1)}℃`',
+        "{asset:asset(p,x.asset_id),A:[],B:[]": "{asset_id:x.asset_id,asset:asset(p,x.asset_id),A:[],B:[]",
+        "return visible.map(({asset,A,B,sourceChanges,units})=>({asset:": "return visible.map(({asset_id,asset,A,B,sourceChanges,units})=>({asset_id,asset:",
+        "for (const x of c.changes) {": "for (const x of [...c.changes].sort((a,b)=>(a.start_min??Math.min(a.A?.start_min??Infinity,a.B?.start_min??Infinity))-(b.start_min??Math.min(b.A?.start_min??Infinity,b.B?.start_min??Infinity)))) {",
+        "const value = ['ac_setpoint','tank_setpoint','ev_charge_window'].includes(x.kind) ? control([x],x.kind) : LABELS[x.kind]||'电器操作';": "const device=p.devices.find(d=>d.asset_id===x.asset_id),objects=device?.types.includes('dishwasher')?'餐具':device?.types.some(k=>['washer','dryer'].includes(k))?'衣物':'物品';\n    const value = ['ac_setpoint','tank_setpoint','ev_charge_window'].includes(x.kind) ? control([x],x.kind) : x.kind==='load'?'装入'+objects:x.kind==='unload'?'取出'+objects:['washer','dryer','dishwasher'].includes(x.kind)?LABELS[x.kind]+'运行':LABELS[x.kind]||'电器操作';",
+        "const rows=changeRows(c,p);": "const rows=changeRows(c,p),notes=c.project_presentation?[m('p','改动的程序设备同时列出装入、运行和取出，包含其中未改的步骤；其他设备沿用A。装入、取出和插拔需要人操作，程序运行可以自动进行。','effect-detail')]:[];\n    if(c.project_presentation)for(const row of rows){const device=p.devices.find(d=>d.asset_id===row.asset_id);if(device?.types.some(k=>['washer','dryer','dishwasher'].includes(k)))for(const side of ['A','B'])row[side]=['tasks','operations'].flatMap(g=>c.plans[side][g]).filter(x=>x.asset_id===row.asset_id).sort((a,b)=>a.start_min-b.start_min||a.end_min-b.end_min).map(x=>command(x,p));}",
+        "return rows.length?rows.map": "return rows.length?[...notes,...rows.map",
+        ")))])):[m('p','本题A/B实际安排相同，仍请独立评价。','no-change')];": ")))]))]:[m('p','本题A/B计划安排相同，实际后果尚未计算。','no-change')];",
+        "result.schedule='本题原始安排，包含跨夜和后续任务。运行及完成情况见“主要影响”。';": "result.schedule='本题计划安排，包含跨夜和后续任务。允许充电不表示全程充电；温控和水箱数值是设定值，不是实际室温或出水温度。实际后果尚未计算。';",
+        "el('p','本题原始安排，包含跨夜和后续任务。运行及完成情况见“主要影响”。','section-note')": "el('p','本题计划安排，包含跨夜和后续任务。允许充电不表示全程充电；温控和水箱数值是设定值，不是实际室温或出水温度。实际后果尚未计算。','section-note')",
         "x.date===q('case-date').value": "x.case_id===q('case-date').value",
         "date:target.date": "case_id:target.case_id",
         "const o=el('option',x.date);o.value=x.date;": "const o=el('option',x.date+' · 方案'+(index.cases.filter(r=>r.household_id===x.household_id).indexOf(x)+1));o.value=x.case_id;",
@@ -214,7 +273,7 @@ def build_questionnaire(project, out):
             plans = display_plans(pair); sid = sample['id']; cid = c['case_id'] + '__' + sid
             case = {'schema': 'eb.project.v69_case.v1', 'case_id': cid, 'household_id': hid, 'date': c['date'],
                 'window_min': [480, 1920], 'plans': plans, 'changes': changes(plans),
-                'project_presentation': {'family_lines': lines}, 'outcome_status': 'not_computed',
+                'project_presentation': {'family_lines': lines, 'event_meter_scope': c['event_meter_scope']}, 'outcome_status': 'not_computed',
                 'impact': None, 'VPP_results': None, 'response': None,
                 'VPP_requests': [dict(e, notification_min=c['decision_min']) for e in c['events']],
                 'bindings': {'sample_id': sid, 'source_pair_sha256': sha(pair_path),
