@@ -57,6 +57,13 @@ def audit():
         if any(not all(r.get(k) for k in ('purpose', 'origin', 'implementation', 'calibration', 'validation'))
                or r['exact_value_from_paper'] is not False for r in entries.values()):
             raise ValueError('INCOMPLETE_PARAMETER_BASIS:' + group)
+    from .collection_design import DEFAULT as COLLECTION_DEFAULT
+    collection = read(package / 'COLLECTION_PARAMETERS.json')
+    if {k:r['value'] for k,r in collection['defaults'].items()} != COLLECTION_DEFAULT:
+        raise ValueError('UNREVIEWED_COLLECTION_DEFAULT')
+    if any(r['exact_value_from_paper'] is not False or not all(r.get(k) for k in ('purpose','origin','boundary'))
+           for r in collection['defaults'].values()):
+        raise ValueError('INCOMPLETE_COLLECTION_PARAMETER_BASIS')
     schema = register['life_schema_parameters']
     path = bound(package, schema['path'])
     if sha(path) != schema['sha256'] or schema_fields(read(path)) != schema['fields']:

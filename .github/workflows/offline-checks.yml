@@ -32,7 +32,7 @@ jobs:
               paths = subprocess.check_output(['git', 'diff', '--name-only', base, 'HEAD'], text=True).splitlines()
               ancillary = {'benchmark/PUBLICATION_MANIFEST.json',
                            'benchmark/family_generation/PACKAGE_MANIFEST.json',
-                           '.github/workflows/ab-generation.yml', '.github/workflows/offline-checks.yml',
+                           '.github/workflows/ab-generation.yml', '.github/workflows/ab-collection-plan.yml', '.github/workflows/offline-checks.yml',
                            '.github/workflows/project-interfaces.yml', 'README.md', 'benchmark/README.md'}
               static_roots = ('benchmark/ab_generation/', 'benchmark/project/')
               ab_only = (any(p.startswith(static_roots) for p in paths)

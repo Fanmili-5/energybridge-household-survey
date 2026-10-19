@@ -2,10 +2,10 @@
   "EP_runs": 0,
   "date": "2026-10-19",
   "dependencies": {
-    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "c5bd9505c1602a947a98a686a0728e459c8cc4a5da355191d6b02c8bf750aae9",
+    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "cdb2848a24d04cfb7bf10f9582afba30bbd4d9b7733881630962414bc75127c8",
     "benchmark/ab_generation/__init__.py": "a591d8b46bebc41f63b28f301f0ff891926009485a02f0cbf5fb65a20fb130dc",
     "benchmark/ab_generation/__main__.py": "7d5c7922190df9a0616976ea903b3025df6939b9854db73605078242f6b96fea",
-    "benchmark/ab_generation/audit_design.py": "c965f65e50ff7a2d874fe6040c18fd5f5c4b0bb8a64f4eebe5e0725754036d09",
+    "benchmark/ab_generation/audit_design.py": "8cc441915a547ed5ac704f3013cd8b045acc074230469181ff2b1d88625168bc",
     "benchmark/ab_generation/common.py": "384385ec8951399f1a6441807f4d2e66b154dfc16538c61b792c9f8ef2438c0a",
     "benchmark/ab_generation/evaluate.py": "4c7ea9c1e63daa14b62ac4890c016b0296236cad2330783e979bf1b8df19abed",
     "benchmark/ab_generation/examples/life/life_batch.json": "ef5acb1daa1484c85cdd15ef9dea04842f85c21aac06e42c8f774377a37718d8",

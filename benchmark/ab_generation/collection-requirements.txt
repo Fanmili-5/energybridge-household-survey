@@ -1,0 +1,2 @@
+# Same pinned numerical/geometry runtime as the connected public source A.
+-r ../housing_simulation/requirements.txt

@@ -9312,6 +9312,170 @@
           "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
         }
       ]
+    },
+    {
+      "path": "examples/collection/design.json",
+      "quantitative_fields": [
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 3,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/ac_delta_C/*",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            0.5,
+            1.0,
+            2.0
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 1,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/assignment_representatives_per_cell",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            2
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 1,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/days",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            10
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 1,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/event/end_min",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            1140
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 1,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/event/start_min",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            1080
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 1,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/event/target_kw",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            1.5
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 1,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/joint_budget",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            192
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 1,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/joint_trials_per_subset",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            6
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 1,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/precondition_min",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            30
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 3,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/quantiles/*",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            0.2,
+            0.5,
+            0.9
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 1,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/seed",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            20261020
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 1,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/solver_node_limit",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            400
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 1,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/step_min",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            10
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 3,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/tank_delta_C/*",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            1.0,
+            3.0,
+            5.0
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "occurrences": 3,
+          "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
+          "path_pattern": "/thermal_duration_min/*",
+          "purpose_and_boundary": "six_existing_public_families_ten_independent_days;not_physical_or_population_calibration;COLLECTION_PARAMETERS.json",
+          "values": [
+            20,
+            40,
+            60
+          ]
+        }
+      ],
+      "sha256": "8d29259ff1aadd520214135613e6391004b1e490d81fe26bc53295f6a4163bc0"
     }
   ],
   "legacy_constraints": [

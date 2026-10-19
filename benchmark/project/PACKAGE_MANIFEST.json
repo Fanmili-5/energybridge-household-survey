@@ -80,7 +80,7 @@
   },
   "dependencies": {
     "benchmark/__init__.py": "64451c197a4f82e4815a5daee3f2ec4dd518da48855e2da1d36807b0249e017c",
-    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "c5bd9505c1602a947a98a686a0728e459c8cc4a5da355191d6b02c8bf750aae9",
+    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "cdb2848a24d04cfb7bf10f9582afba30bbd4d9b7733881630962414bc75127c8",
     "benchmark/collector/README.md": "5dccf7dc02d0e9aad72921d829f79b350c4ad5ca5e673af64a86036d91649697",
     "benchmark/collector/admin.py": "82663519a69cf782fbe64ea6581afa2715b03f9be21d4b4dbc84b6b08042e016",
     "benchmark/collector/answer_contract.py": "125a2408299519fd14f8c65fa708fb8e940c1fd83319bb02f57c16510d9ff0bd",
@@ -99,7 +99,7 @@
     "benchmark/collector/test_protocol.py": "f975b19816207c56309903d836e70738993c0ccc7c431f12399f3341c102dcae",
     "benchmark/collector/view.css": "22f0158a79449120981e8500609ddb27cd3e494bd73506ea46cc61f300e9c969",
     "benchmark/collector/view.js": "4cff389151ba083443c8c676d3f9b80eceec6caa90d5531f01ffdb3a5563fee2",
-    "benchmark/family_generation/PACKAGE_MANIFEST.json": "78edf207ad16686606d7ad616a3d22ff85008230930a91aeaee985efc7ff2c56",
+    "benchmark/family_generation/PACKAGE_MANIFEST.json": "be4a7f9849de1246064492194245c092941ba29ce574673b0a8297978433ffa9",
     "benchmark/housing_simulation/PACKAGE_MANIFEST.json": "f5a2d3c2c4233b8c78049d442fc4fbc6b068a5feb59eeec1cb033a0c46a97d4b"
   }
 }
