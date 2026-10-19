@@ -72,6 +72,20 @@ class OpportunityTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'INVALID_TANK_NODE_REFERENCE|Out of range float'):
             generate(self.c)
 
+    def test_nonarray_node_evidence_is_rejected_as_validation_error(self):
+        row = self.c['reference']['thermal'][self.tank['asset_id']][0]
+        for value in (55, True, '555555', {'node': 55}, None):
+            with self.subTest(value=value):
+                row['node_temperatures_C'] = value
+                with self.assertRaisesRegex(ValueError, 'INVALID_TANK_NODE_REFERENCE'):
+                    generate(self.c)
+
+    def test_thermal_reference_cannot_name_an_uninstalled_asset(self):
+        self.c['reference']['thermal']['not-installed'] = copy.deepcopy(
+            self.c['reference']['thermal'][self.tank['asset_id']])
+        with self.assertRaisesRegex(ValueError, 'UNKNOWN_THERMAL_REFERENCE_ASSET'):
+            generate(self.c)
+
     def test_equal_daily_energy_does_not_hide_time_shift(self):
         context = {'decision_min': 0, 'horizon_min': [0, 60]}
         a = [{'asset_id': 'washer', 'start_min': 0, 'end_min': 10, 'power_kw': 1}]
@@ -129,6 +143,54 @@ class OpportunityTests(unittest.TestCase):
         self.assertIn('NO_DECLARED_PROGRAM_NEED', reasons)
         self.assertIn('NO_REMAINING_A_CHARGE_IN_HORIZON', reasons)
 
+    def test_mixed_joint_supported_targets_still_enter_response_guard(self):
+        rows = []
+        for i, changed in enumerate([False, False, False, True]):
+            evidence = {'status': 'supported', 'asset_id': 'vehicle', 'asset_L1_kWh': {'vehicle': 1}}
+            targets = [{'asset_id': 'vehicle', 'kind': 'ev', 'observable_response': changed}]
+            if not changed:
+                evidence = {'status': 'exploratory', 'children': [evidence, {'status': 'exploratory', 'asset_id': 'store'}]}
+                targets.append({'asset_id': 'store', 'kind': 'water_heater', 'observable_response': True})
+            rows.append({'case_id': 'c', 'sample_id': str(i), 'stratum': 'mixed',
+                         'features': {'opportunity': 'supported' if changed else 'exploratory'}, 'coverage_credit': True,
+                         'observation': {'report': {
+                             'request_opportunity': evidence,
+                             'targeted_response': {'pattern': 'all_targeted_assets_change' if changed else 'mixed_target_response',
+                                 'B_native_trace_sha256': str(i), 'records': targets}}}})
+        result = response_coverage(rows, {'minimum_changed_kinds': ['ev'], 'maximum_supported_no_response_fraction': .5})
+        self.assertEqual(4, result['supported_target_count'])
+        self.assertEqual(.75, result['supported_no_response_fraction'])
+        self.assertFalse(result['passed'])
+        self.assertEqual(4, len(result['records']))
+
+    def test_partial_program_chain_counts_each_assets_profile_evidence(self):
+        row = {'case_id': 'c', 'sample_id': 's', 'stratum': 'exploratory',
+               'features': {'opportunity': 'exploratory'}, 'coverage_credit': True,
+               'observation': {'report': {
+                   'request_opportunity': {'status': 'exploratory', 'asset_L1_kWh': {'wash': 1, 'dry': 0}},
+                   'targeted_response': {'pattern': 'no_target_response', 'B_native_trace_sha256': 'hash',
+                       'records': [{'asset_id': 'wash', 'kind': 'washer', 'observable_response': False},
+                                   {'asset_id': 'dry', 'kind': 'dryer', 'observable_response': False}]}}}}
+        result = response_coverage([row], {'minimum_changed_kinds': ['washer'], 'maximum_supported_no_response_fraction': .5})
+        self.assertEqual(1, result['supported_target_count'])
+        self.assertEqual(1, result['supported_no_response_count'])
+        self.assertFalse(result['passed'])
+
+    def test_missing_supported_target_readback_fails_and_retains_the_row(self):
+        row = {'case_id': 'c', 'sample_id': 's', 'stratum': 'mixed',
+               'features': {'opportunity': 'exploratory'}, 'coverage_credit': True,
+               'observation': {'report': {
+                   'request_opportunity': {'status': 'exploratory', 'children': [
+                       {'status': 'supported', 'asset_id': 'vehicle'}, {'status': 'exploratory', 'asset_id': 'store'}]},
+                   'targeted_response': {'pattern': 'all_targeted_assets_change', 'B_native_trace_sha256': 'hash',
+                       'records': [{'asset_id': 'store', 'kind': 'water_heater', 'observable_response': True}]}}}}
+        result = response_coverage([row], {'minimum_changed_kinds': ['water_heater']})
+        self.assertFalse(result['passed'])
+        self.assertFalse(result['supported_target_response_binding_passed'])
+        self.assertIsNone(result['supported_no_response_fraction'])
+        self.assertEqual([{'sample_id': 's', 'asset_id': 'vehicle'}], result['missing_supported_target_responses'])
+        self.assertEqual(1, len(result['records']))
+
     def test_joint_readback_does_not_credit_silent_tank_for_EV_response(self):
         pair = {'A': {'tasks': [], 'operations': [], 'controls': [
             {'asset_id': 'vehicle', 'kind': 'ev_charge_window', 'need_id': 'connection', 'start_min': 0, 'end_min': 20},
@@ -150,6 +212,20 @@ class OpportunityTests(unittest.TestCase):
         by_id = {r['asset_id']: r for r in response['records']}
         self.assertFalse(by_id['store']['observable_response'])
         self.assertTrue(by_id['vehicle']['observable_response'])
+
+    def test_absent_per_target_report_cannot_be_hidden_by_other_responding_samples(self):
+        rows = [{'case_id': 'c', 'sample_id': 'present', 'stratum': 'supported',
+                 'features': {'opportunity': 'supported'}, 'coverage_credit': True,
+                 'observation': {'report': {'request_opportunity': {'status': 'supported', 'asset_L1_kWh': {'vehicle': 1}},
+                     'targeted_response': {'pattern': 'all_targeted_assets_change', 'B_native_trace_sha256': 'hash',
+                         'records': [{'asset_id': 'vehicle', 'kind': 'ev', 'observable_response': True}]}}}},
+                {'case_id': 'c', 'sample_id': 'absent', 'stratum': 'mixed',
+                 'features': {'opportunity': 'exploratory'}, 'coverage_credit': True, 'observation': {'report': {}}}]
+        result = response_coverage(rows, {'minimum_changed_kinds': ['ev'], 'maximum_supported_no_response_fraction': .5})
+        self.assertFalse(result['passed'])
+        self.assertEqual(['absent'], result['missing_target_response_reports'])
+        self.assertIsNone(result['supported_no_response_fraction'])
+        self.assertEqual(2, len(result['records']))
 
 
 class LifeCapabilityTests(unittest.TestCase):

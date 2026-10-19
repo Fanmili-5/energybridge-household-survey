@@ -69,3 +69,7 @@
 `reproduce-strategies`使用公开生活与空间输入、显式实验及 `plan.json`，输出冻结计划、A基线、同A三规则请求、设备/联合/失败探针和完整回读。冬季计划单独验证制热；数量由配置列表决定。常规 `reproduce-life`也执行默认三策略。
 
 上游输入及单位见 [LIFE_INPUTS.md](LIFE_INPUTS.md)，方法与来源见 [METHOD.md](METHOD.md)、[STRATEGY_RULES.json](STRATEGY_RULES.json)，执行命令见 [REPRODUCE.md](REPRODUCE.md)。
+
+## 逐目标覆盖统计的自查修正
+
+`response_coverage`按`request_opportunity.children`和`asset_L1_kWh`提取每个有依据的目标，不能按联合方案整体的exploratory标签排除其中的supported子设备。`missing_supported_target_responses`列出未匹配的目标，`missing_target_response_reports`列出整份逐设备读回缺失的入样记录；此时`supported_target_response_binding_passed=false`、无响应比例为null且整批不通过，全部原样本仍保留。目标计数是提案内出现次数，旧回执的原统计保留，修正回读见[SELF_CHECK.md](SELF_CHECK.md)。

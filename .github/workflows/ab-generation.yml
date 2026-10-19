@@ -28,6 +28,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity -v
       - run: python -B -m benchmark.ab_generation.verify_package
+      - name: Recheck frozen per-target coverage without selecting new B
+        run: python -B -m benchmark.ab_generation.validation.self_check.recompute --out "${{ runner.temp }}/ab-self-check"
       - name: Reproduce without the historical cohort or other modules
         shell: bash
         run: |

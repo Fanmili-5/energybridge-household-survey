@@ -50,6 +50,8 @@ python -B -m benchmark.ab_generation reproduce-strategies \
 
 ## 技术文档
 
+- [合入后自查](SELF_CHECK.md)：修正混合联合的逐目标分母遗漏，保留原回执并公开重算；异常节点输入拒绝和有效生成结果不变检查。
+
 - [当前生成规则](GENERATION_RULES.md)与[本轮验证](RULES_VALIDATION.md)：A能力边界、逐设备机会依据、联合请求、无效/失败保留和覆盖防退化。
 - [生成合理性与覆盖审查](GENERATION_REVIEW.md)：按电器核对需求、运行约束、B变化及依据，列出已验证范围和补齐优先级。
 - [目的与原EB对应](DESIGN.md)、[证据采用范围](EVIDENCE.md)、[完整A离线实验](OFFLINE_EXPERIMENT.md)、[参数说明](PARAMETERS.md)及[本次验证](DESIGN_VALIDATION.md)：当前v3的正式设计与审查入口。

@@ -305,7 +305,7 @@
       "parameters": [
         "response_checks"
       ],
-      "rule": "Freeze support/exploration/conflict/failure/control strata before B;read back every target;batch deficits and majority no-response fail without dropping or replacing selected samples",
+      "rule": "Freeze support/exploration/conflict/failure/control strata before B;count support per asset including supported children of mixed joints and nonzero program-chain profiles;missing target readback or batch deficits fail without dropping or replacing selected samples",
       "sources": [
         "Wen2025FlexibilityAcceptance",
         "NISTIR7878",
