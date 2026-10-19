@@ -50,6 +50,7 @@ python -B -m benchmark.ab_generation reproduce-strategies \
 
 ## 技术文档
 
+- [生成合理性与覆盖审查](GENERATION_REVIEW.md)：按电器核对需求、运行约束、B变化及依据，列出已验证范围和补齐优先级。
 - [目的与原EB对应](DESIGN.md)、[证据采用范围](EVIDENCE.md)、[完整A离线实验](OFFLINE_EXPERIMENT.md)、[参数说明](PARAMETERS.md)及[本次验证](DESIGN_VALIDATION.md)：当前v3的正式设计与审查入口。
 
 - [生活到A方法](LIFE_METHOD.md)、[生活接口](LIFE_INPUTS.md)及[规则注册](LIFE_RULES.json)：需求形成、排程、控制和失败政策。

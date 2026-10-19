@@ -58,6 +58,14 @@
       "title": "Combinatorial Coverage Measurement",
       "url": "https://csrc.nist.gov/pubs/ir/7878/final",
       "year": 2012
+    },
+    {
+      "accessed": "2026-10-19",
+      "id": "ORToolsJobShop",
+      "organization": "Google OR-Tools",
+      "supports": "precedence and no-overlap constraint formulation only;project uses deterministic enumeration and greedy scheduling,not CP-SAT or a global optimality guarantee",
+      "title": "The Job Shop Problem",
+      "url": "https://developers.google.com/optimization/scheduling/job_shop"
     }
   ],
   "inherited_contract": {

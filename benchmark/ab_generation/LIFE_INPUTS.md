@@ -30,8 +30,8 @@
 | 触发 | 设备及需求 | 附加字段 |
 |---|---|---|
 | `textile` | washer；给定衣物库存及进入量 | `daily_quantity_kg,capacity_kg,initial_inventory_kg,daily_service,no_arrival_release_min` |
-| `after_dinner` | dishwasher；原晚餐完成后 | 无；使用设备范围内原声明的餐食 |
-| `after_service` | 独立dryer；同一洗涤服务的后继 | `upstream_service_id`，当前支持一层显式洗衣→烘干 |
+| `after_dinner` | dishwasher；原在家晚餐完成后；在外晚餐不产生家中餐具 | 无；只计设备使用家庭中在家就餐的成员 |
+| `after_service` | 独立dryer；同一洗涤服务的唯一完整批次后继 | `upstream_service_id`必须指向washer；当前支持一层显式洗衣→烘干，不支持分流或重复烘干 |
 
 共同字段为 `service_id,asset_id,kind,trigger,duration_min,preferred_start_min,maximum_preload_wait_min,maximum_retrieval_wait_min,deadline_after_release_min,machine_windows_min,timer_allowed,priority`。`preferred_start_min`分别提供工作日及周末习惯锚点；它不是强制命令，必须与原可操作资源共同求解。设备程序长度为输入声明，生成器不擅自改短以满足期限。
 

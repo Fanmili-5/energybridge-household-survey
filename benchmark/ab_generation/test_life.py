@@ -140,6 +140,47 @@ class LifeTests(unittest.TestCase):
                 self.assertLessEqual(ops[(parent, 'unload')]['end_min'], ops[(t['need_id'], 'load')]['start_min'])
                 self.assertNotEqual(ops[(parent, 'unload')]['asset_id'], t['asset_id'])
 
+    def test_away_dinners_do_not_create_home_dishwashing(self):
+        for template in self.spec['member_calendars'].values():
+            calendars = [template['weekday'], template['weekend']] + list(template.get('date_overrides', {}).values())
+            for calendar in calendars:
+                for event in calendar:
+                    if event['activity'] == 'dinner':
+                        event.update(location='away', room=None, available_for_operation=False)
+        plan = self.plan()
+        self.assertFalse([n for n in plan['requirements'] if n['kind'] == 'dishwasher'])
+        self.assertFalse([t for t in plan['A']['tasks'] if t['kind'] == 'dishwasher'])
+
+    def test_mixed_home_and_away_dinners_count_only_home_participants(self):
+        self.spec = copy.deepcopy(next(h for h in self.batch['households'] if h['household_id'] == 'example-family'))
+        self.world = next(w for w in read(EXAMPLES / 'resource_worlds.json')['households'] if w['household_id'] == self.spec['household_id'])
+        template = self.spec['member_calendars']['adult1']
+        calendars = [template['weekday'], template['weekend']] + list(template.get('date_overrides', {}).values())
+        for calendar in calendars:
+            for event in calendar:
+                if event['activity'] == 'dinner':
+                    event.update(location='away', room=None, available_for_operation=False)
+        plan = self.plan()
+        needs = [n for n in plan['requirements'] if n['kind'] == 'dishwasher']
+        self.assertTrue(needs)
+        for need in needs:
+            day = plan['days'][need['need_id'].split(':', 1)[0]]
+            self.assertNotIn('adult1', day['meal_end_min_by_member'])
+            self.assertEqual(2, need['quantity'])
+
+    def test_dryer_cannot_consume_a_dishwashing_batch(self):
+        dryer = next(p for p in self.spec['program_policies'] if p['kind'] == 'dryer')
+        dryer['upstream_service_id'] = next(p['service_id'] for p in self.spec['program_policies'] if p['kind'] == 'dishwasher')
+        with self.assertRaisesRegex(ValueError, 'DRYER_REQUIRES_WASHER_UPSTREAM'):
+            self.plan()
+
+    def test_two_drying_services_cannot_duplicate_one_wash_batch(self):
+        duplicate = copy.deepcopy(next(p for p in self.spec['program_policies'] if p['kind'] == 'dryer'))
+        duplicate['service_id'] = 'duplicated-drying'
+        self.spec['program_policies'].append(duplicate)
+        with self.assertRaisesRegex(ValueError, 'DUPLICATE_DRYING_OF_SAME_WASH_BATCH'):
+            self.plan()
+
     def test_comfort_needs_are_independent_of_thermostat(self):
         a = self.plan()
         self.spec['thermostat_policies'][0]['cooling_setpoint_C'] = 27
