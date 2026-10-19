@@ -4,6 +4,7 @@ import math
 from .common import digest
 from .information import PROPOSAL_PURPOSE, checked_information
 from .model import apply, chain_need_ids, overlap, plan_commands, plan_hash, program_issues
+from .opportunity import profile_evidence, thermal_evidence, joint_evidence
 
 DEFAULT_RULES = {
     'schema': 'eb.ab_generation.rules.v1', 'seed': 20261019, 'step_min': 10,
@@ -85,13 +86,18 @@ def validate(context, rules):
     if set(context['reference']) - {'binding', 'thermal', 'ev_charging_steps', 'provenance', 'information_set', 'baseline_admission'}:
         raise ValueError('UNKNOWN_OR_DOWNSTREAM_REFERENCE_FIELD')
     checked_information(context)
-    for rows in context['reference'].get('thermal', {}).values():
+    for aid, rows in context['reference'].get('thermal', {}).items():
         if len({r['minute'] for r in rows}) != len(rows):
             raise ValueError('DUPLICATE_REFERENCE_TIME')
         if any(type(r['minute']) is not int or r['minute'] % 10 or
                any(type(r[k]) not in (int, float) or not math.isfinite(r[k]) for k in ('temperature_C', 'electric_kWh', 'headroom_kWh'))
                or r['electric_kWh'] < 0 or r['headroom_kWh'] < 0 for r in rows):
             raise ValueError('INVALID_THERMAL_REFERENCE')
+        for row in rows:
+            expected_nodes = next(d for d in context['devices'] if d['asset_id'] == aid)['parameters'].get('number_of_nodes')
+            if 'node_temperatures_C' in row and (not row['node_temperatures_C'] or len(row['node_temperatures_C']) != expected_nodes or any(
+                    type(v) not in (int, float) or not math.isfinite(v) for v in row['node_temperatures_C'])):
+                raise ValueError('INVALID_TANK_NODE_REFERENCE')
     charging = context['reference'].get('ev_charging_steps', [])
     if len({(r['need_id'], r['start_min']) for r in charging}) != len(charging):
         raise ValueError('DUPLICATE_EV_REFERENCE_STEP')
@@ -132,7 +138,7 @@ def cost(profile, tariff):
                for x in profile for rate in tariff)
 
 
-def candidate(context, family, asset, factors, patches, issues, profiles=None):
+def candidate(context, family, asset, factors, patches, issues, profiles=None, opportunity=None):
     """Predictions concern commanded constant-power profiles, never final EP."""
     a, b = profiles if profiles is not None else (None, None)
     if a is None:
@@ -148,6 +154,7 @@ def candidate(context, family, asset, factors, patches, issues, profiles=None):
                    'prediction_scope': 'commanded_constant_power_profile;not_final_executed_outcome'}
     row = {'family': family, 'asset_id': asset, 'factors': factors, 'patches': patches,
            'static_issues': sorted(set(issues)), 'prediction': metrics,
+           'opportunity': opportunity if opportunity is not None else profile_evidence(context, a, b),
            'actual_outcomes': None, 'human_acceptance': None}
     row['id'] = digest({'binding': context['reference']['binding'], 'candidate': row})[:24]
     return row
@@ -233,39 +240,54 @@ def thermal_candidates(context, device, rules):
                                 break
                             hi += 10
                         starts.append((lo, hi))
-                    lo, hi = min(starts, key=lambda x: (-(x[1] - x[0]), x[0]))
                     for delta in rules['thermal_delta_C']:
-                        patches, issues = [], []
                         change = delta * (1 if (axis in ('heating', 'tank')) == (wanted == 'up') else -1)
-                        for a in baseline:
-                            begin, end = max(lo, a['start_min']), min(hi, a['end_min'])
-                            if begin >= end:
-                                continue
-                            if family == 'ac':
-                                key = axis + '_setpoint_C'; values = {key: a[key] + change}
-                                if axis == 'cooling' and 'value_C' in a:
-                                    values['value_C'] = values[key]
-                                heat = values.get('heating_setpoint_C', a['heating_setpoint_C'])
-                                cool = values.get('cooling_setpoint_C', a['cooling_setpoint_C'])
-                                if heat >= cool:
-                                    issues.append('THERMOSTAT_DEADBAND_INVERTED')
-                                if not 5 <= heat <= 35 or not 15 <= cool <= 40:
-                                    issues.append('SETPOINT_OUTSIDE_REFERENCE_RANGE')
-                            else:
-                                values = {'value_C': a['value_C'] + change}
-                                if not 10 <= values['value_C'] <= device['parameters']['maximum_C']:
-                                    issues.append('SETPOINT_OUTSIDE_HARDWARE_RANGE')
-                            patches.append({'type': 'control_interval', 'asset_id': aid, 'kind': kind,
-                                            'start_min': begin, 'end_min': end, 'values': values})
-                        active_minutes = sum(10 for t in range(lo, hi, 10) if (state[t].get('axis_electric_kWh', {}).get(axis, 0) if family == 'ac' else state[t]['electric_kWh']) > rules['thermal_active_min_kWh'])
-                        factors = {'event_id': event['event_id'], 'direction': direction, 'thermal_axis': axis,
-                                   'setpoint_delta_C': delta, 'requested_duration_min': duration,
-                                   'available_duration_min': hi - lo, 'A_active_support_min': active_minutes,
-                                   'available_duration_scope': 'continuous_command_permission;A_can_cycle',
-                                   'opportunity_evidence': 'current_A_axis_load' if wanted == 'down' else 'nominal_headroom_search;response_unconfirmed',
-                                   'manual_change_min': 0, 'program_shift_min': 0, 'baseline_restored_after_min': hi}
-                        rows.append(candidate(context, family, aid, factors, patches, issues))
+                        assessed = [(span, thermal_evidence(device, axis, wanted, baseline, state,
+                                                           *span, change, rules['thermal_active_min_kWh'])) for span in starts]
+                        first = min(assessed, key=lambda x: (-(x[0][1] - x[0][0]), x[0][0]))
+                        best = min(assessed, key=lambda x: (x[1]['status'] != 'supported', -(x[0][1] - x[0][0]), x[0][0]))
+                        # Preserve the original earliest window AND a state-supported
+                        # representative if different. No B result enters this choice.
+                        representatives = {span: evidence for span, evidence in (first, best)}
+                        for (lo, hi), opportunity in sorted(representatives.items()):
+                            rows.append(_thermal_candidate(context, device, family, kind, baseline, state,
+                                                           event, direction, axis, delta, duration, change,
+                                                           lo, hi, opportunity, rules))
     return rows, unavailable
+
+
+def _thermal_candidate(context, device, family, kind, baseline, state, event, direction, axis,
+                       delta, duration, change, lo, hi, opportunity, rules):
+    aid = device['asset_id']
+    patches, issues = [], []
+    for a in baseline:
+        begin, end = max(lo, a['start_min']), min(hi, a['end_min'])
+        if begin >= end:
+            continue
+        if family == 'ac':
+            key = axis + '_setpoint_C'; values = {key: a[key] + change}
+            if axis == 'cooling' and 'value_C' in a:
+                values['value_C'] = values[key]
+            heat = values.get('heating_setpoint_C', a['heating_setpoint_C'])
+            cool = values.get('cooling_setpoint_C', a['cooling_setpoint_C'])
+            if heat >= cool:
+                issues.append('THERMOSTAT_DEADBAND_INVERTED')
+            if not 5 <= heat <= 35 or not 15 <= cool <= 40:
+                issues.append('SETPOINT_OUTSIDE_REFERENCE_RANGE')
+        else:
+            values = {'value_C': a['value_C'] + change}
+            if not 10 <= values['value_C'] <= device['parameters']['maximum_C']:
+                issues.append('SETPOINT_OUTSIDE_HARDWARE_RANGE')
+        patches.append({'type': 'control_interval', 'asset_id': aid, 'kind': kind,
+                        'start_min': begin, 'end_min': end, 'values': values})
+    active_minutes = sum(10 for t in range(lo, hi, 10) if (state[t].get('axis_electric_kWh', {}).get(axis, 0) if family == 'ac' else state[t]['electric_kWh']) > rules['thermal_active_min_kWh'])
+    factors = {'event_id': event['event_id'], 'direction': direction, 'thermal_axis': axis,
+               'setpoint_delta_C': delta, 'requested_duration_min': duration,
+               'available_duration_min': hi - lo, 'A_active_support_min': active_minutes,
+               'available_duration_scope': 'continuous_command_permission;A_can_cycle',
+               'opportunity_evidence': opportunity['basis'] + ';' + opportunity['status'],
+               'manual_change_min': 0, 'program_shift_min': 0, 'baseline_restored_after_min': hi}
+    return candidate(context, family, aid, factors, patches, issues, opportunity=opportunity)
 
 
 def ev_candidates(context, device, rules):
@@ -281,7 +303,7 @@ def ev_candidates(context, device, rules):
             continue
         anchor = min(s['start_min'] for s in steps)
         end = max(c['end_min'] for c in controls)
-        before = [{**s, 'power_kw': s['grid_kWh'] * 60 / (s['end_min'] - s['start_min'])} for s in steps]
+        before = [{**s, 'asset_id': aid, 'power_kw': s['grid_kWh'] * 60 / (s['end_min'] - s['start_min'])} for s in steps]
         power = device['parameters'].get('charger_kw')
         if power is None or power <= 0:
             unavailable.append({'asset_id': aid, 'need_id': nid, 'reason': 'EV_CHARGER_RATING_NOT_DECLARED'})
@@ -294,7 +316,7 @@ def ev_candidates(context, device, rules):
                     continue
                 amount = min(power / 6, remaining)
                 if amount > 1e-10:
-                    after.append({'start_min': t, 'end_min': t + 10, 'power_kw': amount * 6})
+                    after.append({'asset_id': aid, 'start_min': t, 'end_min': t + 10, 'power_kw': amount * 6})
                     remaining -= amount
                 if remaining <= 1e-10:
                     break
@@ -340,9 +362,10 @@ def generate(context, rules=None):
     candidates.sort(key=lambda x: x['id'])
     selections = {}
     eligible = [x for x in candidates if not x['static_issues']]
+    supported = [x for x in eligible if x['opportunity']['status'] == 'supported']
     assignment = {'mode': 'fresh_candidates', **context.get('assignment', {})}
     for policy in rules['selection_policies']:
-        pool = eligible
+        pool = supported
         if policy == 'known_profile_cost':
             pool = [x for x in pool if x['prediction']['delta_cost'] is not None]
         if policy == 'known_profile_vpp':
@@ -371,6 +394,7 @@ def generate(context, rules=None):
                               'selection_domain': 'single_device_command_changing_candidates',
                               'selected_prediction': selected[0]['prediction'] if selected else None,
                               'selected_disruption': list(disruption(selected[0])) if selected else None,
+                              'opportunity': selected[0]['opportunity'] if selected else None,
                               'baseline_outside_option': {'delta_cost': 0, 'aligned_event_kWh': 0, 'disruption': [0, 0, 0]},
                               'plan_B': plan, 'B_commands_sha256': plan_hash(plan),
                               'actual_outcomes': None, 'human_acceptance': None}
@@ -399,6 +423,7 @@ def generate(context, rules=None):
                         joint.append({'candidate_ids': [left['id'], right['id']], 'patches': patches,
                                       'id': digest({'binding': context['reference']['binding'], 'children': [left['id'], right['id']]})[:24],
                                       'static_issues': sorted(set(issues)), 'actual_outcomes': None,
+                                      'opportunity': joint_evidence([left, right]),
                                       'status': 'joint_request_failure_retained' if issues else 'joint_static_check_passed'})
     return {'schema': 'eb.ab_generation.result.v3', 'case_id': context['case_id'],
             'information_set': checked_information(context),

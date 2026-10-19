@@ -11,7 +11,7 @@ from .common import bound, canonical, code_hash, digest, read, save, seal, sha, 
 from .generate import DEFAULT_RULES
 from .model import apply, plan_commands, program_issues, request_issues
 
-FEATURES = {'family', 'scope', 'admission', 'direction', 'cost_sign', 'event_sign', 'handling', 'axis', 'dose', 'composition', 'duration'}
+FEATURES = {'family', 'scope', 'admission', 'direction', 'cost_sign', 'event_sign', 'handling', 'axis', 'dose', 'composition', 'duration', 'opportunity', 'joint_support'}
 SERVICE_FAILURES = {'B_EV_departure_target', 'B_hot_water_service',
                     'B_service_execution', 'B_service_completeness'}
 STRESS_STATIC = ['CHARGE_EXCEEDS_ORIGINAL_CONNECTION']
@@ -56,7 +56,8 @@ def sign(value):
 
 
 def validate_plan(plan):
-    require(set(plan) == {'schema', 'seed', 'variants', 'strata', 'coverage_axes'}, 'UNKNOWN_TAIL_PLAN_FIELDS')
+    require(set(plan) in ({'schema', 'seed', 'variants', 'strata', 'coverage_axes'},
+                         {'schema', 'seed', 'variants', 'strata', 'coverage_axes', 'response_checks'}), 'UNKNOWN_TAIL_PLAN_FIELDS')
     require(plan['schema'] == 'eb.ab_tail_plan.v1' and type(plan['seed']) is int, 'INVALID_TAIL_PLAN')
     require(isinstance(plan['variants'], list) and plan['variants'], 'EMPTY_TAIL_VARIANTS')
     names = []
@@ -74,6 +75,15 @@ def validate_plan(plan):
         require(type(row['required']) is bool and all(type(row[k]) is int and row[k] > 0 for k in ('households', 'per_household')), 'INVALID_TAIL_QUOTA')
     require(isinstance(plan['coverage_axes'], list) and len(set(plan['coverage_axes'])) == len(plan['coverage_axes'])
             and set(plan['coverage_axes']) <= FEATURES, 'INVALID_COVERAGE_AXES')
+    if 'response_checks' in plan:
+        checks = plan['response_checks']
+        require(set(checks) in ({'minimum_changed_kinds'}, {'minimum_changed_kinds', 'maximum_supported_no_response_fraction'}) and isinstance(checks['minimum_changed_kinds'], list)
+                and bool(checks['minimum_changed_kinds'])
+                and len(set(checks['minimum_changed_kinds'])) == len(checks['minimum_changed_kinds'])
+                and set(checks['minimum_changed_kinds']) <= {'washer', 'dryer', 'dishwasher', 'ev', 'ac', 'water_heater'}, 'INVALID_RESPONSE_CHECKS')
+        if 'maximum_supported_no_response_fraction' in checks:
+            value = checks['maximum_supported_no_response_fraction']
+            require(type(value) in (int, float) and 0 <= value <= 1, 'INVALID_RESPONSE_FRACTION')
 
 
 def describe(context, plan_B, children, issues, unchanged=None):
@@ -114,6 +124,12 @@ def describe(context, plan_B, children, issues, unchanged=None):
                         'program_' + str(max(r['factors']['program_shift_min'] for r in children)) + 'min')
     features['composition'] = '+'.join(families) if families else 'control_or_preserved'
     features['duration'] = str(combined('available_duration_min', 'not_thermal'))
+    statuses = [r['opportunity']['status'] for r in children]
+    features['opportunity'] = ('control' if unchanged else 'supported' if statuses and all(s == 'supported' for s in statuses)
+                               else 'exploratory' if statuses else 'preserved_failure')
+    features['joint_support'] = ('control' if unchanged else 'single' if len(children) <= 1 else
+                                 'all_supported' if all(s == 'supported' for s in statuses) else
+                                 'mixed' if any(s == 'supported' for s in statuses) else 'all_exploratory')
     return features, issues
 
 
@@ -150,7 +166,8 @@ def catalogue(contexts, results):
                 features, issues = describe(context, B, children, list(request['static_issues']), A_hashes[case_id] == B_hash)
                 ident = digest({'context_sha256': context_hashes[case_id], 'B_commands_sha256': B_hash})
                 alias = {'variant': variant, 'case_id': case_id, 'override': {**override, 'expected_static_issues': request['static_issues']},
-                         'candidate_factors': [r['factors'] for r in children]}
+                         'candidate_factors': [r['factors'] for r in children],
+                         'opportunity_evidence': [r['opportunity'] for r in children]}
                 if ident not in unique:
                     unique[ident] = {'sample_id': ident, 'case_id': case_id, 'household_id': context['household_id'],
                                      'split_group_id': context['household_id'], 'context_sha256': context_hashes[case_id],
@@ -231,6 +248,7 @@ def sample_tail(context_root, plan_path, out):
     rows = catalogue(contexts, variants)
     selection = sample_catalogue(rows, plan)
     selection.update({'schema': 'eb.ab_tail_selection.v1', 'plan_sha256': digest(plan),
+        'response_checks': plan.get('response_checks'),
         'contexts_manifest_sha256': sha(context_root / 'MANIFEST.json'), 'code_sha256': code_hash(),
         'unique_catalogue_size': len(rows), 'raw_aliases': sum(len(r['aliases']) for r in rows),
         'interaction_coverage': interactions(rows, selection['records'], plan['coverage_axes']),
@@ -286,9 +304,45 @@ def coverage_report(selection_root, observations):
         credited = sum(r['coverage_credit'] for r in subset)
         table.append({**row, 'verified': credited, 'verification_deficit': row['requested'] - credited,
                       'passed': row['passed'] and credited == row['requested']})
-    return {'schema': 'eb.ab_tail_coverage.v1', 'passed': bool(records) and all(r['passed'] for r in table if r['required'])
+    response = response_coverage(records, selection.get('response_checks'))
+    return {'schema': 'eb.ab_tail_coverage.v1', 'passed': response['passed'] and bool(records) and all(r['passed'] for r in table if r['required'])
             and all(r['coverage_credit'] for r in records), 'coverage': table, 'records': records,
             'selection_manifest_sha256': sha(selection_root / 'MANIFEST.json'), 'no_outcome_reselection': True,
             'outcome_counts': dict(Counter(r['status'] for r in records)),
+            'response_coverage': response,
             'selection_interaction_coverage': selection['interaction_coverage'],
             'population_prevalence_estimated': False, 'human_acceptance_inferred': False}
+
+
+def response_coverage(records, checks):
+    kinds, patterns, fingerprints = Counter(), Counter(), set()
+    reports, supported_targets, supported_no_response = [], 0, 0
+    for row in records:
+        report = (row.get('observation') or {}).get('report', {})
+        response = report.get('targeted_response')
+        if response is None:
+            continue
+        patterns[response['pattern']] += 1
+        fingerprints.add((row['case_id'], response['B_native_trace_sha256']))
+        # A device responding in a failed service arm is still a response;
+        # service failures remain separately reported, never replaced.
+        if row['coverage_credit']:
+            kinds.update(r['kind'] for r in response['records'] if r['observable_response'])
+            if row['features'].get('opportunity') == 'supported':
+                supported_targets += len(response['records'])
+                supported_no_response += sum(not r['observable_response'] for r in response['records'])
+        reports.append({'sample_id': row['sample_id'], 'stratum': row['stratum'],
+                        'opportunity': row['features'].get('opportunity'), 'response': response})
+    required = (checks or {}).get('minimum_changed_kinds', [])
+    missing = [k for k in required if not kinds[k]]
+    fraction = supported_no_response / supported_targets if supported_targets else None
+    limit = (checks or {}).get('maximum_supported_no_response_fraction')
+    fraction_passed = limit is None or (fraction is not None and fraction <= limit)
+    return {'passed': not missing and fraction_passed, 'required': checks is not None,
+            'supported_target_count': supported_targets, 'supported_no_response_count': supported_no_response,
+            'supported_no_response_fraction': fraction, 'maximum_supported_no_response_fraction': limit,
+            'supported_response_fraction_passed': fraction_passed,
+            'minimum_changed_kinds': required, 'missing_changed_kinds': missing,
+            'actual_changed_kind_counts': dict(kinds), 'patterns': dict(patterns),
+            'distinct_case_and_native_B_trajectories': len(fingerprints), 'records': reports,
+            'no_outcome_reselection': True, 'all_selected_results_retained': True}

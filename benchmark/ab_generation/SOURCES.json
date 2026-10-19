@@ -66,6 +66,15 @@
       "supports": "precedence and no-overlap constraint formulation only;project uses deterministic enumeration and greedy scheduling,not CP-SAT or a global optimality guarantee",
       "title": "The Job Shop Problem",
       "url": "https://developers.google.com/optimization/scheduling/job_shop"
+    },
+    {
+      "id": "EnergyPlus241Thermostats",
+      "organization": "EnergyPlus",
+      "title": "Zone Controls and Group Water Heaters,24.1 documentation",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-water-heaters.html",
+      "zone_control_url": "https://bigladdersoftware.com/epx/docs/24-1/engineering-reference/zone-controls.html",
+      "accessed": "2026-10-19",
+      "supports": "native dual thermostat control and stratified tank cut-in=setpoint-deadband;mean tank temperature is not a known heater sensor;our all-node bound is conservative project screening"
     }
   ],
   "inherited_contract": {
@@ -211,6 +220,25 @@
       "year": 2025,
       "public_record": "https://pure.hw.ac.uk/ws/portalfiles/portal/147868180/1-s2.0-S030626192500340X-main.pdf",
       "current_access_note": "institutional publisherPDF accessed;CC BY4.0 statement on cover;no fullPDF redistribution in this change"
+    },
+    {
+      "key": "Hao2013TCL",
+      "title": "A generalized battery model of a collection of Thermostatically Controlled Loads for providing ancillary service",
+      "authors": [
+        "He Hao",
+        "Borhan M. Sanandaji",
+        "Kameshwar Poolla",
+        "Tyrone L. Vincent"
+      ],
+      "year": 2013,
+      "doi": "10.1109/Allerton.2013.6736573",
+      "url": "https://borhanji.com/my_papers/Allerton2013_TCL.pdf",
+      "public_record": "https://certs.lbl.gov/publications/generalized-battery-model-collection.html",
+      "public_record_checked_date": "2026-10-19",
+      "inherited_reading_status": "author full paper accessed;SectionIII hybrid switching/temperature and SectionV state-based dispatch read",
+      "method_use": "state and switching thresholds matter for thermal flexibility;nameplate headroom alone is insufficient",
+      "boundary": "our sampled-A mechanism screen is a project algorithm;not the aggregate battery or priority-stack controller;no numeric parameters transferred",
+      "reviewed_document_sha256": "64448b0d398f4b2d4be4002c0e16029879fcc27a733f7cf3a312c1705ee74118"
     }
   ],
   "parameter_origin": "all_default_search_levels_and_ranking_rules_are_explicit_project_settings",
@@ -263,5 +291,16 @@
     "plan": "examples/tail/plan.json",
     "population_prevalence_claimed": false,
     "quota_origin": "project_boundary_test_settings;not_paper_values"
+  },
+  "generation_opportunity": {
+    "implementation": "opportunity.py",
+    "method": "GENERATION_RULES.md",
+    "classification": [
+      "supported",
+      "exploratory"
+    ],
+    "meaning": "ex-ante A-state/profile mechanism evidence,not guaranteed B effect or household acceptance",
+    "preserves": "all exploratory,static-conflict and declared service-failure requests;no post-outcome reselection",
+    "scope": "original longest-earliest window plus state-supported window,all cross-family static-valid pairs with per-child evidence"
   }
 }

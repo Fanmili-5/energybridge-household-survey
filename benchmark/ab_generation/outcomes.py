@@ -1,5 +1,6 @@
 """Measured consequences, independent service requirements, and explicit units."""
 from .model import chain_need_ids, overlap
+from .effects import targeted_response
 
 
 def channel(trace, variable, key=''):
@@ -127,6 +128,8 @@ def consequences(pair, metas, traces, audit, context=None):
                          'outside_declared_band_degree_min': None if band is None else sum(max(0, band[0] - values[t], values[t] - band[1]) * 10 for t in range(a, z, 10))}
         comfort.append(row)
     return {'events': events, 'meter_scope': 'whole_physical_dwelling_including_shared_context;not_target_household_submeter',
+            'targeted_response': targeted_response(pair, metas, traces, context, lo, primary),
+            'request_opportunity': pair.get('AB_generation', {}).get('opportunity'),
             'metered_energy': energy, 'simulated_facility_cost': costs, 'service_changes': service_changes(pair, metas),
             'service_execution': {s: metas[s]['execution']['batches'] for s in ('A', 'B')},
             'temperature_outcomes': temperatures, 'independent_comfort': {'status': 'declared_requirements' if comfort else 'not_declared', 'records': comfort},

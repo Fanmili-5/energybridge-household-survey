@@ -239,7 +239,8 @@ class StrategyReviewTests(unittest.TestCase):
                   'temperature_band_C': [24, 26], 'origin': 'declared_unit_scenario'},
                  {'need_id': 'unknown', 'kind': 'comfort', 'room_id': 'ROOM', 'release_min': 0, 'deadline_min': 20,
                   'temperature_band_C': None, 'origin': 'unknown'}]
-        pair = {'decision_min': 0, 'needs_A': needs, 'A': {'operations': []}, 'B': {'operations': []},
+        pair = {'decision_min': 0, 'needs_A': needs, 'A': {'tasks': [], 'operations': [], 'controls': []},
+                'B': {'tasks': [], 'operations': [], 'controls': []},
                 'VPP_events': [{'event_id': 'test', 'start_min': 0, 'end_min': 20, 'direction': 'down', 'target_kw': 1}]}
         context = {'horizon_min': [0, 20], 'tariff': [{'start_min': 0, 'end_min': 20, 'price_per_kWh': 1}]}
         result = consequences(pair, {'A': meta, 'B': meta}, traces, {'details': {}, 'checks': {}}, context)
