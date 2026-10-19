@@ -1,3 +1,5 @@
+当前批次能耗、累计功率及无限制联合的版本修订见[JOINT_LOAD_SUPPLY.md](JOINT_LOAD_SUPPLY.md)；正式长尾分层和缺额见[JOINT_TAIL_METHOD.md](JOINT_TAIL_METHOD.md)。本页已有数值回执按其原始版本解释，不改签为新运行。
+
 # 有限参数敏感性验证
 
 范围仅为第二条线。线上问卷、受访记录与 1000 户主仿真不参与。

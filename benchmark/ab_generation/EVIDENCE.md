@@ -28,3 +28,5 @@
 事前独占分层、家庭/户内无放回取样、命令去重与失败准入已落实，算法与人工参数边界见 `TAIL_METHOD.md`。最终38次引擎运行的全部结果和开发缺额回执见 `TAIL_VALIDATION.md`；费用增加、反向/无效响应、服务失败均保留。有限目录仍有未覆盖交互，不声称人口分布或完整长尾验证。加拿大统计局与NIST依据已登记；科研审查流程继续引用Kassis等（当前arXiv版本已核查）。
 
 当前规则对应的30个新引擎臂、逐设备无效/部分/失败保留及覆盖缺额见[RULES_VALIDATION.md](RULES_VALIDATION.md)，不替换上述历史38臂回执。新增来源全文/元数据核对和未取得全文的排除记录见[RESEARCH_REVIEW.json](validation/rules/RESEARCH_REVIEW.json)。
+
+当前新增依据与采用边界见[联合、批次能量及供电](JOINT_LOAD_SUPPLY.md)、[正式长尾分层](JOINT_TAIL_METHOD.md)：NIST/IPOG支持有限交互设计，统计局支持分层/多阶段原则，Apaydin-Özkan支持窗口与累计功率建模；它们不提供本项目配额或完整覆盖保证。LARCO只支撑一个洗衣程序的相对形状，绝对尺度及烘干近似仍为人工设定。

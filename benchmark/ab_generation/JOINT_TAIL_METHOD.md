@@ -82,4 +82,6 @@ python -B -m benchmark.ab_generation.joint_tail execute --reference-root /tmp/jo
 python -B -m benchmark.ab_generation.joint_tail frame-frozen --reference-root benchmark/ab_generation/validation/joint_tail/frozen_inputs --out /tmp/joint-tail-frozen-replay-new
 ```
 
-输出目录必须全新。两个执行worker只并行运行独立的已冻结请求，顺序和结果不会反馈到抽样。跨引擎/平台重算A可改变上下文哈希与具体抽样；公开冻结A用于精确重放同一目录，不能代替重新验证A物理回执。实际结果及缺额见 `JOINT_TAIL_VALIDATION.md`。
+精确公开取样重放固定Python3.14.3；其他Python版本通过软件检查不等于完整候选ID逐字节不变。输出目录必须全新。`execute`负责收集并保留全部回执，验收须核对`RESULT.json`的`passed`和`full_declared_strata_covered`；公开`validation.joint_tail.recompute`另对必验合同给出严格退出状态。两个执行worker只并行运行独立的已冻结请求，顺序和结果不会反馈到抽样。跨引擎/平台重算A可改变上下文哈希与具体抽样；公开冻结A用于精确重放同一目录，不能代替重新验证A物理回执。实际结果及缺额见 `JOINT_TAIL_VALIDATION.md`。
+
+`recompute`默认验证冻结回执与重算一致；只有加`--require-coverage`才作为严格覆盖退出门。已知缺额须令该门保持非零退出，不能把重算一致当成覆盖接受。当前输入仅工作日降载，周末/增载属于未验证范围。

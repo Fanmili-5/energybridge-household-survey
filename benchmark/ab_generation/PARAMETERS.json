@@ -9052,7 +9052,19 @@
     "stress_admissions": [
       "declared_EV_shortfall_stress",
       "declared_site_capacity_stress"
-    ]
+    ],
+    "execution_workers": {
+      "default": 2,
+      "allowed": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "origin": "project compute budget",
+      "purpose_and_boundary": "parallel independent frozen requests only;no effect on selection priority or outcome admission",
+      "exact_value_from_paper": false
+    }
   },
   "opportunity_algorithm_settings": {
     "implementation": [

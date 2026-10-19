@@ -2,7 +2,7 @@
 
 当前生成规则修订见[GENERATION_RULES.md](GENERATION_RULES.md)，逐设备响应和覆盖验证见[RULES_VALIDATION.md](RULES_VALIDATION.md)。下文历史验证数量仍指其原版本，不作为本轮新运行回执。
 
-版本：`eb.ab_tail_plan.v1`、`eb.ab_tail_selection.v1`、`eb.ab_tail_coverage.v1`。实现为 `sampling.py`、`tail_review.py`，历史计划为 `examples/tail/plan.json`，当前生成规则覆盖计划为`examples/rule_review/plan.json`。
+版本：`eb.ab_tail_plan.v1`、`eb.ab_tail_selection.v1`、`eb.ab_tail_coverage.v1`。通用实现为 `sampling.py`、`tail_review.py`。当前多情境新联合验收为 [JOINT_TAIL_METHOD.md](JOINT_TAIL_METHOD.md)、`joint_tail.py`、`examples/joint_tail/plan.json`；`examples/tail`与`examples/rule_review`保留历史计划，显式两族回放计划为`examples/compatibility/rule_review_v1.json`。
 
 目的：在相同A、资源、事件和评价边界下，保留不同取舍、无效响应、费用增加及服务失败的B，检查生成与执行链。这里的“长尾”指实验目录中容易被优化排序排除的条件，未估计其真实发生频率。通过小样本覆盖验收不等于完成总体效度验证。
 
@@ -14,7 +14,7 @@
 
 ## 候选目录与去重
 
-1. 单设备保留所有已声明程序移时、人工策略、热扰动和EV延迟，包括静态失败。联合B枚举两类不同设备族的**全部静态可行单设备候选的笛卡尔积**，再检查联合冲突；不再只取每族最少打扰的代表。三设备以上、同设备族内组合及连续控制空间不在此目录内。网格扩展会增加计算量；不能靠删除非最优候选静默缩小目录。
+1. 单设备保留所有已声明程序移时、人工策略、热扰动和EV延迟，包括静态失败。当前联合B按独立需求单位允许同族多批及高阶组合，单请求有冲突仍可参与联合重查；预算、两单位剂量覆盖和高阶缺额见`JOINT_LOAD_SUPPLY.md`。历史两族笛卡尔积仅供显式旧规则回放。连续控制空间仍未穷举。网格扩展会增加计算量；不能靠删除非最优候选静默缩小目录。
 2. A=B控制保留。`identical_control` 只允许原控制；`preserved_failure_replay` 不生成替代B，原请求作为等待原审查的诊断记录保留，不自动准入普通实验。
 3. 对同一冻结上下文，按**实际B命令**去重。任务/人工操作排序，控制去除内部ID；仅合并载荷完全相同且相邻的控制区间，保留间隙、不同设定和重叠。哈希绑定完整上下文（包括家庭、案号、A、需求、设备、天气/初态来源、事件、价格、参考轨迹与权限）及规范化B。因此不同世界、事件或案号是不同实验；不能只用文案、候选ID或费用相同判断重复。
 4. 同一命令的不同规则版本/候选来源保留在 `aliases` 中，执行与独占分层计数只算一次；等价命令若出现分类或静态审查矛盾，停止并报错，不能挑较有利的别名。`split_group_id=household_id` 提醒后续训练/测试按家庭分组；本次没有创建学习数据划分。
@@ -31,7 +31,7 @@
 
 按 `(priority, unit_id)` 升序取前k项。`stage` 分别为 `household` 和 `request`。对相同冻结目录，平台、Python版本和输入行顺序不影响优先级；没有用费用数值、目标达成或实际B进行排序。这里是可复现伪随机优先级设计，不声称SHA256固定种子是严格均匀概率抽样的数学证明。
 
-当前A上下文公开封存于 `validation/rules/frozen_contexts/`（历史帧仍在`validation/tail/frozen_contexts/`），可以独立重建相同的入样命令。跨平台重跑物理引擎会改变原生回执及上下文哈希，因而可能改变同一种子下的具体样本；CI检查同一覆盖合同，不能要求不同A回执仍抽中相同案号。预测浮点细节和候选别名的逐字节复现还应固定Python与引擎版本。`duration` 层值的数字单位为分钟，指实际可用热控制时长。
+当前8情境A上下文公开封存于 `validation/joint_tail/frozen_inputs/`；`validation/rules/frozen_contexts/`和`validation/tail/frozen_contexts/`为历史帧，可以独立重建相同的入样命令。跨平台重跑物理引擎会改变原生回执及上下文哈希，因而可能改变同一种子下的具体样本；CI检查同一覆盖合同，不能要求不同A回执仍抽中相同案号。预测浮点细节和候选别名的逐字节复现还应固定Python与引擎版本。`duration` 层值的数字单位为分钟，指实际可用热控制时长。
 
 仓库发布规则不允许跟踪gzip压缩包，公开目录使用明文JSON。4个上下文的解析内容与原A参考完全一致，只更新批次相对路径和序列化清单；原压缩文件哈希及对应关系记录在 `DERIVATION.json`，没有重新设定A状态或服务条件。
 
@@ -51,7 +51,7 @@ H为该独占层可用家庭数，N_h为该户该层独立请求数。该值仅�
 | 实际B服务失败 | 若A复现、读回、能量/身份等完整性成立，保留为 `observed_service_failure_retained`；不重抽 | 服务失败的实际后果，不代表人拒绝 |
 | 引擎、读回、A复现、能量闭合等错误 | 隔离为未知数据/模型错误，覆盖不通过，保存原回执 | 不能解释为零收益、偏好或有效服务失败 |
 
-本版本只把 `B_EV_departure_target`、`B_hot_water_service`、`B_service_execution`、`B_service_completeness` 视为可能解释的B服务失败；其他审查失败均隔离。预设EV压力层必须实际且仅检出 `B_EV_departure_target` 才得到该层覆盖信用；若“意外成功”或同时出现能量错误，保存结果但该压力验收失败。任何层都不能豁免改写过去、换人、扩大控制授权或改变资源身份。
+当前可解释的B服务失败为 `B_EV_departure_target`、`B_hot_water_service`、`B_service_execution`、`B_service_completeness`、`B_declared_comfort`、`B_electrical_supply`；其他审查失败均隔离。供电压力必须由计划显式启用，只允许两种供电静态问题，不豁免资源冲突和权限；实际未超限也保留，不重抽。预设EV压力层必须实际且仅检出 `B_EV_departure_target` 才得到该层覆盖信用；若“意外成功”或同时出现能量错误，保存结果但该压力验收失败。任何层都不能豁免改写过去、换人、扩大控制授权或改变资源身份。
 
 ## 覆盖验收与输出
 
@@ -68,7 +68,9 @@ H为该独占层可用家庭数，N_h为该户该层独立请求数。该值仅�
 - 加拿大统计局 [Probability sampling](https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch13/prob/5214899-eng.htm) 解释抽样前划分分层及多阶段取样，支持“先家庭、再请求”的设计原则；不提供本项目的配额或家庭代表性保证。
 - Kuhn、Kacker、Lei，2010，[NIST SP 800-142](https://csrc.nist.gov/pubs/sp/800/142/final)，DOI `10.6028/NIST.SP.800-142`；Kuhn、Kacker、Lei，2012，[NIST IR 7878](https://csrc.nist.gov/pubs/ir/7878/final)，DOI `10.6028/NIST.IR.7878`。支持显式因素交互与覆盖测量；不证明物理模型真实或小样本已穷尽长尾。
 - `SOURCES.json` 中 Chen2022、ElMakroum2026、Wen2025 分别支持活动/设备分层、便利/费用取舍、因子化情景和人类评价边界；没有从它们移植当前比例、剂量或接受率。
-- 种子20261019、每层1或2户/每户1请求（EV及洗碗机移时各按30/60/120分钟分层，热设备按两方向×两档温差分层）、0.5/1°C档位、普通30/60/120分钟与压力810分钟EV延迟、分层优先顺序、可选冬季缺口，全部是公开软件/边界实验设定。810分钟针对公开合成连接窗口，不是普遍安全延迟；实际不足需重新计算。完整数值登记在 `PARAMETERS.json`。
+- 历史计划的种子20261019、每层1或2户/每户1请求（EV及洗碗机移时各按30/60/120分钟分层，热设备按两方向×两档温差分层）、0.5/1°C档位、普通30/60/120分钟与压力810分钟EV延迟、分层优先顺序、可选冬季缺口，全部是公开软件/边界实验设定。810分钟针对公开合成连接窗口，不是普遍安全延迟；实际不足需重新计算。完整数值登记在 `PARAMETERS.json`。
 - 科研审查流程参考 Kassis等，2026，[Scientific Agent Skills](https://arxiv.org/abs/2609.00065)，DOI `10.48550/arXiv.2609.00065`（已核查当前版本），只用于证据分层与范围校准。
 
 每次结果应报告代码/计划/输入哈希、覆盖表、实际失败与隔离数、未覆盖交互和待验证内容。不得仅发布成功B，也不得把故意失败、模型错误或人的接受率混在同一个成功率中。
+
+当前正式计划为22层、18层必验，新增请求数/族数/同族多批/供电风险轴。当前覆盖及缺额见[JOINT_TAIL_VALIDATION.md](JOINT_TAIL_VALIDATION.md)，不以历史38臂或30臂回执替代本轮验收。

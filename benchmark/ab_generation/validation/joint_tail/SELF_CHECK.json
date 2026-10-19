@@ -1,0 +1,63 @@
+{
+  "all_selected_accounted": true,
+  "deficits": [
+    {
+      "requested": 1,
+      "required": false,
+      "selected": 0,
+      "stratum": "same_family_jobs_executable_gap",
+      "verification_deficit": 1,
+      "verified": 0
+    },
+    {
+      "requested": 1,
+      "required": true,
+      "selected": 0,
+      "stratum": "washer_cost_increase",
+      "verification_deficit": 1,
+      "verified": 0
+    },
+    {
+      "requested": 1,
+      "required": false,
+      "selected": 0,
+      "stratum": "winter_heating_supported_gap",
+      "verification_deficit": 1,
+      "verified": 0
+    }
+  ],
+  "executed_observations": 17,
+  "expected_RESULT_sha256": "0e61b40360d6ae266280e7769cde11cb4da3af3623d9427f2e14a74d7cf738d8",
+  "generation_coverage_passed": true,
+  "new_B_selection": false,
+  "new_physics_runs": 0,
+  "outcome_counts": {
+    "capacity_service_failure_retained": 1,
+    "capacity_stress_executed_without_overload": 1,
+    "declared_service_failure_observed": 1,
+    "executed_valid": 14,
+    "static_failure_retained_nonexecuting": 2
+  },
+  "passed": true,
+  "recomputed_fields_identical": {
+    "coverage": true,
+    "outcome_counts": true,
+    "records": true,
+    "response_coverage": true,
+    "selection_interaction_coverage": true
+  },
+  "required_coverage_passed": false,
+  "response_patterns": {
+    "all_targeted_assets_change": 13,
+    "identical_control": 1,
+    "mixed_target_response": 1,
+    "no_target_response": 2
+  },
+  "schema": "eb.ab_joint_tail.public_self_check.v1",
+  "scope": "recompute frozen coverage and admissions from bound public reports;not independent reexecution of SQL or human validation",
+  "selected": 19,
+  "selection_sha256": "60f27bb7e074ce00979ac0b87d1726ba158bff47749caf3a3ec3dcb600200e48",
+  "strict_coverage_gate_requested": false,
+  "strict_gate_exit_code": 1,
+  "strict_gate_failed_for_declared_required_deficit": true
+}

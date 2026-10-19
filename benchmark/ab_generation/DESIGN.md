@@ -77,3 +77,5 @@ B回答“在这些原资源上，提出这一组具体改变，如果应用，�
 逐参数值和适用边界见[PARAMETERS.json](PARAMETERS.json)、[参数说明](PARAMETERS.md)，来源与权限见[SOURCES.json](SOURCES.json)、[AUTHORIZATION.json](AUTHORIZATION.json)。软件验证、数值集成、经验校准和人类有效性分别报告。
 
 当前联合搜索已取消两族上限，按独立需求单位覆盖同族多批和高阶联合；完整规则、人工预算及缺额定义见[联合、批次能耗及总功率方法](JOINT_LOAD_SUPPLY.md)。旧配对验证为历史版本回执，不能代表新规则覆盖。
+
+当前新联合目录的正式验收由 `joint_tail.py` 跨8个A情境构造单一目录，家庭分组不变；22层/18个必验层、供电压力白名单及缺额定义见[JOINT_TAIL_METHOD.md](JOINT_TAIL_METHOD.md)。三条单设备推荐规则仍是单设备方法对照，不因新目录包含联合就冒称联合最优控制。

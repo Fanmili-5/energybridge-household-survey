@@ -74,3 +74,7 @@ python -B -m benchmark.ab_generation reproduce-strategies \
 `sample-tail` 只构造并封存样本；`reproduce-tail` 复用已绑定的A参考，执行所选B并输出覆盖表、全部已选结果和未覆盖的单/双因素组合。缺失必验机会或执行错误导致验收失败，不自动换成成功B。命令与结果见 [REPRODUCE.md](REPRODUCE.md) 和 [TAIL_VALIDATION.md](TAIL_VALIDATION.md)。当前规则验收使用 [examples/rule_review/plan.json](examples/rule_review/plan.json)，另有冬季与周末补充计划；[本轮验证](RULES_VALIDATION.md)逐项列出已测范围和缺口。不推算真实长尾比例或人的接受率。
 
 当前修订：[联合搜索、批次能耗与住宅功率](JOINT_LOAD_SUPPLY.md)，取消两族上限；保留同族多批、无效请求及服务失败。程序设备仍用完整周期的等效功率，覆盖须区分任务约束与服务后果，不能仅数设备名称。
+
+当前新联合目录的正式长尾入口：[方法与依据](JOINT_TAIL_METHOD.md)、[覆盖和缺额](JOINT_TAIL_VALIDATION.md)。覆盖区分生成组合、分层抽样和实际后果，保留无效、无响应、服务失败及隔离数据错误。
+
+本轮正式验收为17/18个必验层通过，覆盖合同未通过；洗衣费用增加层缺失，另有监测和输入范围缺额。不得因软件CI通过就称benchmark已全面验收。
