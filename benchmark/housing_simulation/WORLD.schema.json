@@ -3061,6 +3061,18 @@
             "ASM-04"
           ],
           "x-evidence-class": "declared_input"
+        },
+        "electrical_capacity_mode": {
+          "type": "string",
+          "enum": [
+            "nameplate_sum",
+            "schedule_resolved"
+          ],
+          "default": "nameplate_sum",
+          "x-rule-ids": [
+            "ASM-03"
+          ],
+          "x-evidence-class": "declared_input"
         }
       },
       "required": [

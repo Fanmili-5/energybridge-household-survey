@@ -147,6 +147,11 @@ def program_issues(context, plan, need_id):
         return ['INCOMPLETE_PROGRAM_CHAIN']
     nids = chain_need_ids(plan, need_id)
     issues = set()
+    contract = context.get('authority')
+    original = {t['task_id']: t for t in context['A']['tasks']}
+    if contract and any(t != original.get(t['task_id']) and not contract['assets'][t['asset_id']]['target_control_authorized']
+                        for t in plan['tasks'] if t['need_id'] in nids):
+        issues.add('TARGET_CONTROL_NOT_AUTHORIZED')
     handled = {o['need_id'] for o in plan['operations'] if o['kind'] == 'load'}
     required = {need_id} | {t['need_id'] for t in plan['tasks'] if t['need_id'] in nids and t.get('depends_on_need_id')}
     if required - handled:

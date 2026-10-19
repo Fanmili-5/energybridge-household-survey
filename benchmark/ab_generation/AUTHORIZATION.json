@@ -79,8 +79,8 @@
     },
     {
       "id": "offline_tail_stress",
-      "material": "synthetic B coverage,static rejections and predeclared EV departure-target failures",
-      "basis": "user-authorized second-line offline experiment;TAIL_METHOD.md",
+      "material": "synthetic B coverage,static rejections,predeclared EV departure shortfalls and explicitly enabled site-capacity stresses",
+      "basis": "user-authorized second-line offline experiment;JOINT_TAIL_METHOD.md and TAIL_METHOD.md",
       "permitted_here": "enumerate and execute synthetic counterfactual requests;publish full adverse outcomes and coverage gaps",
       "not_granted": "real device actuation,participant consent,medical safety,ethics approval or live questionnaire changes",
       "status": "synthetic_model_authority_only;no_actual_human_failure_exposure"

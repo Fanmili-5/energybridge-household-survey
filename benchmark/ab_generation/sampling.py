@@ -13,10 +13,13 @@ from .generate import DEFAULT_RULES
 from .model import apply, plan_commands, program_issues, request_issues
 from .opportunity import EPSILON as PROFILE_EPSILON
 
-FEATURES = {'family', 'scope', 'admission', 'direction', 'cost_sign', 'event_sign', 'handling', 'axis', 'dose', 'composition', 'duration', 'opportunity', 'joint_support', 'day_type', 'event_direction'}
+FEATURES = {'family', 'scope', 'admission', 'direction', 'cost_sign', 'event_sign', 'handling', 'axis', 'dose', 'composition', 'duration', 'opportunity', 'joint_support', 'day_type', 'event_direction',
+            'unit_count', 'family_count', 'same_family_jobs', 'power_risk'}
 SERVICE_FAILURES = {'B_EV_departure_target', 'B_hot_water_service',
                     'B_service_execution', 'B_service_completeness', 'B_declared_comfort', 'B_electrical_supply'}
 STRESS_STATIC = ['CHARGE_EXCEEDS_ORIGINAL_CONNECTION']
+STRESS_ADMISSIONS = {'declared_EV_shortfall_stress', 'declared_site_capacity_stress'}
+SITE_STRESS_STATIC = {'SITE_KNOWN_PROFILE_EXCEEDS_SUPPLY', 'SITE_CAPACITY_NOT_CERTIFIED'}
 SIGN_EPSILON = 1e-9
 
 
@@ -58,8 +61,11 @@ def sign(value):
 
 
 def validate_plan(plan):
-    require(set(plan) in ({'schema', 'seed', 'variants', 'strata', 'coverage_axes'},
-                         {'schema', 'seed', 'variants', 'strata', 'coverage_axes', 'response_checks'}), 'UNKNOWN_TAIL_PLAN_FIELDS')
+    required = {'schema', 'seed', 'variants', 'strata', 'coverage_axes'}
+    require(required <= set(plan) and not set(plan) - required - {'response_checks', 'stress_admissions'}, 'UNKNOWN_TAIL_PLAN_FIELDS')
+    if 'stress_admissions' in plan:
+        require(isinstance(plan['stress_admissions'], list) and len(set(plan['stress_admissions'])) == len(plan['stress_admissions'])
+                and set(plan['stress_admissions']) <= STRESS_ADMISSIONS, 'INVALID_STRESS_ADMISSIONS')
     require(plan['schema'] == 'eb.ab_tail_plan.v1' and type(plan['seed']) is int, 'INVALID_TAIL_PLAN')
     require(isinstance(plan['variants'], list) and plan['variants'], 'EMPTY_TAIL_VARIANTS')
     names = []
@@ -88,7 +94,8 @@ def validate_plan(plan):
             require(type(value) in (int, float) and 0 <= value <= 1, 'INVALID_RESPONSE_FRACTION')
 
 
-def describe(context, plan_B, children, issues, unchanged=None):
+def describe(context, plan_B, children, issues, unchanged=None, stress_admissions=None):
+    allowed_stress = {'declared_EV_shortfall_stress'} if stress_admissions is None else set(stress_admissions)
     gate = request_issues(context, plan_B)
     families = sorted({r['family'] for r in children})
     # Authority and past/identity gates can never be waived by a stress label.
@@ -102,9 +109,12 @@ def describe(context, plan_B, children, issues, unchanged=None):
         unchanged = command_hash(context['A']) == command_hash(plan_B)
     if not issues:
         admission = 'normal'
-    elif not gate and not unchanged and families == ['ev'] and issues == STRESS_STATIC and all(
+    elif 'declared_EV_shortfall_stress' in allowed_stress and not gate and not unchanged and families == ['ev'] and issues == STRESS_STATIC and all(
             r['factors'].get('prediction_energy_shortfall_kWh', 0) > 1e-8 for r in children):
         admission = 'declared_EV_shortfall_stress'
+    elif ('declared_site_capacity_stress' in allowed_stress and context.get('electrical') and not gate and not unchanged
+          and set(issues) <= SITE_STRESS_STATIC):
+        admission = 'declared_site_capacity_stress'
     else:
         admission = 'static_diagnostic'
     known = all(r['prediction']['delta_cost'] is not None for r in children)
@@ -135,10 +145,16 @@ def describe(context, plan_B, children, issues, unchanged=None):
     features['day_type'] = 'weekend' if dt.date.fromisoformat(context['date']).weekday() >= 5 else 'weekday'
     directions = {e['direction'] for e in context['events']}
     features['event_direction'] = next(iter(directions)) if len(directions) == 1 else 'mixed' if directions else 'none'
+    features['unit_count'] = str(len(children))
+    features['family_count'] = str(len(families))
+    jobs = Counter(r['family'] for r in children if r['family'] in ('washer', 'dishwasher', 'ev'))
+    features['same_family_jobs'] = 'yes' if any(n > 1 for n in jobs.values()) else 'no'
+    features['power_risk'] = ('known_profile_overload' if 'SITE_KNOWN_PROFILE_EXCEEDS_SUPPLY' in issues else
+                              'uncertified_upper_bound' if 'SITE_CAPACITY_NOT_CERTIFIED' in issues else 'none')
     return features, issues
 
 
-def catalogue(contexts, results):
+def catalogue(contexts, results, stress_admissions=None):
     """All variants and joint requests; no policy winner or physical B is an input."""
     unique = {}
     context_hashes = {k: digest(c) for k, c in contexts.items()}
@@ -168,7 +184,7 @@ def catalogue(contexts, results):
             for request, children, override in requests:
                 B = context['retained_B_request'] if mode == 'preserved_failure_replay' else apply(baseline, request['patches'])
                 B_hash = command_hash(B)
-                features, issues = describe(context, B, children, list(request['static_issues']), A_hashes[case_id] == B_hash)
+                features, issues = describe(context, B, children, list(request['static_issues']), A_hashes[case_id] == B_hash, stress_admissions)
                 ident = digest({'context_sha256': context_hashes[case_id], 'B_commands_sha256': B_hash})
                 alias = {'variant': variant, 'case_id': case_id, 'override': {**override, 'expected_static_issues': request['static_issues']},
                          'candidate_factors': [r['factors'] for r in children],
@@ -250,7 +266,7 @@ def sample_tail(context_root, plan_path, out):
         build_batch(context_root / 'BATCH.json', folder, rules)
         manifest = verify(folder)
         variants[v['id']] = {r['case_id']: read(bound(folder, r['path'])) for r in manifest['records']}
-    rows = catalogue(contexts, variants)
+    rows = catalogue(contexts, variants, plan.get('stress_admissions'))
     selection = sample_catalogue(rows, plan)
     selection.update({'schema': 'eb.ab_tail_selection.v1', 'plan_sha256': digest(plan),
         'response_checks': plan.get('response_checks'),
@@ -279,6 +295,9 @@ def classify_result(sample, report):
         valid = failures == {'B_EV_departure_target'}
         return {'status': 'declared_service_failure_observed' if valid else 'stress_expectation_missed',
                 'coverage_credit': valid, 'failed_checks': sorted(failures)}
+    if sample['features']['admission'] == 'declared_site_capacity_stress':
+        return {'status': 'capacity_service_failure_retained' if 'B_electrical_supply' in failures else 'capacity_stress_executed_without_overload',
+                'coverage_credit': True, 'failed_checks': sorted(failures)}
     return {'status': 'observed_service_failure_retained' if failures else 'executed_valid',
             'coverage_credit': True, 'failed_checks': sorted(failures)}
 
@@ -298,7 +317,10 @@ def coverage_report(selection_root, observations):
         elif observation is None:
             assessment = {'status': 'missing_execution', 'coverage_credit': False}
         else:
-            require(observation['exported_B_commands_sha256'] == sample['B_commands_sha256'], 'SELECTED_B_EXECUTION_MISMATCH')
+            if observation.get('exported_B_commands_sha256') is None:
+                require(observation['report'].get('readback_status') == 'incomplete', 'MISSING_EXPORTED_B_RECEIPT')
+            else:
+                require(observation['exported_B_commands_sha256'] == sample['B_commands_sha256'], 'SELECTED_B_EXECUTION_MISMATCH')
             assessment = classify_result(sample, observation['report'])
         records.append({'sample_id': sample['sample_id'], 'case_id': sample['case_id'], 'stratum': sample['stratum'],
                         'features': sample['features'], **assessment,

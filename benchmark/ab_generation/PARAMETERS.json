@@ -2998,6 +2998,95 @@
       ]
     },
     {
+      "path": "examples/joint_tail/plan.json",
+      "sha256": "3f13ddc430f1d8e2599f8c09b89eb119dfef9d2c7fd03ab59b439e6146fde0f1",
+      "quantitative_fields": [
+        {
+          "path_pattern": "/response_checks/maximum_supported_no_response_fraction",
+          "origin": "project_declared_experimental_setting",
+          "purpose_and_boundary": "事前固定小规模验证和长尾分层配置；配额及阈值不表示人群比例或论文原值",
+          "implementation_or_definition": "joint_tail.py;sampling.py;examples/joint_tail/plan.json",
+          "exact_value_from_paper": false,
+          "values": [
+            0.5
+          ],
+          "occurrences": 1
+        },
+        {
+          "path_pattern": "/seed",
+          "origin": "project_declared_experimental_setting",
+          "purpose_and_boundary": "事前固定小规模验证和长尾分层配置；配额及阈值不表示人群比例或论文原值",
+          "implementation_or_definition": "joint_tail.py;sampling.py;examples/joint_tail/plan.json",
+          "exact_value_from_paper": false,
+          "values": [
+            20261019
+          ],
+          "occurrences": 1
+        },
+        {
+          "path_pattern": "/strata/*/households",
+          "origin": "project_declared_experimental_setting",
+          "purpose_and_boundary": "事前固定小规模验证和长尾分层配置；配额及阈值不表示人群比例或论文原值",
+          "implementation_or_definition": "joint_tail.py;sampling.py;examples/joint_tail/plan.json",
+          "exact_value_from_paper": false,
+          "values": [
+            1
+          ],
+          "occurrences": 22
+        },
+        {
+          "path_pattern": "/strata/*/per_household",
+          "origin": "project_declared_experimental_setting",
+          "purpose_and_boundary": "事前固定小规模验证和长尾分层配置；配额及阈值不表示人群比例或论文原值",
+          "implementation_or_definition": "joint_tail.py;sampling.py;examples/joint_tail/plan.json",
+          "exact_value_from_paper": false,
+          "values": [
+            1
+          ],
+          "occurrences": 22
+        },
+        {
+          "path_pattern": "/strata/*/required",
+          "origin": "project_declared_experimental_setting",
+          "purpose_and_boundary": "事前固定小规模验证和长尾分层配置；配额及阈值不表示人群比例或论文原值",
+          "implementation_or_definition": "joint_tail.py;sampling.py;examples/joint_tail/plan.json",
+          "exact_value_from_paper": false,
+          "values": [
+            false,
+            true
+          ],
+          "occurrences": 22
+        },
+        {
+          "path_pattern": "/variants/*/overrides/joint_family_limit",
+          "origin": "project_declared_experimental_setting",
+          "purpose_and_boundary": "事前固定小规模验证和长尾分层配置；配额及阈值不表示人群比例或论文原值",
+          "implementation_or_definition": "joint_tail.py;sampling.py;examples/joint_tail/plan.json",
+          "exact_value_from_paper": false,
+          "values": [
+            0
+          ],
+          "occurrences": 2
+        },
+        {
+          "path_pattern": "/variants/*/overrides/ev_delays_min/*",
+          "origin": "project_declared_experimental_setting",
+          "purpose_and_boundary": "事前固定小规模验证和长尾分层配置；配额及阈值不表示人群比例或论文原值",
+          "implementation_or_definition": "joint_tail.py;sampling.py;examples/joint_tail/plan.json",
+          "exact_value_from_paper": false,
+          "values": [
+            810
+          ],
+          "occurrences": 1
+        }
+      ]
+    },
+    {
+      "path": "examples/joint_tail/references.json",
+      "sha256": "760083dffc328dc445bf3665cf022794d70443a1d584bc9c3432e08ff6b839a3",
+      "quantitative_fields": []
+    },
+    {
       "path": "examples/life/experiments.json",
       "sha256": "a0a4a12b3393effa5bc0eb5f8d827099c5fb238ad878a95bce744a58e40833e2",
       "quantitative_fields": [
@@ -8926,10 +9015,14 @@
       "event_direction",
       "event_sign",
       "family",
+      "family_count",
       "handling",
       "joint_support",
       "opportunity",
-      "scope"
+      "power_risk",
+      "same_family_jobs",
+      "scope",
+      "unit_count"
     ],
     "exact_value_from_paper": false,
     "failure_static_whitelist": [
@@ -8951,6 +9044,14 @@
     "stratum_overlap": "first_match_owns_all_matching_units_before_sampling",
     "stress_expected_checks": [
       "B_EV_departure_target"
+    ],
+    "site_failure_static_whitelist": [
+      "SITE_CAPACITY_NOT_CERTIFIED",
+      "SITE_KNOWN_PROFILE_EXCEEDS_SUPPLY"
+    ],
+    "stress_admissions": [
+      "declared_EV_shortfall_stress",
+      "declared_site_capacity_stress"
     ]
   },
   "opportunity_algorithm_settings": {

@@ -78,7 +78,7 @@ def audit():
                     or not row['origin'] or not row['purpose_and_boundary'] or row['exact_value_from_paper'] is not False):
                 raise ValueError('PUBLIC_PARAMETER_BASIS_MISMATCH:' + entry['path'] + ':' + key)
     rights = read(package / 'AUTHORIZATION.json')
-    from .sampling import FEATURES, SERVICE_FAILURES, SIGN_EPSILON, STRESS_STATIC, validate_plan
+    from .sampling import FEATURES, SERVICE_FAILURES, SIGN_EPSILON, SITE_STRESS_STATIC, STRESS_ADMISSIONS, STRESS_STATIC, validate_plan
     from .opportunity import EPSILON
     from .effects import ENERGY_EPSILON_KWH, STATE_EPSILON
     validate_plan(read(package / 'examples/tail/plan.json'))
@@ -91,7 +91,9 @@ def audit():
             or evidence['readback_energy_epsilon_kWh'] != ENERGY_EPSILON_KWH or evidence['readback_state_epsilon'] != STATE_EPSILON):
         raise ValueError('UNREVIEWED_OPPORTUNITY_NUMERICAL_GUARD')
     if (tail['allowed_features'] != sorted(FEATURES) or tail['service_failure_checks'] != sorted(SERVICE_FAILURES)
-            or tail['failure_static_whitelist'] != STRESS_STATIC or tail['prediction_sign_epsilon'] != SIGN_EPSILON):
+            or tail['failure_static_whitelist'] != STRESS_STATIC or tail['prediction_sign_epsilon'] != SIGN_EPSILON
+            or tail.get('stress_admissions') != sorted(STRESS_ADMISSIONS)
+            or tail.get('site_failure_static_whitelist') != sorted(SITE_STRESS_STATIC)):
         raise ValueError('UNREVIEWED_TAIL_CONTRACT')
     if len({r['id'] for r in rights['entries']}) != len(rights['entries']) or any(
             not all(r.get(k) for k in ('material', 'basis', 'permitted_here', 'not_granted', 'status')) for r in rights['entries']):
