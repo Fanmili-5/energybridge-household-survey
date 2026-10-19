@@ -23,9 +23,8 @@ def overlap(a, z, b, y):
     return max(0, min(z, y) - max(a, b))
 
 
-def apply(plan, patches):
-    # Patch by replacement only, then copy once at the public return boundary.
-    # Unchanged history and caller-owned patch rows are never mutated here.
+def _patch_view(plan, patches):
+    """Private read-only view; consumers must never mutate its shared rows."""
     result = {key: sorted(plan[key], key=command_order) for key in ('tasks', 'operations', 'controls')}
     for patch in patches:
         if patch['type'] == 'rows':
@@ -61,7 +60,12 @@ def apply(plan, patches):
             result['controls'] = new
         else:
             raise ValueError('UNKNOWN_PATCH_TYPE')
-    return plan_commands(result)
+    return {key: sorted(rows, key=command_order) for key, rows in result.items()}
+
+
+def apply(plan, patches):
+    # Isolate unchanged history and caller-owned patches at the public boundary.
+    return plan_commands(_patch_view(plan, patches))
 
 
 def operation_issues(context, plan, changed_ids):

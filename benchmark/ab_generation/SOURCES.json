@@ -401,6 +401,29 @@
     ],
     "manual_choices": "10-minute full grid within +/-120 minutes;32768 budget;3 fixed A scenarios;10 strata and quotas;winter date;not paper estimates",
     "authority": "same original task identities,actors,programs,durations,energy and authority;no new permissions",
-    "verification_boundary": "static plan checks and raw candidate interaction receipts only;formal deduplicated sample coverage incomplete;new B physics deferred and not required;existing winter A failure retained,not a static-plan veto;no success replacement"
+    "verification_boundary": "static plan checks and final frozen stratified sampling complete;203 axis-level interactions unselected;new B physics deferred;winter existing physical failure retained separately;old batch unchanged;no outcome replacement"
+  },
+  "final_static_sampling": {
+    "method": "FINAL_SAMPLING_METHOD.md",
+    "implementation": [
+      "sampling.py",
+      "sampling_index.py",
+      "static_sampling.py",
+      "model.py:_patch_view"
+    ],
+    "scientific_basis": [
+      "StatCanProbability2021",
+      "NISTIR7878",
+      "NISTSP800142",
+      "LeiIPOG2007"
+    ],
+    "manual_choices": "same fixed seed 20261019,10 ordered strata and one household/request each;not literature values or population frequencies",
+    "algorithm": "exact canonical full-command SHA256 dedup;first-match ownership of entire pools;household then request deterministic hash priorities;fixed replay;full selected-plan reference audit",
+    "evidence": [
+      "validation/gap_supplement/final_sample/RESULT.json",
+      "validation/gap_supplement/final_sample/SELECTED_AUDIT.json",
+      "validation/gap_supplement/FINAL_INDEX_EQUIVALENCE.json"
+    ],
+    "bounds": "10 strata met;218/421 available one/two-axis level combinations covered;no full covering-array,probability-sampling or physical/human validity claim;all invalid and prior failures retained"
   }
 }

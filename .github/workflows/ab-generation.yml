@@ -36,7 +36,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - run: python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity benchmark.ab_generation.test_sensitivity benchmark.ab_generation.test_joint_load_supply benchmark.ab_generation.test_joint_tail benchmark.ab_generation.test_gap_review -v
+      - run: python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity benchmark.ab_generation.test_sensitivity benchmark.ab_generation.test_joint_load_supply benchmark.ab_generation.test_joint_tail benchmark.ab_generation.test_gap_review benchmark.ab_generation.test_static_sampling -v
       - run: python -B -m benchmark.ab_generation.verify_package
       - name: Run all predeclared parameter generation cases
         if: matrix.python-version == '3.12'
@@ -101,6 +101,8 @@ jobs:
           python-version: '3.12'
       - name: Check plan coverage and retained failures without simulation
         run: python -B -m benchmark.ab_generation.validation.gap_supplement.recompute --out "${{ runner.temp }}/gap-static-check"
+      - name: Replay final frozen strata and audit all selected full plans without simulation
+        run: python -B -m benchmark.ab_generation.static_sampling recheck --require-coverage --out "${{ runner.temp }}/final-static-sampling"
 
   physical-reproduction:
     if: github.event_name == 'workflow_dispatch' && inputs.run_physics
