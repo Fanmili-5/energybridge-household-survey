@@ -384,20 +384,22 @@ def generate(context, rules=None):
         families = sorted(by_family)
         for i, family in enumerate(families):
             for other in families[i + 1:]:
-                left = min(by_family[family], key=lambda x: (disruption(x), x['id']))
-                right = min(by_family[other], key=lambda x: (disruption(x), x['id']))
-                if left['asset_id'] == right['asset_id']:
-                    continue
-                patches = left['patches'] + right['patches']
-                plan = apply(context['A'], patches)
-                issues = []
-                for row in (left, right):
-                    if row['family'] in ('washer', 'dishwasher'):
-                        issues.extend(program_issues(context, plan, row['factors']['need_id']))
-                joint.append({'candidate_ids': [left['id'], right['id']], 'patches': patches,
-                              'id': digest({'binding': context['reference']['binding'], 'children': [left['id'], right['id']]})[:24],
-                              'static_issues': sorted(set(issues)), 'actual_outcomes': None,
-                              'status': 'joint_request_failure_retained' if issues else 'joint_static_check_passed'})
+                # Enumerate the finite two-family product before tail sampling.
+                # Choosing only the least-disruptive representatives hides tails.
+                for left in sorted(by_family[family], key=lambda r: r['id']):
+                    for right in sorted(by_family[other], key=lambda r: r['id']):
+                        if left['asset_id'] == right['asset_id']:
+                            continue
+                        patches = left['patches'] + right['patches']
+                        plan = apply(context['A'], patches)
+                        issues = []
+                        for row in (left, right):
+                            if row['family'] in ('washer', 'dishwasher'):
+                                issues.extend(program_issues(context, plan, row['factors']['need_id']))
+                        joint.append({'candidate_ids': [left['id'], right['id']], 'patches': patches,
+                                      'id': digest({'binding': context['reference']['binding'], 'children': [left['id'], right['id']]})[:24],
+                                      'static_issues': sorted(set(issues)), 'actual_outcomes': None,
+                                      'status': 'joint_request_failure_retained' if issues else 'joint_static_check_passed'})
     return {'schema': 'eb.ab_generation.result.v3', 'case_id': context['case_id'],
             'information_set': checked_information(context),
             'baseline_admission': copy.deepcopy(context['reference'].get('baseline_admission')),

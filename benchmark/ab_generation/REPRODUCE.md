@@ -7,7 +7,7 @@
 环境：Python 3.9或以上，标准库。无需现有1000户、许可调查、天气文件或API。仓库根目录运行：
 
 ```bash
-python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review -v
+python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling -v
 python -B -m benchmark.ab_generation generate \
   --input benchmark/ab_generation/examples/batch.json \
   --rules benchmark/ab_generation/examples/rules.json \
@@ -111,3 +111,34 @@ python -B -m benchmark.housing_simulation verify outputs/ab-runs
 `SUMMARY.json`报告全批候选、缺失机会及指定分配，`MANIFEST.json`登记规则、代码、输入身份和输出文件。它不是物理验收或偏好统计报告。物理运行是否完成、服务是否满足、设备温度/SOC/费用后果与人类评价必须分开汇报。
 
 A、生活资源、模型或天气改变时重新获取当前A参考；规则、事件或选择策略改变时重建候选及B；B改变时重算下游后果。禁止因负节约、未达标或可能被拒绝而覆盖旧结果。1000户正式仿真保持暂缓，当前任务不操作线上问卷。
+
+## 长尾样本（第二条线）
+
+若只重建本次固定A下的入样命令，无需安装物理引擎：
+
+```sh
+python -B -m benchmark.ab_generation sample-tail \
+  --contexts benchmark/ab_generation/validation/tail/frozen_contexts \
+  --out /absolute/path/frozen-tail-sample
+```
+
+将输出所选记录的 `sample_id`、`stratum`、`B_commands_sha256` 与公开 `validation/tail/SELECTION.json` 对照。精确运行环境是Python3.14.3；跨Python版本比较命令与配额，候选预测的浮点细节及别名不作为跨版本字节一致承诺。重新跑引擎会生成新A回执，样本可随上下文哈希改变，但仍须满足同一覆盖合同。
+
+先按本页 `reproduce-strategies` 命令生成公共合成A参考目录 `life-results`。也可显式复用同引擎、完整哈希绑定且审查通过的既有A参考；这不代表新做了A标定。采样不读取原目录中的任何已执行B。
+
+```sh
+python -B -m benchmark.ab_generation sample-tail \
+  --contexts /absolute/path/life-results/contexts \
+  --plan benchmark/ab_generation/examples/tail/plan.json \
+  --out /absolute/path/tail-sample
+python -B -m benchmark.ab_generation reproduce-tail \
+  --reference-root /absolute/path/life-results \
+  --plan benchmark/ab_generation/examples/tail/plan.json \
+  --energyplus-dir /absolute/path/EnergyPlus-24-1-0 \
+  --out /absolute/path/tail-results
+python -B -m benchmark.ab_generation verify /absolute/path/tail-results
+```
+
+第一条命令供仅构造样本时使用；第二条自带同样的封存采样，再执行，两个输出目录必须全新。`sample/PLAN.json`、`CATALOGUE.json.gz`、`SELECTION.json` 和全部规则变体在第一个B运行前固定。每个可执行样本单独导出、编译和运行A/B，避免同案号多B混淆；静态诊断不执行。`OBSERVATIONS.json`、各执行目录及 `RESULT.json` 保留失败与未知；`COVERAGE.md` 列验收表。验收失败返回非零状态；不得依据这些结果换种子或重抽成功B。
+
+CI在原夏季公共复现后增跑该长尾命令，沿用同一基线，不启动1000户或线上问卷。已发布小规模回执见 `TAIL_VALIDATION.json`、`TAIL_VALIDATION.md`、`validation/tail/`；原生SQL/轨迹保存在本地封存证据和CI短期artifact，永久再生依据是公开输入、代码版本、引擎与命令。

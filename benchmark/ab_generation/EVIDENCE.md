@@ -21,3 +21,7 @@
 2. El Makroum, R., Zwickl-Bernhard, S., Kranzl, L., & Auer, H. (2026). Load scheduling optimization for user-centric residential demand response leveraging time use surveys. *Applied Energy, 403(B)*, 127080. [DOI](https://doi.org/10.1016/j.apenergy.2025.127080).
 3. Wen, C., Steadman, S., Rafaq, M. S., Vatougiou, P., & Deakin, M. (2025). Can reduction of local carbon emissions motivate participation in demand-side flexibility programs? Evidence from the United Kingdom. *Applied Energy, 388*, 125610. [DOI](https://doi.org/10.1016/j.apenergy.2025.125610).
 4. Kassis, T., Agarwal, V., He, Y., Patel, D., & Brueckner, A. M. (2026). Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents. [DOI](https://doi.org/10.48550/arXiv.2609.00065). 最新记录于2026-10-19核对，仅用于复核流程归属。
+
+## 长尾采样与覆盖的新增证据
+
+事前独占分层、家庭/户内无放回取样、命令去重与失败准入已落实，算法与人工参数边界见 `TAIL_METHOD.md`。最终38次引擎运行的全部结果和开发缺额回执见 `TAIL_VALIDATION.md`；费用增加、反向/无效响应、服务失败均保留。有限目录仍有未覆盖交互，不声称人口分布或完整长尾验证。加拿大统计局与NIST依据已登记；科研审查流程继续引用Kassis等（当前arXiv版本已核查）。

@@ -78,6 +78,12 @@ def audit():
                     or not row['origin'] or not row['purpose_and_boundary'] or row['exact_value_from_paper'] is not False):
                 raise ValueError('PUBLIC_PARAMETER_BASIS_MISMATCH:' + entry['path'] + ':' + key)
     rights = read(package / 'AUTHORIZATION.json')
+    from .sampling import FEATURES, SERVICE_FAILURES, SIGN_EPSILON, STRESS_STATIC, validate_plan
+    validate_plan(read(package / 'examples/tail/plan.json'))
+    tail = register['tail_algorithm_settings']
+    if (tail['allowed_features'] != sorted(FEATURES) or tail['service_failure_checks'] != sorted(SERVICE_FAILURES)
+            or tail['failure_static_whitelist'] != STRESS_STATIC or tail['prediction_sign_epsilon'] != SIGN_EPSILON):
+        raise ValueError('UNREVIEWED_TAIL_CONTRACT')
     if len({r['id'] for r in rights['entries']}) != len(rights['entries']) or any(
             not all(r.get(k) for k in ('material', 'basis', 'permitted_here', 'not_granted', 'status')) for r in rights['entries']):
         raise ValueError('INCOMPLETE_AUTHORIZATION_BOUNDARY')

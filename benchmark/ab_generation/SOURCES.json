@@ -21,6 +21,43 @@
       "id": "original_EB",
       "path": "provenance/ORIGINAL_EB.json",
       "supports": "purpose and stage boundaries;not equivalence of our synthetic requests with original controller output"
+    },
+    {
+      "accessed": "2026-10-19",
+      "date_modified": "2021-09-02",
+      "id": "StatCanProbability2021",
+      "organization": "Statistics Canada",
+      "supports": "predeclared strata and multistage household/request selection;not our quotas or population validity",
+      "title": "3.2.2 Probability sampling",
+      "url": "https://www150.statcan.gc.ca/n1/edu/power-pouvoir/ch13/prob/5214899-eng.htm"
+    },
+    {
+      "accessed": "2026-10-19",
+      "authors": [
+        "D. Richard Kuhn",
+        "Raghu N. Kacker",
+        "Yu Lei"
+      ],
+      "doi": "10.6028/NIST.SP.800-142",
+      "id": "NISTSP800142",
+      "supports": "explicit factor interactions and finite test design;not a complete covering-array claim",
+      "title": "Practical Combinatorial Testing",
+      "url": "https://csrc.nist.gov/pubs/sp/800/142/final",
+      "year": 2010
+    },
+    {
+      "accessed": "2026-10-19",
+      "authors": [
+        "D. Richard Kuhn",
+        "Raghu N. Kacker",
+        "Yu Lei"
+      ],
+      "doi": "10.6028/NIST.IR.7878",
+      "id": "NISTIR7878",
+      "supports": "measuring covered and uncovered combinations rather than equating sample count with coverage",
+      "title": "Combinatorial Coverage Measurement",
+      "url": "https://csrc.nist.gov/pubs/ir/7878/final",
+      "year": 2012
     }
   ],
   "inherited_contract": {
@@ -210,5 +247,13 @@
   "public_provenance_status": "all_9_legacy_pins_and_prior_contract_resolve_to_public_hash_bound_files;upstream_semantics_linked_at_pinned_commit",
   "parameter_register": "PARAMETERS.json",
   "authorization_register": "AUTHORIZATION.json",
-  "design_contract": "DESIGN.md"
+  "design_contract": "DESIGN.md",
+  "tail_sampling": {
+    "algorithm": "stable_SHA256_priorities_without_replacement;first_match_disjoint_strata;household_then_request",
+    "all_B_outcomes_published": true,
+    "method": "TAIL_METHOD.md",
+    "plan": "examples/tail/plan.json",
+    "population_prevalence_claimed": false,
+    "quota_origin": "project_boundary_test_settings;not_paper_values"
+  }
 }

@@ -174,10 +174,19 @@ def request_issues(context, plan):
                 issues.add('REQUEST_CHANGES_ORIGINAL_RESOURCE_OR_DURATION')
             if min(a['start_min'], b['start_min']) < context['decision_min'] and a != b:
                 issues.add('REQUEST_REWRITES_PREDECISION_COMMAND')
-    def state(rows, t):
-        return sorted((r['asset_id'], r['kind'], digest({k: v for k, v in r.items() if k not in ('start_min', 'end_min', '_ab_control_id')})) for r in rows if r['start_min'] <= t < r['end_min'])
-    old, new = context['A']['controls'], plan['controls']
-    boundaries = {r[k] for r in old + new for k in ('start_min', 'end_min') if r[k] < context['decision_min']}
-    if any(state(old, t) != state(new, t) for t in boundaries):
+    def past_changes(rows):
+        # Equal state multisets iff their clipped interval boundary deltas agree.
+        # Linear construction avoids scanning a multi-day trajectory per boundary.
+        changes = {}
+        for r in rows:
+            lo, hi = r['start_min'], min(r['end_min'], context['decision_min'])
+            if lo >= hi:
+                continue
+            payload = digest({k: v for k, v in r.items() if k not in ('start_min', 'end_min', '_ab_control_id')})
+            for t, delta in ((lo, 1), (hi, -1)):
+                key = (payload, t)
+                changes[key] = changes.get(key, 0) + delta
+        return {k: v for k, v in changes.items() if v}
+    if past_changes(context['A']['controls']) != past_changes(plan['controls']):
         issues.add('REQUEST_REWRITES_PREDECISION_CONTROL')
     return sorted(issues)

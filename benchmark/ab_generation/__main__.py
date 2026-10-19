@@ -51,6 +51,15 @@ def build_batch(input_path, out, rules_path=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='command', required=True)
+    p = sub.add_parser('sample-tail')
+    p.add_argument('--contexts', required=True)
+    p.add_argument('--plan', default='benchmark/ab_generation/examples/tail/plan.json')
+    p.add_argument('--out', required=True)
+    p = sub.add_parser('reproduce-tail')
+    p.add_argument('--reference-root', required=True)
+    p.add_argument('--plan', default='benchmark/ab_generation/examples/tail/plan.json')
+    p.add_argument('--energyplus-dir', required=True)
+    p.add_argument('--out', required=True)
     p = sub.add_parser('import-current')
     p.add_argument('--stage', required=True)
     p.add_argument('--out', required=True)
@@ -124,7 +133,13 @@ def main():
     p.add_argument('--out', required=True)
     p.add_argument('--rules')
     args = parser.parse_args()
-    if args.command == 'bind-life-worlds':
+    if args.command == 'sample-tail':
+        from .sampling import sample_tail
+        result = sample_tail(args.contexts, args.plan, args.out)
+    elif args.command == 'reproduce-tail':
+        from .tail_review import reproduce_tail
+        result = reproduce_tail(args.reference_root, args.plan, args.energyplus_dir, args.out)
+    elif args.command == 'bind-life-worlds':
         from .life_physics import bind_life_worlds
         result = bind_life_worlds(args.world_contracts, args.shells, args.out)
     elif args.command == 'assemble-life':
