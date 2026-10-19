@@ -1,5 +1,7 @@
 # 策略构造与实际后果方法
 
+当前生成规则修订见[GENERATION_RULES.md](GENERATION_RULES.md)，逐设备响应和覆盖验证见[RULES_VALIDATION.md](RULES_VALIDATION.md)。下文历史验证数量仍指其原版本，不作为本轮新运行回执。
+
 本方法的研究目的、原EB对应与差异以[DESIGN.md](DESIGN.md)为准。当前A参照来自完整离线仿真，包含通知后的反事实A信息，不是实时预测；可用信息与数值条件见[OFFLINE_EXPERIMENT.md](OFFLINE_EXPERIMENT.md)。逐参数及授权边界见[PARAMETERS.md](PARAMETERS.md)、[AUTHORIZATION.json](AUTHORIZATION.json)。
 
 ## 1. 过程、对象与证据层次

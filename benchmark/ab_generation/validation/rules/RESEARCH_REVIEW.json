@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-19",
+  "type": "targeted_method_verification_not_systematic_review",
+  "source_files": [
+    "SOURCES.json",
+    "LIFE_RULES.json",
+    "STRATEGY_RULES.json",
+    "PARAMETERS.json"
+  ],
+  "included": [
+    {
+      "id": "Hao2013TCL",
+      "locations": [
+        "author manuscript §III hybrid thermal model",
+        "§V priority-stack state/control constraints"
+      ],
+      "fulltext_url": "https://borhanji.com/my_papers/Allerton2013_TCL.pdf",
+      "fulltext_sha256": "64448b0d398f4b2d4be4002c0e16029879fcc27a733f7cf3a312c1705ee74118",
+      "metadata_crosscheck": "https://certs.lbl.gov/publications/generalized-battery-model-collection.html",
+      "adopted": "thermal state, on/off and hysteresis determine controllable opportunity",
+      "not_adopted": "aggregate battery, priority-stack implementation, numeric AC parameters or guaranteed B response"
+    },
+    {
+      "id": "housing_simulation:EnergyPlus24.1_water_heater_docs",
+      "locations": [
+        "WaterHeater:Stratified; heater setpoint, deadband and height",
+        "native final node temperature outputs"
+      ],
+      "adopted": "native control semantics; all-node bound is our conservative sufficient screen, not the known sensor"
+    },
+    {
+      "id": "EnergyPlus241Thermostats",
+      "locations": [
+        "Zone Controls; dual air-temperature setpoints"
+      ],
+      "adopted": "current compiled air-temperature controller semantics; not transferable to operative-temperature control"
+    },
+    {
+      "id": "Chen2022_ElMakroum2026_Wen2025",
+      "locations": [
+        "previous hash-bound full-text extractions in SOURCES.json"
+      ],
+      "adopted": "activity/load hierarchy; constrained scheduling; scenario attributes before human judgment",
+      "not_adopted": "household parameter values, acceptance rates, implemented MILP or population prevalence"
+    }
+  ],
+  "excluded": [
+    {
+      "source": "Mathieu, Koch, Callaway 2013, DOI 10.1109/TPWRS.2012.2204074",
+      "reason": "author bibliography metadata checked; full text returned HTTP403; no new technical claim based on unread full text"
+    }
+  ],
+  "project_algorithms": [
+    "10-minute constrained greedy A scheduling",
+    "per-target time-resolved absolute profile difference",
+    "sampled-A thermostat witness with conservative all-node tank bounds",
+    "original and support-first window representatives",
+    "per-child joint evidence",
+    "frozen two-stage stratified sampling with explicit deficits",
+    "post-execution per-target response and whole-batch guard without replacement"
+  ],
+  "numeric_values_transferred_from_new_paper": false,
+  "new_source_pdf_redistributed": false
+}

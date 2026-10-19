@@ -1,1 +1,317 @@
-{"rule_parameters_are_project_settings_unless_otherwise_declared":true,"rules":[{"classification":"declared_contract","id":"AB-01","implementation":"generate.py:binding","parameters":[],"rule":"A and resource identity precede B;prices and events remain downstream","sources":["Chen2022StochasticStock"]},{"classification":"declared_authority","id":"AB-02","implementation":"resources.py:authority;model.py:operation_issues","parameters":["authority"],"rule":"No additional controllers,helpers or moved context-household actions","sources":[]},{"classification":"declared_and_inherited_project_constraints","id":"AB-03","implementation":"model.py:_program_issues","parameters":["timer_allowed","maximum_preload_wait_min","machine_windows_min","maximum_retrieval_wait_min"],"rule":"Complete programs retain timer,waits,machine windows and real collection","sources":["legacy_A46"]},{"classification":"native_component_evidence","id":"AB-04","implementation":"life_physics.py:context_from_A;generate.py:thermal_candidates","parameters":["thermal_active_min_kWh"],"rule":"Downward AC evidence uses actual coil energy;unknown mode remains unavailable","sources":["housing_simulation"]},{"classification":"project_search_hint","id":"AB-05","implementation":"generate.py:thermal_candidates","parameters":["thermal_delta_C","thermal_duration_min","thermal_request_directions"],"rule":"Nominal headroom alone stays exploratory;sampled state and shifted native thresholds screen support;retain earliest and supported window representatives","sources":["housing_simulation"]},{"classification":"physical_connection_and_project_prediction","id":"AB-06","implementation":"generate.py:ev_candidates;model.py:apply","parameters":["ev_delays_min"],"rule":"Pause remaining EV charging within existing gaps and permissions;preserve the past","sources":["legacy_A46"]},{"classification":"project_ranking_not_human_utility","id":"AB-07","implementation":"generate.py:generate","parameters":["selection_policies","seed","prediction_rank_cost_quantum","prediction_rank_event_kWh_quantum"],"rule":"Three single-device policy comparisons use the same static-valid mechanism-supported pool;all exploratory candidates remain in the roleplay catalogue","sources":["ElMakroum2026TimeUseDR"]},{"classification":"limited_project_combination","id":"AB-08","implementation":"generate.py:generate;review.py:reproduce_strategies","parameters":["joint_family_limit"],"rule":"At most two device families;retain joint conflicts and execute declared joint probes","sources":[]},{"classification":"frozen_command_gate","id":"AB-09","implementation":"model.py:request_issues;life_physics.py:export_life","parameters":[],"rule":"Export cannot replace original task identities,actors,durations or predecision commands","sources":[]},{"classification":"data_identity_gate","id":"AB-10","implementation":"evaluate.py:summarize;evaluate.py:compare_traces","parameters":[],"rule":"Do not mix jobs,compilations,runs,audits or native units","sources":[]},{"classification":"declared_meter_boundary","id":"AB-11","implementation":"outcomes.py:consequences","parameters":["event_meter_scope","tariff_provenance"],"rule":"Grid meter and modeled equipment subtotals are separate;no implicit shared bill allocation","sources":["housing_simulation"]},{"classification":"independent_service_validation","id":"AB-12","implementation":"../housing_simulation/validation.py:audit","parameters":["temperature_band_C","target_SOC"],"rule":"Known temperature requirements and EV departure targets are checked separately;unknown stays unknown","sources":["housing_simulation"]},{"classification":"legacy_source_identity","id":"AB-13","implementation":"export.py:attach_legacy_requirements","parameters":["annual_A_root"],"rule":"Recovery-period needs come from the original hash-bound annual A,not scheduled commands","sources":["legacy_A46"]},{"classification":"predeclared_design","id":"AB-14","implementation":"review.py:reproduce_strategies","parameters":["REVIEW_PLAN","failure_rules"],"rule":"Normal strategies,device/joint/winter and deliberate failure probes are frozen before outcomes","sources":["Wen2025FlexibilityAcceptance","Kassis2026ScientificAgentSkills"]},{"classification":"project_scope_limit","id":"AB-15","implementation":"export.py:export_physics","parameters":[],"rule":"Reject old multi-independent-AC zones rather than merge controls or silently change equipment","sources":["housing_simulation"]},{"classification":"explicit_offline_information_privilege","id":"AB-16","implementation":"information.py:checked_information;life_physics.py:reference_life","parameters":["information_set","A_reference_span_min"],"rule":"Full future A is offline counterfactual information,not a realtime forecaster;reject missing or understated disclosure","sources":["original_EB"]},{"classification":"original_purpose_and_project_adaptation","id":"AB-17","implementation":"information.py:PROPOSAL_PURPOSE","parameters":[],"rule":"A is event-free daily reference;B is a synthetic proposal;consent and satisfaction stay unknown and separate from if-applied outcomes","sources":["original_EB"]},{"classification":"normal_baseline_admission","id":"AB-18","implementation":"life_physics.py:baseline_admission","parameters":["baseline_audit"],"rule":"New life reference requires a passing service/physics audit bound to the same compilation and runs;engine completion alone is insufficient","sources":["original_EB","housing_simulation"]},{"classification":"project_experimental_design","id":"AB-19","implementation":"generate.py:generate","parameters":["examples/tail/plan.json"],"rule":"Enumerate all statically eligible cross-family pairs before sampling;keep combined conflicts","sources":["NISTSP800142"]},{"classification":"project_experimental_design","id":"AB-20","implementation":"sampling.py:sample_catalogue","parameters":["examples/tail/plan.json"],"rule":"Freeze first-match disjoint strata and two-stage seeded priorities;never select on actual B","sources":["StatCanProbability2021"]},{"classification":"project_experimental_design","id":"AB-21","implementation":"sampling.py:catalogue;sampling.py:normalized_commands","parameters":["examples/tail/plan.json"],"rule":"Dedup actual normalized commands inside exact frozen context;retain aliases and household split group","sources":[]},{"classification":"project_experimental_design","id":"AB-22","implementation":"sampling.py:describe;sampling.py:classify_result","parameters":["examples/tail/plan.json"],"rule":"Separate ordinary,declared EV stress,static diagnostic,and data/model errors;retain adverse physical B","sources":["original_EB","housing_simulation"]},{"classification":"project_experimental_design","id":"AB-23","implementation":"sampling.py:interactions;sampling.py:coverage_report","parameters":["examples/tail/plan.json"],"rule":"Report required quota deficits and uncovered finite-catalogue marginal/pairwise cells;no automatic N/A pass","sources":["NISTIR7878"]},{"classification":"state_aware_project_mechanism_screen","id":"AB-24","implementation":"opportunity.py:thermal_evidence;generate.py:thermal_candidates","parameters":["thermal_delta_C","thermal_duration_min","thermal_active_min_kWh"],"rule":"Thermal support uses A state/native-axis activity and shifted threshold witnesses;stratified tank all-node bounds,not mean-as-sensor;missing witnesses stay exploratory","sources":["Hao2013TCL","EnergyPlus241Thermostats"]},{"classification":"time_resolved_profile_and_joint_evidence","id":"AB-25","implementation":"opportunity.py:profile_evidence;opportunity.py:joint_evidence","parameters":[],"rule":"Per-target analytic time-profile L1 supports program/EV changes;each joint child keeps independent evidence;one supported child cannot upgrade the other","sources":["ElMakroum2026TimeUseDR","Hao2013TCL"]},{"classification":"roleplay_coverage_and_falsifiable_readback","id":"AB-26","implementation":"effects.py:targeted_response;sampling.py:response_coverage","parameters":["response_checks"],"rule":"Freeze support/exploration/conflict/failure/control strata before B;read back every target;batch deficits and majority no-response fail without dropping or replacing selected samples","sources":["Wen2025FlexibilityAcceptance","NISTIR7878","StatCanProbability2021"]}],"schema":"eb.ab_strategy.rule_registry.v2"}
+{
+  "rule_parameters_are_project_settings_unless_otherwise_declared": true,
+  "rules": [
+    {
+      "classification": "declared_contract",
+      "id": "AB-01",
+      "implementation": "generate.py:binding",
+      "parameters": [],
+      "rule": "A and resource identity precede B;prices and events remain downstream",
+      "sources": [
+        "Chen2022StochasticStock"
+      ]
+    },
+    {
+      "classification": "declared_authority",
+      "id": "AB-02",
+      "implementation": "resources.py:authority;model.py:operation_issues",
+      "parameters": [
+        "authority"
+      ],
+      "rule": "No additional controllers,helpers or moved context-household actions",
+      "sources": []
+    },
+    {
+      "classification": "declared_and_inherited_project_constraints",
+      "id": "AB-03",
+      "implementation": "model.py:_program_issues",
+      "parameters": [
+        "timer_allowed",
+        "maximum_preload_wait_min",
+        "machine_windows_min",
+        "maximum_retrieval_wait_min"
+      ],
+      "rule": "Complete programs retain timer,waits,machine windows and real collection",
+      "sources": [
+        "legacy_A46"
+      ]
+    },
+    {
+      "classification": "native_component_evidence",
+      "id": "AB-04",
+      "implementation": "life_physics.py:context_from_A;generate.py:thermal_candidates",
+      "parameters": [
+        "thermal_active_min_kWh"
+      ],
+      "rule": "Downward AC evidence uses actual coil energy;unknown mode remains unavailable",
+      "sources": [
+        "housing_simulation"
+      ]
+    },
+    {
+      "classification": "project_search_hint",
+      "id": "AB-05",
+      "implementation": "generate.py:thermal_candidates",
+      "parameters": [
+        "thermal_delta_C",
+        "thermal_duration_min",
+        "thermal_request_directions"
+      ],
+      "rule": "Nominal headroom alone stays exploratory;sampled state and shifted native thresholds screen support;retain earliest and supported window representatives",
+      "sources": [
+        "housing_simulation"
+      ]
+    },
+    {
+      "classification": "physical_connection_and_project_prediction",
+      "id": "AB-06",
+      "implementation": "generate.py:ev_candidates;model.py:apply",
+      "parameters": [
+        "ev_delays_min"
+      ],
+      "rule": "Pause remaining EV charging within existing gaps and permissions;preserve the past",
+      "sources": [
+        "legacy_A46"
+      ]
+    },
+    {
+      "classification": "project_ranking_not_human_utility",
+      "id": "AB-07",
+      "implementation": "generate.py:generate",
+      "parameters": [
+        "selection_policies",
+        "seed",
+        "prediction_rank_cost_quantum",
+        "prediction_rank_event_kWh_quantum"
+      ],
+      "rule": "Three single-device policy comparisons use the same static-valid mechanism-supported pool;all exploratory candidates remain in the roleplay catalogue",
+      "sources": [
+        "ElMakroum2026TimeUseDR"
+      ]
+    },
+    {
+      "classification": "limited_project_combination",
+      "id": "AB-08",
+      "implementation": "generate.py:generate;review.py:reproduce_strategies",
+      "parameters": [
+        "joint_family_limit"
+      ],
+      "rule": "At most two device families;retain joint conflicts and execute declared joint probes",
+      "sources": []
+    },
+    {
+      "classification": "frozen_command_gate",
+      "id": "AB-09",
+      "implementation": "model.py:request_issues;life_physics.py:export_life",
+      "parameters": [],
+      "rule": "Export cannot replace original task identities,actors,durations or predecision commands",
+      "sources": []
+    },
+    {
+      "classification": "data_identity_gate",
+      "id": "AB-10",
+      "implementation": "evaluate.py:summarize;evaluate.py:compare_traces",
+      "parameters": [],
+      "rule": "Do not mix jobs,compilations,runs,audits or native units",
+      "sources": []
+    },
+    {
+      "classification": "declared_meter_boundary",
+      "id": "AB-11",
+      "implementation": "outcomes.py:consequences",
+      "parameters": [
+        "event_meter_scope",
+        "tariff_provenance"
+      ],
+      "rule": "Grid meter and modeled equipment subtotals are separate;no implicit shared bill allocation",
+      "sources": [
+        "housing_simulation"
+      ]
+    },
+    {
+      "classification": "independent_service_validation",
+      "id": "AB-12",
+      "implementation": "../housing_simulation/validation.py:audit",
+      "parameters": [
+        "temperature_band_C",
+        "target_SOC"
+      ],
+      "rule": "Known temperature requirements and EV departure targets are checked separately;unknown stays unknown",
+      "sources": [
+        "housing_simulation"
+      ]
+    },
+    {
+      "classification": "legacy_source_identity",
+      "id": "AB-13",
+      "implementation": "export.py:attach_legacy_requirements",
+      "parameters": [
+        "annual_A_root"
+      ],
+      "rule": "Recovery-period needs come from the original hash-bound annual A,not scheduled commands",
+      "sources": [
+        "legacy_A46"
+      ]
+    },
+    {
+      "classification": "predeclared_design",
+      "id": "AB-14",
+      "implementation": "review.py:reproduce_strategies",
+      "parameters": [
+        "REVIEW_PLAN",
+        "failure_rules"
+      ],
+      "rule": "Normal strategies,device/joint/winter and deliberate failure probes are frozen before outcomes",
+      "sources": [
+        "Wen2025FlexibilityAcceptance",
+        "Kassis2026ScientificAgentSkills"
+      ]
+    },
+    {
+      "classification": "project_scope_limit",
+      "id": "AB-15",
+      "implementation": "export.py:export_physics",
+      "parameters": [],
+      "rule": "Reject old multi-independent-AC zones rather than merge controls or silently change equipment",
+      "sources": [
+        "housing_simulation"
+      ]
+    },
+    {
+      "id": "AB-16",
+      "classification": "explicit_offline_information_privilege",
+      "implementation": "information.py:checked_information;life_physics.py:reference_life",
+      "parameters": [
+        "information_set",
+        "A_reference_span_min"
+      ],
+      "rule": "Full future A is offline counterfactual information,not a realtime forecaster;reject missing or understated disclosure",
+      "sources": [
+        "original_EB"
+      ]
+    },
+    {
+      "id": "AB-17",
+      "classification": "original_purpose_and_project_adaptation",
+      "implementation": "information.py:PROPOSAL_PURPOSE",
+      "parameters": [],
+      "rule": "A is event-free daily reference;B is a synthetic proposal;consent and satisfaction stay unknown and separate from if-applied outcomes",
+      "sources": [
+        "original_EB"
+      ]
+    },
+    {
+      "id": "AB-18",
+      "classification": "normal_baseline_admission",
+      "implementation": "life_physics.py:baseline_admission",
+      "parameters": [
+        "baseline_audit"
+      ],
+      "rule": "New life reference requires a passing service/physics audit bound to the same compilation and runs;engine completion alone is insufficient",
+      "sources": [
+        "original_EB",
+        "housing_simulation"
+      ]
+    },
+    {
+      "classification": "project_experimental_design",
+      "id": "AB-19",
+      "implementation": "generate.py:generate",
+      "parameters": [
+        "examples/tail/plan.json"
+      ],
+      "rule": "Enumerate all statically eligible cross-family pairs before sampling;keep combined conflicts",
+      "sources": [
+        "NISTSP800142"
+      ]
+    },
+    {
+      "classification": "project_experimental_design",
+      "id": "AB-20",
+      "implementation": "sampling.py:sample_catalogue",
+      "parameters": [
+        "examples/tail/plan.json"
+      ],
+      "rule": "Freeze first-match disjoint strata and two-stage seeded priorities;never select on actual B",
+      "sources": [
+        "StatCanProbability2021"
+      ]
+    },
+    {
+      "classification": "project_experimental_design",
+      "id": "AB-21",
+      "implementation": "sampling.py:catalogue;sampling.py:normalized_commands",
+      "parameters": [
+        "examples/tail/plan.json"
+      ],
+      "rule": "Dedup actual normalized commands inside exact frozen context;retain aliases and household split group",
+      "sources": []
+    },
+    {
+      "classification": "project_experimental_design",
+      "id": "AB-22",
+      "implementation": "sampling.py:describe;sampling.py:classify_result",
+      "parameters": [
+        "examples/tail/plan.json"
+      ],
+      "rule": "Separate ordinary,declared EV stress,static diagnostic,and data/model errors;retain adverse physical B",
+      "sources": [
+        "original_EB",
+        "housing_simulation"
+      ]
+    },
+    {
+      "classification": "project_experimental_design",
+      "id": "AB-23",
+      "implementation": "sampling.py:interactions;sampling.py:coverage_report",
+      "parameters": [
+        "examples/tail/plan.json"
+      ],
+      "rule": "Report required quota deficits and uncovered finite-catalogue marginal/pairwise cells;no automatic N/A pass",
+      "sources": [
+        "NISTIR7878"
+      ]
+    },
+    {
+      "classification": "state_aware_project_mechanism_screen",
+      "id": "AB-24",
+      "implementation": "opportunity.py:thermal_evidence;generate.py:thermal_candidates",
+      "parameters": [
+        "thermal_delta_C",
+        "thermal_duration_min",
+        "thermal_active_min_kWh"
+      ],
+      "rule": "Thermal support uses A state/native-axis activity and shifted threshold witnesses;stratified tank all-node bounds,not mean-as-sensor;missing witnesses stay exploratory",
+      "sources": [
+        "Hao2013TCL",
+        "EnergyPlus241Thermostats"
+      ]
+    },
+    {
+      "classification": "time_resolved_profile_and_joint_evidence",
+      "id": "AB-25",
+      "implementation": "opportunity.py:profile_evidence;opportunity.py:joint_evidence",
+      "parameters": [],
+      "rule": "Per-target analytic time-profile L1 supports program/EV changes;each joint child keeps independent evidence;one supported child cannot upgrade the other",
+      "sources": [
+        "ElMakroum2026TimeUseDR",
+        "Hao2013TCL"
+      ]
+    },
+    {
+      "classification": "roleplay_coverage_and_falsifiable_readback",
+      "id": "AB-26",
+      "implementation": "effects.py:targeted_response;sampling.py:response_coverage",
+      "parameters": [
+        "response_checks"
+      ],
+      "rule": "Freeze support/exploration/conflict/failure/control strata before B;read back every target;batch deficits and majority no-response fail without dropping or replacing selected samples",
+      "sources": [
+        "Wen2025FlexibilityAcceptance",
+        "NISTIR7878",
+        "StatCanProbability2021"
+      ]
+    }
+  ],
+  "schema": "eb.ab_strategy.rule_registry.v2"
+}

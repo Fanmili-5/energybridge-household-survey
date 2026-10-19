@@ -45,7 +45,7 @@
 
 ## roleplay覆盖与防退化
 
-公开小型计划为[examples/rule_review/plan.json](examples/rule_review/plan.json)。在第一个B运行前，封存完整目录、命令去重、种子、独占分层和家庭→请求两阶段抽样。覆盖设备、剂量、时长、方向、人工策略、预测费用符号，以及新增的`opportunity`和`joint_support`。保留缺额，不跨层换成成功B。
+公开小型计划为[examples/rule_review/plan.json](examples/rule_review/plan.json)。在第一个B运行前，封存完整目录、命令去重、种子、独占分层和家庭→请求两阶段抽样。覆盖设备、剂量、时长、方向、人工策略、预测费用符号，以及新增的`opportunity`和`joint_support`。记录还携带原实验日期的`day_type`与固定事件的`event_direction`；不得为填层改写生活日历或事件。保留缺额，不跨层换成成功B。
 
 计划明确包含有依据和探索性请求、两类联合、费用增加取舍、A=B对照、静态拒绝和声明的服务失败。执行后逐目标设备报告用电时点、实际执行时点、温度和SOC，给出`all_targeted_assets_change`、`mixed_target_response`、`no_target_response`和`identical_control`。只有EV变化的联合B不能当作热水器已有作用。相同案号下的原生B轨迹指纹另报，命令不同不自动算独立物理后果。
 
@@ -59,8 +59,8 @@
 |---|---|---|
 | Chen等，Applied Energy 2022，DOI 10.1016/j.apenergy.2022.119890 | 活动、设备事件和建筑负荷分层 | 未移植美国时间日记分布或本项目确切参数 |
 | El Makroum等，Applied Energy 2026，DOI 10.1016/j.apenergy.2025.127080 | 时间使用约束与费用/便利取舍 | 未复现其MILP或将群体习惯当个人偏好 |
-| Hao等，Allerton 2013，DOI 10.1109/Allerton.2013.6736573，作者稿§III、§V | 热状态、启停与死区共同决定温控可调性 | 本项目没有实现其聚合电池、优先栈或高频反馈控制，未转移其AC参数 |
-| EnergyPlus24.1水箱与Zone Controls文档 | 原生感温、分层、双设定和cut-in/cut-out语义 | 全节点界限与采样窗口代表是本项目保守算法，不是完整B物理求解 |
+| Hao等，Allerton 2013，[DOI 10.1109/Allerton.2013.6736573](https://doi.org/10.1109/Allerton.2013.6736573)，作者稿§III、§V | 热状态、启停与死区共同决定温控可调性 | 本项目没有实现其聚合电池、优先栈或高频反馈控制，未转移其AC参数 |
+| EnergyPlus24.1[水箱](https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-water-heaters.html)与[Zone Controls](https://bigladdersoftware.com/epx/docs/24-1/engineering-reference/zone-controls.html)文档 | 原生感温、分层、双设定和cut-in/cut-out语义 | 全节点界限与采样窗口代表是本项目保守算法，不是完整B物理求解 |
 | Wen等，Applied Energy 2025，DOI 10.1016/j.apenergy.2025.125610 | 明确情景属性与取舍，再由人独立判断 | 未移植接受率，未称当前样本正交或总体代表 |
 | NIST SP800-142、IR7878；加拿大统计局分层/多阶段说明 | 有限交互覆盖测量、事前分层和家庭优先取样 | 不证明小样本全面覆盖，不提供本项目配额 |
 

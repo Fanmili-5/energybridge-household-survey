@@ -1,5 +1,7 @@
 # 第二条线：长尾采样与覆盖验收方法
 
+当前生成规则修订见[GENERATION_RULES.md](GENERATION_RULES.md)，逐设备响应和覆盖验证见[RULES_VALIDATION.md](RULES_VALIDATION.md)。下文历史验证数量仍指其原版本，不作为本轮新运行回执。
+
 版本：`eb.ab_tail_plan.v1`、`eb.ab_tail_selection.v1`、`eb.ab_tail_coverage.v1`。实现为 `sampling.py`、`tail_review.py`，公开计划为 `examples/tail/plan.json`。
 
 目的：在相同A、资源、事件和评价边界下，保留不同取舍、无效响应、费用增加及服务失败的B，检查生成与执行链。这里的“长尾”指实验目录中容易被优化排序排除的条件，未估计其真实发生频率。通过小样本覆盖验收不等于完成总体效度验证。

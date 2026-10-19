@@ -26,7 +26,7 @@ B阶段核验家庭与A的版本，读取当前A的运行参考，在原生活�
 Python 3.9或以上，候选生成仅使用标准库。在仓库根目录运行：
 
 ```bash
-python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review -v
+python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity -v
 python -B -m benchmark.ab_generation generate \
   --input benchmark/ab_generation/examples/batch.json \
   --rules benchmark/ab_generation/examples/rules.json \
@@ -50,6 +50,7 @@ python -B -m benchmark.ab_generation reproduce-strategies \
 
 ## 技术文档
 
+- [当前生成规则](GENERATION_RULES.md)与[本轮验证](RULES_VALIDATION.md)：A能力边界、逐设备机会依据、联合请求、无效/失败保留和覆盖防退化。
 - [生成合理性与覆盖审查](GENERATION_REVIEW.md)：按电器核对需求、运行约束、B变化及依据，列出已验证范围和补齐优先级。
 - [目的与原EB对应](DESIGN.md)、[证据采用范围](EVIDENCE.md)、[完整A离线实验](OFFLINE_EXPERIMENT.md)、[参数说明](PARAMETERS.md)及[本次验证](DESIGN_VALIDATION.md)：当前v3的正式设计与审查入口。
 
@@ -59,7 +60,7 @@ python -B -m benchmark.ab_generation reproduce-strategies \
 - [接口规范](INPUTS.md)：对象、单位、依赖、选择状态与输出。
 - [复现指南](REPRODUCE.md)：公开示例、受控50户导入及物理交接。
 - [验证记录](VALIDATION.md)：软件检查、全批次检查及物理验证的不同范围。
-- [来源注册](SOURCES.json)：三篇文献的作用和继承的实现证据。
+- [来源注册](SOURCES.json)：原EB、活动/排程、温控机理、情景设计和覆盖依据的采用边界。
 
 现有家庭、1000户主数据及生产A/B不因本模块运行而更新。原B和既有指定失败作为独立对照保留；原失败请求不重新挑选成成功请求。所有输出均没有预填人类接受标签。
 
@@ -67,4 +68,4 @@ python -B -m benchmark.ab_generation reproduce-strategies \
 
 方法见 [TAIL_METHOD.md](TAIL_METHOD.md)，计划见 [examples/tail/plan.json](examples/tail/plan.json)。目录按实际命令去重，分层按事前顺序独占，再按家庭、户内请求两阶段无放回取样。全体候选及联合冲突保留；最终费用、事件成功和人的回答不参与取样。正常B、声明的EV失败压力、不可执行静态诊断和数据/模型错误分开验收。
 
-`sample-tail` 只构造并封存样本；`reproduce-tail` 复用已绑定的A参考，执行所选B并输出覆盖表、全部已选结果和未覆盖的单/双因素组合。缺失必验机会或执行错误导致验收失败，不自动换成成功B。命令与结果见 [REPRODUCE.md](REPRODUCE.md) 和 [TAIL_VALIDATION.md](TAIL_VALIDATION.md)。本次不推算真实长尾比例或人的接受率，冬季等缺口继续列明。
+`sample-tail` 只构造并封存样本；`reproduce-tail` 复用已绑定的A参考，执行所选B并输出覆盖表、全部已选结果和未覆盖的单/双因素组合。缺失必验机会或执行错误导致验收失败，不自动换成成功B。命令与结果见 [REPRODUCE.md](REPRODUCE.md) 和 [TAIL_VALIDATION.md](TAIL_VALIDATION.md)。当前规则验收使用 [examples/rule_review/plan.json](examples/rule_review/plan.json)，另有冬季与周末补充计划；[本轮验证](RULES_VALIDATION.md)逐项列出已测范围和缺口。不推算真实长尾比例或人的接受率。

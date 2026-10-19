@@ -22,7 +22,7 @@
     },
     {
       "id": "papers",
-      "material": "Chen2022,ElMakroum2026,Wen2025 and workflow reference",
+      "material": "Chen2022,ElMakroum2026,Wen2025,Hao2013 and workflow reference",
       "basis": "public author/publisher/institutional records and reviewed-version hashes",
       "permitted_here": "link,attribute and explain limited methodological use;no full papers redistributed",
       "not_granted": "transfer of empirical validity,household parameters,acceptance rates or all publication rights",
