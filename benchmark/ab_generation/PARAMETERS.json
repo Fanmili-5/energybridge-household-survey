@@ -8156,6 +8156,415 @@
           "implementation_or_definition": "GENERATION_RULES.md;review.py;sampling.py;life_physics.py"
         }
       ]
+    },
+    {
+      "path": "examples/sensitivity/plan.json",
+      "sha256": "3b0969188b671f604f173f9480db354e842e6e1ec1dee429a754dd8b4253dcd7",
+      "quantitative_fields": [
+        {
+          "path_pattern": "/factors/cooling_C/base",
+          "occurrences": 1,
+          "values": [
+            26.0
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/cooling_C/high",
+          "occurrences": 1,
+          "values": [
+            27.0
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/cooling_C/low",
+          "occurrences": 1,
+          "values": [
+            25.0
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/ev_arrival_delta_min/base",
+          "occurrences": 1,
+          "values": [
+            0
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/ev_arrival_delta_min/high",
+          "occurrences": 1,
+          "values": [
+            30
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/ev_arrival_delta_min/low",
+          "occurrences": 1,
+          "values": [
+            -30
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/hot_water_scale/base",
+          "occurrences": 1,
+          "values": [
+            1.0
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/hot_water_scale/high",
+          "occurrences": 1,
+          "values": [
+            1.5
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/hot_water_scale/low",
+          "occurrences": 1,
+          "values": [
+            0.5
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/textile_kg/base",
+          "occurrences": 1,
+          "values": [
+            1.2
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/textile_kg/high",
+          "occurrences": 1,
+          "values": [
+            1.8
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/textile_kg/low",
+          "occurrences": 1,
+          "values": [
+            0.6
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/washer_duration_min/base",
+          "occurrences": 1,
+          "values": [
+            60
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/washer_duration_min/high",
+          "occurrences": 1,
+          "values": [
+            80
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/factors/washer_duration_min/low",
+          "occurrences": 1,
+          "values": [
+            40
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/human_acceptance_inferred",
+          "occurrences": 1,
+          "values": [
+            false
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/maximum_supported_no_response_fraction",
+          "occurrences": 1,
+          "values": [
+            0.5
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/outcome_reselection",
+          "occurrences": 1,
+          "values": [
+            false
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/family/ev_delay_min",
+          "occurrences": 1,
+          "values": [
+            60
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/family/program_shift_min",
+          "occurrences": 1,
+          "values": [
+            30
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/family/thermal_delta_C",
+          "occurrences": 1,
+          "values": [
+            1.0
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/family/thermal_duration_min",
+          "occurrences": 1,
+          "values": [
+            20
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/shared/ev_delay_min",
+          "occurrences": 1,
+          "values": [
+            60
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/shared/program_shift_min",
+          "occurrences": 1,
+          "values": [
+            30
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/shared/thermal_delta_C",
+          "occurrences": 1,
+          "values": [
+            1.0
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/shared/thermal_duration_min",
+          "occurrences": 1,
+          "values": [
+            20
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/studio/ev_delay_min",
+          "occurrences": 1,
+          "values": [
+            60
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/studio/program_shift_min",
+          "occurrences": 1,
+          "values": [
+            30
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/studio/thermal_delta_C",
+          "occurrences": 1,
+          "values": [
+            1.0
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/panels/studio/thermal_duration_min",
+          "occurrences": 1,
+          "values": [
+            20
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/supplementary/*/values/tank_deadband_C",
+          "occurrences": 3,
+          "values": [
+            1,
+            4
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/supplementary/*/values/textile_kg",
+          "occurrences": 7,
+          "values": [
+            0.0,
+            5.0,
+            5.1,
+            0.6,
+            1.2,
+            1.8
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/supplementary/*/values/hot_water_scale",
+          "occurrences": 2,
+          "values": [
+            0.0,
+            1.5
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/supplementary/*/values/missing_ev_handler",
+          "occurrences": 1,
+          "values": [
+            true
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/supplementary/*/values/daily_service",
+          "occurrences": 3,
+          "values": [
+            false
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        },
+        {
+          "path_pattern": "/supplementary/*/values/washer_duration_min",
+          "occurrences": 1,
+          "values": [
+            80
+          ],
+          "origin": "project-designed finite parameter perturbations and fixed B selection dose;not empirical ranges",
+          "purpose_and_boundary": "SENSITIVITY.md;finite deterministic engineering checks,not population prevalence or global physical sensitivity",
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sensitivity.py;SENSITIVITY.md"
+        }
+      ]
     }
   ],
   "legacy_constraints": [

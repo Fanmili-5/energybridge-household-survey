@@ -302,5 +302,17 @@
     "meaning": "ex-ante A-state/profile mechanism evidence,not guaranteed B effect or household acceptance",
     "preserves": "all exploratory,static-conflict and declared service-failure requests;no post-outcome reselection",
     "scope": "original longest-earliest window plus state-supported window,all cross-family static-valid pairs with per-child evidence"
+  },
+  "parameter_sensitivity": {
+    "method": "SENSITIVITY.md",
+    "plan": "examples/sensitivity/plan.json",
+    "source": {
+      "title": "NIST/SEMATECH e-Handbook: Full factorial designs",
+      "url": "https://www.itl.nist.gov/div898/handbook/pri/section3/pri333.htm",
+      "adopted": "all low/high combinations and explicit interaction contrasts for inexpensive finite generation screening",
+      "not_adopted": "no empirical factor distributions,no global physical sensitivity or population calibration claim"
+    },
+    "parameter_origin": "all perturbation levels,B doses,panels and case counts are project settings;no exact values from paper",
+    "joint_family_limit": "two distinct candidate families is an engineering enumeration scope,not physical law;dependent dryer may add a third asset"
   }
 }

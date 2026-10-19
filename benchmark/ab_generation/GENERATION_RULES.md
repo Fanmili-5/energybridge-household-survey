@@ -67,3 +67,5 @@
 | NIST SP800-142、IR7878；加拿大统计局分层/多阶段说明 | 有限交互覆盖测量、事前分层和家庭优先取样 | 不证明小样本全面覆盖，不提供本项目配额 |
 
 精确来源、阅读状态及参数登记见[SOURCES.json](SOURCES.json)、[PARAMETERS.json](PARAMETERS.json)。科研审查流程沿用已登记的Scientific Agent Skills，仅为工作流来源。线上问卷和原答卷保持原状，1000户仿真继续暂缓。
+
+参数扰动与联合上限的详细范围见 [SENSITIVITY.md](SENSITIVITY.md)。两族联合是工程枚举上限，包含洗衣后继烘干时可改三台设备；未实现住宅总回路功率的动态联合约束，不将静态通过等同于物理成功。

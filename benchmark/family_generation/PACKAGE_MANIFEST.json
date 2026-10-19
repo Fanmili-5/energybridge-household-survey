@@ -2,7 +2,7 @@
   "EP_runs": 0,
   "date": "2026-10-19",
   "dependencies": {
-    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "8f22f5f3dbe2f80a4bac743cb823eb4b723fbde5a97d3071629de1913aadea38",
+    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "1c08697c661cd49b30f8fc103b01c13926ea2e5513988da692d983ef0a15a85a",
     "benchmark/ab_generation/__init__.py": "a591d8b46bebc41f63b28f301f0ff891926009485a02f0cbf5fb65a20fb130dc",
     "benchmark/ab_generation/__main__.py": "9197f3df5bd671313b8ef31ad27c16bf11e820ec025fe0934150aec73a5b599d",
     "benchmark/ab_generation/audit_design.py": "23f8040ae954e4b9dcdce72125f0347089787787d28ba94329f251018d33741b",
@@ -57,7 +57,9 @@
     "benchmark/ab_generation/sampling.py": "80dc5f01f9102a66e9e182e413bb666f17790409049601f60ad14f60ad8565c4",
     "benchmark/ab_generation/tail_review.py": "b77429766fc70df3ef4dee6ef7ffaaf83cac39e2f54cd6c6d986a3cb1035045b",
     "benchmark/ab_generation/test_opportunity.py": "3453ec4b62f508873f37fef42ca4b5d34adbc2d3c93639bcb15f1597dc0cc88a",
-    "benchmark/ab_generation/test_sampling.py": "6a795fb9369913b45124a39f3f8129351d4a78e689f8933e3822026c39ee96ad"
+    "benchmark/ab_generation/test_sampling.py": "6a795fb9369913b45124a39f3f8129351d4a78e689f8933e3822026c39ee96ad",
+    "benchmark/ab_generation/sensitivity.py": "561dca54b0fd6ef51eff39268b2cf2d8f0a6db0d32c4434b32a5e3204083c656",
+    "benchmark/ab_generation/test_sensitivity.py": "7ccd87ba4b2f94a6a968f99a494cb0221d2ddb051814db4b067ff90e24313f38"
   },
   "existing_data_migrated": false,
   "files": {
