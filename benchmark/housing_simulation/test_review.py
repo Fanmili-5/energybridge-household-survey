@@ -4,6 +4,7 @@ import datetime as dt
 from pathlib import Path
 import tempfile
 import shutil
+import sqlite3
 import unittest
 
 from .assembly import assemble
@@ -106,7 +107,7 @@ class ContractReviewTests(unittest.TestCase):
 class ReadbackReviewTests(unittest.TestCase):
     def fixture(self,root,change=None):
         compiled=root/'compiled';runs=root/'runs';times=list(range(0,12960,10))
-        base={'source_shell_sha256':'0'*64,'weather_sha256':'1'*64,'history_days':7,'run_interval_min':[-10080,12960],
+        base={'source_shell_sha256':'0'*64,'weather_sha256':'1'*64,'history_days':7,'simulation_timestep_min':10,'run_interval_min':[-10080,12960],
               'intervention_last_request_min':1920,'world_assembly':{'room_ids':['room'],'tank_nodes':2,'electrical_supply_W':1000},
               'tank_name':'TANK','hot_water_model':'standalone_hot_outlet','EV':{'installed':False},'HVAC_equipment_mapping':{},
               'equipment_meter_mapping':{'WASHER':{'asset_id':'washer','kind':'washer','watts':500}},
@@ -132,7 +133,18 @@ class ReadbackReviewTests(unittest.TestCase):
             if change:change(meta,tr)
             model=compiled/'case'/side/'model.idf';model.parent.mkdir(parents=True);model.write_text('synthetic audit fixture;')
             meta['idf_sha256']=sha(model);save(model.parent/'INPUT.json.gz',meta)
-            folder=runs/'case'/side;save(folder/'TRACE.json.gz',tr);(folder/'out').mkdir();(folder/'out/eplusout.sql').write_bytes(b'synthetic receipt only')
+            folder=runs/'case'/side;save(folder/'TRACE.json.gz',tr);(folder/'out').mkdir()
+            with sqlite3.connect(folder/'out/eplusout.sql') as db:
+                db.executescript('''CREATE TABLE ReportDataDictionary(ReportDataDictionaryIndex INT,Name TEXT,KeyValue TEXT,Units TEXT,IsMeter INT);
+                CREATE TABLE Time(TimeIndex INT,SimulationDays INT,Hour INT,Minute INT,Interval INT,WarmupFlag INT,EnvironmentPeriodIndex INT);
+                CREATE TABLE EnvironmentPeriods(EnvironmentPeriodIndex INT,EnvironmentType INT);
+                CREATE TABLE ReportData(ReportDataDictionaryIndex INT,TimeIndex INT,Value REAL);
+                INSERT INTO ReportDataDictionary VALUES(1,'Electricity:Facility','','J',1);
+                INSERT INTO EnvironmentPeriods VALUES(1,3);''')
+                for i, (t, value) in enumerate(tr['Electricity:Facility|']['values'], 1):
+                    end = t % 1440 + 10
+                    db.execute('INSERT INTO Time VALUES(?,?,?,?,10,0,1)',(i,8+t//1440,(end-1)//60,(end-1)%60+1))
+                    db.execute('INSERT INTO ReportData VALUES(1,?,?)',(i,value))
             result={'status':'completed','idf_sha256':sha(model),'trace_sha256':sha(folder/'TRACE.json.gz'),'SQL_sha256':sha(folder/'out/eplusout.sql')};save(folder/'RESULT.json',result);results.append(result)
         seal(compiled,{'records':[{'id':'case','status':'compiled'}]});seal(runs,{'records':results,'compiled_manifest_sha256':sha(compiled/'MANIFEST.json')})
         return audit(compiled,runs,root/'audit')

@@ -286,12 +286,18 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
         for kind in device['types']:
             if kind not in thermal:continue
             ts=[t for t in executed['tasks']if t['asset_id']==aid and t['kind']==kind]
-            name='program_'+digest([aid,kind])[:12];active={t for x in ts for t in range(max(lo,x['start_min']),min(hi,x['end_min']),10)}
-            rows.append(schedule(name,series(lambda t,d,l:int(t in active))))
-            p=device['parameters'];watts=p.get(kind,p)['power_kw']*1000
+            from .program_energy import program_watts
+            name='program_'+digest([aid,kind])[:12]
+            p=device['parameters'];watts=max([p.get(kind,p)['power_kw']*1000]+[program_watts(x,p)for x in ts])
+            demand={}
+            for x in ts:
+                for t in range(max(lo,x['start_min']),min(hi,x['end_min']),10):
+                    demand[t]=demand.get(t,0)+program_watts(x,p)
+            rows.append(schedule(name,series(lambda t,d,l:demand.get(t,0)/watts)))
             equip=name+'_equipment';source=gains[thermal[kind]]
             rows.append(['ElectricEquipment',equip,device['room_id'],name,'EquipmentLevel',watts,'','',*source[8:11],kind])
-            asset_meters[equip.upper()]={'asset_id':aid,'kind':kind,'watts':watts,'thermal_fractions':source[8:11]}
+            asset_meters[equip.upper()]={'asset_id':aid,'kind':kind,'watts':watts,'thermal_fractions':source[8:11],
+                                         'power_contract':'literal_task_power_kw_or_legacy_device_constant'}
     # EB prototype background powers/fractions are explicit common A/B conditions.
     background=pack.get('background')
     lighting_density=(background['lighting_W_m2']if background else sum(float(r[6])for r in native()['gains']if r[0]=='Lights'))*float(os.environ.get('EB_LIGHTING_SCALE','1'))

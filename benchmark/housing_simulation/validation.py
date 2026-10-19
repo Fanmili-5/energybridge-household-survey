@@ -5,7 +5,7 @@ import math
 from pathlib import Path
 
 from .kernel.execution import execute
-from .pipeline import HERE, build_shell, compile_pairs, fresh, read, run_pairs, save, seal, sha, verify
+from .pipeline import HERE, build_shell, compile_pairs, fresh, read, run_pairs, save, seal, sha, verify, native_site_power
 from .policy import reference
 
 TOL = reference('acceptance')
@@ -91,8 +91,13 @@ def audit(compiled, runs, output):
                 facility=values('Electricity:Facility')
                 supply=meta.get('world_assembly',{}).get('electrical_supply_W')
                 if supply:
-                    checks[side+'_electrical_supply']=max(facility.values())/600<=supply+1e-6
+                    native_power = native_site_power(runs/rid/side/'out/eplusout.sql', meta['history_days'], hi, meta['simulation_timestep_min'])
+                    checks[side+'_electrical_supply']=native_power['peak_W']<=supply+1e-6
                     details[side+'_facility_peak_timestep_W']=max(facility.values())/600
+                    details[side+'_native_site_capacity']={'peak_W':native_power['peak_W'],'supply_W':supply,
+                        'native_step_min':native_power['native_step_min'],
+                        'overload_minutes':[t for t,v in native_power['values_W']if v>supply+1e-6],
+                        'scope':native_power['scope']}
                 parts=['Electricity:HVAC','InteriorEquipment:Electricity','InteriorLights:Electricity']
                 if meta['tank_name']:parts.append('WaterSystems:Electricity')
                 if meta['EV']['installed']:parts.append('ExteriorEquipment:Electricity')
@@ -104,7 +109,9 @@ def audit(compiled, runs, output):
                 for key,mapping in meta['equipment_meter_mapping'].items():
                     actual=values('Electric Equipment Electricity Energy',key)
                     tasks=[t for t in meta['execution']['tasks']if t['asset_id']==mapping['asset_id'] and t['kind']==mapping['kind']]
-                    wanted={t:mapping['watts']*600*int(any(x['start_min']<=t<x['end_min']for x in tasks))for t in expected}
+                    # Compiler binds literal powers into executed tasks. Legacy
+                    # tasks retain the mapping's original constant design power.
+                    wanted={t:600*sum(x.get('power_kw',mapping['watts']/1000)*1000 for x in tasks if x['start_min']<=t<x['end_min'])for t in expected}
                     program_errors[mapping['asset_id']]=max(abs(actual[t]-wanted[t])for t in expected)
                 checks[side+'_program_energy']=all(e<TOL['program_absolute_J'] for e in program_errors.values())
                 details[side+'_program_max_error_J']=program_errors

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from .common import code_hash, digest, read, save, seal, sha, verify
 from .life import generate_household, require
+from .energy import task_power
 
 HERE = Path(__file__).parent
 DEFAULT_PLAN = HERE / 'examples/sensitivity/plan.json'
@@ -63,7 +64,6 @@ def perturb(spec, world, values):
 def life_measurements(spec, world, result):
     needs = {n['need_id']: n for n in result['requirements']}
     tasks = result['A']['tasks']; ops = result['A']['operations']
-    powers = {d['asset_id']: d['parameters'].get('power_kw', 0) for d in world['devices']}
     durations = {p['asset_id']: p['duration_min'] for p in spec['program_policies']}
     days = len(result['days']); checks = {}
     checks['complete_programs'] = all(t['end_min'] - t['start_min'] == durations[t['asset_id']] for t in tasks)
@@ -103,8 +103,8 @@ def life_measurements(spec, world, result):
             'unserved_reasons': dict(Counter(r['reason'] for r in result['unserved'])),
             'cycles': dict(Counter(t['kind'] for t in tasks)), 'served_textile_kg': served_kg,
             'remaining_textile_kg': residual,
-            'program_kWh': sum(powers[t['asset_id']] * (t['end_min'] - t['start_min']) / 60 for t in tasks),
-            'washer_kWh': sum(powers[t['asset_id']] * (t['end_min'] - t['start_min']) / 60 for t in tasks if t['kind'] == 'washer'),
+            'program_kWh': sum(task_power(t, next(d['parameters'] for d in world['devices'] if d['asset_id'] == t['asset_id'])) * (t['end_min'] - t['start_min']) / 60 for t in tasks),
+            'washer_kWh': sum(task_power(t, next(d['parameters'] for d in world['devices'] if d['asset_id'] == t['asset_id'])) * (t['end_min'] - t['start_min']) / 60 for t in tasks if t['kind'] == 'washer'),
             'hot_outlet_liters': sum(n['quantity'] for n in result['requirements'] if n['kind'] == 'water_heater'),
             'manual_minutes': sum(o['end_min'] - o['start_min'] for o in ops),
             'ev_grid_kWh': sum(e['battery_kWh'] / eff for e in result['EV']['charge_events']),

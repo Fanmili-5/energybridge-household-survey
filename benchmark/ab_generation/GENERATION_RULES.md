@@ -1,3 +1,5 @@
+当前联合搜索、批次能耗与供电约束修订见[JOINT_LOAD_SUPPLY.md](JOINT_LOAD_SUPPLY.md)。正式新联合长尾验收见[JOINT_TAIL_METHOD.md](JOINT_TAIL_METHOD.md)。历史运行回执及显式旧规则继续保留。
+
 # 面向用户roleplay的A/B生成规则
 
 本次修正规则和算法，服务于后续角色扮演情景供给。普通提案、探索性请求、无效响应和服务失败均可提供不同生活取舍。没有把物理成功当作接受答案，也没有按执行结果挑选更好的B。源码为`life.py`、`opportunity.py`、`generate.py`、`sampling.py`，实际逐设备回读为`effects.py`。
@@ -39,15 +41,15 @@
 
 对每个剂量/时长，先枚举原许可内的窗口。保留原“最长、再最早”代表；若存在不同的、有状态依据的窗口，再增加一个“有依据优先、最长、最早”的代表。相同区间归并。没有读取B后果，也没有只保留较好的窗口；本方法不是所有连续启动时刻的穷举。
 
-三种单设备方法对照只从静态通过且有机制支持的候选选择。全目录继续保留探索性请求与静态失败。联合B仍枚举两设备族的全部静态可行组合，重新检查操作冲突，并逐子请求记录依据：`all_supported`、`mixed`、`all_exploratory`。一台设备有依据不能替另一台提供依据；组合的实际相互作用仍须重新执行。
+三种单设备方法对照只从静态通过且有机制支持的候选选择。全目录继续保留探索性请求与静态失败。当前联合B覆盖同族多批及2至全部独立单位，保留有静态问题的单请求参与联合重查，并逐子请求记录依据：`all_supported`、`mixed`、`all_exploratory`。一台设备有依据不能替另一台提供依据；组合的实际相互作用仍须重新执行。
 
 `admission=normal`只表示静态准入。`opportunity=supported/exploratory`是另一维度，不能把normal解释为已交付有效调节。故意EV目标不足、其他静态冲突、引擎/数据错误继续分开处理。
 
 ## roleplay覆盖与防退化
 
-公开小型计划为[examples/rule_review/plan.json](examples/rule_review/plan.json)。在第一个B运行前，封存完整目录、命令去重、种子、独占分层和家庭→请求两阶段抽样。覆盖设备、剂量、时长、方向、人工策略、预测费用符号，以及新增的`opportunity`和`joint_support`。记录还携带原实验日期的`day_type`与固定事件的`event_direction`；不得为填层改写生活日历或事件。保留缺额，不跨层换成成功B。
+当前正式小型计划为[examples/joint_tail/plan.json](examples/joint_tail/plan.json)，历史计划为`examples/rule_review/plan.json`。在第一个B运行前，封存完整目录、命令去重、种子、独占分层和家庭→请求两阶段抽样。覆盖设备、剂量、时长、方向、人工策略、预测费用符号，以及新增的`opportunity`和`joint_support`。记录还携带原实验日期的`day_type`与固定事件的`event_direction`；不得为填层改写生活日历或事件。保留缺额，不跨层换成成功B。
 
-计划明确包含有依据和探索性请求、两类联合、费用增加取舍、A=B对照、静态拒绝和声明的服务失败。执行后逐目标设备报告用电时点、实际执行时点、温度和SOC，给出`all_targeted_assets_change`、`mixed_target_response`、`no_target_response`和`identical_control`。只有EV变化的联合B不能当作热水器已有作用。相同案号下的原生B轨迹指纹另报，命令不同不自动算独立物理后果。
+计划明确包含有依据和探索性请求、不同任务数联合、同族多批、费用增加取舍、A=B对照、静态拒绝和声明的服务失败。执行后逐目标设备报告用电时点、实际执行时点、温度和SOC，给出`all_targeted_assets_change`、`mixed_target_response`、`no_target_response`和`identical_control`。只有EV变化的联合B不能当作热水器已有作用。相同案号下的原生B轨迹指纹另报，命令不同不自动算独立物理后果。
 
 本计划要求六种设备至少各观察到一次变化，并要求有机制支持的目标设备中无响应比例不超过1/2，防止该子集多数为空操作。该1/2是“拒绝多数退化”的项目验收预算，不是论文估计、真实无效概率或人能感知的阈值。探索性、对照和失败分别报告，不用它们稀释这一分母。达不到时整批验收失败，所有原样本和结果仍保留，不重抽。模型/读回错误不当作可解释的无效响应或用户拒绝。
 
@@ -68,4 +70,4 @@
 
 精确来源、阅读状态及参数登记见[SOURCES.json](SOURCES.json)、[PARAMETERS.json](PARAMETERS.json)。科研审查流程沿用已登记的Scientific Agent Skills，仅为工作流来源。线上问卷和原答卷保持原状，1000户仿真继续暂缓。
 
-参数扰动与联合上限的详细范围见 [SENSITIVITY.md](SENSITIVITY.md)。两族联合是工程枚举上限，包含洗衣后继烘干时可改三台设备；未实现住宅总回路功率的动态联合约束，不将静态通过等同于物理成功。
+参数扰动历史范围见 [SENSITIVITY.md](SENSITIVITY.md)。当前默认取消两族上限，增加批次能量与累计供电检查，详见 `JOINT_LOAD_SUPPLY.md`；静态证书仍不等同于物理成功。

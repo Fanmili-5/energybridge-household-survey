@@ -5,6 +5,8 @@ from .common import digest
 from .information import PROPOSAL_PURPOSE, checked_information
 from .model import apply, chain_need_ids, overlap, plan_commands, plan_hash, program_issues
 from .opportunity import profile_evidence, thermal_evidence, joint_evidence
+from .energy import task_power
+from .power import site_capacity
 
 DEFAULT_RULES = {
     'schema': 'eb.ab_generation.rules.v1', 'seed': 20261019, 'step_min': 10,
@@ -15,7 +17,11 @@ DEFAULT_RULES = {
     'ev_delays_min': [30, 60, 120],
     'thermal_active_min_kWh': 0.001,
     'selection_policies': ['least_disruption', 'known_profile_cost', 'known_profile_vpp'],
-    'joint_family_limit': 2,
+    'joint_family_limit': 0,
+    'joint_candidate_budget': 8192,
+    'joint_trials_per_subset': 8,
+    'joint_exact_product_limit': 512,
+    'joint_beam_width': 4,
     'prediction_rank_cost_quantum': 1e-9,
     'prediction_rank_event_kWh_quantum': 1e-9,
 }
@@ -34,7 +40,7 @@ def binding(context):
 def validate(context, rules):
     if context.get('schema') != 'eb.ab_generation.context.v3':
         raise ValueError('UNKNOWN_CONTEXT_SCHEMA;v1_v2_require_explicit_reimport_for_information_contract')
-    if set(context) - {'schema', 'case_id', 'household_id', 'date', 'decision_min', 'horizon_min', 'A', 'needs', 'devices', 'operator_windows', 'occupancy', 'reservations', 'events', 'event_meter_scope', 'tariff', 'tariff_provenance', 'authority', 'assignment', 'source', 'reference', 'retained_B_request'}:
+    if set(context) - {'schema', 'case_id', 'household_id', 'date', 'decision_min', 'horizon_min', 'A', 'needs', 'devices', 'operator_windows', 'occupancy', 'reservations', 'events', 'event_meter_scope', 'tariff', 'tariff_provenance', 'authority', 'assignment', 'source', 'reference', 'retained_B_request', 'electrical'}:
         raise ValueError('UNKNOWN_OR_DOWNSTREAM_CONTEXT_FIELD')
     if not context.get('authority'):
         raise ValueError('RESOURCE_CONTRACT_REQUIRED;reimport_legacy_context')
@@ -60,8 +66,10 @@ def validate(context, rules):
         raise ValueError('UNKNOWN_DESIGN_LEVEL')
     if set(rules['selection_policies']) - {'least_disruption', 'known_profile_cost', 'known_profile_vpp'}:
         raise ValueError('UNKNOWN_SELECTION_POLICY')
-    if type(rules['joint_family_limit']) is not int or not 1 <= rules['joint_family_limit'] <= 2:
-        raise ValueError('JOINT_FAMILY_LIMIT_MUST_BE_1_OR_2')
+    if type(rules['joint_family_limit']) is not int or rules['joint_family_limit'] not in (0, 1, 2):
+        raise ValueError('JOINT_LIMIT_0_IS_UNRESTRICTED;1_2_ARE_EXPLICIT_LEGACY_REPLAY')
+    if any(type(rules[k]) is not int or rules[k] <= 0 for k in ('joint_candidate_budget', 'joint_trials_per_subset', 'joint_exact_product_limit', 'joint_beam_width')):
+        raise ValueError('INVALID_JOINT_SEARCH_BUDGET')
     if any(type(rules[k]) not in (int, float) or not math.isfinite(rules[k]) or rules[k] <= 0 for k in ('prediction_rank_cost_quantum', 'prediction_rank_event_kWh_quantum')):
         raise ValueError('INVALID_PREDICTION_RANK_RESOLUTION')
     ids = [d['asset_id'] for d in context['devices']]
@@ -160,6 +168,10 @@ def candidate(context, family, asset, factors, patches, issues, profiles=None, o
            'static_issues': sorted(set(issues)), 'prediction': metrics,
            'opportunity': opportunity if opportunity is not None else profile_evidence(context, a, b),
            'actual_outcomes': None, 'human_acceptance': None}
+    if context.get('electrical'):
+        power = site_capacity(context, apply(context['A'], patches))
+        row['power_certificate'] = power
+        row['static_issues'] = sorted(set(row['static_issues'] + power['issues']))
     row['id'] = digest({'binding': context['reference']['binding'], 'candidate': row})[:24]
     return row
 
@@ -183,7 +195,7 @@ def program_candidates(context, device, rules):
             continue
         devices = {d['asset_id']: d for d in context['devices']}
         def profile(tasks):
-            return [{**t, 'power_kw': devices[t['asset_id']]['parameters'].get(t['kind'], devices[t['asset_id']]['parameters'])['power_kw']} for t in tasks]
+            return [{**t, 'power_kw': task_power(t, devices[t['asset_id']]['parameters'])} for t in tasks]
         for delta in rules['program_shifts_min']:
             for handling in rules['handling_modes']:
                 if delta == 0:
@@ -411,6 +423,7 @@ def generate(context, rules=None):
     # A joint request is a separate experimental candidate; detect new conflicts,
     # retain the combined proposal with its failures rather than repairing it.
     joint = []
+    joint_coverage = {'method': 'explicit_legacy_two_family_replay', 'B_results_used': False}
     by_family = {}
     for row in eligible:
         by_family.setdefault(row['family'], []).append(row)
@@ -435,6 +448,9 @@ def generate(context, rules=None):
                                       'static_issues': sorted(set(issues)), 'actual_outcomes': None,
                                       'opportunity': joint_evidence([left, right]),
                                       'status': 'joint_request_failure_retained' if issues else 'joint_static_check_passed'})
+    if rules['joint_family_limit'] == 0:
+        from .joint import search
+        joint, joint_coverage = search(context, candidates, rules)
     return {'schema': 'eb.ab_generation.result.v3', 'case_id': context['case_id'],
             'device_opportunity_inventory': [{'asset_id': d['asset_id'], 'types': d['types'],
                 'independent_candidates': sum(c['asset_id'] == d['asset_id'] for c in candidates),
@@ -451,6 +467,6 @@ def generate(context, rules=None):
             'reference_sha256': digest(context['reference']), 'rules_sha256': digest(rules),
             'assignment': assignment, 'candidates': candidates, 'unavailable': unavailable,
             'resource_authority_status': 'declared',
-            'selections': selections, 'joint_candidates': joint,
+            'selections': selections, 'joint_candidates': joint, 'joint_search_coverage': joint_coverage,
             'paired_execution_status': 'not_run', 'human_acceptance': None,
             'final_B_outcomes_used_for_selection': False}

@@ -1,0 +1,9 @@
+file_name,environment,machine,program_name,program_heat,ambient_temp,target_load,actual_weight,total_energy_consumed_wh,cycle_duration,power_max,status
+wm_KUBO-2_KBWM8321_cold_cotton_40_0.csv,laboratory,KUBO-2_KBWM8321,cotton,40,16,0,0,387.63,150,1827.1,1
+wm_KUBO-2_KBWM8321_cold_cotton_40_2.csv,laboratory,KUBO-2_KBWM8321,cotton,40,16,2,1.999,644.567,152,2022,1
+wm_KUBO-2_KBWM8321_cold_cotton_40_4.csv,laboratory,KUBO-2_KBWM8321,cotton,40,16,4,4,689.025,151,2050.2,1
+wm_KUBO-2_KBWM8321_cold_cotton_40_5.csv,laboratory,KUBO-2_KBWM8321,cotton,40,16,5,5.035,602.755,153,2078.1,1
+wm_KUBO-2_KBWM8321_hot_cotton_40_0.csv,laboratory,KUBO-2_KBWM8321,cotton,40,32,0,0,315.236,154,1873.5,1
+wm_KUBO-2_KBWM8321_hot_cotton_40_2.csv,laboratory,KUBO-2_KBWM8321,cotton,40,32,2,1.983,487.727,180,2047.5,1
+wm_KUBO-2_KBWM8321_hot_cotton_40_4.csv,laboratory,KUBO-2_KBWM8321,cotton,40,32,4,4.026,562.304,153,2145.5,1
+wm_KUBO-2_KBWM8321_hot_cotton_40_5.csv,laboratory,KUBO-2_KBWM8321,cotton,40,32,5,4.979,483.164,151,2096.1,1

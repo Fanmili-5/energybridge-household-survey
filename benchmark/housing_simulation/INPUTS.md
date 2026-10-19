@@ -136,6 +136,7 @@ python -B -m benchmark.housing_simulation assemble \
 | `fixtures` | object[] | 便器、淋浴、厨房台及冰箱等矩形参考包络 |
 | `devices` | object[] | 资产、类别、使用家庭、安装、服务连接与物理参数 |
 | `electrical_supply_W` | number | 住宅供电功率上界，W |
+| `electrical_capacity_mode` | optional enum | 默认`nameplate_sum`；显式`schedule_resolved`由累计排程及执行审查验证时序供电 |
 | `exhaust_power_budget_W` | number | 供电筛查的排风功率预算，W |
 | `background` | object | `lighting_W_m2`、`misc_W_m2`、`refrigerator_W`、`cooking_W` |
 | `hot_water_minimum_C` | number | 参考热水出口最低服务温度，°C；按10 min报告均值的最小值验收 |
@@ -286,3 +287,5 @@ python -B -m benchmark.housing_simulation audit \
 `background`增加可选`misc_standby_fraction∈[0,1]`（默认0）及说明字段`reference_note`。照明、杂项、冰箱、烹饪和程序设备分别记账；论文总设备密度不得不经去重地当作额外杂项输入。
 
 `study --energyplus-dir PATH --out NEW_DIRECTORY [--workers 1..3] [--weather EPW --weather-metadata JSON]`从公开外壳和世界输入构造六案例并运行注册矩阵。输出`REGISTERED_PLAN.json`、每配置的编译/SQL/审计、`REPORT.json`及总清单。`REPORT.passed`必须同时满足全部物理/服务门槛、完整敏感性计算及数值收敛；结构模型差异和效应符号变化保留为结果。
+
+第二条线接口修订：程序任务可携带不可变`power_kw`、`cycle_energy_kWh`及负载模型来源，EP按批次等效功率编译完整周期；只移时不能改能量。供电采用原生求解区间实际有功功率审查，非浪涌或断路器认证。`schedule_resolved`的装配状态不代替A物理准入；B物理服务失败保留。完整依据及预算见[联合、批次和供电方法](../ab_generation/JOINT_LOAD_SUPPLY.md)。

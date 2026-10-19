@@ -176,6 +176,11 @@ def context_from_A(pair, pack, meta, trace, experiment, source):
                'authority': authority(pack, windows),
                'tariff_provenance': experiment.get('tariff_provenance'),
                'assignment': experiment['assignment'], 'source': source}
+    electrical = pack['world'].get('electrical')
+    if electrical:
+        context['electrical'] = {'schema': 'eb.ab_site_capacity.v1', 'supply_W': electrical['supply_W'],
+            'background_upper_W': electrical['background_upper_W'],
+            'scope': 'whole_physical_dwelling_including_shared_context', 'capacity_mode': electrical['capacity_mode']}
     thermal = {}
     for device in devices:
         aid, kind = device['asset_id'], device['kind']
@@ -344,6 +349,8 @@ def export_life(assembled, contexts, generated, policy, out, case_ids=None, requ
                                  'opportunity': selected.get('opportunity'),
                                  'event_meter_scope': context['event_meter_scope'],
                                  'reference_sha256': result['reference_sha256'], 'status': selected['status']}
+        from .power import site_capacity
+        pair['AB_generation']['site_capacity_assessment'] = site_capacity(context, pair['B'])
         pair.pop('source_pair_sha256', None); pair['source_pair_sha256'] = digest(pair)
         name = item['pair']['path']; save(out / name, pair)
         pairs.append({**item, 'pair': {'path': name, 'sha256': sha(out / name)}})

@@ -1660,6 +1660,13 @@
         "ASM-04"
       ],
       "evidence_class": "declared_input"
+    },
+    {
+      "schema_pointer": "/$defs/household/properties/electrical_capacity_mode",
+      "rule_ids": [
+        "ASM-03"
+      ],
+      "evidence_class": "declared_input"
     }
   ]
 }

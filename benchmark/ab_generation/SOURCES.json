@@ -75,6 +75,57 @@
       "zone_control_url": "https://bigladdersoftware.com/epx/docs/24-1/engineering-reference/zone-controls.html",
       "accessed": "2026-10-19",
       "supports": "native dual thermostat control and stratified tank cut-in=setpoint-deadband;mean tank temperature is not a known heater sensor;our all-node bound is conservative project screening"
+    },
+    {
+      "id": "LeiIPOG2007",
+      "title": "IPOG: A General Strategy for t-Way Software Testing",
+      "authors": [
+        "Yu Lei",
+        "Raghu N. Kacker",
+        "D. Richard Kuhn",
+        "Vadim Okun",
+        "James F. Lawrence"
+      ],
+      "year": 2007,
+      "doi": "10.1109/ECBS.2007.47",
+      "url": "https://www.nist.gov/publications/ipog-general-strategy-t-way-software-testing",
+      "full_text": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=50944",
+      "supports": "finite interaction coverage and combinatorial growth;our bounded deterministic search is not a literal IPOG implementation and not complete higher-order dose enumeration",
+      "accessed": "2026-10-19"
+    },
+    {
+      "id": "LARCO2026",
+      "title": "Household Laundry Appliance Resource Consumption and Operation Dataset",
+      "authors": [
+        "Žygimantas Jasiūnas",
+        "João Braz Ferreira",
+        "Tiago Julião",
+        "José Cecílio",
+        "Guilherme Carrilho da Graça",
+        "Pedro M. Ferreira"
+      ],
+      "year": 2026,
+      "doi": "10.1038/s41597-026-07361-6",
+      "url": "https://www.nature.com/articles/s41597-026-07361-6",
+      "dataset": "https://zenodo.org/records/19666168",
+      "dataset_doi": "10.5281/zenodo.19666168",
+      "source_receipt": "validation/joint_load_supply/LARCO_SOURCE.json",
+      "supports": "one washer/program measured load-energy relative shape;neither benchmark absolute energy/timing nor dryer curve empirically calibrated",
+      "accessed": "2026-10-19"
+    },
+    {
+      "id": "ApaydinOzkan2021",
+      "title": "An Appliance Scheduling System for Residential Energy Management",
+      "authors": [
+        "Hanife Apaydin-Özkan"
+      ],
+      "year": 2021,
+      "doi": "10.3390/s21093287",
+      "url": "https://www.mdpi.com/1424-8220/21/9/3287",
+      "full_text": "https://mdpi-res.com/d_attachment/sensors/sensors-21-03287/article_deploy/sensors-21-03287-v2.pdf",
+      "supports": "device windows and cumulative household power constraint;our A scheduler is deterministic resource allocation,not this optimizer or a cost optimality claim",
+      "accessed": "2026-10-19",
+      "read_full_text": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8126103/"
     }
   ],
   "inherited_contract": {
@@ -314,5 +365,16 @@
     },
     "parameter_origin": "all perturbation levels,B doses,panels and case counts are project settings;no exact values from paper",
     "joint_family_limit": "two distinct candidate families is an engineering enumeration scope,not physical law;dependent dryer may add a third asset"
+  },
+  "joint_tail_method": {
+    "document": "JOINT_TAIL_METHOD.md",
+    "algorithm_basis": [
+      "LeiIPOG2007",
+      "NISTSP800142",
+      "StatCanProbability2021",
+      "ApaydinOzkan2021"
+    ],
+    "adoption": "finite interaction design,household-first strata and cumulative resource checks;not full IPOG,uniform-sampling proof or population validation",
+    "project_settings": "22strata,18required,one household/request per stratum,seed20261019,explicit capacity stress whitelist;all predeclared and not paper constants"
   }
 }

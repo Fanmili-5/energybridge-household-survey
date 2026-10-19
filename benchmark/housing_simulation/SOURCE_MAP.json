@@ -51,11 +51,12 @@
     "v2.1 audit adds typed weather provenance and annual profile gates; fixed assumption catalog in physics identity; complete room/node/service readback and authority/EV/calendar constraints",
     "v3 adopts activity-resolved gains,Chinese bounded unit references,joint clearance MILP,native pressure structural alternative and registered Morris/convergence protocol",
     "accept explicit physical EV connections from life generator; verify known anchor state, original handling bounds and journey exclusion; legacy operation-derived connections unchanged",
-    "report native heating/cooling coil energy for mode-evidenced A opportunities;check home-connection departure target and independent comfort separately from trip feasibility and terminal recovery"
+    "report native heating/cooling coil energy for mode-evidenced A opportunities;check home-connection departure target and independent comfort separately from trip feasibility and terminal recovery",
+    "second-line revision binds immutable per-batch equivalent power into EP equipment schedules and native-step site supply audit;retains legacy constant-power replay"
   ],
   "kernel_files": {
     "__init__.py": "f45e77cbda2b4a8adbce11ebd4dc59970914188fc60113833495d5d29bf06332",
-    "compiler.py": "da35fcec609c52ea6a2441816d7ba86db080084bc11a4ee660a3a96ec17152f5",
+    "compiler.py": "e8657896b9e471f0f66b34d94d2abf6f86bc92108e95e4f3bbd3d91ca0e615e4",
     "core.py": "a77b715f651faba15eebed3c865a011df2fd5823365b25672ca55201b5a0166b",
     "core_tools.py": "5e39a8aac787d42c2bc301e5b4eb03300718af989ace0729c1c796777d5ba7a4",
     "execution.py": "c67c5926f1a117a0c34da010fe30755c1a4f13e9a504544f91f635ee0988bd6e",
@@ -63,6 +64,7 @@
     "geometry.py": "a8b2af617f6cdab2f02945849ac254b2fabcd3b1ce1fab26b94c67a0960aa024",
     "native_bundle.py": "e0ea3180b9ab0f8dfff09b3bef793dbbf6ac90d91fced97f8638d3ec3587161a",
     "pressure_network.py": "cf90741927ece7cfa503deef1df576614b124a51cca7978b17bc723732afa74c",
+    "program_energy.py": "954a28d9d2b3fdc3a5e51de26880efd51a9d1f3f882f5c2a390071a87e9309f3",
     "shell.py": "ae4a4975b24db1fd8fec0d1578e92b57bc6406844e4f19a6396f7945ebd73cb4",
     "source_identity.py": "2af2e8b0d51033329045e7dfc9b5f31da72677470e4ee20bca1598344fa01e6e",
     "thermal_environment.py": "4e93cc0908fb2c21153332d7490fba280f1fd50f66eae8393adcb2fb6676e7c5"

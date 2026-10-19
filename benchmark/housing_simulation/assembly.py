@@ -174,7 +174,7 @@ def _bind_world(spec, layout, assignment):
             for k in ('volume_m3','height_m','heater_capacity_W','maximum_C','deadband_C','skin_loss_W_m2K'): number(p[k],k)
             number(p['efficiency'],'efficiency',0,1)
             require(type(p['number_of_nodes']) is int and 2 <= p['number_of_nodes'] <= 12, 'invalid tank node count')
-            require(p['heater_capacity_W'] <= p['nameplate_W'], 'tank exceeds nameplate')
+            require(p['heater_capacity_W'] / p['efficiency'] <= p['nameplate_W'], 'tank electrical input exceeds nameplate')
         elif kind == 'ev':
             for k in ('charger_kw','capacity_kwh'):number(p[k],k)
             for k in ('efficiency','target_soc'):number(p[k],k,0,1)
@@ -199,7 +199,10 @@ def _bind_world(spec, layout, assignment):
     ventilation=read(HERE/'reference_environment.json')['spot_exhaust']
     fan_bound=(ventilation['bathroom_cfm']*int('washroom'in rooms)+ventilation['kitchen_cfm']*int(any(r['census_room_class']=='kitchen'for r in rooms.values())))*ventilation['background_fan_W_per_cfm']
     require(spec['exhaust_power_budget_W']>=fan_bound,'exhaust power budget below configured fans')
-    require(sum(d['parameters']['nameplate_W'] for d in assets.values())+passive <= supply, 'ELECTRICAL_NAMEPLATE_SUM_EXCEEDS_SUPPLY')
+    electrical_mode = spec.get('electrical_capacity_mode', 'nameplate_sum')
+    require(electrical_mode in ('nameplate_sum', 'schedule_resolved'), 'UNKNOWN_ELECTRICAL_CAPACITY_MODE')
+    if electrical_mode == 'nameplate_sum':
+        require(sum(d['parameters']['nameplate_W'] for d in assets.values())+passive <= supply, 'ELECTRICAL_NAMEPLATE_SUM_EXCEEDS_SUPPLY')
     for m in members.values():
         rights=m['can_operate_asset_ids']; require(set(rights) <= assets.keys(), 'unknown operator asset')
         require(not rights or m['age_years']>=INSTALL['operator_min_age_years'], 'operator below declared reference age16')
@@ -212,7 +215,8 @@ def _bind_world(spec, layout, assignment):
             'parameter_pack':{'devices':list(assets.values())}, 'activity_contract':{'room_map':roles},
             'routine':{'mixed_target_C':spec['hot_water_minimum_C']}, 'placements':placements,
             'installation_policy':'joint_MILP_declared_clearance_envelopes_grid;wall_width_budget;not_code_compliance',
-            'electrical':{'supply_W':supply,'nameplate_plus_background_W':sum(d['parameters']['nameplate_W']for d in assets.values())+passive},
+            'electrical':{'supply_W':supply,'background_upper_W':passive,'capacity_mode':electrical_mode,
+                          'nameplate_plus_background_W':sum(d['parameters']['nameplate_W']for d in assets.values())+passive},
             'reference_assumptions_sha256':fingerprint(),
             'input_kind':'declared_reference_household;not_survey_observation'}
 

@@ -119,7 +119,7 @@ A、生活资源、模型或天气改变时重新获取当前A参考；规则、
 ```sh
 python -B -m benchmark.ab_generation sample-tail \
   --contexts benchmark/ab_generation/validation/rules/frozen_contexts \
-  --plan benchmark/ab_generation/examples/rule_review/plan.json \
+  --plan benchmark/ab_generation/examples/compatibility/rule_review_v1.json \
   --out /absolute/path/frozen-tail-sample
 ```
 
@@ -173,3 +173,7 @@ python -B -m benchmark.ab_generation.validation.self_check.recompute \
 ```
 
 无需引擎或历史私有数据。校验原选择回执与样本集合，再按逐目标依据重算覆盖；没有重新取样、修改B或覆盖原物理结果。当前夏季目标出现次数由9修正为10，原无效/部分/失败样本及验收结论不变。生成不变性与新增回归见[SELF_CHECK.md](SELF_CHECK.md)。
+
+## 新联合目录正式长尾验收
+
+当前入口、22层事前计划及公开冻结A重放见[JOINT_TAIL_METHOD.md](JOINT_TAIL_METHOD.md)。精确取样重放使用`joint_tail frame-frozen`及`validation/joint_tail/frozen_inputs`；物理重跑先生成新A、再用`frame`封存并`execute`，不要求新引擎A的哈希和样本ID与旧平台相同。历史回放须显式旧规则，不能把不同生成器的旧样本数量当作本轮结果。

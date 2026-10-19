@@ -114,7 +114,7 @@
     {
       "id": "ASM-03",
       "classification": "declared_input_and_project_gate",
-      "rule": "资产房间使用权、显式接线/给排水/排风等连接；铭牌与背景功率预算不超过供电声明。",
+      "rule": "资产房间使用权与显式接线/给排水/排风；默认铭牌加背景预算不超过供电声明。显式schedule_resolved改用A/B累计排程与原生区间执行审查，装配通过本身不保证时序供电可行。",
       "sources": [],
       "implementation": "assembly.py:bind_world",
       "documentation": "INPUTS.md#5-家庭世界装配接口",

@@ -31,6 +31,7 @@ def build_batch(input_path, out, rules_path=None):
         counts['statically_admissible_candidates'] += sum(not r['static_issues'] for r in result['candidates'])
         counts['joint_candidates'] += len(result['joint_candidates'])
         counts['joint_failures_retained'] += sum(bool(r['static_issues']) for r in result['joint_candidates'])
+        counts['joint_search_coverage_gaps'] += int(result['joint_search_coverage'].get('coverage_passed') is False)
         families.update(r['family'] for r in result['candidates'])
         gaps.update(r['reason'] for r in result['unavailable'])
         assignments[result['assignment']['mode']] += 1
