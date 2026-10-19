@@ -2,7 +2,7 @@
   "EP_runs": 0,
   "date": "2026-10-19",
   "dependencies": {
-    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "cdb2848a24d04cfb7bf10f9582afba30bbd4d9b7733881630962414bc75127c8",
+    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "fc7e8023b0932cc8391d2bd81da7b1f6602170347d58c1ee83339c0d7e9bee22",
     "benchmark/ab_generation/__init__.py": "a591d8b46bebc41f63b28f301f0ff891926009485a02f0cbf5fb65a20fb130dc",
     "benchmark/ab_generation/__main__.py": "7d5c7922190df9a0616976ea903b3025df6939b9854db73605078242f6b96fea",
     "benchmark/ab_generation/audit_design.py": "8cc441915a547ed5ac704f3013cd8b045acc074230469181ff2b1d88625168bc",

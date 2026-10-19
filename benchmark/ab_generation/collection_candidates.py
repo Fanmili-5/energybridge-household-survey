@@ -119,7 +119,7 @@ def _raw_programs(c, d, config):
 def _raw_ev(c,d,config):
     groups=defaultdict(list)
     for s in c['reference'].get('ev_charging_steps',[]):
-        if c['decision_min'] <= s['start_min'] < c['horizon_min'][1] and s['grid_kWh']>0:
+        if c['decision_min'] <= s['start_min'] and s['grid_kWh']>0:
             groups[s['need_id']].append(s)
     for nid,steps in sorted(groups.items()):
         if not any(c['decision_min'] <= s['start_min'] < 1440 for s in steps):
@@ -128,7 +128,9 @@ def _raw_ev(c,d,config):
         if not controls:
             continue
         rating=d['parameters']['charger_kw']; energy=sum(s['grid_kWh'] for s in steps)
-        anchor=min(s['start_min'] for s in steps); end=min(max(r['end_min'] for r in controls),c['horizon_min'][1])
+        anchor=min(s['start_min'] for s in steps)
+        connection_end=c['_original_ev_connection_ends'][(d['asset_id'],nid)]
+        end=min(connection_end,c['horizon_min'][1])
         length=math.ceil((energy/rating*60-1e-8)/10)*10
         latest=end-length
         points=representatives(range(anchor+10,latest+1,10),config['quantiles'])
@@ -148,12 +150,15 @@ def _raw_ev(c,d,config):
                 'mechanism':'ev_defer','branch':'later','needs':[],
                 'patches':[{'type':'control_pause','asset_id':d['asset_id'],'kind':'ev_charge_window','need_id':nid,'start_min':anchor,'end_min':resume}],
                 'profiles':{'A':[{**s,'asset_id':d['asset_id'],'power_kw':s['grid_kWh']*6} for s in steps],'B':after},
+                'outside_case_horizon':remaining>1e-8 and connection_end>end,
                 'extra_issues':['CHARGE_EXCEEDS_ORIGINAL_CONNECTION'] if remaining>1e-8 else [],
                 'magnitude':{'dose_coordinate':resume-anchor,'pause_min':resume-anchor,
-                    'service_slack_min':end-max((s['end_min'] for s in after),default=resume),
+                    'service_slack_min':connection_end-max((s['end_min'] for s in after),default=resume),
+                    'observation_slack_min':end-max((s['end_min'] for s in after),default=resume),
+                    'original_connection_end_min':connection_end,'materialization_end_min':end,
                     'energy_shortfall_kWh':max(0,remaining),'required_A_grid_kWh':energy,
                     'manual_total_shift_min':0,'manual_max_shift_min':0,
-                    'slack_basis':'earlier_of_original_connection_end_and_explicit_case_horizon'}}
+                    'slack_basis':'original_declared_connection_end;observation_limit_is_separate'}}
 
 
 def _raw_thermal(c,d,config):
@@ -208,9 +213,11 @@ def _raw_thermal(c,d,config):
 
 def _finish(c,raw,config):
     check,gate,power=issues(c,raw['patches'],raw['needs'])
+    if raw.get('outside_case_horizon'):
+        gate=sorted(set(gate+['EV_REQUIRES_TAIL_BEYOND_CASE_HORIZON;NOT_DEPARTURE_FAILURE']))
     if gate:
         return {'quarantined':True,'gate_issues':gate,'unit':raw['unit'],
-                'patches':raw['patches'],'request_sha256':digest(raw)}
+                'patches':raw['patches'],'magnitude':raw['magnitude'],'request_sha256':digest(raw)}
     b=apply(c['A'],raw['patches']); bh=command_hash(b)
     if bh==command_hash(c['A']):
         return None

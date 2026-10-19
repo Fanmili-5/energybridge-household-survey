@@ -49,16 +49,19 @@ def audit(root):
                 windows=[w for w in b['controls'] if w['asset_id']==aid and w['kind']=='ev_charge_window' and w['need_id']==nid]
                 steps=[s for s in c['reference']['ev_charging_steps'] if s['need_id']==nid and s['start_min']>=c['decision_min']]
                 remaining=sum(s['grid_kWh'] for s in steps)
-                anchor=min(s['start_min'] for s in steps);end=min(c['horizon_min'][1],max(w['end_min'] for w in original))
+                anchor=min(s['start_min'] for s in steps);connection_end=max(w['end_min'] for w in original)
+                end=min(c['horizon_min'][1],connection_end)
                 rating=next(d['parameters']['charger_kw'] for d in c['devices'] if d['asset_id']==aid)
                 finish=pauses[0]['end_min']
                 for t in range(anchor,end,10):
                     if remaining<=1e-10:break
                     if any(w['start_min']<=t and t+10<=w['end_min'] for w in windows):
                         remaining-=min(rating/6,remaining);finish=t+10
-                slack=end-finish
+                slack=connection_end-finish
                 if abs(slack-m['service_slack_min'])>1e-9 or abs(max(0,remaining)-m['energy_shortfall_kWh'])>1e-8:
                     problems.append('EV_SLACK_OR_ENERGY_SHORTFALL_MISMATCH')
+                if m.get('observation_slack_min')!=end-finish:
+                    problems.append('EV_OBSERVATION_HORIZON_CONFUSED_WITH_DEPARTURE')
                 level='large' if slack<30 or pause>=180 else 'small' if pause<=30 else 'medium'
             else:
                 key=m['axis']+'_setpoint_C' if family=='ac' else 'value_C'

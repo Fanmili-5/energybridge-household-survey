@@ -7,7 +7,7 @@ from .common import digest,read
 from .collection import review
 from .collection_assignment import assign,assignment_frame
 from .collection_candidates import generate_day,presence_subsets
-from .collection_design import DEFAULT,design,representatives
+from .collection_design import DEFAULT,design,representatives,working_context
 from .generate import binding
 from .information import information_set
 from .model import apply
@@ -67,6 +67,28 @@ class CollectionTests(unittest.TestCase):
         r=generate_day(c,self.config)
         self.assertFalse(any(x['features']['composition']=='ev' for x in r['rows']))
         self.assertTrue(any(g['asset_id']=='ev' for g in r['gaps']))
+
+    def test_weekend_EV_connection_is_not_shortened_to_case_horizon(self):
+        c=fixture()
+        for row in c['A']['controls']:
+            if row['kind']=='ev_charge_window':row['end_min']=4800
+        c['reference']['information_set']=information_set('offline_unexecuted_A_plan',c['decision_min'],[0,5000])
+        c['reference']['binding']=binding(c)
+        result=generate_day(c,self.config)
+        ev=[r for r in result['rows'] if r['features']['composition']=='ev']
+        self.assertTrue(ev)
+        for r in ev:
+            m=r['components'][0]['magnitude']
+            self.assertGreater(m['service_slack_min'],m['observation_slack_min'])
+            self.assertEqual(m['service_slack_min']-m['observation_slack_min'],4800-c['horizon_min'][1])
+            self.assertNotIn('CHARGE_EXCEEDS_ORIGINAL_CONNECTION',r['issues'])
+        self.assertTrue(any(any('NOT_DEPARTURE_FAILURE' in s for s in r['gate_issues']) for r in result['quarantined_requests']))
+
+    def test_active_EV_full_future_energy_is_not_clipped_by_display_horizon(self):
+        c=fixture();nid=c['reference']['ev_charging_steps'][0]['need_id']
+        c['reference']['ev_charging_steps'].append({'need_id':nid,'start_min':2000,'end_min':2010,'grid_kWh':0.5})
+        view=working_context(c)
+        self.assertEqual(view['reference']['ev_charging_steps'],c['reference']['ev_charging_steps'])
 
     def test_authority_gate_and_full_review_detect_tampering(self):
         c=fixture();c['authority']['assets']['ac']['target_control_authorized']=False;c['reference']['binding']=binding(c)

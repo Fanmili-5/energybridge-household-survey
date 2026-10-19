@@ -28,7 +28,7 @@ EV仅在原充电连接/权限内推迟恢复，保留原能量需求、行程�
 
 每个机器启动分别产生原装取不动、整链移位，以及装/取日历域20%、50%、90%分位和最接近原A四个构造见证。装/取时间允许集合有空洞时，取真实可用时间点，不在空洞内插值；关联烘干按前置取出完成后再装载。**装取是有界构造搜索，不是完整CSP穷举**；缺少见证不能证明整个自由装取空间不可行。
 
-EV候选加入充电恢复域的20%、50%、90%分位、轻微延迟、19:00、最晚可补足附近及一格短缺诊断。计算名义剩余电量、可用充电步数与余量；充电观察上界是原连接结束与案例尾段的较早者，不能把观察截断称为真实车辆连接缩短。
+EV候选加入充电恢复域的20%、50%、90%分位、轻微延迟、19:00、最晚可补足附近及一格短缺诊断。当前连接的完整剩余A补能需求始终保留，不能因展示窗口而裁掉未来电量。生成范围限定在原连接结束与案例尾段的较早者，但**服务余量按原连接结束计算，观察窗口余量另外记录**。例如周五的连接延续至周一时，周六早晨不能被当成车辆出发期限。需要超出案例尾段才能核对的请求隔离并注明“不是已确认的出发失败”，不混入补能失败长尾。
 
 默认空调服务偏移0.5/1/2℃，水箱1/3/5℃，持续20/40/60分钟，幅度、时长、方向分别变化。保留响应方向相反的请求。硬件/参考设定范围检查与实际舒适判断分开。
 
@@ -68,7 +68,9 @@ python -B -m benchmark.ab_generation.collection prepare-source --out /tmp/collec
 python -B -m benchmark.ab_generation.collection build --source-project /tmp/collection-A --out /tmp/collection-pilot
 python -B -m benchmark.ab_generation.collection recheck --root /tmp/collection-pilot
 python -B -m benchmark.ab_generation.collection replay --root /tmp/collection-pilot
+python -B -m benchmark.ab_generation.validation.collection.baseline_audit --root /tmp/collection-pilot --out /tmp/collection-A-review.json
 python -B -m benchmark.ab_generation.validation.collection.independent_review --root /tmp/collection-pilot --out /tmp/collection-independent-review.json
+python -B -m benchmark.ab_generation.validation.collection.ev_windows --root /tmp/collection-pilot --out /tmp/collection-EV-window-review.json
 python -B -m benchmark.ab_generation.collection sensitivity --root /tmp/collection-pilot --out /tmp/collection-probe
 ```
 

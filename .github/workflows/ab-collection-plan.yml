@@ -25,4 +25,6 @@ jobs:
           python -B -m benchmark.ab_generation.collection build --source-project "$RUNNER_TEMP/collection-A" --out "$RUNNER_TEMP/collection-pilot"
           python -B -m benchmark.ab_generation.collection recheck --root "$RUNNER_TEMP/collection-pilot"
           python -B -m benchmark.ab_generation.collection replay --root "$RUNNER_TEMP/collection-pilot"
+          python -B -m benchmark.ab_generation.validation.collection.baseline_audit --root "$RUNNER_TEMP/collection-pilot" --out "$RUNNER_TEMP/baseline-A-review.json"
           python -B -m benchmark.ab_generation.validation.collection.independent_review --root "$RUNNER_TEMP/collection-pilot" --out "$RUNNER_TEMP/independent-review.json"
+          python -B -m benchmark.ab_generation.validation.collection.ev_windows --root "$RUNNER_TEMP/collection-pilot" --out "$RUNNER_TEMP/ev-windows-review.json"

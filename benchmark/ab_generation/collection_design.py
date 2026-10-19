@@ -64,11 +64,20 @@ def working_context(context):
             break
         keep = enlarged
     c = dict(context)
+    c['_original_ev_connection_ends'] = {}
+    for r in context['A']['controls']:
+        if r['kind']=='ev_charge_window':
+            key=(r['asset_id'],r['need_id'])
+            c['_original_ev_connection_ends'][key]=max(r['end_min'],c['_original_ev_connection_ends'].get(key,r['end_min']))
     c['A'] = {k: [r for r in context['A'][k] if r['need_id'] in keep] for k in ('tasks', 'operations')}
     c['A']['controls'] = [{**r, 'start_min': max(lo, r['start_min']), 'end_min': min(hi, r['end_min'])}
         for r in context['A']['controls'] if r['end_min'] > lo and r['start_min'] < hi]
+    active_ev={s['need_id'] for s in context['reference'].get('ev_charging_steps',[])
+               if lo<=s['start_min']<1440 and s['grid_kWh']>0}
+    # Full remaining energy of an active connection is an offline A input. The
+    # display horizon must not silently erase its later charging requirement.
     c['reference'] = {**context['reference'], 'ev_charging_steps': [s for s in context['reference'].get('ev_charging_steps', [])
-        if s['start_min'] >= lo and s['start_min'] < hi]}
+        if s['start_min'] >= lo and s['need_id'] in active_ev]}
     return c
 
 
