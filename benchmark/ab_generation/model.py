@@ -3,9 +3,12 @@ import copy
 from .common import digest
 
 
+def command_order(row):
+    return (row['start_min'], row['asset_id'], row.get('task_id', row.get('operation_id', row.get('kind', ''))))
+
+
 def plan_commands(plan):
-    return {key: sorted(copy.deepcopy(plan[key]), key=lambda x: (
-        x['start_min'], x['asset_id'], x.get('task_id', x.get('operation_id', x.get('kind', '')))))
+    return {key: sorted(copy.deepcopy(plan[key]), key=command_order)
         for key in ('tasks', 'operations', 'controls')}
 
 
@@ -21,14 +24,16 @@ def overlap(a, z, b, y):
 
 
 def apply(plan, patches):
-    result = copy.deepcopy(plan_commands(plan))
+    # Patch by replacement only, then copy once at the public return boundary.
+    # Unchanged history and caller-owned patch rows are never mutated here.
+    result = {key: sorted(plan[key], key=command_order) for key in ('tasks', 'operations', 'controls')}
     for patch in patches:
         if patch['type'] == 'rows':
             key, identity = patch['collection'], patch['identity']
             replacements = {r[identity]: r for r in patch['rows']}
             if not set(replacements) <= {r[identity] for r in result[key]}:
                 raise ValueError('PATCH_ADDS_UNKNOWN_ROW')
-            result[key] = [copy.deepcopy(replacements.get(r[identity], r)) for r in result[key]]
+            result[key] = [replacements.get(r[identity], r) for r in result[key]]
         elif patch['type'] == 'control_interval':
             new = []
             for row in result['controls']:
@@ -132,10 +137,16 @@ def _program_issues(context, plan, need_id):
         issues.add('SERVICE_DEADLINE_MISSED')
     if unload['start_min'] - finish > need.get('maximum_retrieval_wait_min', float('inf')):
         issues.add('RETRIEVAL_WAIT_EXCEEDED')
+    # Preserve the first-match semantics of next(...), including malformed
+    # duplicate rows, without rescanning every historical operation per load.
+    retrievals = {}
+    for operation in plan['operations']:
+        if operation['kind'] == 'unload':
+            retrievals.setdefault(operation['need_id'], operation)
     for other in plan['operations']:
         if other['kind'] != 'load' or other['need_id'] == need_id or other['asset_id'] != load['asset_id']:
             continue
-        retrieval = next((o for o in plan['operations'] if o['need_id'] == other['need_id'] and o['kind'] == 'unload'), None)
+        retrieval = retrievals.get(other['need_id'])
         end = retrieval['end_min'] if retrieval else context['horizon_min'][1]
         if overlap(load['start_min'], unload['end_min'], other['start_min'], end):
             issues.add('ASSET_HOLD_CONFLICT')

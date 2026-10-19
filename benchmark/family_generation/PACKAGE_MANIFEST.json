@@ -2,7 +2,7 @@
   "EP_runs": 0,
   "date": "2026-10-19",
   "dependencies": {
-    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "3df45b8b979ce84c0371bc4d4d1cd38111e0ad6b33124d714fdcf054c5836fe8",
+    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "3b6364e7021d6a58958b063f0b8a229189da454201353d49788c9ac57101ac46",
     "benchmark/ab_generation/__init__.py": "a591d8b46bebc41f63b28f301f0ff891926009485a02f0cbf5fb65a20fb130dc",
     "benchmark/ab_generation/__main__.py": "7d5c7922190df9a0616976ea903b3025df6939b9854db73605078242f6b96fea",
     "benchmark/ab_generation/audit_design.py": "c965f65e50ff7a2d874fe6040c18fd5f5c4b0bb8a64f4eebe5e0725754036d09",
@@ -17,7 +17,7 @@
     "benchmark/ab_generation/life.py": "60d0294fdd648423c8addfb925597a045ac12d842ef43ad79c6c8f8818125a76",
     "benchmark/ab_generation/life_physics.py": "be5d27e8d3cb9060072f19a983875c22479398658e014d3d9e7c1f40238956f3",
     "benchmark/ab_generation/life_pipeline.py": "9b816b23176a794f7ded134a6054d700249c05645d3974e5b2f761d93e3b97cd",
-    "benchmark/ab_generation/model.py": "5b86a0f8bab5510e8575896c0e4b4ef12541f4bc01b1f4d8fbaa944e1926be08",
+    "benchmark/ab_generation/model.py": "82bf3d1e51c75aae2a462765d522317a7b72cb423cbd60bce0fdbe47e0727beb",
     "benchmark/ab_generation/outcomes.py": "e48b4f3c9667c1074ff304a6a48c0bd2a0df23fa46205701f135b8929e5fe07f",
     "benchmark/ab_generation/resources.py": "f69ed4de35af8b9868e89a47fef861e62dfbe31b45f8026f311e4637472e1aab",
     "benchmark/ab_generation/review.py": "ad6629f60aa1f30ea707b98a8246f78ee20c02387c7ee5aa7ae2fae1820c1419",
@@ -69,7 +69,7 @@
     "benchmark/ab_generation/joint_tail.py": "b4d8673f13ebf7f71ac1bace430fc0b5b5732ee3257db71563b8d5e74f9904f5",
     "benchmark/ab_generation/test_joint_tail.py": "3bead0287104b6f5fe44cd07e3e86944e24c2ec319baab78e4f692938235540e",
     "benchmark/ab_generation/gap_review.py": "192809276df11976faa73d80f9cd735cf91674043d510f5eba7379a1f4768761",
-    "benchmark/ab_generation/test_gap_review.py": "d1a46293540ed50bcb8e369c72e006e280aeef6626b03709b6877866e9d78e1b"
+    "benchmark/ab_generation/test_gap_review.py": "b549bc6d2c980418b231570a8cf78148a62118f92f2f94b5bda7553a2ac85983"
   },
   "existing_data_migrated": false,
   "files": {

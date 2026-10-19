@@ -382,7 +382,8 @@
     "implementation": [
       "gap_review.py",
       "generate.py:program_domain_coverage",
-      "joint_tail.py"
+      "joint_tail.py",
+      "model.py:first-retrieval index and isolated literal patches;constraint semantics unchanged"
     ],
     "evidence": [
       "validation/gap_supplement/DIAGNOSIS.json",

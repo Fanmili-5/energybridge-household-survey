@@ -4,6 +4,8 @@
 
 下列命令在仓库根目录执行；输出目录须不存在。`diagnose` 只读原公开A，先证明原六档与完整10分钟网格的差别。`reference` 只生成及运行固定3个A（A/A共6臂），不执行候选B。`prepare` 保留并单列A未准入的冬季情境，两个夏季完整A必须与原版本一致；缺少冬季参考会继续形成必验缺额。
 
+精确复现本次冻结取样使用Python3.14.3；3.9与3.14均检查接口和约束，但不据此承诺跨Python版本的浮点累计与哈希优先级完全一致。原A执行时源码由当时SHA核对的 `validation/gap_supplement/A_BUILD_SOURCE.json` 保存，B执行源码另由运行前提交和 `PRE_B_FREEZE.json` 记录。
+
 ```bash
 python -B -m benchmark.ab_generation.gap_review diagnose --out outputs/gap-diagnosis
 python -B -m benchmark.ab_generation.gap_review reference \

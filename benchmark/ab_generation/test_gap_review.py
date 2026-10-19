@@ -1,16 +1,39 @@
 """Regress the discovered grid omission using the unchanged public family A."""
 import unittest
+import copy
 from pathlib import Path
 
 from .common import read
 from .gap_review import program_audit
 from .generate import DEFAULT_RULES, program_domain_coverage
 from .sampling import validate_plan
+from .model import program_issues, apply
+from .test_joint_load_supply import two_jobs
 
 HERE = Path(__file__).parent
 
 
 class GapReviewTests(unittest.TestCase):
+    def test_literal_patching_preserves_inputs_and_isolates_nested_output(self):
+        c = two_jobs(); c['A']['tasks'][0]['metadata'] = {'mass': [1.2]}
+        original = copy.deepcopy(c['A'])
+        replacement = {**c['A']['tasks'][0], 'start_min': 200, 'end_min': 220}
+        patches = [{'type': 'rows', 'collection': 'tasks', 'identity': 'task_id', 'rows': [replacement]}]
+        output = apply(c['A'], patches)
+        moved = next(t for t in output['tasks'] if t['task_id'] == 'first')
+        moved['metadata']['mass'][0] = 9
+        self.assertEqual(original, c['A'])
+        self.assertEqual([1.2], replacement['metadata']['mass'])
+        self.assertEqual(['second', 'first'], [t['task_id'] for t in output['tasks']])
+
+    def test_hold_index_keeps_missing_and_first_duplicate_retrieval_semantics(self):
+        c = two_jobs(); plan = copy.deepcopy(c['A'])
+        first = next(o for o in plan['operations'] if o['operation_id'] == 'first:unload')
+        plan['operations'].append({**first, 'start_min': 200, 'end_min': 210})
+        self.assertNotIn('ASSET_HOLD_CONFLICT', program_issues(c, plan, 'second'))
+        plan['operations'] = [o for o in plan['operations'] if o['need_id'] != 'first' or o['kind'] != 'unload']
+        self.assertIn('ASSET_HOLD_CONFLICT', program_issues(c, plan, 'second'))
+
     def test_sparse_grid_cannot_claim_complete_time_opportunities(self):
         coverage = program_domain_coverage(DEFAULT_RULES)
         self.assertFalse(coverage['complete_within_radius'])
