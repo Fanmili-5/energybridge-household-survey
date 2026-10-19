@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-19",
+  "date": "2026-10-20",
   "implementation": "portable_declared_life_to_A_and_frozen_A_candidate_stages;not_a_byte_identical_refactor_of_legacy_generators",
   "implementation_sources": [
     {
@@ -126,6 +126,21 @@
       "supports": "device windows and cumulative household power constraint;our A scheduler is deterministic resource allocation,not this optimizer or a cost optimality claim",
       "accessed": "2026-10-19",
       "read_full_text": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8126103/"
+    },
+    {
+      "accessed": "2026-10-20",
+      "id": "SciPyMILPCollection",
+      "supports": "actual two-stage integer collection assignment; solver status and budget recorded; not global physical validity",
+      "title": "scipy.optimize.milp / HiGHS",
+      "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.milp.html"
+    },
+    {
+      "accessed": "2026-10-20",
+      "doi": "10.1016/j.apenergy.2025.125610",
+      "id": "CollectionVignetteWen2025",
+      "supports": "multi-attribute multi-level factorial vignettes and limited respondent burden;not our ten days, dose values, quotas,or orthogonality",
+      "title": "Can reduction of local carbon emissions motivate participation in demand-side flexibility programs? Evidence from the United Kingdom.",
+      "url": "https://pure.hw.ac.uk/ws/portalfiles/portal/147868180/1-s2.0-S030626192500340X-main.pdf"
     }
   ],
   "inherited_contract": {
@@ -308,7 +323,7 @@
         "Aubrey M. Brueckner"
       ],
       "boundary": "workflow reference only;not evidence of energy model validity or performance",
-      "checked_version": "v2,2026-09-02;latest record checked 2026-10-19",
+      "checked_version": "v2,2026-09-02;latest record checked 2026-10-20",
       "doi": "10.48550/arXiv.2609.00065",
       "key": "Kassis2026ScientificAgentSkills",
       "method_use": "procedural evidence separation,negative controls,and scope calibration during this code review",
