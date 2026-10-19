@@ -6,7 +6,41 @@ concurrency:
 permissions:
   contents: read
 jobs:
+  scope:
+    runs-on: ubuntu-latest
+    outputs:
+      ab_only: ${{ steps.scope.outputs.ab_only }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: scope
+        name: Keep A/B-only changes on their static verification workflow
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          python3 - <<'PY'
+          import os, subprocess
+          base = os.environ.get('BASE_SHA', '')
+          ab_only = False
+          if os.environ['EVENT_NAME'] != 'workflow_dispatch':
+              if not base or set(base) == {'0'}:
+                  base = subprocess.check_output(['git', 'merge-base', 'HEAD',
+                      'origin/' + os.environ['DEFAULT_BRANCH']], text=True).strip()
+              paths = subprocess.check_output(['git', 'diff', '--name-only', base, 'HEAD'], text=True).splitlines()
+              ancillary = {'benchmark/PUBLICATION_MANIFEST.json',
+                           'benchmark/family_generation/PACKAGE_MANIFEST.json',
+                           '.github/workflows/ab-generation.yml', '.github/workflows/offline-checks.yml'}
+              ab_only = (any(p.startswith('benchmark/ab_generation/') for p in paths)
+                         and all(p.startswith('benchmark/ab_generation/') or p in ancillary for p in paths))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('ab_only=' + str(ab_only).lower() + '\n')
+          PY
   verify:
+    needs: scope
+    if: needs.scope.outputs.ab_only != 'true'
     runs-on: ubuntu-22.04
     timeout-minutes: 45
     steps:

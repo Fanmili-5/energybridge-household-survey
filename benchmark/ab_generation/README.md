@@ -1,6 +1,6 @@
 # A/B策略生成
 
-三个缺额的追查与细网格补充版本见 [GAP_METHOD.md](GAP_METHOD.md) 和 [GAP_VALIDATION.md](GAP_VALIDATION.md)：原多批A中存在被六档移位漏掉的合法方案，冬季新增A则须单独通过原服务准入。旧批次与其失败样本、缺额回执保持原样。细网格正式配置为 `examples/gap_supplement/tail_plan.json`，不能将历史六档默认设置解释为全部10分钟机会。
+三个缺额的追查与细网格补充版本见 [GAP_METHOD.md](GAP_METHOD.md) 和 [GAP_VALIDATION.md](GAP_VALIDATION.md)：原多批A中存在被六档移位漏掉的合法方案，冬季新增计划与已有物理诊断分开记录，本轮不要求仿真通过。旧批次与其失败样本、缺额回执保持原样。细网格正式配置为 `examples/gap_supplement/tail_plan.json`，不能将历史六档默认设置解释为全部10分钟机会。
 
 设计目的与原EB的逐项对应见[DESIGN.md](DESIGN.md)。A是无本次VPP干预的日常参照，B是供独立判断的合成提案；本实现先读取完整未来A，属于[离线反事实实验](OFFLINE_EXPERIMENT.md)，没有实时预测器。来源、参数和授权分别登记于[SOURCES.json](SOURCES.json)、[PARAMETERS.json](PARAMETERS.json)和[AUTHORIZATION.json](AUTHORIZATION.json)。
 

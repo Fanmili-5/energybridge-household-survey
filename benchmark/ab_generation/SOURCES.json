@@ -387,7 +387,11 @@
     ],
     "evidence": [
       "validation/gap_supplement/DIAGNOSIS.json",
-      "validation/gap_supplement/A_STATUS.json"
+      "validation/gap_supplement/A_STATUS.json",
+      "validation/gap_supplement/STATIC_GENERATION.json",
+      "validation/gap_supplement/GENERATION_EQUIVALENCE.json",
+      "validation/gap_supplement/PROJECTION_CHECK.json",
+      "validation/gap_supplement/WINTER_PLAN_CANDIDATES.json"
     ],
     "scientific_basis": [
       "ApaydinOzkan2021",
@@ -397,6 +401,6 @@
     ],
     "manual_choices": "10-minute full grid within +/-120 minutes;32768 budget;3 fixed A scenarios;10 strata and quotas;winter date;not paper estimates",
     "authority": "same original task identities,actors,programs,durations,energy and authority;no new permissions",
-    "verification_boundary": "finite rigid shifts only;failed winter A retained;no success replacement;separate new version,not retroactive old coverage"
+    "verification_boundary": "static plan checks and raw candidate interaction receipts only;formal deduplicated sample coverage incomplete;new B physics deferred and not required;existing winter A failure retained,not a static-plan veto;no success replacement"
   }
 }

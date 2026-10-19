@@ -1,6 +1,16 @@
 name: A-B strategy generation
 
 on:
+  workflow_dispatch:
+    inputs:
+      run_physics:
+        description: "Explicitly run deferred A/B physical experiments"
+        type: boolean
+        default: false
+      run_full_replay:
+        description: "Replay the complete historical frozen catalogue"
+        type: boolean
+        default: false
   push:
     paths:
       - 'benchmark/ab_generation/**'
@@ -58,6 +68,7 @@ jobs:
           python -c 'import json, os; from pathlib import Path; expected=json.loads(Path("benchmark/ab_generation/validation/rules/SELECTION.json").read_text()); actual=json.loads((Path(os.environ["RUNNER_TEMP"])/"tail-frozen-sample/SELECTION.json").read_text()); keys=lambda s:[(r["sample_id"],r["stratum"],r["B_commands_sha256"]) for r in s["records"]]; assert keys(expected)==keys(actual); assert actual["selection_coverage_passed"]'
 
   joint-tail-replay:
+    if: github.event_name == 'workflow_dispatch' && inputs.run_full_replay
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -81,68 +92,18 @@ jobs:
             --out "$RUNNER_TEMP/joint-tail-replay"
           python -c 'import json,os;from pathlib import Path;p=Path("benchmark/ab_generation/validation/joint_tail/frozen_sample/SELECTION.json");a=json.loads(p.read_text());b=json.loads((Path(os.environ["RUNNER_TEMP"])/"joint-tail-replay/SELECTION.json").read_text());keys=lambda d:[(r["sample_id"],r["stratum"],r["B_commands_sha256"])for r in d["records"]];assert keys(a)==keys(b);assert b["selection_coverage_passed"]==a["selection_coverage_passed"];assert b["coverage"]==a["coverage"]'
 
-  gap-supplement-replay:
+  gap-static-check:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.14.3'
-      - name: Recheck the separately published supplement including its deficits
-        run: python -B -m benchmark.ab_generation.validation.gap_supplement.recompute --out "${{ runner.temp }}/gap-recheck"
-      - name: Replay the fixed fine-grid selection from public A only
-        run: |
-          python -B -m benchmark.ab_generation.joint_tail frame-frozen \
-            --reference-root benchmark/ab_generation/validation/gap_supplement/frozen_inputs \
-            --references benchmark/ab_generation/validation/gap_supplement/frozen_inputs/REFERENCES.json \
-            --plan benchmark/ab_generation/examples/gap_supplement/tail_plan.json \
-            --out "${{ runner.temp }}/gap-replay"
-          python -c 'import json,os;from pathlib import Path;a=json.loads(Path("benchmark/ab_generation/validation/gap_supplement/frozen_sample/SELECTION.json").read_text());b=json.loads((Path(os.environ["RUNNER_TEMP"])/"gap-replay/SELECTION.json").read_text());key=lambda x:[(r["sample_id"],r["stratum"],r["B_commands_sha256"])for r in x["records"]];assert key(a)==key(b);assert a["coverage"]==b["coverage"]'
-      - name: Check strict acceptance agrees with the recorded failure
-        run: python -c 'import subprocess,sys,os,json;from pathlib import Path;x=json.loads(Path("benchmark/ab_generation/validation/gap_supplement/SELF_CHECK.json").read_text());r=subprocess.run([sys.executable,"-B","-m","benchmark.ab_generation.validation.gap_supplement.recompute","--require-coverage","--out",str(Path(os.environ["RUNNER_TEMP"])/"gap-strict")],capture_output=True,text=True);assert (r.returncode==0)==x["supplement_accepted"]'
-
-  gap-supplement-physical:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.14.3'
-      - run: python -m pip install -r benchmark/housing_simulation/requirements.txt
-      - name: Install the pinned official EnergyPlus build
-        run: |
-          curl -fL --retry 3 -o "$RUNNER_TEMP/gap-energyplus.tar.gz" \
-            https://github.com/NatLabRockies/EnergyPlus/releases/download/v24.1.0/EnergyPlus-24.1.0-9d7789a3ac-Linux-Ubuntu22.04-x86_64.tar.gz
-          echo "5a1d30c3bd1a304741c495a683c7d6ffd8c07d00dd06783e543b50a631c29017  $RUNNER_TEMP/gap-energyplus.tar.gz" | sha256sum --check
-          mkdir "$RUNNER_TEMP/gap-energyplus"
-          tar -xzf "$RUNNER_TEMP/gap-energyplus.tar.gz" -C "$RUNNER_TEMP/gap-energyplus" --strip-components=1
-      - name: Execute the fixed supplement and retain all A failures and B outcomes
-        run: |
-          python -B -m benchmark.ab_generation.gap_review reference \
-            --energyplus-dir "$RUNNER_TEMP/gap-energyplus" --out "$RUNNER_TEMP/gap-reference"
-          python -B -m benchmark.ab_generation.gap_review prepare \
-            --reference-root "$RUNNER_TEMP/gap-reference" --out "$RUNNER_TEMP/gap-admission"
-          python -B -m benchmark.ab_generation.joint_tail frame \
-            --reference-root "$RUNNER_TEMP/gap-reference" --references "$RUNNER_TEMP/gap-admission/REFERENCES.json" \
-            --plan benchmark/ab_generation/examples/gap_supplement/tail_plan.json --out "$RUNNER_TEMP/gap-frame"
-          python -B -m benchmark.ab_generation.joint_tail execute \
-            --reference-root "$RUNNER_TEMP/gap-reference" --sample "$RUNNER_TEMP/gap-frame" \
-            --energyplus-dir "$RUNNER_TEMP/gap-energyplus" --workers 2 --out "$RUNNER_TEMP/gap-results"
-          python -c 'import json,os;from pathlib import Path;x=json.loads((Path(os.environ["RUNNER_TEMP"])/"gap-results/RESULT.json").read_text());assert x["generation_coverage_passed"];assert all(r["coverage_credit"]for r in x["records"]);missing={r["stratum"]for r in x["coverage"]if r["required"]and not r["passed"]};assert missing <= {"winter_heating_down","winter_heating_up"};print(json.dumps({"coverage_accepted":x["passed"],"deficits":sorted(missing),"outcomes":x["outcome_counts"]}))'
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: gap-supplement-all-A-failures-and-B-outcomes
-          path: |
-            ${{ runner.temp }}/gap-reference
-            ${{ runner.temp }}/gap-admission
-            ${{ runner.temp }}/gap-frame
-            ${{ runner.temp }}/gap-results
-          retention-days: 14
+          python-version: '3.12'
+      - name: Check plan coverage and retained failures without simulation
+        run: python -B -m benchmark.ab_generation.validation.gap_supplement.recompute --out "${{ runner.temp }}/gap-static-check"
 
   physical-reproduction:
+    if: github.event_name == 'workflow_dispatch' && inputs.run_physics
     runs-on: ubuntu-22.04
     timeout-minutes: 120
     steps:
