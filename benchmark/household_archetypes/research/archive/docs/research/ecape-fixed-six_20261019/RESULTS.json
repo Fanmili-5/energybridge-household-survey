@@ -1,0 +1,2554 @@
+{
+  "schema": "eb.ecape.fixed_six.results.v1",
+  "n": 1022,
+  "fixed_k": 6,
+  "plan": {
+    "schema": "eb.ecape.fixed_six.plan.v1",
+    "date": "2026-10-19",
+    "status": "Exploratory fixed-six analysis requested by user; feature rules frozen before fitting, after the raw field inventory was inspected. Not a preregistered confirmatory study.",
+    "source": "https://doi.org/10.5281/zenodo.12819318",
+    "raw_filename": "ecape_combined.csv",
+    "raw_sha256": "7047af8a865eae3fd148bea6346643517eab960c58a83a3f73fa49c8a8811326",
+    "sample": "1022 unique public complete respondents, int_resultat stripped equals1. Svar; do not include326 partial responses or nonrespondents",
+    "k": 6,
+    "features": [
+      "weekday_regularity",
+      "job_related_routine_changes",
+      "routine_interruptions",
+      "external_fixed_schedule",
+      "weekday_awake_home_hours",
+      "care_activity_two_days",
+      "smart_heat_use",
+      "EV_ownership"
+    ],
+    "feature_rules": {
+      "weekday_regularity": "q16_morgen andq16_aften: each high if native very-high/high; both_high, one_high or neither_high. Missing/unknown either side gives unobserved. Neither_high is not necessarily irregular because some-extent/neutral are included.",
+      "job_related_routine_changes": "q17_job native strongly/somewhat agree, neither, strongly/somewhat disagree; unknown unobserved",
+      "routine_interruptions": "q20_forstyr same agree/neutral/disagree grouping; unknown unobserved",
+      "external_fixed_schedule": "q20_tid same agree/neutral/disagree grouping; unknown unobserved",
+      "weekday_awake_home_hours": "q14 numeric0..24: below8,8toBelow12,12plus; hidden88/99 or invalid unobserved. Researcher-chosen coarse bins, not a published EB threshold.",
+      "care_activity_two_days": "q22_care andq26_care: caring on both recalled weekday/weekend days, one of two days, neither; describes activity, not care priority or DR refusal",
+      "smart_heat_use": "q6_termo/q6_varme: any active use, owned-but-not-used only, neither owned. Adoption/use, not trust or third-party authorization.",
+      "EV_ownership": "q3_6: at least one EV versus none; ownership, not commute reliance or charging optimization"
+    },
+    "posthoc_only": [
+      "q16_morgen",
+      "q16_aften",
+      "q17_livsstil",
+      "q17_husstand",
+      "q13 home working",
+      "q21a long-term health needs",
+      "hjemb0012 children0to12",
+      "hjemb1319 children13to19",
+      "aldergrp4",
+      "q5_vask_aarsag conditional reason for delay"
+    ],
+    "missingness": "Internal code-1 is excluded from every category in the one-hot likelihood; missing items are marginalized, never treated as negative attitude. Applies missing-at-random likelihood assumption; report observed denominators.",
+    "estimator": "Categorical latent class maximum-likelihood EM; pinned existing research solver; fixed6,48 starts, seed20261019; no EB labels, original quotas or match scores in fitting",
+    "weighting": "Unit weights; no public respondent-weight column acquired. Shares are this sample's soft mixture proportions, not population prevalence or proposed quotas.",
+    "validation": {
+      "bootstrap_replicates": 20,
+      "bootstrap_starts": 12,
+      "alignment": "Posterior overlap, not EB proportions",
+      "sensitivities": [
+        "without_EV",
+        "routines_only",
+        "home_hours_edges10_14"
+      ],
+      "sensitivity_starts": 32,
+      "one_class_closed_form_check": true
+    },
+    "interpretation": "Sort classes by descending fitted sample share, describe actual features, then compare separately to each EB role. Allow partial matches, overlaps and absent matches. A/B monetary/comfort priorities and control-authorization attitudes were not directly measured.",
+    "production_changes": false,
+    "EP_runs": 0,
+    "new_benchmark_labels": 0
+  },
+  "category_names": {
+    "weekday_regularity": [
+      "both_high",
+      "neither_high",
+      "one_high"
+    ],
+    "job_related_routine_changes": [
+      "agree",
+      "disagree",
+      "neutral"
+    ],
+    "routine_interruptions": [
+      "agree",
+      "disagree",
+      "neutral"
+    ],
+    "external_fixed_schedule": [
+      "agree",
+      "disagree",
+      "neutral"
+    ],
+    "weekday_awake_home_hours": [
+      "12plus",
+      "8toBelow12",
+      "below8"
+    ],
+    "care_activity_two_days": [
+      "both_days",
+      "neither_day",
+      "one_day"
+    ],
+    "smart_heat_use": [
+      "active",
+      "none",
+      "owned_unused_only"
+    ],
+    "EV_ownership": [
+      "EV_owned",
+      "none"
+    ]
+  },
+  "fit": {
+    "k": 6,
+    "n": 1022,
+    "ll": -6205.395775701893,
+    "parameters": 95,
+    "bic": 13069.095644626334,
+    "aic": 12600.791551403787,
+    "soft_share": [
+      0.08946842516814536,
+      0.18959766445419127,
+      0.34270930158986335,
+      0.13708628563754702,
+      0.18658341308499932,
+      0.05455491006525409
+    ],
+    "hard_n": [
+      93,
+      206,
+      370,
+      151,
+      162,
+      40
+    ],
+    "mean_max_posterior": 0.8216964345503799,
+    "normalized_entropy": 0.7240125819452392,
+    "best_start_converged": true,
+    "best_start_iterations": 654,
+    "starts_within_1_loglik": 13,
+    "starts": [
+      {
+        "ll": -6212.722198431058,
+        "iterations": 234,
+        "converged": true
+      },
+      {
+        "ll": -6207.97718389755,
+        "iterations": 447,
+        "converged": true
+      },
+      {
+        "ll": -6205.396135095585,
+        "iterations": 1045,
+        "converged": true
+      },
+      {
+        "ll": -6205.395775701893,
+        "iterations": 654,
+        "converged": true
+      },
+      {
+        "ll": -6205.396140205555,
+        "iterations": 1087,
+        "converged": true
+      },
+      {
+        "ll": -6207.309923166338,
+        "iterations": 518,
+        "converged": true
+      },
+      {
+        "ll": -6205.396085027362,
+        "iterations": 863,
+        "converged": true
+      },
+      {
+        "ll": -6207.312906467916,
+        "iterations": 388,
+        "converged": true
+      },
+      {
+        "ll": -6207.313981112076,
+        "iterations": 478,
+        "converged": true
+      },
+      {
+        "ll": -6215.645529071655,
+        "iterations": 823,
+        "converged": true
+      },
+      {
+        "ll": -6205.3960401132335,
+        "iterations": 958,
+        "converged": true
+      },
+      {
+        "ll": -6205.396143605144,
+        "iterations": 1197,
+        "converged": true
+      },
+      {
+        "ll": -6208.915254780229,
+        "iterations": 738,
+        "converged": true
+      },
+      {
+        "ll": -6207.311612857313,
+        "iterations": 361,
+        "converged": true
+      },
+      {
+        "ll": -6208.263896299553,
+        "iterations": 439,
+        "converged": true
+      },
+      {
+        "ll": -6205.396792307434,
+        "iterations": 958,
+        "converged": true
+      },
+      {
+        "ll": -6205.396137997495,
+        "iterations": 961,
+        "converged": true
+      },
+      {
+        "ll": -6207.977067548126,
+        "iterations": 912,
+        "converged": true
+      },
+      {
+        "ll": -6207.309770297959,
+        "iterations": 566,
+        "converged": true
+      },
+      {
+        "ll": -6207.977171180131,
+        "iterations": 313,
+        "converged": true
+      },
+      {
+        "ll": -6205.396144395722,
+        "iterations": 1020,
+        "converged": true
+      },
+      {
+        "ll": -6213.0075905908,
+        "iterations": 1200,
+        "converged": false
+      },
+      {
+        "ll": -6213.389625618151,
+        "iterations": 1105,
+        "converged": true
+      },
+      {
+        "ll": -6208.263798167142,
+        "iterations": 488,
+        "converged": true
+      },
+      {
+        "ll": -6214.299629920461,
+        "iterations": 874,
+        "converged": true
+      },
+      {
+        "ll": -6212.79808505789,
+        "iterations": 1200,
+        "converged": false
+      },
+      {
+        "ll": -6207.9771213281465,
+        "iterations": 857,
+        "converged": true
+      },
+      {
+        "ll": -6207.310034708107,
+        "iterations": 386,
+        "converged": true
+      },
+      {
+        "ll": -6212.919196206134,
+        "iterations": 580,
+        "converged": true
+      },
+      {
+        "ll": -6207.310728115983,
+        "iterations": 627,
+        "converged": true
+      },
+      {
+        "ll": -6207.977167711631,
+        "iterations": 617,
+        "converged": true
+      },
+      {
+        "ll": -6207.977149646806,
+        "iterations": 335,
+        "converged": true
+      },
+      {
+        "ll": -6205.446719247475,
+        "iterations": 883,
+        "converged": true
+      },
+      {
+        "ll": -6207.313403960814,
+        "iterations": 686,
+        "converged": true
+      },
+      {
+        "ll": -6205.544761939855,
+        "iterations": 468,
+        "converged": true
+      },
+      {
+        "ll": -6212.722124029167,
+        "iterations": 242,
+        "converged": true
+      },
+      {
+        "ll": -6207.312755966803,
+        "iterations": 286,
+        "converged": true
+      },
+      {
+        "ll": -6205.44869710727,
+        "iterations": 955,
+        "converged": true
+      },
+      {
+        "ll": -6207.977164392883,
+        "iterations": 725,
+        "converged": true
+      },
+      {
+        "ll": -6220.2551853631285,
+        "iterations": 696,
+        "converged": true
+      },
+      {
+        "ll": -6207.30973293715,
+        "iterations": 575,
+        "converged": true
+      },
+      {
+        "ll": -6207.3128051335025,
+        "iterations": 350,
+        "converged": true
+      },
+      {
+        "ll": -6207.309879282391,
+        "iterations": 473,
+        "converged": true
+      },
+      {
+        "ll": -6208.763431414292,
+        "iterations": 1200,
+        "converged": false
+      },
+      {
+        "ll": -6213.790103128971,
+        "iterations": 668,
+        "converged": true
+      },
+      {
+        "ll": -6205.447245584789,
+        "iterations": 786,
+        "converged": true
+      },
+      {
+        "ll": -6208.764085397686,
+        "iterations": 939,
+        "converged": true
+      },
+      {
+        "ll": -6213.468064561086,
+        "iterations": 299,
+        "converged": true
+      }
+    ],
+    "best_start_continuation": null
+  },
+  "parameters": {
+    "pi": [
+      0.08946806404039888,
+      0.1895980954956704,
+      0.34270810354757575,
+      0.1370875231734686,
+      0.1865839888191055,
+      0.05455422492378095
+    ],
+    "theta": [
+      [
+        0.6947695831919537,
+        0.12556567751089295,
+        0.17966473929715332,
+        0.1835070266403736,
+        0.6450111300451545,
+        0.1714818433144719,
+        9.999998632248512e-07,
+        0.8122010020129721,
+        0.18779799798716473,
+        0.09137238437880629,
+        0.7914632953787972,
+        0.11716432024239647,
+        0.8991917407289314,
+        0.0791846700105418,
+        0.021623589260526852,
+        0.11630919723222011,
+        0.650456591400357,
+        0.2332342113674228,
+        9.999993885438626e-07,
+        0.9676261134133743,
+        0.03237288658723708,
+        9.999995803856769e-07,
+        0.9999990000004196
+      ],
+      [
+        0.6039744640992255,
+        0.10026713236026642,
+        0.2957584035405081,
+        0.7800997701504655,
+        0.04653499991495442,
+        0.17336522993457998,
+        0.026621797731279297,
+        0.31162578804644997,
+        0.6617524142222708,
+        0.8740650278666887,
+        0.08889656414147332,
+        0.03703840799183802,
+        0.24374238386836947,
+        0.22905741525399773,
+        0.5272002008776328,
+        0.06886962503001265,
+        0.7071087542389548,
+        0.22402162073103263,
+        0.06581662747749106,
+        0.93418237252333,
+        9.999991788958012e-07,
+        9.999998037176175e-07,
+        0.9999990000001964
+      ],
+      [
+        0.4617201272433757,
+        0.2376058082043893,
+        0.3006740645522349,
+        0.9273740991395436,
+        0.014476112212063661,
+        0.058149788648392764,
+        0.961160723824071,
+        0.020557043441771835,
+        0.01828223273415721,
+        0.8621853536412641,
+        0.08156999072518858,
+        0.056244655633547296,
+        0.30086983294248837,
+        0.2562750178893868,
+        0.4428551491681249,
+        0.231129148492221,
+        0.5016784683547725,
+        0.26719238315300653,
+        0.0881226618932503,
+        0.8874763596148337,
+        0.024400978491915973,
+        0.042705758227222695,
+        0.9572942417727773
+      ],
+      [
+        0.351891231994111,
+        0.422802246026569,
+        0.22530652197932008,
+        0.2627648508786061,
+        0.01910514636043887,
+        0.7181300027609551,
+        0.027201176340883433,
+        0.12316674434087398,
+        0.8496320793182426,
+        0.05153399503674332,
+        0.00023418297181847404,
+        0.9482318219914383,
+        0.5914984385664995,
+        0.16693683844314164,
+        0.24156472299035886,
+        0.13617510224443755,
+        0.7274194790714638,
+        0.13640541868409878,
+        0.1331155095780121,
+        0.8668834904228154,
+        9.99999172611091e-07,
+        0.010069143185358339,
+        0.9899308568146417
+      ],
+      [
+        0.23617242244087988,
+        0.577809348981471,
+        0.18601822857764916,
+        0.5084507132699335,
+        0.22209815197082547,
+        0.269451134759241,
+        0.3772152819665102,
+        0.3187544739048508,
+        0.30403024412863905,
+        0.14287826983984192,
+        0.5641653417099864,
+        0.2929563884501717,
+        0.6183185764142712,
+        0.310340341764696,
+        0.07134108182103267,
+        0.05747111996516269,
+        0.7554715028322686,
+        0.18705737720256857,
+        0.15075448281434933,
+        0.8309251095044803,
+        0.018320407681170433,
+        0.040384524056322965,
+        0.959615475943677
+      ],
+      [
+        0.7950883825144538,
+        9.999996163778204e-07,
+        0.20491061748592973,
+        0.8456839844980265,
+        0.15431501550242688,
+        9.999995465390992e-07,
+        0.32742590871891364,
+        0.5736218860619207,
+        0.09895220521916581,
+        0.9416819771114924,
+        0.058317022888701615,
+        9.99999805977494e-07,
+        9.999999477257872e-07,
+        0.5603785197139779,
+        0.4396204802860744,
+        0.6462294300134096,
+        0.2479264617747272,
+        0.10584410821186316,
+        0.2508284370069218,
+        0.7491705629940285,
+        9.99999049873086e-07,
+        0.08843432696081482,
+        0.9115656730391852
+      ]
+    ],
+    "categories": [
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1
+      ]
+    ]
+  },
+  "model_columns_by_reported_class": [
+    2,
+    1,
+    4,
+    3,
+    0,
+    5
+  ],
+  "profiles": [
+    {
+      "class": "H1",
+      "share": 0.34270930158986285,
+      "soft_n": 350.24890622483986,
+      "hard_n": 370,
+      "inputs": {
+        "weekday_regularity": {
+          "known_soft_n": 349.556382977011,
+          "known_fraction": 0.9980227682784417,
+          "distribution": {
+            "both_high": 0.46172169160085963,
+            "neither_high": 0.23760311313695154,
+            "one_high": 0.30067519526218867
+          }
+        },
+        "job_related_routine_changes": {
+          "known_soft_n": 348.63668170536994,
+          "known_fraction": 0.995396917761008,
+          "distribution": {
+            "agree": 0.9273712377434085,
+            "disagree": 0.014477289594457037,
+            "neutral": 0.05815147266213505
+          }
+        },
+        "routine_interruptions": {
+          "known_soft_n": 348.7674509036123,
+          "known_fraction": 0.9957702785222218,
+          "distribution": {
+            "agree": 0.9611727637208572,
+            "disagree": 0.020556114697559552,
+            "neutral": 0.018271121581583755
+          }
+        },
+        "external_fixed_schedule": {
+          "known_soft_n": 347.73549052900455,
+          "known_fraction": 0.9928239156463723,
+          "distribution": {
+            "agree": 0.8621860005526809,
+            "disagree": 0.08156960625134445,
+            "neutral": 0.056244393195975476
+          }
+        },
+        "weekday_awake_home_hours": {
+          "known_soft_n": 347.42254985006116,
+          "known_fraction": 0.9919304348292116,
+          "distribution": {
+            "12plus": 0.30086935441272805,
+            "8toBelow12": 0.256274512176348,
+            "below8": 0.442856133410924
+          }
+        },
+        "care_activity_two_days": {
+          "known_soft_n": 350.24890622483986,
+          "known_fraction": 1.0,
+          "distribution": {
+            "both_days": 0.23112629948805855,
+            "neither_day": 0.5016815987861234,
+            "one_day": 0.2671921017258181
+          }
+        },
+        "smart_heat_use": {
+          "known_soft_n": 350.24890622483986,
+          "known_fraction": 1.0,
+          "distribution": {
+            "active": 0.08812165964542165,
+            "none": 0.887477468990451,
+            "owned_unused_only": 0.024400871364127937
+          }
+        },
+        "EV_ownership": {
+          "known_soft_n": 350.24890622483986,
+          "known_fraction": 1.0,
+          "distribution": {
+            "EV_owned": 0.04270520578007601,
+            "none": 0.9572947942199246
+          }
+        }
+      },
+      "posthoc": {
+        "morning_high_regularity": {
+          "known_soft_n": 349.556382977011,
+          "known_fraction": 0.9980227682784417,
+          "distribution": {
+            "False": 0.28475002147538425,
+            "True": 0.7152499785246156
+          }
+        },
+        "evening_high_regularity": {
+          "known_soft_n": 349.556382977011,
+          "known_fraction": 0.9980227682784417,
+          "distribution": {
+            "False": 0.4911314000607075,
+            "True": 0.5088685999392922
+          }
+        },
+        "q17_livsstil_agree": {
+          "known_soft_n": 348.57538266434244,
+          "known_fraction": 0.9952219021080309,
+          "distribution": {
+            "False": 0.08973303703581009,
+            "True": 0.9102669629641902
+          }
+        },
+        "q17_husstand_agree": {
+          "known_soft_n": 182.086172656056,
+          "known_fraction": 0.5198764918887914,
+          "distribution": {
+            "False": 0.08838483220465773,
+            "True": 0.9116151677953425
+          }
+        },
+        "q13": {
+          "known_soft_n": 350.24890622483986,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja, 1-2 gange om ugen": 0.22095782839651712,
+            "Ja, 3-4 gange om ugen": 0.10086380781866236,
+            "Ja, jeg arbejder eller studerer altid hjemmefra": 0.083453625728645,
+            "Nej, aldrig": 0.5947247380561755
+          }
+        },
+        "aldergrp4": {
+          "known_soft_n": 350.24890622483986,
+          "known_fraction": 1.0,
+          "distribution": {
+            "18-34 år": 0.09937676032220455,
+            "35-49 år": 0.3193588560108821,
+            "50-64 år": 0.41103747044884,
+            "65+ år": 0.1702269132180735
+          }
+        },
+        "hjemb0012": {
+          "known_soft_n": 350.24890622483986,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.21571128854603425,
+            "Nej": 0.7842887114539661
+          }
+        },
+        "hjemb1319": {
+          "known_soft_n": 350.24890622483986,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.22889558143245667,
+            "Nej": 0.7711044185675435
+          }
+        },
+        "q21a": {
+          "known_soft_n": 350.2009213745627,
+          "known_fraction": 0.9998629978583107,
+          "distribution": {
+            "Ja": 0.11723966899019561,
+            "Nej": 0.8827603310098047
+          }
+        },
+        "q5_vask_aarsag": {
+          "known_soft_n": 88.81912237267738,
+          "known_fraction": 0.25358857884815367,
+          "distribution": {
+            "Jeg tilpasser min brug af vaskemaskinen til andre aktiviteter": 0.6828439162861064,
+            "Jeg tilpasser min brug af vaskemaskinen til elpriserne eller elsystemet": 0.1804912424197015,
+            "Jeg udskyder min brug af vaskemaskinen pga. støj": 0.13666484129419193
+          }
+        },
+        "weekday_awake_home_hours_raw": {
+          "known_soft_n": 347.42254985006116,
+          "mean": 9.49621767404068
+        }
+      }
+    },
+    {
+      "class": "H2",
+      "share": 0.18959766445419138,
+      "soft_n": 193.76881307218358,
+      "hard_n": 206,
+      "inputs": {
+        "weekday_regularity": {
+          "known_soft_n": 193.32072241482132,
+          "known_fraction": 0.9976874985697759,
+          "distribution": {
+            "both_high": 0.6039700472946369,
+            "neither_high": 0.10027312091639247,
+            "one_high": 0.29575683178897116
+          }
+        },
+        "job_related_routine_changes": {
+          "known_soft_n": 192.64725476368483,
+          "known_fraction": 0.994211873981594,
+          "distribution": {
+            "agree": 0.7801015585757685,
+            "disagree": 0.046532580026089045,
+            "neutral": 0.1733658613981424
+          }
+        },
+        "routine_interruptions": {
+          "known_soft_n": 192.79778777455445,
+          "known_fraction": 0.9949887431200428,
+          "distribution": {
+            "agree": 0.02659393095633326,
+            "disagree": 0.3116290181061218,
+            "neutral": 0.6617770509375452
+          }
+        },
+        "external_fixed_schedule": {
+          "known_soft_n": 192.65932124711819,
+          "known_fraction": 0.994274146559116,
+          "distribution": {
+            "agree": 0.8740610729344583,
+            "disagree": 0.08889799052870605,
+            "neutral": 0.03704093653683543
+          }
+        },
+        "weekday_awake_home_hours": {
+          "known_soft_n": 193.08325736657687,
+          "known_fraction": 0.996461991510722,
+          "distribution": {
+            "12plus": 0.24374582416115195,
+            "8toBelow12": 0.2290576034903474,
+            "below8": 0.5271965723485005
+          }
+        },
+        "care_activity_two_days": {
+          "known_soft_n": 193.76881307218358,
+          "known_fraction": 1.0,
+          "distribution": {
+            "both_days": 0.06887455021530701,
+            "neither_day": 0.7071035614656478,
+            "one_day": 0.2240218883190455
+          }
+        },
+        "smart_heat_use": {
+          "known_soft_n": 193.76881307218358,
+          "known_fraction": 1.0,
+          "distribution": {
+            "active": 0.06581701189810134,
+            "none": 0.9341828143819735,
+            "owned_unused_only": 1.7371992503733665e-07
+          }
+        },
+        "EV_ownership": {
+          "known_soft_n": 193.76881307218358,
+          "known_fraction": 1.0,
+          "distribution": {
+            "EV_owned": 7.985319505112967e-07,
+            "none": 0.9999992014680493
+          }
+        }
+      },
+      "posthoc": {
+        "morning_high_regularity": {
+          "known_soft_n": 193.32072241482132,
+          "known_fraction": 0.9976874985697759,
+          "distribution": {
+            "False": 0.15437525049770548,
+            "True": 0.8456247495022946
+          }
+        },
+        "evening_high_regularity": {
+          "known_soft_n": 193.32072241482132,
+          "known_fraction": 0.9976874985697759,
+          "distribution": {
+            "False": 0.3419278231240506,
+            "True": 0.6580721768759498
+          }
+        },
+        "q17_livsstil_agree": {
+          "known_soft_n": 193.28815830206963,
+          "known_fraction": 0.9975194420480096,
+          "distribution": {
+            "False": 0.2076420217678868,
+            "True": 0.7923579782321133
+          }
+        },
+        "q17_husstand_agree": {
+          "known_soft_n": 85.20253442495853,
+          "known_fraction": 0.43971232044043396,
+          "distribution": {
+            "False": 0.18516016294420354,
+            "True": 0.8148398370557964
+          }
+        },
+        "q13": {
+          "known_soft_n": 193.76881307218358,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja, 1-2 gange om ugen": 0.19096534801998308,
+            "Ja, 3-4 gange om ugen": 0.06146887568966449,
+            "Ja, jeg arbejder eller studerer altid hjemmefra": 0.057370630407640476,
+            "Nej, aldrig": 0.6901951458827121
+          }
+        },
+        "aldergrp4": {
+          "known_soft_n": 193.76881307218358,
+          "known_fraction": 1.0,
+          "distribution": {
+            "18-34 år": 0.13683700146460528,
+            "35-49 år": 0.23133637913925797,
+            "50-64 år": 0.3944909513127056,
+            "65+ år": 0.23733566808343123
+          }
+        },
+        "hjemb0012": {
+          "known_soft_n": 193.76881307218358,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.09795761043651004,
+            "Nej": 0.9020423895634897
+          }
+        },
+        "hjemb1319": {
+          "known_soft_n": 193.76881307218358,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.131411439336539,
+            "Nej": 0.868588560663461
+          }
+        },
+        "q21a": {
+          "known_soft_n": 193.6901365966747,
+          "known_fraction": 0.9995939672940064,
+          "distribution": {
+            "Ja": 0.08030617620228885,
+            "Nej": 0.9196938237977108
+          }
+        },
+        "q5_vask_aarsag": {
+          "known_soft_n": 31.26167954891502,
+          "known_fraction": 0.1613349385448797,
+          "distribution": {
+            "Jeg tilpasser min brug af vaskemaskinen til andre aktiviteter": 0.6594160399034702,
+            "Jeg tilpasser min brug af vaskemaskinen til elpriserne eller elsystemet": 0.1558728748266891,
+            "Jeg udskyder min brug af vaskemaskinen pga. støj": 0.18471108526984087
+          }
+        },
+        "weekday_awake_home_hours_raw": {
+          "known_soft_n": 193.08325736657687,
+          "mean": 8.764435697537527
+        }
+      }
+    },
+    {
+      "class": "H3",
+      "share": 0.18658341308499943,
+      "soft_n": 190.6882481728694,
+      "hard_n": 162,
+      "inputs": {
+        "weekday_regularity": {
+          "known_soft_n": 190.32805700351824,
+          "known_fraction": 0.9981110992795705,
+          "distribution": {
+            "both_high": 0.23617212841673635,
+            "neither_high": 0.5778096795860266,
+            "one_high": 0.18601819199723701
+          }
+        },
+        "job_related_routine_changes": {
+          "known_soft_n": 187.74493609960095,
+          "known_fraction": 0.9845647956731964,
+          "distribution": {
+            "agree": 0.5084516492962367,
+            "disagree": 0.2220967343336031,
+            "neutral": 0.26945161637016024
+          }
+        },
+        "routine_interruptions": {
+          "known_soft_n": 189.83888060948772,
+          "known_fraction": 0.9955457791892257,
+          "distribution": {
+            "agree": 0.37721630409541945,
+            "disagree": 0.31875278538588026,
+            "neutral": 0.30403091051870024
+          }
+        },
+        "external_fixed_schedule": {
+          "known_soft_n": 188.00139536720232,
+          "known_fraction": 0.9859097095315947,
+          "distribution": {
+            "agree": 0.1428765333592834,
+            "disagree": 0.5641663039719446,
+            "neutral": 0.29295716266877203
+          }
+        },
+        "weekday_awake_home_hours": {
+          "known_soft_n": 186.4601181763797,
+          "known_fraction": 0.9778270027807027,
+          "distribution": {
+            "12plus": 0.6183191097009807,
+            "8toBelow12": 0.3103407774864743,
+            "below8": 0.07134011281254467
+          }
+        },
+        "care_activity_two_days": {
+          "known_soft_n": 190.6882481728694,
+          "known_fraction": 1.0,
+          "distribution": {
+            "both_days": 0.05747253946016774,
+            "neither_day": 0.7554707165496246,
+            "one_day": 0.18705674399020775
+          }
+        },
+        "smart_heat_use": {
+          "known_soft_n": 190.6882481728694,
+          "known_fraction": 1.0,
+          "distribution": {
+            "active": 0.15075539677784525,
+            "none": 0.8309241011027863,
+            "owned_unused_only": 0.018320502119368667
+          }
+        },
+        "EV_ownership": {
+          "known_soft_n": 190.6882481728694,
+          "known_fraction": 1.0,
+          "distribution": {
+            "EV_owned": 0.04038455466967617,
+            "none": 0.959615445330324
+          }
+        }
+      },
+      "posthoc": {
+        "morning_high_regularity": {
+          "known_soft_n": 190.32805700351824,
+          "known_fraction": 0.9981110992795705,
+          "distribution": {
+            "False": 0.6307362198762011,
+            "True": 0.36926378012379873
+          }
+        },
+        "evening_high_regularity": {
+          "known_soft_n": 190.32805700351824,
+          "known_fraction": 0.9981110992795705,
+          "distribution": {
+            "False": 0.7109013312930891,
+            "True": 0.28909866870691076
+          }
+        },
+        "q17_livsstil_agree": {
+          "known_soft_n": 189.184013240419,
+          "known_fraction": 0.9921115488402478,
+          "distribution": {
+            "False": 0.22334684478467545,
+            "True": 0.7766531552153245
+          }
+        },
+        "q17_husstand_agree": {
+          "known_soft_n": 85.95051538181914,
+          "known_fraction": 0.45073839738618954,
+          "distribution": {
+            "False": 0.21778155643738353,
+            "True": 0.7822184435626163
+          }
+        },
+        "q13": {
+          "known_soft_n": 190.6882481728694,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja, 1-2 gange om ugen": 0.08716950329357116,
+            "Ja, 3-4 gange om ugen": 0.05421615939934871,
+            "Ja, jeg arbejder eller studerer altid hjemmefra": 0.11796565231046625,
+            "Nej, aldrig": 0.7406486849966137
+          }
+        },
+        "aldergrp4": {
+          "known_soft_n": 190.6882481728694,
+          "known_fraction": 1.0,
+          "distribution": {
+            "18-34 år": 0.035543299378669256,
+            "35-49 år": 0.11964376493640105,
+            "50-64 år": 0.24123357178278332,
+            "65+ år": 0.6035793639021463
+          }
+        },
+        "hjemb0012": {
+          "known_soft_n": 190.6882481728694,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.06673998863692168,
+            "Nej": 0.9332600113630783
+          }
+        },
+        "hjemb1319": {
+          "known_soft_n": 190.6882481728694,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.06359050580504888,
+            "Nej": 0.9364094941949511
+          }
+        },
+        "q21a": {
+          "known_soft_n": 189.51155638013296,
+          "known_fraction": 0.993829238015393,
+          "distribution": {
+            "Ja": 0.12480270868061198,
+            "Nej": 0.8751972913193883
+          }
+        },
+        "q5_vask_aarsag": {
+          "known_soft_n": 33.46070203842181,
+          "known_fraction": 0.1754733307324101,
+          "distribution": {
+            "Jeg tilpasser min brug af vaskemaskinen til andre aktiviteter": 0.7116411849198528,
+            "Jeg tilpasser min brug af vaskemaskinen til elpriserne eller elsystemet": 0.148895239231578,
+            "Jeg udskyder min brug af vaskemaskinen pga. støj": 0.13946357584856917
+          }
+        },
+        "weekday_awake_home_hours_raw": {
+          "known_soft_n": 186.4601181763797,
+          "mean": 12.953322200960333
+        }
+      }
+    },
+    {
+      "class": "H4",
+      "share": 0.13708628563754668,
+      "soft_n": 140.1021839215727,
+      "hard_n": 151,
+      "inputs": {
+        "weekday_regularity": {
+          "known_soft_n": 139.8556647774045,
+          "known_fraction": 0.9982404332518743,
+          "distribution": {
+            "both_high": 0.35189024856865025,
+            "neither_high": 0.4228034377732047,
+            "one_high": 0.22530631365814494
+          }
+        },
+        "job_related_routine_changes": {
+          "known_soft_n": 138.282207292056,
+          "known_fraction": 0.9870096483968052,
+          "distribution": {
+            "agree": 0.2627633085936156,
+            "disagree": 0.019105517118571738,
+            "neutral": 0.7181311742878124
+          }
+        },
+        "routine_interruptions": {
+          "known_soft_n": 139.68404524528137,
+          "known_fraction": 0.9970154735309094,
+          "distribution": {
+            "agree": 0.02720060671541519,
+            "disagree": 0.1231661819249165,
+            "neutral": 0.8496332113596682
+          }
+        },
+        "external_fixed_schedule": {
+          "known_soft_n": 138.72728133588413,
+          "known_fraction": 0.9901864300241157,
+          "distribution": {
+            "agree": 0.05153038131449479,
+            "disagree": 0.0002326112299789037,
+            "neutral": 0.9482370074555263
+          }
+        },
+        "weekday_awake_home_hours": {
+          "known_soft_n": 135.155920453622,
+          "known_fraction": 0.9646953150229296,
+          "distribution": {
+            "12plus": 0.5914989200315665,
+            "8toBelow12": 0.16693666728763065,
+            "below8": 0.24156441268080295
+          }
+        },
+        "care_activity_two_days": {
+          "known_soft_n": 140.1021839215727,
+          "known_fraction": 1.0,
+          "distribution": {
+            "both_days": 0.13617488351018828,
+            "neither_day": 0.7274201029797036,
+            "one_day": 0.13640501351010817
+          }
+        },
+        "smart_heat_use": {
+          "known_soft_n": 140.1021839215727,
+          "known_fraction": 1.0,
+          "distribution": {
+            "active": 0.13311548259720987,
+            "none": 0.8668843519307986,
+            "owned_unused_only": 1.654719914539986e-07
+          }
+        },
+        "EV_ownership": {
+          "known_soft_n": 140.1021839215727,
+          "known_fraction": 1.0,
+          "distribution": {
+            "EV_owned": 0.010069180165176349,
+            "none": 0.9899308198348231
+          }
+        }
+      },
+      "posthoc": {
+        "morning_high_regularity": {
+          "known_soft_n": 139.8556647774045,
+          "known_fraction": 0.9982404332518743,
+          "distribution": {
+            "False": 0.480631640041515,
+            "True": 0.5193683599584851
+          }
+        },
+        "evening_high_regularity": {
+          "known_soft_n": 139.8556647774045,
+          "known_fraction": 0.9982404332518743,
+          "distribution": {
+            "False": 0.5902815491630393,
+            "True": 0.40971845083696057
+          }
+        },
+        "q17_livsstil_agree": {
+          "known_soft_n": 138.95051383010141,
+          "known_fraction": 0.9917797848739034,
+          "distribution": {
+            "False": 0.44762236789987786,
+            "True": 0.5523776321001223
+          }
+        },
+        "q17_husstand_agree": {
+          "known_soft_n": 67.32990600438063,
+          "known_fraction": 0.48057713391584955,
+          "distribution": {
+            "False": 0.44722046156358847,
+            "True": 0.5527795384364116
+          }
+        },
+        "q13": {
+          "known_soft_n": 140.1021839215727,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja, 1-2 gange om ugen": 0.052231114072052644,
+            "Ja, 3-4 gange om ugen": 0.028061947606969256,
+            "Ja, jeg arbejder eller studerer altid hjemmefra": 0.0617997223367719,
+            "Nej, aldrig": 0.857907215984206
+          }
+        },
+        "aldergrp4": {
+          "known_soft_n": 140.1021839215727,
+          "known_fraction": 1.0,
+          "distribution": {
+            "18-34 år": 0.06501171362226005,
+            "35-49 år": 0.11720429475511099,
+            "50-64 år": 0.2624679946136749,
+            "65+ år": 0.5553159970089538
+          }
+        },
+        "hjemb0012": {
+          "known_soft_n": 140.1021839215727,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.10639054888194939,
+            "Nej": 0.8936094511180505
+          }
+        },
+        "hjemb1319": {
+          "known_soft_n": 140.1021839215727,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.03586353056850325,
+            "Nej": 0.9641364694314964
+          }
+        },
+        "q21a": {
+          "known_soft_n": 139.6942226166252,
+          "known_fraction": 0.997088116019834,
+          "distribution": {
+            "Ja": 0.0910454451218437,
+            "Nej": 0.908954554878156
+          }
+        },
+        "q5_vask_aarsag": {
+          "known_soft_n": 23.265739366942398,
+          "known_fraction": 0.1660626459610811,
+          "distribution": {
+            "Jeg tilpasser min brug af vaskemaskinen til andre aktiviteter": 0.8076079411996316,
+            "Jeg tilpasser min brug af vaskemaskinen til elpriserne eller elsystemet": 0.10524248274009874,
+            "Jeg udskyder min brug af vaskemaskinen pga. støj": 0.08714957606026938
+          }
+        },
+        "weekday_awake_home_hours_raw": {
+          "known_soft_n": 135.155920453622,
+          "mean": 12.145067221986185
+        }
+      }
+    },
+    {
+      "class": "H5",
+      "share": 0.08946842516814553,
+      "soft_n": 91.43673052184474,
+      "hard_n": 93,
+      "inputs": {
+        "weekday_regularity": {
+          "known_soft_n": 91.22258486639163,
+          "known_fraction": 0.9976579908945679,
+          "distribution": {
+            "both_high": 0.6947679354584979,
+            "neither_high": 0.12556715197258608,
+            "one_high": 0.17966491256891617
+          }
+        },
+        "job_related_routine_changes": {
+          "known_soft_n": 90.00835072084632,
+          "known_fraction": 0.9843784899914245,
+          "distribution": {
+            "agree": 0.1835062499810121,
+            "disagree": 0.6450114785681064,
+            "neutral": 0.17148227145088157
+          }
+        },
+        "routine_interruptions": {
+          "known_soft_n": 91.21326663611117,
+          "known_fraction": 0.9975560818452474,
+          "distribution": {
+            "agree": 8.522669919958789e-07,
+            "disagree": 0.8122017933518175,
+            "neutral": 0.18779735438119058
+          }
+        },
+        "external_fixed_schedule": {
+          "known_soft_n": 91.17794278335724,
+          "known_fraction": 0.9971697616809946,
+          "distribution": {
+            "agree": 0.09137321331008029,
+            "disagree": 0.7914624269566753,
+            "neutral": 0.11716435973324411
+          }
+        },
+        "weekday_awake_home_hours": {
+          "known_soft_n": 90.2717611825995,
+          "known_fraction": 0.98725928483448,
+          "distribution": {
+            "12plus": 0.8991901344032689,
+            "8toBelow12": 0.07918499121170905,
+            "below8": 0.02162487438502215
+          }
+        },
+        "care_activity_two_days": {
+          "known_soft_n": 91.43673052184474,
+          "known_fraction": 1.0,
+          "distribution": {
+            "both_days": 0.11630815065267996,
+            "neither_day": 0.6504575262728378,
+            "one_day": 0.23323432307448239
+          }
+        },
+        "smart_heat_use": {
+          "known_soft_n": 91.43673052184474,
+          "known_fraction": 1.0,
+          "distribution": {
+            "active": 3.776108792645923e-07,
+            "none": 0.9676268724345969,
+            "owned_unused_only": 0.032372749954523945
+          }
+        },
+        "EV_ownership": {
+          "known_soft_n": 91.43673052184474,
+          "known_fraction": 1.0,
+          "distribution": {
+            "EV_owned": 5.69450538808158e-07,
+            "none": 0.9999994305494613
+          }
+        }
+      },
+      "posthoc": {
+        "morning_high_regularity": {
+          "known_soft_n": 91.22258486639163,
+          "known_fraction": 0.9976579908945679,
+          "distribution": {
+            "False": 0.20399300295468403,
+            "True": 0.7960069970453163
+          }
+        },
+        "evening_high_regularity": {
+          "known_soft_n": 91.22258486639163,
+          "known_fraction": 0.9976579908945679,
+          "distribution": {
+            "False": 0.2268062135594043,
+            "True": 0.7731937864405957
+          }
+        },
+        "q17_livsstil_agree": {
+          "known_soft_n": 89.285344137747,
+          "known_fraction": 0.9764713111260714,
+          "distribution": {
+            "False": 0.44313594011328505,
+            "True": 0.5568640598867151
+          }
+        },
+        "q17_husstand_agree": {
+          "known_soft_n": 40.88626118928747,
+          "known_fraction": 0.44715357773558534,
+          "distribution": {
+            "False": 0.34227017208923743,
+            "True": 0.6577298279107623
+          }
+        },
+        "q13": {
+          "known_soft_n": 91.43673052184474,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja, 1-2 gange om ugen": 0.02741081908707579,
+            "Ja, 3-4 gange om ugen": 0.04275331225380018,
+            "Ja, jeg arbejder eller studerer altid hjemmefra": 0.08709637276738279,
+            "Nej, aldrig": 0.8427394958917414
+          }
+        },
+        "aldergrp4": {
+          "known_soft_n": 91.43673052184474,
+          "known_fraction": 1.0,
+          "distribution": {
+            "18-34 år": 0.023683127217570182,
+            "35-49 år": 0.08156174702461258,
+            "50-64 år": 0.19978449092142384,
+            "65+ år": 0.6949706348363935
+          }
+        },
+        "hjemb0012": {
+          "known_soft_n": 91.43673052184474,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.06326813918416532,
+            "Nej": 0.9367318608158347
+          }
+        },
+        "hjemb1319": {
+          "known_soft_n": 91.43673052184474,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.03311031860670325,
+            "Nej": 0.9668896813932967
+          }
+        },
+        "q21a": {
+          "known_soft_n": 91.1480449453164,
+          "known_fraction": 0.9968427832570045,
+          "distribution": {
+            "Ja": 0.15464682995010945,
+            "Nej": 0.8453531700498905
+          }
+        },
+        "q5_vask_aarsag": {
+          "known_soft_n": 7.398681524184246,
+          "known_fraction": 0.08091585823288662,
+          "distribution": {
+            "Jeg tilpasser min brug af vaskemaskinen til andre aktiviteter": 0.8554581450821125,
+            "Jeg tilpasser min brug af vaskemaskinen til elpriserne eller elsystemet": 0.045709692161894605,
+            "Jeg udskyder min brug af vaskemaskinen pga. støj": 0.09883216275599296
+          }
+        },
+        "weekday_awake_home_hours_raw": {
+          "known_soft_n": 90.2717611825995,
+          "mean": 15.042796765601212
+        }
+      }
+    },
+    {
+      "class": "H6",
+      "share": 0.05455491006525407,
+      "soft_n": 55.75511808668966,
+      "hard_n": 40,
+      "inputs": {
+        "weekday_regularity": {
+          "known_soft_n": 55.716587960853275,
+          "known_fraction": 0.9993089401088439,
+          "distribution": {
+            "both_high": 0.7950909663775668,
+            "neither_high": 5.984357157228151e-07,
+            "one_high": 0.2049084351867176
+          }
+        },
+        "job_related_routine_changes": {
+          "known_soft_n": 55.68056941844197,
+          "known_fraction": 0.9986629269059787,
+          "distribution": {
+            "agree": 0.8456834787637976,
+            "disagree": 0.15431599264182452,
+            "neutral": 5.285943782638231e-07
+          }
+        },
+        "routine_interruptions": {
+          "known_soft_n": 55.69856883095294,
+          "known_fraction": 0.9989857566860714,
+          "distribution": {
+            "agree": 0.32742465759797984,
+            "disagree": 0.5736181451874308,
+            "neutral": 0.09895719721458915
+          }
+        },
+        "external_fixed_schedule": {
+          "known_soft_n": 55.698568737433504,
+          "known_fraction": 0.9989857550087468,
+          "distribution": {
+            "agree": 0.9416837337399799,
+            "disagree": 0.0583154782323158,
+            "neutral": 7.880277046914483e-07
+          }
+        },
+        "weekday_awake_home_hours": {
+          "known_soft_n": 55.60639297076076,
+          "known_fraction": 0.9973325298011626,
+          "distribution": {
+            "12plus": 9.297366630072445e-07,
+            "8toBelow12": 0.5603751666160494,
+            "below8": 0.4396239036472876
+          }
+        },
+        "care_activity_two_days": {
+          "known_soft_n": 55.75511808668966,
+          "known_fraction": 1.0,
+          "distribution": {
+            "both_days": 0.6462178598728802,
+            "neither_day": 0.24793614139330186,
+            "one_day": 0.10584599873381802
+          }
+        },
+        "smart_heat_use": {
+          "known_soft_n": 55.75511808668966,
+          "known_fraction": 1.0,
+          "distribution": {
+            "active": 0.2508310345600121,
+            "none": 0.7491689335028754,
+            "owned_unused_only": 3.19371126864656e-08
+          }
+        },
+        "EV_ownership": {
+          "known_soft_n": 55.75511808668966,
+          "known_fraction": 1.0,
+          "distribution": {
+            "EV_owned": 0.088436140765202,
+            "none": 0.9115638592347985
+          }
+        }
+      },
+      "posthoc": {
+        "morning_high_regularity": {
+          "known_soft_n": 55.716587960853275,
+          "known_fraction": 0.9993089401088439,
+          "distribution": {
+            "False": 0.03132373659445944,
+            "True": 0.968676263405541
+          }
+        },
+        "evening_high_regularity": {
+          "known_soft_n": 55.716587960853275,
+          "known_fraction": 0.9993089401088439,
+          "distribution": {
+            "False": 0.17358589546368966,
+            "True": 0.8264141045363105
+          }
+        },
+        "q17_livsstil_agree": {
+          "known_soft_n": 55.7165878253205,
+          "known_fraction": 0.9993089376779859,
+          "distribution": {
+            "False": 0.20765760037111503,
+            "True": 0.7923423996288849
+          }
+        },
+        "q17_husstand_agree": {
+          "known_soft_n": 34.54461034349823,
+          "known_fraction": 0.6195773864165667,
+          "distribution": {
+            "False": 0.15360812186777328,
+            "True": 0.8463918781322267
+          }
+        },
+        "q13": {
+          "known_soft_n": 55.75511808668966,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja, 1-2 gange om ugen": 0.25397461684125267,
+            "Ja, 3-4 gange om ugen": 0.08219268495905438,
+            "Ja, jeg arbejder eller studerer altid hjemmefra": 0.045503852935372305,
+            "Nej, aldrig": 0.6183288452643207
+          }
+        },
+        "aldergrp4": {
+          "known_soft_n": 55.75511808668966,
+          "known_fraction": 1.0,
+          "distribution": {
+            "18-34 år": 0.1009266046751976,
+            "35-49 år": 0.3878775265945761,
+            "50-64 år": 0.4224570917454789,
+            "65+ år": 0.08873877698474743
+          }
+        },
+        "hjemb0012": {
+          "known_soft_n": 55.75511808668966,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.37752795414358503,
+            "Nej": 0.6224720458564151
+          }
+        },
+        "hjemb1319": {
+          "known_soft_n": 55.75511808668966,
+          "known_fraction": 1.0,
+          "distribution": {
+            "Ja": 0.2903431022413892,
+            "Nej": 0.709656897758611
+          }
+        },
+        "q21a": {
+          "known_soft_n": 55.755118086688,
+          "known_fraction": 0.9999999999999701,
+          "distribution": {
+            "Ja": 0.12415382567213286,
+            "Nej": 0.8758461743278673
+          }
+        },
+        "q5_vask_aarsag": {
+          "known_soft_n": 12.79407514885916,
+          "known_fraction": 0.2294690709643295,
+          "distribution": {
+            "Jeg tilpasser min brug af vaskemaskinen til andre aktiviteter": 0.6882152649874181,
+            "Jeg tilpasser min brug af vaskemaskinen til elpriserne eller elsystemet": 0.18189697172699337,
+            "Jeg udskyder min brug af vaskemaskinen pga. støj": 0.12988776328558851
+          }
+        },
+        "weekday_awake_home_hours_raw": {
+          "known_soft_n": 55.60639297076076,
+          "mean": 7.658086429879725
+        }
+      }
+    }
+  ],
+  "bootstrap": [
+    {
+      "replicate": 0,
+      "ARI": 0.3427055471907858,
+      "aligned_share": [
+        0.3672460293970544,
+        0.1454912637703078,
+        0.11052961297106811,
+        0.05239504014192371,
+        0.2533813062848834,
+        0.07095674743476249
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 1,
+      "ARI": 0.2754718917629231,
+      "aligned_share": [
+        0.1306015994521471,
+        0.17302136435091137,
+        0.1191483039597971,
+        0.09318952382504764,
+        0.19688296767965965,
+        0.2871562407324372
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 2,
+      "ARI": 0.27342124527751377,
+      "aligned_share": [
+        0.16937271049222793,
+        0.28051951962428284,
+        0.10938023698494154,
+        0.2979791171064258,
+        0.10283747954344896,
+        0.039910936248672896
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 3,
+      "ARI": 0.3591793862574732,
+      "aligned_share": [
+        0.19470444070169016,
+        0.2474909354771163,
+        0.23641309604877583,
+        0.10337160333341798,
+        0.09548397060634307,
+        0.12253595383265664
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 4,
+      "ARI": 0.2756336345680619,
+      "aligned_share": [
+        0.11507284179880616,
+        0.23951332936932382,
+        0.1772113840476203,
+        0.08713793321025823,
+        0.1690466874121434,
+        0.21201782416184822
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 5,
+      "ARI": 0.2913967171939404,
+      "aligned_share": [
+        0.2674150100126035,
+        0.18479089708334065,
+        0.0833076769695898,
+        0.23232236977510934,
+        0.12987607883196423,
+        0.10228796732739248
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 6,
+      "ARI": 0.3224012659916435,
+      "aligned_share": [
+        0.17070573667281583,
+        0.2644952517019696,
+        0.049227636387766116,
+        0.18190535980911776,
+        0.18823879966882173,
+        0.145427215759509
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 7,
+      "ARI": 0.32029769714316175,
+      "aligned_share": [
+        0.26461051806440156,
+        0.23411103947225287,
+        0.03494773005325984,
+        0.19022273602772366,
+        0.20621275298885344,
+        0.06989522339350861
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 8,
+      "ARI": 0.5026735651789149,
+      "aligned_share": [
+        0.3146020652089538,
+        0.11827197967370649,
+        0.16637354513734084,
+        0.15696442534310043,
+        0.10646747511613378,
+        0.13732050952076466
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 9,
+      "ARI": 0.4497210229240597,
+      "aligned_share": [
+        0.3885616516219185,
+        0.22213684347356547,
+        0.08597053156999068,
+        0.14975187622953287,
+        0.09016962109667727,
+        0.06340947600831523
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 10,
+      "ARI": 0.2270515172618753,
+      "aligned_share": [
+        0.19825635829574142,
+        0.11797798981397382,
+        0.15613596763751764,
+        0.2624627183542661,
+        0.1692933378067005,
+        0.09587362809180054
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 11,
+      "ARI": 0.36655087319825574,
+      "aligned_share": [
+        0.3506738931073694,
+        0.1921195418881173,
+        0.22862551263664538,
+        0.0685999841840954,
+        0.13625788479030343,
+        0.023723183393469037
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 12,
+      "ARI": 0.6208944754442095,
+      "aligned_share": [
+        0.2732293448548483,
+        0.19211077372625723,
+        0.1771540153192998,
+        0.1424577613318628,
+        0.10854062084761906,
+        0.10650748392011283
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 13,
+      "ARI": 0.29060358087470817,
+      "aligned_share": [
+        0.22200119353087158,
+        0.1438921127516851,
+        0.12022456452142136,
+        0.15915553573377844,
+        0.1218375859089337,
+        0.2328890075533098
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 14,
+      "ARI": 0.37621163501807947,
+      "aligned_share": [
+        0.24490610849461422,
+        0.3210656256167801,
+        0.15737979681347464,
+        0.18671743631325757,
+        0.07145935627330009,
+        0.018471676488573355
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 15,
+      "ARI": 0.7846400378012508,
+      "aligned_share": [
+        0.32930699698040045,
+        0.19258301455977453,
+        0.14836809475093815,
+        0.18511785796900287,
+        0.08559240783245065,
+        0.05903162790743339
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 16,
+      "ARI": 0.6724677425945944,
+      "aligned_share": [
+        0.3581178695124272,
+        0.14138819286284704,
+        0.12306895775824388,
+        0.1418549628276184,
+        0.17283408208408466,
+        0.06273593495477886
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 17,
+      "ARI": 0.3428856358441644,
+      "aligned_share": [
+        0.22897057079870728,
+        0.34126391648023996,
+        0.11250851031004376,
+        0.21360562331731053,
+        0.08712672511771953,
+        0.01652465397597897
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 18,
+      "ARI": 0.3799205735735308,
+      "aligned_share": [
+        0.11501182982569978,
+        0.28040484653388065,
+        0.19928562090196358,
+        0.17192009920130555,
+        0.1036606259260909,
+        0.12971697761105955
+      ],
+      "converged": true
+    },
+    {
+      "replicate": 19,
+      "ARI": 0.31626454016085076,
+      "aligned_share": [
+        0.2246255208663836,
+        0.2169839225867603,
+        0.2190768515917289,
+        0.11480712700172184,
+        0.07337237738005242,
+        0.15113420057335292
+      ],
+      "converged": true
+    }
+  ],
+  "sensitivities": [
+    {
+      "name": "without_EV",
+      "features": [
+        "weekday_regularity",
+        "job_related_routine_changes",
+        "routine_interruptions",
+        "external_fixed_schedule",
+        "weekday_awake_home_hours",
+        "care_activity_two_days",
+        "smart_heat_use"
+      ],
+      "ARI": 0.8672931676505412,
+      "aligned_share": [
+        0.37758001801543034,
+        0.16977348618815435,
+        0.17768100706722978,
+        0.1540090019811911,
+        0.08089799132708647,
+        0.04005849542090801
+      ],
+      "converged": true,
+      "fit": {
+        "k": 6,
+        "n": 1022,
+        "ll": -6078.2639893167125,
+        "parameters": 89,
+        "bic": 12773.25497123139,
+        "aic": 12334.527978633425,
+        "soft_share": [
+          0.16977348618815427,
+          0.040058495420907995,
+          0.17768100706722983,
+          0.15400900198119094,
+          0.377580018015431,
+          0.08089799132708633
+        ],
+        "hard_n": [
+          189,
+          34,
+          160,
+          160,
+          393,
+          86
+        ],
+        "mean_max_posterior": 0.8122609336641975,
+        "normalized_entropy": 0.7119480521509569,
+        "best_start_converged": true,
+        "best_start_iterations": 267,
+        "starts_within_1_loglik": 8,
+        "starts": [
+          {
+            "ll": -6085.852891564376,
+            "iterations": 1134,
+            "converged": true
+          },
+          {
+            "ll": -6078.303107091146,
+            "iterations": 572,
+            "converged": true
+          },
+          {
+            "ll": -6084.153015550459,
+            "iterations": 772,
+            "converged": true
+          },
+          {
+            "ll": -6078.30069068764,
+            "iterations": 899,
+            "converged": true
+          },
+          {
+            "ll": -6081.237367645084,
+            "iterations": 863,
+            "converged": true
+          },
+          {
+            "ll": -6081.237356897509,
+            "iterations": 717,
+            "converged": true
+          },
+          {
+            "ll": -6082.690330638438,
+            "iterations": 464,
+            "converged": true
+          },
+          {
+            "ll": -6081.31676942241,
+            "iterations": 820,
+            "converged": true
+          },
+          {
+            "ll": -6096.355290849853,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6078.302267717472,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6081.23734276003,
+            "iterations": 502,
+            "converged": true
+          },
+          {
+            "ll": -6083.583600559463,
+            "iterations": 506,
+            "converged": true
+          },
+          {
+            "ll": -6083.58331639971,
+            "iterations": 329,
+            "converged": true
+          },
+          {
+            "ll": -6078.264799528524,
+            "iterations": 697,
+            "converged": true
+          },
+          {
+            "ll": -6083.583484376941,
+            "iterations": 402,
+            "converged": true
+          },
+          {
+            "ll": -6084.153277127567,
+            "iterations": 715,
+            "converged": true
+          },
+          {
+            "ll": -6083.596433594039,
+            "iterations": 609,
+            "converged": true
+          },
+          {
+            "ll": -6078.264794569791,
+            "iterations": 551,
+            "converged": true
+          },
+          {
+            "ll": -6086.057854337272,
+            "iterations": 394,
+            "converged": true
+          },
+          {
+            "ll": -6078.2639893167125,
+            "iterations": 267,
+            "converged": true
+          },
+          {
+            "ll": -6083.5836369639965,
+            "iterations": 773,
+            "converged": true
+          },
+          {
+            "ll": -6083.59602990205,
+            "iterations": 406,
+            "converged": true
+          },
+          {
+            "ll": -6084.153280261571,
+            "iterations": 1017,
+            "converged": true
+          },
+          {
+            "ll": -6085.653991215074,
+            "iterations": 828,
+            "converged": true
+          },
+          {
+            "ll": -6086.079408249087,
+            "iterations": 830,
+            "converged": true
+          },
+          {
+            "ll": -6078.302208434027,
+            "iterations": 665,
+            "converged": true
+          },
+          {
+            "ll": -6085.8559499637795,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6078.264797955417,
+            "iterations": 689,
+            "converged": true
+          },
+          {
+            "ll": -6082.6903337755275,
+            "iterations": 534,
+            "converged": true
+          },
+          {
+            "ll": -6090.0540263105195,
+            "iterations": 451,
+            "converged": true
+          },
+          {
+            "ll": -6089.282243807677,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6089.717205434409,
+            "iterations": 946,
+            "converged": true
+          }
+        ],
+        "best_start_continuation": null
+      }
+    },
+    {
+      "name": "routines_only",
+      "features": [
+        "weekday_regularity",
+        "job_related_routine_changes",
+        "routine_interruptions",
+        "external_fixed_schedule"
+      ],
+      "ARI": 0.6508881210759037,
+      "aligned_share": [
+        0.2182271202718495,
+        0.3790923287238478,
+        0.08397456803096548,
+        0.1584633609892744,
+        0.10873887701469304,
+        0.051503744969369804
+      ],
+      "converged": true,
+      "fit": {
+        "k": 6,
+        "n": 1022,
+        "ll": -3756.4666906343446,
+        "parameters": 53,
+        "bic": 7880.197770119163,
+        "aic": 7618.933381268689,
+        "soft_share": [
+          0.05150374496936957,
+          0.08397456803096566,
+          0.21822712027185115,
+          0.37909232872384907,
+          0.10873887701469268,
+          0.15846336098927474
+        ],
+        "hard_n": [
+          32,
+          101,
+          327,
+          288,
+          106,
+          168
+        ],
+        "mean_max_posterior": 0.7581432825624552,
+        "normalized_entropy": 0.7108293035121596,
+        "best_start_converged": true,
+        "best_start_iterations": 1091,
+        "starts_within_1_loglik": 6,
+        "starts": [
+          {
+            "ll": -3756.4750489607272,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3759.691705019962,
+            "iterations": 747,
+            "converged": true
+          },
+          {
+            "ll": -3760.1381545953304,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3759.3098224906616,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3756.67703724359,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3760.4198688805327,
+            "iterations": 1014,
+            "converged": true
+          },
+          {
+            "ll": -3759.3426263107576,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3760.9594861338037,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3760.1765449616187,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3759.975043032856,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3760.54524053323,
+            "iterations": 963,
+            "converged": true
+          },
+          {
+            "ll": -3759.8924581305664,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3759.979098031429,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3759.5199689311585,
+            "iterations": 1016,
+            "converged": true
+          },
+          {
+            "ll": -3757.6467013622355,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3759.8824152571156,
+            "iterations": 1029,
+            "converged": true
+          },
+          {
+            "ll": -3760.4206010991047,
+            "iterations": 1107,
+            "converged": true
+          },
+          {
+            "ll": -3760.143704375124,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3759.5199403473953,
+            "iterations": 1176,
+            "converged": true
+          },
+          {
+            "ll": -3760.4202501496893,
+            "iterations": 981,
+            "converged": true
+          },
+          {
+            "ll": -3760.1753998921486,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3756.4685874746147,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3756.4667703840287,
+            "iterations": 1187,
+            "converged": true
+          },
+          {
+            "ll": -3756.5296509649056,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3764.200016723817,
+            "iterations": 1155,
+            "converged": true
+          },
+          {
+            "ll": -3761.1772509507264,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3759.3344478121826,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3756.4666906343446,
+            "iterations": 1091,
+            "converged": true
+          },
+          {
+            "ll": -3760.5451442504,
+            "iterations": 774,
+            "converged": true
+          },
+          {
+            "ll": -3759.8551070108733,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3760.1287282949643,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -3760.422169657775,
+            "iterations": 1107,
+            "converged": true
+          }
+        ],
+        "best_start_continuation": null
+      }
+    },
+    {
+      "name": "home_hours_edges10_14",
+      "features": [
+        "weekday_regularity",
+        "job_related_routine_changes",
+        "routine_interruptions",
+        "external_fixed_schedule",
+        "weekday_awake_home_hours",
+        "care_activity_two_days",
+        "smart_heat_use",
+        "EV_ownership"
+      ],
+      "ARI": 0.8765716917603994,
+      "aligned_share": [
+        0.3247308424705185,
+        0.21028600362693683,
+        0.17868980218186212,
+        0.14399013021004362,
+        0.08484936522169781,
+        0.0574538562889411
+      ],
+      "converged": true,
+      "fit": {
+        "k": 6,
+        "n": 1022,
+        "ll": -6177.576226933119,
+        "parameters": 95,
+        "bic": 13013.456547088785,
+        "aic": 12545.152453866238,
+        "soft_share": [
+          0.05745385628894115,
+          0.3247308424705188,
+          0.17868980218186215,
+          0.2102860036269372,
+          0.08484936522169788,
+          0.1439901302100441
+        ],
+        "hard_n": [
+          39,
+          356,
+          164,
+          215,
+          88,
+          160
+        ],
+        "mean_max_posterior": 0.8417236593668322,
+        "normalized_entropy": 0.7637254736968312,
+        "best_start_converged": true,
+        "best_start_iterations": 888,
+        "starts_within_1_loglik": 17,
+        "starts": [
+          {
+            "ll": -6178.288757451579,
+            "iterations": 1101,
+            "converged": true
+          },
+          {
+            "ll": -6177.706719831089,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6184.2022847835415,
+            "iterations": 558,
+            "converged": true
+          },
+          {
+            "ll": -6182.874702717674,
+            "iterations": 871,
+            "converged": true
+          },
+          {
+            "ll": -6178.290755442449,
+            "iterations": 923,
+            "converged": true
+          },
+          {
+            "ll": -6177.576226933119,
+            "iterations": 888,
+            "converged": true
+          },
+          {
+            "ll": -6178.289731409195,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6178.288953542767,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6177.708027004088,
+            "iterations": 999,
+            "converged": true
+          },
+          {
+            "ll": -6186.190756384816,
+            "iterations": 682,
+            "converged": true
+          },
+          {
+            "ll": -6177.704752159114,
+            "iterations": 1033,
+            "converged": true
+          },
+          {
+            "ll": -6182.064213519505,
+            "iterations": 900,
+            "converged": true
+          },
+          {
+            "ll": -6177.576299344408,
+            "iterations": 1067,
+            "converged": true
+          },
+          {
+            "ll": -6177.704932768882,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6178.290974261993,
+            "iterations": 994,
+            "converged": true
+          },
+          {
+            "ll": -6178.289252104296,
+            "iterations": 718,
+            "converged": true
+          },
+          {
+            "ll": -6178.288754732666,
+            "iterations": 1038,
+            "converged": true
+          },
+          {
+            "ll": -6178.288751478136,
+            "iterations": 1189,
+            "converged": true
+          },
+          {
+            "ll": -6182.064223959387,
+            "iterations": 703,
+            "converged": true
+          },
+          {
+            "ll": -6186.672756237687,
+            "iterations": 934,
+            "converged": true
+          },
+          {
+            "ll": -6182.062610164913,
+            "iterations": 849,
+            "converged": true
+          },
+          {
+            "ll": -6183.956710497736,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6177.705033206629,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6188.596891862035,
+            "iterations": 422,
+            "converged": true
+          },
+          {
+            "ll": -6186.190755518732,
+            "iterations": 817,
+            "converged": true
+          },
+          {
+            "ll": -6179.83788811656,
+            "iterations": 1096,
+            "converged": true
+          },
+          {
+            "ll": -6181.476874310563,
+            "iterations": 1008,
+            "converged": true
+          },
+          {
+            "ll": -6183.895229631134,
+            "iterations": 1126,
+            "converged": true
+          },
+          {
+            "ll": -6178.28939720243,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6182.13916799602,
+            "iterations": 1130,
+            "converged": true
+          },
+          {
+            "ll": -6182.014950278299,
+            "iterations": 655,
+            "converged": true
+          },
+          {
+            "ll": -6177.704759139015,
+            "iterations": 1155,
+            "converged": true
+          }
+        ],
+        "best_start_continuation": null
+      }
+    }
+  ],
+  "production_changes": false,
+  "EP_runs": 0,
+  "new_benchmark_labels": 0,
+  "one_class_missing_likelihood_error": 9.094947017729282e-13,
+  "bootstrap_summary": {
+    "median_ARI": 0.3427955915174751,
+    "min_ARI": 0.2270515172618753,
+    "share_resample_interval2p5_97p5_not_population_CI": [
+      [
+        0.1150408105129253,
+        0.37843673106510806
+      ],
+      [
+        0.11811763499734684,
+        0.3316697283200965
+      ],
+      [
+        0.04173068556215032,
+        0.23271399392801387
+      ],
+      [
+        0.060092388561955264,
+        0.28110882769914985
+      ],
+      [
+        0.07236804129900745,
+        0.23097624346926912
+      ],
+      [
+        0.017449489669461304,
+        0.26137930497235157
+      ]
+    ]
+  },
+  "source_solver_sha256": {
+    "artifacts/eb_external_validation_20261019/run_validation.py": "3af8a3cc65d8e0b1770a2dc9866147b9e6a40a2a272e1262fb85cd8bbf533cd8",
+    "artifacts/eb_source_selection_20261019/cluster_iflex.py": "c58295d8f83e0bf43aeed015833095182b79067bb6af25a14087830c9cae098a"
+  }
+}

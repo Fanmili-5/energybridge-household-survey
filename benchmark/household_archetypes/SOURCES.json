@@ -1,0 +1,107 @@
+{
+  "schema": "eb.household_archetypes.sources.v1",
+  "accessed": "2026-10-19",
+  "scope": "First-line archetype method; construct evidence not pooled prevalence",
+  "sources": [
+    {
+      "id": "EB",
+      "name": "EnergyBridge predefined roles and assigned-role experiment",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/tree/2b17ae63e613da776c93e900f5dace50d63a88a8",
+      "role_cards": "human_survey_materials/role_cards/fixed_role_cards_readable.md",
+      "counts": "human_roleplay_data/data/participants.csv",
+      "level": "pinned source cards, CODEBOOK and anonymous participant file inspected",
+      "supports": "Definitions A-F and the584 assigned-role experimental composition",
+      "limits": "Not a survey-derived six-class population taxonomy; expert-discussion provenance reported by project author/user, full expert-process records not acquired",
+      "raw_redistributed": false
+    },
+    {
+      "id": "ECA",
+      "name": "Consumer Energy Report Card June2026",
+      "url": "https://energyconsumersaustralia.com.au/our-work/surveys/energy-consumer-survey-data",
+      "questionnaire": "https://energyconsumersaustralia.com.au/sites/default/files/2026-07/web-doc-consumer-energy-report-card-jun-2026-questionnaire.pdf",
+      "methodology": "https://energyconsumersaustralia.com.au/our-work/surveys/energy-consumer-survey-methodology",
+      "level": "raw4507x369, native responses, published instrument and official weight inspected; actual linkage rerun",
+      "fields": [
+        "Q11 cost concern",
+        "Q16 engagement",
+        "A3 presence",
+        "Q33 discomfort",
+        "Q35 avoided HVAC",
+        "Q51a automation ownership/intent",
+        "Q58 VPP interest",
+        "Q59 battery-control concerns",
+        "Q79a actual shifting",
+        "A8a commute",
+        "Q208 main vehicle",
+        "Q213 actual charging",
+        "A2 children",
+        "Z7 health"
+      ],
+      "supports": "Coarse price/comfort context, engagement, conditional control concerns and actual shifting/EV combinations",
+      "weights": "Official age/sex/area/education weight adjusted to energy decision-maker profile, mean-normalized only for analysis",
+      "limits": "Battery VPP framing is not all-device DR; skipped questions remain unobserved; no EB ground-truth labels, actual routine unpredictability or joint caregiving priority; Australian sample estimates not Chinese prevalence",
+      "raw_redistributed": false
+    },
+    {
+      "id": "IFLEX",
+      "name": "iFlex dynamic pricing experiment surveys2020/2021",
+      "url": "https://zenodo.org/records/8248802",
+      "data_paper_doi": "10.1016/j.dib.2023.109571",
+      "level": "raw and original question dictionaries inspected;800 survey2 participants linked by unique ID to survey1",
+      "fields": [
+        "Aq3_1 bill motivation",
+        "Aq3_3 automatic action motivation",
+        "Aq3_4 comfort protection",
+        "Aq3_7 grid motivation",
+        "Aq5N1/N2/N3 flexibility intentions",
+        "q23 presence",
+        "q16_bil_b EV",
+        "q13 heating control"
+      ],
+      "supports": "Direct same-person motivations relevant to A/B/D and coarse EV/household context",
+      "weights": "No population weight used or found in acquired files; voluntary field-trial cohort",
+      "limits": "Motives multi-select; changing routines willingness is not actual unpredictability; investment willingness not third-party consent; English neutral blanks in Aq2 not silently recoded; no EB class proportions",
+      "raw_redistributed": false
+    },
+    {
+      "id": "DUTCH",
+      "name": "Hassles and Habits Dutch Household Load Shifting",
+      "url": "https://doi.org/10.4121/4e223727-d29b-4ffb-80fa-9087f0d29766.v1",
+      "release": "2026-01-14 v1; legacy internal folder name dutch2025 is not the publication year",
+      "level": "1678-row raw SPSS and author DOCX dictionary inspected; joint constructs actually counted",
+      "fields": [
+        "Q29_5/Q48_5/Q63_5 low activity regularity",
+        "Q34_7/Q53_7/Q68_7 automation freedom concern",
+        "Q15 HEMS"
+      ],
+      "supports": "C-related combination of activity irregularity and perceived loss of control; native routine/hassle differences",
+      "weights": "No survey weight found/used in acquired archive",
+      "limits": "Only65 people jointly observed for chosen routine/control items; control item limited to HEMS and randomized presentation; appliance activity not whole-household unpredictability; no thermal tradeoff or complete EB taxonomy",
+      "raw_redistributed": false,
+      "role_in_this_release": "Same-person construct linkage primary; fixed-six clustering exploratory"
+    },
+    {
+      "id": "ECAPE",
+      "name": "eCAPE household smart technology and appliance-use survey",
+      "url": "https://doi.org/10.5281/zenodo.12819318",
+      "level": "Two public CSVs and original questionnaire, extra information and method documents read; fixed-six actually fitted",
+      "n_public_complete": 1022,
+      "raw_combined_rows": 3177,
+      "partial_answers_excluded": 326,
+      "unit": "one public respondent per sampled household; complete-answer subset",
+      "weights": "No usable individual weight column acquired in public CSVs; unit weights only",
+      "supports": "Direct routine variability/interruption, care activity and device ownership/use",
+      "limits": [
+        "No direct joint money-comfort priority or control-authorization attitude",
+        "Smart heat use is adoption, not trust or permission",
+        "29 EV owners do not establish an EV commuter optimization class",
+        "Fixed-six resampling ARI median0.343; no EB six prevalence validation"
+      ],
+      "time_scope": "Method PDF reports November2020-January2021; repository metadata separately says2022; discrepancy retained",
+      "raw_license": "CC BY4.0 per repository",
+      "raw_redistributed": false
+    }
+  ],
+  "applications_or_messages_sent": 0,
+  "raw_individual_records_published": false
+}

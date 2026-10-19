@@ -1,0 +1,123 @@
+{
+  "schema": "eb.household_archetypes.proposed_allocation.v1",
+  "method_version": "household-archetypes-v1",
+  "status": "proposed_not_applied_to_existing_households",
+  "source_interpretation": "EB assigned-role experimental composition, not population prevalence",
+  "EB_source_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "master": {
+    "source_counts": {
+      "A": 97,
+      "B": 116,
+      "C": 73,
+      "D": 88,
+      "E": 91,
+      "F": 119
+    },
+    "target_total": 1000,
+    "exact_quota_fraction": {
+      "A": "12125/73",
+      "B": "14500/73",
+      "C": "125",
+      "D": "11000/73",
+      "E": "11375/73",
+      "F": "14875/73"
+    },
+    "initial_floor": {
+      "A": 166,
+      "B": 198,
+      "C": 125,
+      "D": 150,
+      "E": 155,
+      "F": 203
+    },
+    "fractional_remainder": {
+      "A": "7/73",
+      "B": "46/73",
+      "C": "0",
+      "D": "50/73",
+      "E": "60/73",
+      "F": "56/73"
+    },
+    "remainder_order": [
+      "E",
+      "F",
+      "D",
+      "B",
+      "A",
+      "C"
+    ],
+    "extra_slot_roles": [
+      "E",
+      "F",
+      "D"
+    ],
+    "quotas": {
+      "A": 166,
+      "B": 198,
+      "C": 125,
+      "D": 151,
+      "E": 156,
+      "F": 204
+    }
+  },
+  "same_master_subset": {
+    "source_counts": {
+      "A": 166,
+      "B": 198,
+      "C": 125,
+      "D": 151,
+      "E": 156,
+      "F": 204
+    },
+    "target_total": 50,
+    "exact_quota_fraction": {
+      "A": "83/10",
+      "B": "99/10",
+      "C": "25/4",
+      "D": "151/20",
+      "E": "39/5",
+      "F": "51/5"
+    },
+    "initial_floor": {
+      "A": 8,
+      "B": 9,
+      "C": 6,
+      "D": 7,
+      "E": 7,
+      "F": 10
+    },
+    "fractional_remainder": {
+      "A": "3/10",
+      "B": "9/10",
+      "C": "1/4",
+      "D": "11/20",
+      "E": "4/5",
+      "F": "1/5"
+    },
+    "remainder_order": [
+      "B",
+      "E",
+      "D",
+      "A",
+      "C",
+      "F"
+    ],
+    "extra_slot_roles": [
+      "B",
+      "E",
+      "D"
+    ],
+    "quotas": {
+      "A": 8,
+      "B": 10,
+      "C": 6,
+      "D": 8,
+      "E": 8,
+      "F": 10
+    }
+  },
+  "applied_to_existing_data": false,
+  "generated_households": 0,
+  "generated_acceptance_labels": 0,
+  "EP_runs": 0
+}

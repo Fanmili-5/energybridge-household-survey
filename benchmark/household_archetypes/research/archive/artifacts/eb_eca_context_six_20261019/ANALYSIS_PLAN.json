@@ -1,0 +1,26 @@
+{
+  "schema": "eb.eca.context_six.v1",
+  "date": "2026-10-19",
+  "frozen_before_model_fitting": true,
+  "scope": "Independent research only. Keep production families, schedules, simulations, fees, frontend and deployment unchanged. Do not run EnergyPlus.",
+  "question": "With existing coarse routine, family/health and EV background included, what does a prespecified six-class ECA solution represent and how does it compare to EB A-F?",
+  "source": "https://energyconsumersaustralia.com.au/our-work/surveys/energy-consumer-survey-data",
+  "raw_sha256": "ba82a75740c79cb1c456ea1ed5d3eee4e220449f39b5d692400a1e3fd94a247d",
+  "sample": "All 4507 valid original respondents; never select people to meet EB counts.",
+  "features": ["electricity_cost_concern", "avoided_HVAC_for_cost", "low_energy_discomfort", "VPP_interest", "automation_adoption_or_intent", "health_impacts_energy_use", "weekday_home_pattern", "work_status", "dependent_children", "EV_home_charger"],
+  "derivations": {
+    "weekday_home_pattern": "For each Monday-Friday A3 response, self or another member at home = home; explicit no one home = away. Verify mutual consistency. Summarize as all five / some one-four / none. This is weekly occupancy, not demonstrated unpredictable routine.",
+    "work_status": "Preserve all original Q6b work-status categories. Do not equate casual employment with irregular daily routines.",
+    "dependent_children": "A2a1 + A2a2 > 0 indicates at least one household resident under18. Background only in meaning: does not prove care duties or low DR acceptance.",
+    "health_impacts_energy_use": "Direct Z7 self-report of a health condition/disability affecting energy use; no age-based imputation.",
+    "EV_home_charger": "One composite categorical indicator from Q201 EV/PHEV ownership and conditional Q212 dedicated home charger: no EV/PHEV / EV with charger / EV without charger. Q200 zero vehicles implies no EV; never infer charging preferences from skipped Q213."
+  },
+  "posthoc_only": ["A7aa work location", "A8a driving commute", "Q210 home charging", "Q211 charging time", "Q213 charging method", "Z7 life-support registration", "household type"],
+  "fit": {"k": 6, "method": "Categorical latent class model using original categorical responses", "primary_weighting": "Official survey weights normalized to mean one", "starts": 48, "seed": 20261019, "solver": "Pinned previous research solver; EM convergence continuation with unchanged likelihood/tolerance", "no_class_count_search": true},
+  "validation": {"bootstrap": "20 ordinary respondent resamples, refit with survey weights,16 starts; align by posterior overlap, not EB shares", "unweighted_fit": "48 starts", "initialization": "inspect final likelihood and convergence across starts", "holdout": "3 prespecified 80/20 splits,weighted and unweighted six-class models", "sensitivity": ["remove EV indicator", "replace raw work-status with coarse work-location arrangement", "background-only six-class fit"]},
+  "naming": "Sort output classes by weighted prevalence and describe observed features. No EB labels or quotas in optimization; permit multiple, partial and absent matches.",
+  "proportions": "Compare to EB584 assigned-role experimental composition only, not to a measured own-preference population. Compute gaps for stated exploratory mappings; leave unmatched roles unidentified. Do not optimize permutation to match proportions.",
+  "limits": ["Background detection after adding an EV/health variable is not independent validation of associated attitudes", "Experienced discomfort does not equal willingness to sacrifice comfort", "Automation purchase interest does not equal authorization of third-party control", "Ordinary bootstrap is exploratory and does not recreate the full ECA survey design", "Australian survey shares are not Chinese household prevalence"],
+  "production_data_changes": false,
+  "EP_simulation": "paused"
+}

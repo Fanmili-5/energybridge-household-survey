@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-19",
+  "scope": "Research-only construct linkage audit. Production household data, A/B, simulation, costs, frontend and allocations remain unchanged. EnergyPlus stays paused.",
+  "question": "What can existing ECA respondent-level answers directly measure about EB A-F, what is only a proxy, and what is absent or conditionally unobserved?",
+  "not_claimed": ["EB role ground-truth labels", "classification accuracy", "six population proportions", "one-to-one ECA cluster to EB role mapping", "new quotas"],
+  "raw_sha256": "ba82a75740c79cb1c456ea1ed5d3eee4e220449f39b5d692400a1e3fd94a247d",
+  "method": ["Read all369 original column headers, native categories and questionnaire routing", "Verify Q59, Q79a, Q213 conditional routing with actual answers", "Use native response options for observed feature conjunctions, never as EB role membership rules", "Retain three-valued true/false/unobserved logic for skipped conditions", "Count intersections of observable feature patterns within the same real respondent", "Use all4507 records and all six previously fitted ECA clusters for descriptive cross-tabulation, not redistribution", "Recheck already acquired independent raw datasets for specific missing coarse constructs; never merge independent people across sources"],
+  "observed_patterns_not_role_labels": {
+    "A_related": "High electricity-cost concern (Quite/Extremely), reports employment commute by any mode, and Regularly/Sometimes shifts at least one relevant appliance for bills (Q79a).",
+    "B_related": "Respondent usually home all five weekday daytimes, has not avoided HVAC for cost in past year, and Not very/Not at all interested in battery VPP. Does not directly measure comfort priority.",
+    "C_partial_only": "Among Q59-eligible battery owners not in VPP, selects distrust of energy-company battery management OR concern about losing control. No actual unpredictable routine variable found; no complete C signature asserted.",
+    "D_related": "Active energy-system relationship Q16, Very/Somewhat interested in battery VPP or already member, and owns/is considering/researching home automation. Does not establish stable routine or third-party consent.",
+    "E_related": "Household has under18 child or direct health-related energy need, household someone home all five weekdays, and Not very/Not at all interested in battery VPP. Does not establish actual caregiving duty or comfort-over-cost choice.",
+    "F_related": "Respondent's main driven vehicle is EV/PHEV, self drives to work, and actually charges at particular times for cost or uses HEMS/app/third-party scheduling (Q213). Does not establish daily commute or next-day mandatory SOC."
+  },
+  "thresholds": "Native positive/negative categories combined for descriptive readability. Five-day home is an explicit observed pattern, not a definition of frequent-home EB membership. Thresholds are analysis choices, not published EB classification rules.",
+  "uncertainty": "Report raw observed counts and official-weighted descriptive rates with proper applicability denominators. No predictive validation without independent EB labels.",
+  "fallback": "Use existing external surveys to triangulate specific constructs; if they still do not identify six prevalences, retain EB expert archetypes and explicitly chosen experimental composition. No new human survey is a prerequisite for the present audit."
+}

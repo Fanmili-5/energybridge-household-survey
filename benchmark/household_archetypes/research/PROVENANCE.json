@@ -1,0 +1,102 @@
+{
+  "schema": "eb.household_archetypes.research_archive.v1",
+  "copied_unchanged": true,
+  "files": {
+    "artifacts/eb_source_selection_20261019/cluster_iflex.py": {
+      "sha256": "c58295d8f83e0bf43aeed015833095182b79067bb6af25a14087830c9cae098a",
+      "type": "research_code",
+      "individual_records": false
+    },
+    "artifacts/eb_external_validation_20261019/run_validation.py": {
+      "sha256": "3af8a3cc65d8e0b1770a2dc9866147b9e6a40a2a272e1262fb85cd8bbf533cd8",
+      "type": "research_code",
+      "individual_records": false
+    },
+    "artifacts/eb_external_validation_20261019/ANALYSIS_PLAN.json": {
+      "sha256": "881b7699123215c3de21dfaba74d270bf1057c5ba207d0d35b39cf4f27eda32f",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "artifacts/eb_external_validation_20261019/iflex2020/RESULTS.json": {
+      "sha256": "16c5d29418350280a6105c197b405008549b767a99d7be6178d0f4abc63ca170",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "artifacts/eb_external_validation_20261019/dutch2025/RESULTS.json": {
+      "sha256": "e2684ef75eb9c47371429c5accc59176ec8d877f935e09a94b53871ab6aee076",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "artifacts/eb_eca_context_six_20261019/run_context_six.py": {
+      "sha256": "c56e41ceba44337a848fa0dc054b49e11e309b25de356f1bc62e65d7ae1defd9",
+      "type": "research_code",
+      "individual_records": false
+    },
+    "artifacts/eb_eca_context_six_20261019/ANALYSIS_PLAN.json": {
+      "sha256": "ed57c932f3d733af5c75545b44c1e3ed746fe4a4adab49d2a4fa75d92e54f393",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "artifacts/eb_eca_context_six_20261019/RESULTS.json": {
+      "sha256": "4f7b147e06212d24daea840d69b44dec36daf789f1319537662fc9fe98de817b",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "artifacts/eb_eca_linkage_audit_20261019/run_linkage_audit.py": {
+      "sha256": "e037bfe156a98d46ac22e1c9f516ccfe27c2b5693db5dd728bb1ab6c27c03c62",
+      "type": "research_code",
+      "individual_records": false
+    },
+    "artifacts/eb_eca_linkage_audit_20261019/check_external_constructs.py": {
+      "sha256": "e619093aa648fa92fab48928e3d81a051e2c57a9e514bfe0bcfddfa60706388d",
+      "type": "research_code",
+      "individual_records": false
+    },
+    "artifacts/eb_eca_linkage_audit_20261019/ANALYSIS_PLAN.json": {
+      "sha256": "d92e170648a09a2860edaf6cd18bf9df23b64d2153f0b74cf3b1e90e7caf6703",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "artifacts/eb_eca_linkage_audit_20261019/RESEARCH_MANIFEST.json": {
+      "sha256": "0e3ca384e1dde3dddfc78ce3cc48aa94bed5874175fcb4ee094cb91f9964bbbd",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "artifacts/eb_eca_linkage_audit_20261019/RESULTS.json": {
+      "sha256": "bd7bc164f6d837c091c160af5ceb3d394cca3b46a4ca7d6affe34b0c52ea20c4",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "artifacts/eb_eca_linkage_audit_20261019/EXTERNAL_CONSTRUCTS.json": {
+      "sha256": "bf206abe19d0eadb607b8858a6863ed8366f3925036b61fa7b5b373329c09c33",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "docs/research/ecape-fixed-six_20261019/run.py": {
+      "sha256": "a2479873f62ab661f909a7565d9fc315555df9f3a52cd54ffd261469b856b0f7",
+      "type": "research_code",
+      "individual_records": false
+    },
+    "docs/research/ecape-fixed-six_20261019/ANALYSIS_PLAN.json": {
+      "sha256": "bae538f67c6fd65d01cbaecdc2fc7b6a6c0879611efee3fa49a8c0b873aaf798",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "docs/research/ecape-fixed-six_20261019/RESULTS.json": {
+      "sha256": "8db4fab8e284b9861d2782151ce5e5f87c47246ab86aefc6ad590da0c2d3c8bf",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "docs/research/ecape-fixed-six_20261019/FIELD_AUDIT.json": {
+      "sha256": "b96ae6d02a0031675a184877b96e8a472e1a5869e2d6166f61bf1773d26929fb",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    },
+    "docs/research/ecape-fixed-six_20261019/PROFILES.csv": {
+      "sha256": "dacf8a5d554dd2d5b35026c5996e840f8d3de3c4fc1adfce730587073d70b94a",
+      "type": "analysis_plan_or_aggregate",
+      "individual_records": false
+    }
+  },
+  "note": "Archival plans/results preserve their original wording and local cache defaults; canonical current interpretation is METHOD/EVIDENCE. Old seal lists historical paths, not all are distributed; replay validates the packaged files using PACKAGE_MANIFEST."
+}

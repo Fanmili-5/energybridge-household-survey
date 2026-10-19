@@ -1,0 +1,3235 @@
+{
+  "source": "iflex2020",
+  "n": 800,
+  "features": {
+    "Aq5N1": [
+      "Don't know",
+      "Likely",
+      "Not likely",
+      "Not relevant",
+      "Very likely",
+      "Very unlikely"
+    ],
+    "Aq5N2": [
+      "Don't know",
+      "Likely",
+      "Not likely",
+      "Not relevant",
+      "Very likely",
+      "Very unlikely"
+    ],
+    "Aq5N3": [
+      "Don't know",
+      "Likely",
+      "Not likely",
+      "Not relevant",
+      "Very likely",
+      "Very unlikely"
+    ],
+    "Aq3_1": [
+      0,
+      1
+    ],
+    "Aq3_2": [
+      0,
+      1
+    ],
+    "Aq3_4": [
+      0,
+      1
+    ],
+    "Aq3_7": [
+      0,
+      1
+    ],
+    "Aq8": [
+      "Below NOK 5 that day",
+      "Can not change electricity consumption",
+      "Do not want to change my electricity consumption no matter how much I can save",
+      "Mer enn NOK 500 that day",
+      "NOK 101 - 200 that day",
+      "NOK 201 - 500 that day",
+      "NOK 21 - 50 that day",
+      "NOK 5 - 20 that day",
+      "NOK 51 - 100 that day"
+    ]
+  },
+  "input_sha256": {
+    "survey1_answers.csv": "39181e74b65cbbaf77a565f23c7d1bd5b3674f7b7dea630fc2a5e1a3768cf1e8",
+    "survey1_questions.csv": "7c353bdbdcc3fbc570e492476e1a80c36a56c0c43f907cf6153cf3f1ac426f70",
+    "survey2_answers.csv": "fd18796393528fdcf7abedddfa95cc0e854255355ef3fff184cb3f62d5032efc",
+    "survey2_questions.csv": "856f26bfd988aea94000c96e79d9f3397fc2dd0e3a237880557c367fb8cf6b7e"
+  },
+  "model_selection": [
+    {
+      "k": 1,
+      "n": 800,
+      "ll": -6679.031519014555,
+      "parameters": 27,
+      "bic": 13538.547554676143,
+      "aic": 13412.06303802911,
+      "soft_share": [
+        1.0
+      ],
+      "hard_n": [
+        800
+      ],
+      "mean_max_posterior": 1.0,
+      "normalized_entropy": null,
+      "best_start_converged": true,
+      "best_start_iterations": 3,
+      "starts_within_1_loglik": 24,
+      "starts": [
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        },
+        {
+          "ll": -6679.031519014555,
+          "iterations": 3,
+          "converged": true
+        }
+      ],
+      "best_start_continuation": null
+    },
+    {
+      "k": 2,
+      "n": 800,
+      "ll": -6496.392241876849,
+      "parameters": 55,
+      "bic": 13360.438128775433,
+      "aic": 13102.784483753698,
+      "soft_share": [
+        0.8777946937249065,
+        0.1222053062750932
+      ],
+      "hard_n": [
+        709,
+        91
+      ],
+      "mean_max_posterior": 0.9686823489910148,
+      "normalized_entropy": 0.8824040208502313,
+      "best_start_converged": true,
+      "best_start_iterations": 76,
+      "starts_within_1_loglik": 24,
+      "starts": [
+        {
+          "ll": -6496.39224329955,
+          "iterations": 60,
+          "converged": true
+        },
+        {
+          "ll": -6496.392243578198,
+          "iterations": 72,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242740022,
+          "iterations": 78,
+          "converged": true
+        },
+        {
+          "ll": -6496.392243238541,
+          "iterations": 113,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242521753,
+          "iterations": 73,
+          "converged": true
+        },
+        {
+          "ll": -6496.392243655162,
+          "iterations": 73,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242978533,
+          "iterations": 97,
+          "converged": true
+        },
+        {
+          "ll": -6496.3922431099945,
+          "iterations": 142,
+          "converged": true
+        },
+        {
+          "ll": -6496.3922432294985,
+          "iterations": 73,
+          "converged": true
+        },
+        {
+          "ll": -6496.3922421520765,
+          "iterations": 84,
+          "converged": true
+        },
+        {
+          "ll": -6496.392241876849,
+          "iterations": 76,
+          "converged": true
+        },
+        {
+          "ll": -6496.3922419562105,
+          "iterations": 80,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242439459,
+          "iterations": 74,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242436313,
+          "iterations": 61,
+          "converged": true
+        },
+        {
+          "ll": -6496.392243656291,
+          "iterations": 139,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242321244,
+          "iterations": 78,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242592667,
+          "iterations": 79,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242855874,
+          "iterations": 61,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242013342,
+          "iterations": 72,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242449692,
+          "iterations": 73,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242391121,
+          "iterations": 71,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242890802,
+          "iterations": 76,
+          "converged": true
+        },
+        {
+          "ll": -6496.392242646178,
+          "iterations": 77,
+          "converged": true
+        },
+        {
+          "ll": -6496.392243129587,
+          "iterations": 75,
+          "converged": true
+        }
+      ],
+      "best_start_continuation": null
+    },
+    {
+      "k": 3,
+      "n": 800,
+      "ll": -6423.313697807945,
+      "parameters": 83,
+      "bic": 13401.450169012327,
+      "aic": 13012.62739561589,
+      "soft_share": [
+        0.15189668702950654,
+        0.7998820879022519,
+        0.048221225068240905
+      ],
+      "hard_n": [
+        109,
+        653,
+        38
+      ],
+      "mean_max_posterior": 0.9346382105549013,
+      "normalized_entropy": 0.8541135503442996,
+      "best_start_converged": true,
+      "best_start_iterations": 169,
+      "starts_within_1_loglik": 4,
+      "starts": [
+        {
+          "ll": -6427.343061070102,
+          "iterations": 549,
+          "converged": true
+        },
+        {
+          "ll": -6427.3430673289,
+          "iterations": 287,
+          "converged": true
+        },
+        {
+          "ll": -6427.343064819313,
+          "iterations": 242,
+          "converged": true
+        },
+        {
+          "ll": -6427.3430669175395,
+          "iterations": 350,
+          "converged": true
+        },
+        {
+          "ll": -6427.34306800707,
+          "iterations": 380,
+          "converged": true
+        },
+        {
+          "ll": -6427.343063985577,
+          "iterations": 635,
+          "converged": true
+        },
+        {
+          "ll": -6427.343061384793,
+          "iterations": 407,
+          "converged": true
+        },
+        {
+          "ll": -6427.343061563728,
+          "iterations": 226,
+          "converged": true
+        },
+        {
+          "ll": -6427.3430615222005,
+          "iterations": 349,
+          "converged": true
+        },
+        {
+          "ll": -6427.343064943641,
+          "iterations": 941,
+          "converged": true
+        },
+        {
+          "ll": -6427.343066253764,
+          "iterations": 327,
+          "converged": true
+        },
+        {
+          "ll": -6427.3430684428595,
+          "iterations": 364,
+          "converged": true
+        },
+        {
+          "ll": -6427.343068221647,
+          "iterations": 291,
+          "converged": true
+        },
+        {
+          "ll": -6427.343065443434,
+          "iterations": 311,
+          "converged": true
+        },
+        {
+          "ll": -6427.343060979852,
+          "iterations": 530,
+          "converged": true
+        },
+        {
+          "ll": -6423.313697807945,
+          "iterations": 169,
+          "converged": true
+        },
+        {
+          "ll": -6427.3430620378,
+          "iterations": 367,
+          "converged": true
+        },
+        {
+          "ll": -6423.3137011182735,
+          "iterations": 120,
+          "converged": true
+        },
+        {
+          "ll": -6427.34306636668,
+          "iterations": 321,
+          "converged": true
+        },
+        {
+          "ll": -6427.343060963176,
+          "iterations": 328,
+          "converged": true
+        },
+        {
+          "ll": -6423.313700333788,
+          "iterations": 181,
+          "converged": true
+        },
+        {
+          "ll": -6423.313702120778,
+          "iterations": 166,
+          "converged": true
+        },
+        {
+          "ll": -6427.343062963611,
+          "iterations": 510,
+          "converged": true
+        },
+        {
+          "ll": -6427.343064498,
+          "iterations": 354,
+          "converged": true
+        }
+      ],
+      "best_start_continuation": null
+    },
+    {
+      "k": 4,
+      "n": 800,
+      "ll": -6368.592703905636,
+      "parameters": 111,
+      "bic": 13479.177309582412,
+      "aic": 12959.185407811272,
+      "soft_share": [
+        0.48667443793455845,
+        0.04985346424436087,
+        0.05941843180361779,
+        0.4040536660174628
+      ],
+      "hard_n": [
+        393,
+        40,
+        47,
+        320
+      ],
+      "mean_max_posterior": 0.8206328869267745,
+      "normalized_entropy": 0.7188747857308768,
+      "best_start_converged": true,
+      "best_start_iterations": 748,
+      "starts_within_1_loglik": 19,
+      "starts": [
+        {
+          "ll": -6368.763726919658,
+          "iterations": 365,
+          "converged": true
+        },
+        {
+          "ll": -6368.623673324997,
+          "iterations": 400,
+          "converged": true
+        },
+        {
+          "ll": -6368.623722588193,
+          "iterations": 251,
+          "converged": true
+        },
+        {
+          "ll": -6368.7636743976955,
+          "iterations": 498,
+          "converged": true
+        },
+        {
+          "ll": -6392.61862308047,
+          "iterations": 387,
+          "converged": true
+        },
+        {
+          "ll": -6368.8754088631995,
+          "iterations": 711,
+          "converged": true
+        },
+        {
+          "ll": -6369.28949537689,
+          "iterations": 415,
+          "converged": true
+        },
+        {
+          "ll": -6384.836043921506,
+          "iterations": 456,
+          "converged": true
+        },
+        {
+          "ll": -6368.875415453995,
+          "iterations": 710,
+          "converged": true
+        },
+        {
+          "ll": -6384.836070524831,
+          "iterations": 256,
+          "converged": true
+        },
+        {
+          "ll": -6369.184385724386,
+          "iterations": 332,
+          "converged": true
+        },
+        {
+          "ll": -6368.763715924075,
+          "iterations": 503,
+          "converged": true
+        },
+        {
+          "ll": -6368.592703905636,
+          "iterations": 748,
+          "converged": true
+        },
+        {
+          "ll": -6368.875408240057,
+          "iterations": 829,
+          "converged": true
+        },
+        {
+          "ll": -6368.875409309333,
+          "iterations": 916,
+          "converged": true
+        },
+        {
+          "ll": -6384.836004839639,
+          "iterations": 309,
+          "converged": true
+        },
+        {
+          "ll": -6368.592713845061,
+          "iterations": 406,
+          "converged": true
+        },
+        {
+          "ll": -6368.763646240627,
+          "iterations": 439,
+          "converged": true
+        },
+        {
+          "ll": -6368.763685532542,
+          "iterations": 632,
+          "converged": true
+        },
+        {
+          "ll": -6392.3788343777815,
+          "iterations": 452,
+          "converged": true
+        },
+        {
+          "ll": -6368.623732535211,
+          "iterations": 467,
+          "converged": true
+        },
+        {
+          "ll": -6368.875411847343,
+          "iterations": 874,
+          "converged": true
+        },
+        {
+          "ll": -6368.623726887083,
+          "iterations": 301,
+          "converged": true
+        },
+        {
+          "ll": -6368.763681530547,
+          "iterations": 562,
+          "converged": true
+        }
+      ],
+      "best_start_continuation": null
+    },
+    {
+      "k": 5,
+      "n": 800,
+      "ll": -6327.234065657659,
+      "parameters": 139,
+      "bic": 13583.62916146116,
+      "aic": 12932.468131315318,
+      "soft_share": [
+        0.05388690754206037,
+        0.09870348764804858,
+        0.3897252861405387,
+        0.41121818867548027,
+        0.04646612999387223
+      ],
+      "hard_n": [
+        44,
+        83,
+        306,
+        330,
+        37
+      ],
+      "mean_max_posterior": 0.852213074795009,
+      "normalized_entropy": 0.787904890847984,
+      "best_start_converged": true,
+      "best_start_iterations": 218,
+      "starts_within_1_loglik": 4,
+      "starts": [
+        {
+          "ll": -6327.794636199265,
+          "iterations": 247,
+          "converged": true
+        },
+        {
+          "ll": -6345.519254848869,
+          "iterations": 440,
+          "converged": true
+        },
+        {
+          "ll": -6363.638563578272,
+          "iterations": 328,
+          "converged": true
+        },
+        {
+          "ll": -6344.669671927717,
+          "iterations": 344,
+          "converged": true
+        },
+        {
+          "ll": -6344.669671342691,
+          "iterations": 432,
+          "converged": true
+        },
+        {
+          "ll": -6358.27126229553,
+          "iterations": 210,
+          "converged": true
+        },
+        {
+          "ll": -6327.794641103157,
+          "iterations": 266,
+          "converged": true
+        },
+        {
+          "ll": -6344.669671010746,
+          "iterations": 566,
+          "converged": true
+        },
+        {
+          "ll": -6336.381617519495,
+          "iterations": 306,
+          "converged": true
+        },
+        {
+          "ll": -6344.331673650542,
+          "iterations": 429,
+          "converged": true
+        },
+        {
+          "ll": -6344.331711666057,
+          "iterations": 273,
+          "converged": true
+        },
+        {
+          "ll": -6332.887576653506,
+          "iterations": 742,
+          "converged": true
+        },
+        {
+          "ll": -6338.243976112573,
+          "iterations": 257,
+          "converged": true
+        },
+        {
+          "ll": -6339.3591965472715,
+          "iterations": 373,
+          "converged": true
+        },
+        {
+          "ll": -6336.279941341054,
+          "iterations": 317,
+          "converged": true
+        },
+        {
+          "ll": -6337.43656088838,
+          "iterations": 613,
+          "converged": true
+        },
+        {
+          "ll": -6339.37177060231,
+          "iterations": 486,
+          "converged": true
+        },
+        {
+          "ll": -6338.088696169488,
+          "iterations": 208,
+          "converged": true
+        },
+        {
+          "ll": -6338.243979711104,
+          "iterations": 304,
+          "converged": true
+        },
+        {
+          "ll": -6339.371767024095,
+          "iterations": 389,
+          "converged": true
+        },
+        {
+          "ll": -6327.234065657659,
+          "iterations": 218,
+          "converged": true
+        },
+        {
+          "ll": -6344.331628188545,
+          "iterations": 291,
+          "converged": true
+        },
+        {
+          "ll": -6344.669665554464,
+          "iterations": 363,
+          "converged": true
+        },
+        {
+          "ll": -6327.794768007465,
+          "iterations": 255,
+          "converged": true
+        }
+      ],
+      "best_start_continuation": null
+    },
+    {
+      "k": 6,
+      "n": 800,
+      "ll": -6294.3461123503275,
+      "parameters": 167,
+      "bic": 13705.0223832212,
+      "aic": 12922.692224700655,
+      "soft_share": [
+        0.10713063260348697,
+        0.21814739787487603,
+        0.054240783048972355,
+        0.1015454163162243,
+        0.46942491052442953,
+        0.04951085963201013
+      ],
+      "hard_n": [
+        67,
+        166,
+        46,
+        83,
+        399,
+        39
+      ],
+      "mean_max_posterior": 0.8405877644940333,
+      "normalized_entropy": 0.7815059500537027,
+      "best_start_converged": true,
+      "best_start_iterations": 1358,
+      "starts_within_1_loglik": 2,
+      "starts": [
+        {
+          "ll": -6301.790263763748,
+          "iterations": 609,
+          "converged": true
+        },
+        {
+          "ll": -6296.589072405587,
+          "iterations": 435,
+          "converged": true
+        },
+        {
+          "ll": -6294.895680878239,
+          "iterations": 268,
+          "converged": true
+        },
+        {
+          "ll": -6309.28318382031,
+          "iterations": 296,
+          "converged": true
+        },
+        {
+          "ll": -6320.848620371483,
+          "iterations": 305,
+          "converged": true
+        },
+        {
+          "ll": -6296.1173645653,
+          "iterations": 713,
+          "converged": true
+        },
+        {
+          "ll": -6297.478888669579,
+          "iterations": 310,
+          "converged": true
+        },
+        {
+          "ll": -6294.569865846064,
+          "iterations": 1200,
+          "converged": false
+        },
+        {
+          "ll": -6309.86734482574,
+          "iterations": 185,
+          "converged": true
+        },
+        {
+          "ll": -6296.573860733444,
+          "iterations": 1083,
+          "converged": true
+        },
+        {
+          "ll": -6310.18084798071,
+          "iterations": 463,
+          "converged": true
+        },
+        {
+          "ll": -6324.800395200914,
+          "iterations": 391,
+          "converged": true
+        },
+        {
+          "ll": -6296.149166224043,
+          "iterations": 920,
+          "converged": true
+        },
+        {
+          "ll": -6296.75528048947,
+          "iterations": 750,
+          "converged": true
+        },
+        {
+          "ll": -6303.393120136634,
+          "iterations": 498,
+          "converged": true
+        },
+        {
+          "ll": -6311.244511069708,
+          "iterations": 306,
+          "converged": true
+        },
+        {
+          "ll": -6296.997946038188,
+          "iterations": 493,
+          "converged": true
+        },
+        {
+          "ll": -6325.2629376870555,
+          "iterations": 633,
+          "converged": true
+        },
+        {
+          "ll": -6305.7472536422465,
+          "iterations": 502,
+          "converged": true
+        },
+        {
+          "ll": -6307.093880658921,
+          "iterations": 989,
+          "converged": true
+        },
+        {
+          "ll": -6305.207200989914,
+          "iterations": 272,
+          "converged": true
+        },
+        {
+          "ll": -6317.120594676588,
+          "iterations": 185,
+          "converged": true
+        },
+        {
+          "ll": -6310.277634370268,
+          "iterations": 1102,
+          "converged": true
+        },
+        {
+          "ll": -6321.133179937193,
+          "iterations": 262,
+          "converged": true
+        }
+      ],
+      "best_start_continuation": {
+        "initial_ll": -6294.569865846064,
+        "final_ll": -6294.3461123503275,
+        "additional_iterations": 158,
+        "converged": true
+      }
+    },
+    {
+      "k": 7,
+      "n": 800,
+      "ll": -6263.298181978,
+      "parameters": 195,
+      "bic": 13830.095650851246,
+      "aic": 12916.596363956,
+      "soft_share": [
+        0.03667391797130467,
+        0.11142553313154353,
+        0.12455655179771451,
+        0.3760412156519517,
+        0.050806320007252485,
+        0.0969502584381356,
+        0.20354620300209672
+      ],
+      "hard_n": [
+        28,
+        79,
+        78,
+        328,
+        38,
+        80,
+        169
+      ],
+      "mean_max_posterior": 0.8110853932507063,
+      "normalized_entropy": 0.7510592828554614,
+      "best_start_converged": true,
+      "best_start_iterations": 355,
+      "starts_within_1_loglik": 3,
+      "starts": [
+        {
+          "ll": -6288.792605086166,
+          "iterations": 476,
+          "converged": true
+        },
+        {
+          "ll": -6270.259689671287,
+          "iterations": 935,
+          "converged": true
+        },
+        {
+          "ll": -6279.143222036557,
+          "iterations": 330,
+          "converged": true
+        },
+        {
+          "ll": -6269.7449513615775,
+          "iterations": 1200,
+          "converged": false
+        },
+        {
+          "ll": -6307.512584821795,
+          "iterations": 575,
+          "converged": true
+        },
+        {
+          "ll": -6283.964923515525,
+          "iterations": 445,
+          "converged": true
+        },
+        {
+          "ll": -6289.223905288377,
+          "iterations": 805,
+          "converged": true
+        },
+        {
+          "ll": -6271.44335758638,
+          "iterations": 415,
+          "converged": true
+        },
+        {
+          "ll": -6274.268609216364,
+          "iterations": 880,
+          "converged": true
+        },
+        {
+          "ll": -6284.1402527452565,
+          "iterations": 1024,
+          "converged": true
+        },
+        {
+          "ll": -6279.677977855051,
+          "iterations": 361,
+          "converged": true
+        },
+        {
+          "ll": -6263.298181978,
+          "iterations": 355,
+          "converged": true
+        },
+        {
+          "ll": -6283.530706694476,
+          "iterations": 746,
+          "converged": true
+        },
+        {
+          "ll": -6279.698989688028,
+          "iterations": 258,
+          "converged": true
+        },
+        {
+          "ll": -6263.554619079926,
+          "iterations": 389,
+          "converged": true
+        },
+        {
+          "ll": -6269.569195454939,
+          "iterations": 311,
+          "converged": true
+        },
+        {
+          "ll": -6270.208291205388,
+          "iterations": 402,
+          "converged": true
+        },
+        {
+          "ll": -6282.877594750609,
+          "iterations": 657,
+          "converged": true
+        },
+        {
+          "ll": -6263.421202681162,
+          "iterations": 390,
+          "converged": true
+        },
+        {
+          "ll": -6279.777080753417,
+          "iterations": 286,
+          "converged": true
+        },
+        {
+          "ll": -6276.918189321283,
+          "iterations": 262,
+          "converged": true
+        },
+        {
+          "ll": -6279.518872683731,
+          "iterations": 390,
+          "converged": true
+        },
+        {
+          "ll": -6293.5032907265395,
+          "iterations": 848,
+          "converged": true
+        },
+        {
+          "ll": -6265.146231041263,
+          "iterations": 633,
+          "converged": true
+        }
+      ],
+      "best_start_continuation": null
+    },
+    {
+      "k": 8,
+      "n": 800,
+      "ll": -6233.0478013490965,
+      "parameters": 223,
+      "bic": 13956.76401796814,
+      "aic": 12912.095602698193,
+      "soft_share": [
+        0.09654793669582874,
+        0.07913609817642991,
+        0.07496988958017402,
+        0.04629027405101468,
+        0.028428670046378394,
+        0.4485607917692932,
+        0.06350422574080834,
+        0.16256211394007308
+      ],
+      "hard_n": [
+        79,
+        55,
+        45,
+        37,
+        21,
+        385,
+        45,
+        133
+      ],
+      "mean_max_posterior": 0.838223990275248,
+      "normalized_entropy": 0.8056683198547662,
+      "best_start_converged": true,
+      "best_start_iterations": 771,
+      "starts_within_1_loglik": 1,
+      "starts": [
+        {
+          "ll": -6248.867257621103,
+          "iterations": 485,
+          "converged": true
+        },
+        {
+          "ll": -6248.0466601853805,
+          "iterations": 411,
+          "converged": true
+        },
+        {
+          "ll": -6250.7802246511,
+          "iterations": 574,
+          "converged": true
+        },
+        {
+          "ll": -6233.0478013490965,
+          "iterations": 771,
+          "converged": true
+        },
+        {
+          "ll": -6247.82945299558,
+          "iterations": 845,
+          "converged": true
+        },
+        {
+          "ll": -6248.718156729557,
+          "iterations": 317,
+          "converged": true
+        },
+        {
+          "ll": -6241.831040180778,
+          "iterations": 425,
+          "converged": true
+        },
+        {
+          "ll": -6255.045248409307,
+          "iterations": 391,
+          "converged": true
+        },
+        {
+          "ll": -6246.146740408728,
+          "iterations": 475,
+          "converged": true
+        },
+        {
+          "ll": -6240.988955214855,
+          "iterations": 321,
+          "converged": true
+        },
+        {
+          "ll": -6252.052953011803,
+          "iterations": 271,
+          "converged": true
+        },
+        {
+          "ll": -6244.808008479138,
+          "iterations": 1200,
+          "converged": false
+        },
+        {
+          "ll": -6242.940512166473,
+          "iterations": 846,
+          "converged": true
+        },
+        {
+          "ll": -6251.130163191632,
+          "iterations": 405,
+          "converged": true
+        },
+        {
+          "ll": -6252.800898439554,
+          "iterations": 679,
+          "converged": true
+        },
+        {
+          "ll": -6257.1400457599475,
+          "iterations": 625,
+          "converged": true
+        },
+        {
+          "ll": -6263.962364208743,
+          "iterations": 733,
+          "converged": true
+        },
+        {
+          "ll": -6234.981462923821,
+          "iterations": 930,
+          "converged": true
+        },
+        {
+          "ll": -6241.754256832395,
+          "iterations": 540,
+          "converged": true
+        },
+        {
+          "ll": -6272.018691289105,
+          "iterations": 1152,
+          "converged": true
+        },
+        {
+          "ll": -6248.362316713675,
+          "iterations": 245,
+          "converged": true
+        },
+        {
+          "ll": -6251.794661087217,
+          "iterations": 550,
+          "converged": true
+        },
+        {
+          "ll": -6240.951757680959,
+          "iterations": 844,
+          "converged": true
+        },
+        {
+          "ll": -6246.288774980195,
+          "iterations": 365,
+          "converged": true
+        }
+      ],
+      "best_start_continuation": null
+    }
+  ],
+  "models": {
+    "2": {
+      "summary": {
+        "k": 2,
+        "n": 800,
+        "ll": -6496.392241876849,
+        "parameters": 55,
+        "bic": 13360.438128775433,
+        "aic": 13102.784483753698,
+        "soft_share": [
+          0.8777946937249065,
+          0.1222053062750932
+        ],
+        "hard_n": [
+          709,
+          91
+        ],
+        "mean_max_posterior": 0.9686823489910148,
+        "normalized_entropy": 0.8824040208502313,
+        "best_start_converged": true,
+        "best_start_iterations": 76,
+        "starts_within_1_loglik": 24,
+        "starts": [
+          {
+            "ll": -6496.39224329955,
+            "iterations": 60,
+            "converged": true
+          },
+          {
+            "ll": -6496.392243578198,
+            "iterations": 72,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242740022,
+            "iterations": 78,
+            "converged": true
+          },
+          {
+            "ll": -6496.392243238541,
+            "iterations": 113,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242521753,
+            "iterations": 73,
+            "converged": true
+          },
+          {
+            "ll": -6496.392243655162,
+            "iterations": 73,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242978533,
+            "iterations": 97,
+            "converged": true
+          },
+          {
+            "ll": -6496.3922431099945,
+            "iterations": 142,
+            "converged": true
+          },
+          {
+            "ll": -6496.3922432294985,
+            "iterations": 73,
+            "converged": true
+          },
+          {
+            "ll": -6496.3922421520765,
+            "iterations": 84,
+            "converged": true
+          },
+          {
+            "ll": -6496.392241876849,
+            "iterations": 76,
+            "converged": true
+          },
+          {
+            "ll": -6496.3922419562105,
+            "iterations": 80,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242439459,
+            "iterations": 74,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242436313,
+            "iterations": 61,
+            "converged": true
+          },
+          {
+            "ll": -6496.392243656291,
+            "iterations": 139,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242321244,
+            "iterations": 78,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242592667,
+            "iterations": 79,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242855874,
+            "iterations": 61,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242013342,
+            "iterations": 72,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242449692,
+            "iterations": 73,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242391121,
+            "iterations": 71,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242890802,
+            "iterations": 76,
+            "converged": true
+          },
+          {
+            "ll": -6496.392242646178,
+            "iterations": 77,
+            "converged": true
+          },
+          {
+            "ll": -6496.392243129587,
+            "iterations": 75,
+            "converged": true
+          }
+        ],
+        "best_start_continuation": null
+      },
+      "profiles": [
+        {
+          "class": 1,
+          "share": 0.8777946937249069,
+          "hard_n": 709,
+          "responses": {
+            "Aq5N1": {
+              "Don't know": 0.01976641724238187,
+              "Likely": 0.43797171852335864,
+              "Not likely": 0.41023591905348167,
+              "Not relevant": 0.009845451077363562,
+              "Very likely": 0.052688789454929205,
+              "Very unlikely": 0.06949170464848493
+            },
+            "Aq5N2": {
+              "Don't know": 0.02743325761565669,
+              "Likely": 0.5254816039562152,
+              "Not likely": 0.2612688667498199,
+              "Not relevant": 0.007274506386492955,
+              "Very likely": 0.15094635760083333,
+              "Very unlikely": 0.02759540769098183
+            },
+            "Aq5N3": {
+              "Don't know": 0.05870600828593765,
+              "Likely": 0.4927683916038568,
+              "Not likely": 0.2733552994903913,
+              "Not relevant": 0.008769364639805,
+              "Very likely": 0.11486418058500023,
+              "Very unlikely": 0.05153675539500897
+            },
+            "Aq3_1": {
+              "0": 0.4489925421690875,
+              "1": 0.5510074578309124
+            },
+            "Aq3_2": {
+              "0": 0.601142642462459,
+              "1": 0.3988573575375408
+            },
+            "Aq3_4": {
+              "0": 0.6208829263218837,
+              "1": 0.3791170736781163
+            },
+            "Aq3_7": {
+              "0": 0.8767036749040992,
+              "1": 0.12329632509590067
+            },
+            "Aq8": {
+              "Below NOK 5 that day": 0.05838489177724408,
+              "Can not change electricity consumption": 0.03718179876051815,
+              "Do not want to change my electricity consumption no matter how much I can save": 0.0254632278988287,
+              "Mer enn NOK 500 that day": 0.007468991872471887,
+              "NOK 101 - 200 that day": 0.0790665472412812,
+              "NOK 201 - 500 that day": 0.019993100729453626,
+              "NOK 21 - 50 that day": 0.2891221727331484,
+              "NOK 5 - 20 that day": 0.30443803987642143,
+              "NOK 51 - 100 that day": 0.1788812291106325
+            }
+          },
+          "background_not_used_in_fit": {
+            "daytime_home": {
+              "known_soft_n": 702.2357549799256,
+              "distribution": {
+                "No": 0.502175519365041,
+                "Yes": 0.4978244806349589
+              }
+            },
+            "EV_ownership": {
+              "known_soft_n": 618.724713568939,
+              "distribution": {
+                "No": 0.6359191360493904,
+                "Yes": 0.3640808639506094
+              }
+            },
+            "under6_present": {
+              "known_soft_n": 702.2357549799256,
+              "distribution": {
+                "0": 0.8950096837990688,
+                "1": 0.10499031620093115
+              }
+            },
+            "heating_control": {
+              "known_soft_n": 702.2357549799256,
+              "distribution": {
+                "No": 0.17687098924028566,
+                "Yes, automated by price (advanced control based on spot price for electricity)": 0.007825717314179944,
+                "Yes, automated by time (set schedule in thermostat)": 0.18115366924150922,
+                "Yes, manually (turn on and off panel heaters, regulate temperature on thermostats, etc.)": 0.634149624204025
+              }
+            }
+          }
+        },
+        {
+          "class": 2,
+          "share": 0.12220530627509313,
+          "hard_n": 91,
+          "responses": {
+            "Aq5N1": {
+              "Don't know": 0.13419338595469008,
+              "Likely": 0.024964132668263805,
+              "Not likely": 0.32647589777879255,
+              "Not relevant": 0.2259125739173313,
+              "Very likely": 4.925946027737299e-07,
+              "Very unlikely": 0.28845351708631944
+            },
+            "Aq5N2": {
+              "Don't know": 0.10980891454238893,
+              "Likely": 0.13285050291216463,
+              "Not likely": 0.27134316947615733,
+              "Not relevant": 0.24437954295733608,
+              "Very likely": 7.222344833447954e-07,
+              "Very unlikely": 0.2416171478774698
+            },
+            "Aq5N3": {
+              "Don't know": 0.23295369329339552,
+              "Likely": 0.06096724309176779,
+              "Not likely": 0.26635642590248065,
+              "Not relevant": 0.1620412309041958,
+              "Very likely": 0.02391738847123209,
+              "Very unlikely": 0.25376401833692813
+            },
+            "Aq3_1": {
+              "0": 0.7845545490970164,
+              "1": 0.21544545090298342
+            },
+            "Aq3_2": {
+              "0": 0.7963662237023462,
+              "1": 0.20363377629765375
+            },
+            "Aq3_4": {
+              "0": 0.6750301141962042,
+              "1": 0.3249698858037958
+            },
+            "Aq3_7": {
+              "0": 0.9855068480328475,
+              "1": 0.014493151967152272
+            },
+            "Aq8": {
+              "Below NOK 5 that day": 4.2391147953736856e-07,
+              "Can not change electricity consumption": 0.510305290708804,
+              "Do not want to change my electricity consumption no matter how much I can save": 0.18533167139499404,
+              "Mer enn NOK 500 that day": 0.01795141826273411,
+              "NOK 101 - 200 that day": 0.025332814710064905,
+              "NOK 201 - 500 that day": 0.020049557120396636,
+              "NOK 21 - 50 that day": 0.06104555656391187,
+              "NOK 5 - 20 that day": 0.09423407525809512,
+              "NOK 51 - 100 that day": 0.08574919206951977
+            }
+          },
+          "background_not_used_in_fit": {
+            "daytime_home": {
+              "known_soft_n": 97.7642450200745,
+              "distribution": {
+                "No": 0.38208646748700387,
+                "Yes": 0.6179135325129962
+              }
+            },
+            "EV_ownership": {
+              "known_soft_n": 82.27528643106093,
+              "distribution": {
+                "No": 0.7722989180727456,
+                "Yes": 0.2277010819272547
+              }
+            },
+            "under6_present": {
+              "known_soft_n": 97.7642450200745,
+              "distribution": {
+                "0": 0.9358451953905018,
+                "1": 0.06415480460949828
+              }
+            },
+            "heating_control": {
+              "known_soft_n": 97.7642450200745,
+              "distribution": {
+                "No": 0.15133208806311363,
+                "Yes, automated by price (advanced control based on spot price for electricity)": 0.005160388580853666,
+                "Yes, automated by time (set schedule in thermostat)": 0.18194193909187023,
+                "Yes, manually (turn on and off panel heaters, regulate temperature on thermostats, etc.)": 0.6615655842641626
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "pi": [
+          0.8777884219308939,
+          0.12221157806910617
+        ],
+        "theta": [
+          [
+            0.019766345412497548,
+            0.4379744829776608,
+            0.4102349410041845,
+            0.00984509963966866,
+            0.05268916687862659,
+            0.06948996408736198,
+            0.027432895968565404,
+            0.5254830257232284,
+            0.2612674702614175,
+            0.007274199223608557,
+            0.15094743622755127,
+            0.0275949725956288,
+            0.058705629286843634,
+            0.49277071314693877,
+            0.27335329446718665,
+            0.008769314439228366,
+            0.11486491772762795,
+            0.051536130932174525,
+            0.4489913522018379,
+            0.5510086477981622,
+            0.6011420240401745,
+            0.39885797595982564,
+            0.6208838817373655,
+            0.37911611826263447,
+            0.8767029343607894,
+            0.12329706563921065,
+            0.058385309602895265,
+            0.037179981930684336,
+            0.025462858580056858,
+            0.007468810066125446,
+            0.0790658993770161,
+            0.019993198967928325,
+            0.289123432655558,
+            0.30443955740271245,
+            0.1788809514170233
+          ],
+          [
+            0.13418797388113562,
+            0.024965451722701443,
+            0.3264870340816169,
+            0.22590390343580036,
+            9.999995028788228e-07,
+            0.28845463687924283,
+            0.10980726730233134,
+            0.1328603850423941,
+            0.2713525979916352,
+            0.244369520794619,
+            9.99999732559079e-07,
+            0.24160922886928785,
+            0.23294747578126385,
+            0.06097271467764087,
+            0.26637117355358697,
+            0.16203373566417348,
+            0.023916773172899104,
+            0.25375812715043583,
+            0.7845458705399467,
+            0.21545412946005335,
+            0.7963606387002203,
+            0.20363936129977964,
+            0.6750204670544508,
+            0.32497953294554915,
+            0.9855065656842305,
+            0.0144934343157695,
+            9.999994341890372e-07,
+            0.5102937411801911,
+            0.18532601591911366,
+            0.017952194101907848,
+            0.025340222092041682,
+            0.02004885404868198,
+            0.061048165510017086,
+            0.09423389350552258,
+            0.08575591364308992
+          ]
+        ],
+        "categories": [
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        ]
+      },
+      "bootstrap": [
+        {
+          "iteration": 0,
+          "ari": 0.901012459294377,
+          "share": [
+            0.8682660690908157,
+            0.1317339309091842
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 1,
+          "ari": 0.8663874928590036,
+          "share": [
+            0.8791617276031763,
+            0.12083827239682363
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 2,
+          "ari": 0.8570687207310821,
+          "share": [
+            0.8929441597566242,
+            0.10705584024337575
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 3,
+          "ari": 0.8799663637969366,
+          "share": [
+            0.879367760274759,
+            0.12063223972524102
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 4,
+          "ari": 0.8425849323686531,
+          "share": [
+            0.8341323965476374,
+            0.16586760345236265
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 5,
+          "ari": 0.6223131797860153,
+          "share": [
+            0.8110050001593366,
+            0.18899499984066342
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 6,
+          "ari": 0.8884295763037386,
+          "share": [
+            0.8509543952790508,
+            0.14904560472094905
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 7,
+          "ari": 0.7836243466869953,
+          "share": [
+            0.901017788399873,
+            0.09898221160012682
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 8,
+          "ari": 0.7691925196430508,
+          "share": [
+            0.821241695896941,
+            0.17875830410305904
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 9,
+          "ari": 0.8485268576940943,
+          "share": [
+            0.8736474470676686,
+            0.12635255293233155
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 10,
+          "ari": 0.5667103309993873,
+          "share": [
+            0.7513681896404475,
+            0.2486318103595525
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 11,
+          "ari": 0.9100952588922829,
+          "share": [
+            0.8790291099778529,
+            0.12097089002214717
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 12,
+          "ari": 0.8040219056684869,
+          "share": [
+            0.8893427719580806,
+            0.1106572280419194
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 13,
+          "ari": 0.7334593050158215,
+          "share": [
+            0.9079262941196775,
+            0.09207370588032246
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 14,
+          "ari": 0.8745631696034533,
+          "share": [
+            0.8900522609769252,
+            0.10994773902307475
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 15,
+          "ari": 0.921001996162889,
+          "share": [
+            0.897393680656674,
+            0.1026063193433258
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 16,
+          "ari": 0.925400097916576,
+          "share": [
+            0.8485030008059148,
+            0.15149699919408527
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 17,
+          "ari": 0.7875503585952258,
+          "share": [
+            0.851700424358513,
+            0.1482995756414869
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 18,
+          "ari": 0.9122119287378992,
+          "share": [
+            0.890527980444474,
+            0.10947201955552595
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 19,
+          "ari": 0.7746229957132673,
+          "share": [
+            0.9057323013729257,
+            0.09426769862707428
+          ],
+          "converged": true
+        }
+      ],
+      "bootstrap_summary": {
+        "median_ari": 0.8527977892125882,
+        "min_ari": 0.5667103309993873,
+        "share_interval_2p5_97p5": [
+          [
+            0.7796956746369198,
+            0.9068841475649704
+          ],
+          [
+            0.09311585243502957,
+            0.22030432536308012
+          ]
+        ]
+      }
+    },
+    "6": {
+      "summary": {
+        "k": 6,
+        "n": 800,
+        "ll": -6294.3461123503275,
+        "parameters": 167,
+        "bic": 13705.0223832212,
+        "aic": 12922.692224700655,
+        "soft_share": [
+          0.10713063260348697,
+          0.21814739787487603,
+          0.054240783048972355,
+          0.1015454163162243,
+          0.46942491052442953,
+          0.04951085963201013
+        ],
+        "hard_n": [
+          67,
+          166,
+          46,
+          83,
+          399,
+          39
+        ],
+        "mean_max_posterior": 0.8405877644940333,
+        "normalized_entropy": 0.7815059500537027,
+        "best_start_converged": true,
+        "best_start_iterations": 1358,
+        "starts_within_1_loglik": 2,
+        "starts": [
+          {
+            "ll": -6301.790263763748,
+            "iterations": 609,
+            "converged": true
+          },
+          {
+            "ll": -6296.589072405587,
+            "iterations": 435,
+            "converged": true
+          },
+          {
+            "ll": -6294.895680878239,
+            "iterations": 268,
+            "converged": true
+          },
+          {
+            "ll": -6309.28318382031,
+            "iterations": 296,
+            "converged": true
+          },
+          {
+            "ll": -6320.848620371483,
+            "iterations": 305,
+            "converged": true
+          },
+          {
+            "ll": -6296.1173645653,
+            "iterations": 713,
+            "converged": true
+          },
+          {
+            "ll": -6297.478888669579,
+            "iterations": 310,
+            "converged": true
+          },
+          {
+            "ll": -6294.569865846064,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -6309.86734482574,
+            "iterations": 185,
+            "converged": true
+          },
+          {
+            "ll": -6296.573860733444,
+            "iterations": 1083,
+            "converged": true
+          },
+          {
+            "ll": -6310.18084798071,
+            "iterations": 463,
+            "converged": true
+          },
+          {
+            "ll": -6324.800395200914,
+            "iterations": 391,
+            "converged": true
+          },
+          {
+            "ll": -6296.149166224043,
+            "iterations": 920,
+            "converged": true
+          },
+          {
+            "ll": -6296.75528048947,
+            "iterations": 750,
+            "converged": true
+          },
+          {
+            "ll": -6303.393120136634,
+            "iterations": 498,
+            "converged": true
+          },
+          {
+            "ll": -6311.244511069708,
+            "iterations": 306,
+            "converged": true
+          },
+          {
+            "ll": -6296.997946038188,
+            "iterations": 493,
+            "converged": true
+          },
+          {
+            "ll": -6325.2629376870555,
+            "iterations": 633,
+            "converged": true
+          },
+          {
+            "ll": -6305.7472536422465,
+            "iterations": 502,
+            "converged": true
+          },
+          {
+            "ll": -6307.093880658921,
+            "iterations": 989,
+            "converged": true
+          },
+          {
+            "ll": -6305.207200989914,
+            "iterations": 272,
+            "converged": true
+          },
+          {
+            "ll": -6317.120594676588,
+            "iterations": 185,
+            "converged": true
+          },
+          {
+            "ll": -6310.277634370268,
+            "iterations": 1102,
+            "converged": true
+          },
+          {
+            "ll": -6321.133179937193,
+            "iterations": 262,
+            "converged": true
+          }
+        ],
+        "best_start_continuation": {
+          "initial_ll": -6294.569865846064,
+          "final_ll": -6294.3461123503275,
+          "additional_iterations": 158,
+          "converged": true
+        }
+      },
+      "profiles": [
+        {
+          "class": 1,
+          "share": 0.10713063260348708,
+          "hard_n": 67,
+          "responses": {
+            "Aq5N1": {
+              "Don't know": 6.102973937011204e-07,
+              "Likely": 0.4245321765713782,
+              "Not likely": 0.23978055976079574,
+              "Not relevant": 6.860594634870792e-07,
+              "Very likely": 0.27266546403788183,
+              "Very unlikely": 0.06302050327308707
+            },
+            "Aq5N2": {
+              "Don't know": 0.02036289672988013,
+              "Likely": 0.20542641075217177,
+              "Not likely": 0.12226702344279626,
+              "Not relevant": 3.725879019236257e-07,
+              "Very likely": 0.6519423546023303,
+              "Very unlikely": 9.41884919544728e-07
+            },
+            "Aq5N3": {
+              "Don't know": 0.03257838893188128,
+              "Likely": 0.2618615470210747,
+              "Not likely": 0.21878035848618593,
+              "Not relevant": 6.371835681238811e-07,
+              "Very likely": 0.39115334986394623,
+              "Very unlikely": 0.09562571851334369
+            },
+            "Aq3_1": {
+              "0": 0.5867062306880604,
+              "1": 0.4132937693119395
+            },
+            "Aq3_2": {
+              "0": 0.6730354005798745,
+              "1": 0.3269645994201254
+            },
+            "Aq3_4": {
+              "0": 0.509806390916182,
+              "1": 0.49019360908381804
+            },
+            "Aq3_7": {
+              "0": 0.9999995120290528,
+              "1": 4.879709468350509e-07
+            },
+            "Aq8": {
+              "Below NOK 5 that day": 0.10674522472347259,
+              "Can not change electricity consumption": 2.097217043496801e-07,
+              "Do not want to change my electricity consumption no matter how much I can save": 0.08017105095044925,
+              "Mer enn NOK 500 that day": 0.02153478110093527,
+              "NOK 101 - 200 that day": 0.04552541364513815,
+              "NOK 201 - 500 that day": 0.072944645097219,
+              "NOK 21 - 50 that day": 0.26637561376905894,
+              "NOK 5 - 20 that day": 0.2671209501060415,
+              "NOK 51 - 100 that day": 0.13958211088598096
+            }
+          },
+          "background_not_used_in_fit": {
+            "daytime_home": {
+              "known_soft_n": 85.70450608278966,
+              "distribution": {
+                "No": 0.5613534446387576,
+                "Yes": 0.43864655536124236
+              }
+            },
+            "EV_ownership": {
+              "known_soft_n": 76.41347483876304,
+              "distribution": {
+                "No": 0.48023418160487463,
+                "Yes": 0.5197658183951256
+              }
+            },
+            "under6_present": {
+              "known_soft_n": 85.70450608278966,
+              "distribution": {
+                "0": 0.85152688280029,
+                "1": 0.1484731171997101
+              }
+            },
+            "heating_control": {
+              "known_soft_n": 85.70450608278966,
+              "distribution": {
+                "No": 0.23352123722821402,
+                "Yes, automated by price (advanced control based on spot price for electricity)": 0.023893747083911437,
+                "Yes, automated by time (set schedule in thermostat)": 0.24828059563995536,
+                "Yes, manually (turn on and off panel heaters, regulate temperature on thermostats, etc.)": 0.4943044200479191
+              }
+            }
+          }
+        },
+        {
+          "class": 2,
+          "share": 0.21814739787487583,
+          "hard_n": 166,
+          "responses": {
+            "Aq5N1": {
+              "Don't know": 0.007202127823950467,
+              "Likely": 0.012920672926195654,
+              "Not likely": 0.7679019328707504,
+              "Not relevant": 0.024239237506799485,
+              "Very likely": 5.863006619809344e-07,
+              "Very unlikely": 0.18773544257164193
+            },
+            "Aq5N2": {
+              "Don't know": 0.023993453024980585,
+              "Likely": 0.46697266699245676,
+              "Not likely": 0.4263964027515355,
+              "Not relevant": 0.02241301939858227,
+              "Very likely": 0.032239046928907944,
+              "Very unlikely": 0.027985410903536893
+            },
+            "Aq5N3": {
+              "Don't know": 0.05513110906495108,
+              "Likely": 0.3093625724755543,
+              "Not likely": 0.6156959876729905,
+              "Not relevant": 1.0563401321904862e-07,
+              "Very likely": 8.699809356604887e-07,
+              "Very unlikely": 0.019809355171555257
+            },
+            "Aq3_1": {
+              "0": 0.4503468493140557,
+              "1": 0.5496531506859442
+            },
+            "Aq3_2": {
+              "0": 0.6953080606426177,
+              "1": 0.30469193935738226
+            },
+            "Aq3_4": {
+              "0": 0.44876347123615257,
+              "1": 0.5512365287638473
+            },
+            "Aq3_7": {
+              "0": 0.9668157570638845,
+              "1": 0.033184242936115466
+            },
+            "Aq8": {
+              "Below NOK 5 that day": 0.007639288638757426,
+              "Can not change electricity consumption": 0.11897519883964915,
+              "Do not want to change my electricity consumption no matter how much I can save": 0.011959265050440688,
+              "Mer enn NOK 500 that day": 0.016784785885808864,
+              "NOK 101 - 200 that day": 0.14016964818779903,
+              "NOK 201 - 500 that day": 0.02523886311018375,
+              "NOK 21 - 50 that day": 0.23024917596975525,
+              "NOK 5 - 20 that day": 0.18688801368686073,
+              "NOK 51 - 100 that day": 0.262095760630745
+            }
+          },
+          "background_not_used_in_fit": {
+            "daytime_home": {
+              "known_soft_n": 174.51791829990066,
+              "distribution": {
+                "No": 0.48505388812756384,
+                "Yes": 0.5149461118724361
+              }
+            },
+            "EV_ownership": {
+              "known_soft_n": 151.57117339734754,
+              "distribution": {
+                "No": 0.6684118750710026,
+                "Yes": 0.33158812492899725
+              }
+            },
+            "under6_present": {
+              "known_soft_n": 174.51791829990066,
+              "distribution": {
+                "0": 0.8950214604946564,
+                "1": 0.10497853950534354
+              }
+            },
+            "heating_control": {
+              "known_soft_n": 174.51791829990066,
+              "distribution": {
+                "No": 0.18165039701718957,
+                "Yes, automated by price (advanced control based on spot price for electricity)": 0.011796453809746046,
+                "Yes, automated by time (set schedule in thermostat)": 0.189391624739012,
+                "Yes, manually (turn on and off panel heaters, regulate temperature on thermostats, etc.)": 0.6171615244340524
+              }
+            }
+          }
+        },
+        {
+          "class": 3,
+          "share": 0.054240783048972334,
+          "hard_n": 46,
+          "responses": {
+            "Aq5N1": {
+              "Don't know": 1.0759757356762812e-08,
+              "Likely": 0.0627982571503433,
+              "Not likely": 0.33877526784083234,
+              "Not relevant": 0.14946843076673155,
+              "Very likely": 1.0212738401496104e-07,
+              "Very unlikely": 0.4489579313549513
+            },
+            "Aq5N2": {
+              "Don't know": 4.181671009514591e-07,
+              "Likely": 0.17738978048818385,
+              "Not likely": 0.3312648059776502,
+              "Not relevant": 7.027901841083214e-07,
+              "Very likely": 2.890138852882787e-07,
+              "Very unlikely": 0.4913440035629956
+            },
+            "Aq5N3": {
+              "Don't know": 0.12659910901721622,
+              "Likely": 8.843937124560469e-07,
+              "Not likely": 0.2742556048813463,
+              "Not relevant": 7.999039487474172e-07,
+              "Very likely": 5.267133791466934e-07,
+              "Very unlikely": 0.5991430750903971
+            },
+            "Aq3_1": {
+              "0": 0.8102173650961885,
+              "1": 0.18978263490381178
+            },
+            "Aq3_2": {
+              "0": 0.9139429165493996,
+              "1": 0.08605708345060045
+            },
+            "Aq3_4": {
+              "0": 0.6061901292213799,
+              "1": 0.39380987077861995
+            },
+            "Aq3_7": {
+              "0": 0.9999996516984997,
+              "1": 3.483015004701648e-07
+            },
+            "Aq8": {
+              "Below NOK 5 that day": 5.88983512958036e-07,
+              "Can not change electricity consumption": 0.4997513398134979,
+              "Do not want to change my electricity consumption no matter how much I can save": 0.29249204042959226,
+              "Mer enn NOK 500 that day": 0.05127198169603783,
+              "NOK 101 - 200 that day": 2.549481068224648e-07,
+              "NOK 201 - 500 that day": 0.02232694083317229,
+              "NOK 21 - 50 that day": 9.258184086321115e-07,
+              "NOK 5 - 20 that day": 4.768385422689289e-07,
+              "NOK 51 - 100 that day": 0.13415545063912904
+            }
+          },
+          "background_not_used_in_fit": {
+            "daytime_home": {
+              "known_soft_n": 43.39262643917787,
+              "distribution": {
+                "No": 0.47897339901237607,
+                "Yes": 0.5210266009876239
+              }
+            },
+            "EV_ownership": {
+              "known_soft_n": 37.353622778876385,
+              "distribution": {
+                "No": 0.6515130704638761,
+                "Yes": 0.3484869295361236
+              }
+            },
+            "under6_present": {
+              "known_soft_n": 43.39262643917787,
+              "distribution": {
+                "0": 0.9007873298694952,
+                "1": 0.09921267013050486
+              }
+            },
+            "heating_control": {
+              "known_soft_n": 43.39262643917787,
+              "distribution": {
+                "No": 0.07751591158598345,
+                "Yes, automated by price (advanced control based on spot price for electricity)": 0.0005876251029898661,
+                "Yes, automated by time (set schedule in thermostat)": 0.20836018412513233,
+                "Yes, manually (turn on and off panel heaters, regulate temperature on thermostats, etc.)": 0.7135362791858945
+              }
+            }
+          }
+        },
+        {
+          "class": 4,
+          "share": 0.10154541631622431,
+          "hard_n": 83,
+          "responses": {
+            "Aq5N1": {
+              "Don't know": 0.03587274649923183,
+              "Likely": 0.4786019972693755,
+              "Not likely": 0.37337048314579724,
+              "Not relevant": 0.02601334000387009,
+              "Very likely": 0.08614142671769871,
+              "Very unlikely": 6.364026577521197e-09
+            },
+            "Aq5N2": {
+              "Don't know": 0.023946318346744416,
+              "Likely": 0.509306162735693,
+              "Not likely": 0.29459308668470796,
+              "Not relevant": 8.503353719847736e-13,
+              "Very likely": 0.1475372077717823,
+              "Very unlikely": 0.024617224460221892
+            },
+            "Aq5N3": {
+              "Don't know": 0.022254118661034095,
+              "Likely": 0.4666027979983372,
+              "Not likely": 0.17956458446867857,
+              "Not relevant": 0.03797594482761148,
+              "Very likely": 0.22101264609695326,
+              "Very unlikely": 0.07258990794738542
+            },
+            "Aq3_1": {
+              "0": 0.610488751939432,
+              "1": 0.3895112480605679
+            },
+            "Aq3_2": {
+              "0": 0.7300021372553344,
+              "1": 0.2699978627446656
+            },
+            "Aq3_4": {
+              "0": 0.8840934804271802,
+              "1": 0.11590651957281971
+            },
+            "Aq3_7": {
+              "0": 9.009558176199817e-07,
+              "1": 0.9999990990441824
+            },
+            "Aq8": {
+              "Below NOK 5 that day": 0.07384609398304509,
+              "Can not change electricity consumption": 0.08173990681745193,
+              "Do not want to change my electricity consumption no matter how much I can save": 0.011663958445605145,
+              "Mer enn NOK 500 that day": 1.1528607963370642e-12,
+              "NOK 101 - 200 that day": 0.08366763380487084,
+              "NOK 201 - 500 that day": 0.012309726112204376,
+              "NOK 21 - 50 that day": 0.3336924358934575,
+              "NOK 5 - 20 that day": 0.34555552609163803,
+              "NOK 51 - 100 that day": 0.05752471885057423
+            }
+          },
+          "background_not_used_in_fit": {
+            "daytime_home": {
+              "known_soft_n": 81.23633305297945,
+              "distribution": {
+                "No": 0.45217616837012864,
+                "Yes": 0.5478238316298712
+              }
+            },
+            "EV_ownership": {
+              "known_soft_n": 72.43817380829753,
+              "distribution": {
+                "No": 0.7824200604982668,
+                "Yes": 0.21757993950173285
+              }
+            },
+            "under6_present": {
+              "known_soft_n": 81.23633305297945,
+              "distribution": {
+                "0": 0.9023092368335345,
+                "1": 0.09769076316646533
+              }
+            },
+            "heating_control": {
+              "known_soft_n": 81.23633305297945,
+              "distribution": {
+                "No": 0.15273982233216968,
+                "Yes, automated by price (advanced control based on spot price for electricity)": 5.3589151632305666e-09,
+                "Yes, automated by time (set schedule in thermostat)": 0.17613950735852288,
+                "Yes, manually (turn on and off panel heaters, regulate temperature on thermostats, etc.)": 0.6711206649503922
+              }
+            }
+          }
+        },
+        {
+          "class": 5,
+          "share": 0.4694249105244303,
+          "hard_n": 399,
+          "responses": {
+            "Aq5N1": {
+              "Don't know": 0.02646476627237949,
+              "Likely": 0.6118015339238732,
+              "Not likely": 0.2913578802327323,
+              "Not relevant": 0.006054993364229559,
+              "Very likely": 0.012783902185282555,
+              "Very unlikely": 0.05153692402150312
+            },
+            "Aq5N2": {
+              "Don't know": 0.0342695278894117,
+              "Likely": 0.6047370182566202,
+              "Not likely": 0.22504802996661538,
+              "Not relevant": 0.009968573492741288,
+              "Very likely": 0.08657908759904535,
+              "Very unlikely": 0.03939776279556602
+            },
+            "Aq5N3": {
+              "Don't know": 0.07465403129484906,
+              "Likely": 0.6255068634438704,
+              "Not likely": 0.168909296053126,
+              "Not relevant": 0.006000616363319927,
+              "Very likely": 0.0784573787945384,
+              "Very unlikely": 0.046471814050296205
+            },
+            "Aq3_1": {
+              "0": 0.38151067163756114,
+              "1": 0.6184893283624391
+            },
+            "Aq3_2": {
+              "0": 0.5170980204673259,
+              "1": 0.48290197953267405
+            },
+            "Aq3_4": {
+              "0": 0.6569615002953623,
+              "1": 0.3430384997046379
+            },
+            "Aq3_7": {
+              "0": 0.9999992560283139,
+              "1": 7.439716867090446e-07
+            },
+            "Aq8": {
+              "Below NOK 5 that day": 0.06529064384456652,
+              "Can not change electricity consumption": 0.016326521818889498,
+              "Do not want to change my electricity consumption no matter how much I can save": 0.022493772200856056,
+              "Mer enn NOK 500 that day": 7.94831377077643e-07,
+              "NOK 101 - 200 that day": 0.060817196376187266,
+              "NOK 201 - 500 that day": 0.008986686354550414,
+              "NOK 21 - 50 that day": 0.3030463643429982,
+              "NOK 5 - 20 that day": 0.3538470312236466,
+              "NOK 51 - 100 that day": 0.16919098900692853
+            }
+          },
+          "background_not_used_in_fit": {
+            "daytime_home": {
+              "known_soft_n": 375.53992841954425,
+              "distribution": {
+                "No": 0.5059426588938023,
+                "Yes": 0.4940573411061977
+              }
+            },
+            "EV_ownership": {
+              "known_soft_n": 329.32774257048874,
+              "distribution": {
+                "No": 0.6342479513308331,
+                "Yes": 0.3657520486691668
+              }
+            },
+            "under6_present": {
+              "known_soft_n": 375.53992841954425,
+              "distribution": {
+                "0": 0.9053652246590042,
+                "1": 0.09463477534099614
+              }
+            },
+            "heating_control": {
+              "known_soft_n": 375.53992841954425,
+              "distribution": {
+                "No": 0.16960042691366412,
+                "Yes, automated by price (advanced control based on spot price for electricity)": 0.004967262463652826,
+                "Yes, automated by time (set schedule in thermostat)": 0.1666882136276261,
+                "Yes, manually (turn on and off panel heaters, regulate temperature on thermostats, etc.)": 0.6587440969950571
+              }
+            }
+          }
+        },
+        {
+          "class": 6,
+          "share": 0.04951085963201015,
+          "hard_n": 39,
+          "responses": {
+            "Aq5N1": {
+              "Don't know": 0.325441230338272,
+              "Likely": 8.515377733159574e-07,
+              "Not likely": 0.27743821768962373,
+              "Not relevant": 0.35085262421133245,
+              "Very likely": 0.046266490795945005,
+              "Very unlikely": 5.854270534174289e-07
+            },
+            "Aq5N2": {
+              "Don't know": 0.23360065091870733,
+              "Likely": 0.16977242831434233,
+              "Not likely": 0.05773277408161161,
+              "Not relevant": 0.538893559565464,
+              "Very likely": 3.1552292259179145e-07,
+              "Very unlikely": 2.715969519726619e-07
+            },
+            "Aq5N3": {
+              "Don't know": 0.41025440155080306,
+              "Likely": 0.06968248787250701,
+              "Not likely": 0.0474524939057009,
+              "Not relevant": 0.4206500055694828,
+              "Very likely": 0.05196045211347193,
+              "Very unlikely": 1.5898803405014338e-07
+            },
+            "Aq3_1": {
+              "0": 0.8861495370658684,
+              "1": 0.11385046293413152
+            },
+            "Aq3_2": {
+              "0": 0.7024237812460973,
+              "1": 0.2975762187539025
+            },
+            "Aq3_4": {
+              "0": 0.8874330669845518,
+              "1": 0.11256693301544776
+            },
+            "Aq3_7": {
+              "0": 0.9754559196476261,
+              "1": 0.024544080352373477
+            },
+            "Aq8": {
+              "Below NOK 5 that day": 1.3454083880350592e-07,
+              "Can not change electricity consumption": 0.5246233810971921,
+              "Do not want to change my electricity consumption no matter how much I can save": 0.1250995491188624,
+              "Mer enn NOK 500 that day": 4.773442140980765e-08,
+              "NOK 101 - 200 that day": 8.322867781853453e-08,
+              "NOK 201 - 500 that day": 5.217310338733062e-09,
+              "NOK 21 - 50 that day": 0.12809822784988,
+              "NOK 5 - 20 that day": 0.16501052943709407,
+              "NOK 51 - 100 that day": 0.05716804177572286
+            }
+          },
+          "background_not_used_in_fit": {
+            "daytime_home": {
+              "known_soft_n": 39.60868770560812,
+              "distribution": {
+                "No": 0.24540494870612606,
+                "Yes": 0.7545950512938736
+              }
+            },
+            "EV_ownership": {
+              "known_soft_n": 33.89581260622677,
+              "distribution": {
+                "No": 0.8585947097139284,
+                "Yes": 0.14140529028607174
+              }
+            },
+            "under6_present": {
+              "known_soft_n": 39.60868770560812,
+              "distribution": {
+                "0": 0.970353115746635,
+                "1": 0.029646884253364834
+              }
+            },
+            "heating_control": {
+              "known_soft_n": 39.60868770560812,
+              "distribution": {
+                "No": 0.19747067514086272,
+                "Yes, automated by price (advanced control based on spot price for electricity)": 6.56730555575376e-05,
+                "Yes, automated by time (set schedule in thermostat)": 0.11918342235243495,
+                "Yes, manually (turn on and off panel heaters, regulate temperature on thermostats, etc.)": 0.6832802294511446
+              }
+            }
+          }
+        }
+      ],
+      "parameters": {
+        "pi": [
+          0.10712824006541322,
+          0.21816157287180918,
+          0.05424004315479243,
+          0.10154476303811352,
+          0.4694146659513822,
+          0.049510714918489365
+        ],
+        "theta": [
+          [
+            9.999993197062723e-07,
+            0.42452538014235913,
+            0.2397829325525957,
+            9.999993197062723e-07,
+            0.2726686301805628,
+            0.06302105712584295,
+            0.02036270978580763,
+            0.20541608352456364,
+            0.12226632255774265,
+            9.999993377760725e-07,
+            0.6519528841332106,
+            9.999993377760725e-07,
+            0.032579146294044896,
+            0.2618619383864916,
+            0.21877552795128374,
+            9.999996488226087e-07,
+            0.391156089004824,
+            0.09562629836370694,
+            0.5867076280082174,
+            0.41329237199178254,
+            0.6730373222230845,
+            0.3269626777769155,
+            0.509806473070013,
+            0.4901935269299871,
+            0.9999990000005003,
+            9.99999499635575e-07,
+            0.1067468386935201,
+            9.999992213815134e-07,
+            0.08017254874689335,
+            0.02153193374165757,
+            0.04552632792747107,
+            0.0729450357898611,
+            0.2663752687743808,
+            0.2671207418810475,
+            0.13958030444594707
+          ],
+          [
+            0.007203768489155461,
+            0.012940126461328966,
+            0.7678905924732633,
+            0.024237632858547947,
+            9.999995920528508e-07,
+            0.18772687971811225,
+            0.02399338704041992,
+            0.46698167448840394,
+            0.42638926848517006,
+            0.022412194317220982,
+            0.03223916463902979,
+            0.027984311029755248,
+            0.055135702130365664,
+            0.309368443697903,
+            0.6156796530908692,
+            9.999989871067302e-07,
+            9.999989871067302e-07,
+            0.019814201082887773,
+            0.4503515936245191,
+            0.549648406375481,
+            0.6953048516437104,
+            0.3046951483562897,
+            0.44877098078150196,
+            0.551229019218498,
+            0.9668149188593482,
+            0.03318508114065178,
+            0.007642517324395874,
+            0.11897401794366011,
+            0.011958154875570044,
+            0.01678614961991165,
+            0.14016589921567113,
+            0.025238433853986907,
+            0.23025115404452495,
+            0.18688977295391734,
+            0.26209390016836204
+          ],
+          [
+            9.999981589764967e-07,
+            0.06279515929270248,
+            0.33876982689110996,
+            0.1494713606099695,
+            9.999981589764967e-07,
+            0.44896165320990006,
+            9.99998479095393e-07,
+            0.17737860100700287,
+            0.3312690891576816,
+            9.99998479095393e-07,
+            9.99998479095393e-07,
+            0.49134930983987823,
+            0.1265979593431557,
+            9.999992801431667e-07,
+            0.2742583945053283,
+            9.999992801431667e-07,
+            9.999992801431667e-07,
+            0.5991406461536757,
+            0.8102165595615721,
+            0.18978344043842785,
+            0.9139459171821903,
+            0.08605408281780969,
+            0.6061889927891089,
+            0.39381100721089113,
+            0.9999990000006288,
+            9.999993713319538e-07,
+            9.99998338715574e-07,
+            0.499752360690145,
+            0.2924967028481331,
+            0.05126931651309761,
+            9.99998338715574e-07,
+            0.022327106340099077,
+            9.99998338715574e-07,
+            9.99998338715574e-07,
+            0.13415051361517044
+          ],
+          [
+            0.03587289218052155,
+            0.4786022196899207,
+            0.3733685061913036,
+            0.026013479185369684,
+            0.0861419027538658,
+            9.999990186747335e-07,
+            0.023946422135072285,
+            0.5093055056825833,
+            0.2945917354540508,
+            9.99999012311667e-07,
+            0.14753797204818053,
+            0.02461736468110075,
+            0.022253821918921887,
+            0.4666041352364713,
+            0.17956183847137996,
+            0.03797618184382613,
+            0.22101406696996453,
+            0.07258995555943618,
+            0.610487950113244,
+            0.3895120498867561,
+            0.7300030214391434,
+            0.2699969785608566,
+            0.8840953369659639,
+            0.11590466303403608,
+            9.999999132633984e-07,
+            0.9999990000000868,
+            0.07384648925210444,
+            0.08173825876638482,
+            0.011664027540604492,
+            9.99999012311969e-07,
+            0.08366759834503475,
+            0.012309804094071121,
+            0.3336928622157634,
+            0.34555614722275013,
+            0.05752381256427456
+          ],
+          [
+            0.02646438742554319,
+            0.6118100490228655,
+            0.29134897448481745,
+            0.006055057814386085,
+            0.01278484178392267,
+            0.051536689468464944,
+            0.034269762315121265,
+            0.6047377417957176,
+            0.22504482165766362,
+            0.009968535891341418,
+            0.08658077464256984,
+            0.039398363697586265,
+            0.07465240009128264,
+            0.6255099791289284,
+            0.16890482449186545,
+            0.006000791748455796,
+            0.0784604226346751,
+            0.04647158190479259,
+            0.38150854358067426,
+            0.6184914564193257,
+            0.5170948873694237,
+            0.4829051126305764,
+            0.6569635360693481,
+            0.3430364639306519,
+            0.9999990000002533,
+            9.999997466328648e-07,
+            0.06529048713314797,
+            0.01632504252959675,
+            0.022494331562930486,
+            9.99999797381484e-07,
+            0.06081614521687841,
+            0.00898660700947967,
+            0.30304675796808067,
+            0.35384985036450445,
+            0.16918977821558417
+          ],
+          [
+            0.3254419218555895,
+            9.999994874738217e-07,
+            0.2774368216616565,
+            0.3508529689237635,
+            0.04626628756001566,
+            9.999994874738217e-07,
+            0.23360079441688217,
+            0.16977102312795855,
+            0.05773215486709825,
+            0.5388940275907861,
+            9.999986376207474e-07,
+            9.999986376207474e-07,
+            0.41025381665369043,
+            0.06968158591959392,
+            0.047452501412526014,
+            0.42065049099891777,
+            0.051960605016087576,
+            9.999991842354438e-07,
+            0.8861493859866775,
+            0.11385061401332251,
+            0.7024241005548347,
+            0.29757589944516527,
+            0.8874332935475173,
+            0.1125667064524827,
+            0.9754557995643124,
+            0.024544200435687575,
+            9.999963717137684e-07,
+            0.5246211014367494,
+            0.1250994821274534,
+            9.999963717137684e-07,
+            9.999963717137684e-07,
+            9.999963717137684e-07,
+            0.12809775400088025,
+            0.1650102842293786,
+            0.05716737822005141
+          ]
+        ],
+        "categories": [
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
+        ]
+      },
+      "bootstrap": [
+        {
+          "iteration": 0,
+          "ari": 0.4735705728806574,
+          "share": [
+            0.08051662611866377,
+            0.23613071942218236,
+            0.05555252407349017,
+            0.17033444275594917,
+            0.4139367735007977,
+            0.04352891412891685
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 1,
+          "ari": 0.31355724834445026,
+          "share": [
+            0.09877631866124346,
+            0.11764517171638218,
+            0.13410120666441838,
+            0.06653979998977683,
+            0.5012958219996579,
+            0.08164168096852116
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 2,
+          "ari": 0.4266750205580679,
+          "share": [
+            0.024527415451095068,
+            0.31457050974226125,
+            0.06161481053997328,
+            0.09649125986575818,
+            0.4205518980817194,
+            0.08224410631919288
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 3,
+          "ari": 0.33034774043344606,
+          "share": [
+            0.03779715835565891,
+            0.24607906832175985,
+            0.1540314295929186,
+            0.08980730413696855,
+            0.37308107944825847,
+            0.09920396014443562
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 4,
+          "ari": 0.6703009942808249,
+          "share": [
+            0.061569060632406296,
+            0.23286361196205696,
+            0.08060157584767078,
+            0.09864647432726822,
+            0.46630225790425917,
+            0.060017019326338586
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 5,
+          "ari": 0.3177357436822085,
+          "share": [
+            0.24327146190511073,
+            0.10975912947178727,
+            0.07071318276581737,
+            0.10415482561983225,
+            0.4435664563588886,
+            0.028534943878563784
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 6,
+          "ari": 0.5509649199964028,
+          "share": [
+            0.16007857142694243,
+            0.22486749314070423,
+            0.03042451255731888,
+            0.09457617125220132,
+            0.4127409835567894,
+            0.07731226806604384
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 7,
+          "ari": 0.3354819221792888,
+          "share": [
+            0.08762840637022523,
+            0.4584297825341028,
+            0.055632926840978224,
+            0.0999722940244943,
+            0.2438583101637142,
+            0.0544782800664853
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 8,
+          "ari": 0.21740006723855865,
+          "share": [
+            0.17234698897487946,
+            0.2114290497384584,
+            0.10109566238083,
+            0.08496814856257125,
+            0.3812534401659758,
+            0.04890671017728499
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 9,
+          "ari": 0.19703447832556653,
+          "share": [
+            0.21174502838649364,
+            0.25247849934388567,
+            0.1271316997154029,
+            0.022442361552676912,
+            0.3468912400921606,
+            0.0393111709093803
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 10,
+          "ari": 0.35675512098841283,
+          "share": [
+            0.05766147274447676,
+            0.4455160641595343,
+            0.1074026260402203,
+            0.11298655328255393,
+            0.21765741414862405,
+            0.058775869624590686
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 11,
+          "ari": 0.3479330895111029,
+          "share": [
+            0.1592495046881102,
+            0.18046484668534313,
+            0.04632817762300431,
+            0.1264096533844356,
+            0.41991250330808233,
+            0.06763531431102449
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 12,
+          "ari": 0.3562838846003461,
+          "share": [
+            0.06811330412010937,
+            0.12245933072897429,
+            0.1378639625825812,
+            0.118451414776071,
+            0.5036928975995508,
+            0.04941909019271334
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 13,
+          "ari": 0.1389143908737575,
+          "share": [
+            0.2496668606152181,
+            0.14878910595807437,
+            0.053996548258759665,
+            0.16032326730253563,
+            0.35035360222389295,
+            0.0368706156415193
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 14,
+          "ari": 0.2832107920468766,
+          "share": [
+            0.18116935351709318,
+            0.2375063022219203,
+            0.07369021557235113,
+            0.07439113860430506,
+            0.4016138792483794,
+            0.03162911083595088
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 15,
+          "ari": 0.3596977577495595,
+          "share": [
+            0.13849447680277271,
+            0.18522670656532492,
+            0.1530293850099428,
+            0.10601993236236767,
+            0.3739032355708746,
+            0.04332626368871729
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 16,
+          "ari": 0.45245965841903096,
+          "share": [
+            0.16590129078486698,
+            0.24322384075988532,
+            0.04806561606436929,
+            0.05133154140782919,
+            0.4122946455911915,
+            0.07918306539185768
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 17,
+          "ari": 0.4120142960868003,
+          "share": [
+            0.21243228003299483,
+            0.18620854628976388,
+            0.04261093250483563,
+            0.139388922521454,
+            0.357207236703661,
+            0.06215208194729074
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 18,
+          "ari": 0.19002104415525337,
+          "share": [
+            0.19586170703841066,
+            0.23515012873443264,
+            0.05864644763998938,
+            0.2992739131436015,
+            0.16173548630373574,
+            0.04933231713983007
+          ],
+          "converged": true
+        },
+        {
+          "iteration": 19,
+          "ari": 0.3149245851603499,
+          "share": [
+            0.24785779166643188,
+            0.10185627506448607,
+            0.08412604624579556,
+            0.09793467717354307,
+            0.4193096469013416,
+            0.04891556294840174
+          ],
+          "converged": true
+        }
+      ],
+      "bootstrap_summary": {
+        "median_ari": 0.3417075058451958,
+        "min_ari": 0.1389143908737575,
+        "share_interval_2p5_97p5": [
+          [
+            0.03083054333076289,
+            0.24880755286454465
+          ],
+          [
+            0.10561013090795414,
+            0.4522957663061828
+          ],
+          [
+            0.03621306203238934,
+            0.1535554584160051
+          ],
+          [
+            0.03616472198387424,
+            0.23802766470946646
+          ],
+          [
+            0.18829840203005768,
+            0.5025542866896017
+          ],
+          [
+            0.030004673183322655,
+            0.09114802957744529
+          ]
+        ]
+      }
+    }
+  },
+  "production_changes": false,
+  "selected_k": 2,
+  "independent_one_class_likelihood_error": 0.0,
+  "held_out": [
+    {
+      "split": 0,
+      "train_n": 640,
+      "test_n": 160,
+      "mean_test_loglik": {
+        "2": -8.303374883713728,
+        "6": -8.40596243706772
+      }
+    },
+    {
+      "split": 1,
+      "train_n": 640,
+      "test_n": 160,
+      "mean_test_loglik": {
+        "2": -8.134399616497884,
+        "6": -8.24677651708468
+      }
+    },
+    {
+      "split": 2,
+      "train_n": 640,
+      "test_n": 160,
+      "mean_test_loglik": {
+        "2": -8.080845467773301,
+        "6": -8.198931590162905
+      }
+    }
+  ]
+}

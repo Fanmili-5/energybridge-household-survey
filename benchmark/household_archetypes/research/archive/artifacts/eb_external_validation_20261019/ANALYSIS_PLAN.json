@@ -1,0 +1,30 @@
+{
+  "schema": "eb.external_preference_validation.v1",
+  "frozen_before_model_fitting": true,
+  "date": "2026-10-19",
+  "scope": "Research only. Do not alter household production data, schedules, simulations, fees, questionnaires or deployment.",
+  "target": "Compare independent coarse preference clusters with expert-designed EB A-F roles; matching six is not an inclusion or success criterion.",
+  "sources": {
+    "iflex2020": {
+      "url": "https://zenodo.org/records/8248802",
+      "sample": "All 800 survey2 respondents; survey1 background linked only by verified unique household ID.",
+      "features": ["Aq5N1", "Aq5N2", "Aq5N3", "Aq3_1", "Aq3_2", "Aq3_4", "Aq3_7", "Aq8"],
+      "semantics": ["willingness to change daily routines", "willingness to invest in automation", "willingness to act occasionally after advance notification", "bill motivation", "ease motivation", "no-comfort-loss motivation", "grid-development motivation", "required saving for a four-hour demand reduction"],
+      "cautions": ["Automation investment is not third-party authorization", "Daily routine-change willingness is not actual schedule regularity", "Aq2 neutral responses have ambiguous English blank encoding and are excluded from primary clustering"],
+      "sensitivity": ["exclude money threshold", "exclude don't-know/not-relevant intent answers", "compare with 2021 survey3 using common motivation fields only"]
+    },
+    "dutch2025": {
+      "url": "https://doi.org/10.4121/4e223727-d29b-4ffb-80fa-9087f0d29766.v1",
+      "sample": "One valid appliance branch per respondent; require all four core responses. EV/laundry/dishwasher branches are aligned within each real respondent, never joined across independent people.",
+      "features": ["fixed_routine", "little_regularity", "depends_on_circumstances", "off_peak_hassle"],
+      "branch_columns": {"EV": ["Q29_4", "Q29_5", "Q29_10", "Q22_3"], "laundry": ["Q48_4", "Q48_5", "Q48_10", "Q22_2"], "dishwasher": ["Q63_4", "Q63_5", "Q63_10", "Q22_1"]},
+      "cautions": ["Automatic pilot means psychological habit, not external device control", "Branch and EV ownership are not clustering inputs", "No joint cost-versus-thermal-comfort or authorization measurement"],
+      "sensitivity": ["dishwasher-only replication", "bootstrap within appliance branches"]
+    }
+  },
+  "model": "Categorical latent class model; preserve original response categories, including explicit don't-know. Complete-case core features only, with exclusions reported.",
+  "comparison": {"k": [1,2,3,4,5,6,7,8], "starts": 24, "seed": 20261019, "selection": "minimum BIC; report six regardless of selection", "bootstrap": "20 refits each for selected model and six, 10 initializations; align posteriors; report ARI and share intervals", "held_out": "three prespecified 80/20 household splits; compare selected k with six using mean test log likelihood"},
+  "mapping": "Use EB native textual role definitions after independent fit. Report partial and absent matches; do not invent caregiver or third-party consent labels from age/equipment. Do not force a one-to-one mapping or sum unmatched clusters into fabricated six proportions.",
+  "proportion_reference": "EB 584 assigned role conditions are an experimental-composition reference, not own-preference population ground truth. Sample shares without survey weights cannot establish Chinese household population proportions.",
+  "outputs": "Aggregate profiles, selection, stability, source hashes, mapping limitations; no raw participant answers or individual cluster assignments in repository."
+}

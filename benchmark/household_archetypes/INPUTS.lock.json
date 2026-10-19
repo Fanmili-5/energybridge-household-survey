@@ -1,0 +1,109 @@
+{
+  "schema": "eb.household_archetypes.inputs.v1",
+  "EB_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "EB_files": [
+    {
+      "path": "human_roleplay_data/data/participants.csv",
+      "sha256": "161bdce743fc12b60017041fda4c58029938a4f3bb14b4c82db04e018bdbb08b"
+    },
+    {
+      "path": "human_roleplay_data/CODEBOOK.md",
+      "sha256": "613ca69e8a50bb1b8a3d2b6ba0b3f735b64d51d75d7e8d24d86ddedb7c799217"
+    },
+    {
+      "path": "human_survey_materials/role_cards/fixed_role_cards_readable.md",
+      "sha256": "15a42b5872caa001ae7f8c30d8bfcac78d2ea29e30451a7ffb2dcb682f7262ca"
+    }
+  ],
+  "files": [
+    {
+      "filename": "survey1_questions.csv",
+      "url": "https://zenodo.org/api/records/8248802/files/survey1_questions.csv/content",
+      "sha256": "7c353bdbdcc3fbc570e492476e1a80c36a56c0c43f907cf6153cf3f1ac426f70",
+      "bytes": 41816,
+      "group": "external"
+    },
+    {
+      "filename": "survey1_answers.csv",
+      "url": "https://zenodo.org/api/records/8248802/files/survey1_answers.csv/content",
+      "sha256": "39181e74b65cbbaf77a565f23c7d1bd5b3674f7b7dea630fc2a5e1a3768cf1e8",
+      "bytes": 1290927,
+      "group": "external"
+    },
+    {
+      "filename": "survey2_questions.csv",
+      "url": "https://zenodo.org/api/records/8248802/files/survey2_questions.csv/content",
+      "sha256": "856f26bfd988aea94000c96e79d9f3397fc2dd0e3a237880557c367fb8cf6b7e",
+      "bytes": 101171,
+      "group": "external"
+    },
+    {
+      "filename": "survey2_answers.csv",
+      "url": "https://zenodo.org/api/records/8248802/files/survey2_answers.csv/content",
+      "sha256": "fd18796393528fdcf7abedddfa95cc0e854255355ef3fff184cb3f62d5032efc",
+      "bytes": 699366,
+      "group": "external"
+    },
+    {
+      "filename": "dutch_dictionary.docx",
+      "url": "https://data.4tu.nl/file/4e223727-d29b-4ffb-80fa-9087f0d29766/31536f68-ae54-4224-9a0c-fa33657d8849",
+      "sha256": "b78fa5e8e2c0ca59ba10f67a75ad17697c47a89c5e9b108e681fdfc27e0a2c1b",
+      "bytes": 37435,
+      "group": "external"
+    },
+    {
+      "filename": "dutch.sav",
+      "url": "https://data.4tu.nl/file/4e223727-d29b-4ffb-80fa-9087f0d29766/800efa8f-c9d8-4196-8f44-3b6191258446",
+      "sha256": "f25f84e03013832526589bb430d6b8ce168ac7fb6ed2db413c768c9ceee93bbe",
+      "bytes": 2480468,
+      "group": "external"
+    },
+    {
+      "filename": "eca2026.xlsx",
+      "url": "https://energyconsumersaustralia.com.au/sites/default/files/2026-07/web-data-consumer-energy-report-card-jun-2026-raw-data-labelled.xlsx",
+      "sha256": "ba82a75740c79cb1c456ea1ed5d3eee4e220449f39b5d692400a1e3fd94a247d",
+      "bytes": 6596128,
+      "group": "external"
+    },
+    {
+      "filename": "ecape_combined.csv",
+      "source_filename": "AAUEforbrug2020_samlet.csv",
+      "url": "https://zenodo.org/api/records/12819318/files/AAUEforbrug2020_samlet.csv/content",
+      "sha256": "7047af8a865eae3fd148bea6346643517eab960c58a83a3f73fa49c8a8811326",
+      "bytes": 4262908,
+      "group": "external"
+    },
+    {
+      "filename": "ecape_answers.csv",
+      "source_filename": "AAUEforbrug2020_svar.csv",
+      "url": "https://zenodo.org/api/records/12819318/files/AAUEforbrug2020_svar.csv/content",
+      "sha256": "3307252247e91c180630fa8594cf11a6c02f25eddcc5158d488b51c9560369ed",
+      "bytes": 2750775,
+      "group": "external"
+    },
+    {
+      "filename": "ecape_questionnaire.pdf",
+      "source_filename": "Survey_questionnaire_on_households_use_of_smart_home_technology_and_their_time_of_use_of_electric_appliances.pdf",
+      "url": "https://zenodo.org/api/records/12819318/files/Survey_questionnaire_on_households_use_of_smart_home_technology_and_their_time_of_use_of_electric_appliances.pdf/content",
+      "sha256": "53279a9cd70ee50fab279e0573fe268c1ef49c933514417e9fca564f73e7e20b",
+      "bytes": 968444,
+      "group": "external"
+    },
+    {
+      "filename": "ecape_extra.pdf",
+      "source_filename": "Extra%20information%20-%20eCAPE%20survey.pdf",
+      "url": "https://zenodo.org/api/records/12819318/files/Extra%20information%20-%20eCAPE%20survey.pdf/content",
+      "sha256": "b1216d78558f804db5d15cad8f31e1f81f70f68c7bfc43fecdb0bfeea773fe5e",
+      "bytes": 1000209,
+      "group": "external"
+    },
+    {
+      "filename": "ecape_method.pdf",
+      "source_filename": "Metodedokument_AAU_Energi_2020.pdf",
+      "url": "https://zenodo.org/api/records/12819318/files/Metodedokument_AAU_Energi_2020.pdf/content",
+      "sha256": "2ab0f5a33cbfd8f67c77e51e6a70e1e64fc43de64a32244c58b478a12c29974d",
+      "bytes": 843063,
+      "group": "external"
+    }
+  ]
+}

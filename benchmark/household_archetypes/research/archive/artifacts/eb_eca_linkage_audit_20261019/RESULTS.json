@@ -1,0 +1,524 @@
+{
+  "n": 4507,
+  "raw_sha256": "ba82a75740c79cb1c456ea1ed5d3eee4e220449f39b5d692400a1e3fd94a247d",
+  "scope": "construct linkage only; no role labels or quotas",
+  "newly_examined_fields": {
+    "Q16": "Q16. And which of the following best characterises the type of relationship that you would like to have with Australia’s electricity system?",
+    "Q59": [
+      "Q59. Which of the following, if any, are reasons why you haven’t joined a virtual power plant? - You don’t trust energy companies or providers to manage your battery",
+      "Q59. Which of the following, if any, are reasons why you haven’t joined a virtual power plant? - You are concerned about data privacy or sharing your information",
+      "Q59. Which of the following, if any, are reasons why you haven’t joined a virtual power plant? - You are worried about possible impacts on your equipment or battery life",
+      "Q59. Which of the following, if any, are reasons why you haven’t joined a virtual power plant? - You are concerned about losing control over your battery or how your energy is used",
+      "Q59. Which of the following, if any, are reasons why you haven’t joined a virtual power plant? - You don’t think the financial benefits would be worth it",
+      "Q59. Which of the following, if any, are reasons why you haven’t joined a virtual power plant? - You don’t know enough about how they work",
+      "Q59. Which of the following, if any, are reasons why you haven’t joined a virtual power plant? - You haven’t been offered the opportunity to join one",
+      "Q59. Which of the following, if any, are reasons why you haven’t joined a virtual power plant? - You didn’t know about virtual power plants before today",
+      "Q59. Which of the following, if any, are reasons why you haven’t joined a virtual power plant? - You don’t know what the benefits are of joining one",
+      "Q59. Which of the following, if any, are reasons why you haven’t joined a virtual power plant? - Another reason (please specify)",
+      "Q59. Which of the following, if any, are reasons why you haven’t joined a virtual power plant? - None of these"
+    ],
+    "Q79": [
+      "Q79a. Dishwasher : How often does your household deliberately shift the time of day that it uses appliances or other electrical equipment to reduce your electricity bill?",
+      "Q79a. Heater : How often does your household deliberately shift the time of day that it uses appliances or other electrical equipment to reduce your electricity bill?",
+      "Q79a. Hot water heater : How often does your household deliberately shift the time of day that it uses appliances or other electrical equipment to reduce your electricity bill?",
+      "Q79a. Dryer : How often does your household deliberately shift the time of day that it uses appliances or other electrical equipment to reduce your electricity bill?",
+      "Q79a. Washing machine : How often does your household deliberately shift the time of day that it uses appliances or other electrical equipment to reduce your electricity bill?",
+      "Q79a. Air conditioner : How often does your household deliberately shift the time of day that it uses appliances or other electrical equipment to reduce your electricity bill?"
+    ],
+    "Q213": "Q213. Which of the following best describes how you most regularly charge this plugin hybrid (PHEV) or electric vehicle?"
+  },
+  "routing": {
+    "Q59_battery_nonmember": 420,
+    "Q79_tou_demand_or_solar": 2501,
+    "Q213_actual_main_EV_home_chargers": 202
+  },
+  "direct_dimensions": {
+    "cost_concern": {
+      "n_true": 3495,
+      "n_false": 1012,
+      "n_unobserved": 0,
+      "n_observed": 4507,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 1.0,
+      "weighted_positive_fraction_observed_only": 0.78179883659604,
+      "weighted_positive_fraction_among_observed": 0.78179883659604
+    },
+    "employment_commute_any_mode": {
+      "n_true": 2995,
+      "n_false": 1512,
+      "n_unobserved": 0,
+      "n_observed": 4507,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 1.0,
+      "weighted_positive_fraction_observed_only": 0.6329780715813356,
+      "weighted_positive_fraction_among_observed": 0.6329780715813356
+    },
+    "active_energy_relationship": {
+      "n_true": 1945,
+      "n_false": 2562,
+      "n_unobserved": 0,
+      "n_observed": 4507,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 1.0,
+      "weighted_positive_fraction_observed_only": 0.408827296944812,
+      "weighted_positive_fraction_among_observed": 0.408827296944812
+    },
+    "VPP_interested_or_member": {
+      "n_true": 2862,
+      "n_false": 1645,
+      "n_unobserved": 0,
+      "n_observed": 4507,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 1.0,
+      "weighted_positive_fraction_observed_only": 0.6067036425679773,
+      "weighted_positive_fraction_among_observed": 0.6067036425679773
+    },
+    "home_automation_own_or_intent": {
+      "n_true": 1467,
+      "n_false": 3040,
+      "n_unobserved": 0,
+      "n_observed": 4507,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 1.0,
+      "weighted_positive_fraction_observed_only": 0.29931061811149196,
+      "weighted_positive_fraction_among_observed": 0.29931061811149196
+    },
+    "actual_cost_shift_any_appliance": {
+      "n_true": 1924,
+      "n_false": 536,
+      "n_unobserved": 2047,
+      "n_observed": 2460,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 0.5213396097631755,
+      "weighted_positive_fraction_observed_only": 0.40298104811093016,
+      "weighted_positive_fraction_among_observed": 0.7729722441269884
+    },
+    "battery_management_distrust": {
+      "n_true": 103,
+      "n_false": 317,
+      "n_unobserved": 4087,
+      "n_observed": 420,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 0.08473933056113882,
+      "weighted_positive_fraction_observed_only": 0.021889612711191272,
+      "weighted_positive_fraction_among_observed": 0.2583170360945686
+    },
+    "battery_control_loss_concern": {
+      "n_true": 131,
+      "n_false": 289,
+      "n_unobserved": 4087,
+      "n_observed": 420,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 0.08473933056113882,
+      "weighted_positive_fraction_observed_only": 0.02499069870014337,
+      "weighted_positive_fraction_among_observed": 0.2949126283469134
+    },
+    "either_battery_control_concern": {
+      "n_true": 166,
+      "n_false": 254,
+      "n_unobserved": 4087,
+      "n_observed": 420,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 0.08473933056113882,
+      "weighted_positive_fraction_observed_only": 0.03305264447829107,
+      "weighted_positive_fraction_among_observed": 0.39005080945788007
+    },
+    "main_EV_or_PHEV_driver": {
+      "n_true": 211,
+      "n_false": 4296,
+      "n_unobserved": 0,
+      "n_observed": 4507,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 1.0,
+      "weighted_positive_fraction_observed_only": 0.038743234113049474,
+      "weighted_positive_fraction_among_observed": 0.038743234113049474
+    },
+    "main_EV_and_work_drive": {
+      "n_true": 158,
+      "n_false": 4349,
+      "n_unobserved": 0,
+      "n_observed": 4507,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 1.0,
+      "weighted_positive_fraction_observed_only": 0.027748444737241425,
+      "weighted_positive_fraction_among_observed": 0.027748444737241425
+    },
+    "actual_cost_or_scheduled_home_charging": {
+      "n_true": 145,
+      "n_false": 57,
+      "n_unobserved": 4305,
+      "n_observed": 202,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 0.03677336586788285,
+      "weighted_positive_fraction_observed_only": 0.026758596093301175,
+      "weighted_positive_fraction_among_observed": 0.7276624116877921
+    }
+  },
+  "patterns_not_role_prevalences": {
+    "A_related_observed_combination": {
+      "n_true": 1028,
+      "n_false": 2437,
+      "n_unobserved": 1042,
+      "n_observed": 3465,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 0.7658098233791938,
+      "weighted_positive_fraction_observed_only": 0.20541851780511397,
+      "weighted_positive_fraction_among_observed": 0.2682369846062946
+    },
+    "B_related_observed_combination": {
+      "n_true": 309,
+      "n_false": 4198,
+      "n_unobserved": 0,
+      "n_observed": 4507,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 1.0,
+      "weighted_positive_fraction_observed_only": 0.0758296788886249,
+      "weighted_positive_fraction_among_observed": 0.0758296788886249
+    },
+    "C_control_caution_only_not_complete_role": {
+      "n_true": 166,
+      "n_false": 254,
+      "n_unobserved": 4087,
+      "n_observed": 420,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 0.08473933056113882,
+      "weighted_positive_fraction_observed_only": 0.03305264447829107,
+      "weighted_positive_fraction_among_observed": 0.39005080945788007
+    },
+    "D_related_observed_combination": {
+      "n_true": 704,
+      "n_false": 3803,
+      "n_unobserved": 0,
+      "n_observed": 4507,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 1.0,
+      "weighted_positive_fraction_observed_only": 0.13861903944769308,
+      "weighted_positive_fraction_among_observed": 0.13861903944769308
+    },
+    "E_related_observed_combination": {
+      "n_true": 373,
+      "n_false": 4134,
+      "n_unobserved": 0,
+      "n_observed": 4507,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 1.0,
+      "weighted_positive_fraction_observed_only": 0.09207741298470029,
+      "weighted_positive_fraction_among_observed": 0.09207741298470029
+    },
+    "F_related_observed_combination": {
+      "n_true": 106,
+      "n_false": 4394,
+      "n_unobserved": 7,
+      "n_observed": 4500,
+      "reference_weight_sum": 4507.0,
+      "known_weight_fraction": 0.9984406949247805,
+      "weighted_positive_fraction_observed_only": 0.019020157400762096,
+      "weighted_positive_fraction_among_observed": 0.019049861947178563
+    }
+  },
+  "conditional_tables": {
+    "under18": {
+      "False": {
+        "n": 2917,
+        "VPP_interest_weighted_fraction": 0.5621850705599796
+      },
+      "True": {
+        "n": 1590,
+        "VPP_interest_weighted_fraction": 0.6950381377186972
+      }
+    },
+    "health_energy_need": {
+      "False": {
+        "n": 4066,
+        "VPP_interest_weighted_fraction": 0.6061524309370644
+      },
+      "True": {
+        "n": 441,
+        "VPP_interest_weighted_fraction": 0.611838222813237
+      }
+    },
+    "home_all5": {
+      "False": {
+        "n": 1680,
+        "VPP_interest_weighted_fraction": 0.6317066352645411
+      },
+      "True": {
+        "n": 2827,
+        "VPP_interest_weighted_fraction": 0.5929549266102048
+      }
+    }
+  },
+  "pairwise_pattern_overlap_raw_n": {
+    "A_related_observed_combination & B_related_observed_combination": 15,
+    "A_related_observed_combination & C_control_caution_only_not_complete_role": 60,
+    "A_related_observed_combination & D_related_observed_combination": 279,
+    "A_related_observed_combination & E_related_observed_combination": 79,
+    "A_related_observed_combination & F_related_observed_combination": 48,
+    "B_related_observed_combination & C_control_caution_only_not_complete_role": 16,
+    "B_related_observed_combination & D_related_observed_combination": 0,
+    "B_related_observed_combination & E_related_observed_combination": 72,
+    "B_related_observed_combination & F_related_observed_combination": 0,
+    "C_control_caution_only_not_complete_role & D_related_observed_combination": 45,
+    "C_control_caution_only_not_complete_role & E_related_observed_combination": 21,
+    "C_control_caution_only_not_complete_role & F_related_observed_combination": 19,
+    "D_related_observed_combination & E_related_observed_combination": 0,
+    "D_related_observed_combination & F_related_observed_combination": 51,
+    "E_related_observed_combination & F_related_observed_combination": 4
+  },
+  "all_previous_ECA_clusters": [
+    {
+      "class": "H1",
+      "share": 0.2670479037930008,
+      "related_patterns": {
+        "A_related_observed_combination": {
+          "reference_weight_sum": 1203.5849023950545,
+          "known_weight_fraction": 0.6053305022555455,
+          "weighted_positive_fraction_observed_only": 0.2993621873798362,
+          "weighted_positive_fraction_among_observed": 0.49454337137212007
+        },
+        "B_related_observed_combination": {
+          "reference_weight_sum": 1203.5849023950545,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.0018133005857705073,
+          "weighted_positive_fraction_among_observed": 0.0018133005857705073
+        },
+        "C_control_caution_only_not_complete_role": {
+          "reference_weight_sum": 1203.5849023950545,
+          "known_weight_fraction": 0.05371026348553053,
+          "weighted_positive_fraction_observed_only": 0.019164610782770805,
+          "weighted_positive_fraction_among_observed": 0.35681468566866603
+        },
+        "D_related_observed_combination": {
+          "reference_weight_sum": 1203.5849023950545,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.10712331982431912,
+          "weighted_positive_fraction_among_observed": 0.10712331982431912
+        },
+        "E_related_observed_combination": {
+          "reference_weight_sum": 1203.5849023950545,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.049025945415043584,
+          "weighted_positive_fraction_among_observed": 0.049025945415043584
+        },
+        "F_related_observed_combination": {
+          "reference_weight_sum": 1203.5849023950545,
+          "known_weight_fraction": 0.9992785002227574,
+          "weighted_positive_fraction_observed_only": 0.009716904782956264,
+          "weighted_positive_fraction_among_observed": 0.00972392058949551
+        }
+      }
+    },
+    {
+      "class": "H2",
+      "share": 0.2078428713832192,
+      "related_patterns": {
+        "A_related_observed_combination": {
+          "reference_weight_sum": 936.7478213241689,
+          "known_weight_fraction": 0.8765883128556212,
+          "weighted_positive_fraction_observed_only": 0.0924723851133648,
+          "weighted_positive_fraction_among_observed": 0.10549123660127499
+        },
+        "B_related_observed_combination": {
+          "reference_weight_sum": 936.7478213241689,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.04823163031112283,
+          "weighted_positive_fraction_among_observed": 0.04823163031112283
+        },
+        "C_control_caution_only_not_complete_role": {
+          "reference_weight_sum": 936.7478213241689,
+          "known_weight_fraction": 0.060591470056114136,
+          "weighted_positive_fraction_observed_only": 0.025339591112017532,
+          "weighted_positive_fraction_among_observed": 0.4182039334670438
+        },
+        "D_related_observed_combination": {
+          "reference_weight_sum": 936.7478213241689,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.04894463245545904,
+          "weighted_positive_fraction_among_observed": 0.04894463245545904
+        },
+        "E_related_observed_combination": {
+          "reference_weight_sum": 936.7478213241689,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.11049440505919746,
+          "weighted_positive_fraction_among_observed": 0.11049440505919746
+        },
+        "F_related_observed_combination": {
+          "reference_weight_sum": 936.7478213241689,
+          "known_weight_fraction": 0.9999918847664888,
+          "weighted_positive_fraction_observed_only": 0.0010176382226482524,
+          "weighted_positive_fraction_among_observed": 0.0010176464810870782
+        }
+      }
+    },
+    {
+      "class": "H3",
+      "share": 0.17729122014531554,
+      "related_patterns": {
+        "A_related_observed_combination": {
+          "reference_weight_sum": 799.0515291949371,
+          "known_weight_fraction": 0.9332669136689927,
+          "weighted_positive_fraction_observed_only": 0.054729167575537814,
+          "weighted_positive_fraction_among_observed": 0.05864256706624117
+        },
+        "B_related_observed_combination": {
+          "reference_weight_sum": 799.0515291949371,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.28428613835218025,
+          "weighted_positive_fraction_among_observed": 0.28428613835218025
+        },
+        "C_control_caution_only_not_complete_role": {
+          "reference_weight_sum": 799.0515291949371,
+          "known_weight_fraction": 0.08883232479774242,
+          "weighted_positive_fraction_observed_only": 0.038492587016415176,
+          "weighted_positive_fraction_among_observed": 0.43331734370407277
+        },
+        "D_related_observed_combination": {
+          "reference_weight_sum": 799.0515291949371,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.05976814762663657,
+          "weighted_positive_fraction_among_observed": 0.05976814762663657
+        },
+        "E_related_observed_combination": {
+          "reference_weight_sum": 799.0515291949371,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.06563976947669543,
+          "weighted_positive_fraction_among_observed": 0.06563976947669543
+        },
+        "F_related_observed_combination": {
+          "reference_weight_sum": 799.0515291949371,
+          "known_weight_fraction": 0.9999896201316113,
+          "weighted_positive_fraction_observed_only": 0.0034148524473571478,
+          "weighted_positive_fraction_among_observed": 0.003414887893444044
+        }
+      }
+    },
+    {
+      "class": "H4",
+      "share": 0.12743004916522901,
+      "related_patterns": {
+        "A_related_observed_combination": {
+          "reference_weight_sum": 574.3272315876872,
+          "known_weight_fraction": 0.7530174478423008,
+          "weighted_positive_fraction_observed_only": 0.40124249105970833,
+          "weighted_positive_fraction_among_observed": 0.532846207228571
+        },
+        "B_related_observed_combination": {
+          "reference_weight_sum": 574.3272315876872,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.01133369888709906,
+          "weighted_positive_fraction_among_observed": 0.01133369888709906
+        },
+        "C_control_caution_only_not_complete_role": {
+          "reference_weight_sum": 574.3272315876872,
+          "known_weight_fraction": 0.18029428372733672,
+          "weighted_positive_fraction_observed_only": 0.07010309134494078,
+          "weighted_positive_fraction_among_observed": 0.38882592334962396
+        },
+        "D_related_observed_combination": {
+          "reference_weight_sum": 574.3272315876872,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.5378378661490713,
+          "weighted_positive_fraction_among_observed": 0.5378378661490713
+        },
+        "E_related_observed_combination": {
+          "reference_weight_sum": 574.3272315876872,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.048474145534853054,
+          "weighted_positive_fraction_among_observed": 0.048474145534853054
+        },
+        "F_related_observed_combination": {
+          "reference_weight_sum": 574.3272315876872,
+          "known_weight_fraction": 0.9940540590197546,
+          "weighted_positive_fraction_observed_only": 0.09912078724723403,
+          "weighted_positive_fraction_among_observed": 0.09971367889687802
+        }
+      }
+    },
+    {
+      "class": "H5",
+      "share": 0.12474511211606563,
+      "related_patterns": {
+        "A_related_observed_combination": {
+          "reference_weight_sum": 562.2262203071078,
+          "known_weight_fraction": 0.6759883957431734,
+          "weighted_positive_fraction_observed_only": 0.20187353196347044,
+          "weighted_positive_fraction_among_observed": 0.2986346115328402
+        },
+        "B_related_observed_combination": {
+          "reference_weight_sum": 562.2262203071078,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.06910272687180667,
+          "weighted_positive_fraction_among_observed": 0.06910272687180667
+        },
+        "C_control_caution_only_not_complete_role": {
+          "reference_weight_sum": 562.2262203071078,
+          "known_weight_fraction": 0.09033633005041511,
+          "weighted_positive_fraction_observed_only": 0.03536044504864728,
+          "weighted_positive_fraction_among_observed": 0.3914310557990704
+        },
+        "D_related_observed_combination": {
+          "reference_weight_sum": 562.2262203071078,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.08318360208964976,
+          "weighted_positive_fraction_among_observed": 0.08318360208964976
+        },
+        "E_related_observed_combination": {
+          "reference_weight_sum": 562.2262203071078,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.09234645389822152,
+          "weighted_positive_fraction_among_observed": 0.09234645389822152
+        },
+        "F_related_observed_combination": {
+          "reference_weight_sum": 562.2262203071078,
+          "known_weight_fraction": 0.9977970763252358,
+          "weighted_positive_fraction_observed_only": 0.015103593890367127,
+          "weighted_positive_fraction_among_observed": 0.015136939412562531
+        }
+      }
+    },
+    {
+      "class": "H6",
+      "share": 0.09564284339716989,
+      "related_patterns": {
+        "A_related_observed_combination": {
+          "reference_weight_sum": 431.06229519104465,
+          "known_weight_fraction": 0.7969401422528993,
+          "weighted_positive_fraction_observed_only": 0.21160662719749376,
+          "weighted_positive_fraction_among_observed": 0.2655238655682411
+        },
+        "B_related_observed_combination": {
+          "reference_weight_sum": 431.06229519104465,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.05076096134360536,
+          "weighted_positive_fraction_among_observed": 0.05076096134360536
+        },
+        "C_control_caution_only_not_complete_role": {
+          "reference_weight_sum": 431.06229519104465,
+          "known_weight_fraction": 0.08165269431943921,
+          "weighted_positive_fraction_observed_only": 0.026133070693934616,
+          "weighted_positive_fraction_among_observed": 0.3200515416147519
+        },
+        "D_related_observed_combination": {
+          "reference_weight_sum": 431.06229519104465,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.10799937363099021,
+          "weighted_positive_fraction_among_observed": 0.10799937363099021
+        },
+        "E_related_observed_combination": {
+          "reference_weight_sum": 431.06229519104465,
+          "known_weight_fraction": 1.0,
+          "weighted_positive_fraction_observed_only": 0.27901174148137325,
+          "weighted_positive_fraction_among_observed": 0.27901174148137325
+        },
+        "F_related_observed_combination": {
+          "reference_weight_sum": 431.06229519104465,
+          "known_weight_fraction": 0.9965433105586118,
+          "weighted_positive_fraction_observed_only": 0.011430858761947795,
+          "weighted_positive_fraction_among_observed": 0.011470508748425829
+        }
+      }
+    }
+  ],
+  "production_changes": false,
+  "EP_runs": 0
+}

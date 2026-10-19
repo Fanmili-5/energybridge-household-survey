@@ -1,0 +1,69 @@
+{
+  "dutch": {
+    "source": "https://doi.org/10.4121/4e223727-d29b-4ffb-80fa-9087f0d29766.v1",
+    "n": 1678,
+    "branches": {
+      "EV": {
+        "routine_field": "Q29_5",
+        "control_field": "Q34_7",
+        "routine_original_label": "Geef steeds aan in hoeverre de stelling op jou van toepassing is. - Er zit weinig regelmaat in het moment waarop ik de auto laad",
+        "control_original_label": "Geef aan in hoeverre je het eens bent met onderstaande stellingen. Is wat er in de stelling genoemd wordt voor jou een drempel om de auto te laden in de daluren?\n\n\tdaluren zijn vóór 16.00 uur en ná 21.00 uur. \n\n\n\nBlijf je ervan bewust van dat er geen goede of foute antwoorden zijn, het gaat om je eigen ervaring. - Drempel: dat het automatische regelsysteem mij als gebruiker weinig vrijheid laat",
+        "routine_valid_n": 141,
+        "routine_low_regularity4or5_n": 50,
+        "control_valid_n": 37,
+        "control_concern5to7_n": 22,
+        "both_observed_n": 29,
+        "both_positive_n": 10
+      },
+      "laundry": {
+        "routine_field": "Q48_5",
+        "control_field": "Q53_7",
+        "routine_original_label": "Geef steeds aan in hoeverre de stelling op jou van toepassing is. - Er zit weinig regelmaat in het moment waarop ik de was doe",
+        "control_original_label": "Geef aan in hoeverre je het eens bent met onderstaande stellingen. Is wat er in de stelling genoemd wordt voor jou een drempel om de was in de daluren te doen?\n\n\tdaluren zijn vóór 16.00 uur en ná 21.00 uur. \n\n\n\nBlijf je ervan bewust van dat er geen goede of foute antwoorden zijn, het gaat om je eigen ervaring. - Drempel: dat het automatische regelsysteem mij als gebruiker weinig vrijheid laat",
+        "routine_valid_n": 529,
+        "routine_low_regularity4or5_n": 155,
+        "control_valid_n": 13,
+        "control_concern5to7_n": 3,
+        "both_observed_n": 11,
+        "both_positive_n": 1
+      },
+      "dishwasher": {
+        "routine_field": "Q63_5",
+        "control_field": "Q68_7",
+        "routine_original_label": "Geef steeds aan in hoeverre de stelling op jou van toepassing is. - Er zit weinig regelmaat in het moment waarop ik de vaatwasser laat draaien",
+        "control_original_label": "Geef aan in hoeverre je het eens bent met onderstaande stellingen. Is wat er in de stelling genoemd wordt voor jou een drempel om de vaatwasser in de daluren te starten? \n\n\tdaluren zijn vóór 16.00 uur en ná 21.00 uur. \n\n\n\nBlijf je ervan bewust van dat er geen goede of foute antwoorden zijn, het gaat om je eigen ervaring. - Drempel: dat het automatische regelsysteem mij als gebruiker weinig vrijheid laat",
+        "routine_valid_n": 701,
+        "routine_low_regularity4or5_n": 220,
+        "control_valid_n": 27,
+        "control_concern5to7_n": 8,
+        "both_observed_n": 25,
+        "both_positive_n": 4
+      }
+    },
+    "interpretation": "Actual low regularity and perceived loss of freedom due to automatic control can be co-observed. Control-barrier items are conditional on HEMS and randomized item routing. No population weights; no EB six prevalence claimed.",
+    "both_observed_unique_n": 65,
+    "both_positive_unique_n": 15
+  },
+  "iFlex2020": {
+    "source": "https://zenodo.org/records/8248802",
+    "same_participants_joined_n": 800,
+    "bills_motivation_n": 408,
+    "comfort_protection_motivation_n": 298,
+    "automatic_action_motivation_n": 374,
+    "grid_development_motivation_n": 88,
+    "bills_and_comfort_same_person_n": 149,
+    "comfortable_conditions_and_usually_home_n": 141,
+    "grid_and_automation_investment_willingness_n": 57,
+    "interpretation": "Direct same-person motives for four-hour winter DR are stronger evidence than ECA cost pressure alone. Motives are multi-select, not six classes. No population weights; no Chinese or EB six proportions. Aq2 English blank combines a legitimate Norwegian neutral category with other possible blanks, so it is not recoded as measured comfort priority."
+  },
+  "production_changes": false,
+  "EP_runs": 0,
+  "input_sha256": {
+    "dutch.sav": "f25f84e03013832526589bb430d6b8ce168ac7fb6ed2db413c768c9ceee93bbe",
+    "dutch_dictionary.docx": "b78fa5e8e2c0ca59ba10f67a75ad17697c47a89c5e9b108e681fdfc27e0a2c1b",
+    "survey1_answers.csv": "39181e74b65cbbaf77a565f23c7d1bd5b3674f7b7dea630fc2a5e1a3768cf1e8",
+    "survey1_questions.csv": "7c353bdbdcc3fbc570e492476e1a80c36a56c0c43f907cf6153cf3f1ac426f70",
+    "survey2_answers.csv": "fd18796393528fdcf7abedddfa95cc0e854255355ef3fff184cb3f62d5032efc",
+    "survey2_questions.csv": "856f26bfd988aea94000c96e79d9f3397fc2dd0e3a237880557c367fb8cf6b7e"
+  }
+}

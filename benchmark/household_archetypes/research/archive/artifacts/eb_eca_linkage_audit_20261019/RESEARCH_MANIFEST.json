@@ -1,0 +1,36 @@
+{
+  "environment": {
+    "python": "3.14.3",
+    "pandas": "3.0.3",
+    "numpy": "2.5.2",
+    "scipy": "1.17.1",
+    "scikit-learn": "1.9.0",
+    "openpyxl": "3.1.5"
+  },
+  "files_sha256": {
+    "artifacts/eb_eca_linkage_audit_20261019/FIELD_INVENTORY.json": "ed01dfd23c4c1794a7c514cee848d6d885a6c61758814b452d5f79217047aa55",
+    "artifacts/eb_eca_linkage_audit_20261019/RESULTS.json": "bd7bc164f6d837c091c160af5ceb3d394cca3b46a4ca7d6affe34b0c52ea20c4",
+    "artifacts/eb_eca_linkage_audit_20261019/check_external_constructs.py": "e619093aa648fa92fab48928e3d81a051e2c57a9e514bfe0bcfddfa60706388d",
+    "artifacts/eb_eca_linkage_audit_20261019/连接验证结论.md": "e4cc7c3c92d1018f67e1ccf0df7f4af479e1ec29891933319342954a187028d1",
+    "artifacts/eb_eca_linkage_audit_20261019/ANALYSIS_PLAN.json": "d92e170648a09a2860edaf6cd18bf9df23b64d2153f0b74cf3b1e90e7caf6703",
+    "artifacts/eb_eca_linkage_audit_20261019/run_linkage_audit.py": "e037bfe156a98d46ac22e1c9f516ccfe27c2b5693db5dd728bb1ab6c27c03c62",
+    "artifacts/eb_eca_linkage_audit_20261019/EXTERNAL_CONSTRUCTS.json": "bf206abe19d0eadb607b8858a6863ed8366f3925036b61fa7b5b373329c09c33",
+    "artifacts/eb_eca_context_six_20261019/run_context_six.py": "c56e41ceba44337a848fa0dc054b49e11e309b25de356f1bc62e65d7ae1defd9",
+    "artifacts/eb_eca_context_six_20261019/RESULTS.json": "4f7b147e06212d24daea840d69b44dec36daf789f1319537662fc9fe98de817b",
+    "artifacts/eb_external_validation_20261019/run_validation.py": "3af8a3cc65d8e0b1770a2dc9866147b9e6a40a2a272e1262fb85cd8bbf533cd8",
+    "artifacts/eb_source_selection_20261019/cluster_iflex.py": "c58295d8f83e0bf43aeed015833095182b79067bb6af25a14087830c9cae098a",
+    "upstream_2b17ae6/human_survey_materials/role_cards/fixed_role_cards_readable.md": "15a42b5872caa001ae7f8c30d8bfcac78d2ea29e30451a7ffb2dcb682f7262ca"
+  },
+  "ECA_raw_sha256": "ba82a75740c79cb1c456ea1ed5d3eee4e220449f39b5d692400a1e3fd94a247d",
+  "external_raw_sha256": {
+    "dutch.sav": "f25f84e03013832526589bb430d6b8ce168ac7fb6ed2db413c768c9ceee93bbe",
+    "dutch_dictionary.docx": "b78fa5e8e2c0ca59ba10f67a75ad17697c47a89c5e9b108e681fdfc27e0a2c1b",
+    "survey1_answers.csv": "39181e74b65cbbaf77a565f23c7d1bd5b3674f7b7dea630fc2a5e1a3768cf1e8",
+    "survey1_questions.csv": "7c353bdbdcc3fbc570e492476e1a80c36a56c0c43f907cf6153cf3f1ac426f70",
+    "survey2_answers.csv": "fd18796393528fdcf7abedddfa95cc0e854255355ef3fff184cb3f62d5032efc",
+    "survey2_questions.csv": "856f26bfd988aea94000c96e79d9f3397fc2dd0e3a237880557c367fb8cf6b7e"
+  },
+  "production_changes": false,
+  "EP_runs": 0,
+  "validation": "routing, denominators, all six posterior shares and unique-participant join checked; independent native-label cross-check of106 EV/commute/optimized-charge cases and166 control-concern cases"
+}

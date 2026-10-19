@@ -1,0 +1,30 @@
+{
+  "schema": "eb.ecape.fixed_six.plan.v1",
+  "date": "2026-10-19",
+  "status": "Exploratory fixed-six analysis requested by user; feature rules frozen before fitting, after the raw field inventory was inspected. Not a preregistered confirmatory study.",
+  "source": "https://doi.org/10.5281/zenodo.12819318",
+  "raw_filename": "ecape_combined.csv",
+  "raw_sha256": "7047af8a865eae3fd148bea6346643517eab960c58a83a3f73fa49c8a8811326",
+  "sample": "1022 unique public complete respondents, int_resultat stripped equals1. Svar; do not include326 partial responses or nonrespondents",
+  "k": 6,
+  "features": ["weekday_regularity", "job_related_routine_changes", "routine_interruptions", "external_fixed_schedule", "weekday_awake_home_hours", "care_activity_two_days", "smart_heat_use", "EV_ownership"],
+  "feature_rules": {
+    "weekday_regularity": "q16_morgen andq16_aften: each high if native very-high/high; both_high, one_high or neither_high. Missing/unknown either side gives unobserved. Neither_high is not necessarily irregular because some-extent/neutral are included.",
+    "job_related_routine_changes": "q17_job native strongly/somewhat agree, neither, strongly/somewhat disagree; unknown unobserved",
+    "routine_interruptions": "q20_forstyr same agree/neutral/disagree grouping; unknown unobserved",
+    "external_fixed_schedule": "q20_tid same agree/neutral/disagree grouping; unknown unobserved",
+    "weekday_awake_home_hours": "q14 numeric0..24: below8,8toBelow12,12plus; hidden88/99 or invalid unobserved. Researcher-chosen coarse bins, not a published EB threshold.",
+    "care_activity_two_days": "q22_care andq26_care: caring on both recalled weekday/weekend days, one of two days, neither; describes activity, not care priority or DR refusal",
+    "smart_heat_use": "q6_termo/q6_varme: any active use, owned-but-not-used only, neither owned. Adoption/use, not trust or third-party authorization.",
+    "EV_ownership": "q3_6: at least one EV versus none; ownership, not commute reliance or charging optimization"
+  },
+  "posthoc_only": ["q16_morgen", "q16_aften", "q17_livsstil", "q17_husstand", "q13 home working", "q21a long-term health needs", "hjemb0012 children0to12", "hjemb1319 children13to19", "aldergrp4", "q5_vask_aarsag conditional reason for delay"],
+  "missingness": "Internal code-1 is excluded from every category in the one-hot likelihood; missing items are marginalized, never treated as negative attitude. Applies missing-at-random likelihood assumption; report observed denominators.",
+  "estimator": "Categorical latent class maximum-likelihood EM; pinned existing research solver; fixed6,48 starts, seed20261019; no EB labels, original quotas or match scores in fitting",
+  "weighting": "Unit weights; no public respondent-weight column acquired. Shares are this sample's soft mixture proportions, not population prevalence or proposed quotas.",
+  "validation": {"bootstrap_replicates": 20, "bootstrap_starts": 12, "alignment": "Posterior overlap, not EB proportions", "sensitivities": ["without_EV", "routines_only", "home_hours_edges10_14"], "sensitivity_starts": 32, "one_class_closed_form_check": true},
+  "interpretation": "Sort classes by descending fitted sample share, describe actual features, then compare separately to each EB role. Allow partial matches, overlaps and absent matches. A/B monetary/comfort priorities and control-authorization attitudes were not directly measured.",
+  "production_changes": false,
+  "EP_runs": 0,
+  "new_benchmark_labels": 0
+}

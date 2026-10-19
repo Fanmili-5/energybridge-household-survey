@@ -1,0 +1,102 @@
+{
+  "n": 1022,
+  "input_distributions": {
+    "weekday_regularity": {
+      "both_high": 480,
+      "neither_high": 283,
+      "one_high": 257,
+      "nan": 2
+    },
+    "job_related_routine_changes": {
+      "agree": 669,
+      "neutral": 219,
+      "disagree": 125,
+      "nan": 9
+    },
+    "routine_interruptions": {
+      "agree": 434,
+      "neutral": 333,
+      "disagree": 251,
+      "nan": 4
+    },
+    "external_fixed_schedule": {
+      "agree": 563,
+      "disagree": 227,
+      "neutral": 224,
+      "nan": 8
+    },
+    "weekday_awake_home_hours": {
+      "12plus": 428,
+      "below8": 328,
+      "8toBelow12": 252,
+      "nan": 14
+    },
+    "care_activity_two_days": {
+      "neither_day": 632,
+      "one_day": 219,
+      "both_days": 171
+    },
+    "smart_heat_use": {
+      "none": 902,
+      "active": 105,
+      "owned_unused_only": 15
+    },
+    "EV_ownership": {
+      "none": 993,
+      "EV_owned": 29
+    }
+  },
+  "missing_items": {
+    "weekday_regularity": 2,
+    "job_related_routine_changes": 9,
+    "routine_interruptions": 4,
+    "external_fixed_schedule": 8,
+    "weekday_awake_home_hours": 14,
+    "care_activity_two_days": 0,
+    "smart_heat_use": 0,
+    "EV_ownership": 0
+  },
+  "input_categories": {
+    "weekday_regularity": [
+      "both_high",
+      "neither_high",
+      "one_high"
+    ],
+    "job_related_routine_changes": [
+      "agree",
+      "disagree",
+      "neutral"
+    ],
+    "routine_interruptions": [
+      "agree",
+      "disagree",
+      "neutral"
+    ],
+    "external_fixed_schedule": [
+      "agree",
+      "disagree",
+      "neutral"
+    ],
+    "weekday_awake_home_hours": [
+      "12plus",
+      "8toBelow12",
+      "below8"
+    ],
+    "care_activity_two_days": [
+      "both_days",
+      "neither_day",
+      "one_day"
+    ],
+    "smart_heat_use": [
+      "active",
+      "none",
+      "owned_unused_only"
+    ],
+    "EV_ownership": [
+      "EV_owned",
+      "none"
+    ]
+  },
+  "weighting": "unit weights; supplied public file contains no survey weights",
+  "production_changes": false
+}

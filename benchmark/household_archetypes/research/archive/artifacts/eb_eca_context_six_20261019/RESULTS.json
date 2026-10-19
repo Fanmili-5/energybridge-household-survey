@@ -1,0 +1,2884 @@
+{
+  "schema": "eb.eca.context_six.results.v1",
+  "n": 4507,
+  "k_prespecified": 6,
+  "input_sha256": "ba82a75740c79cb1c456ea1ed5d3eee4e220449f39b5d692400a1e3fd94a247d",
+  "features": {
+    "electricity_cost_concern": [
+      "Extremely concerned",
+      "Not concerned at all",
+      "Quite concerned",
+      "Slightly concerned"
+    ],
+    "avoided_HVAC_for_cost": [
+      "No",
+      "Yes"
+    ],
+    "low_energy_discomfort": [
+      "Always",
+      "Never",
+      "Often",
+      "Rarely",
+      "Sometimes"
+    ],
+    "VPP_interest": [
+      "Already a member of a virtual power plant",
+      "Not at all interested",
+      "Not very interested",
+      "Somewhat interested",
+      "Very interested"
+    ],
+    "automation_adoption_or_intent": [
+      "Don’t know",
+      "You already have this",
+      "You’re considering buying this technology but are not actively researching it",
+      "You’re currently researching options for buying this technology",
+      "You’re not researching or considering buying this technology"
+    ],
+    "health_impacts_energy_use": [
+      "No",
+      "Yes"
+    ],
+    "weekday_home_pattern": [
+      "away_all5",
+      "home_all5",
+      "home_some1to4"
+    ],
+    "work_status": [
+      "Full time home / parent duties",
+      "Full-time student",
+      "Other",
+      "Retired",
+      "Unemployed",
+      "Working casually",
+      "Working full time",
+      "Working part time"
+    ],
+    "dependent_children": [
+      "no_under18",
+      "under18_present"
+    ],
+    "EV_home_charger": [
+      "EV_with_dedicated_home_charger",
+      "EV_without_dedicated_home_charger",
+      "no_EV_or_PHEV"
+    ]
+  },
+  "weighting": "official survey weights, mean one",
+  "fit": {
+    "k": 6,
+    "n": 4507,
+    "ll": -41071.3564083366,
+    "parameters": 179,
+    "bic": 83648.70909373483,
+    "aic": 82500.7128166732,
+    "soft_share": [
+      0.12437641150776993,
+      0.09087600059415506,
+      0.14886284486497497,
+      0.2746684362501832,
+      0.16935643939344522,
+      0.1918598673894714
+    ],
+    "hard_n": [
+      625,
+      370,
+      674,
+      1257,
+      721,
+      860
+    ],
+    "mean_max_posterior": 0.7958527562817819,
+    "normalized_entropy": 0.7169012632180642,
+    "best_start_converged": true,
+    "best_start_iterations": 377,
+    "starts_within_1_loglik": 46,
+    "starts": [
+      {
+        "ll": -41071.35658948846,
+        "iterations": 493,
+        "converged": true
+      },
+      {
+        "ll": -41071.356658399396,
+        "iterations": 469,
+        "converged": true
+      },
+      {
+        "ll": -41071.35664613645,
+        "iterations": 448,
+        "converged": true
+      },
+      {
+        "ll": -41071.35658762799,
+        "iterations": 424,
+        "converged": true
+      },
+      {
+        "ll": -41071.35661516532,
+        "iterations": 422,
+        "converged": true
+      },
+      {
+        "ll": -41071.35665030416,
+        "iterations": 467,
+        "converged": true
+      },
+      {
+        "ll": -41071.35662719984,
+        "iterations": 501,
+        "converged": true
+      },
+      {
+        "ll": -41071.356639834776,
+        "iterations": 460,
+        "converged": true
+      },
+      {
+        "ll": -41071.35665172974,
+        "iterations": 600,
+        "converged": true
+      },
+      {
+        "ll": -41071.35664520305,
+        "iterations": 404,
+        "converged": true
+      },
+      {
+        "ll": -41071.356652207396,
+        "iterations": 677,
+        "converged": true
+      },
+      {
+        "ll": -41071.35664103528,
+        "iterations": 445,
+        "converged": true
+      },
+      {
+        "ll": -41071.35662575394,
+        "iterations": 478,
+        "converged": true
+      },
+      {
+        "ll": -41147.244048097884,
+        "iterations": 758,
+        "converged": true
+      },
+      {
+        "ll": -41071.356634792784,
+        "iterations": 588,
+        "converged": true
+      },
+      {
+        "ll": -41071.35665046286,
+        "iterations": 556,
+        "converged": true
+      },
+      {
+        "ll": -41071.356652439084,
+        "iterations": 895,
+        "converged": true
+      },
+      {
+        "ll": -41071.35662497675,
+        "iterations": 591,
+        "converged": true
+      },
+      {
+        "ll": -41071.3566542206,
+        "iterations": 496,
+        "converged": true
+      },
+      {
+        "ll": -41071.35660501332,
+        "iterations": 435,
+        "converged": true
+      },
+      {
+        "ll": -41071.35664494765,
+        "iterations": 467,
+        "converged": true
+      },
+      {
+        "ll": -41071.356642295286,
+        "iterations": 574,
+        "converged": true
+      },
+      {
+        "ll": -41071.356622999505,
+        "iterations": 810,
+        "converged": true
+      },
+      {
+        "ll": -41071.356619004364,
+        "iterations": 502,
+        "converged": true
+      },
+      {
+        "ll": -41071.35666127528,
+        "iterations": 602,
+        "converged": true
+      },
+      {
+        "ll": -41071.35661956802,
+        "iterations": 437,
+        "converged": true
+      },
+      {
+        "ll": -41071.356643205334,
+        "iterations": 448,
+        "converged": true
+      },
+      {
+        "ll": -41071.35663784339,
+        "iterations": 456,
+        "converged": true
+      },
+      {
+        "ll": -41071.356641318256,
+        "iterations": 484,
+        "converged": true
+      },
+      {
+        "ll": -41071.35661897133,
+        "iterations": 558,
+        "converged": true
+      },
+      {
+        "ll": -41071.35660416455,
+        "iterations": 421,
+        "converged": true
+      },
+      {
+        "ll": -41071.3566139519,
+        "iterations": 438,
+        "converged": true
+      },
+      {
+        "ll": -41071.35664869507,
+        "iterations": 440,
+        "converged": true
+      },
+      {
+        "ll": -41071.35660184743,
+        "iterations": 425,
+        "converged": true
+      },
+      {
+        "ll": -41071.35662269504,
+        "iterations": 486,
+        "converged": true
+      },
+      {
+        "ll": -41071.3564927983,
+        "iterations": 618,
+        "converged": true
+      },
+      {
+        "ll": -41071.356631678245,
+        "iterations": 473,
+        "converged": true
+      },
+      {
+        "ll": -41071.356662948354,
+        "iterations": 509,
+        "converged": true
+      },
+      {
+        "ll": -41071.3564083366,
+        "iterations": 377,
+        "converged": true
+      },
+      {
+        "ll": -41147.24406496681,
+        "iterations": 338,
+        "converged": true
+      },
+      {
+        "ll": -41071.356622780346,
+        "iterations": 472,
+        "converged": true
+      },
+      {
+        "ll": -41071.35661864688,
+        "iterations": 514,
+        "converged": true
+      },
+      {
+        "ll": -41071.35665309383,
+        "iterations": 517,
+        "converged": true
+      },
+      {
+        "ll": -41071.3566438145,
+        "iterations": 464,
+        "converged": true
+      },
+      {
+        "ll": -41071.35665934529,
+        "iterations": 552,
+        "converged": true
+      },
+      {
+        "ll": -41071.356503089555,
+        "iterations": 541,
+        "converged": true
+      },
+      {
+        "ll": -41071.35662267773,
+        "iterations": 517,
+        "converged": true
+      },
+      {
+        "ll": -41071.35665323285,
+        "iterations": 536,
+        "converged": true
+      }
+    ],
+    "best_start_continuation": null
+  },
+  "parameters": {
+    "pi": [
+      0.12474533496668064,
+      0.09564287062104761,
+      0.1274307673874673,
+      0.267046958902948,
+      0.17729147994719863,
+      0.20784258817465778
+    ],
+    "theta": [
+      [
+        0.21761016265222174,
+        0.05092637660883176,
+        0.42417013573831386,
+        0.3072933250006326,
+        0.9971972679558475,
+        0.0028027320441524946,
+        0.023359865262765653,
+        0.28149683958171956,
+        0.057209899459844685,
+        0.411927601962292,
+        0.22600579373337815,
+        0.00615988773236855,
+        0.18916165662257495,
+        0.28018848826694137,
+        0.4629758547214678,
+        0.06151411265664731,
+        0.10821373055210558,
+        0.08503923321027035,
+        0.14589069864990553,
+        0.052354132945139076,
+        0.6085022046425795,
+        0.97275905998933,
+        0.027240940010669998,
+        0.4197707909115305,
+        0.3650717954908132,
+        0.2151574135976563,
+        9.999993594464135e-07,
+        0.01463527974718992,
+        0.014567329927839344,
+        9.999993594464135e-07,
+        0.005577995354865971,
+        0.023192848896823826,
+        0.8276968483146696,
+        0.1143276977598925,
+        0.6239108105016824,
+        0.3760891894983177,
+        0.014725171184031995,
+        0.04277763726812588,
+        0.9424971915478422
+      ],
+      [
+        0.5155054743076837,
+        0.01279938918721579,
+        0.3339628521851936,
+        0.13773228431990692,
+        0.1976904938308431,
+        0.8023095061691569,
+        0.035216441810394516,
+        0.07126346260908815,
+        0.23189407629263933,
+        0.24246357228561807,
+        0.4191624470022599,
+        9.999992945697014e-07,
+        0.11423949194940139,
+        0.19581916635082874,
+        0.49245279650127766,
+        0.19748754519919753,
+        0.15887461594634208,
+        0.07882441326616801,
+        0.13341020324552122,
+        0.03580470580125678,
+        0.5930860617407119,
+        0.9049373363832913,
+        0.09506266361670866,
+        0.00021804297770037836,
+        0.9500756654955045,
+        0.04970629152679514,
+        0.3789588340499717,
+        0.013051777119775516,
+        0.016145172968822265,
+        9.999996907038656e-07,
+        0.06280064043851896,
+        0.059358463587558946,
+        0.3209424085443898,
+        0.148741703291272,
+        0.043026105646696,
+        0.956973894353304,
+        0.010744090116391103,
+        0.052992352256158504,
+        0.9362635576274504
+      ],
+      [
+        0.3593683990354879,
+        0.05150089089724509,
+        0.39666257855298614,
+        0.19246813151428094,
+        0.4375798368758949,
+        0.5624201631241051,
+        0.08005212004672531,
+        0.07841860668486686,
+        0.21249556996101293,
+        0.27035533126677963,
+        0.35867837204061537,
+        0.03280324174453629,
+        0.0017711635184986937,
+        0.0831396245912173,
+        0.4753265088998882,
+        0.4069594612458596,
+        9.999998007930349e-07,
+        0.2793479915201593,
+        0.3374647330050052,
+        0.2951359359071644,
+        0.08805033956787035,
+        0.8745843120843503,
+        0.12541568791564978,
+        0.0603826093042707,
+        0.5763751464264409,
+        0.3632422442692884,
+        0.010054884015310869,
+        0.04705046075397237,
+        0.002851248298939797,
+        0.012525200104902453,
+        0.004853928673014382,
+        0.05156424947063204,
+        0.6979022606710553,
+        0.17319776801217263,
+        0.3709833522265863,
+        0.6290166477734137,
+        0.2459443047151136,
+        0.09417955553029424,
+        0.6598761397545921
+      ],
+      [
+        0.4034767794944321,
+        0.02690995628007998,
+        0.41687867947568674,
+        0.15273458474980117,
+        0.04304939445727398,
+        0.9569506055427259,
+        0.03188819889731169,
+        0.046717073485098244,
+        0.1925348151401003,
+        0.2517318564534355,
+        0.4771280560240542,
+        0.002380653511888994,
+        0.13534117354640682,
+        0.22240697715008464,
+        0.49513173914049424,
+        0.14473945665112528,
+        0.08557104902570628,
+        0.07920910467068634,
+        0.1460289136885692,
+        0.0474313738583259,
+        0.6417595587567123,
+        0.9685303713262347,
+        0.031469628673765376,
+        0.2706445273821834,
+        0.35689146365190233,
+        0.3724640089659143,
+        9.999996465798325e-07,
+        0.02411077404680326,
+        0.0002319382606362881,
+        0.01203604368026844,
+        9.999996465798325e-07,
+        0.08456695214361817,
+        0.6706154388789692,
+        0.20843685299041148,
+        0.6459469906856738,
+        0.3540530093143261,
+        0.007179406352915574,
+        0.01976676630504684,
+        0.9730538273420376
+      ],
+      [
+        0.2929491326399041,
+        0.08556764488751459,
+        0.33646053338502596,
+        0.2850226890875555,
+        0.8192551025238284,
+        0.1807448974761716,
+        0.009190376663219044,
+        0.4154578594917929,
+        9.999999196193367e-07,
+        0.48021998278167993,
+        0.09513078106338863,
+        0.015621336577785255,
+        0.29108310144888316,
+        0.22682257633660016,
+        0.3115558071100858,
+        0.15491717852664577,
+        0.06881907454200187,
+        0.06699130382280527,
+        0.06295261999031106,
+        0.020255887494567235,
+        0.7809811141503146,
+        0.9034122722717385,
+        0.0965877277282616,
+        0.02070422272333783,
+        0.8587837766864891,
+        0.1205120005901731,
+        0.0428136172582988,
+        0.015129209491469156,
+        0.024573554243112927,
+        0.6388892330765903,
+        0.045745054523793745,
+        0.08137198624931466,
+        0.05433551264857164,
+        0.09714183250884889,
+        0.9486913665182135,
+        0.05130863348178647,
+        0.01391434510442276,
+        0.019234425937571045,
+        0.9668512289580062
+      ],
+      [
+        0.642702488203491,
+        0.008347082792540456,
+        0.2882430891320725,
+        0.06070733987189592,
+        0.12730591818963571,
+        0.8726940818103643,
+        0.09826023820021472,
+        0.0018036421254113654,
+        0.27863825640199014,
+        0.13610999459866838,
+        0.4851878686737154,
+        0.002910982706841027,
+        0.2934180801524357,
+        0.22099106841918892,
+        0.35090978775659937,
+        0.1317700809649349,
+        0.1378447650542264,
+        0.04370095358280799,
+        0.05489574657993361,
+        0.019733436952245643,
+        0.7438250978307863,
+        0.793375677584011,
+        0.20662432241598902,
+        0.010774903176502855,
+        0.9035267992460639,
+        0.08569829757743315,
+        0.02953093773304183,
+        0.03021130423633201,
+        0.05815614137835845,
+        0.4717547717328566,
+        0.14663577884150258,
+        0.058689665574028715,
+        0.07378249932975132,
+        0.13123890117412845,
+        0.93816586543277,
+        0.06183413456723,
+        0.0067419026877659945,
+        0.005693204636548295,
+        0.9875648926756857
+      ]
+    ],
+    "categories": [
+      [
+        0,
+        1,
+        2,
+        3
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        2
+      ]
+    ]
+  },
+  "class_order_descending_weighted_share": [
+    3,
+    5,
+    4,
+    2,
+    0,
+    1
+  ],
+  "profiles": [
+    {
+      "class": "H1",
+      "model_column": 3,
+      "share_weighted_soft": 0.2670479037930008,
+      "share_unweighted_soft": 0.2746684362501838,
+      "hard_n": 1257,
+      "share_weighted_hard": 0.26977952419176887,
+      "inputs": {
+        "electricity_cost_concern": {
+          "Extremely concerned": 0.4034747398560985,
+          "Not concerned at all": 0.026910227685650503,
+          "Quite concerned": 0.4168787604425077,
+          "Slightly concerned": 0.15273627201574339
+        },
+        "avoided_HVAC_for_cost": {
+          "No": 0.043044397642036186,
+          "Yes": 0.956955602357964
+        },
+        "low_energy_discomfort": {
+          "Always": 0.03188803064529068,
+          "Never": 0.046718713078736186,
+          "Often": 0.19253388807739605,
+          "Rarely": 0.2517333731933083,
+          "Sometimes": 0.4771259950052688
+        },
+        "VPP_interest": {
+          "Already a member of a virtual power plant": 0.002380718977942123,
+          "Not at all interested": 0.13534063414384712,
+          "Not very interested": 0.22240723939723606,
+          "Somewhat interested": 0.49513152861908316,
+          "Very interested": 0.14473987886189155
+        },
+        "automation_adoption_or_intent": {
+          "Don’t know": 0.08557044593323605,
+          "You already have this": 0.07920940710559307,
+          "You’re considering buying this technology but are not actively researching it": 0.14602960509183102,
+          "You’re currently researching options for buying this technology": 0.047431619874659985,
+          "You’re not researching or considering buying this technology": 0.64175892199468
+        },
+        "health_impacts_energy_use": {
+          "No": 0.9685306134593299,
+          "Yes": 0.03146938654067015
+        },
+        "weekday_home_pattern": {
+          "away_all5": 0.2706456487114093,
+          "home_all5": 0.3568917301843731,
+          "home_some1to4": 0.37246262110421763
+        },
+        "work_status": {
+          "Full time home / parent duties": 7.843007148833221e-07,
+          "Full-time student": 0.024110793497710434,
+          "Other": 0.00023241846211841116,
+          "Retired": 0.012036191509283442,
+          "Unemployed": 8.606120184435235e-07,
+          "Working casually": 0.08456649218148579,
+          "Working full time": 0.670616851246519,
+          "Working part time": 0.20843560819014953
+        },
+        "dependent_children": {
+          "no_under18": 0.6459480424376925,
+          "under18_present": 0.3540519575623074
+        },
+        "EV_home_charger": {
+          "EV_with_dedicated_home_charger": 0.007179599095854517,
+          "EV_without_dedicated_home_charger": 0.01976697903800889,
+          "no_EV_or_PHEV": 0.9730534218661366
+        }
+      },
+      "posthoc": {
+        "work_location": {
+          "known_soft_n": 1203.5849023950545,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "home_based_possible": 0.09627785188271748,
+            "hybrid_possible": 0.3620608275659394,
+            "not_employed": 0.03638104838184561,
+            "on_site_only": 0.5052802721694976
+          }
+        },
+        "EV_and_driving_commute": {
+          "known_soft_n": 1203.5849023950545,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.9789606021381312,
+            "True": 0.0210393978618687
+          }
+        },
+        "drive_commute_asked": {
+          "known_soft_n": 1203.5849023950545,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.03638104838184561,
+            "True": 0.9636189516181545
+          }
+        },
+        "drive_commute_yes": {
+          "known_soft_n": 1159.7972218293612,
+          "known_fraction_in_class": 0.9636189516181545,
+          "distribution": {
+            "False": 0.21172080219757977,
+            "True": 0.7882791978024202
+          }
+        },
+        "household_type": {
+          "known_soft_n": 1203.5849023950545,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "Couple with child(ren)": 0.30594678172639045,
+            "Couple without children": 0.26791495497308454,
+            "Extended family": 0.0363677599731974,
+            "Other (please specify)": 0.013443049314794134,
+            "Share house (i.e. with friends/housemates)": 0.07512800818035295,
+            "Single (live alone)": 0.20564974672758637,
+            "Single parent with child(ren)": 0.0955496991045942
+          }
+        },
+        "home_charging_frequency": {
+          "known_soft_n": 20.68239075241176,
+          "known_fraction_in_class": 0.01718398985501992,
+          "distribution": {
+            "A few times a week": 0.5104402790034848,
+            "About once a week": 0.11241949780046463,
+            "Daily": 0.2078997187804178,
+            "Less often": 0.11456056793524197,
+            "Never": 0.05467993648039089
+          }
+        },
+        "weekday_charging_time": {
+          "known_soft_n": 19.55147893980726,
+          "known_fraction_in_class": 0.01624437038126775,
+          "distribution": {
+            "4PM – 9PM": 0.22683027009067527,
+            "9AM – 4PM": 0.34051061712684805,
+            "9PM – 9AM": 0.30728075770339175,
+            "Don’t know / it varies too much": 0.1253783550790849
+          }
+        },
+        "charging_method": {
+          "known_soft_n": 19.55147893980726,
+          "known_fraction_in_class": 0.01624437038126775,
+          "distribution": {
+            "Allow a third party (such as retailer or network operator) to manage charging in exchange for bill savings": 0.005394795721888671,
+            "Charge it at specific times to minimise the cost": 0.5672602132563996,
+            "Charge it whenever you choose without considering the price": 0.2437507520582221,
+            "Use in-car settings or companion app to schedule charging (e.g. Tesla app)": 0.0740232126346488,
+            "Use smart home energy system to automatically manage charging": 0.10957102632884085
+          }
+        },
+        "life_support_registration": {
+          "known_soft_n": 1203.5849023950545,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "No": 0.9822849337449194,
+            "Yes": 0.017715066255080653
+          }
+        },
+        "weekdays_home_count": {
+          "known_soft_n": 1203.5849023950545,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "0": 0.2706456487114093,
+            "1": 0.07812267341714994,
+            "2": 0.1169802110605116,
+            "3": 0.1024040154386325,
+            "4": 0.07495572118792361,
+            "5": 0.3568917301843731
+          }
+        }
+      }
+    },
+    {
+      "class": "H2",
+      "model_column": 5,
+      "share_weighted_soft": 0.2078428713832192,
+      "share_unweighted_soft": 0.1918598673894716,
+      "hard_n": 860,
+      "share_weighted_hard": 0.2084473055367383,
+      "inputs": {
+        "electricity_cost_concern": {
+          "Extremely concerned": 0.6427027773973342,
+          "Not concerned at all": 0.008347050690194209,
+          "Quite concerned": 0.2882431226085212,
+          "Slightly concerned": 0.060707049303950336
+        },
+        "avoided_HVAC_for_cost": {
+          "No": 0.12730621009826665,
+          "Yes": 0.8726937899017333
+        },
+        "low_energy_discomfort": {
+          "Always": 0.09826020042098467,
+          "Never": 0.0018039144608397362,
+          "Often": 0.2786380667805412,
+          "Rarely": 0.13611019683893513,
+          "Sometimes": 0.4851876214986993
+        },
+        "VPP_interest": {
+          "Already a member of a virtual power plant": 0.0029109727575551626,
+          "Not at all interested": 0.2934181863095672,
+          "Not very interested": 0.22099112603040802,
+          "Somewhat interested": 0.35090995186914165,
+          "Very interested": 0.13176976303332802
+        },
+        "automation_adoption_or_intent": {
+          "Don’t know": 0.13784489349297158,
+          "You already have this": 0.04370098631210252,
+          "You’re considering buying this technology but are not actively researching it": 0.054895781997358624,
+          "You’re currently researching options for buying this technology": 0.019733310517539404,
+          "You’re not researching or considering buying this technology": 0.743825027680028
+        },
+        "health_impacts_energy_use": {
+          "No": 0.7933755887851389,
+          "Yes": 0.20662441121486108
+        },
+        "weekday_home_pattern": {
+          "away_all5": 0.010774558247228583,
+          "home_all5": 0.9035271287966129,
+          "home_some1to4": 0.0856983129561585
+        },
+        "work_status": {
+          "Full time home / parent duties": 0.02953119781288944,
+          "Full-time student": 0.03021126112462906,
+          "Other": 0.0581557127839754,
+          "Retired": 0.47175424640612645,
+          "Unemployed": 0.1466357160779281,
+          "Working casually": 0.0586898894141248,
+          "Working full time": 0.07378268666440585,
+          "Working part time": 0.1312392897159209
+        },
+        "dependent_children": {
+          "no_under18": 0.9381656782799775,
+          "under18_present": 0.0618343217200225
+        },
+        "EV_home_charger": {
+          "EV_with_dedicated_home_charger": 0.00674188145016793,
+          "EV_without_dedicated_home_charger": 0.005693196409398462,
+          "no_EV_or_PHEV": 0.9875649221404336
+        }
+      },
+      "posthoc": {
+        "work_location": {
+          "known_soft_n": 936.7478213241689,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "home_based_possible": 0.04977759670278283,
+            "hybrid_possible": 0.06896873250142048,
+            "not_employed": 0.7362881342055485,
+            "on_site_only": 0.14496553659024825
+          }
+        },
+        "EV_and_driving_commute": {
+          "known_soft_n": 936.7478213241689,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.9980335048800834,
+            "True": 0.0019664951199167926
+          }
+        },
+        "drive_commute_asked": {
+          "known_soft_n": 936.7478213241689,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.7362881342055485,
+            "True": 0.2637118657944516
+          }
+        },
+        "drive_commute_yes": {
+          "known_soft_n": 247.03151574028408,
+          "known_fraction_in_class": 0.26371186579445155,
+          "distribution": {
+            "False": 0.2809981782587973,
+            "True": 0.7190018217412029
+          }
+        },
+        "household_type": {
+          "known_soft_n": 936.7478213241689,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "Couple with child(ren)": 0.13096919492854373,
+            "Couple without children": 0.3548210347187911,
+            "Extended family": 0.056081988032223744,
+            "Other (please specify)": 0.036487969947561,
+            "Share house (i.e. with friends/housemates)": 0.06527978741718567,
+            "Single (live alone)": 0.3026507593174706,
+            "Single parent with child(ren)": 0.053709265638224174
+          }
+        },
+        "home_charging_frequency": {
+          "known_soft_n": 8.44528984758387,
+          "known_fraction_in_class": 0.009015542556208745,
+          "distribution": {
+            "A few times a week": 0.36741738712491073,
+            "About once a week": 0.3578338163896992,
+            "Daily": 0.21935918753772965,
+            "Less often": 0.002329248209171927,
+            "Never": 0.053060360738488646
+          }
+        },
+        "weekday_charging_time": {
+          "known_soft_n": 7.997179721729976,
+          "known_fraction_in_class": 0.008537174615923116,
+          "distribution": {
+            "4PM – 9PM": 0.22797033152656193,
+            "9AM – 4PM": 0.28535854527561205,
+            "9PM – 9AM": 0.48608668975878166,
+            "Don’t know / it varies too much": 0.0005844334390443041
+          }
+        },
+        "charging_method": {
+          "known_soft_n": 7.997179721729976,
+          "known_fraction_in_class": 0.008537174615923116,
+          "distribution": {
+            "Allow a third party (such as retailer or network operator) to manage charging in exchange for bill savings": 0.00014756311335468696,
+            "Charge it at specific times to minimise the cost": 0.6900888837783101,
+            "Charge it whenever you choose without considering the price": 0.05773965919183686,
+            "Use in-car settings or companion app to schedule charging (e.g. Tesla app)": 0.13892950692859418,
+            "Use smart home energy system to automatically manage charging": 0.11309438698790406
+          }
+        },
+        "life_support_registration": {
+          "known_soft_n": 936.7478213241689,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "No": 0.9396207842888519,
+            "Yes": 0.06037921571114818
+          }
+        },
+        "weekdays_home_count": {
+          "known_soft_n": 936.7478213241689,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "0": 0.010774558247228583,
+            "1": 0.012002477688013767,
+            "2": 0.01677161781717834,
+            "3": 0.030473773073302693,
+            "4": 0.026450444377663706,
+            "5": 0.9035271287966129
+          }
+        }
+      }
+    },
+    {
+      "class": "H3",
+      "model_column": 4,
+      "share_weighted_soft": 0.17729122014531554,
+      "share_unweighted_soft": 0.16935643939344483,
+      "hard_n": 721,
+      "share_weighted_hard": 0.16840711609134917,
+      "inputs": {
+        "electricity_cost_concern": {
+          "Extremely concerned": 0.29294881077067736,
+          "Not concerned at all": 0.0855676928288273,
+          "Quite concerned": 0.33646056905622623,
+          "Slightly concerned": 0.28502292734426915
+        },
+        "avoided_HVAC_for_cost": {
+          "No": 0.8192556955404066,
+          "Yes": 0.18074430445959358
+        },
+        "low_energy_discomfort": {
+          "Always": 0.009190353597358984,
+          "Never": 0.41545782240174817,
+          "Often": 9.18367107677752e-07,
+          "Rarely": 0.48022009989997644,
+          "Sometimes": 0.09513080573380872
+        },
+        "VPP_interest": {
+          "Already a member of a virtual power plant": 0.015621363482251958,
+          "Not at all interested": 0.2910830344898504,
+          "Not very interested": 0.2268225737765956,
+          "Somewhat interested": 0.3115557702954258,
+          "Very interested": 0.15491725795587635
+        },
+        "automation_adoption_or_intent": {
+          "Don’t know": 0.06881899236339856,
+          "You already have this": 0.066991101061449,
+          "You’re considering buying this technology but are not actively researching it": 0.06295260805882646,
+          "You’re currently researching options for buying this technology": 0.020255869003424885,
+          "You’re not researching or considering buying this technology": 0.7809814295129012
+        },
+        "health_impacts_energy_use": {
+          "No": 0.903412344289546,
+          "Yes": 0.09658765571045401
+        },
+        "weekday_home_pattern": {
+          "away_all5": 0.020704244585846694,
+          "home_all5": 0.8587840111246402,
+          "home_some1to4": 0.12051174428951318
+        },
+        "work_status": {
+          "Full time home / parent duties": 0.04281369718058596,
+          "Full-time student": 0.015129205106179357,
+          "Other": 0.02457313920693966,
+          "Retired": 0.6388897584186444,
+          "Unemployed": 0.045745039462276996,
+          "Working casually": 0.08137168965972419,
+          "Working full time": 0.054336162574101336,
+          "Working part time": 0.0971413083915482
+        },
+        "dependent_children": {
+          "no_under18": 0.9486917822558404,
+          "under18_present": 0.05130821774415975
+        },
+        "EV_home_charger": {
+          "EV_with_dedicated_home_charger": 0.01391435913174191,
+          "EV_without_dedicated_home_charger": 0.01923442862130667,
+          "no_EV_or_PHEV": 0.9668512122469515
+        }
+      },
+      "posthoc": {
+        "work_location": {
+          "known_soft_n": 799.0515291949371,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "home_based_possible": 0.03970834485614563,
+            "hybrid_possible": 0.056064857113908115,
+            "not_employed": 0.7671508393746262,
+            "on_site_only": 0.13707595865531996
+          }
+        },
+        "EV_and_driving_commute": {
+          "known_soft_n": 799.0515291949371,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.9946464844220098,
+            "True": 0.005353515577990249
+          }
+        },
+        "drive_commute_asked": {
+          "known_soft_n": 799.0515291949371,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.7671508393746262,
+            "True": 0.23284916062537375
+          }
+        },
+        "drive_commute_yes": {
+          "known_soft_n": 186.05847786946242,
+          "known_fraction_in_class": 0.23284916062537375,
+          "distribution": {
+            "False": 0.2137322353457474,
+            "True": 0.7862677646542525
+          }
+        },
+        "household_type": {
+          "known_soft_n": 799.0515291949371,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "Couple with child(ren)": 0.15301771681427398,
+            "Couple without children": 0.4928664794900452,
+            "Extended family": 0.03341621224574609,
+            "Other (please specify)": 0.020837896058526515,
+            "Share house (i.e. with friends/housemates)": 0.05449509595092856,
+            "Single (live alone)": 0.2126504917009071,
+            "Single parent with child(ren)": 0.03271610773957268
+          }
+        },
+        "home_charging_frequency": {
+          "known_soft_n": 18.257667571544403,
+          "known_fraction_in_class": 0.022849174182720637,
+          "distribution": {
+            "A few times a week": 0.2944340876133021,
+            "About once a week": 0.27269462262150046,
+            "Daily": 0.29463204793671405,
+            "Less often": 0.13436195580101815,
+            "Never": 0.0038772860274653223
+          }
+        },
+        "weekday_charging_time": {
+          "known_soft_n": 18.186877372175147,
+          "known_fraction_in_class": 0.022760581398922855,
+          "distribution": {
+            "4PM – 9PM": 0.10020974703491507,
+            "9AM – 4PM": 0.5781286742717645,
+            "9PM – 9AM": 0.3082962365911893,
+            "Don’t know / it varies too much": 0.013365342102131248
+          }
+        },
+        "charging_method": {
+          "known_soft_n": 18.186877372175147,
+          "known_fraction_in_class": 0.022760581398922855,
+          "distribution": {
+            "Allow a third party (such as retailer or network operator) to manage charging in exchange for bill savings": 0.0009367020198503892,
+            "Charge it at specific times to minimise the cost": 0.3072373537160368,
+            "Charge it whenever you choose without considering the price": 0.333662106501126,
+            "Use in-car settings or companion app to schedule charging (e.g. Tesla app)": 0.23672308515158783,
+            "Use smart home energy system to automatically manage charging": 0.12144075261139904
+          }
+        },
+        "life_support_registration": {
+          "known_soft_n": 799.0515291949371,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "No": 0.961643695358099,
+            "Yes": 0.03835630464190102
+          }
+        },
+        "weekdays_home_count": {
+          "known_soft_n": 799.0515291949371,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "0": 0.020704244585846694,
+            "1": 0.009632677995632898,
+            "2": 0.014920051967596189,
+            "3": 0.0421581747921971,
+            "4": 0.05380083953408701,
+            "5": 0.8587840111246402
+          }
+        }
+      }
+    },
+    {
+      "class": "H4",
+      "model_column": 2,
+      "share_weighted_soft": 0.12743004916522901,
+      "share_unweighted_soft": 0.14886284486497492,
+      "hard_n": 674,
+      "share_weighted_hard": 0.12773203401881633,
+      "inputs": {
+        "electricity_cost_concern": {
+          "Extremely concerned": 0.3593689170091026,
+          "Not concerned at all": 0.051500870969115965,
+          "Quite concerned": 0.3966624664229033,
+          "Slightly concerned": 0.19246774559887805
+        },
+        "avoided_HVAC_for_cost": {
+          "No": 0.4375807456479169,
+          "Yes": 0.5624192543520831
+        },
+        "low_energy_discomfort": {
+          "Always": 0.08005244929258577,
+          "Never": 0.07841823163174337,
+          "Often": 0.21249601142889035,
+          "Rarely": 0.27035506792529734,
+          "Sometimes": 0.3586782397214831
+        },
+        "VPP_interest": {
+          "Already a member of a virtual power plant": 0.03280337084363453,
+          "Not at all interested": 0.0017711266732253275,
+          "Not very interested": 0.08313951749674049,
+          "Somewhat interested": 0.4753260630677998,
+          "Very interested": 0.4069599219185998
+        },
+        "automation_adoption_or_intent": {
+          "Don’t know": 7.990507506353934e-07,
+          "You already have this": 0.2793483986292447,
+          "You’re considering buying this technology but are not actively researching it": 0.3374648108772401,
+          "You’re currently researching options for buying this technology": 0.29513632120130895,
+          "You’re not researching or considering buying this technology": 0.08804967024145544
+        },
+        "health_impacts_energy_use": {
+          "No": 0.8745837952960414,
+          "Yes": 0.12541620470395856
+        },
+        "weekday_home_pattern": {
+          "away_all5": 0.060381586030463945,
+          "home_all5": 0.5763756511802582,
+          "home_some1to4": 0.3632427627892778
+        },
+        "work_status": {
+          "Full time home / parent duties": 0.010054971052798714,
+          "Full-time student": 0.047050582047011826,
+          "Other": 0.002851085385767585,
+          "Retired": 0.012525269445261725,
+          "Unemployed": 0.004853935297668879,
+          "Working casually": 0.05156402132486915,
+          "Working full time": 0.6979020911591792,
+          "Working part time": 0.1731980442874429
+        },
+        "dependent_children": {
+          "no_under18": 0.37098253569661593,
+          "under18_present": 0.629017464303384
+        },
+        "EV_home_charger": {
+          "EV_with_dedicated_home_charger": 0.24594531908157122,
+          "EV_without_dedicated_home_charger": 0.09417952609224631,
+          "no_EV_or_PHEV": 0.6598751548261823
+        }
+      },
+      "posthoc": {
+        "work_location": {
+          "known_soft_n": 574.3272315876872,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "home_based_possible": 0.12747026371989703,
+            "hybrid_possible": 0.44572565045685675,
+            "not_employed": 0.07733584322850873,
+            "on_site_only": 0.34946824259473747
+          }
+        },
+        "EV_and_driving_commute": {
+          "known_soft_n": 574.3272315876872,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.7323125566651552,
+            "True": 0.26768744333484484
+          }
+        },
+        "drive_commute_asked": {
+          "known_soft_n": 574.3272315876872,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.07733584322850873,
+            "True": 0.9226641567714912
+          }
+        },
+        "drive_commute_yes": {
+          "known_soft_n": 529.9111508437584,
+          "known_fraction_in_class": 0.9226641567714913,
+          "distribution": {
+            "False": 0.16708392967090188,
+            "True": 0.8329160703290981
+          }
+        },
+        "household_type": {
+          "known_soft_n": 574.3272315876872,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "Couple with child(ren)": 0.5818806749545877,
+            "Couple without children": 0.1845176083042227,
+            "Extended family": 0.03131731069087279,
+            "Other (please specify)": 0.009748537915859693,
+            "Share house (i.e. with friends/housemates)": 0.06652383816786489,
+            "Single (live alone)": 0.08497636301990392,
+            "Single parent with child(ren)": 0.04103566694668822
+          }
+        },
+        "home_charging_frequency": {
+          "known_soft_n": 95.17158277758097,
+          "known_fraction_in_class": 0.16570968176885123,
+          "distribution": {
+            "A few times a week": 0.38554174959435755,
+            "About once a week": 0.15207697027500314,
+            "Daily": 0.4135098555715903,
+            "Less often": 0.01298966595767527,
+            "Never": 0.03588175860137373
+          }
+        },
+        "weekday_charging_time": {
+          "known_soft_n": 91.75665901864515,
+          "known_fraction_in_class": 0.15976372696971086,
+          "distribution": {
+            "4PM – 9PM": 0.17511598787502175,
+            "9AM – 4PM": 0.2253085246494882,
+            "9PM – 9AM": 0.551891639209555,
+            "Don’t know / it varies too much": 0.047683848265934976
+          }
+        },
+        "charging_method": {
+          "known_soft_n": 91.75665901864515,
+          "known_fraction_in_class": 0.15976372696971086,
+          "distribution": {
+            "Allow a third party (such as retailer or network operator) to manage charging in exchange for bill savings": 0.018790764473130727,
+            "Charge it at specific times to minimise the cost": 0.4524602305607998,
+            "Charge it whenever you choose without considering the price": 0.2902212135655931,
+            "Use in-car settings or companion app to schedule charging (e.g. Tesla app)": 0.04110824658944006,
+            "Use smart home energy system to automatically manage charging": 0.19741954481103616
+          }
+        },
+        "life_support_registration": {
+          "known_soft_n": 574.3272315876872,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "No": 0.8670047566903712,
+            "Yes": 0.13299524330962875
+          }
+        },
+        "weekdays_home_count": {
+          "known_soft_n": 574.3272315876872,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "0": 0.060381586030463945,
+            "1": 0.06856989641996407,
+            "2": 0.09586970289687663,
+            "3": 0.09194657638907393,
+            "4": 0.10685658708336312,
+            "5": 0.5763756511802582
+          }
+        }
+      }
+    },
+    {
+      "class": "H5",
+      "model_column": 0,
+      "share_weighted_soft": 0.12474511211606563,
+      "share_unweighted_soft": 0.12437641150776993,
+      "hard_n": 625,
+      "share_weighted_hard": 0.13863660214186482,
+      "inputs": {
+        "electricity_cost_concern": {
+          "Extremely concerned": 0.21761212956325224,
+          "Not concerned at all": 0.05092614463594341,
+          "Quite concerned": 0.4241703585873922,
+          "Slightly concerned": 0.30729136721341216
+        },
+        "avoided_HVAC_for_cost": {
+          "No": 0.9972117387885658,
+          "Yes": 0.002788261211434178
+        },
+        "low_energy_discomfort": {
+          "Always": 0.023360069036632153,
+          "Never": 0.2814950454894729,
+          "Often": 0.05721094688798585,
+          "Rarely": 0.41192528846531196,
+          "Sometimes": 0.22600865012059712
+        },
+        "VPP_interest": {
+          "Already a member of a virtual power plant": 0.006159793448709341,
+          "Not at all interested": 0.18916209883469903,
+          "Not very interested": 0.2801873365862621,
+          "Somewhat interested": 0.46297623710483315,
+          "Very interested": 0.06151453402549643
+        },
+        "automation_adoption_or_intent": {
+          "Don’t know": 0.108214684399674,
+          "You already have this": 0.0850397455889256,
+          "You’re considering buying this technology but are not actively researching it": 0.14589009323483046,
+          "You’re currently researching options for buying this technology": 0.05235487576928534,
+          "You’re not researching or considering buying this technology": 0.6085006010072846
+        },
+        "health_impacts_energy_use": {
+          "No": 0.9727586791217976,
+          "Yes": 0.02724132087820246
+        },
+        "weekday_home_pattern": {
+          "away_all5": 0.4197690336396256,
+          "home_all5": 0.36507155438980377,
+          "home_some1to4": 0.21515941197057073
+        },
+        "work_status": {
+          "Full time home / parent duties": 6.058484549660364e-07,
+          "Full-time student": 0.014635338592631452,
+          "Other": 0.014568181057922082,
+          "Retired": 7.500403203576101e-07,
+          "Unemployed": 0.005578077367275673,
+          "Working casually": 0.02319394337932369,
+          "Working full time": 0.8276936094963668,
+          "Working part time": 0.1143294942177049
+        },
+        "dependent_children": {
+          "no_under18": 0.6239087542421058,
+          "under18_present": 0.37609124575789427
+        },
+        "EV_home_charger": {
+          "EV_with_dedicated_home_charger": 0.014725135513105328,
+          "EV_without_dedicated_home_charger": 0.04277772063586471,
+          "no_EV_or_PHEV": 0.9424971438510299
+        }
+      },
+      "posthoc": {
+        "work_location": {
+          "known_soft_n": 562.2262203071078,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "home_based_possible": 0.08545935178853266,
+            "hybrid_possible": 0.3540711479352997,
+            "not_employed": 0.034782952906604526,
+            "on_site_only": 0.5256865473695631
+          }
+        },
+        "EV_and_driving_commute": {
+          "known_soft_n": 562.2262203071078,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.9490491925316427,
+            "True": 0.050950807468357374
+          }
+        },
+        "drive_commute_asked": {
+          "known_soft_n": 562.2262203071078,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.034782952906604526,
+            "True": 0.9652170470933954
+          }
+        },
+        "drive_commute_yes": {
+          "known_soft_n": 542.6703321633074,
+          "known_fraction_in_class": 0.9652170470933954,
+          "distribution": {
+            "False": 0.16119216182698354,
+            "True": 0.8388078381730165
+          }
+        },
+        "household_type": {
+          "known_soft_n": 562.2262203071078,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "Couple with child(ren)": 0.37058638691026885,
+            "Couple without children": 0.2583771299268752,
+            "Extended family": 0.020975239755289303,
+            "Other (please specify)": 0.009429972941449332,
+            "Share house (i.e. with friends/housemates)": 0.061120451085115844,
+            "Single (live alone)": 0.2191673248239614,
+            "Single parent with child(ren)": 0.060343494557040064
+          }
+        },
+        "home_charging_frequency": {
+          "known_soft_n": 18.005674663720413,
+          "known_fraction_in_class": 0.03202567581050396,
+          "distribution": {
+            "A few times a week": 0.45596939432408146,
+            "About once a week": 0.1863570018379452,
+            "Daily": 0.22628543288920988,
+            "Less often": 0.01304251183281259,
+            "Never": 0.11834565911595081
+          }
+        },
+        "weekday_charging_time": {
+          "known_soft_n": 15.874781227815046,
+          "known_fraction_in_class": 0.028235576098076108,
+          "distribution": {
+            "4PM – 9PM": 0.08932766433593634,
+            "9AM – 4PM": 0.10925892225557111,
+            "9PM – 9AM": 0.6582894695676393,
+            "Don’t know / it varies too much": 0.14312394384085309
+          }
+        },
+        "charging_method": {
+          "known_soft_n": 15.874781227815046,
+          "known_fraction_in_class": 0.028235576098076108,
+          "distribution": {
+            "Allow a third party (such as retailer or network operator) to manage charging in exchange for bill savings": 0.00908576618017024,
+            "Charge it at specific times to minimise the cost": 0.4999355870443887,
+            "Charge it whenever you choose without considering the price": 0.34784649636569237,
+            "Use in-car settings or companion app to schedule charging (e.g. Tesla app)": 0.10865390931371598,
+            "Use smart home energy system to automatically manage charging": 0.03447824109603266
+          }
+        },
+        "life_support_registration": {
+          "known_soft_n": 562.2262203071078,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "No": 0.9576171580039192,
+            "Yes": 0.04238284199608088
+          }
+        },
+        "weekdays_home_count": {
+          "known_soft_n": 562.2262203071078,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "0": 0.4197690336396256,
+            "1": 0.05359947009489546,
+            "2": 0.06631561292069695,
+            "3": 0.06507184168217191,
+            "4": 0.030172487272806373,
+            "5": 0.36507155438980377
+          }
+        }
+      }
+    },
+    {
+      "class": "H6",
+      "model_column": 1,
+      "share_weighted_soft": 0.09564284339716989,
+      "share_unweighted_soft": 0.09087600059415497,
+      "hard_n": 370,
+      "share_weighted_hard": 0.08699741801946256,
+      "inputs": {
+        "electricity_cost_concern": {
+          "Extremely concerned": 0.515506149542844,
+          "Not concerned at all": 0.01279938056943787,
+          "Quite concerned": 0.3339623564792574,
+          "Slightly concerned": 0.1377321134084607
+        },
+        "avoided_HVAC_for_cost": {
+          "No": 0.1976897143004882,
+          "Yes": 0.8023102856995118
+        },
+        "low_energy_discomfort": {
+          "Always": 0.035216407241515056,
+          "Never": 0.07126318636933619,
+          "Often": 0.2318941900320341,
+          "Rarely": 0.24246360099376646,
+          "Sometimes": 0.41916261536334815
+        },
+        "VPP_interest": {
+          "Already a member of a virtual power plant": 2.9225033703120564e-07,
+          "Not at all interested": 0.11423951367950434,
+          "Not very interested": 0.19581919438534628,
+          "Somewhat interested": 0.4924532586617617,
+          "Very interested": 0.19748774102305067
+        },
+        "automation_adoption_or_intent": {
+          "Don’t know": 0.15887415463647217,
+          "You already have this": 0.07882431878284347,
+          "You’re considering buying this technology but are not actively researching it": 0.13341046749256122,
+          "You’re currently researching options for buying this technology": 0.0358047920751493,
+          "You’re not researching or considering buying this technology": 0.5930862670129738
+        },
+        "health_impacts_energy_use": {
+          "No": 0.9049375443441341,
+          "Yes": 0.09506245565586598
+        },
+        "weekday_home_pattern": {
+          "away_all5": 0.00021805010129435185,
+          "home_all5": 0.9500750073057814,
+          "home_some1to4": 0.04970694259292415
+        },
+        "work_status": {
+          "Full time home / parent duties": 0.3789583334718536,
+          "Full-time student": 0.013051719659088658,
+          "Other": 0.016144597693640583,
+          "Retired": 6.883836565341122e-07,
+          "Unemployed": 0.06280046374922686,
+          "Working casually": 0.059358471536869524,
+          "Working full time": 0.32094335567448107,
+          "Working part time": 0.14874236983118316
+        },
+        "dependent_children": {
+          "no_under18": 0.04302424686328366,
+          "under18_present": 0.9569757531367163
+        },
+        "EV_home_charger": {
+          "EV_with_dedicated_home_charger": 0.010744086467769292,
+          "EV_without_dedicated_home_charger": 0.05299235147872537,
+          "no_EV_or_PHEV": 0.9362635620535055
+        }
+      },
+      "posthoc": {
+        "work_location": {
+          "known_soft_n": 431.06229519104465,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "home_based_possible": 0.11065651141710693,
+            "hybrid_possible": 0.18828416512298138,
+            "not_employed": 0.47095580295746625,
+            "on_site_only": 0.2301035205024455
+          }
+        },
+        "EV_and_driving_commute": {
+          "known_soft_n": 431.06229519104465,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.9672065081247349,
+            "True": 0.03279349187526506
+          }
+        },
+        "drive_commute_asked": {
+          "known_soft_n": 431.06229519104465,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "False": 0.47095580295746625,
+            "True": 0.5290441970425339
+          }
+        },
+        "drive_commute_yes": {
+          "known_soft_n": 228.0510058346579,
+          "known_fraction_in_class": 0.5290441970425338,
+          "distribution": {
+            "False": 0.1746707683632038,
+            "True": 0.8253292316367963
+          }
+        },
+        "household_type": {
+          "known_soft_n": 431.06229519104465,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "Couple with child(ren)": 0.7607177768440389,
+            "Couple without children": 0.04214030039120539,
+            "Extended family": 0.03323116512195815,
+            "Other (please specify)": 0.007636769340249696,
+            "Share house (i.e. with friends/housemates)": 0.03201467614832027,
+            "Single (live alone)": 0.018045126167936337,
+            "Single parent with child(ren)": 0.10621418598629132
+          }
+        },
+        "home_charging_frequency": {
+          "known_soft_n": 14.053150534672557,
+          "known_fraction_in_class": 0.03260120565275669,
+          "distribution": {
+            "A few times a week": 0.4430307999343412,
+            "About once a week": 0.045232194863835944,
+            "Daily": 0.3903769812049513,
+            "Less often": 0.0016312240992396698,
+            "Never": 0.11972879989763181
+          }
+        },
+        "weekday_charging_time": {
+          "known_soft_n": 12.37058368637545,
+          "known_fraction_in_class": 0.028697902424736244,
+          "distribution": {
+            "4PM – 9PM": 0.0518641402776511,
+            "9AM – 4PM": 0.5725600540592872,
+            "9PM – 9AM": 0.373463184012885,
+            "Don’t know / it varies too much": 0.002112621650176643
+          }
+        },
+        "charging_method": {
+          "known_soft_n": 12.37058368637545,
+          "known_fraction_in_class": 0.028697902424736244,
+          "distribution": {
+            "Allow a third party (such as retailer or network operator) to manage charging in exchange for bill savings": 1.3032015524884175e-05,
+            "Charge it at specific times to minimise the cost": 0.6298103787591925,
+            "Charge it whenever you choose without considering the price": 0.13654468627721067,
+            "Use in-car settings or companion app to schedule charging (e.g. Tesla app)": 0.04865257768920873,
+            "Use smart home energy system to automatically manage charging": 0.18497932525886307
+          }
+        },
+        "life_support_registration": {
+          "known_soft_n": 431.06229519104465,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "No": 0.9726216022365727,
+            "Yes": 0.027378397763427396
+          }
+        },
+        "weekdays_home_count": {
+          "known_soft_n": 431.06229519104465,
+          "known_fraction_in_class": 1.0,
+          "distribution": {
+            "0": 0.00021805010129435185,
+            "1": 0.005851233794013017,
+            "2": 0.010096358967086017,
+            "3": 0.011445986585147066,
+            "4": 0.022313363246678052,
+            "5": 0.9500750073057814
+          }
+        }
+      }
+    }
+  ],
+  "bootstrap": [
+    {
+      "iteration": 0,
+      "ari": 0.7393525796846102,
+      "aligned_share": [
+        0.2608740357838634,
+        0.20207668067060086,
+        0.185458713909554,
+        0.12835800014027918,
+        0.12071780604324328,
+        0.10251476345245913
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 1,
+      "ari": 0.5964544853795682,
+      "aligned_share": [
+        0.2030474207158999,
+        0.22211924812056336,
+        0.14625681475031382,
+        0.1913860544018136,
+        0.1415453111615753,
+        0.09564515084983397
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 2,
+      "ari": 0.6741821052352613,
+      "aligned_share": [
+        0.2610823710680178,
+        0.20122410686136896,
+        0.19010054440255475,
+        0.10760882068044224,
+        0.12099112544019859,
+        0.11899303154741755
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 3,
+      "ari": 0.5847117905023309,
+      "aligned_share": [
+        0.23023660860174777,
+        0.2091591981414901,
+        0.19666051876224028,
+        0.14554931144941252,
+        0.09284209738690732,
+        0.12555226565820207
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 4,
+      "ari": 0.6608667637217139,
+      "aligned_share": [
+        0.32664420282523154,
+        0.18736184521202112,
+        0.17994439521834632,
+        0.13293555821703926,
+        0.08602255706506719,
+        0.08709144146229444
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 5,
+      "ari": 0.7786727753017719,
+      "aligned_share": [
+        0.25647106967589783,
+        0.20490651634157533,
+        0.15603972163564792,
+        0.1502856452767431,
+        0.14915916180160885,
+        0.08313788526852714
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 6,
+      "ari": 0.7486788810216616,
+      "aligned_share": [
+        0.28898494706947486,
+        0.18400659977908698,
+        0.18802936897329428,
+        0.1557242171064434,
+        0.13384677220052127,
+        0.04940809487117918
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 7,
+      "ari": 0.7411428757752214,
+      "aligned_share": [
+        0.2756806310861545,
+        0.20044227090939232,
+        0.19040656806478848,
+        0.09860991531616042,
+        0.15129225200312674,
+        0.08356836262037766
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 8,
+      "ari": 0.7576281752497732,
+      "aligned_share": [
+        0.2964217045897146,
+        0.19221265641279023,
+        0.1769798349315556,
+        0.1425830513847369,
+        0.11389693267543673,
+        0.07790582000576599
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 9,
+      "ari": 0.782957906753657,
+      "aligned_share": [
+        0.2521635052368324,
+        0.21242696916869142,
+        0.17671780869258583,
+        0.13421151427803588,
+        0.13344300825130012,
+        0.0910371943725542
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 10,
+      "ari": 0.6611418317961113,
+      "aligned_share": [
+        0.30517287947335947,
+        0.1814410495995835,
+        0.1787167552252723,
+        0.11130689593671055,
+        0.16990135819922966,
+        0.05346106156584446
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 11,
+      "ari": 0.6858287131478772,
+      "aligned_share": [
+        0.26187199014849705,
+        0.1881766916431282,
+        0.18174717516452304,
+        0.12826478892715473,
+        0.14763486682598026,
+        0.09230448729071687
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 12,
+      "ari": 0.6959491135871345,
+      "aligned_share": [
+        0.3388014882817715,
+        0.21265784078856242,
+        0.16310778222440847,
+        0.09221112199573846,
+        0.13281355544546297,
+        0.060408211264056294
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 13,
+      "ari": 0.7692618459987882,
+      "aligned_share": [
+        0.2806571514469797,
+        0.19096260040552998,
+        0.18936693984499678,
+        0.11665132355034283,
+        0.12765205372029742,
+        0.09470993103185317
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 14,
+      "ari": 0.4939753057424185,
+      "aligned_share": [
+        0.2443999477999038,
+        0.2247374388418749,
+        0.16535496470208966,
+        0.09974944376505897,
+        0.21483284736389338,
+        0.050925357527179346
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 15,
+      "ari": 0.7166995804858367,
+      "aligned_share": [
+        0.22305837312871715,
+        0.23464288263350855,
+        0.15631775723964159,
+        0.17130683939484556,
+        0.12313721335018843,
+        0.09153693425309876
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 16,
+      "ari": 0.5309686001379198,
+      "aligned_share": [
+        0.18634129165441318,
+        0.20744672155960334,
+        0.19595646392541655,
+        0.09854161021028734,
+        0.10060673595125098,
+        0.2111071766990286
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 17,
+      "ari": 0.6859619118754104,
+      "aligned_share": [
+        0.33553532739173364,
+        0.16329523628848103,
+        0.1723686030112012,
+        0.13010140773147869,
+        0.13595864665579677,
+        0.06274077892130876
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 18,
+      "ari": 0.6691688262848716,
+      "aligned_share": [
+        0.25640915700530453,
+        0.21951831911349717,
+        0.17593240589251202,
+        0.11814762563078003,
+        0.10220104528267913,
+        0.127791447075227
+      ],
+      "converged": true
+    },
+    {
+      "iteration": 19,
+      "ari": 0.7068838158493381,
+      "aligned_share": [
+        0.30025473480341636,
+        0.22955822268755055,
+        0.1637011536876074,
+        0.1369613570964621,
+        0.07662862565161518,
+        0.09289590607334833
+      ],
+      "converged": true
+    }
+  ],
+  "sensitivity": [
+    {
+      "name": "unweighted",
+      "features": [
+        "electricity_cost_concern",
+        "avoided_HVAC_for_cost",
+        "low_energy_discomfort",
+        "VPP_interest",
+        "automation_adoption_or_intent",
+        "health_impacts_energy_use",
+        "weekday_home_pattern",
+        "work_status",
+        "dependent_children",
+        "EV_home_charger"
+      ],
+      "fit": {
+        "k": 6,
+        "n": 4507,
+        "ll": -41288.18821034787,
+        "parameters": 179,
+        "bic": 84082.37269775737,
+        "aic": 82934.37642069574,
+        "soft_share": [
+          0.11904049877974793,
+          0.1955911603725532,
+          0.12513910739956674,
+          0.1616505727067597,
+          0.08854569156438542,
+          0.310032969176986
+        ],
+        "hard_n": [
+          508,
+          858,
+          635,
+          677,
+          334,
+          1495
+        ],
+        "mean_max_posterior": 0.8064333334531002,
+        "normalized_entropy": 0.7261613287450829,
+        "best_start_converged": true,
+        "best_start_iterations": 270,
+        "starts_within_1_loglik": 45,
+        "starts": [
+          {
+            "ll": -41288.18913895918,
+            "iterations": 365,
+            "converged": true
+          },
+          {
+            "ll": -41288.18895452062,
+            "iterations": 340,
+            "converged": true
+          },
+          {
+            "ll": -41288.18905215253,
+            "iterations": 318,
+            "converged": true
+          },
+          {
+            "ll": -41288.18904972229,
+            "iterations": 386,
+            "converged": true
+          },
+          {
+            "ll": -41288.18908875054,
+            "iterations": 326,
+            "converged": true
+          },
+          {
+            "ll": -41288.18898478383,
+            "iterations": 351,
+            "converged": true
+          },
+          {
+            "ll": -41288.18821034787,
+            "iterations": 270,
+            "converged": true
+          },
+          {
+            "ll": -41288.18901335907,
+            "iterations": 334,
+            "converged": true
+          },
+          {
+            "ll": -41288.188968680115,
+            "iterations": 394,
+            "converged": true
+          },
+          {
+            "ll": -41288.18891460343,
+            "iterations": 349,
+            "converged": true
+          },
+          {
+            "ll": -41288.18884800468,
+            "iterations": 393,
+            "converged": true
+          },
+          {
+            "ll": -41288.18893963977,
+            "iterations": 349,
+            "converged": true
+          },
+          {
+            "ll": -41382.260137677455,
+            "iterations": 851,
+            "converged": true
+          },
+          {
+            "ll": -41288.18910602112,
+            "iterations": 380,
+            "converged": true
+          },
+          {
+            "ll": -41288.18891654545,
+            "iterations": 358,
+            "converged": true
+          },
+          {
+            "ll": -41374.980738724036,
+            "iterations": 453,
+            "converged": true
+          },
+          {
+            "ll": -41288.18896513562,
+            "iterations": 333,
+            "converged": true
+          },
+          {
+            "ll": -41288.18876441169,
+            "iterations": 672,
+            "converged": true
+          },
+          {
+            "ll": -41288.189069773274,
+            "iterations": 321,
+            "converged": true
+          },
+          {
+            "ll": -41392.217972154205,
+            "iterations": 557,
+            "converged": true
+          },
+          {
+            "ll": -41288.18897425612,
+            "iterations": 326,
+            "converged": true
+          },
+          {
+            "ll": -41288.18889005277,
+            "iterations": 355,
+            "converged": true
+          },
+          {
+            "ll": -41288.1890133021,
+            "iterations": 340,
+            "converged": true
+          },
+          {
+            "ll": -41288.18902649658,
+            "iterations": 357,
+            "converged": true
+          },
+          {
+            "ll": -41288.18908906612,
+            "iterations": 324,
+            "converged": true
+          },
+          {
+            "ll": -41288.18894186037,
+            "iterations": 319,
+            "converged": true
+          },
+          {
+            "ll": -41288.18894647026,
+            "iterations": 371,
+            "converged": true
+          },
+          {
+            "ll": -41288.188961852415,
+            "iterations": 325,
+            "converged": true
+          },
+          {
+            "ll": -41288.18899159696,
+            "iterations": 351,
+            "converged": true
+          },
+          {
+            "ll": -41288.18890922858,
+            "iterations": 309,
+            "converged": true
+          },
+          {
+            "ll": -41288.189056873314,
+            "iterations": 304,
+            "converged": true
+          },
+          {
+            "ll": -41288.188941096734,
+            "iterations": 312,
+            "converged": true
+          },
+          {
+            "ll": -41288.18885133243,
+            "iterations": 372,
+            "converged": true
+          },
+          {
+            "ll": -41288.18904849155,
+            "iterations": 435,
+            "converged": true
+          },
+          {
+            "ll": -41288.189054402996,
+            "iterations": 338,
+            "converged": true
+          },
+          {
+            "ll": -41288.18886441933,
+            "iterations": 352,
+            "converged": true
+          },
+          {
+            "ll": -41288.18895762202,
+            "iterations": 391,
+            "converged": true
+          },
+          {
+            "ll": -41288.18911381119,
+            "iterations": 332,
+            "converged": true
+          },
+          {
+            "ll": -41288.189113061315,
+            "iterations": 357,
+            "converged": true
+          },
+          {
+            "ll": -41288.18899868181,
+            "iterations": 315,
+            "converged": true
+          },
+          {
+            "ll": -41288.18914967927,
+            "iterations": 374,
+            "converged": true
+          },
+          {
+            "ll": -41288.188744404295,
+            "iterations": 512,
+            "converged": true
+          },
+          {
+            "ll": -41288.1889835101,
+            "iterations": 322,
+            "converged": true
+          },
+          {
+            "ll": -41288.18901344517,
+            "iterations": 372,
+            "converged": true
+          },
+          {
+            "ll": -41288.18897005238,
+            "iterations": 348,
+            "converged": true
+          },
+          {
+            "ll": -41288.188892701626,
+            "iterations": 388,
+            "converged": true
+          },
+          {
+            "ll": -41288.18906609206,
+            "iterations": 409,
+            "converged": true
+          },
+          {
+            "ll": -41288.18895720898,
+            "iterations": 462,
+            "converged": true
+          }
+        ],
+        "best_start_continuation": null
+      },
+      "ARI_with_primary": 0.8200930953146016,
+      "aligned_share_using_official_weights": [
+        0.3007957373473496,
+        0.21206671693880966,
+        0.16921801214918483,
+        0.09895431586683136,
+        0.12520880679922358,
+        0.09375641089860101
+      ]
+    },
+    {
+      "name": "without_EV",
+      "features": [
+        "electricity_cost_concern",
+        "avoided_HVAC_for_cost",
+        "low_energy_discomfort",
+        "VPP_interest",
+        "automation_adoption_or_intent",
+        "health_impacts_energy_use",
+        "weekday_home_pattern",
+        "work_status",
+        "dependent_children"
+      ],
+      "fit": {
+        "k": 6,
+        "n": 4507,
+        "ll": -39846.002109730485,
+        "parameters": 167,
+        "bic": 81097.03985225031,
+        "aic": 80026.00421946097,
+        "soft_share": [
+          0.18489586101590696,
+          0.16686733386123,
+          0.12881140329124635,
+          0.16471019242939497,
+          0.26436998184531807,
+          0.09034522755690455
+        ],
+        "hard_n": [
+          829,
+          718,
+          643,
+          850,
+          1117,
+          350
+        ],
+        "mean_max_posterior": 0.7919210436790227,
+        "normalized_entropy": 0.7084171609657814,
+        "best_start_converged": true,
+        "best_start_iterations": 580,
+        "starts_within_1_loglik": 22,
+        "starts": [
+          {
+            "ll": -39846.00389656589,
+            "iterations": 832,
+            "converged": true
+          },
+          {
+            "ll": -39846.00388051268,
+            "iterations": 467,
+            "converged": true
+          },
+          {
+            "ll": -39846.00396696269,
+            "iterations": 512,
+            "converged": true
+          },
+          {
+            "ll": -39846.00389205561,
+            "iterations": 441,
+            "converged": true
+          },
+          {
+            "ll": -39846.00388348159,
+            "iterations": 409,
+            "converged": true
+          },
+          {
+            "ll": -39846.00388828613,
+            "iterations": 450,
+            "converged": true
+          },
+          {
+            "ll": -39846.002116547934,
+            "iterations": 496,
+            "converged": true
+          },
+          {
+            "ll": -39846.0039173097,
+            "iterations": 427,
+            "converged": true
+          },
+          {
+            "ll": -39846.003899659,
+            "iterations": 462,
+            "converged": true
+          },
+          {
+            "ll": -39846.00389477969,
+            "iterations": 433,
+            "converged": true
+          },
+          {
+            "ll": -39846.00389960274,
+            "iterations": 446,
+            "converged": true
+          },
+          {
+            "ll": -39846.00390233855,
+            "iterations": 515,
+            "converged": true
+          },
+          {
+            "ll": -39914.55993252025,
+            "iterations": 640,
+            "converged": true
+          },
+          {
+            "ll": -39846.003953167616,
+            "iterations": 581,
+            "converged": true
+          },
+          {
+            "ll": -39846.00393627989,
+            "iterations": 434,
+            "converged": true
+          },
+          {
+            "ll": -39846.002109730485,
+            "iterations": 580,
+            "converged": true
+          },
+          {
+            "ll": -39914.55896991065,
+            "iterations": 590,
+            "converged": true
+          },
+          {
+            "ll": -39846.00388590738,
+            "iterations": 424,
+            "converged": true
+          },
+          {
+            "ll": -39846.00387781374,
+            "iterations": 512,
+            "converged": true
+          },
+          {
+            "ll": -39846.00382208281,
+            "iterations": 420,
+            "converged": true
+          },
+          {
+            "ll": -39846.00397235708,
+            "iterations": 560,
+            "converged": true
+          },
+          {
+            "ll": -39846.0039355998,
+            "iterations": 379,
+            "converged": true
+          },
+          {
+            "ll": -39846.00390251653,
+            "iterations": 601,
+            "converged": true
+          },
+          {
+            "ll": -39846.00393269905,
+            "iterations": 547,
+            "converged": true
+          }
+        ],
+        "best_start_continuation": null
+      },
+      "ARI_with_primary": 0.8035058524179083,
+      "aligned_share_using_official_weights": [
+        0.2581938482240034,
+        0.20000701833130047,
+        0.17496394547795788,
+        0.14531487216165767,
+        0.12685560672529644,
+        0.09466470907978426
+      ]
+    },
+    {
+      "name": "work_location_instead_of_status",
+      "features": [
+        "electricity_cost_concern",
+        "avoided_HVAC_for_cost",
+        "low_energy_discomfort",
+        "VPP_interest",
+        "automation_adoption_or_intent",
+        "health_impacts_energy_use",
+        "weekday_home_pattern",
+        "dependent_children",
+        "EV_home_charger",
+        "work_location"
+      ],
+      "fit": {
+        "k": 6,
+        "n": 4507,
+        "ll": -39720.63126439025,
+        "parameters": 155,
+        "bic": 80745.33751729755,
+        "aic": 79751.2625287805,
+        "soft_share": [
+          0.13565257904031583,
+          0.13514091990324537,
+          0.1526185962489302,
+          0.19199550951763625,
+          0.23073584119936583,
+          0.15385655409050522
+        ],
+        "hard_n": [
+          618,
+          573,
+          758,
+          827,
+          1078,
+          653
+        ],
+        "mean_max_posterior": 0.7751817436943182,
+        "normalized_entropy": 0.6796418674962714,
+        "best_start_converged": true,
+        "best_start_iterations": 323,
+        "starts_within_1_loglik": 21,
+        "starts": [
+          {
+            "ll": -39720.63159695281,
+            "iterations": 381,
+            "converged": true
+          },
+          {
+            "ll": -39720.63231158005,
+            "iterations": 355,
+            "converged": true
+          },
+          {
+            "ll": -39720.63168552758,
+            "iterations": 846,
+            "converged": true
+          },
+          {
+            "ll": -39720.63134078453,
+            "iterations": 460,
+            "converged": true
+          },
+          {
+            "ll": -39720.63267394596,
+            "iterations": 307,
+            "converged": true
+          },
+          {
+            "ll": -39720.63148378554,
+            "iterations": 307,
+            "converged": true
+          },
+          {
+            "ll": -39720.631539926944,
+            "iterations": 348,
+            "converged": true
+          },
+          {
+            "ll": -39720.6315683627,
+            "iterations": 507,
+            "converged": true
+          },
+          {
+            "ll": -39720.63147689117,
+            "iterations": 338,
+            "converged": true
+          },
+          {
+            "ll": -39720.63141205332,
+            "iterations": 314,
+            "converged": true
+          },
+          {
+            "ll": -39720.63153187745,
+            "iterations": 333,
+            "converged": true
+          },
+          {
+            "ll": -39720.63126439025,
+            "iterations": 323,
+            "converged": true
+          },
+          {
+            "ll": -39720.63160680329,
+            "iterations": 324,
+            "converged": true
+          },
+          {
+            "ll": -39720.63161042723,
+            "iterations": 343,
+            "converged": true
+          },
+          {
+            "ll": -39789.375945646134,
+            "iterations": 392,
+            "converged": true
+          },
+          {
+            "ll": -39720.63167123281,
+            "iterations": 370,
+            "converged": true
+          },
+          {
+            "ll": -39789.37549778158,
+            "iterations": 410,
+            "converged": true
+          },
+          {
+            "ll": -39720.63158154195,
+            "iterations": 383,
+            "converged": true
+          },
+          {
+            "ll": -39720.63158343025,
+            "iterations": 322,
+            "converged": true
+          },
+          {
+            "ll": -39720.63159551479,
+            "iterations": 308,
+            "converged": true
+          },
+          {
+            "ll": -39720.63149838931,
+            "iterations": 389,
+            "converged": true
+          },
+          {
+            "ll": -39720.63128745318,
+            "iterations": 293,
+            "converged": true
+          },
+          {
+            "ll": -39789.379050251606,
+            "iterations": 433,
+            "converged": true
+          },
+          {
+            "ll": -39720.631513409004,
+            "iterations": 349,
+            "converged": true
+          }
+        ],
+        "best_start_continuation": null
+      },
+      "ARI_with_primary": 0.48819282611078896,
+      "aligned_share_using_official_weights": [
+        0.14977357086093682,
+        0.25114340681715813,
+        0.1629703850995843,
+        0.11351800020621272,
+        0.13499746236413943,
+        0.18759717465196862
+      ]
+    },
+    {
+      "name": "background_only",
+      "features": [
+        "health_impacts_energy_use",
+        "weekday_home_pattern",
+        "work_status",
+        "dependent_children",
+        "EV_home_charger"
+      ],
+      "fit": {
+        "k": 6,
+        "n": 4507,
+        "ll": -15963.593072875923,
+        "parameters": 83,
+        "bic": 32625.49726863517,
+        "aic": 32093.186145751846,
+        "soft_share": [
+          0.052134323543770386,
+          0.22092828795432334,
+          0.02510599965896222,
+          0.2846028688538795,
+          0.2345017303278471,
+          0.18272678966122463
+        ],
+        "hard_n": [
+          266,
+          919,
+          138,
+          1482,
+          1095,
+          607
+        ],
+        "mean_max_posterior": 0.8144481452865129,
+        "normalized_entropy": 0.7464720841480467,
+        "best_start_converged": true,
+        "best_start_iterations": 1035,
+        "starts_within_1_loglik": 17,
+        "starts": [
+          {
+            "ll": -15964.047879619067,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15963.87556495965,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15963.91054253713,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15963.611527014391,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15964.631836911843,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15964.463551715175,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15970.276258534726,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15964.573686932912,
+            "iterations": 1162,
+            "converged": true
+          },
+          {
+            "ll": -15973.248676326988,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15963.615819765499,
+            "iterations": 1050,
+            "converged": true
+          },
+          {
+            "ll": -15963.816426000027,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15964.297102945016,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15963.813481796098,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15970.486440207676,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15964.634952486807,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15967.786243541717,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15963.593072875923,
+            "iterations": 1035,
+            "converged": true
+          },
+          {
+            "ll": -15963.683256178241,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15963.872221043683,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15964.38583593769,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15964.098196625078,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15967.81017924047,
+            "iterations": 1158,
+            "converged": true
+          },
+          {
+            "ll": -15963.994661610473,
+            "iterations": 1200,
+            "converged": false
+          },
+          {
+            "ll": -15964.58959219067,
+            "iterations": 1133,
+            "converged": true
+          }
+        ],
+        "best_start_continuation": null
+      },
+      "ARI_with_primary": 0.2875851889685819,
+      "aligned_share_using_official_weights": [
+        0.21980318183008757,
+        0.02708410466674965,
+        0.30370517902334465,
+        0.21043610704226473,
+        0.17900625055153788,
+        0.05996517688601561
+      ]
+    }
+  ],
+  "holdout": [
+    {
+      "split": 0,
+      "train_n": 3605,
+      "test_n": 902,
+      "mean_test_loglik": {
+        "weighted_fit": -9.167276581703621,
+        "unweighted_fit": -9.158927968080038
+      }
+    },
+    {
+      "split": 1,
+      "train_n": 3605,
+      "test_n": 902,
+      "mean_test_loglik": {
+        "weighted_fit": -9.257357857734238,
+        "unweighted_fit": -9.271700637340903
+      }
+    },
+    {
+      "split": 2,
+      "train_n": 3605,
+      "test_n": 902,
+      "mean_test_loglik": {
+        "weighted_fit": -9.196667379666357,
+        "unweighted_fit": -9.199562859633286
+      }
+    }
+  ],
+  "production_changes": false,
+  "EP_runs": 0,
+  "one_class_closed_form_likelihood_error": 7.275957614183426e-12,
+  "bootstrap_summary": {
+    "median_ari": 0.6909555127312725,
+    "min_ari": 0.4939753057424185,
+    "share_interval_2p5_97p5": [
+      [
+        0.19427670295861937,
+        0.3372500618590035
+      ],
+      [
+        0.17191449761125469,
+        0.2322276691591785
+      ],
+      [
+        0.1509036955208475,
+        0.19632609271474902
+      ],
+      [
+        0.09521810389764918,
+        0.18184842727350375
+      ],
+      [
+        0.08109074307300489,
+        0.19349039001067805
+      ],
+      [
+        0.05012879463277926,
+        0.17153220512772271
+      ]
+    ]
+  },
+  "ARI_with_previous_attitude_only_six": 0.256639765110601,
+  "previous_model_overlap_weighted": [
+    [
+      0.1642773753432076,
+      0.039543444038805775,
+      0.01348554589055459,
+      0.031228096119476457,
+      0.012111707838309201,
+      0.006401734562647385
+    ],
+    [
+      0.10153421547337675,
+      0.07165434241698117,
+      0.008378574906211684,
+      0.010933359492934764,
+      0.003707501401509,
+      0.011634877692205744
+    ],
+    [
+      0.02822024203158029,
+      0.004987319061537986,
+      0.002496910092278303,
+      0.006181160711213619,
+      0.04955283614549244,
+      0.08585275210321261
+    ],
+    [
+      0.022813937591194596,
+      0.0018205341647394672,
+      0.03290641163164378,
+      0.04460398247656667,
+      0.022808778271735306,
+      0.0024764050293493156
+    ],
+    [
+      0.011980860969563495,
+      0.002393933367430724,
+      0.002387474358499513,
+      0.014643808468223354,
+      0.03499552936376004,
+      0.058343505588588425
+    ],
+    [
+      0.047188057103491686,
+      0.01759601085768908,
+      0.005025835355627806,
+      0.011176311566315619,
+      0.00595190600880014,
+      0.008704722505245514
+    ]
+  ]
+}

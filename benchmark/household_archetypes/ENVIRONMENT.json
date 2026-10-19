@@ -1,0 +1,15 @@
+{
+  "python": "3.14.3",
+  "packages": {
+    "numpy": "2.5.2",
+    "pandas": "3.0.3",
+    "scipy": "1.17.1",
+    "scikit-learn": "1.9.0",
+    "threadpoolctl": "3.6.0",
+    "openpyxl": "3.1.5",
+    "pyreadstat": "1.3.6"
+  },
+  "pyreadstat_note": "Original Dutch replay imports pyreadstat from the research cache pydeps when supplied, or the installed environment; see requirements-research.txt",
+  "new_models_or_feature_choices": 0,
+  "frozen_eCAPE_model_refits_for_publication": 1
+}

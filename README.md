@@ -18,6 +18,10 @@
 
 [完整生成规则](benchmark/GENERATION.md) · [数据卡](benchmark/DATASET_CARD.md) · [采集质控](benchmark/COLLECTION.md) · [评测边界](benchmark/EVALUATION.md) · [复现步骤](benchmark/REPRODUCTION.md)
 
+## 家庭六类偏好方法
+
+[第一条方法主线 v1](benchmark/household_archetypes/README.md)固定EB六类的来源，逐类区分外部问卷依据、实验设定与实际验证结果，公开EB实验构成的配额计算、原始输入版本/哈希、离线重放及论文方法表述。外部调查支持相关特征与部分组合，不代表完整六类或人口比例已验证；拟议配额尚未应用于现有50/1000户，当前家庭、排程、仿真、费用和线上版本保持，1000户仿真继续暂停。
+
 ## 独立住房与仿真生成
 
 [住房生成模块](benchmark/housing_simulation/README.md)提供不依赖历史1000户的完整物理构造流程：参考外壳、成员与设备自动装配、日历和服务绑定、A/B编译、EnergyPlus运行及统一审计。公开非空实例可复现三种家庭场景；输入Schema、算法、来源依据、项目规则及验证结果对应发布。该构造模块与上表中的既有数据集版本分别管理。新版补充中国户型来源域、活动负荷、联合安装求解、压力网络结构比较，以及先登记的敏感性与数值收敛流程；方法采用范围与项目设定逐项说明。

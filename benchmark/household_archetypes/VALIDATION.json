@@ -1,0 +1,51 @@
+{
+  "schema": "eb.household_archetypes.validation.v1",
+  "date": "2026-10-19",
+  "scope": "Method source/integer calculation/aggregate reproduction; not human preference validation",
+  "EB_participants_raw_hash_and_unique_counts_verified": true,
+  "EB_participants": 584,
+  "proposed_allocation_recomputed_from_EB_raw": true,
+  "construct_replay": {
+    "schema": "eb.household_archetypes.replay.v1",
+    "constructs_match": {
+      "RESULTS.json": true,
+      "EXTERNAL_CONSTRUCTS.json": true
+    },
+    "refit_requested": null,
+    "production_changes": false,
+    "EP_runs": 0
+  },
+  "frozen_eCAPE_refit": {
+    "schema": "eb.household_archetypes.replay.v1",
+    "constructs_match": {
+      "RESULTS.json": true,
+      "EXTERNAL_CONSTRUCTS.json": true
+    },
+    "refit_requested": "ecape",
+    "production_changes": false,
+    "EP_runs": 0,
+    "refit_result_matches_frozen_numeric_tolerance1e_10": true
+  },
+  "selected_existing_source_and_pointer_files_unchanged": {
+    "README.md": "4103784a34ad841ae311ac5f4873a19968835e80ae11c1932cf8d4f785437040",
+    "THIRD_PARTY.md": "ea3db619ed58ed96dd4500ceb7a6b95728d09ed841afa43d59a163f3e8b9a0dd",
+    "docs/README.md": "a55a52728a81f669763fbb03c11cb4fca9c43e39b64be72b0556428d5385e0f8",
+    "realtime_pilot/server.py": "4f5637a5e2750c54375c50ea93c63ca7e7a42fd59194b201cb0d7c8d647ee149",
+    "realtime_pilot/role_ten_day.py": "60b45062a80ff649358cd141e3f48e01b481fddb3fbb40446939e2bee9160a3e",
+    "realtime_pilot/static/index.html": "c726538d3392df5bec1456734a85b995ad0b3f39ab97a248ca49ef12489410d8",
+    "realtime_pilot/static/plan-view.js": "45e148ddabb0cd19db4b4f08851f60c3c0201e28088b44cf34a29a941b58166c",
+    "realtime_pilot/static/style.css": "e00d0c00f6d8cccc9c106a18be2a525e0fac1c0ca461a1ee9232597e929752df",
+    "docs/household1000/CURRENT_AB.json": "88b55c16a29c2919cdbc151879457629f57b722d24da11abc09bc2f3941203c2",
+    "docs/household1000/CURRENT_PHYSICAL50.json": "d484025472a8f88b3bdbef74d2f781a7abaa2dc1397da77fd7db604a24333ebc"
+  },
+  "existing_data_migrated": false,
+  "new_human_labels": 0,
+  "EP_runs": 0,
+  "deployed": false,
+  "does_not_claim": [
+    "archetype/population validity",
+    "representative prevalence",
+    "full1000 physical acceptance",
+    "human benchmark scores"
+  ]
+}

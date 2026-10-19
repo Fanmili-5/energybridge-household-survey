@@ -1,0 +1,362 @@
+{
+  "schema": "eb.household_archetypes.evidence.v1",
+  "date": "2026-10-19",
+  "interpretation": "Our construct-level reanalysis, not source-author EB clusters or population prevalence",
+  "ECA": {
+    "n": 4507,
+    "routing": {
+      "Q59_battery_nonmember": 420,
+      "Q79_tou_demand_or_solar": 2501,
+      "Q213_actual_main_EV_home_chargers": 202
+    },
+    "patterns_not_role_prevalences": {
+      "A_related_observed_combination": {
+        "n_true": 1028,
+        "n_false": 2437,
+        "n_unobserved": 1042,
+        "n_observed": 3465,
+        "reference_weight_sum": 4507.0,
+        "known_weight_fraction": 0.7658098233791938,
+        "weighted_positive_fraction_observed_only": 0.20541851780511397,
+        "weighted_positive_fraction_among_observed": 0.2682369846062946
+      },
+      "B_related_observed_combination": {
+        "n_true": 309,
+        "n_false": 4198,
+        "n_unobserved": 0,
+        "n_observed": 4507,
+        "reference_weight_sum": 4507.0,
+        "known_weight_fraction": 1.0,
+        "weighted_positive_fraction_observed_only": 0.0758296788886249,
+        "weighted_positive_fraction_among_observed": 0.0758296788886249
+      },
+      "C_control_caution_only_not_complete_role": {
+        "n_true": 166,
+        "n_false": 254,
+        "n_unobserved": 4087,
+        "n_observed": 420,
+        "reference_weight_sum": 4507.0,
+        "known_weight_fraction": 0.08473933056113882,
+        "weighted_positive_fraction_observed_only": 0.03305264447829107,
+        "weighted_positive_fraction_among_observed": 0.39005080945788007
+      },
+      "D_related_observed_combination": {
+        "n_true": 704,
+        "n_false": 3803,
+        "n_unobserved": 0,
+        "n_observed": 4507,
+        "reference_weight_sum": 4507.0,
+        "known_weight_fraction": 1.0,
+        "weighted_positive_fraction_observed_only": 0.13861903944769308,
+        "weighted_positive_fraction_among_observed": 0.13861903944769308
+      },
+      "E_related_observed_combination": {
+        "n_true": 373,
+        "n_false": 4134,
+        "n_unobserved": 0,
+        "n_observed": 4507,
+        "reference_weight_sum": 4507.0,
+        "known_weight_fraction": 1.0,
+        "weighted_positive_fraction_observed_only": 0.09207741298470029,
+        "weighted_positive_fraction_among_observed": 0.09207741298470029
+      },
+      "F_related_observed_combination": {
+        "n_true": 106,
+        "n_false": 4394,
+        "n_unobserved": 7,
+        "n_observed": 4500,
+        "reference_weight_sum": 4507.0,
+        "known_weight_fraction": 0.9984406949247805,
+        "weighted_positive_fraction_observed_only": 0.019020157400762096,
+        "weighted_positive_fraction_among_observed": 0.019049861947178563
+      }
+    },
+    "pairwise_pattern_overlap_raw_n": {
+      "A_related_observed_combination & B_related_observed_combination": 15,
+      "A_related_observed_combination & C_control_caution_only_not_complete_role": 60,
+      "A_related_observed_combination & D_related_observed_combination": 279,
+      "A_related_observed_combination & E_related_observed_combination": 79,
+      "A_related_observed_combination & F_related_observed_combination": 48,
+      "B_related_observed_combination & C_control_caution_only_not_complete_role": 16,
+      "B_related_observed_combination & D_related_observed_combination": 0,
+      "B_related_observed_combination & E_related_observed_combination": 72,
+      "B_related_observed_combination & F_related_observed_combination": 0,
+      "C_control_caution_only_not_complete_role & D_related_observed_combination": 45,
+      "C_control_caution_only_not_complete_role & E_related_observed_combination": 21,
+      "C_control_caution_only_not_complete_role & F_related_observed_combination": 19,
+      "D_related_observed_combination & E_related_observed_combination": 0,
+      "D_related_observed_combination & F_related_observed_combination": 51,
+      "E_related_observed_combination & F_related_observed_combination": 4
+    },
+    "fixed_six_bootstrap_summary": {
+      "median_ari": 0.6909555127312725,
+      "min_ari": 0.4939753057424185,
+      "share_interval_2p5_97p5": [
+        [
+          0.19427670295861937,
+          0.3372500618590035
+        ],
+        [
+          0.17191449761125469,
+          0.2322276691591785
+        ],
+        [
+          0.1509036955208475,
+          0.19632609271474902
+        ],
+        [
+          0.09521810389764918,
+          0.18184842727350375
+        ],
+        [
+          0.08109074307300489,
+          0.19349039001067805
+        ],
+        [
+          0.05012879463277926,
+          0.17153220512772271
+        ]
+      ]
+    },
+    "weights": "Official ECA weights; raw counts are unweighted"
+  },
+  "iFlex": {
+    "source": "https://zenodo.org/records/8248802",
+    "same_participants_joined_n": 800,
+    "bills_motivation_n": 408,
+    "comfort_protection_motivation_n": 298,
+    "automatic_action_motivation_n": 374,
+    "grid_development_motivation_n": 88,
+    "bills_and_comfort_same_person_n": 149,
+    "comfortable_conditions_and_usually_home_n": 141,
+    "grid_and_automation_investment_willingness_n": 57,
+    "interpretation": "Direct same-person motives for four-hour winter DR are stronger evidence than ECA cost pressure alone. Motives are multi-select, not six classes. No population weights; no Chinese or EB six proportions. Aq2 English blank combines a legitimate Norwegian neutral category with other possible blanks, so it is not recoded as measured comfort priority."
+  },
+  "iFlex_clustering": {
+    "n": 800,
+    "selected_k": 2,
+    "fixed_six_bootstrap_summary": {
+      "median_ari": 0.3417075058451958,
+      "min_ari": 0.1389143908737575,
+      "share_interval_2p5_97p5": [
+        [
+          0.03083054333076289,
+          0.24880755286454465
+        ],
+        [
+          0.10561013090795414,
+          0.4522957663061828
+        ],
+        [
+          0.03621306203238934,
+          0.1535554584160051
+        ],
+        [
+          0.03616472198387424,
+          0.23802766470946646
+        ],
+        [
+          0.18829840203005768,
+          0.5025542866896017
+        ],
+        [
+          0.030004673183322655,
+          0.09114802957744529
+        ]
+      ]
+    }
+  },
+  "Dutch": {
+    "construct_linkage": {
+      "source": "https://doi.org/10.4121/4e223727-d29b-4ffb-80fa-9087f0d29766.v1",
+      "n": 1678,
+      "branches": {
+        "EV": {
+          "routine_field": "Q29_5",
+          "control_field": "Q34_7",
+          "routine_original_label": "Geef steeds aan in hoeverre de stelling op jou van toepassing is. - Er zit weinig regelmaat in het moment waarop ik de auto laad",
+          "control_original_label": "Geef aan in hoeverre je het eens bent met onderstaande stellingen. Is wat er in de stelling genoemd wordt voor jou een drempel om de auto te laden in de daluren?\n\n\tdaluren zijn vóór 16.00 uur en ná 21.00 uur. \n\n\n\nBlijf je ervan bewust van dat er geen goede of foute antwoorden zijn, het gaat om je eigen ervaring. - Drempel: dat het automatische regelsysteem mij als gebruiker weinig vrijheid laat",
+          "routine_valid_n": 141,
+          "routine_low_regularity4or5_n": 50,
+          "control_valid_n": 37,
+          "control_concern5to7_n": 22,
+          "both_observed_n": 29,
+          "both_positive_n": 10
+        },
+        "laundry": {
+          "routine_field": "Q48_5",
+          "control_field": "Q53_7",
+          "routine_original_label": "Geef steeds aan in hoeverre de stelling op jou van toepassing is. - Er zit weinig regelmaat in het moment waarop ik de was doe",
+          "control_original_label": "Geef aan in hoeverre je het eens bent met onderstaande stellingen. Is wat er in de stelling genoemd wordt voor jou een drempel om de was in de daluren te doen?\n\n\tdaluren zijn vóór 16.00 uur en ná 21.00 uur. \n\n\n\nBlijf je ervan bewust van dat er geen goede of foute antwoorden zijn, het gaat om je eigen ervaring. - Drempel: dat het automatische regelsysteem mij als gebruiker weinig vrijheid laat",
+          "routine_valid_n": 529,
+          "routine_low_regularity4or5_n": 155,
+          "control_valid_n": 13,
+          "control_concern5to7_n": 3,
+          "both_observed_n": 11,
+          "both_positive_n": 1
+        },
+        "dishwasher": {
+          "routine_field": "Q63_5",
+          "control_field": "Q68_7",
+          "routine_original_label": "Geef steeds aan in hoeverre de stelling op jou van toepassing is. - Er zit weinig regelmaat in het moment waarop ik de vaatwasser laat draaien",
+          "control_original_label": "Geef aan in hoeverre je het eens bent met onderstaande stellingen. Is wat er in de stelling genoemd wordt voor jou een drempel om de vaatwasser in de daluren te starten? \n\n\tdaluren zijn vóór 16.00 uur en ná 21.00 uur. \n\n\n\nBlijf je ervan bewust van dat er geen goede of foute antwoorden zijn, het gaat om je eigen ervaring. - Drempel: dat het automatische regelsysteem mij als gebruiker weinig vrijheid laat",
+          "routine_valid_n": 701,
+          "routine_low_regularity4or5_n": 220,
+          "control_valid_n": 27,
+          "control_concern5to7_n": 8,
+          "both_observed_n": 25,
+          "both_positive_n": 4
+        }
+      },
+      "interpretation": "Actual low regularity and perceived loss of freedom due to automatic control can be co-observed. Control-barrier items are conditional on HEMS and randomized item routing. No population weights; no EB six prevalence claimed.",
+      "both_observed_unique_n": 65,
+      "both_positive_unique_n": 15
+    },
+    "clustering_n": 1350,
+    "selected_k": 3,
+    "fixed_six_bootstrap_summary": {
+      "median_ari": 0.4432481712603805,
+      "min_ari": 0.3230967107453157,
+      "share_interval_2p5_97p5": [
+        [
+          0.0361135248408512,
+          0.22377435543615773
+        ],
+        [
+          0.06467941696313545,
+          0.29231306822206027
+        ],
+        [
+          0.0578911741119077,
+          0.16382866045785688
+        ],
+        [
+          0.13535912703284306,
+          0.2343116210172638
+        ],
+        [
+          0.12894565266833438,
+          0.33900565176898917
+        ],
+        [
+          0.11617095441638955,
+          0.3577776992483844
+        ]
+      ]
+    }
+  },
+  "eCAPE": {
+    "n": 1022,
+    "fixed_k": 6,
+    "class_shares": {
+      "H1": 0.34270930158986285,
+      "H2": 0.18959766445419138,
+      "H3": 0.18658341308499943,
+      "H4": 0.13708628563754668,
+      "H5": 0.08946842516814553,
+      "H6": 0.05455491006525407
+    },
+    "bootstrap_summary": {
+      "median_ARI": 0.3427955915174751,
+      "min_ARI": 0.2270515172618753,
+      "share_resample_interval2p5_97p5_not_population_CI": [
+        [
+          0.1150408105129253,
+          0.37843673106510806
+        ],
+        [
+          0.11811763499734684,
+          0.3316697283200965
+        ],
+        [
+          0.04173068556215032,
+          0.23271399392801387
+        ],
+        [
+          0.060092388561955264,
+          0.28110882769914985
+        ],
+        [
+          0.07236804129900745,
+          0.23097624346926912
+        ],
+        [
+          0.017449489669461304,
+          0.26137930497235157
+        ]
+      ]
+    },
+    "sensitivities": [
+      {
+        "name": "without_EV",
+        "features": [
+          "weekday_regularity",
+          "job_related_routine_changes",
+          "routine_interruptions",
+          "external_fixed_schedule",
+          "weekday_awake_home_hours",
+          "care_activity_two_days",
+          "smart_heat_use"
+        ],
+        "ARI": 0.8672931676505412,
+        "aligned_share": [
+          0.37758001801543034,
+          0.16977348618815435,
+          0.17768100706722978,
+          0.1540090019811911,
+          0.08089799132708647,
+          0.04005849542090801
+        ],
+        "converged": true
+      },
+      {
+        "name": "routines_only",
+        "features": [
+          "weekday_regularity",
+          "job_related_routine_changes",
+          "routine_interruptions",
+          "external_fixed_schedule"
+        ],
+        "ARI": 0.6508881210759037,
+        "aligned_share": [
+          0.2182271202718495,
+          0.3790923287238478,
+          0.08397456803096548,
+          0.1584633609892744,
+          0.10873887701469304,
+          0.051503744969369804
+        ],
+        "converged": true
+      },
+      {
+        "name": "home_hours_edges10_14",
+        "features": [
+          "weekday_regularity",
+          "job_related_routine_changes",
+          "routine_interruptions",
+          "external_fixed_schedule",
+          "weekday_awake_home_hours",
+          "care_activity_two_days",
+          "smart_heat_use",
+          "EV_ownership"
+        ],
+        "ARI": 0.8765716917603994,
+        "aligned_share": [
+          0.3247308424705185,
+          0.21028600362693683,
+          0.17868980218186212,
+          0.14399013021004362,
+          0.08484936522169781,
+          0.0574538562889411
+        ],
+        "converged": true
+      }
+    ],
+    "weights": "Unit weights; sample shares only",
+    "supports": "Routine variability, care activity and coarse home/device context; not full EB preferences"
+  },
+  "production_changes": false,
+  "new_acceptance_labels": 0,
+  "EP_runs": 0,
+  "proposed_allocation_applied": false
+}

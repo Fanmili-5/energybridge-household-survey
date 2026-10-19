@@ -1,0 +1,49 @@
+{
+  "schema": "eb.household_archetypes.policy.v1",
+  "method_version": "household-archetypes-v1",
+  "date": "2026-10-19",
+  "status": "method_frozen_existing_data_unchanged",
+  "EB_source": {
+    "commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+    "participants_url": "https://raw.githubusercontent.com/Agentic-Intelligence-Lab/EnergyBridge/2b17ae63e613da776c93e900f5dace50d63a88a8/human_roleplay_data/data/participants.csv",
+    "participants_sha256": "161bdce743fc12b60017041fda4c58029938a4f3bb14b4c82db04e018bdbb08b",
+    "participants_total": 584,
+    "unique_id_field": "participant_id",
+    "assigned_role_field": "persona",
+    "assigned_role_counts": {
+      "A": 97,
+      "B": 116,
+      "C": 73,
+      "D": 88,
+      "E": 91,
+      "F": 119
+    }
+  },
+  "archetypes": {
+    "A": "费用敏感的务实通勤者",
+    "B": "经常居家、舒适优先",
+    "C": "作息变化、自动控制谨慎",
+    "D": "日程稳定、合作与自动化开放",
+    "E": "照护优先",
+    "F": "EV通勤优化"
+  },
+  "allocation_rule": "Hamilton largest remainder using exact rational arithmetic; ties A-F; subset from integer master quotas",
+  "external_validation_scope": "Specific constructs and same-respondent co-occurrence; exploratory clusters not EB class truth or population shares",
+  "not_estimated": [
+    "Chinese or other population prevalence of EB six",
+    "Complete joint archetype validity",
+    "Case-level acceptance or generic acceptance priors",
+    "Monetary comfort-utility weights"
+  ],
+  "current_data_migration": false,
+  "household_generation_invoked": false,
+  "new_acceptance_labels": 0,
+  "EP_runs": 0,
+  "deployment": false,
+  "future_evaluation_plan": [
+    "per_archetype",
+    "equal_archetype_weighted_mean",
+    "whole_cohort"
+  ],
+  "expert_process": "EB origin reported as expert-discussed by project author; public roles checked, no independent expert-process validation here"
+}
