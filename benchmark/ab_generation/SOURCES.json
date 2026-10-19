@@ -141,6 +141,37 @@
       "supports": "multi-attribute multi-level factorial vignettes and limited respondent burden;not our ten days, dose values, quotas,or orthogonality",
       "title": "Can reduction of local carbon emissions motivate participation in demand-side flexibility programs? Evidence from the United Kingdom.",
       "url": "https://pure.hw.ac.uk/ws/portalfiles/portal/147868180/1-s2.0-S030626192500340X-main.pdf"
+    },
+    {
+      "id": "Auspurg2009Plausibility",
+      "authors": [
+        "Katrin Auspurg",
+        "Thomas Hinz",
+        "Stefan Liebig"
+      ],
+      "year": 2009,
+      "title": "Complexity, Learning Effects and Plausibility of Vignettes in the Factorial Survey Design",
+      "doi": "10.12758/mda.2009.003",
+      "url": "https://majournals.bib.uni-mannheim.de/mda/article/view/2009.003",
+      "accessed": "2026-10-20",
+      "supports": "experimental evidence that high complexity and implausible cases can reduce the dimensions considered;motivates separating malformed engineering requests;does not prescribe our admission whitelist or category proportions",
+      "reading_scope": "primary_journal_record_and_abstract"
+    },
+    {
+      "id": "Ribeiro2020CheckList",
+      "authors": [
+        "Marco Tulio Ribeiro",
+        "Tongshuang Wu",
+        "Carlos Guestrin",
+        "Sameer Singh"
+      ],
+      "year": 2020,
+      "title": "Beyond Accuracy: Behavioral Testing of NLP Models with CheckList",
+      "doi": "10.18653/v1/2020.acl-main.442",
+      "url": "https://aclanthology.org/2020.acl-main.442/",
+      "accessed": "2026-10-20",
+      "supports": "capability-by-test-type diagnostic accounting;engineering tests retained separately from respondent cases;not our dose levels or sampling proportions",
+      "reading_scope": "primary_ACL_record_and_abstract"
     }
   ],
   "inherited_contract": {
@@ -440,5 +471,24 @@
       "validation/gap_supplement/FINAL_INDEX_EQUIVALENCE.json"
     ],
     "bounds": "10 strata met;218/421 available one/two-axis level combinations covered;no full covering-array,probability-sampling or physical/human validity claim;all invalid and prior failures retained"
+  },
+  "collection_admission_v2": {
+    "method": "COLLECTION_METHOD.md",
+    "implementation": [
+      "collection_admission.py",
+      "collection_candidates.py",
+      "collection_assignment.py"
+    ],
+    "basis": [
+      "ORToolsJobShop",
+      "ApaydinOzkan2021",
+      "Auspurg2009Plausibility",
+      "Ribeiro2020CheckList",
+      "NISTIR7878",
+      "SciPyMILPCollection"
+    ],
+    "boundary": "constructive precedence and hardware admissibility;raw engineering ledger;service-conflict and zero/opposing requests retained;no outcome reroll or class proportions",
+    "historical_pilot": "validation/collection;git74531e58ace3a5a971f939086f6536465c520825",
+    "new_pilot": "validation/collection_v2"
   }
 }

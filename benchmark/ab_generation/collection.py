@@ -14,6 +14,7 @@ from .energy import task_power
 from .generate import event_energy
 from .model import apply
 from .power import ev_profile
+from .collection_admission import engineering_issues
 from .sampling import command_hash
 
 HERE=Path(__file__).parent
@@ -66,6 +67,9 @@ def review(c,row):
     known=event_energy(before,event)-event_energy(after,event)
     failures=[]
     if gate:failures.append('IMMUTABLE_GATE')
+    logic=engineering_issues(c,b,row['program_needs'],actual)
+    if logic or row.get('engineering_issues',[])!=logic:
+        failures.append('COLLECTION_ENGINEERING_ADMISSION_FAILED')
     if actual!=row['issues']:failures.append('FULL_PLAN_ISSUE_MISMATCH')
     if abs(known-row['known_event_reduction_kWh'])>1e-8:failures.append('EVENT_PROFILE_INTEGRATION_MISMATCH')
     if row['actual_outcomes'] is not None or row['human_acceptance'] is not None:failures.append('INVENTED_OUTCOME')
@@ -90,6 +94,7 @@ def review(c,row):
     if command_hash(apply(working_context(c)['A'],row['patches']))!=row['working_B_sha256']:
         failures.append('PATCH_BINDING_MISMATCH')
     return {'passed':not failures,'failed_checks':failures,'expected_issues':row['issues'],
+        'engineering_issues':logic,
         'recomputed_issues':actual,'known_event_reduction_kWh':known,'power_status':power['status'],
         'A_commands_sha256':command_hash(c['A']),'B_commands_sha256':command_hash(b),
         'scope':'full_A_static_and_independent_analytic_event_integration;not_physical_execution'},b
@@ -103,6 +108,7 @@ def _projection(c,row,b,check):
     return {'id':row['id'],'household_id':c['household_id'],'date':c['date'],'events':c['events'],
         'A':clip(c['A']),'B':clip(b),'components':row['components'],'features':row['features'],
         'issues':row['issues'],'known_event_reduction_kWh':row['known_event_reduction_kWh'],
+        'engineering_issues':row.get('engineering_issues',[]),
         'unknown_thermal_response':row['unknown_thermal_response'],'full_plan_audit':check,
         'presentation_scope_min':[lo,hi],'full_A_and_B_retained_in_build':True,
         'physical_status':'not_run','actual_cost':None,'actual_temperature':None,
@@ -110,14 +116,16 @@ def _projection(c,row,b,check):
 
 
 def _coverage(rows,selected,assignment,daily):
-    result={'schema':'eb.collection.coverage.v1','catalogue':report_counts(rows),'selected':report_counts(selected),
+    result={'schema':'eb.collection.coverage.v2','catalogue':report_counts(rows),'selected':report_counts(selected),
         'catalogue_unique':len(rows),'selected_count':len(selected),
         'all_evaluated_diagnostics_retained':True,'diagnostics_catalogue':sum(bool(r['issues']) for r in rows),
         'diagnostics_selected':sum(bool(r['issues']) for r in selected),
+        'engineering_diagnostics_retained':sum(r['engineering_diagnostics_retained'] for r in daily),
+        'category_proportions_prescribed':False,'admission_labels_rewarded':False,
         'goals':assignment['coverage'],'required_deficits':assignment['required_deficits'],
         'near_duplicate_excess':assignment['near_duplicate_excess'],'interactions':[],
         'generation_limits':[{'household_id':x['household_id'],'date':x['date'],
-            **{k:x[k] for k in ('joint_subset_required','joint_subset_observed','joint_search_status','retimed_handling_search','gaps')}} for x in daily],
+            **{k:x[k] for k in ('joint_subset_required','joint_subset_observed','joint_subset_attempted','joint_search_status','retimed_handling_search','gaps')}} for x in daily],
         'physical_failure_prevalence':'unknown;not_executed','actual_nonresponse_prevalence':'unknown;not_executed',
         'population_representativeness_claim':False,'new_engine_runs':0}
     axes=['device_count','intensity','admission','event','manual','thermal_direction','service_slack']
@@ -171,7 +179,7 @@ def build(source_project,config_path,out,progress=None):
             result=generate_day(c,config);contexts[case]=c
             save(out/'contexts'/(case+'.json.gz'),c);save(out/'catalogues'/(case+'.json.gz'),result)
             all_rows.extend(result['rows']);daily.append({'household_id':hid,'date':date,
-                **{k:v for k,v in result.items() if k not in ('rows','quarantined_requests')},
+                **{k:v for k,v in result.items() if k not in ('rows','quarantined_requests','engineering_diagnostics','control_record')},
                 'quarantine_count':len(result['quarantined_requests']),
                 'quarantine_reasons':dict(Counter(i for r in result['quarantined_requests'] for i in r['gate_issues']))})
         if digest(life)!=life_before:raise ValueError('SOURCE_A_MUTATED')
@@ -191,9 +199,12 @@ def build(source_project,config_path,out,progress=None):
         'same_frozen_A_preserved':True,'source_life_payloads':original_life,'new_engine_runs':0,
         'acceptance_labels_generated':0,'online_questionnaire_changed':False,'master1000_started':False}
     save(out/'REVIEW.json',audit)
-    summary={'schema':'eb.collection.pilot.v1','households':len(config['households']),'days_per_household':10,
+    summary={'schema':'eb.collection.pilot.v2','households':len(config['households']),'days_per_household':10,
         'selected':len(selected),'catalogue_unique':len(all_rows),'diagnostics_retained':coverage['diagnostics_catalogue'],
         'diagnostics_selected':coverage['diagnostics_selected'],'required_deficits':coverage['required_deficits'],
+        'engineering_diagnostics_retained':coverage['engineering_diagnostics_retained'],
+        'engineering_errors_selected':sum(bool(x['engineering_issues']) for x in audits),
+        'category_proportions_prescribed':False,'admission_labels_rewarded':False,
         'interaction_deficits':coverage['interaction_deficits'],'interaction_cells':coverage['interaction_cells'],
         'near_duplicate_excess':coverage['near_duplicate_excess'],'full_plan_review_passed':audit['passed'],
         'coverage_contract_passed':coverage['required_deficits']==0,'physical_status':'not_run','new_engine_runs':0,
