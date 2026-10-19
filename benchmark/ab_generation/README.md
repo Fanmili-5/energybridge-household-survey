@@ -50,6 +50,7 @@ python -B -m benchmark.ab_generation reproduce-strategies \
 
 ## 技术文档
 
+- [参数敏感性与联合边界](SENSITIVITY.md)：两候选族的工程上限、冲突含义、165 个生成案例与 20 个物理案例，以及无机会和舒适失败的保留结果。
 - [合入后自查](SELF_CHECK.md)：修正混合联合的逐目标分母遗漏，保留原回执并公开重算；异常节点输入拒绝和有效生成结果不变检查。
 
 - [当前生成规则](GENERATION_RULES.md)与[本轮验证](RULES_VALIDATION.md)：A能力边界、逐设备机会依据、联合请求、无效/失败保留和覆盖防退化。

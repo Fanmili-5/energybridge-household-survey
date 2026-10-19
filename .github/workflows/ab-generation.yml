@@ -26,8 +26,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - run: python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity -v
+      - run: python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity benchmark.ab_generation.test_sensitivity -v
       - run: python -B -m benchmark.ab_generation.verify_package
+      - name: Run all predeclared parameter generation cases
+        if: matrix.python-version == '3.12'
+        run: |
+          python -B -m benchmark.ab_generation.sensitivity screen --out "${{ runner.temp }}/ab-sensitivity-screen"
+          python -c 'import json, os; from pathlib import Path; x=json.loads((Path(os.environ["RUNNER_TEMP"])/"ab-sensitivity-screen/SCREEN.json").read_text()); assert x["invariants_passed"] and x["generation_cases"] == 165'
       - name: Recheck frozen per-target coverage without selecting new B
         run: python -B -m benchmark.ab_generation.validation.self_check.recompute --out "${{ runner.temp }}/ab-self-check"
       - name: Reproduce without the historical cohort or other modules
