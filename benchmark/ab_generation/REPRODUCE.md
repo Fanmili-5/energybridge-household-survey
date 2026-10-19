@@ -164,3 +164,12 @@ python -B -m benchmark.ab_generation reproduce-strategies \
 ```
 
 各输出目录必须全新。先按既有夏季、冬季命令生成基线参考；新参考自动含原生水箱节点。每个长尾计划在第一个B执行前封存。验收失败时保留整批，不换种子、不调配额补成功样本。当前30个新引擎臂的来源、版本及范围见[RULES_VALIDATION.md](RULES_VALIDATION.md)。
+
+## 合入后自查：只重算原封存结果
+
+```bash
+python -B -m benchmark.ab_generation.validation.self_check.recompute \
+  --out /absolute/path/ab-self-check
+```
+
+无需引擎或历史私有数据。校验原选择回执与样本集合，再按逐目标依据重算覆盖；没有重新取样、修改B或覆盖原物理结果。当前夏季目标出现次数由9修正为10，原无效/部分/失败样本及验收结论不变。生成不变性与新增回归见[SELF_CHECK.md](SELF_CHECK.md)。

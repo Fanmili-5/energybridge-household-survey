@@ -11,6 +11,7 @@ from pathlib import Path
 from .common import bound, canonical, code_hash, digest, read, save, seal, sha, verify
 from .generate import DEFAULT_RULES
 from .model import apply, plan_commands, program_issues, request_issues
+from .opportunity import EPSILON as PROFILE_EPSILON
 
 FEATURES = {'family', 'scope', 'admission', 'direction', 'cost_sign', 'event_sign', 'handling', 'axis', 'dose', 'composition', 'duration', 'opportunity', 'joint_support', 'day_type', 'event_direction'}
 SERVICE_FAILURES = {'B_EV_departure_target', 'B_hot_water_service',
@@ -318,13 +319,31 @@ def coverage_report(selection_root, observations):
             'population_prevalence_estimated': False, 'human_acceptance_inferred': False}
 
 
+def _supported_target_assets(evidence, response):
+    """Read the evidence for each target, independently of aggregate labels."""
+    if 'children' in evidence:
+        return set().union(*(_supported_target_assets(child, response) for child in evidence['children']))
+    if 'asset_L1_kWh' in evidence:
+        return {aid for aid, value in evidence['asset_L1_kWh'].items() if value > PROFILE_EPSILON}
+    if evidence.get('status') == 'supported':
+        return {evidence['asset_id']} if 'asset_id' in evidence else {r['asset_id'] for r in response['records']}
+    return set()
+
+
 def response_coverage(records, checks):
     kinds, patterns, fingerprints = Counter(), Counter(), set()
     reports, supported_targets, supported_no_response = [], 0, 0
+    missing_supported = []
+    missing_reports = []
     for row in records:
         report = (row.get('observation') or {}).get('report', {})
         response = report.get('targeted_response')
         if response is None:
+            if checks is not None and row['coverage_credit'] and row['features'].get('admission') != 'static_diagnostic':
+                missing_reports.append(row['sample_id'])
+                reports.append({'sample_id': row['sample_id'], 'stratum': row['stratum'],
+                                'opportunity': row['features'].get('opportunity'), 'response': None,
+                                'error': 'TARGET_RESPONSE_REPORT_MISSING'})
             continue
         patterns[response['pattern']] += 1
         fingerprints.add((row['case_id'], response['B_native_trace_sha256']))
@@ -332,18 +351,33 @@ def response_coverage(records, checks):
         # service failures remain separately reported, never replaced.
         if row['coverage_credit']:
             kinds.update(r['kind'] for r in response['records'] if r['observable_response'])
-            if row['features'].get('opportunity') == 'supported':
+            evidence = report.get('request_opportunity')
+            if evidence:
+                # Mixed joints and dependent program chains retain the support
+                # of each asset; aggregate labels cannot erase this evidence.
+                supported_assets = _supported_target_assets(evidence, response)
+                measured = {r['asset_id']: r for r in response['records']}
+                supported_targets += len(supported_assets)
+                supported_no_response += sum(not measured[aid]['observable_response']
+                                             for aid in supported_assets & measured.keys())
+                missing_supported.extend({'sample_id': row['sample_id'], 'asset_id': aid}
+                                         for aid in sorted(supported_assets - measured.keys()))
+            elif row['features'].get('opportunity') == 'supported':
                 supported_targets += len(response['records'])
                 supported_no_response += sum(not r['observable_response'] for r in response['records'])
         reports.append({'sample_id': row['sample_id'], 'stratum': row['stratum'],
                         'opportunity': row['features'].get('opportunity'), 'response': response})
     required = (checks or {}).get('minimum_changed_kinds', [])
     missing = [k for k in required if not kinds[k]]
-    fraction = supported_no_response / supported_targets if supported_targets else None
+    bound = not missing_supported and not missing_reports
+    fraction = supported_no_response / supported_targets if supported_targets and bound else None
     limit = (checks or {}).get('maximum_supported_no_response_fraction')
     fraction_passed = limit is None or (fraction is not None and fraction <= limit)
-    return {'passed': not missing and fraction_passed, 'required': checks is not None,
+    return {'passed': not missing and bound and fraction_passed, 'required': checks is not None,
             'supported_target_count': supported_targets, 'supported_no_response_count': supported_no_response,
+            'supported_target_response_binding_passed': bound,
+            'missing_supported_target_responses': missing_supported,
+            'missing_target_response_reports': missing_reports,
             'supported_no_response_fraction': fraction, 'maximum_supported_no_response_fraction': limit,
             'supported_response_fraction_passed': fraction_passed,
             'minimum_changed_kinds': required, 'missing_changed_kinds': missing,

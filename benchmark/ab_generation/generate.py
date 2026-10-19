@@ -87,6 +87,8 @@ def validate(context, rules):
         raise ValueError('UNKNOWN_OR_DOWNSTREAM_REFERENCE_FIELD')
     checked_information(context)
     for aid, rows in context['reference'].get('thermal', {}).items():
+        if aid not in ids:
+            raise ValueError('UNKNOWN_THERMAL_REFERENCE_ASSET')
         if len({r['minute'] for r in rows}) != len(rows):
             raise ValueError('DUPLICATE_REFERENCE_TIME')
         if any(type(r['minute']) is not int or r['minute'] % 10 or
@@ -95,7 +97,9 @@ def validate(context, rules):
             raise ValueError('INVALID_THERMAL_REFERENCE')
         for row in rows:
             expected_nodes = next(d for d in context['devices'] if d['asset_id'] == aid)['parameters'].get('number_of_nodes')
-            if 'node_temperatures_C' in row and (not row['node_temperatures_C'] or len(row['node_temperatures_C']) != expected_nodes or any(
+            if 'node_temperatures_C' in row and (not isinstance(row['node_temperatures_C'], list)
+                    or not row['node_temperatures_C'] or type(expected_nodes) is not int or expected_nodes <= 0
+                    or len(row['node_temperatures_C']) != expected_nodes or any(
                     type(v) not in (int, float) or not math.isfinite(v) for v in row['node_temperatures_C'])):
                 raise ValueError('INVALID_TANK_NODE_REFERENCE')
     charging = context['reference'].get('ev_charging_steps', [])
