@@ -79,8 +79,14 @@ def audit():
                 raise ValueError('PUBLIC_PARAMETER_BASIS_MISMATCH:' + entry['path'] + ':' + key)
     rights = read(package / 'AUTHORIZATION.json')
     from .sampling import FEATURES, SERVICE_FAILURES, SIGN_EPSILON, STRESS_STATIC, validate_plan
+    from .opportunity import EPSILON
+    from .effects import ENERGY_EPSILON_KWH, STATE_EPSILON
     validate_plan(read(package / 'examples/tail/plan.json'))
     tail = register['tail_algorithm_settings']
+    evidence = register['opportunity_algorithm_settings']
+    if (evidence['profile_difference_epsilon_kWh'] != EPSILON or evidence['state_witness_epsilon_C'] != EPSILON
+            or evidence['readback_energy_epsilon_kWh'] != ENERGY_EPSILON_KWH or evidence['readback_state_epsilon'] != STATE_EPSILON):
+        raise ValueError('UNREVIEWED_OPPORTUNITY_NUMERICAL_GUARD')
     if (tail['allowed_features'] != sorted(FEATURES) or tail['service_failure_checks'] != sorted(SERVICE_FAILURES)
             or tail['failure_static_whitelist'] != STRESS_STATIC or tail['prediction_sign_epsilon'] != SIGN_EPSILON):
         raise ValueError('UNREVIEWED_TAIL_CONTRACT')

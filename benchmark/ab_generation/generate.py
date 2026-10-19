@@ -163,6 +163,8 @@ def candidate(context, family, asset, factors, patches, issues, profiles=None, o
 def program_candidates(context, device, rules):
     aid, rows, unavailable = device['asset_id'], [], []
     needs = [n for n in context['needs'] if n['asset_id'] == aid and n['kind'] in ('washer', 'dishwasher')]
+    if not needs:
+        return [], [{'asset_id': aid, 'reason': 'NO_DECLARED_PROGRAM_NEED'}]
     for need in needs:
         nid = need['need_id']
         if not any(t['need_id'] == nid for t in context['A']['tasks']):
@@ -195,6 +197,8 @@ def program_candidates(context, device, rules):
                            'manual_change_min': sum(abs(b['start_min'] - a['start_min']) for a, b in zip(ops, moved)),
                            'requested_duration_min': 0, 'setpoint_delta_C': 0}
                 rows.append(candidate(context, need['kind'], aid, factors, patches, issues, (profile(chain), profile(tasks))))
+    if not rows and not unavailable:
+        unavailable.append({'asset_id': aid, 'reason': 'NO_UNSTARTED_A_PROGRAM_IN_HORIZON'})
     return rows, unavailable
 
 
@@ -330,6 +334,8 @@ def ev_candidates(context, device, rules):
                        'prediction_energy_shortfall_kWh': max(0, remaining),
                        'full_continuous_SOC_validation': 'pending_paired_execution'}
             rows.append(candidate(context, 'ev', aid, factors, patches, issues, (before, after)))
+    if not rows and not unavailable:
+        unavailable.append({'asset_id': aid, 'reason': 'NO_REMAINING_A_CHARGE_IN_HORIZON'})
     return rows, unavailable
 
 
@@ -426,6 +432,13 @@ def generate(context, rules=None):
                                       'opportunity': joint_evidence([left, right]),
                                       'status': 'joint_request_failure_retained' if issues else 'joint_static_check_passed'})
     return {'schema': 'eb.ab_generation.result.v3', 'case_id': context['case_id'],
+            'device_opportunity_inventory': [{'asset_id': d['asset_id'], 'types': d['types'],
+                'independent_candidates': sum(c['asset_id'] == d['asset_id'] for c in candidates),
+                'static_valid_supported': sum(c['asset_id'] == d['asset_id'] and not c['static_issues'] and c['opportunity']['status'] == 'supported' for c in candidates),
+                'exploratory_candidates': sum(c['asset_id'] == d['asset_id'] and c['opportunity']['status'] == 'exploratory' for c in candidates),
+                'dispatch_scope': 'dependency_only' if set(d['types']) == {'dryer'} else 'independent',
+                'unavailable_reasons': sorted({r['reason'] for r in unavailable if r['asset_id'] == d['asset_id']})}
+                for d in context['devices']],
             'information_set': checked_information(context),
             'baseline_admission': copy.deepcopy(context['reference'].get('baseline_admission')),
             'proposal_purpose': copy.deepcopy(PROPOSAL_PURPOSE),

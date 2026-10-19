@@ -4,6 +4,7 @@ Strata and quotas are experimental settings, not estimated population frequencie
 The priority algorithm is specified here rather than delegated to versioned PRNGs.
 """
 import copy
+import datetime as dt
 import itertools
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -11,7 +12,7 @@ from .common import bound, canonical, code_hash, digest, read, save, seal, sha, 
 from .generate import DEFAULT_RULES
 from .model import apply, plan_commands, program_issues, request_issues
 
-FEATURES = {'family', 'scope', 'admission', 'direction', 'cost_sign', 'event_sign', 'handling', 'axis', 'dose', 'composition', 'duration', 'opportunity', 'joint_support'}
+FEATURES = {'family', 'scope', 'admission', 'direction', 'cost_sign', 'event_sign', 'handling', 'axis', 'dose', 'composition', 'duration', 'opportunity', 'joint_support', 'day_type', 'event_direction'}
 SERVICE_FAILURES = {'B_EV_departure_target', 'B_hot_water_service',
                     'B_service_execution', 'B_service_completeness'}
 STRESS_STATIC = ['CHARGE_EXCEEDS_ORIGINAL_CONNECTION']
@@ -130,6 +131,9 @@ def describe(context, plan_B, children, issues, unchanged=None):
     features['joint_support'] = ('control' if unchanged else 'single' if len(children) <= 1 else
                                  'all_supported' if all(s == 'supported' for s in statuses) else
                                  'mixed' if any(s == 'supported' for s in statuses) else 'all_exploratory')
+    features['day_type'] = 'weekend' if dt.date.fromisoformat(context['date']).weekday() >= 5 else 'weekday'
+    directions = {e['direction'] for e in context['events']}
+    features['event_direction'] = next(iter(directions)) if len(directions) == 1 else 'mixed' if directions else 'none'
     return features, issues
 
 

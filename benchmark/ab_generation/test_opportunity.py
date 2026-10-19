@@ -51,7 +51,9 @@ class OpportunityTests(unittest.TestCase):
 
     def test_later_supported_window_added_without_deleting_early_uncertain_window(self):
         available = {r['minute'] for r in self.c['reference']['thermal'][self.tank['asset_id']]}
-        event = next(e for e in self.c['events'] if e['start_min'] in available)
+        event = next(e for e in self.c['events'] if e['start_min'] in available and any(
+            c['asset_id'] == self.tank['asset_id'] and c['start_min'] <= e['start_min'] < c['end_min']
+            for c in self.c['A']['controls']))
         start = event['start_min']
         for r in self.c['reference']['thermal'][self.tank['asset_id']]:
             if r['minute'] >= start + 20:
@@ -105,6 +107,49 @@ class OpportunityTests(unittest.TestCase):
         self.assertFalse(report['passed'])
         self.assertEqual(1, len(report['records']))
         self.assertEqual({'no_target_response': 1}, report['patterns'])
+
+    def test_majority_no_response_among_supported_targets_fails_without_reselection(self):
+        rows = []
+        for i, changed in enumerate([False, False, False, True]):
+            rows.append({'case_id': 'c', 'sample_id': str(i), 'stratum': 'supported',
+                         'features': {'opportunity': 'supported'}, 'coverage_credit': True,
+                         'observation': {'report': {'targeted_response': {'pattern': 'all_targeted_assets_change' if changed else 'no_target_response',
+                             'B_native_trace_sha256': str(i), 'records': [{'kind': 'ev', 'observable_response': changed}]}}}})
+        result = response_coverage(rows, {'minimum_changed_kinds': ['ev'], 'maximum_supported_no_response_fraction': .5})
+        self.assertFalse(result['passed'])
+        self.assertEqual(.75, result['supported_no_response_fraction'])
+        self.assertEqual(4, len(result['records']))
+
+    def test_no_demand_or_remaining_charge_records_absence(self):
+        self.c['needs'] = [n for n in self.c['needs'] if n['kind'] not in ('washer', 'dryer', 'dishwasher')]
+        self.c['reference']['ev_charging_steps'] = []
+        self.c['reference']['binding'] = binding(self.c)
+        result = generate(self.c)
+        reasons = {r['reason'] for r in result['unavailable']}
+        self.assertIn('NO_DECLARED_PROGRAM_NEED', reasons)
+        self.assertIn('NO_REMAINING_A_CHARGE_IN_HORIZON', reasons)
+
+    def test_joint_readback_does_not_credit_silent_tank_for_EV_response(self):
+        pair = {'A': {'tasks': [], 'operations': [], 'controls': [
+            {'asset_id': 'vehicle', 'kind': 'ev_charge_window', 'need_id': 'connection', 'start_min': 0, 'end_min': 20},
+            {'asset_id': 'store', 'kind': 'tank_setpoint', 'value_C': 55, 'start_min': 0, 'end_min': 20}]}}
+        pair['B'] = copy.deepcopy(pair['A'])
+        pair['B']['controls'][0]['start_min'] = 10
+        pair['B']['controls'][1]['value_C'] = 55.5
+        meta = {'HVAC_equipment_mapping': {}, 'equipment_meter_mapping': {}, 'tank_name': 'TANK',
+                'EV': {'trace': [[0, 3], [10, 4]]}, 'world_assembly': {'tank_nodes': 1},
+                'execution': {'tasks': [], 'operations': []}}
+        a = {'Exterior Equipment Electricity Energy|EXTERNAL_EV': {'unit': 'J', 'values': [[0, 1000000], [10, 0]]},
+             'Water Heater Electricity Energy|TANK': {'unit': 'J', 'values': [[0, 0], [10, 0]]},
+             'Water Heater Final Temperature Node 1|TANK': {'unit': 'C', 'values': [[0, 55], [10, 55]]},
+             'Water Heater Use Side Outlet Temperature|TANK': {'unit': 'C', 'values': [[0, 55], [10, 55]]}}
+        b = copy.deepcopy(a)
+        b['Exterior Equipment Electricity Energy|EXTERNAL_EV']['values'] = [[0, 0], [10, 1000000]]
+        response = targeted_response(pair, {'A': meta, 'B': meta}, {'A': a, 'B': b}, None, 0, 20)
+        self.assertEqual('mixed_target_response', response['pattern'])
+        by_id = {r['asset_id']: r for r in response['records']}
+        self.assertFalse(by_id['store']['observable_response'])
+        self.assertTrue(by_id['vehicle']['observable_response'])
 
 
 class LifeCapabilityTests(unittest.TestCase):
