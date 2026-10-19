@@ -1,0 +1,52 @@
+name: Three-line v69 data interfaces
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'benchmark/project/**'
+      - 'benchmark/ab_generation/**'
+      - 'benchmark/family_generation/**'
+      - '.github/workflows/project-interfaces.yml'
+  pull_request:
+    paths:
+      - 'benchmark/project/**'
+      - 'benchmark/ab_generation/**'
+      - 'benchmark/family_generation/**'
+      - '.github/workflows/project-interfaces.yml'
+permissions:
+  contents: read
+jobs:
+  static-interfaces:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        python-version: ['3.12', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r benchmark/housing_simulation/requirements.txt
+      - run: python -B -m unittest benchmark.project.test_project benchmark.ab_generation.test_plan_only benchmark.family_generation.test_generation benchmark.family_generation.test_connection -v
+      - run: python -B -m benchmark.project.verify_package
+      - run: python -B -m benchmark.project verify-questionnaire benchmark/project/examples/questionnaire
+      - run: node benchmark/project/verify_display.js benchmark/project/examples/questionnaire
+      - name: Rebuild six-household data and v69 materials without an engine
+        if: matrix.python-version == '3.12'
+        run: |
+          python -B -m benchmark.project build --out "$RUNNER_TEMP/eb-project"
+          python -B -m benchmark.project verify "$RUNNER_TEMP/eb-project"
+          python -B -m benchmark.project questionnaire --project "$RUNNER_TEMP/eb-project" --out "$RUNNER_TEMP/eb-v69"
+          python -B -m benchmark.project verify-questionnaire "$RUNNER_TEMP/eb-v69"
+          node benchmark/project/verify_display.js "$RUNNER_TEMP/eb-v69"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          actual=json.loads((Path(os.environ['RUNNER_TEMP'])/'eb-v69/public/index.json').read_text())
+          expected=json.loads(Path('benchmark/project/examples/questionnaire/public/index.json').read_text())
+          assert [(r['case_id'],r['sha256']) for r in actual['cases']]==[(r['case_id'],r['sha256']) for r in expected['cases']]
+          PY

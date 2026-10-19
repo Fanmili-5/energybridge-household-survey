@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 0
       - id: scope
-        name: Keep A/B-only changes on their static verification workflow
+        name: Keep bounded A/B/project interface changes on static workflows
         env:
           EVENT_NAME: ${{ github.event_name }}
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
@@ -32,9 +32,11 @@ jobs:
               paths = subprocess.check_output(['git', 'diff', '--name-only', base, 'HEAD'], text=True).splitlines()
               ancillary = {'benchmark/PUBLICATION_MANIFEST.json',
                            'benchmark/family_generation/PACKAGE_MANIFEST.json',
-                           '.github/workflows/ab-generation.yml', '.github/workflows/offline-checks.yml'}
-              ab_only = (any(p.startswith('benchmark/ab_generation/') for p in paths)
-                         and all(p.startswith('benchmark/ab_generation/') or p in ancillary for p in paths))
+                           '.github/workflows/ab-generation.yml', '.github/workflows/offline-checks.yml',
+                           '.github/workflows/project-interfaces.yml', 'README.md', 'benchmark/README.md'}
+              static_roots = ('benchmark/ab_generation/', 'benchmark/project/')
+              ab_only = (any(p.startswith(static_roots) for p in paths)
+                         and all(p.startswith(static_roots) or p in ancillary for p in paths))
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write('ab_only=' + str(ab_only).lower() + '\n')
           PY
