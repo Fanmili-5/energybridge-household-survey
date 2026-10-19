@@ -1,4 +1,4 @@
-当前联合搜索、批次能耗与供电约束修订见[JOINT_LOAD_SUPPLY.md](JOINT_LOAD_SUPPLY.md)。正式新联合长尾验收见[JOINT_TAIL_METHOD.md](JOINT_TAIL_METHOD.md)。历史运行回执及显式旧规则继续保留。
+当前联合搜索、批次能耗与供电约束修订见[JOINT_LOAD_SUPPLY.md](JOINT_LOAD_SUPPLY.md)。联合长尾验收见[JOINT_TAIL_METHOD.md](JOINT_TAIL_METHOD.md)；三个缺额的追查与细网格新版本见[GAP_METHOD.md](GAP_METHOD.md)。历史运行回执及显式旧规则继续保留。
 
 # 面向用户roleplay的A/B生成规则
 
@@ -47,7 +47,7 @@
 
 ## roleplay覆盖与防退化
 
-当前正式小型计划为[examples/joint_tail/plan.json](examples/joint_tail/plan.json)，历史计划为`examples/rule_review/plan.json`。在第一个B运行前，封存完整目录、命令去重、种子、独占分层和家庭→请求两阶段抽样。覆盖设备、剂量、时长、方向、人工策略、预测费用符号，以及新增的`opportunity`和`joint_support`。记录还携带原实验日期的`day_type`与固定事件的`event_direction`；不得为填层改写生活日历或事件。保留缺额，不跨层换成成功B。
+既有正式小型计划为[examples/joint_tail/plan.json](examples/joint_tail/plan.json)，历史计划为`examples/rule_review/plan.json`。缺额诊断后的新版本为[examples/gap_supplement/tail_plan.json](examples/gap_supplement/tail_plan.json)：完整24个非零10分钟档位，报告`program_shift_domain`及联合交互覆盖，旧六档只保留稀疏设计/历史复现用途。在第一个B运行前，封存完整目录、命令去重、种子、独占分层和家庭→请求两阶段抽样。覆盖设备、剂量、时长、方向、人工策略、预测费用符号，以及新增的`opportunity`和`joint_support`。记录还携带原实验日期的`day_type`与固定事件的`event_direction`；不得为填层改写生活日历或事件。保留缺额，不跨层换成成功B。
 
 计划明确包含有依据和探索性请求、不同任务数联合、同族多批、费用增加取舍、A=B对照、静态拒绝和声明的服务失败。执行后逐目标设备报告用电时点、实际执行时点、温度和SOC，给出`all_targeted_assets_change`、`mixed_target_response`、`no_target_response`和`identical_control`。只有EV变化的联合B不能当作热水器已有作用。相同案号下的原生B轨迹指纹另报，命令不同不自动算独立物理后果。
 

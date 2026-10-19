@@ -8962,6 +8962,356 @@
         }
       ],
       "sha256": "217c595c6343a516afb272e81a9cc46fb6d90a28961cd093c17734e5c5f23cdd"
+    },
+    {
+      "path": "examples/gap_supplement/references.json",
+      "sha256": "7a6416a253194821ac7eb3f67cfa01262d68c1d6e3b1a2049e9c75fcda2ae38c",
+      "quantitative_fields": []
+    },
+    {
+      "path": "examples/gap_supplement/scenarios.json",
+      "sha256": "2a2020a08b303f7ef408270bd6f2c2026e989248d41b5a8f11c4ce7bac45682a",
+      "quantitative_fields": [
+        {
+          "path_pattern": "/cases/*/events/*/end_min",
+          "values": [
+            1150,
+            1920
+          ],
+          "occurrences": 3,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/cases/*/events/*/start_min",
+          "values": [
+            1090,
+            480
+          ],
+          "occurrences": 3,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/cases/*/events/*/target_kw",
+          "values": [
+            1,
+            1.0
+          ],
+          "occurrences": 3,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/cases/*/tariff/*/end_min",
+          "values": [
+            -140,
+            -1440,
+            -1580,
+            -1670,
+            -230,
+            -2880,
+            -3020,
+            -3110,
+            -4320,
+            -4460,
+            -4550,
+            -5760,
+            -5900,
+            -5990,
+            -7200,
+            -7340,
+            -7430,
+            -8640,
+            -8780,
+            -8870,
+            0,
+            10080,
+            11290,
+            11380,
+            11520,
+            1210,
+            12730,
+            12820,
+            12960,
+            1300,
+            14170,
+            14260,
+            1440,
+            14400,
+            15610,
+            15700,
+            15840,
+            17050,
+            17140,
+            17280,
+            18490,
+            18580,
+            18720,
+            2650,
+            2740,
+            2880,
+            4090,
+            4180,
+            4320,
+            5530,
+            5620,
+            5760,
+            6970,
+            7060,
+            7200,
+            8410,
+            8500,
+            8640,
+            9850,
+            9940
+          ],
+          "occurrences": 180,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/cases/*/tariff/*/price_per_kWh",
+          "values": [
+            0.307,
+            0.617
+          ],
+          "occurrences": 180,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/cases/*/tariff/*/start_min",
+          "values": [
+            -10080,
+            -140,
+            -1440,
+            -1580,
+            -1670,
+            -230,
+            -2880,
+            -3020,
+            -3110,
+            -4320,
+            -4460,
+            -4550,
+            -5760,
+            -5900,
+            -5990,
+            -7200,
+            -7340,
+            -7430,
+            -8640,
+            -8780,
+            -8870,
+            0,
+            10080,
+            11290,
+            11380,
+            11520,
+            1210,
+            12730,
+            12820,
+            12960,
+            1300,
+            14170,
+            14260,
+            1440,
+            14400,
+            15610,
+            15700,
+            15840,
+            17050,
+            17140,
+            17280,
+            18490,
+            18580,
+            2650,
+            2740,
+            2880,
+            4090,
+            4180,
+            4320,
+            5530,
+            5620,
+            5760,
+            6970,
+            7060,
+            7200,
+            8410,
+            8500,
+            8640,
+            9850,
+            9940
+          ],
+          "occurrences": 180,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/cases/*/textile_kg",
+          "values": [
+            1.2,
+            5.1
+          ],
+          "occurrences": 3,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/cases/*/weekend_preferred_start_min/dryer",
+          "values": [
+            1190
+          ],
+          "occurrences": 3,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/cases/*/weekend_preferred_start_min/washer",
+          "values": [
+            1100
+          ],
+          "occurrences": 3,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        }
+      ]
+    },
+    {
+      "path": "examples/gap_supplement/tail_plan.json",
+      "sha256": "917fb17b45250977b190512dbf68f5ca553c52eba0d2aedcb2a8ae8df107cd84",
+      "quantitative_fields": [
+        {
+          "path_pattern": "/response_checks/maximum_supported_no_response_fraction",
+          "values": [
+            0.5
+          ],
+          "occurrences": 1,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/seed",
+          "values": [
+            20261019
+          ],
+          "occurrences": 1,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/strata/*/households",
+          "values": [
+            1
+          ],
+          "occurrences": 10,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/strata/*/per_household",
+          "values": [
+            1
+          ],
+          "occurrences": 10,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/strata/*/required",
+          "values": [
+            true
+          ],
+          "occurrences": 10,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/variants/*/overrides/joint_candidate_budget",
+          "values": [
+            32768
+          ],
+          "occurrences": 1,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/variants/*/overrides/joint_family_limit",
+          "values": [
+            0
+          ],
+          "occurrences": 1,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        },
+        {
+          "path_pattern": "/variants/*/overrides/program_shifts_min/*",
+          "values": [
+            -10,
+            -100,
+            -110,
+            -120,
+            -20,
+            -30,
+            -40,
+            -50,
+            -60,
+            -70,
+            -80,
+            -90,
+            10,
+            100,
+            110,
+            120,
+            20,
+            30,
+            40,
+            50,
+            60,
+            70,
+            80,
+            90
+          ],
+          "occurrences": 24,
+          "origin": "project_gap_supplement_experimental_setting",
+          "exact_value_from_paper": false,
+          "purpose_and_boundary": "Complete 10-minute +/-120-minute grid;32768 joint budget;fixed 3 scenarios,10 required strata,seed and quotas;synthetic tariff/textile/thermal controls;not paper constants,population calibration or guaranteed physical feasibility",
+          "implementation_or_definition": "gap_review.py;joint_tail.py;GAP_METHOD.md"
+        }
+      ]
     }
   ],
   "legacy_constraints": [
@@ -9091,5 +9441,18 @@
     "reference_full_batch_energy_and_duration": "project/device scale;not data-calibrated household absolute energy",
     "dryer_curve": "explicit project affine approximation with positive overhead;not fitted to LARCO",
     "operation": "piecewise-linear interpolation with no above-capacity extrapolation;zero mass creates no cycle;energy cannot be clipped to fit nameplate"
+  },
+  "gap_supplement": {
+    "grid_step_min": 10,
+    "grid_radius_min": 120,
+    "nonzero_shifts": 24,
+    "joint_budget": 32768,
+    "planned_A_scenarios": 3,
+    "planned_unique_households": 2,
+    "required_strata": 10,
+    "source": "project_setting;not_paper_values",
+    "historical_defaults": "six_sparse_shifts retained for replay;official supplement explicitly supplies complete grid",
+    "winter_A_failure": "keep existing comfort contract;exclude from normal B frame and retain coverage deficit",
+    "B_selection": "no outcomes/reselection"
   }
 }
