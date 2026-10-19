@@ -99,7 +99,7 @@ def build_days(spec, world):
                     require(row['location'] == 'away' and not row.get('room'), 'INVALID_AWAY_LOCATION')
                     row['room_id'] = None
                 require(not row['available_for_operation'] or (row['location'] == 'home' and not row['activity'].startswith('sleep') and row['activity'] not in ('nap', 'bath', 'care')), 'INVALID_HANDLING_AVAILABILITY')
-                if row['activity'] == 'dinner':
+                if row['activity'] == 'dinner' and row['location'] == 'home':
                     meals[mid] = row['end_min']
                 if row['activity'] == 'bath':
                     require(row['location'] == 'home' and row['room_id'] == world['room_map']['bath'], 'BATH_REQUIRES_BATHROOM')
@@ -429,6 +429,9 @@ def generate_household(spec, world, rules=None):
     require(all((p['trigger'], p['kind']) in {('textile', 'washer'), ('after_dinner', 'dishwasher')} for p in roots), 'SERVICE_TRIGGER_KIND_MISMATCH')
     require(all(p['kind'] == 'dryer' for p in children), 'ONLY_EXPLICIT_SEPARATE_DRYER_DEPENDENCY_SUPPORTED')
     require(all(p['upstream_service_id'] in {r['service_id'] for r in roots} for p in children), 'UNKNOWN_OR_NESTED_SERVICE_DEPENDENCY')
+    root_by_id = {p['service_id']: p for p in roots}
+    require(all(root_by_id[p['upstream_service_id']]['kind'] == 'washer' for p in children), 'DRYER_REQUIRES_WASHER_UPSTREAM')
+    require(len({p['upstream_service_id'] for p in children}) == len(children), 'DUPLICATE_DRYING_OF_SAME_WASH_BATCH')
     requirements, ledger, inventory = [], [], {}
     for p in roots:
         if p['trigger'] == 'textile':
