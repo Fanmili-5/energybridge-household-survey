@@ -7651,6 +7651,69 @@
           "exact_value_from_paper": false
         }
       ]
+    },
+    {
+      "path": "examples/tail/plan.json",
+      "quantitative_fields": [
+        {
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sampling.py:validate_plan;TAIL_METHOD.md",
+          "occurrences": 1,
+          "origin": "project_tail_coverage_boundary_test_setting",
+          "path_pattern": "/seed",
+          "purpose_and_boundary": "种子、配额、必验标记和EV810分钟压力边界；仅有限合成目录验收，不是人口比例、文献原值或安全推荐",
+          "values": [
+            20261019
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sampling.py:validate_plan;TAIL_METHOD.md",
+          "occurrences": 20,
+          "origin": "project_tail_coverage_boundary_test_setting",
+          "path_pattern": "/strata/*/households",
+          "purpose_and_boundary": "种子、配额、必验标记和EV810分钟压力边界；仅有限合成目录验收，不是人口比例、文献原值或安全推荐",
+          "values": [
+            1,
+            2
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sampling.py:validate_plan;TAIL_METHOD.md",
+          "occurrences": 20,
+          "origin": "project_tail_coverage_boundary_test_setting",
+          "path_pattern": "/strata/*/per_household",
+          "purpose_and_boundary": "种子、配额、必验标记和EV810分钟压力边界；仅有限合成目录验收，不是人口比例、文献原值或安全推荐",
+          "values": [
+            1
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sampling.py:validate_plan;TAIL_METHOD.md",
+          "occurrences": 20,
+          "origin": "project_tail_coverage_boundary_test_setting",
+          "path_pattern": "/strata/*/required",
+          "purpose_and_boundary": "种子、配额、必验标记和EV810分钟压力边界；仅有限合成目录验收，不是人口比例、文献原值或安全推荐",
+          "values": [
+            false,
+            true
+          ]
+        },
+        {
+          "exact_value_from_paper": false,
+          "implementation_or_definition": "sampling.py:validate_plan;TAIL_METHOD.md",
+          "occurrences": 1,
+          "origin": "project_tail_coverage_boundary_test_setting",
+          "path_pattern": "/variants/*/overrides/ev_delays_min/*",
+          "purpose_and_boundary": "种子、配额、必验标记和EV810分钟压力边界；仅有限合成目录验收，不是人口比例、文献原值或安全推荐",
+          "values": [
+            810
+          ]
+        }
+      ],
+      "sha256": "217c595c6343a516afb272e81a9cc46fb6d90a28961cd093c17734e5c5f23cdd"
     }
   ],
   "legacy_constraints": [
@@ -7680,12 +7743,48 @@
     "unit_conversions": "60 min/hour,1440 min/day,1000 W/kW,3600000 J/kWh are dimensional identities",
     "10_min_step_energy": "kW/6 kWh, W/6000 kWh are grid conversions",
     "energy_float_tolerances": "1e-10 kWh allocation stop;1e-8 kWh shortfall comparison in generate.py:ev_candidates are project numerical guards,not a household permission or meter certification",
-    "audit_tolerances": "physical acceptance tolerances belong to hash-bound housing configuration and audit;never reuse as human satisfaction thresholds"
+    "audit_tolerances": "physical acceptance tolerances belong to hash-bound housing configuration and audit;never reuse as human satisfaction thresholds",
+    "tail_prediction_sign": "1e-9 cost/event sign threshold in sampling.py is project floating-point reporting resolution;not significance,comfort or success threshold"
   },
   "unverified": [
     "empirical time diaries and device measurements",
     "parameter sensitivity beyond registered examples",
     "human acceptance,satisfaction and role understanding",
     "online forecast error and deployability"
-  ]
+  ],
+  "tail_algorithm_settings": {
+    "algorithm_version": "eb.tail.priority.v1",
+    "allowed_features": [
+      "admission",
+      "axis",
+      "composition",
+      "cost_sign",
+      "direction",
+      "dose",
+      "duration",
+      "event_sign",
+      "family",
+      "handling",
+      "scope"
+    ],
+    "exact_value_from_paper": false,
+    "failure_static_whitelist": [
+      "CHARGE_EXCEEDS_ORIGINAL_CONNECTION"
+    ],
+    "hash": "SHA256 of canonical JSON tuple;lexicographic stable tie break",
+    "joint_order": 2,
+    "population_weight": null,
+    "prediction_sign_epsilon": 1e-09,
+    "service_failure_checks": [
+      "B_EV_departure_target",
+      "B_hot_water_service",
+      "B_service_completeness",
+      "B_service_execution"
+    ],
+    "source_and_boundary": "TAIL_METHOD.md;algorithm choices and reporting design,not empirically calibrated values",
+    "stratum_overlap": "first_match_owns_all_matching_units_before_sampling",
+    "stress_expected_checks": [
+      "B_EV_departure_target"
+    ]
+  }
 }

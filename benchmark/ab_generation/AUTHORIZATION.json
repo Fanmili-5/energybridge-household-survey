@@ -76,6 +76,14 @@
       "permitted_here": "preserve current production files and keep1000 simulation paused",
       "not_granted": "deploy questionnaire,modify production responses or start1000-household physics",
       "status": "unchanged_and_paused"
+    },
+    {
+      "id": "offline_tail_stress",
+      "material": "synthetic B coverage,static rejections and predeclared EV departure-target failures",
+      "basis": "user-authorized second-line offline experiment;TAIL_METHOD.md",
+      "permitted_here": "enumerate and execute synthetic counterfactual requests;publish full adverse outcomes and coverage gaps",
+      "not_granted": "real device actuation,participant consent,medical safety,ethics approval or live questionnaire changes",
+      "status": "synthetic_model_authority_only;no_actual_human_failure_exposure"
     }
   ],
   "license_policy": "no unified repository license introduced;public visibility is not a blanket reuse license",

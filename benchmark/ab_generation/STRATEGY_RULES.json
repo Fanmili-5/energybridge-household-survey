@@ -212,6 +212,65 @@
         "original_EB",
         "housing_simulation"
       ]
+    },
+    {
+      "classification": "project_experimental_design",
+      "id": "AB-19",
+      "implementation": "generate.py:generate",
+      "parameters": [
+        "examples/tail/plan.json"
+      ],
+      "rule": "Enumerate all statically eligible cross-family pairs before sampling;keep combined conflicts",
+      "sources": [
+        "NISTSP800142"
+      ]
+    },
+    {
+      "classification": "project_experimental_design",
+      "id": "AB-20",
+      "implementation": "sampling.py:sample_catalogue",
+      "parameters": [
+        "examples/tail/plan.json"
+      ],
+      "rule": "Freeze first-match disjoint strata and two-stage seeded priorities;never select on actual B",
+      "sources": [
+        "StatCanProbability2021"
+      ]
+    },
+    {
+      "classification": "project_experimental_design",
+      "id": "AB-21",
+      "implementation": "sampling.py:catalogue;sampling.py:normalized_commands",
+      "parameters": [
+        "examples/tail/plan.json"
+      ],
+      "rule": "Dedup actual normalized commands inside exact frozen context;retain aliases and household split group",
+      "sources": []
+    },
+    {
+      "classification": "project_experimental_design",
+      "id": "AB-22",
+      "implementation": "sampling.py:describe;sampling.py:classify_result",
+      "parameters": [
+        "examples/tail/plan.json"
+      ],
+      "rule": "Separate ordinary,declared EV stress,static diagnostic,and data/model errors;retain adverse physical B",
+      "sources": [
+        "original_EB",
+        "housing_simulation"
+      ]
+    },
+    {
+      "classification": "project_experimental_design",
+      "id": "AB-23",
+      "implementation": "sampling.py:interactions;sampling.py:coverage_report",
+      "parameters": [
+        "examples/tail/plan.json"
+      ],
+      "rule": "Report required quota deficits and uncovered finite-catalogue marginal/pairwise cells;no automatic N/A pass",
+      "sources": [
+        "NISTIR7878"
+      ]
     }
   ],
   "schema": "eb.ab_strategy.rule_registry.v2"

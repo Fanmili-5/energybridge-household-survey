@@ -307,19 +307,25 @@ def export_life(assembled, contexts, generated, policy, out, case_ids=None, requ
         selected = result['selections'][policy]
         override = (request_overrides or {}).get(case_id)
         if override:
-            require(result['assignment']['mode'] == 'fresh_candidates', 'CANNOT_OVERRIDE_FROZEN_CONTROL_OR_FAILURE')
-            probe = (next(c for c in result['joint_candidates'] if c['id'] == override['joint_id']) if 'joint_id' in override
-                     else next(c for c in result['candidates'] if c['id'] == override['candidate_id']))
-            allowed = override.get('expected_static_issues', [])
-            require(probe['static_issues'] == allowed, 'PROBE_STATIC_ISSUES_NOT_PREDECLARED')
-            baseline = plan_commands(context['A'])
-            for c in baseline['controls']:
-                c['_ab_control_id'] = digest(c)
-            plan = apply(baseline, probe['patches'])
-            for c in plan['controls']:
-                c.pop('_ab_control_id', None)
-            selected = {'status': 'predeclared_failure_probe' if allowed else 'explicit_predeclared_candidate_probe',
-                        'candidate_ids': probe.get('candidate_ids', [probe['id']]), 'plan_B': plan}
+            if override.get('baseline_control') is True:
+                require(set(override) <= {'baseline_control', 'expected_static_issues'}
+                        and not override.get('expected_static_issues')
+                        and result['assignment']['mode'] != 'preserved_failure_replay', 'INVALID_BASELINE_CONTROL_OVERRIDE')
+                selected = {'status': 'predeclared_identical_control', 'candidate_ids': [], 'plan_B': plan_commands(context['A'])}
+            else:
+                require(result['assignment']['mode'] == 'fresh_candidates', 'CANNOT_OVERRIDE_FROZEN_CONTROL_OR_FAILURE')
+                probe = (next(c for c in result['joint_candidates'] if c['id'] == override['joint_id']) if 'joint_id' in override
+                         else next(c for c in result['candidates'] if c['id'] == override['candidate_id']))
+                allowed = override.get('expected_static_issues', [])
+                require(probe['static_issues'] == allowed, 'PROBE_STATIC_ISSUES_NOT_PREDECLARED')
+                baseline = plan_commands(context['A'])
+                for c in baseline['controls']:
+                    c['_ab_control_id'] = digest(c)
+                plan = apply(baseline, probe['patches'])
+                for c in plan['controls']:
+                    c.pop('_ab_control_id', None)
+                selected = {'status': 'predeclared_failure_probe' if allowed else 'explicit_predeclared_candidate_probe',
+                            'candidate_ids': probe.get('candidate_ids', [probe['id']]), 'plan_B': plan}
         require(selected['status'] != 'no_comparable_opportunity', 'NO_B_OPPORTUNITY:' + case_id)
         pair = read(bound(assembled, item['pair']['path']))
         require(plan_hash(pair['A']) == result['A_commands_sha256'], 'FROZEN_A_CHANGED')
