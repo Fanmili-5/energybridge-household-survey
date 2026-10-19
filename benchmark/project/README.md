@@ -22,7 +22,7 @@ node benchmark/project/verify_display.js benchmark/project/examples/questionnair
 python -B -m benchmark.project serve --port 18780
 ```
 
-浏览器地址：`http://127.0.0.1:18780/household50-current/form`。这是回环地址的只读资料预览，沿用 v69 页面、样式、接受/拒绝、四项1—5评分及原因。输入仅用于本页交互检查，不写生产答卷、没有采集 API。可用 URL 的 `household` / `case_id` 定位其他资料；不改变正式问卷的身份分配。
+浏览器地址：`http://127.0.0.1:18780/household50-current/form`。这是回环地址的只读资料预览，沿用 v69 页面、样式、接受/拒绝、四项1—5评分及原因。**实际后果未计算时，保留原题目但禁用作答和提交，提示不要猜测评分。** 没有采集 API，不写草稿或生产答卷。可用 URL 的 `household` / `case_id` 定位其他资料；不改变正式问卷的身份分配。
 
 生成新项目还需住房模块的依赖；以下命令均不启动仿真：
 
@@ -54,4 +54,4 @@ python -B -m benchmark.project prepare-idf --project /tmp/eb-project-new \
 - 六户只证明接口连接与保留逻辑；不证明人口代表性、完整长尾覆盖、物理有效性或真人可理解性。可选分层缺额原样公开；旧10层冻结实验与203项交互缺额仍是独立版本。
 - 线上 v69 的源文件、封存发布、部署、答卷和1000户状态均不修改。
 
-详见 [接口](INTERFACES.md)、[方法与依据](METHOD.md)、[覆盖与缺额](COVERAGE.md)、[自查结果](VALIDATION.json)。
+详见 [具体家庭走查](WALKTHROUGH.md)、[接口](INTERFACES.md)、[方法与依据](METHOD.md)、[覆盖与缺额](COVERAGE.md)。[初次集成验收](VALIDATION.json) 保留上一版资料摘要；本次展示修正和逐案源对照另记在 [走查验收](WALKTHROUGH_VALIDATION.json)，不覆盖历史记录。

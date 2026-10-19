@@ -34,20 +34,21 @@
     if (!states?.length) return kind==='ev_charge_window' ? '暂停充电' : kind==='tank_setpoint' ? '暂停加热' : '暂停温控';
     return states.map(x=>{
       if (kind==='ev_charge_window') return `允许充电（到${num((x.stop_at_target_soc??.85)*100,1)}%停止）`;
-      if (kind==='tank_setpoint') return `加热目标${num(x.value_C,1)}℃`;
+      if (kind==='tank_setpoint') return `水箱加热设定${num(x.value_C,1)}℃`;
       const shown = axes?.length ? axes : ['heating_setpoint_C','cooling_setpoint_C','fan_operating_mode'];
-      return shown.map(key=>key==='heating_setpoint_C' ? `制热${num(x[key],1)}℃` : key==='cooling_setpoint_C' ? `制冷${num(x[key]??x.value_C,1)}℃` : x.fan_operating_mode===1 ? '持续送风' : '自动送风').join('，');
+      return shown.map(key=>key==='heating_setpoint_C' ? `制热设定${num(x[key],1)}℃` : key==='cooling_setpoint_C' ? `制冷设定${num(x[key]??x.value_C,1)}℃` : x.fan_operating_mode===1 ? '持续送风' : '自动送风').join('，');
     }).join(' / ');
   }
   function command(x,p) {
     if (!x) return '未安排';
-    const value = ['ac_setpoint','tank_setpoint','ev_charge_window'].includes(x.kind) ? control([x],x.kind) : LABELS[x.kind]||'电器操作';
+    const device=p.devices.find(d=>d.asset_id===x.asset_id),objects=device?.types.includes('dishwasher')?'餐具':device?.types.some(k=>['washer','dryer'].includes(k))?'衣物':'物品';
+    const value = ['ac_setpoint','tank_setpoint','ev_charge_window'].includes(x.kind) ? control([x],x.kind) : x.kind==='load'?'装入'+objects:x.kind==='unload'?'取出'+objects:['washer','dryer','dishwasher'].includes(x.kind)?LABELS[x.kind]+'运行':LABELS[x.kind]||'电器操作';
     return `${value} ${span(x)}${x.operator_id?'（'+person(p,x.operator_id)+'）':''}`;
   }
   function changeRows(c,p) {
     const groups = new Map();
-    for (const x of c.changes) {
-      if (!groups.has(x.asset_id)) groups.set(x.asset_id,{asset:asset(p,x.asset_id),A:[],B:[],sourceChanges:0,units:1,isAC:p.devices.find(d=>d.asset_id===x.asset_id)?.types.includes('ac')});
+    for (const x of [...c.changes].sort((a,b)=>(a.start_min??Math.min(a.A?.start_min??Infinity,a.B?.start_min??Infinity))-(b.start_min??Math.min(b.A?.start_min??Infinity,b.B?.start_min??Infinity)))) {
+      if (!groups.has(x.asset_id)) groups.set(x.asset_id,{asset_id:x.asset_id,asset:asset(p,x.asset_id),A:[],B:[],sourceChanges:0,units:1,isAC:p.devices.find(d=>d.asset_id===x.asset_id)?.types.includes('ac')});
       const row = groups.get(x.asset_id);
       if (x.group==='controls') {
         const axes = x.kind==='ac_setpoint' ? thermostatAxes(x) : null;
@@ -72,7 +73,7 @@
       if(duplicate){duplicate.units++;duplicate.sourceChanges+=row.sourceChanges;}
       else visible.push(row);
     }
-    return visible.map(({asset,A,B,sourceChanges,units})=>({asset:units>1?asset.replace('空调 ·',`空调（${units}台） ·`):asset,A,B,sourceChanges,units}));
+    return visible.map(({asset_id,asset,A,B,sourceChanges,units})=>({asset_id,asset:units>1?asset.replace('空调 ·',`空调（${units}台） ·`):asset,A,B,sourceChanges,units}));
   }
 
   function familyLines(c,p) {
@@ -194,12 +195,14 @@
       m('div',null,'family-meta',deviceLabels(p).map(s=>m('span',null,'device-tag',[iconNode(s),m('span',s)])))];
   }
   function requestModel(c){
+    if(c.project_presentation) return [m('p','电网用电调整邀请（VPP请求）','request-title'),m('p',c.VPP_requests.length?c.VPP_requests.map(x=>`${span(x)}，希望相对A${c.project_presentation.event_meter_scope==='whole_physical_dwelling'?'整套住宅':''}平均${x.direction==='up'?'增加':'降低'}用电功率${num(x.target_kw)}kW`).join('；'):'本题没有电网调整邀请','request-events'),m('p',`通知时间：${[...new Set(c.VPP_requests.map(x=>time(x.notification_min)))].join('、')||'未设置'}。这是请求目标，实际响应未计算。`,'request-notice')];
     const notices=[...new Set(c.VPP_requests.map(x=>time(x.notification_min)))];
     return [m('p','这一天的VPP请求','request-title'),m('p',c.VPP_requests.length?c.VPP_requests.map(x=>`${span(x)}，${x.direction==='up'?'增加':'降低'}负荷${num(x.target_kw)}kW`).join('；'):'未设置VPP请求','request-events'),m('p',`通知时间：${notices.join('、')||'未设置'}`,'request-notice')];
   }
   function changesModel(c,p){
-    const rows=changeRows(c,p);
-    return rows.length?rows.map(r=>m('div',null,'change-card',[m('h3',null,'',[iconNode(r.asset),m('span',r.asset)]),m('div',null,'change-pair',['A','B'].map(side=>m('div',null,'change-side'+(side==='B'?' proposal':''),[sideLabel(side),...r[side].map(s=>m('p',s,'change-command'))])))])):[m('p','本题A/B实际安排相同，仍请独立评价。','no-change')];
+    const rows=changeRows(c,p),notes=c.project_presentation?[m('p','改动的程序设备同时列出装入、运行和取出，包含其中未改的步骤；其他设备沿用A。装入、取出和插拔需要人操作，程序运行可以自动进行。','effect-detail')]:[];
+    if(c.project_presentation)for(const row of rows){const device=p.devices.find(d=>d.asset_id===row.asset_id);if(device?.types.some(k=>['washer','dryer','dishwasher'].includes(k)))for(const side of ['A','B'])row[side]=['tasks','operations'].flatMap(g=>c.plans[side][g]).filter(x=>x.asset_id===row.asset_id).sort((a,b)=>a.start_min-b.start_min||a.end_min-b.end_min).map(x=>command(x,p));}
+    return rows.length?[...notes,...rows.map(r=>m('div',null,'change-card',[m('h3',null,'',[iconNode(r.asset),m('span',r.asset)]),m('div',null,'change-pair',['A','B'].map(side=>m('div',null,'change-side'+(side==='B'?' proposal':''),[sideLabel(side),...r[side].map(s=>m('p',s,'change-command'))])))]))]:[m('p','本题A/B计划安排相同，实际后果尚未计算。','no-change')];
   }
   function serviceLines(c,side){
     const card=c.impact.display.task_delivery_card,x=card[side],lines=[];
@@ -219,7 +222,7 @@
     return lines;
   }
   function impactModel(c,p){
-    if(c.outcome_status==='not_computed') return ['用电量','有人时的室温','生活任务是否完成','VPP响应'].map(label=>m('div',null,'impact-card',[m('div',null,'impact-title',[m('h3',label)]),m('div',null,'metric-pair',[metricCell('A','未计算'),metricCell('B','未计算')]),m('p','尚未运行仿真；这里不能判断实际后果。','effect-detail')]));
+    if(c.outcome_status==='not_computed') return ['用电量','有人时的室温','生活任务是否完成','电网响应（VPP）'].map(label=>m('div',null,'impact-card',[m('div',null,'impact-title',[m('h3',label)]),m('div',null,'metric-pair',[metricCell('A','未计算'),metricCell('B','未计算')]),m('p','尚无实际后果数据，不能从计划直接判断。','effect-detail')]));
     const e=c.impact.energy_changes,primary=e.primary,observation=e.observation;
     const cards=[m('div',null,'impact-card',[
       m('div',null,'impact-title',[m('h3','用电量'),m('span','当日08:00—次日08:00','impact-subtitle')]),
@@ -255,7 +258,7 @@
   }
   function displayed(c,p){
     const result={family:familyModel(c,p).map(textOf).join(''),request:requestModel(c).map(textOf).join(''),changes:changesModel(c,p).map(textOf).join(''),impacts:impactModel(c,p).map(textOf).join('')};
-    result.schedule='本题原始安排，包含跨夜和后续任务。运行及完成情况见“主要影响”。';
+    result.schedule='本题计划安排，包含跨夜和后续任务。允许充电不表示全程充电；温控和水箱数值是设定值，不是实际室温或出水温度。实际后果尚未计算。';
     for(const d of p.devices){result.schedule+=asset(p,d.asset_id);for(const side of ['A','B']){result.schedule+=side==='A'?'原安排A':'提议B';const events=Object.values(c.plans[side]).flat().filter(x=>x.asset_id===d.asset_id&&x.end_min>c.window_min[0]).sort((a,b)=>a.start_min-b.start_min||a.end_min-b.end_min);result.schedule+=events.length?events.map(x=>command(x,p)).join(''):'此范围内无安排。';}}
     return result;
   }
@@ -296,7 +299,7 @@
   }
   function renderPlans() {
     if(plansRendered||!current)return;plansRendered=true;
-    const box=q('plans');box.append(el('p','本题原始安排，包含跨夜和后续任务。运行及完成情况见“主要影响”。','section-note'));
+    const box=q('plans');box.append(el('p','本题计划安排，包含跨夜和后续任务。允许充电不表示全程充电；温控和水箱数值是设定值，不是实际室温或出水温度。实际后果尚未计算。','section-note'));
     for(const d of profile.devices) {
       const block=el('div',null,'plan-block');block.append(el('h3',asset(profile,d.asset_id)));const columns=el('div',null,'plan-columns');
       for(const side of ['A','B']) {
