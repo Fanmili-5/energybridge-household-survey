@@ -5,6 +5,11 @@ class SourceScopeTest(unittest.TestCase):
     def test_presentation_and_record_hashes_do_not_change_source_worlds(self):
         self.assertFalse(requires_source_rebuild([
             'benchmark/project/reference_collection_release.py',
+            'benchmark/project/reference_refined_release.py',
+            'benchmark/project/reference_collection_physics.py',
+            'benchmark/project/reference_physics_results.py',
+            'benchmark/project/refined91/housing_drawing.js',
+            'benchmark/project/UI91_VALIDATION.json',
             'benchmark/ab_generation/validation/collection_v4/REFERENCE50_RELEASE_REVIEW.json',
             'benchmark/project/PACKAGE_MANIFEST.json','benchmark/README.md']))
 

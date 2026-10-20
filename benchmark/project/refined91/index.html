@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EnergyBridge · 用电方案评估</title>
+  <link rel="stylesheet" href="view.css">
+  <script src="required-response.js" defer></script><script src="collection-client.js" defer></script><script src="view.js" defer></script>
+</head>
+<body>
+<header class="site-header"><div class="header-inner"><span class="brand">EnergyBridge<span>家庭用电研究</span></span><span class="badge">同源50户 · 本地预览</span></div></header>
+<main>
+  <div class="page-heading">
+    <div><p class="eyebrow">家庭用电研究</p><h1>用电方案评估</h1><p class="intro">代入给定家庭，对比两套安排并作出评价。</p></div>
+    <nav class="selectors" aria-label="选择家庭和日期"><label for="household" hidden>家庭<select id="household" disabled></select></label><label for="case-date">正在查看的日期<select id="case-date" disabled></select></label></nav>
+  </div>
+  <div class="collection-toolbar"><span id="collection-progress"></span><div><button id="show-recovery" class="text-button" type="button">保存与恢复</button><button hidden id="collection-logout" class="text-button" type="button">退出</button><button hidden id="collection-withdraw" class="text-button" type="button">撤回答卷</button></div></div>
+  <p id="load-status" role="status"></p>
+  <article id="task" hidden>
+    <section class="panel family-panel" aria-labelledby="family-heading"><div class="section-head"><span class="section-index">01</span><div><h2 id="family-heading">家庭与住房</h2></div></div><div id="family"></div></section>
+    <section class="panel changes-panel" aria-labelledby="change-heading"><div class="section-head"><span class="section-index">02</span><div><h2 id="change-heading">设备方案对比</h2></div></div><p class="section-note">A为原安排，B为调整后安排。</p><div id="vpp-request" class="request-note" hidden></div><div id="changes"></div></section>
+    <section class="panel effects-panel" aria-labelledby="impact-heading"><div class="section-head"><span class="section-index">03</span><div><h2 id="impact-heading">整体影响</h2></div></div><div id="impacts"></div></section>
+    <section class="panel answer-panel" aria-labelledby="answer-heading"><div class="section-head"><span class="section-index">04</span><div><h2 id="answer-heading">家庭评价</h2></div></div>
+      <form id="response-form">
+        <fieldset><legend>按这户家庭的情况，是否接受原样执行B？</legend><div class="decision-options"><label class="choice"><input type="radio" name="decision" value="accept" required><span>接受B方案</span></label><label class="choice"><input type="radio" name="decision" value="reject" required><span>不接受B方案</span></label></div></fieldset>
+        <div class="score-heading"><h3>给这次调整打分</h3><p>按家庭角色，评B相对A是否合适：1分很不合适，5分很合适，可填一位小数。VPP达标结果已单独列出。</p></div>
+        <div class="rating-grid">
+          <label for="score"><span>响应安排<small>通知和操作是否适合这户家庭</small></span><input id="score" name="score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
+          <label for="comfort_score"><span>舒适与生活<small>室温与生活变化是否适合这户家庭</small></span><input id="comfort_score" name="comfort_score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
+          <label for="energy_score"><span>用电与费用<small>用电时段与费用变化是否适合这户家庭</small></span><input id="energy_score" name="energy_score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
+          <label for="vpp_score"><span>VPP配合<small>这种配合方式是否适合这户家庭</small></span><input id="vpp_score" name="vpp_score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
+        </div>
+        <label class="field reason-label" for="reason">最主要的原因<span class="required-note">必填</span><textarea id="reason" name="reason" required maxlength="4000" rows="3" placeholder="哪些改变适合或不适合这户家庭？"></textarea></label>
+        <div class="form-actions"><button type="submit" id="submit-answer" disabled>提交答卷</button><button type="button" id="clear-response" class="secondary">撤销未提交修改</button></div><button id="next-question" class="secondary next-button" type="button" hidden>下一题</button><p id="response-status" role="status" aria-live="polite"></p>
+      </form><p class="save-note">草稿自动保存，提交后生成回执。此入口为本地预览。</p>
+    </section>
+  </article>
+</main>
+<dialog id="recovery-dialog" class="recovery-dialog" aria-labelledby="recovery-heading">
+  <h2 id="recovery-heading">保存与恢复</h2>
+  <p>草稿会自动保存。保留下面的恢复码，可找回本地预览的填写和查看记录。</p>
+  <code id="preview-recovery"></code>
+  <label for="recover-credential">恢复已有记录<input id="recover-credential" autocomplete="off" placeholder="输入恢复码"></label>
+  <p id="recover-status" role="status"></p>
+  <div class="dialog-actions"><button id="close-recovery" type="button" class="secondary">关闭</button><button id="recover-preview" type="button">恢复记录</button></div>
+</dialog>
+<footer>请按给定家庭角色作答。展示结果不会改变现实电器的设置。</footer>
+</body></html>

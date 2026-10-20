@@ -8,6 +8,12 @@ PRESENTATION={
     'benchmark/project/collection_questionnaire.py',
     'benchmark/project/test_reference_collection_release.py',
     'benchmark/project/source_scope.py','benchmark/project/test_source_scope.py',
+    'benchmark/project/reference_refined_release.py',
+    'benchmark/project/reference_collection_physics.py',
+    'benchmark/project/reference_physics_results.py',
+    'benchmark/project/test_reference_collection_physics.py',
+    'benchmark/project/verify_refined_display.js',
+    'benchmark/project/UI91_VALIDATION.json',
     'benchmark/verify_publication.py',
 }
 METADATA={'benchmark/PUBLICATION_MANIFEST.json','docs/household1000/STATUS.json',
@@ -17,6 +23,9 @@ def requires_source_rebuild(paths):
     for name in paths:
         path=Path(name)
         if name in PRESENTATION or name in METADATA or path.suffix=='.md':continue
+        # Display assets and frozen-input export/readback adapters do not alter
+        # family, housing or A/B source generation. Their tests still run.
+        if name.startswith('benchmark/project/refined91/') and path.suffix in ('.html','.css','.js','.json'):continue
         if path.name=='PACKAGE_MANIFEST.json'and name.startswith('benchmark/'):continue
         if name.startswith('.github/workflows/')and path.suffix in ('.yml','.yaml'):continue
         if name.startswith('benchmark/ab_generation/validation/')and path.suffix=='.json':continue
