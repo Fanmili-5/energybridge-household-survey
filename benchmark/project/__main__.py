@@ -11,6 +11,7 @@ def main():
     a = sub.add_parser('verify'); a.add_argument('folder', type=Path)
     a = sub.add_parser('prepare-idf'); a.add_argument('--project', type=Path, required=True); a.add_argument('--weather', type=Path, required=True); a.add_argument('--out', type=Path, required=True); a.add_argument('--sample-id', action='append'); a.add_argument('--preparation-profile', type=Path)
     a = sub.add_parser('questionnaire'); a.add_argument('--project', type=Path, required=True); a.add_argument('--out', type=Path, required=True)
+    a = sub.add_parser('collection-questionnaire'); a.add_argument('--collection', type=Path, required=True); a.add_argument('--source', type=Path, required=True); a.add_argument('--out', type=Path, required=True)
     a = sub.add_parser('verify-questionnaire'); a.add_argument('folder', type=Path)
     a = sub.add_parser('serve'); a.add_argument('--release', type=Path, default=Path(__file__).parent / 'examples/questionnaire'); a.add_argument('--port', type=int, default=18780)
     args = p.parse_args()
@@ -22,6 +23,9 @@ def main():
     elif args.command == 'questionnaire':
         from .questionnaire import build_questionnaire
         result = build_questionnaire(args.project, args.out)
+    elif args.command == 'collection-questionnaire':
+        from .collection_questionnaire import build_collection_questionnaire
+        result = build_collection_questionnaire(args.collection, args.source, args.out)
     elif args.command == 'verify-questionnaire':
         from .questionnaire import verify_questionnaire
         result = verify_questionnaire(args.folder)

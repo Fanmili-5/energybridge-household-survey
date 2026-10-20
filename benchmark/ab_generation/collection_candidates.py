@@ -190,6 +190,11 @@ def _raw_thermal(c,d,config):
             for lead in (config['ac_precondition_min'] if family=='ac' and mechanism=='precondition_and_relax'
                          else [config['precondition_min'] if mechanism=='precondition_and_relax' else 0])]
         for delta,duration,direction,mechanism,lead in variants:
+            # The v1 state encoding declares a cooling fallback only. Heating
+            # event requests are supported; preheating across an inactive state
+            # needs its own typed contract and is not silently mislabelled.
+            if family=='ac' and axis=='heating' and mechanism=='precondition_and_relax':
+                continue
             hi=lo+duration
             if not all(any(r['start_min']<=t and t+10<=r['end_min'] for r in controls) for t in range(lo,hi,10)):
                 continue
@@ -355,6 +360,15 @@ def generate_day(context,config):
     validate_context(context); before=digest(context); c=working_context(context)
     baseline_needs={t['need_id'] for t in c['A']['tasks'] if c['decision_min']<=t['start_min']<1440}
     baseline_needs={n['need_id'] for n in c['needs'] if n['need_id'] in baseline_needs}
+    # A46 lists an automatic combo's dry stage as a separate service need but
+    # gives the parent one loading/retrieval chain. Do not demand a fictitious
+    # second handling chain; the parent check already includes this same asset.
+    automatic_children={nid for nid in baseline_needs if nid.endswith(':dry')
+        and any(t['need_id']==nid[:-4] and t['asset_id']==u['asset_id']
+                for t in c['A']['tasks'] for u in c['A']['tasks'] if u['need_id']==nid)
+        and any(o['need_id']==nid[:-4] and o['kind']=='load' for o in c['A']['operations'])
+        and not any(o['need_id']==nid for o in c['A']['operations'])}
+    baseline_needs-=automatic_children
     baseline_check,_,_=issues(c,[],baseline_needs)
     baseline_logic=engineering_issues(c,c['A'],baseline_needs,baseline_check)
     if baseline_logic:

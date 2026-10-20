@@ -1,1 +1,308 @@
-{"AC_controller_encoding":{"actual_compressor_state_known":false,"applicability":"explicit_public_synthetic_life_encoding_contract;not_automatic_for_real_imports","cooling_stop_fallback_C":40.0,"evidence":"validation/collection_v3/AC_CONTROL_EVIDENCE.json","exact_value_from_paper":false,"native_availability_supported_here":false,"not_occupied_comfort_target":true,"origin":"original_EB_family_runner@2b17ae6_and_declared_project_LIFE_setback"},"admission_rules":{"admission_labels_rewarded":false,"category_proportions_prescribed":false,"control_policy":"only_if_no_changed_request_in_declared_daily_domain","engineering_checks":["ASSET_HOLD_CONFLICT","EV_CONTROL_OUTSIDE_CONNECTED_INTERVAL","INCOMPLETE_EV_CONNECTION","INCOMPLETE_PROGRAM_CHAIN","INVALID_PLAN_INTERVAL","LOAD_BEFORE_RELEASE","OVERLAPPING_PATCH_IDENTITIES","PREREQUISITE_NOT_COLLECTED","PROGRAM_BEFORE_LOAD_END","PROGRAM_ORDER_CHANGED","RETRIEVAL_BEFORE_PROGRAM_END","SETPOINT_OUTSIDE_HARDWARE_RANGE","SETPOINT_OUTSIDE_REFERENCE_RANGE","SIMULTANEOUS_PROGRAMS_ON_ONE_ASSET","THERMOSTAT_DEADBAND_INVERTED","TIMER_NOT_AVAILABLE"],"origin":"project_semantic_and_experiment_boundary;precedence_no_overlap_supported_by_job_shop;not_paper_proportions_or_safety_standard","replacement_after_failure":false,"retained_service_checks":["CHARGE_EXCEEDS_ORIGINAL_CONNECTION","FACILITY_RESERVED","MACHINE_WINDOW_VIOLATED","OPERATOR_DOUBLE_BOOKED","OPERATOR_UNAVAILABLE","PRELOAD_WAIT_EXCEEDED","RETRIEVAL_WAIT_EXCEEDED","ROOM_DOUBLE_BOOKED","SERVICE_DEADLINE_MISSED","SITE_CAPACITY_NOT_CERTIFIED","SITE_KNOWN_PROFILE_EXCEEDS_SUPPLY"]},"defaults":{"ac_axes":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"declared_cooling_request_axis_for_existing_summer_cases;not_measured_activity","purpose":"collection_design.DEFAULT:ac_axes","value":["cooling"]},"ac_delta_C":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"project_experimental_design_setting;not_a_paper_prescription","purpose":"collection_design.DEFAULT:ac_delta_C","value":[0.5,1.0,2.0]},"ac_precondition_min":{"boundary":"plan-only;not_comfort_or_actual_response","exact_value_from_paper":false,"origin":"project_experimental_design_setting;not_a_paper_prescription","purpose":"collection_design.DEFAULT:ac_precondition_min","value":[10,30,60]},"assignment_representatives_per_cell":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"project_experimental_design_setting;not_a_paper_prescription","purpose":"collection_design.DEFAULT:assignment_representatives_per_cell","value":2},"days":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"user_requested_ten_daily_cases_per_household","purpose":"collection_design.DEFAULT:days","value":10},"event":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"original_EnergyBridge_18_19_default_plus_declared_project_down_request_target","purpose":"collection_design.DEFAULT:event","value":{"direction":"down","end_min":1140,"event_id":"fixed-vpp-18-19","start_min":1080,"target_kw":1.5}},"first_date":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"unchanged_existing_public_life_A_dates","purpose":"collection_design.DEFAULT:first_date","value":"2025-07-15"},"households":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"explicit_existing_public_synthetic_pilot_frame;not_a_population_sample","purpose":"collection_design.DEFAULT:households","value":[]},"joint_budget":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"project_experimental_design_setting;not_a_paper_prescription","purpose":"collection_design.DEFAULT:joint_budget","value":192},"joint_trials_per_subset":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"project_experimental_design_setting;not_a_paper_prescription","purpose":"collection_design.DEFAULT:joint_trials_per_subset","value":6},"precondition_min":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"project_experimental_design_setting;not_a_paper_prescription","purpose":"collection_design.DEFAULT:precondition_min","value":30},"quantiles":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"project_experimental_design_setting;not_a_paper_prescription","purpose":"collection_design.DEFAULT:quantiles","value":[0.2,0.5,0.9]},"schema":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"project_interface_version","purpose":"collection_design.DEFAULT:schema","value":"eb.collection.design.v3"},"seed":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"project_reproducibility_setting","purpose":"collection_design.DEFAULT:seed","value":20261020},"solver_node_limit":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"project_experimental_design_setting;not_a_paper_prescription","purpose":"collection_design.DEFAULT:solver_node_limit","value":2000},"step_min":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"existing_A_and_control_interface_10minute_grid","purpose":"collection_design.DEFAULT:step_min","value":10},"tank_delta_C":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"project_experimental_design_setting;not_a_paper_prescription","purpose":"collection_design.DEFAULT:tank_delta_C","value":[1.0,3.0,5.0]},"thermal_duration_min":{"boundary":"plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md","exact_value_from_paper":false,"origin":"project_experimental_design_setting;not_a_paper_prescription","purpose":"collection_design.DEFAULT:thermal_duration_min","value":[20,40,60]}},"event_relevance_contract":{"category_proportions_prescribed":false,"dependent_asset":"existing same-material service dependency;not another independent opportunity;no necessity claim for every chain phase","direct_event_request":"task/permission/thermal command related to fixed18-19;positive response not required","joint_support_search_budget":"floor(joint_budget/4);numerical allowance,not_sample_proportion","outside_event_support":"literal new operator/room or known scheduled supply conflict caused by roots;leave-one-component-out witness","scope":"one root plus one outside support per support search;not exhaustive closure","unrelated_requests":"archived with original patches;not formal coverage;no replacement"},"numerical_guards":{"energy_epsilon_kWh":1e-09,"integer_readback_tolerance":1e-06,"review_energy_tolerance_kWh":1e-08},"publication_boundary":"these values are experimental/numerical settings;literature supports mechanisms,not exact values","reporting_bins":{"AC_event_duration_and_cooling_stop_min":[20,40,60],"AC_preconditioning_and_additional_enable_min":[10,30,60],"AC_state_levels":["unchanged","leave_cooling_stop_fallback","request_cooling_stop_fallback","mixed"],"AC_temperature_offset_C":[0.5,1,2],"EV":{"large_pause_at_least_min":180,"small_pause_max_min":30,"tight_slack_under_min":30},"fallback_state_change_is_temperature_delta":false,"program_minutes":{"large_min":90,"small_max":30},"scope":"independent_command_axes;not_population_or_comfort_or_response_classes","service_slack_minutes":[0,30,120],"whole_B_intensity":null},"schema":"eb.collection.parameter_register.v1","selection_contract":{"core_goals_per_available_level":1,"days_per_household":10,"objective_is_user_preference_or_energy_optimum":false,"one_case_per_day":1,"stages":["minimize_coverage_deficits","lock_achieved_coverage_then_minimize_near_repeats_and_seeded_tie"],"unavailable_goals_reported_as_deficits":true,"whole_B_intensity_rewarded":false}}
+{
+  "AC_controller_encoding": {
+    "actual_compressor_state_known": false,
+    "applicability": "explicit_public_synthetic_life_encoding_contract;not_automatic_for_real_imports",
+    "cooling_stop_fallback_C": 40.0,
+    "evidence": "validation/collection_v3/AC_CONTROL_EVIDENCE.json",
+    "exact_value_from_paper": false,
+    "native_availability_supported_here": false,
+    "not_occupied_comfort_target": true,
+    "origin": "original_EB_family_runner@2b17ae6_and_declared_project_LIFE_setback"
+  },
+  "admission_rules": {
+    "admission_labels_rewarded": false,
+    "category_proportions_prescribed": false,
+    "control_policy": "only_if_no_changed_request_in_declared_daily_domain",
+    "engineering_checks": [
+      "ASSET_HOLD_CONFLICT",
+      "EV_CONTROL_OUTSIDE_CONNECTED_INTERVAL",
+      "INCOMPLETE_EV_CONNECTION",
+      "INCOMPLETE_PROGRAM_CHAIN",
+      "INVALID_PLAN_INTERVAL",
+      "LOAD_BEFORE_RELEASE",
+      "OVERLAPPING_PATCH_IDENTITIES",
+      "PREREQUISITE_NOT_COLLECTED",
+      "PROGRAM_BEFORE_LOAD_END",
+      "PROGRAM_ORDER_CHANGED",
+      "RETRIEVAL_BEFORE_PROGRAM_END",
+      "SETPOINT_OUTSIDE_HARDWARE_RANGE",
+      "SETPOINT_OUTSIDE_REFERENCE_RANGE",
+      "SIMULTANEOUS_PROGRAMS_ON_ONE_ASSET",
+      "THERMOSTAT_DEADBAND_INVERTED",
+      "THERMOSTAT_DEADBAND_TOO_NARROW",
+      "TIMER_NOT_AVAILABLE"
+    ],
+    "origin": "project_semantic_and_experiment_boundary;precedence_no_overlap_supported_by_job_shop;not_paper_proportions_or_safety_standard",
+    "replacement_after_failure": false,
+    "retained_service_checks": [
+      "CHARGE_EXCEEDS_ORIGINAL_CONNECTION",
+      "FACILITY_RESERVED",
+      "MACHINE_WINDOW_VIOLATED",
+      "OPERATOR_DOUBLE_BOOKED",
+      "OPERATOR_UNAVAILABLE",
+      "PRELOAD_WAIT_EXCEEDED",
+      "RETRIEVAL_WAIT_EXCEEDED",
+      "ROOM_DOUBLE_BOOKED",
+      "SERVICE_DEADLINE_MISSED",
+      "SITE_CAPACITY_NOT_CERTIFIED",
+      "SITE_KNOWN_PROFILE_EXCEEDS_SUPPLY"
+    ]
+  },
+  "defaults": {
+    "ac_axes": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "declared_cooling_request_axis_for_existing_summer_cases;not_measured_activity",
+      "purpose": "collection_design.DEFAULT:ac_axes",
+      "value": [
+        "cooling"
+      ]
+    },
+    "ac_delta_C": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "project_experimental_design_setting;not_a_paper_prescription",
+      "purpose": "collection_design.DEFAULT:ac_delta_C",
+      "value": [
+        0.5,
+        1.0,
+        2.0
+      ]
+    },
+    "ac_precondition_min": {
+      "boundary": "plan-only;not_comfort_or_actual_response",
+      "exact_value_from_paper": false,
+      "origin": "project_experimental_design_setting;not_a_paper_prescription",
+      "purpose": "collection_design.DEFAULT:ac_precondition_min",
+      "value": [
+        10,
+        30,
+        60
+      ]
+    },
+    "assignment_representatives_per_cell": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "project_experimental_design_setting;not_a_paper_prescription",
+      "purpose": "collection_design.DEFAULT:assignment_representatives_per_cell",
+      "value": 2
+    },
+    "days": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "user_requested_ten_daily_cases_per_household",
+      "purpose": "collection_design.DEFAULT:days",
+      "value": 10
+    },
+    "event": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "original_EnergyBridge_18_19_default_plus_declared_project_down_request_target",
+      "purpose": "collection_design.DEFAULT:event",
+      "value": {
+        "direction": "down",
+        "end_min": 1140,
+        "event_id": "fixed-vpp-18-19",
+        "start_min": 1080,
+        "target_kw": 1.5
+      }
+    },
+    "first_date": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "unchanged_existing_public_life_A_dates",
+      "purpose": "collection_design.DEFAULT:first_date",
+      "value": "2025-07-15"
+    },
+    "households": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "explicit_existing_public_synthetic_pilot_frame;not_a_population_sample",
+      "purpose": "collection_design.DEFAULT:households",
+      "value": []
+    },
+    "joint_budget": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "project_experimental_design_setting;not_a_paper_prescription",
+      "purpose": "collection_design.DEFAULT:joint_budget",
+      "value": 192
+    },
+    "joint_trials_per_subset": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "project_experimental_design_setting;not_a_paper_prescription",
+      "purpose": "collection_design.DEFAULT:joint_trials_per_subset",
+      "value": 6
+    },
+    "precondition_min": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "project_experimental_design_setting;not_a_paper_prescription",
+      "purpose": "collection_design.DEFAULT:precondition_min",
+      "value": 30
+    },
+    "quantiles": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "project_experimental_design_setting;not_a_paper_prescription",
+      "purpose": "collection_design.DEFAULT:quantiles",
+      "value": [
+        0.2,
+        0.5,
+        0.9
+      ]
+    },
+    "schema": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "project_interface_version",
+      "purpose": "collection_design.DEFAULT:schema",
+      "value": "eb.collection.design.v3"
+    },
+    "seed": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "project_reproducibility_setting",
+      "purpose": "collection_design.DEFAULT:seed",
+      "value": 20261020
+    },
+    "solver_node_limit": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "project_experimental_design_setting;not_a_paper_prescription",
+      "purpose": "collection_design.DEFAULT:solver_node_limit",
+      "value": 2000
+    },
+    "step_min": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "existing_A_and_control_interface_10minute_grid",
+      "purpose": "collection_design.DEFAULT:step_min",
+      "value": 10
+    },
+    "tank_delta_C": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "project_experimental_design_setting;not_a_paper_prescription",
+      "purpose": "collection_design.DEFAULT:tank_delta_C",
+      "value": [
+        1.0,
+        3.0,
+        5.0
+      ]
+    },
+    "thermal_duration_min": {
+      "boundary": "plan-only pilot;no_physical_or_human_acceptance_guarantee;see_COLLECTION_METHOD.md",
+      "exact_value_from_paper": false,
+      "origin": "project_experimental_design_setting;not_a_paper_prescription",
+      "purpose": "collection_design.DEFAULT:thermal_duration_min",
+      "value": [
+        20,
+        40,
+        60
+      ]
+    }
+  },
+  "event_relevance_contract": {
+    "category_proportions_prescribed": false,
+    "dependent_asset": "existing same-material service dependency;not another independent opportunity;no necessity claim for every chain phase",
+    "direct_event_request": "task/permission/thermal command related to fixed18-19;positive response not required",
+    "joint_support_search_budget": "floor(joint_budget/4);numerical allowance,not_sample_proportion",
+    "outside_event_support": "literal new operator/room or known scheduled supply conflict caused by roots;leave-one-component-out witness",
+    "scope": "one root plus one outside support per support search;not exhaustive closure",
+    "unrelated_requests": "archived with original patches;not formal coverage;no replacement"
+  },
+  "numerical_guards": {
+    "energy_epsilon_kWh": 1e-09,
+    "integer_readback_tolerance": 1e-06,
+    "review_energy_tolerance_kWh": 1e-08
+  },
+  "publication_boundary": "these values are experimental/numerical settings;literature supports mechanisms,not exact values",
+  "reporting_bins": {
+    "AC_event_duration_and_cooling_stop_min": [
+      20,
+      40,
+      60
+    ],
+    "AC_preconditioning_and_additional_enable_min": [
+      10,
+      30,
+      60
+    ],
+    "AC_state_levels": [
+      "unchanged",
+      "leave_cooling_stop_fallback",
+      "request_cooling_stop_fallback",
+      "mixed"
+    ],
+    "AC_temperature_offset_C": [
+      0.5,
+      1,
+      2
+    ],
+    "EV": {
+      "large_pause_at_least_min": 180,
+      "small_pause_max_min": 30,
+      "tight_slack_under_min": 30
+    },
+    "fallback_state_change_is_temperature_delta": false,
+    "program_minutes": {
+      "large_min": 90,
+      "small_max": 30
+    },
+    "scope": "independent_command_axes;not_population_or_comfort_or_response_classes",
+    "service_slack_minutes": [
+      0,
+      30,
+      120
+    ],
+    "whole_B_intensity": null
+  },
+  "schema": "eb.collection.parameter_register.v1",
+  "selection_contract": {
+    "schema": "eb.collection.selection_policy.v4",
+    "days_per_household": 10,
+    "one_case_per_day": 1,
+    "objective_is_user_preference_or_energy_optimum": false,
+    "stages": [
+      "joint_normalized_coverage_and_semantic_family_redundancy",
+      "lock_joint_objective_then_seeded_semantic_tie"
+    ],
+    "device_detail_budget_shared_across_mechanisms_doses_and_slack": true,
+    "descriptive_AC_axes_rewarded_individually": false,
+    "full_device_count_cross_axes_rewarded": false,
+    "independent_root_service_bins": [
+      "single",
+      "two",
+      "three_or_more"
+    ],
+    "support_device_is_new_root_opportunity": false,
+    "category_proportions_prescribed": false,
+    "whole_B_intensity_rewarded": false,
+    "unavailable_goals_reported_as_deficits": true,
+    "policy_file": "collection_selection.py:POLICY",
+    "weights_are_experimental_settings": true,
+    "joint_order_goal_scope": "batch_only;not_per_household",
+    "composition_redundancy_is_soft_not_requested_composition_quota": true,
+    "development_structural_diagnosis_retained": true
+  },
+  "reference50_import_v4": {
+    "source_A": "original_frozen_A46_cases;all50households_and_original10dates",
+    "old_B_or_physical_results_used": false,
+    "event": [
+      1080,
+      1140
+    ],
+    "EV_missing_control_need_IDs": "explicit_lineage_annotation;original_command_values_and_times_identical",
+    "EV_energy": "native_A_charge_event_mean_split_to10min;not_meter_measurement",
+    "program_capabilities": "inherited_A46_project_rules;not_empirical_hardware_claim",
+    "thermal_axes": [
+      "cooling",
+      "heating"
+    ],
+    "heating_preconditioning_supported": false,
+    "source_defined_minimum_deadband_enforced": true,
+    "automatic_combo_dry_stage": "one_original_handling_chain;not_a_second_independent_device"
+  }
+}

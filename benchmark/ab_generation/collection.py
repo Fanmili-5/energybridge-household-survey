@@ -144,7 +144,7 @@ def _projection(c,row,b,check):
 
 
 def _coverage(rows,selected,assignment,daily):
-    result={'schema':'eb.collection.coverage.v3','catalogue':report_counts(rows),'selected':report_counts(selected),
+    result={'schema':'eb.collection.coverage.v4','catalogue':report_counts(rows),'selected':report_counts(selected),
         'catalogue_unique':len(rows),'selected_count':len(selected),
         'all_evaluated_diagnostics_retained':True,'diagnostics_catalogue':sum(bool(r['issues']) for r in rows),
         'diagnostics_selected':sum(bool(r['issues']) for r in selected),
@@ -153,6 +153,8 @@ def _coverage(rows,selected,assignment,daily):
         'category_proportions_prescribed':False,'admission_labels_rewarded':False,
         'goals':assignment['coverage'],'required_deficits':assignment['required_deficits'],
         'near_duplicate_excess':assignment['near_duplicate_excess'],'interactions':[],
+        'selection_policy':assignment['selection_policy'],'family_exposure':assignment['family_exposure'],
+        'weighted_deficits':assignment['weighted_deficits'],
         'generation_limits':[{'household_id':x['household_id'],'date':x['date'],
             **{k:x[k] for k in ('joint_subset_required','joint_subset_observed','joint_subset_attempted','joint_search_status','retimed_handling_search','gaps')}} for x in daily],
         'physical_failure_prevalence':'unknown;not_executed','actual_nonresponse_prevalence':'unknown;not_executed',
@@ -249,7 +251,7 @@ def build(source_project,config_path,out,progress=None):
         'same_frozen_A_preserved':True,'source_life_payloads':original_life,'new_engine_runs':0,
         'acceptance_labels_generated':0,'online_questionnaire_changed':False,'master1000_started':False}
     save(out/'REVIEW.json',audit)
-    summary={'schema':'eb.collection.pilot.v3','households':len(config['households']),'days_per_household':10,
+    summary={'schema':'eb.collection.pilot.v4','households':len(config['households']),'days_per_household':10,
         'selected':len(selected),'catalogue_unique':len(all_rows),'diagnostics_retained':coverage['diagnostics_catalogue'],
         'diagnostics_selected':coverage['diagnostics_selected'],'required_deficits':coverage['required_deficits'],
         'engineering_diagnostics_retained':coverage['engineering_diagnostics_retained'],
@@ -260,6 +262,65 @@ def build(source_project,config_path,out,progress=None):
         'near_duplicate_excess':coverage['near_duplicate_excess'],'full_plan_review_passed':audit['passed'],
         'coverage_contract_passed':coverage['required_deficits']==0,'physical_status':'not_run','new_engine_runs':0,
         'online_questionnaire_changed':False,'master1000_started':False,'solver':assignment['solver']}
+    if code_hash()!=generation_code:raise ValueError('GENERATOR_CODE_CHANGED_DURING_BUILD;retain_development_run')
+    save(out/'SUMMARY.json',summary);seal(out,{'schema':summary['schema'],'code_sha256':generation_code,
+        'pre_generation_sha256':sha(out/'PRE_GENERATION.json'),'summary_sha256':sha(out/'SUMMARY.json')})
+    return summary
+
+
+def select_catalogue(root,out):
+    """Versioned selection from a sealed catalogue; no A/B regeneration/rerolls.
+
+    Every original request/diagnostic and context is copied byte-for-byte. The
+    parent build remains intact. Only assignment and its derived pairs change.
+    """
+    import shutil
+    from .collection_selection import POLICY
+    root=Path(root).resolve();out=Path(out).resolve();parent=verify(root)
+    config=design(read(root/'DESIGN.json'));generation_code=code_hash()
+    out.mkdir(parents=True,exist_ok=False)
+    for name in ('contexts','catalogues'):
+        shutil.copytree(root/name,out/name)
+    for name in ('DESIGN.json','HOUSEHOLDS.json','GENERATION.json'):
+        shutil.copyfile(root/name,out/name)
+    pre={**read(root/'PRE_GENERATION.json'),'selection_code_sha256':generation_code,
+         'selection_policy':POLICY,'frozen_catalogue_manifest_sha256':sha(root/'MANIFEST.json'),
+         'catalogue_regenerated':False,'original_build_schema':parent['schema'],
+         'B_outcomes_available':False,'human_answers_available':False}
+    save(out/'PRE_GENERATION.json',pre)
+    rows=[]
+    for path in sorted((out/'catalogues').glob('*.json.gz')):rows.extend(read(path)['rows'])
+    assignment=assign(rows,config);save(out/'ASSIGNMENT.json',assignment)
+    by_id={r['id']:r for r in rows};selected=[by_id[i] for i in assignment['selected_ids']]
+    samples=[];audits=[]
+    for row in selected:
+        c=read(out/'contexts'/(row['case_id']+'.json.gz'));check,b=review(c,row,config)
+        if not check['passed']:raise ValueError('FULL_PLAN_REVIEW_FAILED:'+row['id'])
+        audits.append({'id':row['id'],**check})
+        save(out/'pairs'/(row['id']+'.json'),{'A':c['A'],'B':b,'row':row,'review':check})
+        samples.append(_projection(c,row,b,check))
+    coverage=_coverage(rows,selected,assignment,read(out/'GENERATION.json'))
+    save(out/'PUBLIC_SAMPLES.json',samples);save(out/'COVERAGE.json',coverage)
+    save(out/'REVIEW.json',{'schema':'eb.collection.review.v1','passed':True,'records':audits,
+        'same_frozen_A_preserved':True,'source_life_payloads':read(root/'REVIEW.json')['source_life_payloads'],
+        'new_engine_runs':0,'acceptance_labels_generated':0,'online_questionnaire_changed':False,'master1000_started':False})
+    identity={name:all(sha(path)==sha(out/path.relative_to(root)) for path in (root/name).glob('*.json.gz'))
+              for name in ('contexts','catalogues')}
+    if not all(identity.values()):raise ValueError('FROZEN_CATALOGUE_OR_A_CHANGED')
+    save(out/'INPUT_IDENTITY.json',{'parent_manifest_sha256':sha(root/'MANIFEST.json'),
+        'byte_identical':identity,'original_selection_preserved':True,'rerolls':0,'new_engine_runs':0})
+    summary={'schema':'eb.collection.pilot.v4','households':len(config['households']),'days_per_household':10,
+        'selected':len(selected),'catalogue_unique':len(rows),'diagnostics_retained':coverage['diagnostics_catalogue'],
+        'diagnostics_selected':coverage['diagnostics_selected'],'required_deficits':coverage['required_deficits'],
+        'weighted_deficits':coverage['weighted_deficits'],'family_exposure':assignment['family_exposure'],
+        'engineering_diagnostics_retained':coverage['engineering_diagnostics_retained'],
+        'relevance_diagnostics_retained':coverage['relevance_diagnostics_retained'],'engineering_errors_selected':0,
+        'category_proportions_prescribed':False,'admission_labels_rewarded':False,
+        'interaction_deficits':coverage['interaction_deficits'],'interaction_cells':coverage['interaction_cells'],
+        'near_duplicate_excess':coverage['near_duplicate_excess'],'full_plan_review_passed':True,
+        'coverage_contract_passed':coverage['required_deficits']==0,'physical_status':'not_run','new_engine_runs':0,
+        'online_questionnaire_changed':False,'master1000_started':False,'solver':assignment['solver'],
+        'catalogue_regenerated':False,'selection_policy':POLICY}
     if code_hash()!=generation_code:raise ValueError('GENERATOR_CODE_CHANGED_DURING_BUILD;retain_development_run')
     save(out/'SUMMARY.json',summary);seal(out,{'schema':summary['schema'],'code_sha256':generation_code,
         'pre_generation_sha256':sha(out/'PRE_GENERATION.json'),'summary_sha256':sha(out/'SUMMARY.json')})
@@ -341,11 +402,13 @@ def main():
     p=sub.add_parser('prepare-source');p.add_argument('--input',default='benchmark/project/examples/project.json');p.add_argument('--out',required=True)
     p=sub.add_parser('build');p.add_argument('--source-project',required=True);p.add_argument('--config',default=str(HERE/'examples/collection/design.json'));p.add_argument('--out',required=True)
     p=sub.add_parser('recheck');p.add_argument('--root',required=True)
+    p=sub.add_parser('select-catalogue');p.add_argument('--root',required=True);p.add_argument('--out',required=True)
     p=sub.add_parser('replay');p.add_argument('--root',required=True)
     p=sub.add_parser('sensitivity');p.add_argument('--root',required=True);p.add_argument('--out',required=True)
     args=parser.parse_args()
     value=(prepare_source(args.input,args.out) if args.command=='prepare-source' else
         build(args.source_project,args.config,args.out) if args.command=='build' else
+        select_catalogue(args.root,args.out) if args.command=='select-catalogue' else
         replay(args.root) if args.command=='replay' else sensitivity(args.root,args.out) if args.command=='sensitivity' else recheck(args.root))
     print(json.dumps(value,ensure_ascii=False,sort_keys=True))
 
