@@ -40,6 +40,12 @@ def build(collection,profiles_release,original_a,out):
     # pending-outcome and typed-control presentation branches.
     for name in ('index.html','entry.html','entry.js','collection-client.js'):
         shutil.copyfile(COLLECTOR/name,out/'public'/name)
+    entry=out/'public/entry.html';entry_text=entry.read_text()
+    entry_text=entry_text.replace('方案为参考仿真，不会改变现实电器的设置。','本版只评价调整提案，实际后果尚未计算，不会改变现实电器的设置。')
+    entry_anchor='<p id="notice-text" class="section-note"></p>'
+    if entry_text.count(entry_anchor)!=1:raise ValueError('V69_PROPOSAL_ENTRY_ANCHOR_CHANGED')
+    entry_text=entry_text.replace(entry_anchor,entry_anchor+'<p class="section-note">本版本尚未计算实际用电、室温和VPP响应。请根据家庭需要与A/B计划评价提案；以后补做仿真不会改写本次作答条件。</p>')
+    entry.write_text(entry_text)
     html=out/'public/index.html';s=html.read_text();old_notice='结果为仿真估算。用电减少可能伴随任务未完成；费用与补偿未计算。'
     if s.count(old_notice)!=1:raise ValueError('V69_OUTCOME_NOTICE_ANCHOR_CHANGED')
     s=s.replace(old_notice,'本题先评价调整提案是否适合本户。实际用电、室温、任务完成和VPP响应尚未计算，后续另行仿真；未计算不代表没有变化。')
@@ -103,6 +109,9 @@ def build(collection,profiles_release,original_a,out):
     from answer_contract import ANSWER_INSTRUCTIONS
     instructions=copy.deepcopy(ANSWER_INSTRUCTIONS)
     instructions['collection_condition']='本版本评价提案的操作时段、温控请求与生活安排；不要求推测未计算的用电量、室温或达标。后续仿真不会改写受访者当时看到的资料和答案。'
+    instructions['scores']['comfort_score']['meaning']='温控请求与生活安排是否适合这户家庭'
+    instructions['scores']['energy_score']['meaning']='用电时段与设备安排是否适合这户家庭'
+    instructions['objective_outcomes']='实际用电、室温、任务完成和VPP达标未计算，不要求参与者推测；后续结果另行关联冻结A/B。'
     save(out/'ANSWER_INSTRUCTIONS.json',instructions)
     index['ui_assets_sha256']={p.name:sha(p) for p in (out/'public').iterdir() if p.is_file()};save(out/'INDEX50.json',index)
     save(out/'SOURCE_IDENTITY.json',{'records':source_proofs,'same_50_households_and_10_original_dates':True,
