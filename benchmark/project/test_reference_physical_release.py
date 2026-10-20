@@ -5,9 +5,33 @@ import tempfile
 from pathlib import Path
 from .reference_physics_results import integrity_failures,mixed_water_delivery,native_numerical_failures
 from .reference_weather_audit import native_weather_review
+from .reference_physical_release import require_computed_consequences
 
 
 class PhysicalInformationTests(unittest.TestCase):
+    def complete_outcomes(self):
+        return {'metered_energy':{'primary_24h':{'A':2.,'B':3.,'B_minus_A':1.}},
+                'simulated_facility_cost':{'currency':'CNY','intervals':{'primary_24h':{'status':'complete','A':1.,'B':2.,'B_minus_A':1.}}},
+                'events':[{'target_met':False,'A_kWh':2.,'B_kWh':3.,'aligned_response_kw':-1.}],
+                'temperature_outcomes':[{'A':{'minimum_C':20.,'mean_C':21.,'maximum_C':22.},'B':{'minimum_C':25.,'mean_C':26.,'maximum_C':27.}}]}
+
+    def test_formal_collection_rejects_unknown_even_when_all_native_runs_finished(self):
+        rows=[{'case_id':str(i),'status':'computed','actual_outcomes':self.complete_outcomes()} for i in range(500)]
+        require_computed_consequences(rows)
+        rows[2].update(status='audit_failed',actual_outcomes=None)
+        with self.assertRaisesRegex(ValueError,'FORMAL_COLLECTION_REQUIRES_COMPUTED_CONSEQUENCES:1'):
+            require_computed_consequences(rows)
+
+    def test_readiness_does_not_filter_adverse_service_or_target_failures(self):
+        rows=[{'case_id':str(i),'status':'computed','audit_status':'failed','failed_checks':['B_EV_departure_target'],
+               'actual_outcomes':self.complete_outcomes()}for i in range(500)]
+        require_computed_consequences(rows)
+
+    def test_computed_marker_alone_does_not_bypass_readiness(self):
+        rows=[{'case_id':str(i),'status':'computed','actual_outcomes':{}}for i in range(500)]
+        with self.assertRaisesRegex(ValueError,'FORMAL_CORE_CONSEQUENCES_INCOMPLETE'):
+            require_computed_consequences(rows)
+
     def test_weather_check_covers_cross_year_history_and_recovery_not_unrelated_months(self):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d)/'weather.epw'

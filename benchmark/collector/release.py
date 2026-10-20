@@ -80,7 +80,7 @@ class Release:
 
     def actor_index(self,household,resume_date=None):
         if household not in self.households:raise PermissionError('家庭不属于当前版本。')
-        return {**self.index,'release_sha256':self.signature,'households':[household],
+        return {**self.index,'release_sha256':self.signature,'households':[household],'households_total':len(self.households),
                 'profiles_sha256':{household:self.index['profiles_sha256'][household]},
                 'cases':[r for r in self.records.values()if r['household_id']==household],
                 'resume_date':resume_date}

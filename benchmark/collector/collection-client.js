@@ -21,7 +21,7 @@
   const localKey=c=>`eb:formal69:${state.participant_id}:${state.release_sha256}:${c.case.case_id}`;
   const pendingKey=c=>localKey(c)+':pending';
   const viewKey=c=>localKey(c)+':view';
-  const bind=c=>({participant_id:state.participant_id,release_sha256:state.release_sha256,ui_revision:UI,case_id:c.case.case_id,case_sha256:c.row.sha256});
+  const bind=c=>({participant_id:state.participant_id,assignment_id:state.assignment_id,release_sha256:state.release_sha256,ui_revision:UI,case_id:c.case.case_id,case_sha256:c.row.sha256});
   function values(){const r={decision:q('response-form').querySelector('input[name=decision]:checked')?.value||null,reason:q('reason').value||null};for(const k of ['score','comfort_score','energy_score','vpp_score'])r[k]=q(k).value===''?null:Number(q(k).value);return r;}
   function setValues(response){q('response-form').reset();if(!response)return;for(const [key,value]of Object.entries(response)){if(key==='decision'){const n=q('response-form').querySelector(`input[name=decision][value="${value}"]`);if(n)n.checked=true;}else if(q(key))q(key).value=value??'';}}
   function presentation(c){return {fields:{family:q('family').textContent,request:q('vpp-request').textContent,changes:q('changes').textContent,impacts:q('impacts').textContent},schedule_seen:c.scheduleSeen,schedule_text:c.scheduleSeen?c.scheduleText:null,presented_at:c.presentedAt};}
@@ -39,10 +39,11 @@
     return enqueue(async()=>{const r=await api('view',{...bind(c),presentation:shown});updateView(r.view,c);}).catch(e=>{status(e.message+' 查看记录仍保留在本机，联网后会重试。',c);throw e;});
   }
   function progress(){
-    const n=state.answers.length;q('collection-progress').textContent=`已提交 ${n}/${state.question_count}题 · 草稿自动保存`;
+    const n=state.answers.length;q('collection-progress').textContent=`第${state.round_number||1}轮 · 系统分配家庭 · 已提交 ${n}/${state.question_count}题${n===state.question_count?' · 本轮已完成':' · 草稿自动保存'}`;
     if(state.fixtures){document.querySelector('.badge').textContent='流程验证 · 不入正式数据';}
     const done=new Set(state.answers.map(x=>x.case_id));
     q('next-question').hidden=!context||!answerFor(context)||context.index.cases.every(x=>done.has(x.case_id));
+    q('next-household').hidden=n!==state.question_count||(state.rounds?.length||1)>=context?.index.households_total;
   }
   function flush(c){
     if(!c||!c.dirty||!c.presentation)return Promise.resolve();
@@ -125,10 +126,18 @@
   function observeSchedule(open){if(!context||!open)return;const c=context;c.scheduleSeen=true;c.scheduleText=q('plans').textContent;c.presentation=presentation(c);rememberView(c);if(c.dirty)remember(c);syncView(c).catch(()=>{});}
   q('response-form').addEventListener('input',changed);q('response-form').addEventListener('change',changed);
   q('next-question').addEventListener('click',()=>{const done=new Set(state.answers.map(x=>x.case_id));const next=context.index.cases.find(x=>!done.has(x.case_id));if(next){q('case-date').value=next.date;q('case-date').dispatchEvent(new Event('change',{bubbles:true}));q('family-heading').scrollIntoView({block:'start'});}});
+  q('next-household').addEventListener('click',async()=>{
+    const button=q('next-household');if(button.disabled)return;button.disabled=true;
+    try{
+      clearTimeout(timer);if(context?.viewDirty)await syncView(context);if(context?.dirty)await flush(context);await tail;
+      await api('next-round',{participant_id:state.participant_id,assignment_id:state.assignment_id,release_sha256:state.release_sha256,ui_revision:UI});
+      location.assign(BASE+'/form');
+    }catch(e){status(e.message);button.disabled=false;}
+  });
   q('collection-logout').addEventListener('click',async()=>{try{clearTimeout(timer);if(context?.viewDirty)await syncView(context);if(context?.dirty)await flush(context);await tail;await api('logout',{});location.assign(BASE+'/');}catch(e){status(e.message);}});
   let withdrawArmed=false;
   q('collection-withdraw').addEventListener('click',async()=>{
-    if(!withdrawArmed){withdrawArmed=true;q('collection-withdraw').textContent='再次点击确认撤回';status('撤回后，此身份的全部答卷将不再用于研究。再次点击确认。');return;}
+    if(!withdrawArmed){withdrawArmed=true;q('collection-withdraw').textContent='再次点击确认撤回';status('撤回后，此身份全部轮次的答卷将不再用于研究。再次点击确认。');return;}
     try{clearTimeout(timer);await tail;const r=await api('withdraw',{});enable(false);q('collection-progress').textContent='已撤回全部答卷';status('已撤回 · 回执 '+r.receipt_id);}catch(e){status(e.message);}
   });
   window.addEventListener('online',()=>{for(const c of contexts.values()){if(c.viewDirty)syncView(c).catch(()=>{});if(c.dirty)flush(c).catch(()=>{});}});

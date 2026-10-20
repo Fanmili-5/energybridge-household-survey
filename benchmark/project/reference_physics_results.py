@@ -12,6 +12,7 @@ from benchmark.ab_generation.common import read, save, sha, verify, seal
 from benchmark.ab_generation.outcomes import consequences
 from benchmark.ab_generation.model import plan_hash
 from .reference_weather_audit import native_weather_review
+from .reference_solver_repair import review as review_solver_repair, PATCH_SHA256
 
 
 def integrity_failures(check):
@@ -32,6 +33,25 @@ def native_numerical_failures(error_text):
               'native_severe_error':r'\*\*\s+Severe\s+\*\*',
               'native_fatal_error':r'\*\*\s+Fatal\s+\*\*'}
     return [name for name,pattern in patterns.items() if re.search(pattern,error_text,re.I)]
+
+
+def arm_numerical_review(folder,result):
+    error=folder/'out/eplusout.err'
+    failures=native_numerical_failures(error.read_text(errors='replace'))
+    review={'failures':failures,'error_log_sha256':sha(error)}
+    evidence=result.get('bounded_solver_repair')
+    if evidence is not None:
+        log=folder/'stderr.txt'
+        if sha(log)!=evidence['stderr_sha256'] or evidence['patch_sha256']!=PATCH_SHA256:
+            raise ValueError('NUMERICAL_REPAIR_EVIDENCE_CHANGED')
+        proof=review_solver_repair(log.read_text(),evidence['engine_files_sha256'])
+        if result['engine_sha256']!=evidence['engine_files_sha256']['energyplus']:
+            raise ValueError('NUMERICAL_REPAIR_ENGINE_MISMATCH')
+        review['bounded_solver_repair']=proof
+        # Only the pinned fallback's wet-bulb iteration warning is explained.
+        # Severe/Fatal and every unresolved fallback remain engineering failures.
+        review['failures']=[f for f in failures if f!='wetbulb_iteration_not_converged']+proof['failures']
+    return review
 
 
 def mixed_water_delivery(meta,trace,lo=480,hi=1920):
@@ -96,8 +116,7 @@ def bind(collection, exported, compiled, runs, audit, out):
         check=audits.get(ident)
         if check is None:
             row.update(status='audit_missing',reason='No complete paired audit;outcomes remain null');rows.append(row);continue
-        numerical={s:{'failures':native_numerical_failures((runs/ident/s/'out/eplusout.err').read_text(errors='replace')),
-                      'error_log_sha256':sha(runs/ident/s/'out/eplusout.err')} for s in ('A','B')}
+        numerical={s:arm_numerical_review(runs/ident/s,results[s])for s in ('A','B')}
         weather_reviews={s:native_weather_review(compiled_rows[ident]['weather_path'],compiled_rows[ident]['weather_sha256'],
                           (compiled/ident/s/'model.idf').read_text())for s in ('A','B')}
         if weather_reviews['A']!=weather_reviews['B']:raise ValueError('PAIRED_WEATHER_SCOPE_MISMATCH')
@@ -107,7 +126,7 @@ def bind(collection, exported, compiled, runs, audit, out):
             native_numerical_convergence={'passed':not any(v['failures']for v in numerical.values()),'arms':numerical,
                 'scope':'entire_supplied_history_primary_day_and_recovery;conservative_admission_not_a_claim_that_all_times_are_corrupt'},
             engine_warnings={s:results[s].get('warnings',[]) for s in ('A','B')},
-            model_scope={s:{k:metas[s].get(k) for k in ('history_days','simulation_timestep_min','reference_air_changes_per_hour','multi_AC_execution','air_exchange_scope')} for s in ('A','B')},
+            model_scope={s:{k:metas[s].get(k) for k in ('history_days','simulation_timestep_min','reference_air_changes_per_hour','multi_AC_execution','air_exchange_scope','reference_exterior_door')} for s in ('A','B')},
             engine_runs=2,IDFs_compiled=True,
             receipts={s:{k:results[s][k] for k in ('engine_sha256','idf_sha256','SQL_sha256','trace_sha256')} for s in ('A','B')})
         if not row['native_numerical_convergence']['passed'] or not row['weather_input_quality']['passed']:
@@ -129,14 +148,18 @@ def bind(collection, exported, compiled, runs, audit, out):
         row.update(status='computed',actual_outcomes=actual,
             audit_status=check['status'],failed_checks=[k for k,v in check['checks'].items() if not v],
             engine_warnings={s:results[s].get('warnings',[]) for s in ('A','B')},
-            model_scope={s:{k:metas[s].get(k) for k in ('history_days','simulation_timestep_min','reference_air_changes_per_hour','multi_AC_execution','air_exchange_scope')} for s in ('A','B')},
+            model_scope={s:{k:metas[s].get(k) for k in ('history_days','simulation_timestep_min','reference_air_changes_per_hour','multi_AC_execution','air_exchange_scope','reference_exterior_door')} for s in ('A','B')},
             engine_runs=2,IDFs_compiled=True,
             receipts={s:{k:results[s][k] for k in ('engine_sha256','idf_sha256','SQL_sha256','trace_sha256')} for s in ('A','B')})
         rows.append(row)
     out.mkdir(parents=True,exist_ok=False)
+    replenishment=read(collection/'REPLENISHMENT_LINEAGE.json')if (collection/'REPLENISHMENT_LINEAGE.json').exists()else None
     summary={'cases':len(rows),'statuses':dict(Counter(r['status'] for r in rows)),
         'engine_arms_in_this_bound_run':sum('side'in r for r in rm['records']),'collection_answers_or_payloads_changed':False,
-        'old_B_results_used':False,'reselection_after_results':False,'full1000_deferred':True}
+        'old_B_results_used':False,'reselection_after_results':replenishment is not None,
+        'engineering_replenishment':replenishment,'selection_by_favorable_results':False,
+        'native_attempts_during_preparation':rm.get('native_attempts_during_preparation'),
+        'full1000_deferred':True}
     save(out/'RESULT_INDEX500.json',{'schema':'eb.reference50.bound_physics_results.v1',**summary,'records':rows})
     seal(out,{'schema':'eb.reference50.bound_physics_results.v1','source_selection_sha256':sha(collection/'ASSIGNMENT.json'),
         'export_manifest_sha256':sha(exported/'MANIFEST.json'),'compiled_manifest_sha256':sha(compiled/'MANIFEST.json'),

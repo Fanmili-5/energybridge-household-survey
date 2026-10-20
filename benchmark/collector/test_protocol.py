@@ -108,6 +108,29 @@ def run(release_path=None):
             restored_store=CollectionStore(restored,release,fixtures=True)
             restored_session,_=restored_store.session(h2['Cookie'].split('=',1)[1]);assert restored_store.state(restored_session)=={k:v for k,v in final_state.items()if k!='csrf'}
             assert restored_store.export()==[]
+            # A second household belongs to the same anonymous participant, with a
+            # separate assignment binding. Original credentials and records survive.
+            transition={k:final_state[k]for k in ('participant_id','assignment_id','release_sha256','ui_revision')}
+            bad('/api/next-round',{**transition,'household_id':'self-chosen'},h2)
+            code,_,second=request('POST','/api/next-round',transition,h2);assert code==200,second
+            assert second['participant_id']==identity['participant_id']and second['round_number']==2
+            assert second['household_id']!=identity['household_id']and second['assignment_id']!=identity['assignment_id']
+            assert request('POST','/api/next-round',transition,h2)[2]['assignment_id']==second['assignment_id']
+            state2=request('GET','/api/state',headers=h2)[2];assert state2['answers']==[]and len(state2['rounds'])==2
+            bad('/api/next-round',{k:state2[k]for k in transition},h2,409)
+            bad('/api/answers',payload,h2,409)
+            h3=session();assert request('POST','/api/recover',{'credential':identity['recovery_code']},h3)[0]==200
+            assert request('GET','/api/state',headers=h3)[2]['assignment_id']==second['assignment_id']
+            idx2=request('GET','/index.json',headers=h3)[2];assert idx2['households']==[second['household_id']]
+            r2=idx2['cases'][0];m2=release.models[r2['case_id']]
+            present2={'fields':{k:m2[k]for k in ['family','request','changes','impacts']},'schedule_seen':False,'schedule_text':None,'presented_at':now()}
+            item2={**binding,'assignment_id':second['assignment_id'],'case_id':r2['case_id'],'case_sha256':r2['sha256'],
+                   'expected_answer_revision':0,'expected_draft_version':0,'request_id':str(uuid.uuid4()),'response':values,'presentation':present2}
+            assert request('POST','/api/answers',item2,h3)[0]==201
+            with server.store.connect()as db:
+                record2=json.loads(db.execute('select record_json from responses_v69 where actor_id=?',(second['assignment_id'],)).fetchone()[0])
+                assert record2['participant_id']==identity['participant_id']and record2['round_number']==2
+            assert backup(root,temp/'backup_rounds')['row_counts']['participant_rounds']==len(sessions)+4
             assert request('POST','/api/withdraw',{},h2)[0]==200
             assert status(server.store)['submitted_latest_actor_cases']==0
             bad('/api/recover',{'credential':identity['recovery_code']},session(),403)
@@ -116,6 +139,8 @@ def run(release_path=None):
                     'idle_assignment_does_not_block_replenishment':True,'partial_draft_view_cross_session_restart_backup':True,
                     'version_identity_and_case_guards':True,'mandatory_fields':True,'quality_review_revision_bound':True,
                     'objective_VPP_separate':True,'append_only_revisions_and_idempotency':True,'withdrawal_excluded':True,
+                    'stable_participant_optional_rounds':True,'original_recovery_code_resumes_latest_round':True,
+                    'next_round_idempotent_and_incomplete_blocked':True,'stale_round_writes_rejected':True,'withdrawal_all_rounds':True,
                     'negative_requests_rejected':bad_count,'human_labels_created':0,'production_records_written':0}
             print(json.dumps(report));return report
         finally:server.shutdown();server.server_close();thread.join()

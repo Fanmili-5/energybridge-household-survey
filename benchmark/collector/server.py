@@ -50,8 +50,11 @@ class Handler(BaseHTTPRequestHandler):
                 'households':len(release.households),'cases':len(release.records),'release_sha256':release.signature,'ui_revision':UI_VERSION,
                 'presentation_revision':release.manifest.get('presentation_revision',UI_VERSION),
                 'entry_mode':'open_no_invitation','questions_per_participant':release.questions_per_household,'cohort_id':store.cohort,
+                'assignment_policy':'system_assigned_stable_participant_optional_rounds.v1','questions_per_round':release.questions_per_household,
                 'A_stage':release.manifest['A_stage'],'B_stage':release.manifest['B_stage'],
                 'physical_stage':release.manifest['physical_stage'],'impact_stage':release.manifest['impact_stage'],
+                'formal_collection_ready':release.manifest.get('formal_collection_ready',False),
+                'physical_statuses':release.manifest.get('physical_statuses',{}),
                 'human_collection_release':not store.fixtures,'training_release':False,'full1000_deferred_by_user':True})
             if path in ASSETS:
                 return self.send(200,release.file('public/'+path),mime=(mimetypes.guess_type(path)[0]or'application/octet-stream')+'; charset=utf-8')
@@ -91,6 +94,7 @@ class Handler(BaseHTTPRequestHandler):
                 if not isinstance(value,dict)or set(value)!={'credential'}:raise ValueError('恢复码格式无效。')
                 return self.send(200,store.claim(session,store.cohort,value['credential'],self.headers.get('X-Real-IP')or self.client_address[0]))
             if path=='api/consent':return self.send(200,store.consent(session,value))
+            if path=='api/next-round':return self.send(200,store.next_round(session,value))
             if path=='api/view':return self.send(200,store.view(session,value))
             if path=='api/draft':return self.send(200,store.draft(session,value))
             if path=='api/revert':return self.send(200,store.draft(session,value,clear=True))

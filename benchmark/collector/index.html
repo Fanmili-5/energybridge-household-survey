@@ -11,7 +11,7 @@
 <main>
   <div class="page-heading">
     <div><p class="eyebrow">家庭用电安排 / 每日评价</p><h1>这份调整，适合这户家庭吗？</h1><p class="intro">代入给定家庭，看看安排变了什么，再作出选择。</p></div>
-    <nav class="selectors" aria-label="选择家庭和日期"><label for="household" hidden>家庭<select id="household" disabled></select></label><label for="case-date">正在查看的日期<select id="case-date" disabled></select></label></nav>
+    <nav class="selectors" aria-label="系统分配家庭及日期"><label for="household" hidden>系统分配家庭<select id="household" disabled></select></label><label for="case-date">正在查看的日期<select id="case-date" disabled></select></label></nav>
   </div>
   <div class="collection-toolbar"><span id="collection-progress"></span><div><button id="collection-logout" class="text-button" type="button">退出</button><button id="collection-withdraw" class="text-button" type="button">撤回答卷</button></div></div>
   <p id="load-status" role="status"></p>
@@ -30,7 +30,7 @@
           <label for="vpp_score"><span>VPP配合<small>这种配合方式是否适合这户家庭</small></span><input id="vpp_score" name="vpp_score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
         </div>
         <label class="field reason-label" for="reason">最主要的原因<span class="required-note">必填</span><textarea id="reason" name="reason" required maxlength="4000" rows="3" placeholder="哪些改变适合或不适合这户家庭？"></textarea></label>
-        <div class="form-actions"><button type="submit" id="submit-answer" disabled>提交答卷 <span aria-hidden="true">→</span></button><button type="button" id="clear-response" class="secondary">撤销未提交修改</button></div><button id="next-question" class="secondary next-button" type="button" hidden>下一题</button><p id="response-status" role="status" aria-live="polite"></p>
+        <div class="form-actions"><button type="submit" id="submit-answer" disabled>提交答卷 <span aria-hidden="true">→</span></button><button type="button" id="clear-response" class="secondary">撤销未提交修改</button></div><button id="next-question" class="secondary next-button" type="button" hidden>下一题</button><button id="next-household" class="secondary next-button" type="button" hidden>本轮已完成，自愿再评价一户</button><p id="response-status" role="status" aria-live="polite"></p>
       </form><p class="save-note">草稿自动保存。提交后生成回执；凭恢复码可换设备续填。</p>
     </section>
   </article>

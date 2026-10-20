@@ -15,6 +15,7 @@ import sys
 import tarfile
 import time
 import urllib.request
+import urllib.error
 from pathlib import Path
 
 
@@ -37,9 +38,16 @@ def health(url,signature):
     raise RuntimeError('Collector health/signature mismatch')
 
 
-def activate(signature,previous,origin):
+def activate(signature,previous,origin,port=18793,service_name='energybridge-current50-ui91-physics',previous_private_port=None):
     assert re.fullmatch('[a-f0-9]{64}',signature) and re.fullmatch('[a-f0-9]{64}',previous)
-    health(origin+'/household50-current/api/health',previous)
+    assert 18793<=port<=18799 and re.fullmatch(r'energybridge-current50-[a-z0-9-]+',service_name)
+    if previous_private_port is None:health(origin+'/household50-current/api/health',previous)
+    else:
+        assert 18791<=previous_private_port<=18799 and previous_private_port!=port
+        health(f'http://127.0.0.1:{previous_private_port}/household50-current/api/health',previous)
+        try:urllib.request.urlopen(origin+'/household50-current/',timeout=10)
+        except urllib.error.HTTPError as e:assert e.code==503 and '问卷暂未开放' in e.read().decode()
+        else:raise RuntimeError('Expected paused public entry before zero-unknown replacement')
     base=Path('/opt/energybridge-current50')/signature[:20];base.mkdir(mode=0o755,exist_ok=True)
     with tarfile.open(fileobj=sys.stdin.buffer,mode='r|gz')as archive:
         for member in archive:
@@ -55,21 +63,27 @@ def activate(signature,previous,origin):
     assert release.manifest['schema']=='eb.reference_benchmark.release.v2' and release.manifest['new_EP_runs']==1000
     assert release.manifest['presentation_revision']=='eb.questionnaire50.refined.v91.newAB.v1'
     assert len(release.records)==500 and len(release.households)==50
+    assert release.manifest.get('formal_collection_ready') is True,'Formal release has not passed zero-unknown readiness'
+    assert release.manifest.get('physical_statuses')=={'computed':500},'Formal collection cannot contain unavailable consequences'
+    assert release.manifest.get('assignment_policy',{}).get('version')=='system_assigned_stable_participant_optional_rounds.v1','Formal collection requires verified system assignment and multi-round identity'
+    for cid,row in release.records.items():
+        _,case=release.case(cid,row['household_id'])
+        assert case.get('outcome_status')=='computed' and isinstance(case.get('impact'),dict),'Missing case consequences'
     account=pwd.getpwnam('ebjoint');root=Path('/var/lib/energybridge-current50/collection_ui91_physics')/signature[:20]
     snapshots=Path('/var/backups/energybridge-current50')/signature[:20]
     for p in (root,snapshots):
         p.mkdir(parents=True,exist_ok=True,mode=0o700);p.chmod(0o700);os.chown(p,account.pw_uid,account.pw_gid)
     old=[]
-    for parent in ('collection_v69','collection_v4_proposal'):
+    for parent in ('collection_v69','collection_v4_proposal','collection_ui91_physics'):
         for p in sorted((Path('/var/lib/energybridge-current50')/parent).glob('*')):
             if not(p/'formal_responses.sqlite3').exists():continue
             before=counts(p);snapshot=snapshots/'before-switch'/parent/p.name;snapshot.mkdir(parents=True,mode=0o700)
             runtime=Path('/opt/energybridge-current50')/p.name/'runtime/admin.py'
             backup=json.loads(command('/usr/bin/python3','-B',str(runtime),'backup','--data-root',str(p),'--output',str(snapshot)))
             assert backup['sqlite_integrity']=='ok';old.append({'root':str(p),'counts_before':before,'backup':backup})
-    with socket.socket()as s:s.bind(('127.0.0.1',18793))
-    unit=Path('/etc/systemd/system/energybridge-current50-ui91-physics.service')
-    backup=unit.with_name('energybridge-current50-ui91-physics-backup.service');timer=unit.with_name('energybridge-current50-ui91-physics-backup.timer')
+    with socket.socket()as s:s.bind(('127.0.0.1',port))
+    unit=Path('/etc/systemd/system')/(service_name+'.service')
+    backup=unit.with_name(service_name+'-backup.service');timer=unit.with_name(service_name+'-backup.timer')
     assert not unit.exists(),'A different UI91 service already exists;review it rather than overwrite'
     service=f'''[Unit]
 Description=EnergyBridge frozen reference50 UI91 paired physics collection
@@ -79,7 +93,7 @@ Type=simple
 User=ebjoint
 Group=ebjoint
 WorkingDirectory={base/'runtime'}
-ExecStart=/usr/bin/python3 -B {base/'runtime/server.py'} --release {base/'release'} --data-root {root} --public-origin {origin} --port 18793
+ExecStart=/usr/bin/python3 -B {base/'runtime/server.py'} --release {base/'release'} --data-root {root} --public-origin {origin} --port {port}
 Restart=on-failure
 RestartSec=3
 UMask=0077
@@ -120,15 +134,26 @@ Persistent=true
 WantedBy=timers.target
 '''
     snippet=Path('/etc/nginx/snippets/energybridge-household50-test.conf');original=snippet.read_bytes()
-    pattern=r'# BEGIN CURRENT50 V4PROPOSAL\n.*?# END CURRENT50 V4PROPOSAL';blocks=re.findall(pattern,original.decode(),re.S);assert len(blocks)==1
+    pattern=r'# BEGIN CURRENT50 (?:V4PROPOSAL|UI91PHYSICS)\n.*?# END CURRENT50 (?:V4PROPOSAL|UI91PHYSICS)';blocks=re.findall(pattern,original.decode(),re.S);assert len(blocks)==1
     (snapshots/'nginx-before.conf').write_bytes(original)
     try:
         for p,text in ((unit,service),(backup,backup_text),(timer,timer_text)):p.write_text(text)
         command('systemctl','daemon-reload');command('systemctl','start',unit.name)
-        private=health('http://127.0.0.1:18793/household50-current/api/health',signature)
+        private=health(f'http://127.0.0.1:{port}/household50-current/api/health',signature)
         assert private['presentation_revision']==release.manifest['presentation_revision']
+        assert private['assignment_policy']==release.manifest['assignment_policy']['version'] and private['questions_per_round']==10
         assert not any(counts(root).values()),'New ledger must be empty before public activation'
-        changed=blocks[0].replace('V4PROPOSAL','UI91PHYSICS').replace('18792','18793')
+        changed=f'''# BEGIN CURRENT50 UI91PHYSICS
+location ^~ /household50-current {{
+ auth_basic off;
+ proxy_pass http://127.0.0.1:{port};
+ proxy_set_header Host $host;
+ proxy_set_header X-Real-IP $remote_addr;
+ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+ proxy_set_header X-Forwarded-Proto $scheme;
+ proxy_read_timeout 30s;
+}}
+# END CURRENT50 UI91PHYSICS'''
         snippet.write_text(original.decode().replace(blocks[0],changed,1));command('nginx','-t');command('systemctl','reload','nginx')
         public=health(origin+'/household50-current/api/health',signature)
         for prior in old:
@@ -147,5 +172,6 @@ WantedBy=timers.target
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--release-sha256',required=True);p.add_argument('--previous-release-sha256',required=True);p.add_argument('--origin',required=True);a=p.parse_args()
-    print(json.dumps(activate(a.release_sha256,a.previous_release_sha256,a.origin),ensure_ascii=False))
+    p=argparse.ArgumentParser();p.add_argument('--release-sha256',required=True);p.add_argument('--previous-release-sha256',required=True);p.add_argument('--origin',required=True)
+    p.add_argument('--port',type=int,default=18793);p.add_argument('--service-name',default='energybridge-current50-ui91-physics');p.add_argument('--previous-private-port',type=int);a=p.parse_args()
+    print(json.dumps(activate(a.release_sha256,a.previous_release_sha256,a.origin,a.port,a.service_name,a.previous_private_port),ensure_ascii=False))
