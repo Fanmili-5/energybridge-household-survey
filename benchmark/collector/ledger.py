@@ -236,6 +236,8 @@ class CollectionStore(IdentityStore):
                          'schedule_context':'previously_displayed_in_this_case_and_release'if presentation['schedule_seen']else'not_displayed',
                          'answer_instructions':copy.deepcopy(self.public_release.answer_instructions)}
             record={'schema':'eb.formal_role_response.v69','ui_revision':UI_VERSION,'answer_contract':CONTRACT_VERSION,
+                    'presentation_revision':self.public_release.manifest.get('presentation_revision',UI_VERSION),
+                    'collection_condition':self.public_release.manifest.get('collection_condition','legacy_reference_collection'),
                     'source_release_sha256':self.release,'source_case_sha256':row['sha256'],
                     'source_profile_sha256':self.public_release.index['profiles_sha256'][a['household_id']],
                     'source_bindings':case['bindings'],'ui_assets_sha256':self.public_release.index['ui_assets_sha256'],

@@ -36,6 +36,8 @@ python -B benchmark/collector/test_protocol.py --release /controlled/new-formal-
 
 问卷显示当日住宅用电、情境单价电费、完整房间温度范围、按次日08:00截断的运行/取出计数、最近出发电量和固定18:00—19:00的响应。共享住宅用电不伪称目标户实测分表；全天温度不等于个人舒适；无独立热水交付核验时明确标为未知；后续费用无完整单价覆盖时不补零。回路超限只表示模拟平均功率超过参考容量，未模拟跳闸。
 
+对原生混合水模型，本版回读`Water Use Equipment Total Volume`与`Mixed Water Temperature`：先验证累计体积的Sum聚合，再列住宅总出水量、10分钟报告体积加权温度及有流量时的最低10分钟均温。计划用水量按原请求与当天窗口的交叠计，不改需求。字段含义依据[EnergyPlus24.1水系统文档](https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-water-systems.html)。不把混合水等同纯热水，不作逐人分摊，不从报告均温推断瞬时最低温，也不预设“所有洗澡都满意”。通道或累计类型未核实时保留未知。
+
 受访者站在给定家庭的立场，判断是否原样接受B、四项评分和理由。物理/工程状态、VPP达标与接受标签分开。四项初始为空，不由模型预填。
 
 ## 发布与验证记录

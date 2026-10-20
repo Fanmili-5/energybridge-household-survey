@@ -99,6 +99,7 @@
     ]);
     const service=side=>{
       const ids=new Set(x.service_changes.services.filter(r=>['A','B'].some(s=>r[s]&&[r[s].requested_program_end_min,r[s].requested_retrieval_end_min].some(t=>t>=480&&t<1920))).map(r=>r.need_id));
+      if(!ids.size)return '本窗口没有待完成或取出的程序批次';
       const rows=x.service_execution[side].filter(r=>ids.has(r.need_id));
       return `次日08:00前运行完成${rows.filter(r=>r.program_executed&&r.requested_program_end_min<1920).length}/${ids.size}批；已取出${rows.filter(r=>r.collected&&r.requested_retrieval_end_min<1920).length}/${ids.size}批`;
     };
@@ -119,17 +120,23 @@
       if(k.includes('recovery')||k.includes('terminal'))return '后续恢复检查存在残差，不能把当日用电差直接当成等服务节能。';
       return who+'存在其他已记录的服务或约束检查问题。';
     });
+    const mixed=x.native_mixed_water_delivery;
+    const mixedKnown=mixed&&['A','B'].every(s=>mixed[s]?.status==='computed');
+    const waterRows=mixedKnown?[
+      {label:'住宅混合用水量',...Object.fromEntries(['A','B'].map(s=>[s,`${num(mixed[s].delivered_mixed_liters,1)}L（给定需求${num(mixed[s].requested_mixed_liters,1)}L）`]))},
+      {label:'有用水时的报告温度',...Object.fromEntries(['A','B'].map(s=>[s,mixed[s].volume_weighted_reported_temperature_C==null?'未记录到出水':`加权均温${num(mixed[s].volume_weighted_reported_temperature_C,1)}℃；最低10分钟均温${num(mixed[s].minimum_active_10min_mean_C,1)}℃`]))}
+    ]:[{label:'按本题用水要求',...Object.fromEntries(['A','B'].map(s=>[s,x.water_service[s]==null?'未单独核验':`${x.water_service[s].filter(w=>w.temperature_met&&w.quantity_met_with_density_tolerance).length}/${x.water_service[s].length}次满足给定水量与温度`]))}];
     return [m('p','本题已完成同一住房、天气和前史下的A/B配对仿真；下列为模型估算，不是实测结果。','cost-scope',[],{style:'grid-column:1 / -1'}),
       card('当日住宅用电',[{label:'08:00—次日08:00',A:num(energy.A,3)+'度',B:num(energy.B,3)+'度'}],'住宅电表包含共同建模空间；不自动等于目标家庭实测分表。'),
       card('当日电费',[{label:'按情境单价计算',A:fee?.A==null?'未计算':num(fee.A,3)+'元',B:fee?.B==null?'未计算':num(fee.B,3)+'元'}],'只列当日给定单价覆盖的费用；不含VPP补偿，后续未覆盖费用不补零。'),
       card('本户使用房间的室温范围',temp,'全天范围，包含无人时段；不直接等于个人舒适评分。'),
-      card('当日程序执行与取出',[{label:'按当日计划完成时点计数',A:service('A'),B:service('B')}],'程序运行、实际取出与全部生活需求是否满足是不同问题。'),
+      card('住宅内程序执行与取出',[{label:'按当日计划完成时点计数',A:service('A'),B:service('B')}],'住宅及共用设备总计。程序运行、实际取出与本户生活需求是否满足分别判断。'),
       ...(x.EV.A.installed?[card('车辆最近一次出发',evRows,'按原连接与行程核算；不假定出发目标必然满足。')]:[]),
-      ...(p.devices.some(d=>d.types.includes('water_heater'))?[card('热水交付',[{label:'按本题用水要求',...Object.fromEntries(['A','B'].map(s=>[s,x.water_service[s]==null?'未单独核验':`${x.water_service[s].filter(w=>w.temperature_met&&w.quantity_met_with_density_tolerance).length}/${x.water_service[s].length}次满足给定水量与温度`]))}],'有热水器运行结果不等于已证明每次用水需求满足；未核验部分保持未知。')]:[]),
+      ...(p.devices.some(d=>d.types.includes('water_heater'))?[card('热水交付',waterRows,mixedKnown?`按原生混合出水报告；给定目标温度${mixed.A.declared_target_C.map(t=>num(t,1)+'℃').join('、')||'未声明'}。住宅总计，未逐人分摊；10分钟均温不能代表瞬时最低温或个人感受。`:'有热水器运行结果不等于已证明每次用水需求满足；未核验部分保持未知。')]:[]),
       m('section',null,'overall-vpp',[m('h3','电网响应（VPP）'),...x.events.map(e=>m('div',null,'vpp-event',[
         m('p',`${time(e.interval_min[0])}–${time(e.interval_min[1])}，要求降低${num(e.target_kw)}kW；按本题声明的可控设备电表比较。`,'vpp-request-line'),
         sideBySide([{label:'响应时段平均功率',A:num(e.A_kWh*60/(e.interval_min[1]-e.interval_min[0]),3)+'kW',B:num(e.B_kWh*60/(e.interval_min[1]-e.interval_min[0]),3)+'kW'}]),
-        m('p',null,'vpp-outcome',[m('span',`实际平均${e.delta_kw>=0?'增加':'降低'}${num(Math.abs(e.delta_kw),3)}kW`),m('strong',e.target_met?'达标':'未达标')])
+        m('p',null,'vpp-outcome',[m('span',Math.abs(e.delta_kw)<.0005?'实际平均功率基本未变（显示至0.001kW）':`实际平均${e.delta_kw>=0?'增加':'降低'}${num(Math.abs(e.delta_kw),3)}kW`),m('strong',e.target_met?'达标':'未达标')])
       ]))]),
       ...[...new Set(constraintNotes)].map(t=>m('p',t,'cost-warning',[],{style:'grid-column:1 / -1'})),
       m('p',`工程审计：${review.audit_status==='passed'?'通过':'有已记录的问题'}。以上约束检查涵盖当日及后续恢复区间；工程运行完成不等于VPP达标，也不预设家庭是否接受。`,'cost-scope',[],{style:'grid-column:1 / -1'}),completeInformation(c,p)
