@@ -8,6 +8,8 @@ class SourceScopeTest(unittest.TestCase):
             'benchmark/project/reference_refined_release.py',
             'benchmark/project/reference_collection_physics.py',
             'benchmark/project/reference_physics_results.py',
+            'benchmark/project/reference_physics_selfcheck.py',
+            'benchmark/project/reference_physical_release.py',
             'benchmark/project/refined91/housing_drawing.js',
             'benchmark/project/UI91_VALIDATION.json',
             'benchmark/project/FULL500_PHYSICS_VALIDATION.json',

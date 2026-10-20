@@ -42,7 +42,7 @@ def build(proposal_release,results,out):
     source=source.replace('const physical_review=physicalReviews?.cases[c.case_id];','const physical_review=c.physical_review||physicalReviews?.cases[c.case_id];')
     source=source.replace('暂停制冷请求（实际运行未计算）','暂停制冷请求')
     view.write_text(source)
-    css=public/'view.css';css.write_text(css.read_text()+'\n#impacts > .cost-scope, #impacts > .cost-warning {grid-column:1 / -1;}\n')
+    css=public/'view.css';css.write_text(css.read_text()+'\n#impacts > .cost-scope, #impacts > .cost-warning {grid-column:1 / -1;}\n.outcome-prose .money-comparison .compare-value {font-size:17px;line-height:1.75;font-weight:500;}\n')
     html=public/'index.html';html.write_text(html.read_text().replace('实际用电、费用、室温和VPP达标情况尚未计算，请根据提议安排判断。','按本题列出的A/B配对仿真估算判断；失败、未知与未达标均照实保留。'))
     entry=public/'entry.html';entry.write_text((COLLECTOR/'entry.html').read_text().replace('方案为参考仿真，不会改变现实电器的设置。','方案与后果为参考模型估算，不会改变现实电器的设置；仿真失败时后果明确标为未知。旧版答卷独立保留，不会作为本版答案。'))
     instructions=read(out/'ANSWER_INSTRUCTIONS.json');instructions.update(collection_condition='按给定家庭、A/B计划及本题已列的配对仿真估算作答；未知和失败不补造后果，不把VPP达标当作接受答案。',objective_outcomes='物理估算、工程/服务失败和VPP达标按同一冻结A/B版本单独记录；不预设家庭接受或评分。')

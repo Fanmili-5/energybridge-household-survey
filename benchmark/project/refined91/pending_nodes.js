@@ -94,7 +94,7 @@
   function computedReviewNodes(c,p){
     const review=c.physical_review,x=review.actual_outcomes,energy=x.metered_energy.primary_24h;
     const costs=x.simulated_facility_cost,fee=costs?.intervals.primary_24h;
-    const card=(title,rows,note)=>m('section',null,'overall-cost',[
+    const card=(title,rows,note,prose=false)=>m('section',null,'overall-cost'+(prose?' outcome-prose':''),[
       m('div',null,'overall-cost-heading',[m('h3',title)]),sideBySide(rows,'money-comparison'),...(note?[m('p',note,'cost-scope')]:[])
     ]);
     const service=side=>{
@@ -105,11 +105,21 @@
     };
     const rooms=new Set(p.display_housing.rooms.filter(r=>r.using_household_ids.includes(p.household_id)).map(r=>r.room_id));
     const temp=x.temperature_outcomes.filter(r=>rooms.has(r.room_id)).map(r=>({label:room(r.room_id),...Object.fromEntries(['A','B'].map(s=>[s,`${num(r[s].minimum_C,1)}—${num(r[s].maximum_C,1)}℃`]))}));
-    const departureTimes=[...new Set(['A','B'].flatMap(s=>x.EV[s].installed?x.EV[s].trips.filter(t=>t.departure_min>=480).slice(0,1).map(t=>t.departure_min):[]))];
+    const trips=s=>x.EV[s].installed?x.EV[s].trips:[];
+    const allDepartures=[...new Set(['A','B'].flatMap(s=>trips(s).filter(t=>t.departure_min>=480).map(t=>t.departure_min)))].sort((a,b)=>a-b);
+    const differing=allDepartures.find(t=>{
+      const a=trips('A').find(v=>v.departure_min===t),b=trips('B').find(v=>v.departure_min===t);
+      return !a||!b||Math.abs(a.pre_trip_kWh-b.pre_trip_kWh)>1e-6||Math.abs((a.target_shortfall_kWh??0)-(b.target_shortfall_kWh??0))>1e-6;
+    });
+    const departureTimes=[...new Set([
+      ...allDepartures.filter(t=>t<1920),allDepartures.find(t=>t>=1920),differing,
+      ...['A','B'].flatMap(s=>[trips(s).find(t=>t.departure_min>=480&&(t.target_shortfall_kWh??0)>1e-6)?.departure_min,
+        trips(s).find(t=>t.departure_min>=480&&t.unserved_traction_kWh>1e-6)?.departure_min])
+    ].filter(Number.isFinite))].sort((a,b)=>a-b);
     const evRows=departureTimes.map(t=>({label:time(t),...Object.fromEntries(['A','B'].map(s=>{
       const v=x.EV[s].trips.find(z=>z.departure_min===t);
       const target=v?.target_shortfall_kWh;
-      return [s,v?`出发前${num(v.pre_trip_kWh,2)}kWh；${target==null?'未声明出发目标':target>1e-6?'距目标少'+num(target,2)+'kWh':'达到给定目标'}`:'未获得可用出发记录'];
+      return [s,v?`出发前${num(v.pre_trip_kWh,2)}kWh；${target==null?'本次未单独给定目标':target>1e-6?'距目标少'+num(target,2)+'kWh':'达到给定目标'}${v.unserved_traction_kWh>1e-6?'；行程缺电'+num(v.unserved_traction_kWh,2)+'kWh':''}`:'未获得可用出发记录'];
     }))}));
     const constraintNotes=(review.failed_checks||[]).map(k=>{
       const who=k.startsWith('A_')?'A：':k.startsWith('B_')?'B：':'';
@@ -130,9 +140,9 @@
       card('当日住宅用电',[{label:'08:00—次日08:00',A:num(energy.A,3)+'度',B:num(energy.B,3)+'度'}],'住宅电表包含共同建模空间；不自动等于目标家庭实测分表。'),
       card('当日电费',[{label:'按情境单价计算',A:fee?.A==null?'未计算':num(fee.A,3)+'元',B:fee?.B==null?'未计算':num(fee.B,3)+'元'}],'只列当日给定单价覆盖的费用；不含VPP补偿，后续未覆盖费用不补零。'),
       card('本户使用房间的室温范围',temp,'全天范围，包含无人时段；不直接等于个人舒适评分。'),
-      card('住宅内程序执行与取出',[{label:'按当日计划完成时点计数',A:service('A'),B:service('B')}],'住宅及共用设备总计。程序运行、实际取出与本户生活需求是否满足分别判断。'),
-      ...(x.EV.A.installed?[card('车辆最近一次出发',evRows,'按原连接与行程核算；不假定出发目标必然满足。')]:[]),
-      ...(p.devices.some(d=>d.types.includes('water_heater'))?[card('热水交付',waterRows,mixedKnown?`按原生混合出水报告；给定目标温度${mixed.A.declared_target_C.map(t=>num(t,1)+'℃').join('、')||'未声明'}。住宅总计，未逐人分摊；10分钟均温不能代表瞬时最低温或个人感受。`:'有热水器运行结果不等于已证明每次用水需求满足；未核验部分保持未知。')]:[]),
+      card('住宅内程序执行与取出',[{label:'按当日计划完成时点计数',A:service('A'),B:service('B')}],'住宅及共用设备总计。程序运行、实际取出与本户生活需求是否满足分别判断。',true),
+      ...(x.EV.A.installed?[card('车辆出发电量',evRows.length?evRows:[{label:'当前模拟范围',A:'未给定新出发行程',B:'未给定新出发行程'}],'列当日出发、首个后续出发及首个受影响/不达目标的出发；按原连接与行程核算，不假定必然满足，也不补造后续恢复。',true)]:[]),
+      ...(p.devices.some(d=>d.types.includes('water_heater'))?[card('热水交付',waterRows,mixedKnown?`按原生混合出水报告；给定目标温度${mixed.A.declared_target_C.map(t=>num(t,1)+'℃').join('、')||'未声明'}。住宅总计，未逐人分摊；10分钟均温不能代表瞬时最低温或个人感受。`:'有热水器运行结果不等于已证明每次用水需求满足；未核验部分保持未知。',true)]:[]),
       m('section',null,'overall-vpp',[m('h3','电网响应（VPP）'),...x.events.map(e=>m('div',null,'vpp-event',[
         m('p',`${time(e.interval_min[0])}–${time(e.interval_min[1])}，要求降低${num(e.target_kw)}kW；按本题声明的可控设备电表比较。`,'vpp-request-line'),
         sideBySide([{label:'响应时段平均功率',A:num(e.A_kWh*60/(e.interval_min[1]-e.interval_min[0]),3)+'kW',B:num(e.B_kWh*60/(e.interval_min[1]-e.interval_min[0]),3)+'kW'}]),
