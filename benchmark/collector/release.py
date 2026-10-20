@@ -64,15 +64,16 @@ class Release:
             if case_id not in self.cache:
                 raw=self.file('public/'+row['path'])
                 if hashlib.sha256(raw).hexdigest()!=row['sha256']:raise RuntimeError('案例签名不一致。')
-                self.cache[case_id]=json.loads(raw)
+                value=json.loads(raw)
                 if self.manifest['schema'].endswith('.v2'):
-                    c=self.cache[case_id];review=c['physical_review']
+                    c=value;review=c['physical_review']
                     assert c['outcome_status']==review['status']
                     assert review['source_frozen_pair_sha256']==c['bindings']['source_pair_sha256']
                     assert c['bindings']['label_condition']==self.manifest['collection_condition']
                     if review['status']=='computed':
                         assert c['impact']==review['actual_outcomes'] and c['VPP_results']==review['actual_outcomes']['events']
                     else:assert c['impact'] is None and c['VPP_results'] is None
+                self.cache[case_id]=value
                 while len(self.cache)>4:self.cache.popitem(last=False)
             else:self.cache.move_to_end(case_id)
             return row,self.cache[case_id]

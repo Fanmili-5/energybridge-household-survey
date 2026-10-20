@@ -48,6 +48,7 @@ class Handler(BaseHTTPRequestHandler):
             path=self.routed_path();release=self.server.release;store=self.server.store
             if path=='api/health':return self.send(200,{'mode':'engineering_fixture'if store.fixtures else'formal_role_collection',
                 'households':len(release.households),'cases':len(release.records),'release_sha256':release.signature,'ui_revision':UI_VERSION,
+                'presentation_revision':release.manifest.get('presentation_revision',UI_VERSION),
                 'entry_mode':'open_no_invitation','questions_per_participant':release.questions_per_household,'cohort_id':store.cohort,
                 'A_stage':release.manifest['A_stage'],'B_stage':release.manifest['B_stage'],
                 'physical_stage':release.manifest['physical_stage'],'impact_stage':release.manifest['impact_stage'],
