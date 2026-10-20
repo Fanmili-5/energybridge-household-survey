@@ -46,6 +46,7 @@ jobs:
               static_roots = ('benchmark/ab_generation/', 'benchmark/project/',
                               'benchmark/collector/', 'benchmark/releases/reference50-v1/runtime/',
                               'benchmark/releases/reference50-v4-ui91-complete/',
+                              'benchmark/releases/reference50-v4-ui91-clean/',
                               'benchmark/releases/reference50-v4-proposal/')
               ab_only = (bool(paths)
                          and all(p.endswith('.md') or p.startswith(static_roots) or p in ancillary

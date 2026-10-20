@@ -1,27 +1,27 @@
 # 正式采集的存储、导出与维护
 
-当前正式入口：https://47.85.194.154/household50-current/ 。使用UI91立体房间与50户500题完整配对后果；当前发布签名、上线记录与后续维护状态分别见[MANIFEST](../../benchmark/releases/reference50-v4-ui91-complete/MANIFEST.json)、[ACTIVATION](../../benchmark/releases/reference50-v4-ui91-complete/ACTIVATION.json)和[OPERATIONS](../../benchmark/releases/reference50-v4-ui91-complete/OPERATIONS.json)。上线时保留旧库是历史事实；此后用户明确要求清除退役采集记录，维护状态已更新，不能把历史上线回执当作当前保留策略。
+当前正式入口：https://47.85.194.154/household50-current/ 。当前使用UI91精简版、0—5分方块单选和50户500题配对后果；发布签名、上线记录与公网核对分别见[MANIFEST](../../benchmark/releases/reference50-v4-ui91-clean/MANIFEST.json)、[ACTIVATION](../../benchmark/releases/reference50-v4-ui91-clean/ACTIVATION.json)和[READBACK](../../benchmark/releases/reference50-v4-ui91-clean/READBACK.json)。本次展示切换保留前一版的身份、草稿、答卷、查看记录和备份，新版使用独立数据库；旧分数不取整、不转换为看过新版的答案。更早的退役记录曾按用户要求清理，其历史维护记录不变。
 
 ## 保存位置与完整信息
 
 正式数据库在服务器的新40GiB数据盘`/dev/vdb1`，ext4挂载于`/srv/energybridge-data`。2026-10-20已先备份再迁移；只有`/dev/vdb`执行分区和格式化，系统盘未分区、格式化或扩容。实际数据库路径：
 
 ```text
-/srv/energybridge-data/collections/current50/collection_ui91_physics/e9f4e541e35558b7dae3/formal_responses.sqlite3
+/srv/energybridge-data/collections/current50/collection_ui91_physics/34ce9629ef397b08ef3b/formal_responses.sqlite3
 ```
 
-原路径通过bind mount指向同一份新盘数据，现有服务命令、浏览器cookie、身份和恢复码不变：
+通过bind mount，服务使用以下兼容路径。前一版本的身份和恢复材料仍保存在前一版本目录，不自动导入新版库：
 
 ```text
-/var/lib/energybridge-current50/collection_ui91_physics/e9f4e541e35558b7dae3/formal_responses.sqlite3
+/var/lib/energybridge-current50/collection_ui91_physics/34ce9629ef397b08ef3b/formal_responses.sqlite3
 ```
 
 这是SQLite数据库。`responses_v69.record_json`保存版本绑定的完整提交，修改追加新修订、保留历史；重试使用同一提交标识，不重复产生答案。草稿、查看历史、匿名身份、多轮分配和同意/撤回另表保存，未提交草稿不计作正式答卷。页面显示提交回执才表示提交已确认；断网未同步内容仍可能只在浏览器，不能当作服务器已收到。
 
-每份提交包含：匿名`participant_id`、本轮`assignment_id`与轮次、家庭与日期、四项评分、接受/拒绝、原因、提交时间/回执/修订、所见文本和完整排程是否展开、问卷/案例/家庭/资源的版本哈希，以及独立的客观仿真结果。冻结的完整家庭、住房、设备、A/B与后果题包位于：
+每份提交包含：匿名`participant_id`、本轮`assignment_id`与轮次、家庭与日期、四项评分、接受/拒绝、原因、提交时间/回执/修订、所见文本和排程展示状态（本版已删除完整资料入口，排程状态为未展示）、问卷/案例/家庭/资源的版本哈希，以及独立的客观仿真结果。冻结的完整家庭、住房、设备、A/B与后果题包位于：
 
 ```text
-/opt/energybridge-current50/e9f4e541e35558b7dae3/release
+/opt/energybridge-current50/34ce9629ef397b08ef3b/release
 ```
 
 题包与程序同样已迁至新盘，实际在`/srv/energybridge-data/programs/current50`；`/opt/energybridge-current50`通过bind mount保持兼容。备份应覆盖数据库及同目录的`credential_pepper`，题包另以冻结签名关联保存。
@@ -33,9 +33,9 @@
 授权管理员在服务器使用匹配运行时导出UTF-8 JSONL，每行一题、一名匿名参与者的一轮最新提交：
 
 ```bash
-/usr/bin/python3 -B /opt/energybridge-current50/e9f4e541e35558b7dae3/runtime/admin.py export \
-  --release /opt/energybridge-current50/e9f4e541e35558b7dae3/release \
-  --data-root /var/lib/energybridge-current50/collection_ui91_physics/e9f4e541e35558b7dae3 \
+/usr/bin/python3 -B /opt/energybridge-current50/34ce9629ef397b08ef3b/runtime/admin.py export \
+  --release /opt/energybridge-current50/34ce9629ef397b08ef3b/release \
+  --data-root /var/lib/energybridge-current50/collection_ui91_physics/34ce9629ef397b08ef3b \
   --quality all --output /private/approved-export/answers-YYYYMMDD.jsonl
 ```
 
@@ -51,7 +51,7 @@
 
 ## 新盘挂载与故障保护
 
-`/etc/fstab`按文件系统UUID挂载新盘，并绑定原数据和程序目录。正式服务和备份服务都有`RequiresMountsFor`、`BindsTo`与`After`依赖；新盘离线时不会继续在系统盘生成另一套空数据库。原bind目标的底层空目录权限为000，另由外部[启动守卫](../../deploy/verify_reference50_data_mount.py)核对实际设备UUID、三个真实挂载点、bind目录身份、现有数据库、32字节恢复材料与发布签名。守卫位于`/usr/local/lib/energybridge-current50/verify_data_mount.py`，布局在`/etc/energybridge-current50/storage-layout.json`，不改冻结采集运行时或题包。
+`/etc/fstab`按文件系统UUID挂载新盘，并绑定原数据和程序目录。正式服务和备份服务都有`RequiresMountsFor`、`BindsTo`与`After`依赖；新盘离线时不会继续在系统盘生成另一套空数据库。原bind目标的底层空目录权限为000，另由外部[启动守卫](../../deploy/verify_reference50_data_mount.py)核对实际设备UUID、三个真实挂载点、bind目录身份、现有数据库、32字节恢复材料与发布签名。守卫位于`/usr/local/lib/energybridge-current50/verify_data_mount.py`，当前版布局在`/etc/energybridge-current50/storage-layout-34ce9629ef397b08ef3b.json`，前一版布局`/etc/energybridge-current50/storage-layout.json`保留，不改冻结采集运行时或题包。
 
 已以实际服务账号核对挂载、启动正式服务及备份；故意给错UUID会拒绝启动。`findmnt --verify`、启用生成器的`systemd-analyze --generators=yes verify`及实际挂载单元均通过。服务器未重启，不能把持久配置检查称为实际重启验收。不要在线卸载新盘或直接复制旧库覆盖新库。
 
@@ -64,7 +64,7 @@
 当前正式库每6小时生成一致SQLite备份并检查完整性，同目录保留`latest.tar.gz`和`previous.tar.gz`。此路径仍在系统盘，与正式数据位于不同磁盘：
 
 ```text
-/var/backups/energybridge-current50/e9f4e541e35558b7dae3/rolling
+/var/backups/energybridge-current50/34ce9629ef397b08ef3b/rolling
 ```
 
 备份含原恢复材料；仅有数据库而丢失恢复材料，会影响恢复码续填。此次已将最终停止写入后的快照、以及重新启用的自动备份各自还原到临时目录，核对所有表、结构及恢复材料一致。迁移前快照、配置和系统盘原目录另保存在：
