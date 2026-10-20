@@ -1,0 +1,20 @@
+import unittest
+from .source_scope import requires_source_rebuild
+
+class SourceScopeTest(unittest.TestCase):
+    def test_presentation_and_record_hashes_do_not_change_source_worlds(self):
+        self.assertFalse(requires_source_rebuild([
+            'benchmark/project/reference_collection_release.py',
+            'benchmark/ab_generation/validation/collection_v4/REFERENCE50_RELEASE_REVIEW.json',
+            'benchmark/project/PACKAGE_MANIFEST.json','benchmark/README.md']))
+
+    def test_generator_inputs_and_unknown_changes_fail_safe_to_full_rebuild(self):
+        for path in ['benchmark/ab_generation/collection_selection.py',
+                     'benchmark/project/pipeline.py','benchmark/family_generation/core.py',
+                     'benchmark/housing_simulation/worker.py',
+                     'benchmark/ab_generation/examples/collection/design.json',
+                     'benchmark/project/examples/questionnaire/public/index.json',
+                     'benchmark/collector/server.py','new_unknown_source.py']:
+            with self.subTest(path=path):self.assertTrue(requires_source_rebuild([path]))
+
+if __name__=='__main__':unittest.main()

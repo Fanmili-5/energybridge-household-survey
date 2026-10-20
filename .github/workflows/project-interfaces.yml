@@ -24,6 +24,15 @@ jobs:
         python-version: ['3.12', '3.14']
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: source_world
+        name: Check whether source-world inputs changed
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: python3 -B benchmark/project/source_scope.py
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
@@ -31,12 +40,12 @@ jobs:
         with:
           node-version: '22'
       - run: python -m pip install -r benchmark/housing_simulation/requirements.txt
-      - run: python -B -m unittest benchmark.project.test_project benchmark.project.test_reference_collection_release benchmark.ab_generation.test_plan_only benchmark.family_generation.test_generation benchmark.family_generation.test_connection -v
+      - run: python -B -m unittest benchmark.project.test_source_scope benchmark.project.test_project benchmark.project.test_reference_collection_release benchmark.ab_generation.test_plan_only benchmark.family_generation.test_generation benchmark.family_generation.test_connection -v
       - run: python -B -m benchmark.project.verify_package
       - run: python -B -m benchmark.project verify-questionnaire benchmark/project/examples/questionnaire
       - run: node benchmark/project/verify_display.js benchmark/project/examples/questionnaire
       - name: Rebuild six-household data and v69 materials without an engine
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.12' && steps.source_world.outputs.rebuild == 'true'
         run: |
           python -B -m benchmark.project build --out "$RUNNER_TEMP/eb-project"
           python -B -m benchmark.project verify "$RUNNER_TEMP/eb-project"

@@ -28,6 +28,14 @@ def proposal_question_copy(html):
     return html
 
 
+def typed_control_copy(code):
+    """Type the cooling sentinel per axis without hiding heating or fan axes."""
+    old="key==='cooling_setpoint_C' ? `制冷${num(x[key]??x.value_C,1)}℃`"
+    new="key==='cooling_setpoint_C' ? (x._eb_cooling_stop_fallback ? '暂停制冷请求（实际运行未计算）' : `制冷${num(x[key]??x.value_C,1)}℃`)"
+    if code.count(old)!=1:raise ValueError('V69_CONTROL_FIELD_ANCHOR_CHANGED')
+    return code.replace(old,new)
+
+
 def build(collection,profiles_release,original_a,out):
     collection=Path(collection).resolve();profiles_release=Path(profiles_release).resolve();original_a=Path(original_a).resolve();out=Path(out).resolve()
     verify(collection);assignment=read(collection/'ASSIGNMENT.json');selected=assignment['selected_ids']
@@ -50,9 +58,7 @@ def build(collection,profiles_release,original_a,out):
     if s.count(old_notice)!=1:raise ValueError('V69_OUTCOME_NOTICE_ANCHOR_CHANGED')
     s=s.replace(old_notice,'本题先评价调整提案是否适合本户。实际用电、室温、任务完成和VPP响应尚未计算，后续另行仿真；未计算不代表没有变化。')
     html.write_text(proposal_question_copy(s))
-    js=out/'public/view.js';s=js.read_text();anchor="      const shown = axes?.length ? axes : ['heating_setpoint_C','cooling_setpoint_C','fan_operating_mode'];"
-    if s.count(anchor)!=1:raise ValueError('V69_CONTROL_ANCHOR_CHANGED')
-    s=s.replace(anchor,"      if(kind==='ac_setpoint' && x._eb_cooling_stop_fallback) return '暂停制冷请求（实际运行未计算）';\n"+anchor)
+    js=out/'public/view.js';s=typed_control_copy(js.read_text())
     start=s.index('  function familyLines(c,p) {');end=s.index('\n  function ',start+5);section=s[start:end]
     if section.count('return lines;')!=1:raise ValueError('V69_FAMILY_CONTEXT_ANCHOR_CHANGED')
     section=section.replace('return lines;','return [...lines,...(c.collection_life_lines||[])];');s=s[:start]+section+s[end:];js.write_text(s)
