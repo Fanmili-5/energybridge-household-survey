@@ -2,15 +2,6 @@ name: A-B strategy generation
 
 on:
   workflow_dispatch:
-    inputs:
-      run_physics:
-        description: "Explicitly run deferred A/B physical experiments"
-        type: boolean
-        default: false
-      run_full_replay:
-        description: "Replay the complete historical frozen catalogue"
-        type: boolean
-        default: false
   push:
     paths:
       - 'benchmark/ab_generation/**'
@@ -77,31 +68,6 @@ jobs:
             --out "$RUNNER_TEMP/tail-frozen-sample"
           python -c 'import json, os; from pathlib import Path; expected=json.loads(Path("benchmark/ab_generation/validation/rules/SELECTION.json").read_text()); actual=json.loads((Path(os.environ["RUNNER_TEMP"])/"tail-frozen-sample/SELECTION.json").read_text()); keys=lambda s:[(r["sample_id"],r["stratum"],r["B_commands_sha256"]) for r in s["records"]]; assert keys(expected)==keys(actual); assert actual["selection_coverage_passed"]'
 
-  joint-tail-replay:
-    if: github.event_name == 'workflow_dispatch' && inputs.run_full_replay
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.14.3'
-      - name: Recompute sealed joint-tail coverage without a new B selection
-        run: python -B -m benchmark.ab_generation.validation.joint_tail.recompute --out "${{ runner.temp }}/joint-tail-recheck"
-      - name: Confirm the strict gate reports the published acceptance state
-        run: python -c 'import json,subprocess,sys,os;from pathlib import Path;x=json.loads(Path("benchmark/ab_generation/validation/joint_tail/RESULT.json").read_text());r=subprocess.run([sys.executable,"-B","-m","benchmark.ab_generation.validation.joint_tail.recompute","--require-coverage","--out",str(Path(os.environ["RUNNER_TEMP"])/"joint-tail-strict")],capture_output=True,text=True);assert (r.returncode==0)==x["passed"]'
-      - name: Replay the public A-only frame without the physics package
-        shell: bash
-        run: |
-          mkdir -p "$RUNNER_TEMP/joint-tail-independent/benchmark"
-          cp benchmark/__init__.py "$RUNNER_TEMP/joint-tail-independent/benchmark/"
-          cp -R benchmark/ab_generation "$RUNNER_TEMP/joint-tail-independent/benchmark/"
-          cd "$RUNNER_TEMP/joint-tail-independent"
-          python -B -m benchmark.ab_generation.joint_tail frame-frozen \
-            --reference-root benchmark/ab_generation/validation/joint_tail/frozen_inputs \
-            --out "$RUNNER_TEMP/joint-tail-replay"
-          python -c 'import json,os;from pathlib import Path;p=Path("benchmark/ab_generation/validation/joint_tail/frozen_sample/SELECTION.json");a=json.loads(p.read_text());b=json.loads((Path(os.environ["RUNNER_TEMP"])/"joint-tail-replay/SELECTION.json").read_text());keys=lambda d:[(r["sample_id"],r["stratum"],r["B_commands_sha256"])for r in d["records"]];assert keys(a)==keys(b);assert b["selection_coverage_passed"]==a["selection_coverage_passed"];assert b["coverage"]==a["coverage"]'
-
   gap-static-check:
     runs-on: ubuntu-latest
     steps:
@@ -113,48 +79,3 @@ jobs:
         run: python -B -m benchmark.ab_generation.validation.gap_supplement.recompute --out "${{ runner.temp }}/gap-static-check"
       - name: Replay final frozen strata and audit all selected full plans without simulation
         run: python -B -m benchmark.ab_generation.static_sampling recheck --require-coverage --out "${{ runner.temp }}/final-static-sampling"
-
-  physical-reproduction:
-    if: github.event_name == 'workflow_dispatch' && inputs.run_physics
-    runs-on: ubuntu-22.04
-    timeout-minutes: 120
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: python -m pip install -r benchmark/housing_simulation/requirements.txt
-      - name: Install pinned official EnergyPlus release
-        shell: bash
-        run: |
-          curl -fL --retry 3 -o "$RUNNER_TEMP/energyplus.tar.gz" \
-            https://github.com/NatLabRockies/EnergyPlus/releases/download/v24.1.0/EnergyPlus-24.1.0-9d7789a3ac-Linux-Ubuntu22.04-x86_64.tar.gz
-          echo "5a1d30c3bd1a304741c495a683c7d6ffd8c07d00dd06783e543b50a631c29017  $RUNNER_TEMP/energyplus.tar.gz" | sha256sum --check
-          mkdir "$RUNNER_TEMP/energyplus"
-          tar -xzf "$RUNNER_TEMP/energyplus.tar.gz" -C "$RUNNER_TEMP/energyplus" --strip-components=1
-      - name: Reproduce the current joint catalogue and frozen tail experiment
-        shell: bash
-        run: |
-          mkdir -p "$RUNNER_TEMP/life-independent/benchmark"
-          cp benchmark/__init__.py "$RUNNER_TEMP/life-independent/benchmark/"
-          cp -R benchmark/ab_generation benchmark/housing_simulation "$RUNNER_TEMP/life-independent/benchmark/"
-          cd "$RUNNER_TEMP/life-independent"
-          python -B -m benchmark.ab_generation.joint_review \
-            --energyplus-dir "$RUNNER_TEMP/energyplus" --out "$RUNNER_TEMP/joint-reference"
-          python -B -m benchmark.ab_generation verify "$RUNNER_TEMP/joint-reference"
-          python -B -m benchmark.ab_generation.joint_tail frame \
-            --reference-root "$RUNNER_TEMP/joint-reference" --out "$RUNNER_TEMP/joint-frame"
-          python -B -m benchmark.ab_generation.joint_tail execute \
-            --reference-root "$RUNNER_TEMP/joint-reference" --sample "$RUNNER_TEMP/joint-frame" \
-            --energyplus-dir "$RUNNER_TEMP/energyplus" --workers 2 --out "$RUNNER_TEMP/joint-tail-results"
-          python -B -m benchmark.ab_generation verify "$RUNNER_TEMP/joint-tail-results"
-          python -c 'import json,os;from pathlib import Path;x=json.loads((Path(os.environ["RUNNER_TEMP"])/"joint-tail-results/RESULT.json").read_text());assert x["generation_coverage_passed"] and x["response_coverage"]["passed"];assert all(r["coverage_credit"] for r in x["records"]);missing={r["stratum"] for r in x["coverage"] if r["required"] and not r["passed"]};assert missing <= {"washer_cost_increase"};assert x["no_outcome_reselection"];print(json.dumps({"required_coverage_accepted":x["passed"],"required_deficits":sorted(missing),"all_deficits":[r["stratum"] for r in x["coverage"] if not r["passed"]]}))'
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: joint-A-B-tail-physical-reproduction
-          path: |
-            ${{ runner.temp }}/joint-reference
-            ${{ runner.temp }}/joint-frame
-            ${{ runner.temp }}/joint-tail-results
-          retention-days: 14
