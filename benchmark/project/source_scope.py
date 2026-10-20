@@ -11,6 +11,8 @@ PRESENTATION={
     'benchmark/project/reference_refined_release.py',
     'benchmark/project/reference_collection_physics.py',
     'benchmark/project/reference_physics_results.py',
+    'benchmark/project/reference_physics_selfcheck.py',
+    'benchmark/project/reference_physical_release.py',
     'benchmark/project/test_reference_collection_physics.py',
     'benchmark/project/verify_refined_display.js',
     'benchmark/project/UI91_VALIDATION.json',

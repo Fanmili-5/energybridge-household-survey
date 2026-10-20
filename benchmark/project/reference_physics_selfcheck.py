@@ -21,6 +21,10 @@ def check(exported,compiled,runs,out):
             if sorted(r[1] for r in idf if r[0]=='Zone')!=sorted(r['room_id']for r in pack['world']['layout']['rooms']):raise ValueError('ROOM_ADDED_OR_REMOVED')
             gates={d['asset_id']:d['coil_gate_schedules'] for room in meta['multi_AC_execution'] for d in room['devices']}
             for package in pack['HVAC']:
+                if package['asset_id'] in gates:
+                    for key in ('available','heat_sp','cool_sp'):
+                        sensor=package['schedule_names']['available']+'_independent_'+key
+                        if by[('EnergyManagementSystem:Sensor',sensor)][2:]!=[package['schedule_names'][key],'Schedule Value']:raise ValueError('UNIT_SENSOR_BOUND_TO_OTHER_DEVICE')
                 for expected in package['rows']:
                     actual=by[(expected[0],expected[1])];wanted=list(map(str,expected))
                     if package['asset_id'] in gates and expected[0].startswith(('Coil:Heating:','Coil:Cooling:')):
@@ -44,6 +48,7 @@ def check(exported,compiled,runs,out):
         'multi_AC_completed_arms_with_individual_gate_readback':multi,'independent_gate_pairs_observed_different':different_gates,
         'all_original_native_hardware_parameters_and_curves_preserved':True,'all_original_physical_rooms_preserved':True,
         'source_schedule_hashes_unchanged':True,'only_native_coil_availability_fields_derived_for_multi_AC':True,
+        'each_unit_sensor_bound_to_its_own_requested_schedule':True,
         'source_export_manifest_sha256':sha(exported/'MANIFEST.json'),'compiled_manifest_sha256':sha(compiled/'MANIFEST.json'),
         'runs_manifest_sha256':sha(runs/'MANIFEST.json'),'engine_runs_started':0,'selections_changed':0}
     save(out,summary);return summary
