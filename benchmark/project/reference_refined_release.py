@@ -14,7 +14,7 @@ from benchmark.ab_generation.common import digest, read, save, sha
 from .questionnaire import COLLECTOR, HERE, UI
 
 ASSETS=HERE/'refined91'
-PRESENTATION='eb.questionnaire50.refined.v91.clean.v2'
+PRESENTATION='eb.questionnaire50.refined.v91.trial.v1'
 
 
 def section(source, name, following):
@@ -47,7 +47,9 @@ def participant_renderer(source):
     if "if(physical_review?.status==='computed'){q('score-note')" in source:
         a=source.index("if(physical_review?.status==='computed'){q('score-note')");b=source.index('renderFamily();',a)
         source=source[:a]+"q('score-note').textContent='1分很不合适，5分很合适；可填一位小数。';"+source[b:]
-    source=source.replace("presentation_revision:'eb.questionnaire50.refined.v91.newAB.v1'", "presentation_revision:'"+PRESENTATION+"'")
+    import re
+    source=re.sub(r"presentation_revision:'eb\.questionnaire50\.refined\.v91\.(?:newAB\.v1|clean\.v[23]|trial\.v1)'", "presentation_revision:'"+PRESENTATION+"'",source)
+    source=source.replace('current=physical_review?{...c,physical_review}:c;', 'current={...(physical_review?{...c,physical_review}:c),ui_trial:Boolean(index.ui_trial_only)};')
     if "Number.isInteger(a[key])" not in source:source=source.replace("root.EBRequiredResponse(a);", "root.EBRequiredResponse(a);\n    for(const key of ['score','comfort_score','energy_score','vpp_score'])if(!Number.isInteger(a[key]))throw Error('四项评分均须为0—5的整数。');")
     source=source.replace('1分很不合适，5分很合适；可填一位小数。','0分很不合适，5分很合适。')
     return source

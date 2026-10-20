@@ -1,5 +1,7 @@
 # 数据与验收
 
+当前线上入口临时切为[试填测试版](https://47.85.194.154/household50-current/)，标题注明“测试版·含示例数据”。50户500题沿用UI91及0—5整数选项；其中56题用临时空调示例覆盖展示，系填写测试数值，不是新增仿真或可信物理预测，不用于科研结论或模型训练。原始A/B、原生结果和旧答卷均保留，测试答卷独立保存。范围、规则和上线核验见[测试发布清单](../benchmark/releases/reference50-v4-ui91-trial/MANIFEST.json)。1000户仍暂缓。
+
 当前发布以[版本指针](household1000/CURRENT_QUESTIONNAIRE50.json)、[发布清单](../benchmark/releases/reference50-v4-ui91-clean/MANIFEST.json)和[激活凭据](../benchmark/releases/reference50-v4-ui91-clean/ACTIVATION.json)共同核对。本页描述`reference50-v4-ui91-clean`，工程通过与科研有效性分别报告。
 
 ## 当前资料

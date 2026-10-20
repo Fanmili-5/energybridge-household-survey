@@ -46,7 +46,7 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if urlsplit(self.path).path==PREFIX:return self.send(302,b'',location=PREFIX+'/')
             path=self.routed_path();release=self.server.release;store=self.server.store
-            if path=='api/health':return self.send(200,{'mode':'engineering_fixture'if store.fixtures else'formal_role_collection',
+            if path=='api/health':return self.send(200,{'mode':'engineering_fixture'if store.fixtures else'ui_trial_collection'if release.manifest.get('ui_trial_only')else'formal_role_collection',
                 'households':len(release.households),'cases':len(release.records),'release_sha256':release.signature,'ui_revision':UI_VERSION,
                 'presentation_revision':release.manifest.get('presentation_revision',UI_VERSION),
                 'entry_mode':'open_no_invitation','questions_per_participant':release.questions_per_household,'cohort_id':store.cohort,
@@ -54,6 +54,7 @@ class Handler(BaseHTTPRequestHandler):
                 'A_stage':release.manifest['A_stage'],'B_stage':release.manifest['B_stage'],
                 'physical_stage':release.manifest['physical_stage'],'impact_stage':release.manifest['impact_stage'],
                 'formal_collection_ready':release.manifest.get('formal_collection_ready',False),
+                'ui_trial_only':release.manifest.get('ui_trial_only',False),
                 'physical_statuses':release.manifest.get('physical_statuses',{}),
                 'human_collection_release':not store.fixtures,'training_release':False,'full1000_deferred_by_user':True})
             if path in ASSETS:
