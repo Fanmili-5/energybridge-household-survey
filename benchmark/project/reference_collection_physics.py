@@ -12,6 +12,7 @@ from collections import Counter
 from pathlib import Path
 from benchmark.ab_generation.common import bound, digest, read, save, seal, sha, verify
 from benchmark.ab_generation.model import plan_commands, plan_hash
+from benchmark.ab_generation.sampling import command_hash
 from benchmark.ab_generation.export import attach_legacy_requirements
 
 
@@ -86,7 +87,8 @@ def export(collection, stage, original_a, out):
         reason=unsupported
         if dt.date.fromisoformat(date)+dt.timedelta(days=tail)>dt.date.fromisoformat(pack['end_exclusive']):reason='INSUFFICIENT_FROZEN_RECOVERY_CALENDAR'
         record={**entry,'household_id':hid,'date':date,'source_frozen_pair_sha256':sha(frozen_path),
-            'A_commands_sha256':plan_hash(pair['A']),'B_commands_sha256':plan_hash(pair['B']),
+            'A_commands_sha256':command_hash(pair['A']),'B_commands_sha256':command_hash(pair['B']),
+            'A_execution_plan_sha256':plan_hash(pair['A']),'B_execution_plan_sha256':plan_hash(pair['B']),
             'history_days':history,'tail_days':tail,'history_scope':'explicit available original A calendar capped at112days;shorter histories not newly convergence-validated',
             'status':'unsupported_world' if reason else 'input_prepared','reason':reason,'retained_plan_issues':row['issues'],
             'actual_outcomes':None,'IDFs_compiled':False,'engine_runs':0}

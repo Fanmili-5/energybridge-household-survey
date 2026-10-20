@@ -43,6 +43,9 @@ def renderer(base):
     source=source.replace("x.case_id===q('case-date').value","x.date===q('case-date').value")
     source=source.replace("const o=el('option',x.date+' · 方案'+(index.cases.filter(r=>r.household_id===x.household_id).indexOf(x)+1));o.value=x.case_id;", "const o=el('option',x.date);o.value=x.date;")
     source=source.replace("dates(params.get('case_id')||data.resume_case_id)", "dates(index.cases.find(x=>x.case_id===params.get('case_id'))?.date||params.get('date')||data.resume_date)")
+    source=source.replace('let index,current,profile,row,serial=0,loading=true,plansRendered=false;', 'let index,current,profile,row,physicalReviews=null,serial=0,loading=true,plansRendered=false;')
+    source=source.replace('profile=p;current=c;renderFamily();', "profile=p;const physical_review=physicalReviews?.cases[c.case_id];if(physical_review&&physical_review.source_frozen_pair_sha256!==c.bindings.source_pair_sha256)throw Error('仿真结果与本题方案不一致。');current=physical_review?{...c,physical_review}:c;if(physical_review?.status==='computed'){q('score-note').textContent='按给定家庭和本题已列出的配对仿真估算判断：1分很不合适，5分很合适，可填一位小数。工程审计、VPP达标和家庭是否接受分别判断。';q('comfort_score').parentElement.querySelector('small').textContent='室温与生活变化是否适合这户家庭';q('energy_score').parentElement.querySelector('small').textContent='用电时段与费用变化是否适合这户家庭';}else{q('score-note').textContent='按家庭角色评价提议安排：1分很不合适，5分很合适，可填一位小数。实际后果尚未计算，不要求推测。';q('comfort_score').parentElement.querySelector('small').textContent='温控请求与生活安排是否适合这户家庭';q('energy_score').parentElement.querySelector('small').textContent='用电时段与设备安排是否适合这户家庭';}renderFamily();")
+    source=source.replace("json('index.json').then(data=>{\n    index=data;", "json('index.json').then(async data=>{\n    index=data;if(data.physical_review_index)physicalReviews=await json(data.physical_review_index.path,data.physical_review_index.sha256);")
     return source
 
 
@@ -67,12 +70,16 @@ def build(proposal_release, frontend_source, out):
     html=html.replace(' hidden id="collection-', ' id="collection-')
     html=html.replace(' id="vpp-request" class="request-note" hidden',' id="vpp-request" class="request-note"')
     html=html.replace('VPP达标结果已单独列出。','实际用电、费用、室温和VPP达标情况尚未计算，请根据提议安排判断。')
+    html=html.replace('<div class="score-heading"><h3>给这次调整打分</h3><p>','<div class="score-heading"><h3>给这次调整打分</h3><p id="score-note">')
     html=html.replace('室温与生活变化是否适合这户家庭','温控请求与生活安排是否适合这户家庭')
     html=html.replace('用电时段与费用变化是否适合这户家庭','用电时段与设备安排是否适合这户家庭')
     html=html.replace('此入口为本地预览。','凭恢复码可换设备续填。')
     (public/'index.html').write_text(html)
     (public/'view.css').write_bytes((ASSETS/'view.css').read_bytes())
     (public/'view.js').write_text(renderer((public/'view.js').read_text()))
+    instructions=read(out/'ANSWER_INSTRUCTIONS.json')
+    instructions['scores']['energy_score']['label']='用电与费用'
+    save(out/'ANSWER_INSTRUCTIONS.json',instructions)
     housing_index=read(frontend_source/'public/display-index.json')
     if sha(frontend_source/'public/display-index.json')!=reviewed['files']['public/display-index.json']:raise ValueError('UI91_HOUSING_INDEX_CHANGED')
     index=read(out/'INDEX50.json');profile_review=[]
@@ -109,6 +116,28 @@ def build(proposal_release, frontend_source, out):
     assert all(sha(public/r['path'])==r['sha256'] for r in parent.index['cases'])
     return {'release_sha256':checked.signature,'cases':len(checked.records),'unchanged_case_bytes':len(parent.records),
         'housing_layouts':len(profile_review),'presentation_revision':index['presentation_revision'],'new_EP_runs':0,'online_changed':False}
+
+
+def build_review_preview(release, results, out):
+    """Separate read-only review; never change the sealed collection condition."""
+    release,results,out=map(lambda p:Path(p).resolve(),(release,results,out))
+    from benchmark.ab_generation.common import verify,seal
+    verify(results);m=read(release/'FORMAL_RELEASE.json');rows=read(results/'RESULT_INDEX500.json')['records']
+    shutil.copytree(release/'public',out);index=read(out/'index.json');by={r['case_id']:r for r in index['cases']};reviews={}
+    for r in rows:
+        case=read(out/by[r['case_id']]['path'])
+        if case['bindings']['source_pair_sha256']!=r['source_frozen_pair_sha256']:raise ValueError('REVIEW_CASE_RESULT_MISMATCH')
+        if r['status']=='computed' and r['actual_outcomes']['simulated_facility_cost']['currency']!='CNY':raise ValueError('REVIEW_COST_CURRENCY_UNDECLARED')
+        reviews[r['case_id']]={k:r.get(k) for k in ('status','actual_outcomes','reason','audit_status','source_frozen_pair_sha256')}
+    save(out/'physical-review.json',{'cases':reviews})
+    index['physical_review_index']={'path':'physical-review.json','sha256':sha(out/'physical-review.json')};save(out/'index.json',index)
+    html=(out/'index.html').read_text().replace('src="collection-client.js"','src="preview-client.js"').replace('50户正式问卷','UI91 · 方案与仿真核对').replace('<div class="collection-toolbar">','<div class="collection-toolbar" hidden>')
+    html=html.replace('草稿自动保存，提交后生成回执。凭恢复码可换设备续填。','只读核对页：按本题版本显示仿真状态，不保存正式答卷。')
+    (out/'index.html').write_text(html)
+    client=(HERE/'preview-client.js').read_text().replace('资料预览：后果未计算；可检查填写交互，内容不会提交到正式采集库。','资料预览：后果状态按本题资料标注；内容不会提交到正式采集库。')
+    (out/'preview-client.js').write_text(client)
+    return {'parent_collection_release_sha256':m['release_sha256'],'result_manifest_sha256':sha(results/'MANIFEST.json'),
+        'cases':len(reviews),'formal_collection':False,'answers_written':0}
 
 
 if __name__=='__main__':

@@ -9,6 +9,7 @@ from collections import Counter
 from pathlib import Path
 from benchmark.ab_generation.common import read, save, sha, verify, seal
 from benchmark.ab_generation.outcomes import consequences
+from benchmark.ab_generation.model import plan_hash
 
 
 def bind(collection, exported, compiled, runs, audit, out):
@@ -20,7 +21,10 @@ def bind(collection, exported, compiled, runs, audit, out):
     if not set(compiled_rows)<={r['id'] for r in cases}:raise ValueError('UNKNOWN_COMPILED_COLLECTION_CASE')
     rows=[]
     for item in cases:
-        ident=item['id'];row={**item,'outcomes':None,'questionnaire_payload_changed':False}
+        ident=item['id'];row={**item,'actual_outcomes':None,'questionnaire_payload_changed':False}
+        frozen_path=collection/'pairs'/(ident+'.json');frozen=read(frozen_path)
+        if sha(frozen_path)!=item['source_frozen_pair_sha256']:raise ValueError('RESULT_FROZEN_PLAN_CHANGED')
+        if any(item[s+'_commands_sha256']!=frozen['review'][s+'_commands_sha256'] for s in ('A','B')):raise ValueError('RESULT_COLLECTION_COMMAND_HASH_MISMATCH')
         if item['status']=='unsupported_world':rows.append(row);continue
         if ident not in compiled_rows:
             row['status']='not_computed';rows.append(row);continue
@@ -33,11 +37,10 @@ def bind(collection, exported, compiled, runs, audit, out):
         results={s:read(p) for s,p in paths.items()}
         if any(r['status']!='completed' for r in results.values()):
             row.update(status='execution_failed',reason='Preserved engine failure;no replacement B');rows.append(row);continue
-        frozen_path=collection/'pairs'/(ident+'.json');frozen=read(frozen_path)
-        if sha(frozen_path)!=item['source_frozen_pair_sha256']:raise ValueError('RESULT_FROZEN_PLAN_CHANGED')
         pair_path=exported/'resources'/item['pair']['path']
         if sha(pair_path)!=item['pair']['sha256']:raise ValueError('RESULT_EXPORTED_PAIR_CHANGED')
         pair=read(pair_path);metas={s:read(compiled/ident/s/'INPUT.json.gz') for s in ('A','B')}
+        if any(plan_hash(pair[s])!=plan_hash(frozen[s]) for s in ('A','B')):raise ValueError('RESULT_EXECUTED_PLAN_DIFFERS_FROM_FROZEN_COLLECTION')
         traces={}
         for side in ('A','B'):
             result=results[side];meta=metas[side];trace_path=runs/ident/side/'TRACE.json.gz';sql=runs/ident/side/'out/eplusout.sql'
@@ -47,7 +50,11 @@ def bind(collection, exported, compiled, runs, audit, out):
         if check is None:
             row.update(status='audit_missing',reason='No complete paired audit;outcomes remain null');rows.append(row);continue
         context=read(collection/'contexts'/(frozen['row']['case_id']+'.json.gz'))
-        row.update(status='computed',outcomes=consequences(pair,metas,traces,check,context),
+        home=read(exported/'resources'/item['household']['path'])
+        rate=home['world']['tariff_reference']['flat_CNY_per_kWh']
+        if context['tariff_provenance']['origin']=='retained_world_reference_tariff;not_live_or_observed' and all(t['price_per_kWh']==rate for t in context['tariff']):
+            context={**context,'tariff_provenance':{**context['tariff_provenance'],'currency':'CNY','unit':'CNY/kWh'}}
+        row.update(status='computed',actual_outcomes=consequences(pair,metas,traces,check,context),
             audit_status=check['status'],failed_checks=[k for k,v in check['checks'].items() if not v],
             engine_runs=2,IDFs_compiled=True,
             receipts={s:{k:results[s][k] for k in ('engine_sha256','idf_sha256','SQL_sha256','trace_sha256')} for s in ('A','B')})
