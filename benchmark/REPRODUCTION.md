@@ -1,3 +1,13 @@
+# 当前v4复现入口
+
+新B与v69封存请使用[项目模块](project/README.md)的reference_collection与reference_collection_release命令。未计算结果保持空值；不调用旧B物理输出。完整500题需获准的原50户输入，公开六户用于方法复现。
+
+[当前发布](releases/reference50-v4-proposal/MANIFEST.json) · [方法与来源](ab_generation/COLLECTION_METHOD.md)
+
+---
+
+以下为**历史reference50-v1 / A46-B57**说明，保留来源和验证历史，不代表当前新B的物理结果。
+
 # 复现与版本核验
 
 ## 公开clone可以做什么

@@ -1,3 +1,13 @@
+# 当前数据卡：reference50-v4-proposal
+
+当前为原50户×10个原日期的新B提案采集。原A命令与画像保留，VPP固定18—19；500题的实际耗电、室温、任务完成与VPP响应未计算。评分针对时段、温控请求及生活安排。新B不属于旧B57主集，旧物理结果不能复用；未来结果不可追写为参与者已知信息。
+
+[当前发布](releases/reference50-v4-proposal/MANIFEST.json) · [方法与来源](ab_generation/COLLECTION_METHOD.md)
+
+---
+
+以下为**历史reference50-v1 / A46-B57**说明，保留来源和验证历史，不代表当前新B的物理结果。
+
 # 数据卡：reference50-v1
 
 ## 研究单位
