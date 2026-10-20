@@ -38,7 +38,8 @@ jobs:
                            'benchmark/verify_publication.py', 'benchmark/DATASET_CARD.md',
                            'benchmark/COLLECTION.md', 'benchmark/EVALUATION.md',
                            'benchmark/GENERATION.md', 'benchmark/REPRODUCTION.md', 'benchmark/ACCEPTANCE.md',
-                           'docs/household1000/STATUS.json', 'docs/household1000/CURRENT_QUESTIONNAIRE50.json'}
+                           'docs/household1000/STATUS.json', 'docs/household1000/CURRENT_QUESTIONNAIRE50.json',
+                           'PROJECT.md', 'PROJECT_REVIEW_20261020.md', 'docs/README.md'}
               static_roots = ('benchmark/ab_generation/', 'benchmark/project/',
                               'benchmark/collector/', 'benchmark/releases/reference50-v1/runtime/',
                               'benchmark/releases/reference50-v4-ui91-complete/',
