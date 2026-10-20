@@ -63,8 +63,8 @@ def verify_public_body_capacity(origin):
 
 def verify_presentation(release,previous):
     revision=release.manifest['presentation_revision']
-    assert revision in ('eb.questionnaire50.refined.v91.newAB.v1','eb.questionnaire50.refined.v91.clean.v2')
-    if revision.endswith('clean.v2'):
+    assert revision in ('eb.questionnaire50.refined.v91.newAB.v1','eb.questionnaire50.refined.v91.clean.v2','eb.questionnaire50.refined.v91.clean.v3','eb.questionnaire50.refined.v91.trial.v1')
+    if '.clean.v' in revision or '.trial.v' in revision:
         instructions=release.answer_instructions
         assert instructions['range']==[0,5] and instructions['decimal_places']==0
         assert instructions['score_values']==[0,1,2,3,4,5]
@@ -110,9 +110,12 @@ def activate(signature,previous,origin,port=18793,service_name='energybridge-cur
     release=Release(base/'release');assert release.signature==signature
     assert release.manifest['schema']=='eb.reference_benchmark.release.v2' and release.manifest['new_EP_runs']==1000
     revision=verify_presentation(release,previous)
-    if revision.endswith('clean.v2'):assert layout is not None,'Mounted-volume guard required for the clean presentation'
+    if '.clean.v' in revision or '.trial.v' in revision:assert layout is not None,'Mounted-volume guard required for the clean presentation'
     assert len(release.records)==500 and len(release.households)==50
-    assert release.manifest.get('formal_collection_ready') is True,'Formal release has not passed zero-unknown readiness'
+    if release.manifest.get('ui_trial_only'):
+        assert revision.endswith('trial.v1') and release.manifest['trial_display']['synthetic_display_values'] is True
+        assert release.manifest.get('formal_collection_ready') is False,'Trial must not claim formal readiness'
+    else:assert release.manifest.get('formal_collection_ready') is True,'Formal release has not passed zero-unknown readiness'
     assert release.manifest.get('physical_statuses')=={'computed':500},'Formal collection cannot contain unavailable consequences'
     assert release.manifest.get('assignment_policy',{}).get('version')=='system_assigned_stable_participant_optional_rounds.v1','Formal collection requires verified system assignment and multi-round identity'
     for cid,row in release.records.items():

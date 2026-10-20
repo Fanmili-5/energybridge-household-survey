@@ -85,6 +85,51 @@ class PhysicalInformationTests(unittest.TestCase):
 
 
 class ParticipantPresentationTests(unittest.TestCase):
+    def test_ev_resume_and_thermostat_thresholds_are_not_misrepresented(self):
+        import json,subprocess,copy
+        from .reference_refined_release import renderer
+        from .reference_collection_release import typed_control_copy
+        from .questionnaire import HERE
+        ac={'asset_id':'ac','kind':'ac_setpoint','heating_setpoint_C':22,'cooling_setpoint_C':24.5,'fan_operating_mode':0}
+        ev={'asset_id':'ev','kind':'ev_charge_window','need_id':'trip','stop_at_target_soc':.85,'actual_charge_end_min':960}
+        a=[{**ac,'start_min':1020,'end_min':1400},{**ev,'start_min':870,'end_min':1920}]
+        b=[{**ac,'start_min':1020,'end_min':1080},{**ac,'heating_setpoint_C':21,'start_min':1080,'end_min':1140},
+           {**ac,'start_min':1140,'end_min':1400},{**ev,'start_min':1740,'end_min':1920}]
+        c={'household_id':'h','date':'2025-08-06','window_min':[480,1920],
+           'project_presentation':{'family_lines':['家庭资料','你代入成员1']},
+           'context':{'needs':{'A':[{'asset_id':'ev','kind':'ev','need_id':'trip','departure_min':1990,'required_departure_soc':.85}]}},
+           'changes':[{'asset_id':'ac','kind':'ac_setpoint','group':'controls','start_min':1080,'end_min':1140,'A':[ac],'B':[{**ac,'heating_setpoint_C':21}]},
+                      {'asset_id':'ev','kind':'ev_charge_window','group':'controls','start_min':870,'end_min':1740,'A':[ev],'B':[]}],
+           'plans':{'A':{'controls':a},'B':{'controls':b}},'outcome_status':'not_computed','impact':None,'VPP_results':None,
+           'VPP_requests':[{'start_min':1080,'end_min':1140,'notification_min':480,'target_kw':1.5,'direction':'down'}]}
+        p={'household_id':'h','province':'陕西','members_count':3,'generations':2,'household_area_m2':62,'relationships':[],'support':[],
+           'display_housing':{'rooms':[],'target_H7':2,'shared_household_count_design':1},
+           'devices':[{'asset_id':'ac','types':['ac'],'room_id':'living_hall'},{'asset_id':'ev','types':['ev'],'room_id':'external_dedicated_ev_bay'}]}
+        before=copy.deepcopy(c)
+        with tempfile.TemporaryDirectory()as temp:
+            view=Path(temp)/'view.js';view.write_text(renderer(typed_control_copy((HERE/'examples/questionnaire/public/view.js').read_text())))
+            run="require(process.argv[1]);const c=JSON.parse(process.argv[2]),p=JSON.parse(process.argv[3]);console.log(JSON.stringify({shown:globalThis.EBSimple50.displayed(c,p),c}));"
+            value=json.loads(subprocess.check_output(['node','-e',run,str(view),json.dumps(c),json.dumps(p)],text=True))
+            metric={'minimum_C':24.5,'mean_C':25.5,'maximum_C':30.}
+            outcomes={'metered_energy':{'primary_24h':{'A':31.68,'B':31.68,'B_minus_A':0}},
+                'simulated_facility_cost':{'intervals':{'primary_24h':{'A':19.008,'B':19.008,'B_minus_A':0,'status':'complete'}}},
+                'temperature_outcomes':[{'room_id':'living_hall','A':metric.copy(),'B':metric.copy()}],
+                'service_changes':{'services':[]},'service_execution':{'A':[],'B':[]},
+                'EV':{'A':{'installed':False,'trips':[]},'B':{'installed':False,'trips':[]}},
+                'native_mixed_water_delivery':None,'water_service':{'A':None,'B':None},
+                'events':[{'interval_min':[1080,1140],'A_kWh':.483,'B_kWh':.483,'delta_kw':0,'aligned_response_kw':0,'requested_direction':'down','target_kw':1.5,'target_met':False}]}
+            trial=copy.deepcopy(c);trial.update(ui_trial=True,outcome_status='computed',physical_review={'status':'computed','actual_outcomes':outcomes})
+            trial_before=copy.deepcopy(trial)
+            demo=json.loads(subprocess.check_output(['node','-e',run,str(view),json.dumps(trial),json.dumps(p)],text=True))
+            self.assertIn('制冷设定25.5℃',demo['shown']['changes'])
+            for phrase in ['试填示例','31.38度','18.828元']:self.assertIn(phrase,demo['shown']['impacts'])
+            self.assertNotIn('仿真估算',demo['shown']['impacts'])
+            self.assertEqual(demo['c'],trial_before)
+        shown=value['shown']['changes']
+        for phrase in ['14:30起允许充电','次日05:00起允许充电','到85%停止','制冷设定24.5℃','制热下限22℃','制热下限21℃','18:00–19:00','19:00后恢复原安排']:self.assertIn(phrase,shown)
+        for phrase in ['暂停充电','制热22℃','制热21℃','16:00']:self.assertNotIn(phrase,shown)
+        self.assertEqual(value['c'],before)
+
     def test_separate_laundry_display_hides_engineering_details_and_keeps_plans(self):
         import json,subprocess,copy
         from .reference_refined_release import renderer,participant_html

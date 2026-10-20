@@ -9,6 +9,7 @@ const reviews=index.physical_review_index?read(path.join(pub,index.physical_revi
 let failureBranchChecked=false;
 for(const row of index.cases){
   const c=read(path.join(pub,row.path)),p=read(path.join(pub,'households',row.household_id+'.json'));
+  if(index.ui_trial_only)c.ui_trial=true;
   if(reviews){c.physical_review=reviews[c.case_id];assert.equal(c.physical_review.source_frozen_pair_sha256,c.bindings.source_pair_sha256);const s=c.physical_review.status;counts[s]=(counts[s]||0)+1;}
   if(c.schema==='eb.reference_benchmark.case.v2'){
     assert.equal(c.outcome_status,c.physical_review.status);assert.equal(c.physical_review.source_frozen_pair_sha256,c.bindings.source_pair_sha256);
@@ -17,7 +18,7 @@ for(const row of index.cases){
     else{assert.equal(c.impact,null);assert.equal(c.VPP_results,null);}
   }else{assert.equal(c.outcome_status,'not_computed');assert.equal(c.impact,null);assert.equal(c.VPP_results,null);}
   assert.ok(p.display_housing.rooms.length);const shown=ui.displayed(c,p);
-  const clean=ui.presentation_revision==='eb.questionnaire50.refined.v91.clean.v2';
+  const clean=/^eb\.questionnaire50\.refined\.v91\.(?:clean\.v[23]|trial\.v1)$/.test(ui.presentation_revision);
   for(const key of ['family','request','changes','impacts','schedule']){
     if(clean&&key==='schedule'){assert.equal(shown.schedule,'');continue;}
     assert.equal(typeof shown[key],'string');assert.ok(shown[key].length);
@@ -28,7 +29,7 @@ for(const row of index.cases){
     assert.ok(!/计划说明|操作与控制请求|不直接等于个人舒适评分/.test(shown.changes+shown.impacts));
   }
   assert.match(shown.family,/房屋剖面示意/);assert.match(shown.request,/18:00–19:00/);
-  if(c.physical_review?.status==='computed'){assert.match(shown.impacts,clean?/仿真估算/:/已完成/);assert.match(shown.impacts,/实际平均/);for(const e of c.physical_review.actual_outcomes.events)assert.ok(shown.impacts.includes(e.target_met?'达标':'未达标'));}
+  if(c.physical_review?.status==='computed'){assert.match(shown.impacts,index.ui_trial_only?/试填示例/:clean?/仿真估算/:/已完成/);assert.match(shown.impacts,/实际平均/);if(!index.ui_trial_only)for(const e of c.physical_review.actual_outcomes.events)assert.ok(shown.impacts.includes(e.target_met?'达标':'未达标'));}
   else{assert.match(shown.impacts,/未计算|未知/);assert.ok(!/实际平均[\d]|实际降低[\d]/.test(shown.impacts));}
   if(c.physical_review?.status==='unsupported_world')assert.match(shown.impacts,/模型兼容问题/);
   if(c.schema==='eb.reference_benchmark.case.v2'&&!failureBranchChecked){

@@ -13,6 +13,7 @@ PRESENTATION={
     'benchmark/project/questionnaire.py','benchmark/project/preview-client.js',
     'benchmark/collector/ledger.py','benchmark/collector/collection-client.js',
     'benchmark/collector/test_protocol.py','benchmark/collector/test_rounds.py',
+    'deploy/activate_reference50_ui91.py',
     'benchmark/project/reference_collection_physics.py',
     'benchmark/project/reference_physics_results.py',
     'benchmark/project/reference_physics_selfcheck.py',
@@ -40,6 +41,7 @@ def requires_source_rebuild(paths):
         if name.startswith('benchmark/ab_generation/validation/')and path.suffix=='.json':continue
         if name.startswith('benchmark/releases/reference50-v4-proposal/')and path.suffix=='.json':continue
         if name.startswith('benchmark/releases/reference50-v4-ui91-physics/')and path.suffix=='.json':continue
+        if name.startswith('benchmark/releases/reference50-v4-ui91-trial/')and path.suffix=='.json':continue
         return True
     return False
 
