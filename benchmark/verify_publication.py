@@ -96,6 +96,8 @@ def check(controlled=None):
                 assert storage['backup_and_live_data_on_separate_disks']and storage['automatic_backup_timer_active']
                 assert storage['production_answers_created_by_checks']==0 and storage['full1000_started']is False
                 assert current['storage_migration_record_sha256']==sha(storage_path)
+                assert storage['installed_guard_sha256']==sha(ROOT/'deploy/verify_reference50_data_mount.py')
+                assert storage['after_configuration_backed_up_on_both_disks']
         else:assert current['old_records_preserved']
         assert current['UI91_presentation_revision']=='eb.questionnaire50.refined.v91.newAB.v1'
         assert sha(ROOT/current['aggregate_review_path'])==current['aggregate_review_sha256']

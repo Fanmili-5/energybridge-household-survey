@@ -75,6 +75,8 @@
 
 成功迁移的最终快照在其`retry-20261020T095857Z/final-quiesced-snapshot/latest.tar.gz`，原目录在同级`system-disk-originals`。新盘还保存副本`/srv/energybridge-data/private-backups/pre-migration-20261020T095857Z/latest.tar.gz`。旧的未激活迁移副本受root专有目录保护，不是第二个运行中的库。
 
+迁移后的fstab、服务单元及drop-in、布局文件和守卫代码也分别保存在成功迁移目录与新盘快照目录的`configuration-after`，逐文件核对一致；线上守卫代码的哈希与公开源文件一致。
+
 恢复时应先维护并停止写入，保留当前库和恢复材料，校验目标快照的`MANIFEST.json`、SQLite及发布签名，在独立目录验证后成对恢复数据库与`credential_pepper`，保持原权限，再经挂载守卫、服务启动和公网检查后开放。不能在新库收到后续提交后直接回退到迁移前目录；系统盘原目录只是切换时刻的快照。
 
 当前未配置自动异地备份。服务器内双盘和两代滚动快照不能抵御整机或账号故障；本次自动审批未允许将含恢复密钥的快照导出本机，故未下载。异地导出需另获授权并使用私有受控位置，不能上传GitHub。
