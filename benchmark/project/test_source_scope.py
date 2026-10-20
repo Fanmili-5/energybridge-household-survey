@@ -10,6 +10,8 @@ class SourceScopeTest(unittest.TestCase):
             'benchmark/project/reference_physics_results.py',
             'benchmark/project/refined91/housing_drawing.js',
             'benchmark/project/UI91_VALIDATION.json',
+            'benchmark/project/FULL500_PHYSICS_VALIDATION.json',
+            'benchmark/releases/reference50-v4-ui91-physics/MANIFEST.json',
             'benchmark/ab_generation/validation/collection_v4/REFERENCE50_RELEASE_REVIEW.json',
             'benchmark/project/PACKAGE_MANIFEST.json','benchmark/README.md']))
 
@@ -17,6 +19,8 @@ class SourceScopeTest(unittest.TestCase):
         for path in ['benchmark/ab_generation/collection_selection.py',
                      'benchmark/project/pipeline.py','benchmark/family_generation/core.py',
                      'benchmark/housing_simulation/worker.py',
+                     'benchmark/housing_simulation/kernel/compiler.py',
+                     'benchmark/housing_simulation/kernel/multi_ac.py',
                      'benchmark/ab_generation/examples/collection/design.json',
                      'benchmark/project/examples/questionnaire/public/index.json',
                      'benchmark/collector/server.py','new_unknown_source.py']:

@@ -41,7 +41,9 @@ jobs:
               static_roots = ('benchmark/ab_generation/', 'benchmark/project/',
                               'benchmark/releases/reference50-v4-proposal/')
               ab_only = (bool(paths)
-                         and all(p.startswith(static_roots) or p in ancillary for p in paths))
+                         and all(p.startswith(static_roots) or p in ancillary
+                                 or (p.startswith('benchmark/releases/reference50-v4-ui91-physics/')
+                                     and p.endswith(('.json', '.md'))) for p in paths))
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write('ab_only=' + str(ab_only).lower() + '\n')
           PY
