@@ -29,7 +29,7 @@ def build(proposal_release,results,out):
     for row in index['cases']:
         path=public/row['path'];case=read(path);r=rows[row['case_id']]
         if r['source_frozen_pair_sha256']!=case['bindings']['source_pair_sha256'] or any(r[s+'_commands_sha256']!=case['bindings'][s+'_commands_sha256'] for s in ('A','B')):raise ValueError('PHYSICS_PLAN_BINDING_MISMATCH')
-        review={k:r.get(k) for k in ('status','actual_outcomes','reason','audit_status','failed_checks','source_frozen_pair_sha256','receipts','engine_warnings','model_scope')}
+        review={k:r.get(k) for k in ('status','actual_outcomes','reason','audit_status','failed_checks','source_frozen_pair_sha256','receipts','engine_warnings','model_scope','native_numerical_convergence')}
         if r['status']=='computed' and r['actual_outcomes']['simulated_facility_cost']['currency']!='CNY':raise ValueError('CURRENCY_UNDECLARED')
         case.update(physical_review=review,outcome_status=r['status'],impact=r['actual_outcomes'],
                     VPP_results=r['actual_outcomes']['events'] if r['status']=='computed' else None)
@@ -41,6 +41,7 @@ def build(proposal_release,results,out):
     source=source[:a]+(HERE/'refined91/pending_nodes.js').read_text()+'\n'+source[b:]
     source=source.replace('const physical_review=physicalReviews?.cases[c.case_id];','const physical_review=c.physical_review||physicalReviews?.cases[c.case_id];')
     source=source.replace('暂停制冷请求（实际运行未计算）','暂停制冷请求')
+    source=source.replace('实际后果尚未计算，不要求推测。','本题未获得可用配对后果，请依据已列计划判断，不猜测未知后果。')
     view.write_text(source)
     css=public/'view.css';css.write_text(css.read_text()+'\n#impacts > .cost-scope, #impacts > .cost-warning {grid-column:1 / -1;}\n.outcome-prose .money-comparison .compare-value {font-size:17px;line-height:1.75;font-weight:500;}\n')
     html=public/'index.html';html.write_text(html.read_text().replace('实际用电、费用、室温和VPP达标情况尚未计算，请根据提议安排判断。','按本题列出的A/B配对仿真估算判断；失败、未知与未达标均照实保留。'))

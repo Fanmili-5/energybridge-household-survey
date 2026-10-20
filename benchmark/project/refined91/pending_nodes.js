@@ -39,7 +39,7 @@
       ]),
       m('p',null,'family-requirement',[m('span','家庭要求','inline-label'),m('span',g.requirements.join(' '))]),
       sideBySide(g.rows),
-      m('p',null,'life-effect',[m('strong','计划说明'),m('span',c.physical_review?.status==='computed'?'以上为操作与控制请求；本题配对仿真结果见下方。':'以上为操作与控制请求；实际运行、完成情况及生活后果尚未计算。')])
+      m('p',null,'life-effect',[m('strong','计划说明'),m('span',c.physical_review?.status==='computed'?'以上为操作与控制请求；本题配对仿真结果见下方。':'以上为操作与控制请求；本题尚无可用配对后果，未知部分不作推测。')])
     ],{'data-asset-id':g.assets.join(' ')}));
     if(!nodes.length)nodes.push(m('p','这一天A、B安排相同。请按给定家庭判断是否接受。','no-direct-change'));
     const changed=new Set(groups.flatMap(g=>g.assets)),rest=p.devices.filter(d=>!changed.has(d.asset_id));

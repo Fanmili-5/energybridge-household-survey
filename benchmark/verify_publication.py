@@ -62,6 +62,11 @@ def check(controlled=None):
         assert current['presentation_revision']=='eb.questionnaire50.refined.v91.newAB.v1'
         assert sha(ROOT/current['aggregate_review_path'])==current['aggregate_review_sha256']
         assert online['physical_stage']=='all500_frozen_new_AB_attempted'
+        assert current['status']=='active_online' and online['physical_statuses']==current['physical_statuses']
+        assert sha(ROOT/current['activation_record'])==current['activation_record_sha256']
+        activation=read(ROOT/current['activation_record'])
+        assert activation['passed'] and activation['release_sha256']==current['release_sha256']
+        assert activation['old_records_preserved'] and activation['backup_active']
     else:raise AssertionError('Unknown current collection dataset: '+str(dataset))
     publication=read(ROOT/'benchmark/PUBLICATION_MANIFEST.json')
     for name,expected in publication['files'].items():assert sha(ROOT/name)==expected,name

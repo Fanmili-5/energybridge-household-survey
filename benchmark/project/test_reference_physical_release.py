@@ -1,9 +1,18 @@
 """Distinguish adverse household outcomes from corrupt/unbound physics."""
 import unittest
-from .reference_physics_results import integrity_failures,mixed_water_delivery
+from .reference_physics_results import integrity_failures,mixed_water_delivery,native_numerical_failures
 
 
 class PhysicalInformationTests(unittest.TestCase):
+    def test_successful_process_with_internal_nonconvergence_is_not_reliable_consequences(self):
+        text='** Warning ** WetBulb not converged after 101 iterations(PsyTwbFnTdbWPb)'
+        self.assertEqual(native_numerical_failures(text),['wetbulb_iteration_not_converged'])
+        self.assertEqual(native_numerical_failures('** Severe  ** invalid native state'),['native_severe_error'])
+
+    def test_intermediate_iteration_range_warning_does_not_invent_failure(self):
+        text='** Warning ** Temperature out of range [-100. to 200.] (PsyPsatFnTemp)\nRoutine=PsyTwbFnTdbWPb'
+        self.assertEqual(native_numerical_failures(text),[])
+
     def test_adverse_service_is_not_an_engineering_rejection_filter(self):
         check={'checks':{'B_service_execution':False,'B_EV_departure_target':False,
                          'B_electrical_supply':False,'recovery_observable_residuals':False,

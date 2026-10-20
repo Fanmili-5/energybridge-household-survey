@@ -5,6 +5,7 @@ sealed questionnaire or retrospectively changes a respondent's information.
 """
 import argparse
 import json
+import re
 from collections import Counter
 from pathlib import Path
 from benchmark.ab_generation.common import read, save, sha, verify, seal
@@ -17,6 +18,19 @@ def integrity_failures(check):
     critical={'same_channel_set','pre_notice_trajectory_equal','shared_shell_weather','readback_complete'}
     endings=('_complete_finite_timeline','_required_zone_channels','_required_tank_nodes','_meter_closure','_program_energy','_EV_meter')
     return [k for k,v in check['checks'].items() if not v and (k in critical or k.endswith(endings))]
+
+
+def native_numerical_failures(error_text):
+    """A normal process exit does not certify the internal iterative solution.
+
+    Gate explicit nonconvergence/severe/fatal messages across the supplied
+    history, main day and recovery. Range warnings from intermediate wet-bulb
+    iteration guesses alone remain disclosed warnings, not an invented failure.
+    """
+    patterns={'wetbulb_iteration_not_converged':r'WetBulb not converged',
+              'native_severe_error':r'\*\*\s+Severe\s+\*\*',
+              'native_fatal_error':r'\*\*\s+Fatal\s+\*\*'}
+    return [name for name,pattern in patterns.items() if re.search(pattern,error_text,re.I)]
 
 
 def mixed_water_delivery(meta,trace,lo=480,hi=1920):
@@ -81,6 +95,20 @@ def bind(collection, exported, compiled, runs, audit, out):
         check=audits.get(ident)
         if check is None:
             row.update(status='audit_missing',reason='No complete paired audit;outcomes remain null');rows.append(row);continue
+        numerical={s:{'failures':native_numerical_failures((runs/ident/s/'out/eplusout.err').read_text(errors='replace')),
+                      'error_log_sha256':sha(runs/ident/s/'out/eplusout.err')} for s in ('A','B')}
+        row.update(audit_status=check['status'],
+            failed_checks=[k for k,v in check['checks'].items() if not v],
+            native_numerical_convergence={'passed':not any(v['failures']for v in numerical.values()),'arms':numerical,
+                'scope':'entire_supplied_history_primary_day_and_recovery;conservative_admission_not_a_claim_that_all_times_are_corrupt'},
+            engine_warnings={s:results[s].get('warnings',[]) for s in ('A','B')},
+            model_scope={s:{k:metas[s].get(k) for k in ('history_days','simulation_timestep_min','reference_air_changes_per_hour','multi_AC_execution','air_exchange_scope')} for s in ('A','B')},
+            engine_runs=2,IDFs_compiled=True,
+            receipts={s:{k:results[s][k] for k in ('engine_sha256','idf_sha256','SQL_sha256','trace_sha256')} for s in ('A','B')})
+        if not row['native_numerical_convergence']['passed']:
+            row['failed_checks'] += [s+'_native_numerical_convergence'for s in ('A','B')if numerical[s]['failures']]
+            row.update(status='audit_failed',reason='Native internal solver reported nonconvergence/severe/fatal error despite process completion;paired consequences remain unknown;original SQL and diagnostic estimates preserved without rerun or reselection')
+            rows.append(row);continue
         if integrity_failures(check):
             row.update(status='audit_failed',reason='Paired engineering integrity check failed;diagnostic results preserved without presenting them as reliable outcomes',
                 failed_checks=integrity_failures(check),audit_status=check['status'],engine_runs=2,IDFs_compiled=True)
