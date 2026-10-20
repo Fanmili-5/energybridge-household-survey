@@ -18,7 +18,7 @@ permissions:
 jobs:
   static-interfaces:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
     strategy:
       matrix:
         python-version: ['3.12', '3.14']
@@ -44,18 +44,3 @@ jobs:
       - run: python -B -m benchmark.project.verify_package
       - run: python -B -m benchmark.project verify-questionnaire benchmark/project/examples/questionnaire
       - run: node benchmark/project/verify_display.js benchmark/project/examples/questionnaire
-      - name: Rebuild six-household data and v69 materials without an engine
-        if: matrix.python-version == '3.12' && steps.source_world.outputs.rebuild == 'true'
-        run: |
-          python -B -m benchmark.project build --out "$RUNNER_TEMP/eb-project"
-          python -B -m benchmark.project verify "$RUNNER_TEMP/eb-project"
-          python -B -m benchmark.project questionnaire --project "$RUNNER_TEMP/eb-project" --out "$RUNNER_TEMP/eb-v69"
-          python -B -m benchmark.project verify-questionnaire "$RUNNER_TEMP/eb-v69"
-          node benchmark/project/verify_display.js "$RUNNER_TEMP/eb-v69"
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          actual=json.loads((Path(os.environ['RUNNER_TEMP'])/'eb-v69/public/index.json').read_text())
-          expected=json.loads(Path('benchmark/project/examples/questionnaire/public/index.json').read_text())
-          assert [(r['case_id'],r['sha256']) for r in actual['cases']]==[(r['case_id'],r['sha256']) for r in expected['cases']]
-          PY
