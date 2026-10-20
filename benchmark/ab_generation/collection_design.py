@@ -10,7 +10,7 @@ from .power import site_capacity
 
 
 DEFAULT = {
-    'schema': 'eb.collection.design.v2', 'seed': 20261020,
+    'schema': 'eb.collection.design.v3', 'seed': 20261020,
     'first_date': '2025-07-15', 'days': 10, 'households': [],
     'event': {'event_id': 'fixed-vpp-18-19', 'start_min': 1080, 'end_min': 1140,
               'direction': 'down', 'target_kw': 1.5},
@@ -18,6 +18,7 @@ DEFAULT = {
     'ac_delta_C': [0.5, 1.0, 2.0], 'tank_delta_C': [1.0, 3.0, 5.0],
     'thermal_duration_min': [20, 40, 60], 'ac_axes': ['cooling'],
     'precondition_min': 30, 'joint_budget': 192,
+    'ac_precondition_min': [10, 30, 60],
     'joint_trials_per_subset': 6, 'assignment_representatives_per_cell': 2,
     'solver_node_limit': 2000,
 }
@@ -35,11 +36,13 @@ def design(value=None):
         raise ValueError('UNSAFE_HOUSEHOLD_ID')
     if len(c['quantiles']) != 3 or not 0 < c['quantiles'][0] < c['quantiles'][1] < c['quantiles'][2] < 1:
         raise ValueError('THREE_ORDERED_INTERIOR_QUANTILES_REQUIRED')
-    for k in ('ac_delta_C', 'tank_delta_C', 'thermal_duration_min'):
+    for k in ('ac_delta_C', 'tank_delta_C', 'thermal_duration_min', 'ac_precondition_min'):
         if len(c[k]) != 3 or any(type(x) not in (int, float) or not math.isfinite(x) or x <= 0 for x in c[k]) or c[k] != sorted(set(c[k])):
             raise ValueError('INVALID_COLLECTION_LEVELS:' + k)
     if any(x % 10 or x > 60 for x in c['thermal_duration_min']) or c['precondition_min'] <= 0 or c['precondition_min'] % 10:
         raise ValueError('INVALID_COLLECTION_DURATION')
+    if any(type(x) is not int or x % 10 or x > 60 for x in c['ac_precondition_min']):
+        raise ValueError('INVALID_AC_PRECONDITION_DURATION')
     if not c['ac_axes'] or set(c['ac_axes']) - {'heating', 'cooling'}:
         raise ValueError('INVALID_DECLARED_REQUEST_AXES')
     for k in ('joint_budget', 'joint_trials_per_subset', 'assignment_representatives_per_cell', 'solver_node_limit'):
@@ -69,6 +72,12 @@ def working_context(context):
             break
         keep = enlarged
     c = dict(context)
+    c['operator_windows']={k:[[max(lo,a),min(hi,z)] for a,z in v if a<hi and z>lo]
+        for k,v in context['operator_windows'].items()}
+    c['occupancy']={k:[[max(lo,a),min(hi,z)] for a,z in v if a<hi and z>lo]
+        for k,v in context['occupancy'].items()}
+    c['reservations']=[{**r,'start_min':max(lo,r['start_min']),'end_min':min(hi,r['end_min'])}
+        for r in context['reservations'] if r['start_min']<hi and r['end_min']>lo]
     c['_original_ev_connection_ends'] = {}
     for r in context['A']['controls']:
         if r['kind']=='ev_charge_window':
@@ -87,7 +96,13 @@ def working_context(context):
 
 
 def validate_context(c):
-    validate(c, DEFAULT_RULES)
+    from .collection_thermal import AC_CONTRACT
+    contract=c['reference'].get('ac_control_contract')
+    if contract is not None and contract!=AC_CONTRACT:
+        raise ValueError('UNKNOWN_AC_ENCODING_CONTRACT')
+    # This is collection-side command metadata, not a new future observation.
+    view={**c,'reference':{k:v for k,v in c['reference'].items() if k!='ac_control_contract'}}
+    validate(view, DEFAULT_RULES)
     if c['reference']['information_set']['mode'] != 'offline_unexecuted_A_plan':
         raise ValueError('COLLECTION_REQUIRES_UNEXECUTED_A_WITHOUT_B_OR_HUMAN_OUTCOMES')
     if c['events'] != [DEFAULT['event']]:
@@ -138,6 +153,9 @@ def annotate_doses(rows, config):
 def absolute_level(row):
     """Reporting bins are project settings, not household preference labels."""
     m = row['magnitude']
+    if row['family'] == 'ac' and m.get('ac_intervention'):
+        ac=m['ac_intervention']
+        return 'state_change' if ac['state_change']!='unchanged' else 'multi_axis' if ac['preconditioning_min'] else ac['amplitude_axes']['temperature_offset']
     if row['family'] in ('washer', 'dishwasher', 'dryer'):
         x = max(m.get('machine_shift_min', 0), m.get('manual_max_shift_min', 0))
         return 'small' if x <= 30 else 'medium' if x < 90 else 'large'
@@ -154,12 +172,26 @@ def event_status(known, unknown):
     return 'reduction' if known > 1e-9 else 'increase' if known < -1e-9 else 'zero'
 
 
+def amplitude_axes(children):
+    out=set()
+    for r in children:
+        if r['family']=='ac':
+            ac=r['magnitude']['ac_intervention']
+            out.add('ac.control_state='+ac['state_change'])
+            out.update('ac.'+k+'='+v for k,v in ac['amplitude_axes'].items() if v not in ('none','not_applicable'))
+        else:
+            out.add(r['family']+'.'+('setpoint_offset' if r['family']=='water_heater' else 'pause_and_slack' if r['family']=='ev' else 'schedule_shift')+'='+r['absolute_level'])
+    return sorted(out)
+
+
 def tags(row):
     f = row['features']
-    out = {f'{k}={f[k]}' for k in ('device_count', 'intensity', 'admission', 'event', 'manual', 'thermal_direction', 'service_slack')}
+    out = {f'{k}={f[k]}' for k in ('device_count', 'admission', 'event', 'manual', 'thermal_direction', 'service_slack')}
     out.add('composition=' + f['composition'])
     out.update('mechanism=' + s for s in f['mechanisms'])
-    for a, b in (('device_count', 'intensity'), ('device_count', 'admission'), ('event', 'manual')):
+    out.update('amplitude='+s for s in f['amplitude_axes'])
+    out.update('device_count='+f['device_count']+'|amplitude='+s for s in f['amplitude_axes'])
+    for a, b in (('device_count', 'admission'), ('event', 'manual')):
         out.add(a + '=' + f[a] + '|' + b + '=' + f[b])
     return sorted(out)
 
@@ -187,4 +219,4 @@ def semantic_signature(c, row):
 
 def report_counts(rows):
     return {k: dict(sorted(Counter(r['features'][k] for r in rows).items()))
-            for k in ('device_count', 'intensity', 'admission', 'event', 'manual', 'composition')}
+            for k in ('device_count', 'amplitude_profile', 'admission', 'event', 'manual', 'composition')}

@@ -4,7 +4,6 @@ from .common import canonical,digest
 
 
 CORE = {
-    'intensity':['small','medium','large','mixed'],
     'event':['reduction','zero','increase','unknown','unknown_with_known_reduction'],
     'manual':['changed','unchanged'],
     'thermal_direction':['aligned','opposing'],
@@ -16,6 +15,8 @@ def assignment_frame(rows,config):
     for r in rows:
         if r.get('engineering_issues') or r.get('engineering_diagnostic'):
             raise ValueError('ENGINEERING_DIAGNOSTIC_NOT_COLLECTION_ELIGIBLE')
+        if r.get('relevance_diagnostic') or not r.get('event_relevance',{}).get('passed'):
+            raise ValueError('UNRELATED_ACTION_NOT_COLLECTION_ELIGIBLE')
         dated[(r['household_id'],r['date'])].append(r)
     for pool in dated.values():
         if any(r['features']['device_count']=='0' for r in pool) and any(r['features']['device_count']!='0' for r in pool):
@@ -52,11 +53,14 @@ def goals(rows,households):
                 tag=axis+'='+level
                 out.append({'id':h+'::'+tag,'household':h,'tag':tag,
                     'available_household_days':len({r['date'] for r in hh if tag in r['tags']})})
+        for tag in sorted({t for r in hh for t in r['tags'] if t.startswith('amplitude=')}):
+            out.append({'id':h+'::'+tag,'household':h,'tag':tag,
+                'available_household_days':len({r['date'] for r in hh if tag in r['tags']})})
     # Admission labels are reports, never quotas or a coverage reward. Control
     # remains a scarcity fallback, not a requested household/batch witness.
     for tag in sorted({t for r in rows for t in r['tags']
-                       if ('|' in t or t.startswith(('composition=','mechanism=','service_slack=')))
-                       and 'admission=' not in t and 'control' not in t
+                       if ('|' in t or t.startswith(('composition=','mechanism=','service_slack=','amplitude=')))
+                       and 'admission=' not in t and t not in ('composition=control','mechanism=control')
                        and 'device_count=0' not in t}):
         out.append({'id':'batch::'+tag,'household':None,'tag':tag,
             'available_household_days':len({(r['household_id'],r['date']) for r in rows if tag in r['tags']})})

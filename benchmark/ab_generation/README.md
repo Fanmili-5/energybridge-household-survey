@@ -83,4 +83,4 @@ python -B -m benchmark.ab_generation reproduce-strategies \
 
 本轮正式验收为17/18个必验层通过，覆盖合同未通过；洗衣费用增加层缺失，另有监测和输入范围缺额。不得因软件CI通过就称benchmark已全面验收。
 
-第二版采集准入（`eb.collection.design.v2`）：基本时序与设备能力在构造域保护，错误原请求保留为工程诊断，生活/服务失败与零/反向请求仍可选；取消准入标签覆盖奖励和固定对照见证，不设类别配比。见 [方法](COLLECTION_METHOD.md)、[小规模验证与自查](COLLECTION_VALIDATION.md)、`validation/collection_v2/`。第一版样本及方法另存于 `validation/collection/`，未改线上问卷、未跑仿真、未启动50+950户。
+第三版采集入口（`eb.collection.design.v3`）：原EB的40℃停冷回退与普通温度目标分开；空调状态、提前时长、温度偏移和事件持续时间分别表示，不给整个B贴小/中/大标签。联合B逐组件和逐设备记录事件关联或支持见证，无关变化只留审计，不为覆盖增加设备。无帮助、反向、生活/服务冲突及未知响应继续保留，不设配比。见[方法](COLLECTION_METHOD.md)、[验证](COLLECTION_VALIDATION.md)、`validation/collection_v3/`。第二版按268685d复现，历史样本保持原样。线上问卷、仿真和50+950户生产不在本轮执行范围。

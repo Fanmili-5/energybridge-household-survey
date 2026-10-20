@@ -336,6 +336,34 @@
       "method_use": "state and switching thresholds matter for thermal flexibility;nameplate headroom alone is insufficient",
       "boundary": "our sampled-A mechanism screen is a project algorithm;not the aggregate battery or priority-stack controller;no numeric parameters transferred",
       "reviewed_document_sha256": "64448b0d398f4b2d4be4002c0e16029879fcc27a733f7cf3a312c1705ee74118"
+    },
+    {
+      "key": "Wang2020Precooling",
+      "title": "Design and analysis of optimal pre-cooling in residential buildings",
+      "authors": [
+        "Junke Wang",
+        "Choon Yik Tang",
+        "Li Song"
+      ],
+      "year": 2020,
+      "doi": "10.1016/j.enbuild.2020.109951",
+      "url": "https://doi.org/10.1016/j.enbuild.2020.109951",
+      "supports": "pre-event conditioning and event control depend on thermal state and timing;not exact project doses or comfort guarantee",
+      "access_note": "publisher abstract/author institutional publication record verified2026-10-20;OSTI author manuscript retrieval unavailable this turn"
+    },
+    {
+      "key": "Yahia2020Multiobjective",
+      "title": "Multi-objective optimization of household appliance scheduling problem considering consumer preference and peak load reduction",
+      "authors": [
+        "Zakaria Yahia",
+        "Anup Pradhan"
+      ],
+      "year": 2020,
+      "doi": "10.1016/j.scs.2020.102058",
+      "url": "https://doi.org/10.1016/j.scs.2020.102058",
+      "public_record": "https://ujcontent.uj.ac.za/esploro/outputs/journalArticle/Multi-objective-optimization-of-household-appliance-scheduling/9912690707691",
+      "supports": "separate cost,inconvenience and peak-load dimensions;not importing optimal-schedule selection,weights,proportions or empirical effects",
+      "access_note": "author institution abstract verified2026-10-20;no full-model equivalence claimed"
     }
   ],
   "parameter_origin": "all_default_search_levels_and_ranking_rules_are_explicit_project_settings",
@@ -490,5 +518,33 @@
     "boundary": "constructive precedence and hardware admissibility;raw engineering ledger;service-conflict and zero/opposing requests retained;no outcome reroll or class proportions",
     "historical_pilot": "validation/collection;git74531e58ace3a5a971f939086f6536465c520825",
     "new_pilot": "validation/collection_v2"
+  },
+  "collection_command_relevance_v3": {
+    "upstream_evidence": "validation/collection_v3/AC_CONTROL_EVIDENCE.json",
+    "upstream_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+    "thermal_model_support": "Hao2013 sectionIII;binary operating state,setpoint andactual temperature are distinct;no compressor state assumed",
+    "preconditioning_support": "Wang2020Precooling;mechanism only",
+    "multidimensional_support": "Yahia2020Multiobjective;dimensions only",
+    "algorithm": "event-rooted bounded construction;one-root/one-support leave-one-component-out resource witness;MILP coverage only after semantic/relevance admission",
+    "project_choices_not_paper_constants": [
+      "temperature dose0.5/1/2C",
+      "lead10/30/60min",
+      "duration20/40/60min",
+      "support search one quarter of fixed budget",
+      "relevance-admission whitelist",
+      "no aggregate whole-B intensity"
+    ],
+    "not_claimed": [
+      "hardware40C supported setpoint",
+      "availability=0 actuator implemented",
+      "actual thermal response",
+      "physically validated successes or failures",
+      "human acceptance",
+      "population distribution",
+      "exhaustive support closure"
+    ],
+    "old_v2_retained": "validation/collection_v2/;pinned268685d",
+    "physical_runs": 0,
+    "online_questionnaire_changed": false
   }
 }
