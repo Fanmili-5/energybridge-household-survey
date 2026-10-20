@@ -1,0 +1,106 @@
+{
+  "schema": "eb.ci.scope_incident.v1",
+  "cause": "New proposal-release documentation was missing from bounded static workflow roots.",
+  "runs": [
+    {
+      "run_id": 39365465990,
+      "commit": "cd1e5d677c9e68fc67bc3a731814ca1081456bb0",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "native_regression_steps": [
+        {
+          "completedAt": "2026-10-20T03:42:48Z",
+          "conclusion": "cancelled",
+          "name": "Backend and native EP regression without model APIs",
+          "number": 13,
+          "startedAt": "2026-10-20T03:41:40Z",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "run_id": 39365471642,
+      "commit": "cd1e5d677c9e68fc67bc3a731814ca1081456bb0",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "native_regression_steps": [
+        {
+          "completedAt": "2026-10-20T03:42:51Z",
+          "conclusion": "cancelled",
+          "name": "Backend and native EP regression without model APIs",
+          "number": 13,
+          "startedAt": "2026-10-20T03:41:46Z",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "run_id": 39365706624,
+      "commit": "5aa60113e7ce4b65c1ed9344c10c62bffa8c03f3",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "native_regression_steps": [
+        {
+          "completedAt": "2026-10-20T03:44:22Z",
+          "conclusion": "skipped",
+          "name": "Backend and native EP regression without model APIs",
+          "number": 13,
+          "startedAt": "2026-10-20T03:44:22Z",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "run_id": 39365710846,
+      "commit": "5aa60113e7ce4b65c1ed9344c10c62bffa8c03f3",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "native_regression_steps": [
+        {
+          "completedAt": "2026-10-20T03:44:22Z",
+          "conclusion": "skipped",
+          "name": "Backend and native EP regression without model APIs",
+          "number": 13,
+          "startedAt": "2026-10-20T03:44:22Z",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "run_id": 39365843976,
+      "commit": "6bd5c581a3ef8979b3ed115fcf3c37988aa9b1d7",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "native_regression_steps": [
+        {
+          "completedAt": "2026-10-20T03:48:42Z",
+          "conclusion": "success",
+          "name": "Backend and native EP regression without model APIs",
+          "number": 13,
+          "startedAt": "2026-10-20T03:46:36Z",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "run_id": 39365840826,
+      "commit": "6bd5c581a3ef8979b3ed115fcf3c37988aa9b1d7",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "native_regression_steps": [
+        {
+          "completedAt": "2026-10-20T03:48:53Z",
+          "conclusion": "success",
+          "name": "Backend and native EP regression without model APIs",
+          "number": 13,
+          "startedAt": "2026-10-20T03:46:37Z",
+          "status": "completed"
+        }
+      ]
+    }
+  ],
+  "formal500_plan_pair_simulations": 0,
+  "master1000_executions": 0,
+  "generic_CI_results_used_for_B_selection": false,
+  "corrective_action": "Cancel general verification; include this specific plan-only release documentation prefix in static scope while retaining full checks for collector/backend/physical-worker changes."
+}

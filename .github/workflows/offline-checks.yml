@@ -34,7 +34,8 @@ jobs:
                            'benchmark/family_generation/PACKAGE_MANIFEST.json',
                            '.github/workflows/ab-generation.yml', '.github/workflows/ab-collection-plan.yml', '.github/workflows/offline-checks.yml',
                            '.github/workflows/project-interfaces.yml', 'README.md', 'benchmark/README.md'}
-              static_roots = ('benchmark/ab_generation/', 'benchmark/project/')
+              static_roots = ('benchmark/ab_generation/', 'benchmark/project/',
+                              'benchmark/releases/reference50-v4-proposal/')
               ab_only = (any(p.startswith(static_roots) for p in paths)
                          and all(p.startswith(static_roots) or p in ancillary for p in paths))
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
