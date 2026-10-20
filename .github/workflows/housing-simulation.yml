@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -r benchmark/housing_simulation/requirements.txt
-      - run: python -B -m unittest benchmark.housing_simulation.test_pipeline benchmark.housing_simulation.test_assembly benchmark.housing_simulation.test_review benchmark.housing_simulation.test_methods
+      - run: python -B -m unittest benchmark.housing_simulation.test_pipeline benchmark.housing_simulation.test_assembly benchmark.housing_simulation.test_review benchmark.housing_simulation.test_methods benchmark.housing_simulation.test_multi_ac
       - run: python -B -m benchmark.housing_simulation.verify_package
 
   physical-reproduction:

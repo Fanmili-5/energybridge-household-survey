@@ -34,7 +34,9 @@ def check(controlled=None):
     source=read(ROOT/'benchmark/generation/SOURCE_CATALOG.json')
     for item in source['files']:
         path=ROOT/item['path'];assert path.resolve().is_relative_to(ROOT)and sha(path)==item['sha256'],item['path']
-    for name,expected in manifest['collector_files'].items():assert sha(ROOT/'benchmark/collector'/name)==expected,name
+    for name,expected in manifest['collector_files'].items():
+        archived=folder/'runtime'/name
+        assert sha(archived if archived.exists() else ROOT/'benchmark/collector'/name)==expected,name
     status=read(ROOT/'docs/household1000/STATUS.json');online=read(ROOT/'docs/household1000/CURRENT_QUESTIONNAIRE50.json')
     dataset=online['public_dataset_id']
     assert status['active_stage']==dataset and not status['current_full1000_acceptance']

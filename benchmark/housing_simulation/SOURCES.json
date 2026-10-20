@@ -1,6 +1,6 @@
 {
   "schema": "eb.housing_simulation.sources.v1",
-  "checked_on": "2026-10-19",
+  "checked_on": "2026-10-20",
   "sources": [
     {
       "id": "dest_library",
@@ -360,6 +360,48 @@
         "project convergence thresholds"
       ],
       "doi": "10.2172/90674"
+    },
+    {
+      "id": "ep24_zone_equipment",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/input-output-reference/group-zone-equipment.html",
+      "kind": "official EnergyPlus24.1 reference",
+      "access": "public documentation checked2026-10-20",
+      "supports": [
+        "multi-unit topology and SequentialLoad residual dispatch"
+      ],
+      "not_identified": [
+        "empirical0.2C hysteresis",
+        "manufacturer independent inverter control",
+        "Chinese household calibration"
+      ]
+    },
+    {
+      "id": "ep24_ems_schedules",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/ems-application-guide/general.html",
+      "kind": "official EnergyPlus24.1 reference",
+      "access": "public documentation checked2026-10-20",
+      "supports": [
+        "independent schedule actuators;avoid self-referential schedule override"
+      ],
+      "not_identified": [
+        "empirical0.2C hysteresis",
+        "manufacturer independent inverter control",
+        "Chinese household calibration"
+      ]
+    },
+    {
+      "id": "ep24_ems_calling_points",
+      "url": "https://bigladdersoftware.com/epx/docs/24-1/ems-application-guide/ems-calling-points.html",
+      "kind": "official EnergyPlus24.1 reference",
+      "access": "public documentation checked2026-10-20",
+      "supports": [
+        "predictor/system/corrector sequence and EMS calling-point interface"
+      ],
+      "not_identified": [
+        "empirical0.2C hysteresis",
+        "manufacturer independent inverter control",
+        "Chinese household calibration"
+      ]
     }
   ],
   "scope": "reference dwelling construction and paired energy simulation",

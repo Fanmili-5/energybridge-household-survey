@@ -389,6 +389,35 @@
       "implementation": "kernel/execution.py:explicit_EV_connections",
       "documentation": "INPUTS.md#62-家庭包",
       "source_relations": []
+    },
+    {
+      "id": "AC-MULTI-01",
+      "classification": "official_interfaces_with_project_control_approximation",
+      "rule": "同一热区保留全部设备，逐台原请求驱动盘管门控；活动设定包络与原清单SequentialLoad分配，0.2C滞环为人工参考假设。",
+      "sources": [
+        "ep24_zone_equipment",
+        "ep24_ems_schedules",
+        "ep24_ems_calling_points"
+      ],
+      "implementation": "kernel/multi_ac.py:add_controls",
+      "documentation": "MULTI_AC_METHOD.md#控制算法",
+      "source_relations": [
+        {
+          "source_id": "ep24_zone_equipment",
+          "role": "official_interface_support_not_parameter_calibration",
+          "supports": "multi-unit topology and SequentialLoad residual dispatch"
+        },
+        {
+          "source_id": "ep24_ems_schedules",
+          "role": "official_interface_support_not_parameter_calibration",
+          "supports": "independent schedule actuators;avoid self-referential schedule override"
+        },
+        {
+          "source_id": "ep24_ems_calling_points",
+          "role": "official_interface_support_not_parameter_calibration",
+          "supports": "predictor/system/corrector sequence and EMS calling-point interface"
+        }
+      ]
     }
   ]
 }
