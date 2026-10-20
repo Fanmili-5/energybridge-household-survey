@@ -113,6 +113,33 @@ def check(controlled=None):
         else:
             assert current['status']=='prepared_zero_unknown_waiting_verified_cutover'
             assert online['collection_state']=='paused_waiting_verified_cutover'
+    elif dataset=='reference50-v4-ui91-clean':
+        current=read(ROOT/'benchmark/releases/reference50-v4-ui91-clean/MANIFEST.json')
+        assert current['release_sha256']==online['release_sha256']
+        assert current['status']=='active_online' and current['formal_collection_ready']
+        assert current['households']==50 and current['cases']==500 and current['physical_statuses']=={'computed':500}
+        assert current['score_values']==[0,1,2,3,4,5] and current['score_decimal_places']==0
+        assert current['presentation_revision']==online['presentation_revision']=='eb.questionnaire50.refined.v91.clean.v2'
+        assert current['new_EP_runs']==0 and current['unchanged_case_bytes']==500 and current['unchanged_profiles']==50
+        assert current['old_records_preserved'] and online['old_release_and_records_preserved']
+        parent_path=ROOT/current['parent_manifest']
+        assert sha(parent_path)==current['parent_manifest_sha256']
+        parent=read(parent_path)
+        assert parent['release_sha256']==current['parent_release_sha256']
+        native=ROOT/parent['aggregate_review_path']
+        assert sha(native)==parent['aggregate_review_sha256']
+        native_review=read(native)
+        assert native_review['unknown_consequences']==0 and native_review['paired_integrity_failures']==0
+        for key in ('activation_record','readback_record','presentation_review_record'):
+            assert sha(ROOT/current[key])==current[key+'_sha256']
+        activation=read(ROOT/current['activation_record']);readback=read(ROOT/current['readback_record'])
+        assert activation['passed'] and activation['old_records_preserved'] and activation['backup_active']
+        assert activation['storage_mount_guard']['passed'] and activation['storage_mount_guard']['release_sha256']==current['release_sha256']
+        assert readback['passed'] and readback['backup_active'] and readback['release_sha256']==current['release_sha256']
+        protocol=readback['isolated_HTTP_protocol']
+        assert protocol['passed'] and protocol['score_range']==[0,5] and protocol['zero_score_saved_and_recovered']
+        assert readback['form_score_tiles']==24 and not readback['manual_score_input']
+        assert readback['production_answers_created_by_checks']==0 and readback['new_EP_runs']==0
     else:raise AssertionError('Unknown current collection dataset: '+str(dataset))
     publication=read(ROOT/'benchmark/PUBLICATION_MANIFEST.json')
     for name,expected in publication['files'].items():assert sha(ROOT/name)==expected,name
@@ -130,7 +157,7 @@ def check(controlled=None):
             index=read(controlled/'INDEX50.json')
             assert len(index['cases'])==500 and len(index['households'])==50
             actual_dates={(x['household_id'],x['date'])for x in index['cases']};original_dates={(x['household_id'],x['date'])for x in cases}
-            if dataset=='reference50-v4-ui91-complete':
+            if dataset in ('reference50-v4-ui91-complete','reference50-v4-ui91-clean'):
                 assert len(actual_dates)==500
                 assert release['formal_collection_ready'] and release['physical_statuses']=={'computed':500}
                 lineage=release['engineering_replenishment'];assert lineage['retained_original_cases']==497

@@ -61,9 +61,34 @@ def verify_public_body_capacity(origin):
     raise RuntimeError('Proxy body limit is below the collector request bound')
 
 
-def activate(signature,previous,origin,port=18793,service_name='energybridge-current50-ui91-physics',previous_private_port=None):
+def verify_presentation(release,previous):
+    revision=release.manifest['presentation_revision']
+    assert revision in ('eb.questionnaire50.refined.v91.newAB.v1','eb.questionnaire50.refined.v91.clean.v2')
+    if revision.endswith('clean.v2'):
+        instructions=release.answer_instructions
+        assert instructions['range']==[0,5] and instructions['decimal_places']==0
+        assert instructions['score_values']==[0,1,2,3,4,5]
+        assert release.manifest['source_pins']['parent_information_release_sha256']==previous
+        assert release.manifest['presentation_update']['case_bytes_unchanged'] is True
+    return revision
+
+
+def storage_unit_guard(layout_path,layout):
+    mounts=[layout['mount_root'],*layout['binds']]
+    units=[command('systemd-escape','--path','--suffix=mount',p) for p in mounts]
+    return ('[Unit]\nRequiresMountsFor='+' '.join(mounts)+'\nBindsTo='+' '.join(units)+
+        '\nAfter='+' '.join(units)+'\n[Service]\nExecStartPre=/usr/bin/python3 -B '
+        '/usr/local/lib/energybridge-current50/verify_data_mount.py --layout '+str(layout_path)+'\n')
+
+
+def activate(signature,previous,origin,port=18793,service_name='energybridge-current50-ui91-physics',previous_private_port=None,storage_layout=None):
     assert re.fullmatch('[a-f0-9]{64}',signature) and re.fullmatch('[a-f0-9]{64}',previous)
     assert 18793<=port<=18799 and re.fullmatch(r'energybridge-current50-[a-z0-9-]+',service_name)
+    layout=None
+    if storage_layout:
+        layout=json.loads(Path(storage_layout).read_text())
+        assert layout['release_sha256']==previous
+        assert json.loads(command('/usr/bin/python3','-B','/usr/local/lib/energybridge-current50/verify_data_mount.py','--layout',str(storage_layout)))['passed']
     if previous_private_port is None:health(origin+'/household50-current/api/health',previous)
     else:
         assert 18791<=previous_private_port<=18799 and previous_private_port!=port
@@ -84,7 +109,8 @@ def activate(signature,previous,origin,port=18793,service_name='energybridge-cur
     sys.path.insert(0,str(base/'runtime'));from release import Release
     release=Release(base/'release');assert release.signature==signature
     assert release.manifest['schema']=='eb.reference_benchmark.release.v2' and release.manifest['new_EP_runs']==1000
-    assert release.manifest['presentation_revision']=='eb.questionnaire50.refined.v91.newAB.v1'
+    revision=verify_presentation(release,previous)
+    if revision.endswith('clean.v2'):assert layout is not None,'Mounted-volume guard required for the clean presentation'
     assert len(release.records)==500 and len(release.households)==50
     assert release.manifest.get('formal_collection_ready') is True,'Formal release has not passed zero-unknown readiness'
     assert release.manifest.get('physical_statuses')=={'computed':500},'Formal collection cannot contain unavailable consequences'
@@ -96,9 +122,22 @@ def activate(signature,previous,origin,port=18793,service_name='energybridge-cur
     snapshots=Path('/var/backups/energybridge-current50')/signature[:20]
     for p in (root,snapshots):
         p.mkdir(parents=True,exist_ok=True,mode=0o700);p.chmod(0o700);os.chown(p,account.pw_uid,account.pw_gid)
+    guarded_layout=None;guard_result=None
+    if layout:
+        # Initialize only the new empty ledger before a guard that deliberately
+        # refuses to create a database or new recovery material itself.
+        init="import sys;sys.path.insert(0,sys.argv[1]);from release import Release;from ledger import CollectionStore;CollectionStore(sys.argv[3],Release(sys.argv[2]))"
+        command('runuser','-u','ebjoint','--','/usr/bin/python3','-B','-c',init,str(base/'runtime'),str(base/'release'),str(root))
+        guarded_layout=Path(storage_layout).with_name('storage-layout-'+signature[:20]+'.json')
+        new_layout={**layout,'data_root':str(root),'release_manifest':str(base/'release/FORMAL_RELEASE.json'),'release_sha256':signature}
+        assert not guarded_layout.exists(),'Refusing to overwrite a deployment layout'
+        guarded_layout.write_text(json.dumps(new_layout,indent=2)+'\n');guarded_layout.chmod(0o644)
+        guard_result=json.loads(command('runuser','-u','ebjoint','--','/usr/bin/python3','-B','/usr/local/lib/energybridge-current50/verify_data_mount.py','--layout',str(guarded_layout)))
+        assert guard_result['passed']
     old=[]
     for parent in ('collection_v69','collection_v4_proposal','collection_ui91_physics'):
         for p in sorted((Path('/var/lib/energybridge-current50')/parent).glob('*')):
+            if p==root:continue
             if not(p/'formal_responses.sqlite3').exists():continue
             before=counts(p);snapshot=snapshots/'before-switch'/parent/p.name;snapshot.mkdir(parents=True,mode=0o700)
             runtime=Path('/opt/energybridge-current50')/p.name/'runtime/admin.py'
@@ -161,6 +200,11 @@ WantedBy=timers.target
     (snapshots/'nginx-before.conf').write_bytes(original)
     try:
         for p,text in ((unit,service),(backup,backup_text),(timer,timer_text)):p.write_text(text)
+        if guarded_layout:
+            for service_unit in (unit,backup):
+                drop=service_unit.with_name(service_unit.name+'.d');drop.mkdir(exist_ok=True)
+                (drop/'storage-volume.conf').write_text(storage_unit_guard(guarded_layout,new_layout))
+            command('systemd-analyze','--generators=yes','verify',unit.name,backup.name,timer.name)
         command('systemctl','daemon-reload');command('systemctl','start',unit.name)
         private=health(f'http://127.0.0.1:{port}/household50-current/api/health',signature)
         assert private['presentation_revision']==release.manifest['presentation_revision']
@@ -188,7 +232,9 @@ location ^~ /household50-current {{
         report={'passed':True,'release_sha256':signature,'previous_release_sha256':previous,'public_health':public,
             'public_body_capacity':body_capacity,
             'prior_ledgers':old,'new_ledger_counts_after_activation':counts(root),'old_services_stopped':False,
-            'backup_active':True,'human_answers_created_by_deployment':0,'full1000_deferred':True}
+            'backup_active':True,'human_answers_created_by_deployment':0,'full1000_deferred':True,
+            'storage_mount_guard':guard_result,'storage_layout':str(guarded_layout)if guarded_layout else None,
+            'score_range':release.answer_instructions['range'],'score_decimal_places':release.answer_instructions['decimal_places']}
         (base/'ACTIVATION.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');return report
     except BaseException:
         snippet.write_bytes(original)
@@ -199,5 +245,6 @@ location ^~ /household50-current {{
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--release-sha256',required=True);p.add_argument('--previous-release-sha256',required=True);p.add_argument('--origin',required=True)
-    p.add_argument('--port',type=int,default=18793);p.add_argument('--service-name',default='energybridge-current50-ui91-physics');p.add_argument('--previous-private-port',type=int);a=p.parse_args()
-    print(json.dumps(activate(a.release_sha256,a.previous_release_sha256,a.origin,a.port,a.service_name,a.previous_private_port),ensure_ascii=False))
+    p.add_argument('--port',type=int,default=18793);p.add_argument('--service-name',default='energybridge-current50-ui91-physics');p.add_argument('--previous-private-port',type=int)
+    p.add_argument('--storage-layout',type=Path);a=p.parse_args()
+    print(json.dumps(activate(a.release_sha256,a.previous_release_sha256,a.origin,a.port,a.service_name,a.previous_private_port,a.storage_layout),ensure_ascii=False))
