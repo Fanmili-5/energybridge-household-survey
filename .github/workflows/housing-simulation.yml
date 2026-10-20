@@ -27,7 +27,9 @@ jobs:
 
   physical-reproduction:
     runs-on: ubuntu-22.04
-    timeout-minutes: 60
+    # The registered 2-minute solver plus all Morris states exceeds one hour
+    # on hosted CPUs. Keep the full matrix and numerical gates unchanged.
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -69,4 +71,6 @@ jobs:
           path: |
             ${{ runner.temp }}/housing-results
             ${{ runner.temp }}/housing-study
+            !${{ runner.temp }}/**/eplusout.eso
+            !${{ runner.temp }}/**/eplusout.mtr
           retention-days: 14
