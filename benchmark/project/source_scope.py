@@ -18,6 +18,7 @@ PRESENTATION={
     'benchmark/project/reference_physics_selfcheck.py',
     'benchmark/project/reference_physical_release.py',
     'benchmark/project/test_reference_collection_physics.py',
+    'benchmark/project/test_reference_physical_release.py',
     'benchmark/project/verify_refined_display.js',
     'benchmark/project/UI91_VALIDATION.json',
     'benchmark/project/FULL500_PHYSICS_VALIDATION.json',
