@@ -1,8 +1,10 @@
-# 当前v4复现入口
+# 当前项目的复现入口
 
-新B与v69封存请使用[项目模块](project/README.md)的reference_collection与reference_collection_release命令。未计算结果保持空值；不调用旧B物理输出。完整500题需获准的原50户输入，公开六户用于方法复现。
+[完整项目](../PROJECT.md#5-从公开仓库开始核验)区分公开检查、独立家庭生成、新十天计划和受控正式50户复现。公开六户37案是旧v69接口示例，事件18:10—19:10、后果未计算；新版十天入口为`benchmark.ab_generation.collection`，事件18:00—19:00，不能以旧示例替代。
 
-[当前发布](releases/reference50-v4-proposal/MANIFEST.json) · [方法与来源](ab_generation/COLLECTION_METHOD.md)
+原50户A侧导入为`benchmark.ab_generation.reference_collection`，提案资料封存为`benchmark.project.reference_collection_release`，同版物理交接为`benchmark.project.reference_collection_physics`，UI91结果封存为`benchmark.project.reference_physical_release`。完整正式数据需要授权输入及固定资源；旧B结果不可复用。工程修复后的批次另按[修复及补生成方法](project/PHYSICS_REPAIR_PRODUCTION.md)和本版清单重放。上述生成命令不会自动激活线上服务。
+
+[当前资料指针](../docs/household1000/CURRENT_QUESTIONNAIRE50.json) · [计划方法](ab_generation/COLLECTION_METHOD.md) · [独立住房复现](housing_simulation/REPRODUCE.md)
 
 ---
 
