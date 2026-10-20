@@ -1,8 +1,8 @@
-# 当前v4验收范围
+# 当前项目的验收范围
 
-当前500题已通过原A等价、计划与覆盖、逐轴温控显示、v69与采集协议检查；物理后果未计算，人类效度未验证。计划可采集不等于物理或科学benchmark已全部验收。详见[本版验证](ab_generation/COLLECTION_VALIDATION.md)。
+三条线的实现、计划正确性、指定批次的物理结果、线上激活、真人理解与最终benchmark效度分别验收。不能用“软件通过”代替后四项，也不能用旧提案版的未计算状态覆盖新物理版。
 
-[当前发布](releases/reference50-v4-proposal/MANIFEST.json) · [方法与来源](ab_generation/COLLECTION_METHOD.md)
+[完整项目](../PROJECT.md)提供逐阶段索引；[计划与覆盖验证](ab_generation/COLLECTION_VALIDATION.md)说明生成/选题范围，[完整后果修复验证](project/FULL500_PHYSICS_REPAIR_VALIDATION.json)记录特定正式50户版本。实际版本及采集状态以[当前资料指针](../docs/household1000/CURRENT_QUESTIONNAIRE50.json)和对应发布/激活凭据核对。真人标签、分组与正式评测仍须独立完成；1000户继续暂缓。
 
 ---
 

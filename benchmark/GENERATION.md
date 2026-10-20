@@ -1,8 +1,10 @@
-# 当前生成方法 v4
+# 当前生成方法与版本边界
 
-当前50户的B使用机会识别、单项/联合请求、归一化覆盖与去重规则，原A和生活安排不因覆盖缺额改写。固定18—19的VPP，保留生活/服务/容量诊断和无帮助请求；工程逻辑错误只保留诊断。
+当前B方法使用机会识别、单项/联合请求、归一化覆盖与去重，固定18:00—19:00；不因覆盖缺额改写A或生活安排。工程逻辑错误隔离诊断，生活/服务/容量压力、无帮助及不利请求保留。正式批次的工程修复或补生成须另外保留原因、事前顺序和谱系。
 
-[当前发布](releases/reference50-v4-proposal/MANIFEST.json) · [方法与来源](ab_generation/COLLECTION_METHOD.md)
+三条主线及接口见[完整项目](../PROJECT.md)。方法版本不等于某批数据的运行或上线状态；以[当前资料指针](../docs/household1000/CURRENT_QUESTIONNAIRE50.json)、对应发布清单及激活凭据核对。
+
+[十天方法与来源](ab_generation/COLLECTION_METHOD.md) · [物理修复及补生成](project/PHYSICS_REPAIR_PRODUCTION.md)
 
 ---
 
