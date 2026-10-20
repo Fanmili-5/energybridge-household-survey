@@ -73,7 +73,16 @@ def check(controlled=None):
         assert current['formal_collection_ready']is True and current['physical_statuses']=={'computed':500}
         assert current['cases']==500 and current['households']==50 and current['questions_per_household']==10
         assert current['original_selected_cases_retained']==497 and current['engineering_replenished_cases']==3
-        assert current['old_records_preserved'] and current['unchanged_annual_A_hardware_and_family']
+        assert current['unchanged_annual_A_hardware_and_family']
+        if current.get('operations_record'):
+            assert sha(ROOT/current['operations_record'])==current['operations_record_sha256']
+            operations=read(ROOT/current['operations_record'])
+            assert operations['release_sha256']==current['release_sha256']
+            assert operations['retired_records_deleted_at_user_request']and operations['live_records_preserved']
+            assert current['old_records_preserved']is False and current['old_records_preserved_at_activation']is True
+            assert operations['complete_payload_check']['passed']and operations['public_body_capacity']['passed']
+            assert operations['nginx_body_limit_bytes']==262144
+        else:assert current['old_records_preserved']
         assert current['UI91_presentation_revision']=='eb.questionnaire50.refined.v91.newAB.v1'
         assert sha(ROOT/current['aggregate_review_path'])==current['aggregate_review_sha256']
         review=read(ROOT/current['aggregate_review_path'])

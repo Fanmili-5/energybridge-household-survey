@@ -96,3 +96,5 @@ node benchmark/project/verify_display.js benchmark/project/examples/questionnair
 三条线都有代码、方法、来源/设定登记、阶段产物和验证入口，已经构成可解释的研究生产项目。具体50户版本的计算及上线状态须按自己的清单核验，不能由某个模块测试通过推定。
 
 仍需独立完成：正式采集中的题意理解与标签质控；冻结按家庭/共享来源分组的训练验证测试清单、模型可见信息和指标；用有效人类评价验证roleplay模型。人口代表性、实际住宅校准和所有可能设备组合的穷尽覆盖均不是当前已证实结论。见[评测边界](benchmark/EVALUATION.md)与[验收范围](benchmark/ACCEPTANCE.md)。
+
+正式采集的数据库位置、JSONL导出、请求体边界和备份见[存储与维护说明](docs/household1000/COLLECTION_STORAGE_AND_OPERATIONS.md)。后续维护已按用户要求删除退役采集记录及其备份；冻结源计划和工程失败谱系保留，历史上线时的保留策略不代表当前采集记录策略。

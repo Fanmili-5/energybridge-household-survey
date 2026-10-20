@@ -35,6 +35,8 @@ jobs:
                            '.github/workflows/ab-generation.yml', '.github/workflows/ab-collection-plan.yml', '.github/workflows/offline-checks.yml',
                            '.github/workflows/project-interfaces.yml', 'README.md', 'THIRD_PARTY.md', 'benchmark/README.md',
                            'deploy/activate_reference50_ui91.py',
+                           'deploy/test_reference50_body_capacity.py', '.github/workflows/reference-benchmark.yml',
+                           'docs/household1000/COLLECTION_STORAGE_AND_OPERATIONS.md',
                            'benchmark/verify_publication.py', 'benchmark/DATASET_CARD.md',
                            'benchmark/COLLECTION.md', 'benchmark/EVALUATION.md',
                            'benchmark/GENERATION.md', 'benchmark/REPRODUCTION.md', 'benchmark/ACCEPTANCE.md',

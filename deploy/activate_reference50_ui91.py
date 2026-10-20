@@ -38,6 +38,29 @@ def health(url,signature):
     raise RuntimeError('Collector health/signature mismatch')
 
 
+def verify_public_body_capacity(origin):
+    """Check the proxy accepts the app's bound, without an identity or answer."""
+    limit=256*1024
+    prefix=b'{"engineering_body_size_probe":"';suffix=b'"}'
+    body=prefix+b'x'*(limit-len(prefix)-len(suffix))+suffix
+    request=urllib.request.Request(origin+'/household50-current/api/answers',data=body,
+        headers={'Content-Type':'application/json','Origin':origin})
+    for _ in range(30):
+        try:
+            with urllib.request.urlopen(request,timeout=15):pass
+            raise RuntimeError('Unauthenticated size probe unexpectedly accepted')
+        except urllib.error.HTTPError as error:
+            if error.code==413:
+                error.close()
+                time.sleep(.1);continue  # Old Nginx workers may drain during reload.
+            try:message=json.loads(error.read()).get('error','')
+            finally:error.close()
+            if error.code==403 and '会话'in message:
+                return {'passed':True,'request_bytes':limit,'unauthenticated_write_rejected':True}
+            raise RuntimeError('Size probe did not reach collector session rejection')
+    raise RuntimeError('Proxy body limit is below the collector request bound')
+
+
 def activate(signature,previous,origin,port=18793,service_name='energybridge-current50-ui91-physics',previous_private_port=None):
     assert re.fullmatch('[a-f0-9]{64}',signature) and re.fullmatch('[a-f0-9]{64}',previous)
     assert 18793<=port<=18799 and re.fullmatch(r'energybridge-current50-[a-z0-9-]+',service_name)
@@ -146,6 +169,7 @@ WantedBy=timers.target
         changed=f'''# BEGIN CURRENT50 UI91PHYSICS
 location ^~ /household50-current {{
  auth_basic off;
+ client_max_body_size 256k;
  proxy_pass http://127.0.0.1:{port};
  proxy_set_header Host $host;
  proxy_set_header X-Real-IP $remote_addr;
@@ -156,11 +180,13 @@ location ^~ /household50-current {{
 # END CURRENT50 UI91PHYSICS'''
         snippet.write_text(original.decode().replace(blocks[0],changed,1));command('nginx','-t');command('systemctl','reload','nginx')
         public=health(origin+'/household50-current/api/health',signature)
+        body_capacity=verify_public_body_capacity(origin)
         for prior in old:
             prior['counts_after']=counts(Path(prior['root']))
             assert all(prior['counts_after'][k]>=v for k,v in prior['counts_before'].items()),'Old records decreased'
         command('systemctl','start',backup.name);command('systemctl','enable',unit.name,timer.name);command('systemctl','start',timer.name)
         report={'passed':True,'release_sha256':signature,'previous_release_sha256':previous,'public_health':public,
+            'public_body_capacity':body_capacity,
             'prior_ledgers':old,'new_ledger_counts_after_activation':counts(root),'old_services_stopped':False,
             'backup_active':True,'human_answers_created_by_deployment':0,'full1000_deferred':True}
         (base/'ACTIVATION.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n');return report
