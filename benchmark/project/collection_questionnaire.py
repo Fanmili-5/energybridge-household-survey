@@ -3,6 +3,7 @@ import subprocess
 from pathlib import Path
 from benchmark.ab_generation.common import read,save,seal,verify,sha,bound,digest
 from benchmark.ab_generation.sampling import command_hash
+from .reference_collection_release import proposal_question_copy
 from .questionnaire import HERE,COLLECTOR,UI,preview_assets,profile_and_lines,display_plans,changes,verify_questionnaire
 
 
@@ -12,6 +13,7 @@ def build_collection_questionnaire(collection,source,out):
     assignment=read(collection/'ASSIGNMENT.json')
     if assignment['schema']!='eb.collection.assignment.v4':raise ValueError('V4_COLLECTION_REQUIRED')
     out.mkdir(parents=True,exist_ok=False);preview_assets(out)
+    html=out/'public/index.html';html.write_text(proposal_question_copy(html.read_text()))
     js=out/'public/view.js';code=js.read_text();anchor="      const shown = axes?.length ? axes : ['heating_setpoint_C','cooling_setpoint_C','fan_operating_mode'];"
     if code.count(anchor)!=1:raise ValueError('V69_CONTROL_ADAPTER_ANCHOR_CHANGED')
     code=code.replace(anchor,"      if(kind==='ac_setpoint' && x._eb_cooling_stop_fallback) return '暂停制冷请求（实际运行未计算）';\n"+anchor)
@@ -75,7 +77,7 @@ def build_collection_questionnaire(collection,source,out):
              'source_project_manifest_sha256':sha(source/'MANIFEST.json'),'source_collection_manifest_sha256':sha(collection/'MANIFEST.json'),
              'source_v69_assets':{str(p.relative_to(HERE.parent.parent)):sha(p) for p in sorted(COLLECTOR.iterdir()) if p.is_file()},
              'adapter_sources':{str(p.relative_to(HERE.parent.parent)):sha(p) for p in [Path(__file__),HERE/'questionnaire.py',HERE/'preview-client.js',HERE/'verify_display.js']},
-             'question_text_and_scales_changed':False,'new_EP_runs':0,'production_deployed':False,'human_collection_release':False,
+             'question_text_and_scales_changed':True,'scales_changed':False,'question_hint_change':'plan_judgment_when_outcomes_pending','new_EP_runs':0,'production_deployed':False,'human_collection_release':False,
              'training_release':False,'online_questionnaire_changed':False}
     save(out/'SUMMARY.json',summary);seal(out,{'schema':summary['schema'],'ui_revision':UI,'new_EP_runs':0})
     verify_questionnaire(out);return summary

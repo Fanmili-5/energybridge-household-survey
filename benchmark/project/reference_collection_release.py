@@ -14,6 +14,20 @@ from benchmark.ab_generation.common import read,save,verify,bound,sha,digest
 from .questionnaire import HERE,COLLECTOR,UI,preview_assets,display_plans,changes,time
 
 
+def proposal_question_copy(html):
+    """Pending-outcome scores concern plan requests, never unobserved results."""
+    substitutions={
+        '室温与生活变化是否适合这户家庭':'温控请求与生活安排是否适合这户家庭',
+        '用电量变化是否适合这户家庭':'用电时段与设备安排是否适合这户家庭',
+        '四项均评价B相对A的调整是否适合这户家庭：1分很不合适，5分很合适，可填一位小数。VPP是否达标单独记录。':
+        '四项均评价B相对A的提议安排：1分很不合适，5分很合适，可填一位小数。请按给定家庭的时段、温控请求和生活约束判断，不推测尚未计算的用电量、室温或VPP达标情况。',
+    }
+    for old,new in substitutions.items():
+        if html.count(old)!=1:raise ValueError('V69_PROPOSAL_QUESTION_ANCHOR_CHANGED')
+        html=html.replace(old,new)
+    return html
+
+
 def build(collection,profiles_release,original_a,out):
     collection=Path(collection).resolve();profiles_release=Path(profiles_release).resolve();original_a=Path(original_a).resolve();out=Path(out).resolve()
     verify(collection);assignment=read(collection/'ASSIGNMENT.json');selected=assignment['selected_ids']
@@ -29,7 +43,7 @@ def build(collection,profiles_release,original_a,out):
     html=out/'public/index.html';s=html.read_text();old_notice='结果为仿真估算。用电减少可能伴随任务未完成；费用与补偿未计算。'
     if s.count(old_notice)!=1:raise ValueError('V69_OUTCOME_NOTICE_ANCHOR_CHANGED')
     s=s.replace(old_notice,'本题先评价调整提案是否适合本户。实际用电、室温、任务完成和VPP响应尚未计算，后续另行仿真；未计算不代表没有变化。')
-    html.write_text(s)
+    html.write_text(proposal_question_copy(s))
     js=out/'public/view.js';s=js.read_text();anchor="      const shown = axes?.length ? axes : ['heating_setpoint_C','cooling_setpoint_C','fan_operating_mode'];"
     if s.count(anchor)!=1:raise ValueError('V69_CONTROL_ANCHOR_CHANGED')
     s=s.replace(anchor,"      if(kind==='ac_setpoint' && x._eb_cooling_stop_fallback) return '暂停制冷请求（实际运行未计算）';\n"+anchor)
@@ -88,7 +102,7 @@ def build(collection,profiles_release,original_a,out):
     sys_path.insert(0,str(COLLECTOR))
     from answer_contract import ANSWER_INSTRUCTIONS
     instructions=copy.deepcopy(ANSWER_INSTRUCTIONS)
-    instructions['collection_condition']='本版本评价提案，实际物理后果未计算；后续仿真不会改写受访者当时看到的资料和答案。'
+    instructions['collection_condition']='本版本评价提案的操作时段、温控请求与生活安排；不要求推测未计算的用电量、室温或达标。后续仿真不会改写受访者当时看到的资料和答案。'
     save(out/'ANSWER_INSTRUCTIONS.json',instructions)
     index['ui_assets_sha256']={p.name:sha(p) for p in (out/'public').iterdir() if p.is_file()};save(out/'INDEX50.json',index)
     save(out/'SOURCE_IDENTITY.json',{'records':source_proofs,'same_50_households_and_10_original_dates':True,
@@ -105,7 +119,7 @@ def build(collection,profiles_release,original_a,out):
               'source_case_definition':'new_v4_cases_sealed_before_collection;old500_cases_not_reused_or_modified',
               'new_EP_runs':0,'full1000_deferred_by_user':True,'entry_mode':'open_no_invitation','timeline':False,
               'quality_policy':'manual_versioned_review_no_auto_labels','outcome_status':'not_computed',
-              'collection_condition':'proposal_judgment_before_physical_results','production_deployed':False}
+              'collection_condition':'proposal_judgment_before_physical_results','score_interpretation':'plan_timing_and_control_requests_not_realized_outcomes','production_deployed':False}
     manifest['files']={str(p.relative_to(out)):sha(p) for p in sorted(out.rglob('*')) if p.is_file()}
     manifest['implementation_files']={p.name:sha(p) for p in sorted(COLLECTOR.iterdir()) if p.is_file()}
     manifest['release_sha256']=digest(manifest);save(out/'FORMAL_RELEASE.json',manifest)
