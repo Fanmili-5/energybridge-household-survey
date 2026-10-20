@@ -361,16 +361,17 @@ def compile_pairs(config, output, workers=1):
 def sql_trace(path, history_days, native_step=10):
     channels = {}
     with sqlite3.connect(path) as db:
-        query = '''SELECT d.Name,d.KeyValue,d.Units,d.IsMeter,t.SimulationDays,t.Hour,t.Minute,t.Interval,r.Value
+        query = '''SELECT d.Name,d.KeyValue,d.Units,d.IsMeter,t.SimulationDays,t.Hour,t.Minute,t.Interval,r.Value,d.Type
         FROM ReportData r JOIN ReportDataDictionary d USING(ReportDataDictionaryIndex)
         JOIN Time t USING(TimeIndex) JOIN EnvironmentPeriods e USING(EnvironmentPeriodIndex)
         WHERE t.WarmupFlag=0 AND e.EnvironmentType=3 AND t.SimulationDays>=?
         ORDER BY t.TimeIndex'''
-        for name, key, unit, meter, day, hour, minute, interval, value in db.execute(query, (history_days + 1,)):
+        for name, key, unit, meter, day, hour, minute, interval, value, aggregation in db.execute(query, (history_days + 1,)):
             if interval != native_step or not math.isfinite(value):
                 raise ValueError('invalid timestep or nonfinite output')
             t = (day - history_days - 1) * 1440 + hour * 60 + minute - interval
-            channel = channels.setdefault(name + '|' + (key or ''), {'unit': unit, 'is_meter': bool(meter), 'values': []})
+            if aggregation not in ('Sum','Avg'):raise ValueError('unknown native output aggregation type')
+            channel = channels.setdefault(name + '|' + (key or ''), {'unit': unit, 'is_meter': bool(meter), 'values': [],'native_aggregation':aggregation})
             channel['values'].append([t, value])
     if native_step!=10:
         for c in channels.values():
@@ -379,7 +380,7 @@ def sql_trace(path, history_days, native_step=10):
             bins={}
             for t,value in raw:bins.setdefault(t//10*10,[]).append(value)
             if any(len(v)!=10//native_step for v in bins.values()):raise ValueError('incomplete native aggregation bin')
-            c['values']=[[t,sum(v)if c['unit']=='J'else sum(v)/len(v)]for t,v in bins.items()]
+            c['values']=[[t,sum(v)if c['native_aggregation']=='Sum'else sum(v)/len(v)]for t,v in bins.items()]
             c['native_timestep_min']=native_step;c['report_timestep_min']=10
     if not any(k.startswith('Electricity:Facility|') for k in channels) or not any(k.startswith('Zone Mean Air Temperature|') for k in channels):
         raise ValueError('required meter/temperature channels missing')

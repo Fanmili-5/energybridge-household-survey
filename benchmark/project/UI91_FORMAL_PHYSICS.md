@@ -28,6 +28,8 @@ python -B benchmark/collector/test_protocol.py --release /controlled/new-formal-
 
 如调度器中断，已绑定的未封存运行可用同一批次的`--resume`恢复；不改输入，也不对失败臂另开一次引擎尝试。最终执行凭据及已完成臂的哈希必须通过核验。
 
+旧回读器曾以单位是否为J区分累加/平均，因而把原生累计水量m³误作均值。本版按原生SQL的`ReportDataDictionary.Type`聚合Sum与Avg。`reference_physics_readback`可从旧运行派生修正的TRACE/RESULT，原运行不变、SQL逐字节相同，不新增引擎尝试；电量与室温数值不变。正式绑定采用修正后的回读版本，编译源版本与回读源版本分别保留，不能冒称历史编译使用了后来的回读代码。
+
 ## 正式资料与回答含义
 
 `reference_physical_release`派生新的v2题包，逐题验证原A/B语义哈希，保留计划、变化、背景、日期和住房设备。原提案题包保持原字节。新题包附上本题新物理结果、状态和绑定；未知仍为null。原先的v69回答协议和量表保持，视觉身份沿用UI91立体剖面及并排比较，版本明确区分。
