@@ -40,8 +40,16 @@ def recompute(out):
     runtime_matches = digest(source['runtime_files']) == source['runtime_sha256'] == identity['runtime_sha256']
     runtime_matches &= all(source['runtime_files']['benchmark/ab_generation/' + k] == v for k, v in file_hashes.items())
     repository = folder.parents[3]
-    runtime_matches &= all(sha(repository / k) == v for k, v in source['runtime_files'].items()
-                           if k.startswith('benchmark/housing_simulation/') or k.endswith('/LAUNDRY_MODEL.json'))
+    # These are receipts of a historical A build, not pins that freeze the live
+    # physics implementation forever. Verify its exact archived source when the
+    # current module has an explicitly versioned successor; never rewrite pins.
+    archived_runtime=[]
+    for k,v in source['runtime_files'].items():
+        if not(k.startswith('benchmark/housing_simulation/') or k.endswith('/LAUNDRY_MODEL.json')):continue
+        path=repository/k
+        if sha(path)!=v:
+            path=folder/'historical_runtime'/(k+'.txt');archived_runtime.append(k)
+        runtime_matches &= path.is_file() and sha(path)==v
     old = read(folder / 'DIAGNOSIS.json')
     old_folder = folder.parent / 'joint_tail'
     unchanged = (sha(old_folder / 'RESULT.json') == old['old_result_sha256']
@@ -71,6 +79,7 @@ def recompute(out):
     checks['final_sampling_integrity'] = final['passed']
     checks['final_required_strata_coverage'] = final['required_coverage_passed']
     result = {'schema': 'eb.ab_gap_static_check.v1', 'passed': all(checks.values()), 'checks': checks,
+        'historical_runtime_sources_verified_from_archive':archived_runtime,
         'physics_required_for_plan_acceptance': False, 'new_physics_runs': 0, 'new_B_executed': False,
         'formal_selection_completed': True, 'actual_response_coverage': 'deferred_unverified',
         'deduplicated_stratified_sample_coverage': 'passed' if final['required_coverage_passed'] else 'deficits_retained',

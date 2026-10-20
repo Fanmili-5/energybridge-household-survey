@@ -14,6 +14,7 @@ PRESENTATION={
     'benchmark/project/test_reference_collection_physics.py',
     'benchmark/project/verify_refined_display.js',
     'benchmark/project/UI91_VALIDATION.json',
+    'benchmark/project/FULL500_PHYSICS_VALIDATION.json',
     'benchmark/verify_publication.py',
 }
 METADATA={'benchmark/PUBLICATION_MANIFEST.json','docs/household1000/STATUS.json',
@@ -30,6 +31,7 @@ def requires_source_rebuild(paths):
         if name.startswith('.github/workflows/')and path.suffix in ('.yml','.yaml'):continue
         if name.startswith('benchmark/ab_generation/validation/')and path.suffix=='.json':continue
         if name.startswith('benchmark/releases/reference50-v4-proposal/')and path.suffix=='.json':continue
+        if name.startswith('benchmark/releases/reference50-v4-ui91-physics/')and path.suffix=='.json':continue
         return True
     return False
 

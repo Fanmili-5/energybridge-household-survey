@@ -235,11 +235,12 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
     for c in plan['controls']:controls[(c['asset_id'],c['kind'])].append(c)
     def series(fn):return {day:[fn((day-date).days*1440+t,day,t)for t in range(0,1440,10)]for day in days}
     rows.append(schedule('report_target_and_recovery',{day:[int(day>=date)]*144 for day in days}))
-    zones=collections.defaultdict(list);asset_meters={};equipment_names={}
+    zones=collections.defaultdict(list);asset_meters={};equipment_names={};hvac_lookup={};multi_ac=[]
     for package in pack['HVAC']:
         zones[package['room_id']].append(package);rows.extend(copy.deepcopy(package['rows']));aid=package['asset_id']
         cs=controls[(aid,'ac_setpoint')]
         lookup={t:c for c in cs for t in range(max(lo,c['start_min']),min(hi,c['end_min']),10)}
+        hvac_lookup[aid]=lookup
         for key,name in package['schedule_names'].items():
             def value(t,day,local,key=key):
                 c=lookup.get(t)
@@ -249,13 +250,25 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
             rows.append(schedule(name,series(value),HP['off_heating_C'] if key=='heat_sp'else HP['off_cooling_C'] if key=='cool_sp'else 0))
         equipment_names[aid]=package['equipment_name'].upper()
     for room,ps in zones.items():
-        if len(ps)>1:raise ValueError('MULTIPLE_INDEPENDENT_AC_IN_ONE_ZONE_UNSUPPORTED')
         prefix='zone_'+digest(room)[:10]
+        heat_schedule=ps[0]['schedule_names']['heat_sp'];cool_schedule=ps[0]['schedule_names']['cool_sp']
+        if len(ps)>1:
+            from .multi_ac import add_controls
+            def envelope(t,day,local):
+                active=[hvac_lookup[p['asset_id']][t] for p in ps if t in hvac_lookup[p['asset_id']]]
+                heat=max((c['heating_setpoint_C'] for c in active),default=HP['off_heating_C'])
+                cool=min((c['cooling_setpoint_C'] for c in active),default=HP['off_cooling_C'])
+                if heat>cool:raise ValueError('CONFLICTING_COLOCATED_HEATING_COOLING_REQUESTS')
+                return heat,cool
+            heat_schedule=prefix+'_heat_envelope';cool_schedule=prefix+'_cool_envelope'
+            rows.extend([schedule(heat_schedule,series(lambda t,d,l:envelope(t,d,l)[0]),HP['off_heating_C']),
+                         schedule(cool_schedule,series(lambda t,d,l:envelope(t,d,l)[1]),HP['off_cooling_C'])])
+            multi_ac.append(add_controls(rows,room,ps,prefix,fields(),put))
         rows +=[['NodeList',prefix+'_supply']+[p['zone_supply_node']for p in ps],['NodeList',prefix+'_return']+[p['zone_return_node']for p in ps]]
         eq=['ZoneHVAC:EquipmentList',prefix+'_equipment','SequentialLoad']
         for i,p in enumerate(ps,1):eq+=['ZoneHVAC:PackagedTerminalHeatPump',p['equipment_name'],i,i,'','']
         rows +=[eq,['ZoneHVAC:EquipmentConnections',room,prefix+'_equipment',prefix+'_supply',prefix+'_return',prefix+'_air',''],
-                 ['ThermostatSetpoint:DualSetpoint',prefix+'_setpoint',ps[0]['schedule_names']['heat_sp'],ps[0]['schedule_names']['cool_sp']],
+                 ['ThermostatSetpoint:DualSetpoint',prefix+'_setpoint',heat_schedule,cool_schedule],
                  ['ZoneControl:Thermostat',prefix+'_thermostat',room,'dual','ThermostatSetpoint:DualSetpoint',prefix+'_setpoint']]
     # Actual executed handling changes room headcounts; blocked handling does not.
     pp={};aa={};heat={}
@@ -395,6 +408,7 @@ def compile_model(pack,pair,side,folder,history_days=112,tail_days=8):
           'nonleap_weather_year_shift':year_shift,'original_human_calendar_dates_preserved':True,
           'derived_interzone_layer_order_repairs':wall_repairs,
           'reference_assumptions_sha256':fingerprint(),'water_mains':stat,'equipment_meter_mapping':asset_meters,'HVAC_equipment_mapping':equipment_names,
+          'multi_AC_execution':multi_ac,
           'HVAC_component_mapping':{p['asset_id']:{'cooling':[r[1].upper()for r in p['rows']if r[0].startswith('Coil:Cooling:')],
                                                   'heating':[r[1].upper()for r in p['rows']if r[0].startswith('Coil:Heating:')]}
                                     for p in pack['HVAC']},

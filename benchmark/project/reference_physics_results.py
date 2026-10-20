@@ -12,6 +12,38 @@ from benchmark.ab_generation.outcomes import consequences
 from benchmark.ab_generation.model import plan_hash
 
 
+def integrity_failures(check):
+    """Engineering readback invariants; service/comfort failures remain outcomes."""
+    critical={'same_channel_set','pre_notice_trajectory_equal','shared_shell_weather','readback_complete'}
+    endings=('_complete_finite_timeline','_required_zone_channels','_required_tank_nodes','_meter_closure','_program_energy','_EV_meter')
+    return [k for k,v in check['checks'].items() if not v and (k in critical or k.endswith(endings))]
+
+
+def mixed_water_delivery(meta,trace,lo=480,hi=1920):
+    """Native aggregate mixed outlet; no invented individual allocation/pass label."""
+    if not meta.get('tank_name') or meta.get('hot_water_model')!='native_mixed_water_plant':return None
+    volumes={k.split('|',1)[1]:c for k,c in trace.items() if k.startswith('Water Use Equipment Total Volume|')}
+    temperatures={k.split('|',1)[1]:c for k,c in trace.items() if k.startswith('Water Use Equipment Mixed Water Temperature|')}
+    if not volumes or set(volumes)!=set(temperatures):return {'status':'unavailable','reason':'native outlet channels missing'}
+    if any(c['unit']!='m3'or c.get('native_aggregation')!='Sum' for c in volumes.values()) or any(c['unit']!='C' for c in temperatures.values()):return {'status':'unavailable','reason':'native volume aggregation/units not verified'}
+    needs=[n for n in meta['water_needs'] if n['release_min']<hi and n['deadline_min']>lo]
+    requested=sum(n['quantity']*max(0,min(hi,n['deadline_min'])-max(lo,n['release_min']))/(n['deadline_min']-n['release_min']) for n in needs)
+    targets=sorted({n.get('target_C',n.get('minimum_C')) for n in needs if n.get('target_C',n.get('minimum_C'))is not None})
+    total=weighted=0.;active=[]
+    for key,c in volumes.items():
+        v=dict(c['values']);temp=dict(temperatures[key]['values'])
+        if not all(t in v and t in temp for t in range(lo,hi,10)):return {'status':'unavailable','reason':'incomplete outlet timeline'}
+        for t in range(lo,hi,10):
+            if v[t]<0:return {'status':'unavailable','reason':'negative native outlet volume'}
+            total+=v[t];weighted+=v[t]*temp[t]
+            if v[t]>0:active.append(temp[t])
+    return {'status':'computed','interval_min':[lo,hi],'requested_mixed_liters':requested,'delivered_mixed_liters':total*1000,
+        'declared_target_C':targets,'volume_weighted_reported_temperature_C':weighted/total if total>0 else None,
+        'minimum_active_10min_mean_C':min(active)if active else None,
+        'scope':'whole_modeled_dwelling_mixed_outlet;10min_report;no_individual_allocation_or_personal_comfort_inference',
+        'service_pass_inferred':False}
+
+
 def bind(collection, exported, compiled, runs, audit, out):
     collection,exported,compiled,runs,audit,out=map(lambda p:Path(p).resolve(),(collection,exported,compiled,runs,audit,out))
     verify(collection);em=verify(exported);cm=verify(compiled);rm=verify(runs);am=verify(audit)
@@ -49,19 +81,27 @@ def bind(collection, exported, compiled, runs, audit, out):
         check=audits.get(ident)
         if check is None:
             row.update(status='audit_missing',reason='No complete paired audit;outcomes remain null');rows.append(row);continue
+        if integrity_failures(check):
+            row.update(status='audit_failed',reason='Paired engineering integrity check failed;diagnostic results preserved without presenting them as reliable outcomes',
+                failed_checks=integrity_failures(check),audit_status=check['status'],engine_runs=2,IDFs_compiled=True)
+            rows.append(row);continue
         context=read(collection/'contexts'/(frozen['row']['case_id']+'.json.gz'))
         home=read(exported/'resources'/item['household']['path'])
         rate=home['world']['tariff_reference']['flat_CNY_per_kWh']
         if context['tariff_provenance']['origin']=='retained_world_reference_tariff;not_live_or_observed' and all(t['price_per_kWh']==rate for t in context['tariff']):
             context={**context,'tariff_provenance':{**context['tariff_provenance'],'currency':'CNY','unit':'CNY/kWh'}}
-        row.update(status='computed',actual_outcomes=consequences(pair,metas,traces,check,context),
+        actual=consequences(pair,metas,traces,check,context)
+        actual['native_mixed_water_delivery']={s:mixed_water_delivery(metas[s],traces[s]) for s in ('A','B')}
+        row.update(status='computed',actual_outcomes=actual,
             audit_status=check['status'],failed_checks=[k for k,v in check['checks'].items() if not v],
+            engine_warnings={s:results[s].get('warnings',[]) for s in ('A','B')},
+            model_scope={s:{k:metas[s].get(k) for k in ('history_days','simulation_timestep_min','reference_air_changes_per_hour','multi_AC_execution','air_exchange_scope')} for s in ('A','B')},
             engine_runs=2,IDFs_compiled=True,
             receipts={s:{k:results[s][k] for k in ('engine_sha256','idf_sha256','SQL_sha256','trace_sha256')} for s in ('A','B')})
         rows.append(row)
     out.mkdir(parents=True,exist_ok=False)
     summary={'cases':len(rows),'statuses':dict(Counter(r['status'] for r in rows)),
-        'engine_arms_in_this_bound_run':len(rm['records']),'collection_answers_or_payloads_changed':False,
+        'engine_arms_in_this_bound_run':sum('side'in r for r in rm['records']),'collection_answers_or_payloads_changed':False,
         'old_B_results_used':False,'reselection_after_results':False,'full1000_deferred':True}
     save(out/'RESULT_INDEX500.json',{'schema':'eb.reference50.bound_physics_results.v1',**summary,'records':rows})
     seal(out,{'schema':'eb.reference50.bound_physics_results.v1','source_selection_sha256':sha(collection/'ASSIGNMENT.json'),

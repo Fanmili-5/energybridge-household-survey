@@ -14,6 +14,7 @@ from pathlib import Path
 import re
 import sqlite3
 import subprocess
+from concurrent.futures import ThreadPoolExecutor
 import sys
 
 HERE = Path(__file__).resolve().parent
@@ -285,7 +286,8 @@ def make_demo(schema, weather, output):
                       'HVAC_or_appliance_performance_validated': False})
 
 
-def compile_pairs(config, output):
+def compile_pairs(config, output, workers=1):
+    if type(workers) is not int or not 1<=workers<=16:raise ValueError('workers must be1..16')
     job = read(config)
     root = (config.parent / job['resource_root']).resolve()
     settings = {'history_days':112,'tail_days':8,'reference_ach':.35,'portal_flow_scale':1.,'simulation_timestep_min':10,'airflow_model':'reference_mixing','people_scale':1.,'lighting_scale':1.,'misc_scale':1.}
@@ -329,8 +331,8 @@ def compile_pairs(config, output):
         weather = bound(root, {'path': pack['weather'], 'sha256': pack['weather_sha256']})
         inputs.append((item, pack_path, pair_path, weather))
     out = fresh(output)
-    records = []
-    for item, pp, cp, weather in inputs:
+    def compile_one(entry):
+        item,pp,cp,weather=entry
         folder = out / item['id']
         folder.mkdir()
         worker = {'resource_root': str(root), 'household_path': str(pp), 'pair_path': str(cp),
@@ -342,7 +344,9 @@ def compile_pairs(config, output):
         rec = {'id': item['id'], 'status': 'compiled' if run.returncode == 0 else 'failed',
                'weather_path': str(weather), 'weather_sha256': sha(weather),
                'household_sha256': sha(pp), 'pair_sha256': sha(cp)}
-        records.append(rec)
+        return rec
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        records=list(pool.map(compile_one,inputs))
     for rel, expected in resources.items():
         if sha(root / rel) != expected:
             raise ValueError('resource changed during compilation')
@@ -357,16 +361,17 @@ def compile_pairs(config, output):
 def sql_trace(path, history_days, native_step=10):
     channels = {}
     with sqlite3.connect(path) as db:
-        query = '''SELECT d.Name,d.KeyValue,d.Units,d.IsMeter,t.SimulationDays,t.Hour,t.Minute,t.Interval,r.Value
+        query = '''SELECT d.Name,d.KeyValue,d.Units,d.IsMeter,t.SimulationDays,t.Hour,t.Minute,t.Interval,r.Value,d.Type
         FROM ReportData r JOIN ReportDataDictionary d USING(ReportDataDictionaryIndex)
         JOIN Time t USING(TimeIndex) JOIN EnvironmentPeriods e USING(EnvironmentPeriodIndex)
         WHERE t.WarmupFlag=0 AND e.EnvironmentType=3 AND t.SimulationDays>=?
         ORDER BY t.TimeIndex'''
-        for name, key, unit, meter, day, hour, minute, interval, value in db.execute(query, (history_days + 1,)):
+        for name, key, unit, meter, day, hour, minute, interval, value, aggregation in db.execute(query, (history_days + 1,)):
             if interval != native_step or not math.isfinite(value):
                 raise ValueError('invalid timestep or nonfinite output')
             t = (day - history_days - 1) * 1440 + hour * 60 + minute - interval
-            channel = channels.setdefault(name + '|' + (key or ''), {'unit': unit, 'is_meter': bool(meter), 'values': []})
+            if aggregation not in ('Sum','Avg'):raise ValueError('unknown native output aggregation type')
+            channel = channels.setdefault(name + '|' + (key or ''), {'unit': unit, 'is_meter': bool(meter), 'values': [],'native_aggregation':aggregation})
             channel['values'].append([t, value])
     if native_step!=10:
         for c in channels.values():
@@ -375,7 +380,7 @@ def sql_trace(path, history_days, native_step=10):
             bins={}
             for t,value in raw:bins.setdefault(t//10*10,[]).append(value)
             if any(len(v)!=10//native_step for v in bins.values()):raise ValueError('incomplete native aggregation bin')
-            c['values']=[[t,sum(v)if c['unit']=='J'else sum(v)/len(v)]for t,v in bins.items()]
+            c['values']=[[t,sum(v)if c['native_aggregation']=='Sum'else sum(v)/len(v)]for t,v in bins.items()]
             c['native_timestep_min']=native_step;c['report_timestep_min']=10
     if not any(k.startswith('Electricity:Facility|') for k in channels) or not any(k.startswith('Zone Mean Air Temperature|') for k in channels):
         raise ValueError('required meter/temperature channels missing')
@@ -405,7 +410,8 @@ def native_site_power(path, history_days, hi, native_step):
             'scope': 'native_solver_interval_mean_real_power;not_inrush_current_or_breaker_trip'}
 
 
-def run_pairs(compiled, output, engine, engine_sha, timeout):
+def run_pairs(compiled, output, engine, engine_sha, timeout, workers=1):
+    if type(workers) is not int or not 1<=workers<=16:raise ValueError('workers must be1..16')
     compiled = Path(compiled).resolve()
     m = verify(compiled)
     engine = Path(engine).resolve()
@@ -415,45 +421,57 @@ def run_pairs(compiled, output, engine, engine_sha, timeout):
     if '24.1.0-9d7789a3ac' not in version:
         raise ValueError('this kernel requires EnergyPlus24.1.0-9d7789a3ac')
     out = fresh(output)
-    records = []
-    for item in m['records']:
-        if item['status'] != 'compiled':
-            records.append({'id': item['id'], 'status': 'compile_failed'}); continue
+    jobs=[(item,side) for item in m['records'] if item['status']=='compiled' for side in ('A','B')]
+    def run_one(job):
+        item,side=job
         if sha(item['weather_path']) != item['weather_sha256']:
             raise ValueError('weather changed after compilation')
-        for side in ('A', 'B'):
-            folder = out / item['id'] / side
-            folder.mkdir(parents=True)
-            source = compiled / item['id'] / side
-            meta = read(source / 'INPUT.json.gz')
-            if sha(source / 'model.idf') != meta['idf_sha256']:
-                raise ValueError('compiled model/input receipt mismatch')
-            command = [str(engine), '-w', item['weather_path'], '-d', str(folder / 'out'), str(source / 'model.idf')]
-            try:
-                run = subprocess.run(command, capture_output=True, text=True, timeout=timeout)
-                (folder / 'stdout.txt').write_text(run.stdout + run.stderr)
-                errors = (folder / 'out/eplusout.err').read_text()
-                success = run.returncode == 0 and 'EnergyPlus Completed Successfully' in errors
-                result = {'id': item['id'], 'side': side, 'status': 'completed' if success else 'engine_failed',
-                          'engine_sha256': engine_sha, 'idf_sha256': sha(source / 'model.idf'),
-                          'evaluated_interval_min': [0, meta['run_interval_min'][1]],
-                          'energy_scope': 'facility electricity over evaluated interval;not automatically daily or equal-service savings',
-                          'warnings': [l for l in errors.splitlines() if '** Warning **' in l],
-                          'human_acceptance': None, 'engine_completion_is_not_service_success': True}
-                if success:
-                    channels = sql_trace(folder / 'out/eplusout.sql', meta['history_days'],meta.get('simulation_timestep_min',10))
-                    expected = list(range(0, meta['run_interval_min'][1], 10))
-                    if any([t for t, v in c['values']] != expected for c in channels.values()):
-                        raise ValueError('incomplete or duplicated output timeline')
-                    save(folder / 'TRACE.json.gz', channels)
-                    result['SQL_sha256'] = sha(folder / 'out/eplusout.sql')
-                    result['trace_sha256'] = sha(folder / 'TRACE.json.gz')
-                    result['facility_energy_kWh'] = sum(v for t, v in channels['Electricity:Facility|']['values']) / 3600000
-                save(folder / 'RESULT.json', result)
-                records.append(result)
-            except (OSError, ValueError, subprocess.TimeoutExpired) as e:
-                result = {'id': item['id'], 'side': side, 'status': 'readback_or_engine_failed', 'reason': str(e)}
-                save(folder / 'RESULT.json', result); records.append(result)
+        folder = out / item['id'] / side
+        folder.mkdir(parents=True)
+        source = compiled / item['id'] / side
+        meta = read(source / 'INPUT.json.gz')
+        if sha(source / 'model.idf') != meta['idf_sha256']:
+            raise ValueError('compiled model/input receipt mismatch')
+        command = [str(engine), '-w', item['weather_path'], '-d', str(folder / 'out'), str(source / 'model.idf')]
+        try:
+            run = subprocess.run(command, capture_output=True, text=True, timeout=timeout)
+            (folder / 'stdout.txt').write_text(run.stdout + run.stderr)
+            errors = (folder / 'out/eplusout.err').read_text()
+            success = run.returncode == 0 and 'EnergyPlus Completed Successfully' in errors
+            result = {'id': item['id'], 'side': side, 'status': 'completed' if success else 'engine_failed',
+                      'engine_sha256': engine_sha, 'idf_sha256': sha(source / 'model.idf'),
+                      'evaluated_interval_min': [0, meta['run_interval_min'][1]],
+                      'energy_scope': 'facility electricity over evaluated interval;not automatically daily or equal-service savings',
+                      'warnings': [l for l in errors.splitlines() if '** Warning **' in l],
+                      'human_acceptance': None, 'engine_completion_is_not_service_success': True}
+            if success:
+                channels = sql_trace(folder / 'out/eplusout.sql', meta['history_days'],meta.get('simulation_timestep_min',10))
+                expected = list(range(0, meta['run_interval_min'][1], 10))
+                if any([t for t, v in c['values']] != expected for c in channels.values()):
+                    raise ValueError('incomplete or duplicated output timeline')
+                save(folder / 'TRACE.json.gz', channels)
+                result['SQL_sha256'] = sha(folder / 'out/eplusout.sql')
+                result['trace_sha256'] = sha(folder / 'TRACE.json.gz')
+                result['facility_energy_kWh'] = sum(v for t, v in channels['Electricity:Facility|']['values']) / 3600000
+            save(folder / 'RESULT.json', result)
+            # Retain the redundant native text exports losslessly; SQL/TRACE and
+            # error logs remain directly readable and content-bound.
+            for name in ('eplusout.eso','eplusout.mtr'):
+                text_export=folder/'out'/name
+                if text_export.exists():
+                    text_export.with_suffix(text_export.suffix+'.gz').write_bytes(portable_gzip(text_export.read_bytes()))
+                    text_export.unlink()
+            return result
+        except (OSError, ValueError, subprocess.TimeoutExpired) as e:
+            result = {'id': item['id'], 'side': side, 'status': 'readback_or_engine_failed', 'reason': str(e)}
+            save(folder / 'RESULT.json', result); return result
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        executed=list(pool.map(run_one,jobs))
+    by={(r['id'],r['side']):r for r in executed}
+    records=[]
+    for item in m['records']:
+        if item['status']!='compiled':records.append({'id':item['id'],'status':'compile_failed'})
+        else:records.extend(by[(item['id'],side)] for side in ('A','B'))
     verify(compiled)
     if sha(engine) != engine_sha:
         raise ValueError('engine changed during execution')

@@ -22,8 +22,14 @@ class Release:
         self.root=Path(path).resolve();m=json.loads((self.root/'FORMAL_RELEASE.json').read_text())
         self.signature=digest({k:v for k,v in m.items()if k!='release_sha256'})
         assert self.signature==m['release_sha256']
-        assert m['schema']=='eb.reference_benchmark.release.v1'
-        assert m['source_case_bytes_modified'] is False and m['new_EP_runs']==0
+        assert m['schema'] in ('eb.reference_benchmark.release.v1','eb.reference_benchmark.release.v2')
+        if m['schema'].endswith('.v1'):
+            assert m['source_case_bytes_modified'] is False and m['new_EP_runs']==0
+        else:
+            assert m['frozen_A_B_commands_modified'] is False and m['all_source_cases_retained'] is True
+            assert m['collection_condition']=='role_judgment_with_version_bound_physics'
+            assert 0<m['new_EP_runs']<=2*m['cases']
+            assert sum(m['physical_statuses'].values())==m['cases']
         assert m['ui_revision']==UI_VERSION and m['response_contract']==CONTRACT_VERSION
         assert 60<=m['assignment_lease_seconds']<=86400
         self.manifest=m
@@ -58,7 +64,16 @@ class Release:
             if case_id not in self.cache:
                 raw=self.file('public/'+row['path'])
                 if hashlib.sha256(raw).hexdigest()!=row['sha256']:raise RuntimeError('案例签名不一致。')
-                self.cache[case_id]=json.loads(raw)
+                value=json.loads(raw)
+                if self.manifest['schema'].endswith('.v2'):
+                    c=value;review=c['physical_review']
+                    assert c['outcome_status']==review['status']
+                    assert review['source_frozen_pair_sha256']==c['bindings']['source_pair_sha256']
+                    assert c['bindings']['label_condition']==self.manifest['collection_condition']
+                    if review['status']=='computed':
+                        assert c['impact']==review['actual_outcomes'] and c['VPP_results']==review['actual_outcomes']['events']
+                    else:assert c['impact'] is None and c['VPP_results'] is None
+                self.cache[case_id]=value
                 while len(self.cache)>4:self.cache.popitem(last=False)
             else:self.cache.move_to_end(case_id)
             return row,self.cache[case_id]

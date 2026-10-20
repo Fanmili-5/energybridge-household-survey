@@ -34,7 +34,9 @@ def check(controlled=None):
     source=read(ROOT/'benchmark/generation/SOURCE_CATALOG.json')
     for item in source['files']:
         path=ROOT/item['path'];assert path.resolve().is_relative_to(ROOT)and sha(path)==item['sha256'],item['path']
-    for name,expected in manifest['collector_files'].items():assert sha(ROOT/'benchmark/collector'/name)==expected,name
+    for name,expected in manifest['collector_files'].items():
+        archived=folder/'runtime'/name
+        assert sha(archived if archived.exists() else ROOT/'benchmark/collector'/name)==expected,name
     status=read(ROOT/'docs/household1000/STATUS.json');online=read(ROOT/'docs/household1000/CURRENT_QUESTIONNAIRE50.json')
     dataset=online['public_dataset_id']
     assert status['active_stage']==dataset and not status['current_full1000_acceptance']
@@ -50,6 +52,16 @@ def check(controlled=None):
         assert current['new_engine_runs']==0 and current['old_B_results_reused']is False
         assert sha(ROOT/current['aggregate_review_path'])==current['aggregate_review_sha256']
         assert online['physical_stage']=='not_run_for_new_B'and online['impact_stage']=='not_computed'
+    elif dataset=='reference50-v4-ui91-physics':
+        current=read(ROOT/'benchmark/releases/reference50-v4-ui91-physics/MANIFEST.json')
+        assert online['release_sha256']==current['release_sha256']
+        assert current['cases']==500 and current['households']==50 and current['new_engine_runs']==1000
+        assert sum(current['physical_statuses'].values())==500
+        assert current['label_condition']=='role_judgment_with_version_bound_physics'
+        assert current['old_B_results_reused'] is False and current['original_A_B_commands_modified'] is False
+        assert current['presentation_revision']=='eb.questionnaire50.refined.v91.newAB.v1'
+        assert sha(ROOT/current['aggregate_review_path'])==current['aggregate_review_sha256']
+        assert online['physical_stage']=='all500_frozen_new_AB_attempted'
     else:raise AssertionError('Unknown current collection dataset: '+str(dataset))
     publication=read(ROOT/'benchmark/PUBLICATION_MANIFEST.json')
     for name,expected in publication['files'].items():assert sha(ROOT/name)==expected,name
@@ -68,15 +80,29 @@ def check(controlled=None):
             assert len(index['cases'])==500 and len(index['households'])==50
             assert {(x['household_id'],x['date'])for x in index['cases']}=={(x['household_id'],x['date'])for x in cases}
             profiles={x['household_id']:x['profile_sha256']for x in cases}
-            assert index['profiles_sha256']==profiles
+            if dataset=='reference50-v4-proposal':assert index['profiles_sha256']==profiles
+            else:
+                for hid,expected in profiles.items():
+                    p=read(controlled/'public/households'/(hid+'.json'));assert 'display_housing'in p
+                    p.pop('display_housing')
+                    raw=(json.dumps(p,ensure_ascii=False,sort_keys=True,separators=(',',':'),allow_nan=False)+'\n').encode()
+                    assert hashlib.sha256(raw).hexdigest()==expected
             for row in index['cases']:
                 packet=controlled/'public'/row['path'];assert sha(packet)==row['sha256']
                 value=read(packet)
-                assert value['response']is None and value['outcome_status']=='not_computed'
-                assert all(value[k]is None for k in ['impact','VPP_results'])
-                assert value['bindings']['label_condition']=='proposal_judgment_before_physical_results'
+                assert value['response']is None
+                if dataset=='reference50-v4-proposal':
+                    assert value['outcome_status']=='not_computed'and all(value[k]is None for k in ['impact','VPP_results'])
+                    assert value['bindings']['label_condition']=='proposal_judgment_before_physical_results'
+                else:
+                    assert value['outcome_status']==value['physical_review']['status']
+                    assert value['bindings']['label_condition']=='role_judgment_with_version_bound_physics'
+                    assert value['bindings']['source_pair_sha256']==value['physical_review']['source_frozen_pair_sha256']
+                    assert value['bindings']['source_profile_sha256']==profiles[row['household_id']]
+                    if value['outcome_status']=='computed':assert value['impact']==value['physical_review']['actual_outcomes']and value['VPP_results']==value['impact']['events']
+                    else:assert value['impact']is None and value['VPP_results']is None
                 assert all(e['start_min']==1080 and e['end_min']==1140 for e in value['VPP_requests'])
-            for hid,expected in profiles.items():assert sha(controlled/'public/households'/(hid+'.json'))==expected
+            for hid,expected in index['profiles_sha256'].items():assert sha(controlled/'public/households'/(hid+'.json'))==expected
     return {'passed':True,'public_source_files_verified':len(source['files']),'public_payload_files_verified':len(publication['files']),
             'master_input_cases':10000,'same_source_reference_cases':500,'controlled_cases_verified':500 if controlled else 0,
             'archived_master_relationship':'reference50-v1_A46_B57;not_a_claim_that_new_v4_B_is_in_old_master',

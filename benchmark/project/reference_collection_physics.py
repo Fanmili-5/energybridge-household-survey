@@ -60,8 +60,7 @@ def export(collection, stage, original_a, out):
             if sha(weather)!=pack['weather_sha256']:raise ValueError('WEATHER_CHANGED')
             if not destination.exists():shutil.copyfile(weather,destination)
             fixed[pack['weather']]=pack['weather_sha256']
-            zones=[d['room_id'] for d in pack['world']['parameter_pack']['devices'] if 'ac' in d['types']]
-            unsupported='MULTIPLE_INDEPENDENT_AC_IN_ONE_ZONE_UNSUPPORTED' if len(zones)!=len(set(zones)) else None
+            unsupported=None # Co-located units retain independent coil thermostat gates.
             cache[hid]=(pack,annual,home_path,unsupported)
         pack,annual,home_path,unsupported=cache[hid]
         raw_case=next(r for r in originals[hid]['cases'] if r['date']==date);raw_path=bound(original_a,raw_case['path'])
