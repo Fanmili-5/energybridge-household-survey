@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 from benchmark.ab_generation.common import read,save,seal,verify,sha,bound,digest
 from benchmark.ab_generation.sampling import command_hash
-from .reference_collection_release import proposal_question_copy
+from .reference_collection_release import proposal_question_copy,typed_control_copy
 from .questionnaire import HERE,COLLECTOR,UI,preview_assets,profile_and_lines,display_plans,changes,verify_questionnaire
 
 
@@ -14,10 +14,7 @@ def build_collection_questionnaire(collection,source,out):
     if assignment['schema']!='eb.collection.assignment.v4':raise ValueError('V4_COLLECTION_REQUIRED')
     out.mkdir(parents=True,exist_ok=False);preview_assets(out)
     html=out/'public/index.html';html.write_text(proposal_question_copy(html.read_text()))
-    js=out/'public/view.js';code=js.read_text();anchor="      const shown = axes?.length ? axes : ['heating_setpoint_C','cooling_setpoint_C','fan_operating_mode'];"
-    if code.count(anchor)!=1:raise ValueError('V69_CONTROL_ADAPTER_ANCHOR_CHANGED')
-    code=code.replace(anchor,"      if(kind==='ac_setpoint' && x._eb_cooling_stop_fallback) return '暂停制冷请求（实际运行未计算）';\n"+anchor)
-    js.write_text(code)
+    js=out/'public/view.js';js.write_text(typed_control_copy(js.read_text()))
     family_records={r['household_id']:r for r in read(source/'families/SUMMARY.json')['records']}
     index={'schema':'eb.project.v69_index.v1','ui_revision':UI,'adapter_revision':'eb.collection.v69_adapter.v1',
            'households':[],'cases':[],'profiles_sha256':{},'mode':'read_only_material_preview',

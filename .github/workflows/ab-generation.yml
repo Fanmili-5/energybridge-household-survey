@@ -33,19 +33,29 @@ jobs:
         python-version: ['3.9', '3.12']
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: source_world
+        name: Check whether source-world inputs changed
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: python3 -B benchmark/project/source_scope.py
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - run: python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity benchmark.ab_generation.test_sensitivity benchmark.ab_generation.test_joint_load_supply benchmark.ab_generation.test_joint_tail benchmark.ab_generation.test_gap_review benchmark.ab_generation.test_static_sampling benchmark.ab_generation.test_plan_only -v
       - run: python -B -m benchmark.ab_generation.verify_package
       - name: Run all predeclared parameter generation cases
-        if: matrix.python-version == '3.12'
+        if: matrix.python-version == '3.12' && steps.source_world.outputs.rebuild == 'true'
         run: |
           python -B -m benchmark.ab_generation.sensitivity screen --out "${{ runner.temp }}/ab-sensitivity-screen"
           python -c 'import json, os; from pathlib import Path; x=json.loads((Path(os.environ["RUNNER_TEMP"])/"ab-sensitivity-screen/SCREEN.json").read_text()); assert x["invariants_passed"] and x["generation_cases"] == 165'
       - name: Recheck frozen per-target coverage without selecting new B
         run: python -B -m benchmark.ab_generation.validation.self_check.recompute --out "${{ runner.temp }}/ab-self-check"
       - name: Reproduce without the historical cohort or other modules
+        if: steps.source_world.outputs.rebuild == 'true'
         shell: bash
         run: |
           mkdir -p "$RUNNER_TEMP/ab-independent/benchmark"

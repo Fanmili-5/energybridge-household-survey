@@ -33,7 +33,11 @@ jobs:
               ancillary = {'benchmark/PUBLICATION_MANIFEST.json',
                            'benchmark/family_generation/PACKAGE_MANIFEST.json',
                            '.github/workflows/ab-generation.yml', '.github/workflows/ab-collection-plan.yml', '.github/workflows/offline-checks.yml',
-                           '.github/workflows/project-interfaces.yml', 'README.md', 'benchmark/README.md'}
+                           '.github/workflows/project-interfaces.yml', 'README.md', 'benchmark/README.md',
+                           'benchmark/verify_publication.py', 'benchmark/DATASET_CARD.md',
+                           'benchmark/COLLECTION.md', 'benchmark/EVALUATION.md',
+                           'benchmark/GENERATION.md', 'benchmark/REPRODUCTION.md', 'benchmark/ACCEPTANCE.md',
+                           'docs/household1000/STATUS.json', 'docs/household1000/CURRENT_QUESTIONNAIRE50.json'}
               static_roots = ('benchmark/ab_generation/', 'benchmark/project/',
                               'benchmark/releases/reference50-v4-proposal/')
               ab_only = (any(p.startswith(static_roots) for p in paths)
