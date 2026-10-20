@@ -288,4 +288,4 @@ python -B -m benchmark.housing_simulation audit \
 
 `study --energyplus-dir PATH --out NEW_DIRECTORY [--workers 1..3] [--weather EPW --weather-metadata JSON]`从公开外壳和世界输入构造六案例并运行注册矩阵。输出`REGISTERED_PLAN.json`、每配置的编译/SQL/审计、`REPORT.json`及总清单。`REPORT.passed`必须同时满足全部物理/服务门槛、完整敏感性计算及数值收敛；结构模型差异和效应符号变化保留为结果。
 
-第二条线接口修订：程序任务可携带不可变`power_kw`、`cycle_energy_kWh`及负载模型来源，EP按批次等效功率编译完整周期；只移时不能改能量。供电采用原生求解区间实际有功功率审查，非浪涌或断路器认证。`schedule_resolved`的装配状态不代替A物理准入；B物理服务失败保留。完整依据及预算见[联合、批次和供电方法](../ab_generation/docs/history/JOINT_LOAD_SUPPLY.md)。
+第二条线接口修订：程序任务可携带不可变`power_kw`、`cycle_energy_kWh`及负载模型来源，EP按批次等效功率编译完整周期；只移时不能改能量。供电采用原生求解区间实际有功功率审查，非浪涌或断路器认证。`schedule_resolved`的装配状态不代替A物理准入；B物理服务失败保留。完整依据及预算见[联合、批次和供电方法](../ab_generation/JOINT_LOAD_SUPPLY.md)。
