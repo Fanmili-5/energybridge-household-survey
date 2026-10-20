@@ -7,8 +7,8 @@
 实际用电、室温、任务完成和VPP响应均为未计算，旧B结果不复用。现在采到的答案属于**看到提案、尚未看到物理后果时的角色判断**。以后可对同一冻结A/B完成编译和配对仿真，但不能把后算结果写成受访者当时已知的信息。
 
 - [公开清单](MANIFEST.json)
-- [规则、算法与证据](../../ab_generation/COLLECTION_METHOD.md)
-- [小样本及正式500题验收](../../ab_generation/COLLECTION_VALIDATION.md)
+- [规则、算法与证据](../../ab_generation/docs/collection/COLLECTION_METHOD.md)
+- [小样本及正式500题验收](../../ab_generation/docs/collection/COLLECTION_VALIDATION.md)
 - [正式500题聚合审查](../../ab_generation/validation/collection_v4/REFERENCE50_RELEASE_REVIEW.json)
 - [原50户导入、问卷封存命令](../../project/README.md)
 

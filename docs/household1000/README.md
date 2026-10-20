@@ -3,9 +3,9 @@
 当前入口为免邀请码的50户500组、每人固定一户10题，发布`reference50-v1`/V69。50户是1000户10000组A46/B57的原比例子集。物理V61和摘要V62只覆盖当前50户；1000户新版全量物理继续暂缓。旧全量验收属于旧输入版本，不可混用。
 
 - [基准总入口](../../benchmark/README.md)
-- [数据生成](../../benchmark/GENERATION.md)
-- [复现与受控输入](../../benchmark/REPRODUCTION.md)
-- [11项验收](../../benchmark/ACCEPTANCE.md)
+- [数据生成](../history/project-20261020/GENERATION.md)
+- [复现与受控输入](../REPRODUCE.md)
+- [11项验收](../history/project-20261020/ACCEPTANCE.md)
 - [当前问卷](CURRENT_QUESTIONNAIRE50.json)
 - [当前A/B输入](CURRENT_AB.json)
 - [当前参考物理](CURRENT_PHYSICAL50.json)

@@ -1,72 +1,19 @@
-# 文档入口
+# 项目文档
 
-请先读[完整项目与三条主线](../PROJECT.md)：家庭/设备、生活A/B、住房/仿真各自的输入、依据、规则、人工设定、验证与复现均有统一索引。
+按以下顺序阅读即可了解和使用项目。
 
-- [基准与数据入口](../benchmark/README.md)
-- [当前问卷资料指针](household1000/CURRENT_QUESTIONNAIRE50.json)及[总体状态](household1000/STATUS.json)：与对应发布清单、激活凭据共同核验；代码准备完成不代表已经上线。
-- [本次项目组织核查](../PROJECT_REVIEW_20261020.md)：检查版本、发现、修订和未验证范围。
-
-## 以下为历史文档导航
-
-下文V29、V30、原自报问卷及旧部署均为历史记录，其中“当前”“已发布”和旧验收数字只适用于各自记录的版本，不覆盖上述当前指针，不表示新版950户已生成或1000户仿真已开放。
-
-# 文档目录
-
-## 当前版本入口
-
-V29补充41组优先修正、原857组分类及任务编码准入；原50完整通过后更新950。[此次区分度自审](household1000/CONTRAST_REVIEW_20261015.md)。
-
-**1000户V29（2026-10-15）**：[当前状态与入口](household1000/README.md)。全1000户静态、六类覆盖、学校物理及10000前端案例绑定验收通过；原50先通过后核验950。50/950两个正式采集版本已经发布。真实偏好比例、真人有效性和最终benchmark性能仍未验证。
-
-**正式角色问卷**：[发布、采集与恢复协议](../deploy/formal_questionnaires_20261014/RELEASE.md)，使用V29任务，增加本人年龄/性别，保留影响与简略动作；邀请码分户、实际答卷独立保存，可恢复和撤回。训练和最终benchmark仍需真人质量检查。
-
-下面是原自报问卷和旧版工程记录，按各自版本判读。
-
-## 项目使用
-
-| 文档 | 内容 |
+| 文档 | 回答的问题 |
 |---|---|
-| [问卷内容](QUESTIONNAIRE.md) | 收集哪些信息、如何使用 |
-| [数据保存与导出](DATA.md) | 后台记录、交付文件和导出命令 |
-| [案例编号与问题反馈](CASE_REPORTS.md) | 选填昵称、问题报告、后台核查和失败轨迹导出 |
-| [原始记录与清洗文件](saved-json-and-cleaning.md) | 两步整理之间的关系 |
-| [英文规划输入](planner-language.md) | 中文答案到 EB 字段的映射 |
-| [天气与住宅](../simulation_resources/README.md) | 地点、住宅和日期选择 |
-| [部署与维护](DEPLOYMENT.md) | 环境、配置、队列、更新和备份 |
-| [验证记录](AUDIT.md) | 已检查的内容和未解决的测试问题 |
-| [公开试填样例](../examples/real-test-20260914/README.md) | 实际收集和清洗后的 JSON |
+| [方法说明](METHOD.md) | 三条主线怎样连接，每一步依据、规则和人工设定是什么？ |
+| [数据与验收](DATASET.md) | 当前50户是什么版本，哪些完成、哪些仍待验证？ |
+| [复现指南](REPRODUCE.md) | 公开环境可以运行什么，受控输入需要什么？ |
+| [采集与质控](COLLECTION.md) | UI91如何分户、作答、恢复，以及标签怎样管理？ |
+| [评测协议](EVALUATION.md) | 模型输入输出、数据分组和正式指标怎样确定？ |
 
-## 开发记录
+源码入口见[benchmark](../benchmark/README.md)，当前机器可读版本见[CURRENT_QUESTIONNAIRE50.json](household1000/CURRENT_QUESTIONNAIRE50.json)。
 
-以下文件保留当时的设计讨论、测试结果和修复依据。其中的路径、版本及测试数量可能已变化，使用项目请先阅读上面的文档。
+## 历史与证据
 
-### 规划与设备接口
-
-- [电器到 EnergyPlus 的连接：上游核对与候选修复](upstream-binding-review/README.md)
-- [EB 原生流程重新审计 — v3.1](native-loop-collection-audit-20260912.md)
-- [恢复原 EB 的规划检查与证据复核](native-planning-repair-20260912.md)
-
-### 时间与仿真环境
-
-- [24小时统计与完整时间轴](STATISTICS_24H_20260914.md)
-- [问卷两份安排的比较时间：依据与建议](EVALUATION_HORIZON_RESEARCH_20260914.md)
-- [十分钟精度修复（2026-09-14）](input-precision-fix-20260914.md)
-- [问卷 → 地区环境 → 原 EB → 真人反馈](regional-environment/INTEGRATION.md)
-
-### 页面与访问
-
-- [免登录填写与本地图片验证码](public-access-local-captcha.md)
-- [提交页面与反馈回执](submission-flow-v619.md)
-- [连续时段端点与 EV 凌晨记录核对](timeline-run-endpoints-20260914.md)
-
-### 历次审计
-
-- [2026-09-11 完整链路复核](AUDIT_20260911.md)
-- [数据采集交付修复记录 · 2026-09-12](DATA_COLLECTION_RELEASE_20260912.md)
-- [上线前复验 · 2026-09-13](PRELAUNCH_AUDIT_20260913.md)
-- [系统检查记录 · 2026-09-14](SYSTEM_AUDIT_20260914.md)
-- [问卷系统三视角审计（2026-09-14）](three-perspective-audit-20260914.md)
-
-部署历史：[服务器迁移](../deploy/VIRGINIA-MIGRATION-20260912.md)、[计算节点接入](../deploy/SCHOOL-COMPUTE.md)、[并发测试](../deploy/CONCURRENCY-20260912.md)。
-
-`notion-review/` 保存早期交流材料，`examples/` 保存旧格式测试样例；当前数据格式见上面的公开试填样例。
+- [早期问卷和工程记录](history/legacy-202609/)、[旧项目说明](history/project-20261020)、[项目复核记录](history/reviews/)。
+- [研究源码与逐版材料](research/)、[家庭批次与机器清单](household1000/)。历史说明只适用于其登记版本。
+- 各模块的原始依据、参数和验证文件由对应README引导，不作为并列的项目入口。

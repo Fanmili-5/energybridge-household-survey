@@ -1,20 +1,20 @@
 # 十天采集算法：六户计划层试点与自查
 
-日期：2026-10-20。运行规范见 [COLLECTION_METHOD.md](COLLECTION_METHOD.md)，配置见 [examples/collection/design.json](examples/collection/design.json)。这轮完成算法实现、小规模计划检查和来源/参数登记，没有运行仿真、修改线上问卷或启动50+950户生产。代码可复用不等于正式采集配置已冻结。
+日期：2026-10-20。运行规范见 [COLLECTION_METHOD.md](../../docs/collection/COLLECTION_METHOD.md)，配置见 [examples/collection/design.json](../../examples/collection/design.json)。这轮完成算法实现、小规模计划检查和来源/参数登记，没有运行仿真、修改线上问卷或启动50+950户生产。代码可复用不等于正式采集配置已冻结。
 
 ## 已完成和已验证
 
 - 原有六个公开合成家庭，2025-07-15至07-24，各十题，共60题；不冒充真实50户。
-- 从公开家庭输入重新构造的六份完整生活A与既有源A压缩字节逐一相同，见 [A_REPRODUCTION.json](validation/collection/A_REPRODUCTION.json)。日期、设备、人员、生活和需求没有为B覆盖而改动。
+- 从公开家庭输入重新构造的六份完整生活A与既有源A压缩字节逐一相同，见 [A_REPRODUCTION.json](A_REPRODUCTION.json)。日期、设备、人员、生活和需求没有为B覆盖而改动。
 - 六户十天的60份基线A另行通过当前日程序链、人工操作与控制范围检查，功率包络单独报告，见 `validation/collection/BASELINE_AUDIT.json`；不据此推断物理舒适。
 - VPP新实验固定18:00—19:00；没有改旧18:10—19:10预览或仅换标签。
 - 规范化候选27,081个，其中14,155个计划诊断仍在原目录。另有1,183个涉及不可移动他户操作等硬准入违规请求，以及2个需要超出案例窗口才能核对的EV尾部请求，原补丁和原因在构建产物中隔离保存，不参加采集取样。
 - 60个所选B均从完整A重新物化并复核约束、权限、已知事件积分和未知状态；明确诊断仍带原问题。独立检查器不导入采集生成器，另行核对字面装取变化、温控幅度/时长、EV余量与幅度分类。
 - 同一目录/种子/锁定运行环境下，整数分配回放的60个ID和覆盖表一致；不使用物理后果或人类答案选题。
-- 12个固定家庭日、5组预登记参数共60次计划敏感性生成，1,199个分层见证的完整A检查通过。生成预算减半/加倍、替换分位和加大热控请求均不改源A及原取样；候选数量与分类变化仍保留，见 [SENSITIVITY_SUMMARY.json](validation/collection/SENSITIVITY_SUMMARY.json)。这不是实际后果稳健性验证。
+- 12个固定家庭日、5组预登记参数共60次计划敏感性生成，1,199个分层见证的完整A检查通过。生成预算减半/加倍、替换分位和加大热控请求均不改源A及原取样；候选数量与分类变化仍保留，见 [SENSITIVITY_SUMMARY.json](SENSITIVITY_SUMMARY.json)。这不是实际后果稳健性验证。
 - 同户近似重复额外次数为0。A=B是对照，不是“没有机会”的证明。
 
-正式回执见 [SUMMARY.json](validation/collection/SUMMARY.json)、[REVIEW.json](validation/collection/REVIEW.json)及独立检查回执。公开 [PUBLIC_SAMPLES.json](validation/collection/PUBLIC_SAMPLES.json)包含60题的时间范围投影、完整计划摘要、分解动作与问题；不冒充完整多月A或已有物理结果。完整A/B与所有候选保留在可复现构建目录。
+正式回执见 [SUMMARY.json](SUMMARY.json)、[REVIEW.json](REVIEW.json)及独立检查回执。公开 [PUBLIC_SAMPLES.json](PUBLIC_SAMPLES.json)包含60题的时间范围投影、完整计划摘要、分解动作与问题；不冒充完整多月A或已有物理结果。完整A/B与所有候选保留在可复现构建目录。
 
 ## 覆盖表
 
@@ -46,13 +46,13 @@
 
 前两类各在8个家庭日的目录中有候选，第三类在1个家庭日中有候选；它们不是“情境完全没有机会”。本次整数求解证明，在这个有限目录、十天席位和当前目标下，最少仍有3项目标缺额。**不证明这三个指定目标各自不能选**，换另一份最优分配可能缺另一些目标。
 
-七个覆盖轴的两两交互共274个可用水平组合，已覆盖242、未覆盖32。完整列表在 [COVERAGE.json](validation/collection/COVERAGE.json)。指定目标、全交互计量和生成子集覆盖是不同指标，不能混算。高阶剂量与自由装取空间均未穷举；“目录没有”不能直接归为理论无机会。
+七个覆盖轴的两两交互共274个可用水平组合，已覆盖242、未覆盖32。完整列表在 [COVERAGE.json](COVERAGE.json)。指定目标、全交互计量和生成子集覆盖是不同指标，不能混算。高阶剂量与自由装取空间均未穷举；“目录没有”不能直接归为理论无机会。
 
 ## 自查发现及修正
 
 开发版只把共享场景的 `CONTEXT_OPERATOR_IMMUTABLE` 当作普通静态问题，可能将移动他户成员操作的请求带进诊断取样。修复后，根资产和关联任务产生的授权/不可移动操作者问题都进入硬门槛，并保留隔离补丁、原因和数量；新选样中此类权限违规为0。新增回归测试构造不可移动操作者，验证所有可选B的人工作业保持原样。
 
-三个开发版本的原选样、摘要与原因保留在 [DEVELOPMENT_HISTORY.json](validation/collection/DEVELOPMENT_HISTORY.json) 和 `validation/collection/development/`。修正过程中使用相同源A和种子，没有观察实际成功率或用户答案，也没有将某个物理失败B换成成功B。旧开发样本不属于最终可采集样本，不宣称可由修复后的代码重新生成其旧选择。
+三个开发版本的原选样、摘要与原因保留在 [DEVELOPMENT_HISTORY.json](DEVELOPMENT_HISTORY.json) 和 `validation/collection/development/`。修正过程中使用相同源A和种子，没有观察实际成功率或用户答案，也没有将某个物理失败B换成成功B。旧开发样本不属于最终可采集样本，不宣称可由修复后的代码重新生成其旧选择。
 
 最后的EV边界审查发现，案例到次日08:00的观察窗口不能充当周五至周一连接的真实期限。修复后分别记录原连接结束前的服务余量与观察窗口余量，保留当前连接全部未来A补能需求。2个在窗口内无法核对尾部的请求隔离为范围不足，不能冒充出发失败。新增跨周末回归与完整目录边界检查；未改行程、连接条件或A。
 

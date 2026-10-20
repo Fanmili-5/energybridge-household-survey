@@ -22,7 +22,7 @@
 
 材料与接口使用原成熟前端和 `deploy/formal_questionnaires_20261014/`。实际浏览器由 `deploy/contrast_validation_20261015/browser_fixture.py` 在学校以独立虚构身份验收；`complete_review.py`连接全部当前物理/正式材料/角色覆盖收据。命令不会替参与者生成真人答案。旧静态/生成辅助模块不能直接覆盖新阶段，现有目录与历史失败均保留。
 
-`household1000.py require-generation` 是只读验证，当前输入/代码变化即拒绝旧收据，不自动启动EP。公开clone缺少许可原件和逐户完整输入；学校准备好的工作区才能核完整证据。G6真人与实测限制见[研究门](RESEARCH_GATES.md)。
+`household1000.py require-generation` 是只读验证，当前输入/代码变化即拒绝旧收据，不自动启动EP。公开clone缺少许可原件和逐户完整输入；学校准备好的工作区才能核完整证据。G6真人与实测限制见[研究门](../household1000/RESEARCH_GATES.md)。
 
 下面是历史V28及更早版本的源链和复现说明，其当前状态或启动顺序不能替代上述V29入口。
 
@@ -53,7 +53,7 @@ python3 scripts/household1000.py check-bindings --workspace /path/to/prepared/en
 python3 scripts/household1000.py check-bindings --workspace /path/to/prepared/energybridge-household-survey --scope static1000
 ```
 
-入口从STATUS的 `active_stage` 读取V23。生成、校验、编译和物理回读在学校Linux执行；历史阶段不覆盖。受控阶段依赖见 [INPUTS.md](INPUTS.md) 与 [PIPELINE.json](PIPELINE.json)。源版本/data schema仍为V22，当前验收为V23。
+入口从STATUS的 `active_stage` 读取V23。生成、校验、编译和物理回读在学校Linux执行；历史阶段不覆盖。受控阶段依赖见 [INPUTS.md](../household1000/INPUTS.md) 与 [PIPELINE.json](../household1000/PIPELINE.json)。源版本/data schema仍为V22，当前验收为V23。
 
 在受控V23目录中，依次执行并保留失败：
 
@@ -69,6 +69,6 @@ python3 scripts/household1000.py check-bindings --workspace /path/to/prepared/en
 
 ## 前端与后续反馈
 
-去案例模板的六段JSON为空，需要当前同版本角色/任务/物理后果填充。原前端二元采用、四评分、理由保持。`FRONTEND_BROWSER_REVIEW`记录工程检查，真人身份、理解、角色信息效应、反馈预算和独立分组评测仍见 [RESEARCH_GATES.md](RESEARCH_GATES.md)。不将工程记录重命名为真人答案。
+去案例模板的六段JSON为空，需要当前同版本角色/任务/物理后果填充。原前端二元采用、四评分、理由保持。`FRONTEND_BROWSER_REVIEW`记录工程检查，真人身份、理解、角色信息效应、反馈预算和独立分组评测仍见 [RESEARCH_GATES.md](../household1000/RESEARCH_GATES.md)。不将工程记录重命名为真人答案。
 
 本发布的校验范围见PUBLICATION_CHECK与RELEASE_MANIFEST。历史硬路径和获准输入依赖如实保留；移植时需在新阶段配置并重核路径/hash，不声称任意机器clone即可生成完整数据集。

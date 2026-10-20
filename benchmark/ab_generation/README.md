@@ -1,92 +1,30 @@
 # A/B策略生成
 
-每户十天的统一采集算法试点见 [COLLECTION_METHOD.md](COLLECTION_METHOD.md)：固定已有A、18:00—19:00事件，分别生成机器/装取安排、EV与温控请求，再以整数规划分配十天；包含多设备、不同幅度、无帮助、无效和未知样本。它是独立的计划层采集入口，不替换下述历史批次或v69材料；本轮不运行引擎、不启动50+950户生产。具体结果与缺额见 [COLLECTION_VALIDATION.md](COLLECTION_VALIDATION.md)。
+从给定家庭的生活需求生成日常A；冻结A后，围绕18:00—19:00的VPP构造有不同取舍的B，再分配每户十题。生活安排、设备和授权不为凑覆盖而改写，没帮助、生活冲突及可计算失败保留；工程逻辑错误隔离诊断。
 
-三个缺额的追查与细网格补充版本见 [GAP_METHOD.md](GAP_METHOD.md) 和 [GAP_VALIDATION.md](GAP_VALIDATION.md)：原多批A中存在被六档移位漏掉的合法方案，冬季新增计划与已有物理诊断分开记录，本轮不要求仿真通过。旧批次与其失败样本、缺额回执保持原样。新版[最终静态取样](FINAL_SAMPLING_METHOD.md)已完成：十层各1个；未覆盖203个单轴/双轴水平组合，不要求物理仿真通过。细网格正式配置为 `examples/gap_supplement/tail_plan.json`，不能将历史六档默认设置解释为全部10分钟机会。
+## 当前方法
 
-设计目的与原EB的逐项对应见[DESIGN.md](DESIGN.md)。A是无本次VPP干预的日常参照，B是供独立判断的合成提案；本实现先读取完整未来A，属于[离线反事实实验](OFFLINE_EXPERIMENT.md)，没有实时预测器。来源、参数和授权分别登记于[SOURCES.json](SOURCES.json)、[PARAMETERS.json](PARAMETERS.json)和[AUTHORIZATION.json](AUTHORIZATION.json)。
+| 内容 | 阅读入口 |
+|---|---|
+| 新版机会识别、逐设备变化、事件关联、联合与去重 | [十天采集方法](docs/collection/COLLECTION_METHOD.md) |
+| 计划、覆盖、缺额和实际验证范围 | [采集验证](docs/collection/COLLECTION_VALIDATION.md) |
+| 生活需求如何形成A | [生活到A](docs/life/LIFE_METHOD.md)、[生活输入](docs/life/LIFE_INPUTS.md) |
+| 原EB对应、完整未来A的离线条件、论文与参数 | [设计](docs/core/DESIGN.md)、[离线实验](docs/core/OFFLINE_EXPERIMENT.md)、[证据](docs/core/EVIDENCE.md)、[参数](docs/core/PARAMETERS.md) |
+| 基础接口及独立实验复现 | [接口](docs/core/INPUTS.md)、[复现](docs/core/REPRODUCE.md) |
 
-本模块提供“生活安排→独立服务需求→日常A→当前A运行参考→B候选→配对仿真”的可复现流程。生活生成接收已绑定的家庭世界、逐日活动及声明的习惯，自动生成完整人工操作、机器程序与控制命令。
+现有50户从冻结A侧导入，新B独立生成；正式物理结果和UI91接入由[project](../project/)完成。当前数据范围见[数据与验收](../../docs/DATASET.md)。基础三策略实验、旧分层和新版正式十天选题分别管理。
 
-B阶段核验家庭与A的版本，读取当前A的运行参考，在原生活资源内枚举程序移时、人工装取、温控及EV请求，并在最终配对仿真前选择B。批次规模由输入决定，代码没有固定家庭数量、家庭ID或历史目录。
+## 入口与核验
 
-## 系统边界
-
-生活生成接口为 `eb.life_to_A.v1`，固定A后的B候选为 `eb.ab_generation.frozen_A.v3`，规范上下文为 `context.v3`。v3要求资源契约及完整A离线信息集合；v1/v2上下文须重新只读导入或重建。新生活A参考还须有绑定且通过的基线服务/物理审查。公开示例不替换已发布数据或线上问卷。
-
-| 阶段 | 实现 | 产物 |
-|---|---|---|
-| 生活到A | 完整日历、库存/餐食/洗浴/出行需求与原资源联合排程 | 独立需求、程序、人工链、控制与未满足原因 |
-| A与生活资源冻结 | 原始输入、日历、设备、需求、A命令及当前A运行绑定校验 | 规范化案例、运行参考和来源哈希 |
-| 机会识别 | 完整程序链、原人工窗口、实际占用、A设备运行及原EV充电 | 原生设备机会、缺失与不可用原因 |
-| 候选构造 | 程序移时×人工策略；温差×时长×方向；原连接内EV延迟 | 所有单设备候选、静态问题及两设备族静态可行候选的全部组合 |
-| 事前选择 | 最小命令变化、已知负荷费用、已知负荷VPP贡献三种规则 | 三份方法对照B；不作为三套真人标签集 |
-| 物理接口 | 将选定B与原A、需求及VPP绑定，导出住房模块作业 | `physics_job.json`及显式资源目录 |
-
-温控候选的费用与VPP贡献不以名义功率伪装成预测；相应数值保持未知。已知负荷排序只比较程序设备和EV的命令负荷剖面。静态通过不等于完整服务、温度、SOC或VPP达标，最终后果交由配对仿真计算。
-
-## 快速开始
-
-Python 3.9或以上，候选生成仅使用标准库。在仓库根目录运行：
+- `benchmark.ab_generation build-life`：生活条件→服务需求与A。
+- `benchmark.ab_generation.collection`：固定A→新版候选、准入、十天分配与回放。
+- `benchmark.ab_generation.reference_collection`：既有50户A侧导入。
 
 ```bash
-python -B -m unittest benchmark.ab_generation.test_generation benchmark.ab_generation.test_life benchmark.ab_generation.test_review benchmark.ab_generation.test_sampling benchmark.ab_generation.test_opportunity -v
-python -B -m benchmark.ab_generation generate \
-  --input benchmark/ab_generation/examples/batch.json \
-  --rules benchmark/ab_generation/examples/rules.json \
-  --out outputs/ab-public-example
-python -B -m benchmark.ab_generation verify outputs/ab-public-example
+python -B -m benchmark.ab_generation.audit_design
+python -B -m benchmark.ab_generation.verify_package
 ```
 
-输出目录必须不存在。三个公开合成案例分别检查正常构造、A=B控制和缺少当前热状态参考；其温度与负荷参考为接口测试输入，不是实测或EnergyPlus结果。
+来源、数值和授权登记为`SOURCES.json`、`PARAMETERS.json`、`COLLECTION_PARAMETERS.json`、`AUTHORIZATION.json`。精确数值和搜索权重是明示实验设定，论文不自动证明本批数据的代表性或真人效度。
 
-生活生成与完整物理集成示例：
-
-```bash
-python -B -m benchmark.ab_generation build-life \
-  --input benchmark/ab_generation/examples/life/life_batch.json \
-  --out outputs/life-A
-python -B -m benchmark.ab_generation reproduce-strategies \
-  --energyplus-dir /path/to/EnergyPlus-24-1-0 --out outputs/life-AB
-```
-
-第一条命令只使用Python标准库。第二条使用住房模块的固定依赖和官方引擎资源，执行同A同事件的三策略、设备与联合探针，以及明确预设的EV失败。`reproduce-life`保留较小的默认三策略集成入口。冬季制热检查和完整参数见复现指南。
-
-## 技术文档
-
-- [参数敏感性与联合边界](SENSITIVITY.md)：两候选族的工程上限、冲突含义、165 个生成案例与 20 个物理案例，以及无机会和舒适失败的保留结果。
-- [合入后自查](SELF_CHECK.md)：修正混合联合的逐目标分母遗漏，保留原回执并公开重算；异常节点输入拒绝和有效生成结果不变检查。
-
-- [当前生成规则](GENERATION_RULES.md)与[本轮验证](RULES_VALIDATION.md)：A能力边界、逐设备机会依据、联合请求、无效/失败保留和覆盖防退化。
-- [生成合理性与覆盖审查](GENERATION_REVIEW.md)：按电器核对需求、运行约束、B变化及依据，列出已验证范围和补齐优先级。
-- [目的与原EB对应](DESIGN.md)、[证据采用范围](EVIDENCE.md)、[完整A离线实验](OFFLINE_EXPERIMENT.md)、[参数说明](PARAMETERS.md)及[本次验证](DESIGN_VALIDATION.md)：当前v3的正式设计与审查入口。
-
-- [生活到A方法](LIFE_METHOD.md)、[生活接口](LIFE_INPUTS.md)及[规则注册](LIFE_RULES.json)：需求形成、排程、控制和失败政策。
-- [第二主线复核](REVIEW.md)及[策略规则](STRATEGY_RULES.json)：问题、修正、反例、来源和适用边界。
-- [B候选构造方法](METHOD.md)：输入、依据、算法、人为参数及方法边界。
-- [接口规范](INPUTS.md)：对象、单位、依赖、选择状态与输出。
-- [复现指南](REPRODUCE.md)：公开示例、受控50户导入及物理交接。
-- [验证记录](VALIDATION.md)：软件检查、全批次检查及物理验证的不同范围。
-- [来源注册](SOURCES.json)：原EB、活动/排程、温控机理、情景设计和覆盖依据的采用边界。
-
-现有家庭、1000户主数据及生产A/B不因本模块运行而更新。原B和既有指定失败作为独立对照保留；原失败请求不重新挑选成成功请求。所有输出均没有预填人类接受标签。
-
-## 长尾采样与覆盖验收
-
-方法见 [TAIL_METHOD.md](TAIL_METHOD.md)，计划见 [examples/tail/plan.json](examples/tail/plan.json)。目录按实际命令去重，分层按事前顺序独占，再按家庭、户内请求两阶段无放回取样。全体候选及联合冲突保留；最终费用、事件成功和人的回答不参与取样。正常B、声明的EV失败压力、不可执行静态诊断和数据/模型错误分开验收。
-
-`sample-tail` 只构造并封存样本；`reproduce-tail` 复用已绑定的A参考，执行所选B并输出覆盖表、全部已选结果和未覆盖的单/双因素组合。缺失必验机会或执行错误导致验收失败，不自动换成成功B。命令与结果见 [REPRODUCE.md](REPRODUCE.md) 和 [TAIL_VALIDATION.md](TAIL_VALIDATION.md)。当前规则验收使用 [examples/rule_review/plan.json](examples/rule_review/plan.json)，另有冬季与周末补充计划；[本轮验证](RULES_VALIDATION.md)逐项列出已测范围和缺口。不推算真实长尾比例或人的接受率。
-
-当前修订：[联合搜索、批次能耗与住宅功率](JOINT_LOAD_SUPPLY.md)，取消两族上限；保留同族多批、无效请求及服务失败。程序设备仍用完整周期的等效功率，覆盖须区分任务约束与服务后果，不能仅数设备名称。
-
-当前新联合目录的正式长尾入口：[方法与依据](JOINT_TAIL_METHOD.md)、[覆盖和缺额](JOINT_TAIL_VALIDATION.md)。覆盖区分生成组合、分层抽样和实际后果，保留无效、无响应、服务失败及隔离数据错误。
-
-本轮正式验收为17/18个必验层通过，覆盖合同未通过；洗衣费用增加层缺失，另有监测和输入范围缺额。不得因软件CI通过就称benchmark已全面验收。
-
-第三版采集入口（`eb.collection.design.v3`）：原EB的40℃停冷回退与普通温度目标分开；空调状态、提前时长、温度偏移和事件持续时间分别表示，不给整个B贴小/中/大标签。联合B逐组件和逐设备记录事件关联或支持见证，无关变化只留审计，不为覆盖增加设备。无帮助、反向、生活/服务冲突及未知响应继续保留，不设配比。见[方法](COLLECTION_METHOD.md)、[验证](COLLECTION_VALIDATION.md)、`validation/collection_v3/`。第二版按268685d复现，历史样本保持原样。线上问卷、仿真和50+950户生产不在本轮执行范围。
-
-## CI 运行边界（2026-10-20）
-
-GitHub保留单元测试、公开计划与冻结覆盖的静态复核。完整联合长尾重放及原生物理实验已移出workflow，包括手动GitHub入口；需要时在本地按现有CLI和登记协议运行，结果与失败原样归档。CI绿色不替代完整覆盖验收或物理有效性结论。
-
-完整六户60日重建、165组参数筛查和全候选尾部重放同样留在本地CLI；GitHub只运行有界公开小例、单元检查和现有冻结资料的静态核验，不重新生产整套研究样本。
+旧联合上限、敏感性、长尾分层、缺额修订与自查均收在[历史方法与记录](docs/history/)，原版本结果保留。完整实验在研究计算环境显式运行，GitHub只做有界检查。
