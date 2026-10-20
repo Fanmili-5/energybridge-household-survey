@@ -17,12 +17,18 @@ for(const row of index.cases){
     else{assert.equal(c.impact,null);assert.equal(c.VPP_results,null);}
   }else{assert.equal(c.outcome_status,'not_computed');assert.equal(c.impact,null);assert.equal(c.VPP_results,null);}
   assert.ok(p.display_housing.rooms.length);const shown=ui.displayed(c,p);
+  const clean=ui.presentation_revision==='eb.questionnaire50.refined.v91.clean.v2';
   for(const key of ['family','request','changes','impacts','schedule']){
+    if(clean&&key==='schedule'){assert.equal(shown.schedule,'');continue;}
     assert.equal(typeof shown[key],'string');assert.ok(shown[key].length);
     assert.ok(!/undefined|NaN|Infinity|制冷40|已列任务均完成/.test(shown[key]),key);
   }
+  if(clean){
+    assert.ok(!/装载|取出|洗烘一体机|洗烘运行|查看完整资料|工程审计|存在程序、/.test(shown.family+shown.changes+shown.impacts));
+    assert.ok(!/计划说明|操作与控制请求|不直接等于个人舒适评分/.test(shown.changes+shown.impacts));
+  }
   assert.match(shown.family,/房屋剖面示意/);assert.match(shown.request,/18:00–19:00/);
-  if(c.physical_review?.status==='computed'){assert.match(shown.impacts,/已完成/);assert.match(shown.impacts,/实际平均/);for(const e of c.physical_review.actual_outcomes.events)assert.ok(shown.impacts.includes(e.target_met?'达标':'未达标'));}
+  if(c.physical_review?.status==='computed'){assert.match(shown.impacts,clean?/仿真估算/:/已完成/);assert.match(shown.impacts,/实际平均/);for(const e of c.physical_review.actual_outcomes.events)assert.ok(shown.impacts.includes(e.target_met?'达标':'未达标'));}
   else{assert.match(shown.impacts,/未计算|未知/);assert.ok(!/实际平均[\d]|实际降低[\d]/.test(shown.impacts));}
   if(c.physical_review?.status==='unsupported_world')assert.match(shown.impacts,/模型兼容问题/);
   if(c.schema==='eb.reference_benchmark.case.v2'&&!failureBranchChecked){

@@ -17,17 +17,45 @@
   <p id="load-status" role="status"></p>
   <article id="task" hidden>
     <section class="panel family-panel" aria-labelledby="family-heading"><div class="section-head"><span class="section-index">01</span><div><h2 id="family-heading">家庭与住房</h2></div></div><div id="family"></div></section>
-    <section class="panel changes-panel" aria-labelledby="change-heading"><div class="section-head"><span class="section-index">02</span><div><h2 id="change-heading">设备方案对比</h2></div></div><p class="section-note">A为原安排，B为调整后安排。</p><div id="vpp-request" class="request-note" hidden></div><div id="changes"></div></section>
+    <section class="panel changes-panel" aria-labelledby="change-heading"><div class="section-head"><span class="section-index">02</span><div><h2 id="change-heading">设备方案对比</h2></div></div><div id="vpp-request" class="request-note" hidden></div><div id="changes"></div></section>
     <section class="panel effects-panel" aria-labelledby="impact-heading"><div class="section-head"><span class="section-index">03</span><div><h2 id="impact-heading">整体影响</h2></div></div><div id="impacts"></div></section>
     <section class="panel answer-panel" aria-labelledby="answer-heading"><div class="section-head"><span class="section-index">04</span><div><h2 id="answer-heading">家庭评价</h2></div></div>
       <form id="response-form">
         <fieldset><legend>按这户家庭的情况，是否接受原样执行B？</legend><div class="decision-options"><label class="choice"><input type="radio" name="decision" value="accept" required><span>接受B方案</span></label><label class="choice"><input type="radio" name="decision" value="reject" required><span>不接受B方案</span></label></div></fieldset>
-        <div class="score-heading"><h3>给这次调整打分</h3><p>按家庭角色，评B相对A是否合适：1分很不合适，5分很合适，可填一位小数。VPP达标结果已单独列出。</p></div>
+        <div class="score-heading"><h3>给B方案打分</h3><p id="score-note">0分很不合适，5分很合适。</p></div>
         <div class="rating-grid">
-          <label for="score"><span>响应安排<small>通知和操作是否适合这户家庭</small></span><input id="score" name="score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
-          <label for="comfort_score"><span>舒适与生活<small>室温与生活变化是否适合这户家庭</small></span><input id="comfort_score" name="comfort_score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
-          <label for="energy_score"><span>用电与费用<small>用电时段与费用变化是否适合这户家庭</small></span><input id="energy_score" name="energy_score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
-          <label for="vpp_score"><span>VPP配合<small>这种配合方式是否适合这户家庭</small></span><input id="vpp_score" name="vpp_score" type="number" min="1" max="5" step="0.1" placeholder="1—5" required></label>
+          <fieldset id="score" class="score-block" data-score-options><legend>响应安排</legend><div class="score-options">
+            <label class="score-option"><input type="radio" name="score" value="0" required><span>0</span></label>
+            <label class="score-option"><input type="radio" name="score" value="1" required><span>1</span></label>
+            <label class="score-option"><input type="radio" name="score" value="2" required><span>2</span></label>
+            <label class="score-option"><input type="radio" name="score" value="3" required><span>3</span></label>
+            <label class="score-option"><input type="radio" name="score" value="4" required><span>4</span></label>
+            <label class="score-option"><input type="radio" name="score" value="5" required><span>5</span></label>
+          </div></fieldset>
+          <fieldset id="comfort_score" class="score-block" data-score-options><legend>舒适与生活</legend><div class="score-options">
+            <label class="score-option"><input type="radio" name="comfort_score" value="0" required><span>0</span></label>
+            <label class="score-option"><input type="radio" name="comfort_score" value="1" required><span>1</span></label>
+            <label class="score-option"><input type="radio" name="comfort_score" value="2" required><span>2</span></label>
+            <label class="score-option"><input type="radio" name="comfort_score" value="3" required><span>3</span></label>
+            <label class="score-option"><input type="radio" name="comfort_score" value="4" required><span>4</span></label>
+            <label class="score-option"><input type="radio" name="comfort_score" value="5" required><span>5</span></label>
+          </div></fieldset>
+          <fieldset id="energy_score" class="score-block" data-score-options><legend>用电与费用</legend><div class="score-options">
+            <label class="score-option"><input type="radio" name="energy_score" value="0" required><span>0</span></label>
+            <label class="score-option"><input type="radio" name="energy_score" value="1" required><span>1</span></label>
+            <label class="score-option"><input type="radio" name="energy_score" value="2" required><span>2</span></label>
+            <label class="score-option"><input type="radio" name="energy_score" value="3" required><span>3</span></label>
+            <label class="score-option"><input type="radio" name="energy_score" value="4" required><span>4</span></label>
+            <label class="score-option"><input type="radio" name="energy_score" value="5" required><span>5</span></label>
+          </div></fieldset>
+          <fieldset id="vpp_score" class="score-block" data-score-options><legend>VPP配合</legend><div class="score-options">
+            <label class="score-option"><input type="radio" name="vpp_score" value="0" required><span>0</span></label>
+            <label class="score-option"><input type="radio" name="vpp_score" value="1" required><span>1</span></label>
+            <label class="score-option"><input type="radio" name="vpp_score" value="2" required><span>2</span></label>
+            <label class="score-option"><input type="radio" name="vpp_score" value="3" required><span>3</span></label>
+            <label class="score-option"><input type="radio" name="vpp_score" value="4" required><span>4</span></label>
+            <label class="score-option"><input type="radio" name="vpp_score" value="5" required><span>5</span></label>
+          </div></fieldset>
         </div>
         <label class="field reason-label" for="reason">最主要的原因<span class="required-note">必填</span><textarea id="reason" name="reason" required maxlength="4000" rows="3" placeholder="哪些改变适合或不适合这户家庭？"></textarea></label>
         <div class="form-actions"><button type="submit" id="submit-answer" disabled>提交答卷</button><button type="button" id="clear-response" class="secondary">撤销未提交修改</button></div><button id="next-question" class="secondary next-button" type="button" hidden>下一题</button><p id="response-status" role="status" aria-live="polite"></p>
@@ -43,5 +71,5 @@
   <p id="recover-status" role="status"></p>
   <div class="dialog-actions"><button id="close-recovery" type="button" class="secondary">关闭</button><button id="recover-preview" type="button">恢复记录</button></div>
 </dialog>
-<footer>请按给定家庭角色作答。展示结果不会改变现实电器的设置。</footer>
+<footer>请按这户家庭的情况作答。</footer>
 </body></html>

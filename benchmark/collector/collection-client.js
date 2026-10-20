@@ -22,8 +22,9 @@
   const pendingKey=c=>localKey(c)+':pending';
   const viewKey=c=>localKey(c)+':view';
   const bind=c=>({participant_id:state.participant_id,assignment_id:state.assignment_id,release_sha256:state.release_sha256,ui_revision:UI,case_id:c.case.case_id,case_sha256:c.row.sha256});
-  function values(){const r={decision:q('response-form').querySelector('input[name=decision]:checked')?.value||null,reason:q('reason').value||null};for(const k of ['score','comfort_score','energy_score','vpp_score'])r[k]=q(k).value===''?null:Number(q(k).value);return r;}
-  function setValues(response){q('response-form').reset();if(!response)return;for(const [key,value]of Object.entries(response)){if(key==='decision'){const n=q('response-form').querySelector(`input[name=decision][value="${value}"]`);if(n)n.checked=true;}else if(q(key))q(key).value=value??'';}}
+  function scoreValue(key){const n=q(key);return n.matches('[data-score-options]')?n.querySelector('input:checked')?.value??'':n.value;}
+  function values(){const r={decision:q('response-form').querySelector('input[name=decision]:checked')?.value||null,reason:q('reason').value||null};for(const k of ['score','comfort_score','energy_score','vpp_score']){const v=scoreValue(k);r[k]=v===''?null:Number(v);}return r;}
+  function setValues(response){q('response-form').reset();if(!response)return;for(const [key,value]of Object.entries(response)){if(key==='decision'){const n=q('response-form').querySelector(`input[name=decision][value="${value}"]`);if(n)n.checked=true;}else if(q(key)?.matches('[data-score-options]')){const n=q(key).querySelector(`input[value="${value}"]`);if(n)n.checked=true;}else if(q(key))q(key).value=value??'';}}
   function presentation(c){return {fields:{family:q('family').textContent,request:q('vpp-request').textContent,changes:q('changes').textContent,impacts:q('impacts').textContent},schedule_seen:c.scheduleSeen,schedule_text:c.scheduleSeen?c.scheduleText:null,presented_at:c.presentedAt};}
   function remember(c){try{localStorage.setItem(localKey(c),JSON.stringify({response:c.response,presentation:c.presentation,base_answer_revision:c.answerRevision,case_sha256:c.row.sha256,ui_revision:UI,sequence:c.sequence}));}catch{status('本机暂时无法保留草稿，请保持页面打开并尽快提交。',c);}}
   function forget(c,sequence){if(c.sequence===sequence)try{localStorage.removeItem(localKey(c));}catch{}}

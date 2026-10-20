@@ -84,4 +84,54 @@ class PhysicalInformationTests(unittest.TestCase):
         self.assertEqual(mixed_water_delivery(meta,trace,480,500)['status'],'unavailable')
 
 
+class ParticipantPresentationTests(unittest.TestCase):
+    def test_separate_laundry_display_hides_engineering_details_and_keeps_plans(self):
+        import json,subprocess,copy
+        from .reference_refined_release import renderer,participant_html
+        from .reference_collection_release import typed_control_copy
+        from .questionnaire import HERE,COLLECTOR
+        with tempfile.TemporaryDirectory() as temp:
+            view=Path(temp)/'view.js'
+            view.write_text(renderer(typed_control_copy((HERE/'examples/questionnaire/public/view.js').read_text())))
+            p={'household_id':'h','province':'测试','members_count':2,'generations':1,
+               'household_area_m2':70,'relationships':[],'support':[],
+               'display_housing':{'rooms':[],'target_H7':2,'shared_household_count_design':1},
+               'devices':[{'asset_id':'laundry','types':['washer','dryer'],'room_id':'washroom'}]}
+            washer={'asset_id':'laundry','kind':'washer','need_id':'n','start_min':1100,'end_min':1220}
+            dryer={'asset_id':'laundry','kind':'dryer','need_id':'n:dry','upstream_need_id':'n','start_min':1220,'end_min':1310}
+            load={'asset_id':'laundry','kind':'load','need_id':'n','start_min':1090,'end_min':1100}
+            changes=[{'asset_id':'laundry','kind':r['kind'],'group':'tasks' if r is not load else 'operations',
+                      'A':r,'B':{**r,'start_min':r['start_min']+60,'end_min':r['end_min']+60}}
+                     for r in (washer,dryer,load)]
+            c={'household_id':'h','date':'2025-01-01','window_min':[480,1920],
+               'project_presentation':{'family_lines':['成员资料','家庭关系','你代入成员1']},
+               'context':{'needs':{'A':[{'asset_id':'laundry','kind':'washer','need_id':'n','release_min':480,'deadline_min':1920}]}},
+               'changes':changes,'plans':{},'outcome_status':'not_computed','impact':None,'VPP_results':None,
+               'VPP_requests':[{'start_min':1080,'end_min':1140,'notification_min':480,'target_kw':1,'direction':'down'}]}
+            original=copy.deepcopy(c)
+            run="""require(process.argv[1]);const c=JSON.parse(process.argv[2]),p=JSON.parse(process.argv[3]);
+const ui=globalThis.EBSimple50,nodes=ui.presentationNodes(c,p),shown=ui.displayed(c,p);
+console.log(JSON.stringify({nodes,shown,case:c}));"""
+            value=json.loads(subprocess.check_output(['node','-e',run,str(view),json.dumps(c),json.dumps(p)],text=True))
+            cards=value['nodes']['changes']
+            self.assertEqual([r['attrs']['data-device-kind'] for r in cards],['washer','dryer'])
+            self.assertEqual([r['attrs']['data-asset-id'] for r in cards],['laundry','laundry'])
+            shown=value['shown'];self.assertIn('洗衣机',shown['family']);self.assertIn('烘干机',shown['family'])
+            for when in ['18:20','20:20','19:20','21:20','21:50','22:50']:self.assertIn(when,shown['changes'])
+            for word in ['洗烘一体机','装载','取出','查看完整资料','计划说明']:self.assertNotIn(word,shown['changes']+shown['impacts']+shown['family'])
+            self.assertEqual(shown['schedule'],'');self.assertIn('未计算',shown['impacts'])
+            self.assertEqual(value['case'],original)
+            html=participant_html('<p id="score-note">很长的说明</p>'+ (HERE/'refined91/index.html').read_text())
+            self.assertNotIn('<small>',html)
+            self.assertEqual(html.count('class="score-option"'),24)
+            self.assertNotIn('type="number"',html)
+            self.assertNotIn(' checked',html)
+            for value in range(6):self.assertEqual(html.count('value="'+str(value)+'" required'),4)
+            self.assertNotIn('step="0.1"',html)
+            integer_check="require(process.argv[1]);require(process.argv[2]);const a={decision:'accept',score:0,comfort_score:0,energy_score:0,vpp_score:0,reason:'test'};globalThis.EBSimple50.answer(a);for(let v=0;v<=5;v++)globalThis.EBSimple50.answer({...a,score:v});let rejected=0;for(const key of ['score','comfort_score','energy_score','vpp_score']){try{globalThis.EBSimple50.answer({...a,[key]:2.5});}catch{rejected++;}}console.log(rejected);"
+            self.assertEqual(subprocess.check_output(['node','-e',integer_check,str(HERE/'refined91/required-response.js'),str(view)],text=True).strip(),'4')
+            for key in ['score','comfort_score','energy_score','vpp_score','reason','decision']:
+                self.assertIn('name="'+key+'"',html)
+
+
 if __name__=='__main__':unittest.main()

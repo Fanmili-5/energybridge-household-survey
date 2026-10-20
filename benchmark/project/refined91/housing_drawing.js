@@ -65,7 +65,7 @@
     const floors=g.rooms.map(r=>({id:r.room_id,points:g.floor(r)})),labels=[],pending=[];
     for(const r of g.rooms.filter(r=>roomUse(p,r)!=='other')){
       const poly=g.floor(r),center=[0,1].map(axis=>poly.reduce((s,q)=>s+q[axis],0)/4),groups=new Map();
-      for(const d of p.devices.filter(v=>v.room_id===r.room_id)){const title=deviceName(d),item=groups.get(title)||{title,count:0};item.count++;groups.set(title,item);}
+      for(const d of displayDevices(p).filter(v=>v.room_id===r.room_id)){const title=deviceName(d),item=groups.get(title)||{title,count:0};item.count++;groups.set(title,item);}
       const devices=[...groups.values()],name=room(r.room_id),area=`${num(r.usable_area_m2,1)}㎡${roomUse(p,r)==='shared'?' · 共用':''}`;
       const item={id:r.room_id,name,area,devices,center,poly},options=annotationOptions(name,devices,area);
       const xs=poly.map(q=>q[0]),ys=poly.map(q=>q[1]),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);

@@ -7,12 +7,33 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from admin import backup,status
 from identity import now
-from ledger import CollectionStore,Conflict,NOTICE_VERSION
+from ledger import CollectionStore,Conflict,NOTICE_VERSION,response
 from make_fixture import make
 from release import Release,UI_VERSION
 
 
 class RoundsTest(unittest.TestCase):
+    def test_zero_to_five_integer_scores_distinguish_zero_from_missing(self):
+        values={'decision':'reject','score':0,'comfort_score':0,'energy_score':0,'vpp_score':0,'reason':'测试'}
+        for score in range(6):
+            answer={**values,'score':score}
+            self.assertEqual(response(answer,True,0,0),answer)
+        self.assertEqual(response({**values,'score':None},False,0,0)['score'],None)
+        with self.assertRaises(ValueError):response({**values,'score':None},True,0,0)
+        for invalid in (False,-1,6,2.5,float('nan'),float('inf')):
+            with self.assertRaises(ValueError):response({**values,'score':invalid},True,0,0)
+        with self.assertRaises(ValueError):response(values,True,1,1)
+
+    def test_integer_scores_are_release_specific_and_reject_all_fractional_fields(self):
+        values={'decision':'reject','score':1,'comfort_score':2,'energy_score':3,'vpp_score':4,'reason':'测试'}
+        self.assertEqual(response(values,True,0),values)
+        for key in ('score','comfort_score','energy_score','vpp_score'):
+            bad={**values,key:2.5}
+            with self.assertRaisesRegex(ValueError,'整数'):response(bad,True,0)
+            with self.assertRaisesRegex(ValueError,'整数'):response(bad,False,0)
+            self.assertEqual(response(bad,True,1)[key],2.5)
+        for invalid in (False,0,6,float('nan'),float('inf'),2.00000000001):
+            with self.assertRaises(ValueError):response({**values,'score':invalid},True,0)
     @classmethod
     def setUpClass(cls):
         cls.bank=tempfile.TemporaryDirectory(prefix='eb-rounds-bank-')

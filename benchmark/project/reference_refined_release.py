@@ -14,25 +14,72 @@ from benchmark.ab_generation.common import digest, read, save, sha
 from .questionnaire import COLLECTOR, HERE, UI
 
 ASSETS=HERE/'refined91'
+PRESENTATION='eb.questionnaire50.refined.v91.clean.v2'
 
 
 def section(source, name, following):
     a=source.index('  function '+name+'(')
-    b=source.index('  function '+following+'(',a)
+    b=source.index('  function '+following+'(',a) if following else len(source)
     return source[a:b]
+
+
+def participant_renderer(source):
+    """Refresh display only; source asset IDs, commands and results stay intact."""
+    compare=(ASSETS/'compare_nodes.js').read_text()
+    source=source.replace(section(source,'familyModel','serviceLines'),section(compare,'familyModel','sideBySide'))
+    a=source.index('  function housingPreview(');b=source.index('  function sideBySide(',a)
+    source=source[:a]+section(compare,'housingPreview','familyModel')+source[b:]
+    a=source.index('  // UI91 presentation over frozen proposal data.');b=source.index('  function displayed(',a)
+    source=source[:a]+(ASSETS/'pending_nodes.js').read_text()+'\n'+source[b:]
+    a=source.index('  const deviceName = ');b=source.index('\n',a)
+    source=source[:a]+"  const deviceName = d => d.types.map(k=>({washer:'洗衣机',dryer:'烘干机'}[k]||LABELS[k])).join('、');"+source[b:]
+    a=source.index('  function deviceLabels(');b=source.index('  // One model',a)
+    source=source[:a]+source[a:b].replace('for(const d of p.devices)', 'for(const d of displayDevices(p))')+source[b:]
+    a=source.index('  function housingAnnotationPlan(');b=source.index('  function housingDrawing(',a)
+    drawing=(ASSETS/'housing_drawing.js').read_text()
+    source=source[:a]+section(drawing,'housingAnnotationPlan','housingDrawing')+source[b:]
+    a=source.index("    result.schedule=");b=source.index('    return result;',a)
+    source=source[:a]+"    result.schedule='';\n"+source[b:]
+    if '  function renderPlans(' in source:
+        a=source.index('  function renderPlans(');b=source.index('  function renderEffects(',a)
+        source=source[:a]+source[b:]
+    source='\n'.join(line for line in source.split('\n') if not line.strip().startswith("document.addEventListener('toggle',"))
+    if "if(physical_review?.status==='computed'){q('score-note')" in source:
+        a=source.index("if(physical_review?.status==='computed'){q('score-note')");b=source.index('renderFamily();',a)
+        source=source[:a]+"q('score-note').textContent='1分很不合适，5分很合适；可填一位小数。';"+source[b:]
+    source=source.replace("presentation_revision:'eb.questionnaire50.refined.v91.newAB.v1'", "presentation_revision:'"+PRESENTATION+"'")
+    if "Number.isInteger(a[key])" not in source:source=source.replace("root.EBRequiredResponse(a);", "root.EBRequiredResponse(a);\n    for(const key of ['score','comfort_score','energy_score','vpp_score'])if(!Number.isInteger(a[key]))throw Error('四项评分均须为0—5的整数。');")
+    source=source.replace('1分很不合适，5分很合适；可填一位小数。','0分很不合适，5分很合适。')
+    return source
+
+
+def participant_html(html):
+    """Remove repeated display notes, keeping the form's required input contract."""
+    import re
+    html=re.sub(r'<small>[^<]*</small>', '', html)
+    html=re.sub(r'<p class="section-note">A为原安排，B为调整后安排。</p>', '', html)
+    html=re.sub(r'(<p id="score-note">).*?(</p>)', r'\g<1>1分很不合适，5分很合适；可填一位小数。\2', html)
+    html=html.replace('给这次调整打分','给B方案打分')
+    html=html.replace('请按给定家庭角色作答。展示结果不会改变现实电器的设置。','请按这户家庭的情况作答。')
+    html=html.replace('1分很不合适，5分很合适；可填一位小数。','0分很不合适，5分很合适。')
+    template=(ASSETS/'index.html').read_text()
+    start='        <div class="rating-grid">';end='        <label class="field reason-label"'
+    a=html.index(start);b=html.index(end,a)
+    html=html[:a]+template[template.index(start):template.index(end)]+html[b:]
+    return html
 
 
 def renderer(base):
     source=base
     compare=(ASSETS/'compare_nodes.js').read_text()
-    family=section(compare,'familyModel','pairedRows')
+    family=section(compare,'familyModel','sideBySide')
     source=source.replace(section(source,'familyModel','requestModel'),family)
     source=source.replace(section(source,'changesModel','serviceLines'),'')
     source=source.replace(section(source,'impactModel','displayed'),'')
     source=source.replace(section(source,'requestModel','serviceLines'),'')
     additions='\n'.join([(ASSETS/'housing_drawing.js').read_text(),
         section(compare,'housingPreview','familyModel'),
-        section(compare,'sideBySide','daySummary'),(ASSETS/'pending_nodes.js').read_text()])
+        section(compare,'sideBySide',None),(ASSETS/'pending_nodes.js').read_text()])
     source=source.replace('  function displayed(c,p){', additions+'\n  function displayed(c,p){')
     source=source.replace("root.EBSimple50={revision:REVISION,", "root.EBSimple50={presentation_revision:'eb.questionnaire50.refined.v91.newAB.v1',housingGeometry,housingDrawing,presentationNodes:(c,p)=>({family:familyModel(c,p),request:requestModel(c),changes:changesModel(c,p),impacts:impactModel(c,p)}),revision:REVISION,")
     source=source.replace("['svg','path','circle','rect'].includes(n.tag)","['svg','g','defs','filter','feGaussianBlur','linearGradient','stop','line','path','circle','rect','polygon','text','title'].includes(n.tag)")
@@ -44,9 +91,9 @@ def renderer(base):
     source=source.replace("const o=el('option',x.date+' · 方案'+(index.cases.filter(r=>r.household_id===x.household_id).indexOf(x)+1));o.value=x.case_id;", "const o=el('option',x.date);o.value=x.date;")
     source=source.replace("dates(params.get('case_id')||data.resume_case_id)", "dates(index.cases.find(x=>x.case_id===params.get('case_id'))?.date||params.get('date')||data.resume_date)")
     source=source.replace('let index,current,profile,row,serial=0,loading=true,plansRendered=false;', 'let index,current,profile,row,physicalReviews=null,serial=0,loading=true,plansRendered=false;')
-    source=source.replace('profile=p;current=c;renderFamily();', "profile=p;const physical_review=physicalReviews?.cases[c.case_id];if(physical_review&&physical_review.source_frozen_pair_sha256!==c.bindings.source_pair_sha256)throw Error('仿真结果与本题方案不一致。');current=physical_review?{...c,physical_review}:c;if(physical_review?.status==='computed'){q('score-note').textContent='按给定家庭和本题已列出的配对仿真估算判断：1分很不合适，5分很合适，可填一位小数。工程审计、VPP达标和家庭是否接受分别判断。';q('comfort_score').parentElement.querySelector('small').textContent='室温与生活变化是否适合这户家庭';q('energy_score').parentElement.querySelector('small').textContent='用电时段与费用变化是否适合这户家庭';}else{q('score-note').textContent='按家庭角色评价提议安排：1分很不合适，5分很合适，可填一位小数。实际后果尚未计算，不要求推测。';q('comfort_score').parentElement.querySelector('small').textContent='温控请求与生活安排是否适合这户家庭';q('energy_score').parentElement.querySelector('small').textContent='用电时段与设备安排是否适合这户家庭';}renderFamily();")
+    source=source.replace('profile=p;current=c;renderFamily();', "profile=p;const physical_review=physicalReviews?.cases[c.case_id];if(physical_review&&physical_review.source_frozen_pair_sha256!==c.bindings.source_pair_sha256)throw Error('仿真结果与本题方案不一致。');current=physical_review?{...c,physical_review}:c;q('score-note').textContent='1分很不合适，5分很合适；可填一位小数。';renderFamily();")
     source=source.replace("json('index.json').then(data=>{\n    index=data;", "json('index.json').then(async data=>{\n    index=data;if(data.physical_review_index)physicalReviews=await json(data.physical_review_index.path,data.physical_review_index.sha256);")
-    return source
+    return participant_renderer(source)
 
 
 def build(proposal_release, frontend_source, out):
@@ -74,11 +121,13 @@ def build(proposal_release, frontend_source, out):
     html=html.replace('室温与生活变化是否适合这户家庭','温控请求与生活安排是否适合这户家庭')
     html=html.replace('用电时段与费用变化是否适合这户家庭','用电时段与设备安排是否适合这户家庭')
     html=html.replace('此入口为本地预览。','凭恢复码可换设备续填。')
-    (public/'index.html').write_text(html)
+    (public/'index.html').write_text(participant_html(html))
     (public/'view.css').write_bytes((ASSETS/'view.css').read_bytes())
+    (public/'required-response.js').write_bytes((ASSETS/'required-response.js').read_bytes())
     (public/'view.js').write_text(renderer((public/'view.js').read_text()))
     instructions=read(out/'ANSWER_INSTRUCTIONS.json')
     instructions['scores']['energy_score']['label']='用电与费用'
+    instructions.update(decimal_places=0,score_values=[0,1,2,3,4,5],range=[0,5],anchors={'0':'很不合适','5':'很合适'})
     save(out/'ANSWER_INSTRUCTIONS.json',instructions)
     housing_index=read(frontend_source/'public/display-index.json')
     if sha(frontend_source/'public/display-index.json')!=reviewed['files']['public/display-index.json']:raise ValueError('UI91_HOUSING_INDEX_CHANGED')
@@ -93,7 +142,7 @@ def build(proposal_release, frontend_source, out):
         profile_review.append({'household_id':hid,'original_profile_sha256':index['profiles_sha256'][hid],
             'UI91_housing_sha256':ref['sha256'],'original_fields_unchanged':{k:v for k,v in enriched.items() if k!='display_housing'}==original})
         index['profiles_sha256'][hid]=sha(public/'households'/(hid+'.json'))
-    index['presentation_revision']='eb.questionnaire50.refined.v91.newAB.v1'
+    index['presentation_revision']=PRESENTATION
     save(public/'index.json',index)
     save(out/'PROFILE_GEOMETRY_REVIEW.json',{'records':profile_review,'old_physical_results_read':False})
     for n in ['DISPLAY_MODELS.json','DISPLAY_MODELS50.json']:

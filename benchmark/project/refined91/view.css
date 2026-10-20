@@ -246,3 +246,15 @@ details.complete-information{margin:21px 0 0;padding:0;border:1px solid var(--li
 .row-count-63>.compare-side{grid-row:1 / span 64}
 .row-count-64>.compare-side{grid-row:1 / span 65}
 @supports not (grid-template-rows:subgrid){.compare-side{display:block}.compare-row{min-height:86px}}
+
+/* Six explicit, initially empty choices; radios preserve keyboard/form behavior. */
+.rating-grid .score-block{border:0;border-bottom:1px solid var(--line);padding:12px 0;margin:0;min-width:0;}
+.rating-grid .score-block legend{font-size:13px;font-weight:600;padding:0;}
+.score-options{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:9px;}
+.rating-grid .score-option{display:block;position:relative;border:0;padding:0;margin:0;min-width:0;cursor:pointer;}
+.rating-grid .score-option input{position:absolute;opacity:0;width:1px;height:1px;min-height:0;padding:0;margin:0;}
+.score-option span{display:flex;align-items:center;justify-content:center;aspect-ratio:1;min-height:40px;border:1px solid #cadbc9;border-radius:5px;background:#fff;color:#456659;font-size:16px;font-weight:600;}
+.score-option:hover span{border-color:#43896e;background:#f2f7f2;}
+.score-option input:checked+span{border-color:#277761;background:#277761;color:#fff;}
+.score-option input:focus-visible+span{outline:2px solid #398770;outline-offset:3px;}
+.score-option:has(input:disabled){cursor:default;opacity:.6;}
