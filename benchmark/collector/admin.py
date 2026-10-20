@@ -21,6 +21,7 @@ def backup(root,output):
         with sqlite3.connect(stage/'formal_responses.sqlite3')as db:
             assert db.execute('pragma integrity_check').fetchone()[0]=='ok'
             counts={t:db.execute('select count(*)from '+t).fetchone()[0]for t in ['actors','current_drafts','responses_v69','view_history','withdrawals','assignment_leases','quality_reviews']}
+            if db.execute("select 1 from sqlite_master where name='participant_rounds'").fetchone():counts['participant_rounds']=db.execute('select count(*)from participant_rounds').fetchone()[0]
             signature=db.execute("select value from collection_metadata where key='release_sha256'").fetchone()[0]
         shutil.copy2(root/'credential_pepper',stage/'credential_pepper')
         manifest={'schema':'eb.reference_benchmark.backup.v1','created_at':now(),'release_sha256':signature,'row_counts':counts,'sqlite_integrity':'ok'}
@@ -39,6 +40,7 @@ def status(store):
             where r.release=?and a.active=1 and a.consent_version=?order by r.rowid''',(store.release,NOTICE_VERSION)).fetchall()
         reviews=db.execute('select * from quality_reviews where release=?order by review_id',(store.release,)).fetchall()
         actors=db.execute('select count(*)from actors where active=1').fetchone()[0]
+        people=db.execute('select count(distinct p.participant_id)from participant_rounds p join actors a using(actor_id)where a.active=1').fetchone()[0]
     latest={(r['actor_id'],r['case_id']):dict(r)for r in rows}
     review_by_key={(r['actor_id'],r['case_id'],r['answer_revision']):r['status']for r in reviews}
     submitted=collections.Counter();valid=collections.Counter();unreviewed=collections.Counter()
@@ -50,7 +52,9 @@ def status(store):
     for case,row in store.public_release.records.items():
         cases.append({'case_id':case,'household_id':row['household_id'],'submitted':submitted[case],
                       'reviewed_valid':valid[case],'unreviewed':unreviewed[case]})
-    return {'schema':'eb.reference_benchmark.collection_status.v1','release_sha256':store.release,'active_identities':actors,
+    complete=collections.Counter(row['actor_id']for row in latest.values())
+    return {'schema':'eb.reference_benchmark.collection_status.v1','release_sha256':store.release,'active_identities':people,
+            'active_assignments':actors,'completed_rounds':sum(n==store.public_release.questions_per_household for n in complete.values()),
             'human_identity_validation':'not_performed','submitted_latest_actor_cases':len(latest),
             'reviewed_valid_actor_cases':sum(c['reviewed_valid']for c in cases),
             'source_cases_with_submissions':sum(c['submitted']>0 for c in cases),'source_case_count':len(cases),'cases':cases}

@@ -71,6 +71,11 @@ def build(proposal_release,results,out,diagnostic_preview=False):
     html=public/'index.html';html.write_text(html.read_text().replace('实际用电、费用、室温和VPP达标情况尚未计算，请根据提议安排判断。',
         '按本题列出的A/B配对仿真估算判断；失败、未知与未达标均照实保留。' if diagnostic_preview else
         '本版本每题均提供A/B配对仿真估算；任务未完成和VPP未达标照实保留，请按本户需要判断是否接受。'))
+    text=html.read_text().replace('aria-label="选择家庭和日期"','aria-label="系统分配家庭及日期"')
+    if 'id="next-household"'not in text:
+        text=text.replace('<p id="response-status"','<button id="next-household" class="secondary next-button" type="button" hidden>本轮已完成，自愿再评价一户</button><p id="response-status"')
+    html.write_text(text)
+    for name in ('collection-client.js','entry.js'):shutil.copyfile(COLLECTOR/name,public/name)
     entry=public/'entry.html';entry.write_text((COLLECTOR/'entry.html').read_text().replace('方案为参考仿真，不会改变现实电器的设置。',
         '方案与后果为参考模型估算，不会改变现实电器的设置。'+('诊断预览中未通过工程准入的后果标为未知。'if diagnostic_preview else'本版本每题均有可用的配对估算，节电、达标与家庭是否接受分别判断。')+'旧版答卷独立保留，不会作为本版答案。'))
     instructions=read(out/'ANSWER_INSTRUCTIONS.json');instructions.update(collection_condition='按给定家庭、A/B计划及本题已列的配对仿真估算作答；未知和失败不补造后果，不把VPP达标当作接受答案。',objective_outcomes='物理估算、工程/服务失败和VPP达标按同一冻结A/B版本单独记录；不预设家庭接受或评分。')
@@ -93,6 +98,11 @@ def build(proposal_release,results,out,diagnostic_preview=False):
         source_case_bytes_modified=True,source_case_definition='new derived UI91 information packets;original proposal packets preserved;A/B commands unchanged',
         frozen_A_B_commands_modified=False,all_source_cases_retained=True,new_EP_runs=physics['engine_arms_in_this_bound_run'],production_deployed=False)
     m['engineering_replenishment']=physics.get('engineering_replenishment')
+    m['assignment_policy']={'version':'system_assigned_stable_participant_optional_rounds.v1','questions_per_round':10,
+        'household_self_selection':False,'resume_incomplete_round':True,'repeat_household_for_same_identity':False,
+        'next_round':'explicit_voluntary_after_complete_and_no_pending_draft','withdrawal_scope':'all_participant_rounds',
+        'balance':'completed_rounds_then_live_incomplete_leases_then_starts_random_tie','outcome_based_assignment':False,
+        'identity_limit':'anonymous_cookie_and_recovery_code;not_verified_unique_people','analysis_group':'participant_id_across_all_rounds'}
     m['native_attempts_during_preparation']=physics.get('native_attempts_during_preparation')
     m['source_pins'].update(parent_proposal_release_sha256=parent.signature,result_manifest_sha256=sha(results/'MANIFEST.json'),physical_release_builder_sha256=sha(Path(__file__)))
     m['implementation_files']={p.name:sha(p) for p in sorted(COLLECTOR.iterdir()) if p.is_file() and p.suffix!='.pyc'}

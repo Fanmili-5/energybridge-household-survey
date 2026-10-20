@@ -65,6 +65,7 @@ def activate(signature,previous,origin,port=18793,service_name='energybridge-cur
     assert len(release.records)==500 and len(release.households)==50
     assert release.manifest.get('formal_collection_ready') is True,'Formal release has not passed zero-unknown readiness'
     assert release.manifest.get('physical_statuses')=={'computed':500},'Formal collection cannot contain unavailable consequences'
+    assert release.manifest.get('assignment_policy',{}).get('version')=='system_assigned_stable_participant_optional_rounds.v1','Formal collection requires verified system assignment and multi-round identity'
     for cid,row in release.records.items():
         _,case=release.case(cid,row['household_id'])
         assert case.get('outcome_status')=='computed' and isinstance(case.get('impact'),dict),'Missing case consequences'
@@ -140,6 +141,7 @@ WantedBy=timers.target
         command('systemctl','daemon-reload');command('systemctl','start',unit.name)
         private=health(f'http://127.0.0.1:{port}/household50-current/api/health',signature)
         assert private['presentation_revision']==release.manifest['presentation_revision']
+        assert private['assignment_policy']==release.manifest['assignment_policy']['version'] and private['questions_per_round']==10
         assert not any(counts(root).values()),'New ledger must be empty before public activation'
         changed=f'''# BEGIN CURRENT50 UI91PHYSICS
 location ^~ /household50-current {{

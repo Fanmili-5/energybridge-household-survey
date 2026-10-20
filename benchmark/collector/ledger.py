@@ -12,8 +12,8 @@ from release import UI_VERSION,CONTRACT_VERSION,encoded,digest
 
 from identity import Store as IdentityStore,now
 
-NOTICE_VERSION='eb.reference50.collection_notice.v69'
-NOTICE='本研究邀请您扮演给定参考家庭，评价10个日期的A/B用电安排。记录包括四项评分、接受判断、原因、所见页面与版本，以及保存进度所需的操作。参与自愿，可停止或使用恢复码续填、撤回答卷；无需提供姓名或联系方式。模型结果为参考仿真。您的回答用于研究和评估，通过质量检查后才可能用于模型训练。'
+NOTICE_VERSION='eb.reference50.collection_notice.v69.rounds.v1'
+NOTICE='本研究邀请您扮演系统分配的参考家庭，每轮评价一户10个日期的A/B用电安排。未完成时继续原进度；完成后可自愿领取另一户，不重复分配已领家庭。同一匿名身份的多轮记录关联保存，不作为多个独立受访者。记录包括四项评分、接受判断、原因、所见页面与版本，以及保存进度所需的操作。参与自愿，可停止或使用同一恢复码续填、撤回全部轮次答卷；无需提供姓名或联系方式。模型结果为参考仿真。您的回答用于研究和评估，通过质量检查后才可能用于模型训练。'
 FIELDS={'decision','score','comfort_score','energy_score','vpp_score','reason'}
 SCORES=('score','comfort_score','energy_score','vpp_score')
 
@@ -66,17 +66,44 @@ class CollectionStore(IdentityStore):
             CREATE TABLE IF NOT EXISTS quality_reviews(review_id INTEGER PRIMARY KEY AUTOINCREMENT,actor_id TEXT NOT NULL,release TEXT NOT NULL,case_id TEXT NOT NULL,answer_revision INTEGER NOT NULL,status TEXT NOT NULL,rule_version TEXT NOT NULL,reviewer TEXT NOT NULL,reason TEXT NOT NULL,reviewed_at TEXT NOT NULL);
             CREATE TRIGGER IF NOT EXISTS immutable_quality_update BEFORE UPDATE ON quality_reviews BEGIN SELECT RAISE(ABORT,'append only');END;
             CREATE TRIGGER IF NOT EXISTS immutable_quality_delete BEFORE DELETE ON quality_reviews BEGIN SELECT RAISE(ABORT,'append only');END;
+            CREATE TABLE IF NOT EXISTS participant_rounds(actor_id TEXT PRIMARY KEY,participant_id TEXT NOT NULL,round_number INTEGER NOT NULL,previous_actor_id TEXT UNIQUE,allocation_json TEXT NOT NULL,UNIQUE(participant_id,round_number));
             ''')
+            # Existing ledgers retain their actors, credentials and responses unchanged.
+            db.execute("insert or ignore into participant_rounds select actor_id,actor_id,1,NULL,'{\"policy\":\"legacy_single_round\"}' from actors")
             db.execute("insert or ignore into collection_metadata values('release_sha256',?)",(release.signature,))
             db.execute("insert or ignore into collection_metadata values('schema','eb.reference50.collection.v69')")
             db.execute("insert or ignore into collection_metadata values('mode',?)",('engineering_fixture'if fixtures else'formal',))
             assert db.execute("select value from collection_metadata where key='mode'").fetchone()[0]==('engineering_fixture'if fixtures else'formal')
 
     def actor(self,session,db=None,*,consent=False):
+        if db is None:
+            with self.connect()as conn:return self.actor(session,conn,consent=consent)
         a=super().actor(session,db,consent=False)
         if a['batch']!=self.cohort or a['household_id']not in self.public_release.households:raise PermissionError('参与身份不属于当前发布。')
         if consent and a['consent_version']!=NOTICE_VERSION:raise PermissionError('请先确认参与说明。')
-        return a
+        link=db.execute('select * from participant_rounds where actor_id=?',(a['actor_id'],)).fetchone()
+        return {**a,'participant_id':link['participant_id'],'round_number':link['round_number']}
+
+    @staticmethod
+    def assignment(a):
+        return {'participant_id':a['participant_id'],'assignment_id':a['actor_id'],
+                'round_number':a['round_number'],'household_id':a['household_id'],'recovery_code':None}
+
+    def allocate(self,db,excluded=()):
+        # Counts measure workload only. Scores, acceptance and simulated outcomes are never used.
+        completed={r['household_id']:r['n']for r in db.execute('''select household_id,count(*)as n from
+          (select a.actor_id,a.household_id from actors a join responses_v69 r using(actor_id)
+           where a.active=1 and a.consent_version=? and r.release=? group by a.actor_id,a.household_id
+           having count(distinct r.case_id)=?)group by household_id''',(NOTICE_VERSION,self.release,self.public_release.questions_per_household))}
+        busy={r['household_id']:r['n']for r in db.execute('''select l.household_id,count(*)as n from assignment_leases l join actors a using(actor_id)
+            where a.active=1 and l.active_until>? and (select count(distinct r.case_id)from responses_v69 r where r.actor_id=a.actor_id and r.release=?)<? group by l.household_id''',
+            (time.time(),self.release,self.public_release.questions_per_household))}
+        starts={r['household_id']:r['n']for r in db.execute('select household_id,count(*)as n from actors group by household_id')}
+        available=[h for h in self.public_release.households if h not in excluded]
+        if not available:raise Conflict('已完成本版本所有家庭，无需重复填写。')
+        rank=lambda h:(completed.get(h,0),busy.get(h,0),starts.get(h,0))
+        best=min(map(rank,available));ties=[h for h in available if rank(h)==best];hid=secrets.choice(ties)
+        return hid,encoded({'policy':'completed_then_busy_then_starts_random_tie.v1','rank':best,'ties':ties,'selected':hid,'excluded':sorted(excluded)}).decode()
 
     def start_open(self,session):
         with self.lock,self.connect()as db:
@@ -87,21 +114,55 @@ class CollectionStore(IdentityStore):
             if prior and prior['active']:
                 actor=self.actor(session,db)
                 db.execute('update assignment_leases set active_until=? where actor_id=?',(time.time()+self.lease_seconds,actor['actor_id']))
-                return {'participant_id':actor['actor_id'],'household_id':actor['household_id'],'recovery_code':None}
-            # Complete submissions are a load-balancing measure, not quality validation.
-            completed={r['household_id']:r['n']for r in db.execute('''select household_id,count(*)as n from
-              (select a.actor_id,a.household_id from actors a join responses_v69 r using(actor_id)
-               where a.active=1 and a.consent_version=? and r.release=? group by a.actor_id,a.household_id
-               having count(distinct r.case_id)=?)group by household_id''',(NOTICE_VERSION,self.release,self.public_release.questions_per_household))}
-            busy={r['household_id']:r['n']for r in db.execute('''select l.household_id,count(*)as n from assignment_leases l join actors a using(actor_id)
-                where a.active=1 and l.active_until>? group by l.household_id''',(time.time(),))}
-            starts={r['household_id']:r['n']for r in db.execute('select household_id,count(*)as n from actors group by household_id')}
-            hid=min(self.public_release.households,key=lambda h:(completed.get(h,0),busy.get(h,0),starts.get(h,0),self.public_release.households.index(h)))
+                return self.assignment(actor)
+            hid,allocation=self.allocate(db)
             actor_id='P-'+secrets.token_hex(12);recovery=secrets.token_urlsafe(32)
             db.execute('insert into actors values(?,?,?,?,1,NULL,NULL,?)',(actor_id,self.cohort,hid,self.secret_hash('recovery',recovery),now()))
+            db.execute('insert into participant_rounds values(?,?,1,NULL,?)',(actor_id,actor_id,allocation))
             db.execute('insert into assignment_leases values(?,?,?)',(actor_id,hid,time.time()+self.lease_seconds))
             db.execute('update sessions set actor_id=? where session_digest=?',(actor_id,session['session_digest']))
-            return {'participant_id':actor_id,'household_id':hid,'recovery_code':recovery}
+            return {'participant_id':actor_id,'assignment_id':actor_id,'round_number':1,'household_id':hid,'recovery_code':recovery}
+
+    def next_round(self,session,payload):
+        if not isinstance(payload,dict)or set(payload)!={'participant_id','assignment_id','release_sha256','ui_revision'}:raise ValueError('领取下一户请求字段无效。')
+        with self.lock,self.connect()as db:
+            db.execute('BEGIN IMMEDIATE');a=self.actor(session,db,consent=True)
+            if payload['participant_id']!=a['participant_id']or payload['release_sha256']!=self.release or payload['ui_revision']!=UI_VERSION:raise Conflict('参与身份或版本已变化，请刷新。')
+            if payload['assignment_id']!=a['actor_id']:
+                previous=db.execute('select previous_actor_id from participant_rounds where actor_id=?',(a['actor_id'],)).fetchone()[0]
+                if previous==payload['assignment_id']:return {**self.assignment(a),'duplicate':True}
+                raise Conflict('填写轮次已变化，请刷新。')
+            done=db.execute('select count(distinct case_id)from responses_v69 where actor_id=?and release=?',(a['actor_id'],self.release)).fetchone()[0]
+            if done!=self.public_release.questions_per_household:raise Conflict('请先完成当前家庭的10题；原进度会保留。')
+            if db.execute('select 1 from current_drafts where actor_id=?and release=?and value_json is not NULL',(a['actor_id'],self.release)).fetchone():raise Conflict('请先提交或撤销当前轮次的未提交修改。')
+            excluded={r[0]for r in db.execute('select household_id from actors join participant_rounds using(actor_id)where participant_id=?',(a['participant_id'],))}
+            hid,allocation=self.allocate(db,excluded);ident='P-'+secrets.token_hex(12)
+            db.execute('insert into actors values(?,?,?,?,1,?,?,?)',(ident,self.cohort,hid,self.secret_hash('unused_round_credential',secrets.token_urlsafe(32)),a['consent_version'],a['consent_at'],now()))
+            db.execute('insert into participant_rounds values(?,?,?,?,?)',(ident,a['participant_id'],a['round_number']+1,a['actor_id'],allocation))
+            db.execute('update assignment_leases set active_until=0 where actor_id=?',(a['actor_id'],))
+            db.execute('insert into assignment_leases values(?,?,?)',(ident,hid,time.time()+self.lease_seconds))
+            # Move all devices together; stale tabs cannot write to a previous round.
+            db.execute('update sessions set actor_id=?where actor_id in(select actor_id from participant_rounds where participant_id=?)',(ident,a['participant_id']))
+            return {**self.assignment(self.actor(session,db)),'duplicate':False}
+
+    def claim(self,session,batch,credential,remote_key):
+        with self.lock:
+            super().claim(session,batch,credential,remote_key)
+            with self.connect()as db:
+                a=self.actor(session,db)
+                latest=db.execute('select a.actor_id from actors a join participant_rounds p using(actor_id)where p.participant_id=?and a.active=1 order by p.round_number desc limit 1',(a['participant_id'],)).fetchone()[0]
+                db.execute('update sessions set actor_id=?where session_digest=?',(latest,session['session_digest']))
+                return self.assignment(self.actor(session,db))
+
+    def withdraw(self,session):
+        with self.lock,self.connect()as db:
+            db.execute('BEGIN IMMEDIATE');a=self.actor(session,db);receipt='WD-'+secrets.token_hex(8).upper();stamp=now()
+            for row in db.execute('select actor_id from participant_rounds where participant_id=?',(a['participant_id'],)).fetchall():
+                ident=row[0];db.execute('update actors set active=0,consent_version=NULL where actor_id=?',(ident,))
+                db.execute('insert or ignore into withdrawals values(?,?,?)',(ident,stamp,receipt))
+                db.execute('update sessions set actor_id=NULL where actor_id=?',(ident,))
+                db.execute('update assignment_leases set active_until=0 where actor_id=?',(ident,))
+            return {'withdrawn':True,'receipt_id':receipt,'scope':'all_participant_rounds'}
 
     def consent(self,session,payload):
         if payload!={'accept':True,'understood_assigned_role':True,'notice_version':NOTICE_VERSION}:raise ValueError('请先阅读并确认参与说明。')
@@ -119,6 +180,7 @@ class CollectionStore(IdentityStore):
             rows=db.execute('select * from responses_v69 where actor_id=? and release=? order by rowid',(a['actor_id'],self.release)).fetchall()
             drafts=db.execute('select * from current_drafts where actor_id=? and release=?',(a['actor_id'],self.release)).fetchall()
             views=[self.view_state(db,a['actor_id'],r['case_id'])for r in db.execute('select case_id from view_history where actor_id=? and release=?',(a['actor_id'],self.release)).fetchall()]
+            rounds=[dict(r)for r in db.execute('select p.round_number,a.household_id,a.actor_id as assignment_id,(select count(distinct case_id)from responses_v69 r where r.actor_id=a.actor_id and r.release=?)as completed_count from participant_rounds p join actors a using(actor_id)where p.participant_id=?order by p.round_number',(self.release,a['participant_id']))]
         answers={}
         for row in rows:
             r=json.loads(row['record_json']);answers[row['case_id']]={'case_id':row['case_id'],'date':r['date'],'response':r['response'],
@@ -132,13 +194,14 @@ class CollectionStore(IdentityStore):
         live=[d for d in active if d['response']is not None]
         resume=max(live,key=lambda d:d['saved_at'])['case_id']if live else next((r['case_id']for r in self.public_release.records.values()if r['household_id']==a['household_id']and r['case_id']not in answers),None)
         if resume is None and answers:resume=max(answers.values(),key=lambda r:r['saved_at'])['case_id']
-        return {**base,'participant_id':a['actor_id'],'household_id':a['household_id'],
+        return {**base,**self.assignment(a),'rounds':rounds,'can_start_next_round':len(answers)==self.public_release.questions_per_household and len(rounds)<len(self.public_release.households),
                 'consented':a['consent_version']==NOTICE_VERSION,'answers':list(answers.values()),'drafts':active,
                 'completed_count':len(answers),'resume_date':self.public_release.records[resume]['date']if resume else None,'views':views}
 
     def binding(self,session,payload,db=None):
         a=self.actor(session,db,consent=True)
-        if not isinstance(payload,dict)or payload.get('participant_id')!=a['actor_id']:raise Conflict('参与身份已变化，请刷新后继续。')
+        if not isinstance(payload,dict)or payload.get('participant_id')!=a['participant_id']:raise Conflict('参与身份已变化，请刷新后继续。')
+        if payload.get('assignment_id',a['actor_id']if a['round_number']==1 else None)!=a['actor_id']:raise Conflict('填写轮次已变化，请刷新后继续。')
         if not isinstance(payload,dict)or payload.get('release_sha256')!=self.release or payload.get('ui_revision')!=UI_VERSION:raise Conflict('问卷版本已变化，请刷新；原记录不会覆盖到新版。')
         row,case=self.public_release.case(payload.get('case_id'),a['household_id'])
         if payload.get('case_sha256')!=row['sha256']:raise Conflict('案例版本不一致，请刷新。')
@@ -186,7 +249,7 @@ class CollectionStore(IdentityStore):
 
     def view(self,session,payload):
         required={'participant_id','release_sha256','ui_revision','case_id','case_sha256','presentation'}
-        if not isinstance(payload,dict)or set(payload)!=required:raise ValueError('查看记录字段无效。')
+        if not isinstance(payload,dict)or set(payload)not in (required,required|{'assignment_id'}):raise ValueError('查看记录字段无效。')
         with self.lock,self.connect()as db:
             db.execute('BEGIN IMMEDIATE');a,row,_=self.binding(session,payload,db)
             shown=self.presentation(row['case_id'],payload['presentation'])
@@ -195,7 +258,7 @@ class CollectionStore(IdentityStore):
 
     def draft(self,session,payload,*,clear=False):
         fields={'participant_id','release_sha256','ui_revision','case_id','case_sha256','expected_version','expected_answer_revision'}| (set()if clear else{'response','presentation'})
-        if not isinstance(payload,dict)or set(payload)!=fields:raise ValueError('草稿字段无效。')
+        if not isinstance(payload,dict)or set(payload)not in (fields,fields|{'assignment_id'}):raise ValueError('草稿字段无效。')
         expected=integer(payload['expected_version']);answer_rev=integer(payload['expected_answer_revision'])
         answer=None if clear else response(payload['response'],False)
         with self.lock,self.connect()as db:
@@ -215,7 +278,7 @@ class CollectionStore(IdentityStore):
 
     def save(self,session,payload):
         required={'participant_id','release_sha256','ui_revision','case_id','case_sha256','expected_answer_revision','expected_draft_version','request_id','response','presentation'}
-        if not isinstance(payload,dict)or set(payload)!=required:raise ValueError('提交字段无效。')
+        if not isinstance(payload,dict)or set(payload)not in (required,required|{'assignment_id'}):raise ValueError('提交字段无效。')
         if not isinstance(payload['request_id'],str)or not re.fullmatch(r'[a-f0-9-]{36}',payload['request_id']):raise ValueError('提交标识无效。')
         answer=response(payload['response'],True);prior_rev=integer(payload['expected_answer_revision']);draft_rev=integer(payload['expected_draft_version'])
         with self.lock,self.connect()as db:
@@ -241,7 +304,8 @@ class CollectionStore(IdentityStore):
                     'source_release_sha256':self.release,'source_case_sha256':row['sha256'],
                     'source_profile_sha256':self.public_release.index['profiles_sha256'][a['household_id']],
                     'source_bindings':case['bindings'],'ui_assets_sha256':self.public_release.index['ui_assets_sha256'],
-                    'case_id':row['case_id'],'household_id':a['household_id'],'date':case['date'],'participant_id':a['actor_id'],
+                    'case_id':row['case_id'],'household_id':a['household_id'],'date':case['date'],'participant_id':a['participant_id'],
+                    'assignment_id':a['actor_id'],'round_number':a['round_number'],
                     'input':model_input,'input_sha256':digest(model_input),'response':answer,
                     'presentation':presentation,'current_display_presentation':current_display,'view_history':view,
                     'objective_results':{'schema':'eb.fixed_simulation_outcomes.v69','source_case_sha256':row['sha256'],'VPP_requests':copy.deepcopy(case['VPP_requests']),'VPP_results':copy.deepcopy(case['VPP_results']),
