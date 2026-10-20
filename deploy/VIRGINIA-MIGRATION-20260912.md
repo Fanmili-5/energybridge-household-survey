@@ -1,14 +1,14 @@
 # 问卷入口迁移到弗吉尼亚实例
 
-> 部署历史记录，文中的路径和参数不代表当前配置。安装与更新请参阅[部署说明](../docs/DEPLOYMENT.md)。
+> 部署历史记录，文中的路径和参数不代表当前配置。安装与更新请参阅[部署说明](../docs/history/legacy-202609/DEPLOYMENT.md)。
 
 2026-09-12 已完成迁移。新入口：**https://47.85.194.154/**；管理员入口：**https://47.85.194.154/admin**。普通账号和管理员密码沿用现有配置。旧入口 `https://47.76.205.32/` 对页面访问返回跳转；旧 POST 返回迁移提示，避免继续写入旧库。
 
 2026-09-13 当前更新：网站与学校计算端运行 `eb.paired_ep.v3.3`，问卷为 `v4.2`，代码目录分别为 `/opt/energybridge/releases/intake-v42-20260913` 和 `~/energybridge-compute/releases/intake-v42-20260913`。两端计算 release hash 均为 `019bd4d5543dd5a272b41126dd986c22523b8fe40fff910f659dd858cbd68489`；Git 提交为 `cf23b973c741d965f89d7fd8747d0545710b41be`，发布归档 SHA-256 为 `252077fae1d6eee31c68c5684812cda96d7bbc6a8cae8b57116295afa8e3a8a9`。数据库与既有记录没有迁移或改写；线上仍为工程试填模式。
 
-2026-09-14 精度更新：两端已切换到 `releases/precision-v44-20260914`，配对流程 v3.5 / 问卷 v4.4；当前哈希、备份及验收见 [十分钟精度修复](../docs/input-precision-fix-20260914.md)。下表与更早更新段保留为迁移记录。
+2026-09-14 精度更新：两端已切换到 `releases/precision-v44-20260914`，配对流程 v3.5 / 问卷 v4.4；当前哈希、备份及验收见 [十分钟精度修复](../docs/history/legacy-202609/input-precision-fix-20260914.md)。下表与更早更新段保留为迁移记录。
 
-2026-09-14 入口更新：参与者已免登录，生成前使用本地图片验证码；管理入口仍单独认证。当前运行版本为 `releases/public-captcha-20260914`，详见 [免登录与验证码说明](../docs/public-access-local-captcha.md)。
+2026-09-14 入口更新：参与者已免登录，生成前使用本地图片验证码；管理入口仍单独认证。当前运行版本为 `releases/public-captcha-20260914`，详见 [免登录与验证码说明](../docs/history/legacy-202609/public-access-local-captcha.md)。
 
 ## 运行位置与配置
 

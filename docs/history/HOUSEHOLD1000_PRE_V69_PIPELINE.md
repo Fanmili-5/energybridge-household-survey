@@ -22,7 +22,7 @@
 
 材料与接口使用原成熟前端和 `deploy/formal_questionnaires_20261014/`。实际浏览器由 `deploy/contrast_validation_20261015/browser_fixture.py` 在学校以独立虚构身份验收；`complete_review.py`连接全部当前物理/正式材料/角色覆盖收据。命令不会替参与者生成真人答案。旧静态/生成辅助模块不能直接覆盖新阶段，现有目录与历史失败均保留。
 
-`household1000.py require-generation` 是只读验证，当前输入/代码变化即拒绝旧收据，不自动启动EP。公开clone缺少许可原件和逐户完整输入；学校准备好的工作区才能核完整证据。G6真人与实测限制见[研究门](RESEARCH_GATES.md)。
+`household1000.py require-generation` 是只读验证，当前输入/代码变化即拒绝旧收据，不自动启动EP。公开clone缺少许可原件和逐户完整输入；学校准备好的工作区才能核完整证据。G6真人与实测限制见[研究门](../household1000/RESEARCH_GATES.md)。
 
 下面是历史V28及更早版本的源链和复现说明，其当前状态或启动顺序不能替代上述V29入口。
 
@@ -49,4 +49,4 @@
 
 当前数据/仿真验收限定为可复核的给定参考世界，不能推出真实偏好比例、真实电器普及率、品牌热校准或真人角色有效性。正式答卷记录必须来自自愿参与者；回读输出和流程测试不生成人类标签。当前答案与本人信息不进入角色模型输入，修改/撤回保留来源和审计轨迹。
 
-源码路径、输入边界、验收摘要和线上版本见[STATUS.json](STATUS.json)、[复现说明](REPRODUCTION.md)及[正式采集协议](../../deploy/formal_questionnaires_20261014/RELEASE.md)。
+源码路径、输入边界、验收摘要和线上版本见[STATUS.json](../household1000/STATUS.json)、[复现说明](../household1000/REPRODUCTION.md)及[正式采集协议](../../deploy/formal_questionnaires_20261014/RELEASE.md)。

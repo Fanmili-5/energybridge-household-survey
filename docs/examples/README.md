@@ -5,4 +5,4 @@
 - `engineering_sft_candidate.jsonl`：旧候选格式，包含问卷快照、方案、来源和 messages。
 - `engineering_messages.jsonl`：同一记录的对话格式。
 
-这些文件不是真人答卷，也不是当前交付格式。当前 `input` / `output` 样例见[真实试填样例](../../examples/real-test-20260914/README.md)，字段说明见[数据文档](../DATA.md)。
+这些文件不是真人答卷，也不是当前交付格式。当前 `input` / `output` 样例见[真实试填样例](../../examples/real-test-20260914/README.md)，字段说明见[数据文档](../history/legacy-202609/DATA.md)。

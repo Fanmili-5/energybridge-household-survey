@@ -56,6 +56,6 @@
 
 ## 依据与适用边界
 
-依据、采用范围和参数来源见 [COLLECTION_METHOD.md](COLLECTION_METHOD.md)、`SOURCES.json`、`COLLECTION_PARAMETERS.json`。原EB提供设备/事件与阶段边界；作业调度的先后、独占和不可中断语义支持基本约束；情境合理性研究支持区分机械错误与家庭判断；CheckList支持单列工程诊断；组合覆盖与整数分配支持有限题位设计。准入分类仍是本项目明确的方法选择，不是论文规定的比例或硬件安全标准。
+依据、采用范围和参数来源见 [COLLECTION_METHOD.md](../../docs/collection/COLLECTION_METHOD.md)、`SOURCES.json`、`COLLECTION_PARAMETERS.json`。原EB提供设备/事件与阶段边界；作业调度的先后、独占和不可中断语义支持基本约束；情境合理性研究支持区分机械错误与家庭判断；CheckList支持单列工程诊断；组合覆盖与整数分配支持有限题位设计。准入分类仍是本项目明确的方法选择，不是论文规定的比例或硬件安全标准。
 
 实际电费、室温、热水、SOC、物理响应/失败和人类接受全部未知；本轮没有仿真或偏好实证。六户夏季合成试点不能证明真实50户导入、950户生产、冬季覆盖、大规模性能或人类理解效度。

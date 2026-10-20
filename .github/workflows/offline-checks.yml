@@ -45,7 +45,7 @@ jobs:
                               'benchmark/releases/reference50-v4-ui91-complete/',
                               'benchmark/releases/reference50-v4-proposal/')
               ab_only = (bool(paths)
-                         and all(p.startswith(static_roots) or p in ancillary
+                         and all(p.endswith('.md') or p.startswith(static_roots) or p in ancillary
                                  or (p.startswith('benchmark/releases/reference50-v4-ui91-physics/')
                                      and p.endswith(('.json', '.md'))) for p in paths))
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:

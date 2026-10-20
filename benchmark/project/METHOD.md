@@ -7,10 +7,10 @@
 | 环节 | 依据与实现 | 项目设定 / 适用边界 |
 |---|---|---|
 | 家庭与角色 | [家庭方法](../family_generation/METHOD.md)、[六类证据](../household_archetypes/EVIDENCE.md) | 六种合成联合模板；角色是实验条件，不是人口比例、真实偏好或标签。整户生成，不按 B 成败重抽 |
-| 生活 → A | [生活方法](../ab_generation/LIFE_METHOD.md)、[生活规则](../ab_generation/LIFE_RULES.json) | 先给定日历和服务需求，再用有前后关系、装取、资源不重叠的确定性排程形成A；不是宣称使用CP-SAT求全局最优。约束形式与来源中登记的OR-Tools job-shop原则对应 |
-| A → B | [生成规则](../ab_generation/GENERATION_RULES.md)、[联合算法](../ab_generation/JOINT_LOAD_SUPPLY.md) | 程序链移时和原EV连接边界不变；联合目录保留冲突。网格、剂量及搜索预算是实验设定，不称为论文原值 |
+| 生活 → A | [生活方法](../ab_generation/docs/life/LIFE_METHOD.md)、[生活规则](../ab_generation/LIFE_RULES.json) | 先给定日历和服务需求，再用有前后关系、装取、资源不重叠的确定性排程形成A；不是宣称使用CP-SAT求全局最优。约束形式与来源中登记的OR-Tools job-shop原则对应 |
+| A → B | [生成规则](../ab_generation/docs/history/GENERATION_RULES.md)、[联合算法](../ab_generation/docs/history/JOINT_LOAD_SUPPLY.md) | 程序链移时和原EV连接边界不变；联合目录保留冲突。网格、剂量及搜索预算是实验设定，不称为论文原值 |
 | 没有热状态时 | `offline_unexecuted_A_plan`；`plan_only.py` | 只按声明的控制与占用窗口构造热探索。未知运行负载/温度/余量不补造，所有热请求为exploratory，实际响应和费用未知。与原完整A运行oracle实验严格分开 |
-| 目录 → 预览样本 | [最终分层方法](../ab_generation/FINAL_SAMPLING_METHOD.md)及登记的Statistics Canada分层原则、NIST组合覆盖测量原则 | 固定分层与种子，先形成目录再一次选择；不等于人口概率抽样，也不保证全组合覆盖。六户预览不能替代旧冻结10层验收 |
+| 目录 → 预览样本 | [最终分层方法](../ab_generation/docs/history/FINAL_SAMPLING_METHOD.md)及登记的Statistics Canada分层原则、NIST组合覆盖测量原则 | 固定分层与种子，先形成目录再一次选择；不等于人口概率抽样，也不保证全组合覆盖。六户预览不能替代旧冻结10层验收 |
 | 住房与模型 | [住房方法](../housing_simulation/METHOD.md)、[来源](../housing_simulation/SOURCES.json) | 匹配参考几何、安装与热环境配置；模型编译不代表执行、校准或物理通过 |
 | 问卷资料 | [原EB固定来源](../ab_generation/provenance/ORIGINAL_EB.json)、既定 `collector/answer_contract.py` 和v69源文件 | 采用现有接受/拒绝、四维评分及原因。这里只适配数据；不将原EB的其他两阶段问卷强加到已定v69，不导入其接受先验，也不声称是原控制器真实策略输出 |
 
