@@ -272,6 +272,10 @@ def verify_questionnaire(folder):
     if len(seen) != summary['cases'] or not read(folder / 'AUDIT.json')['all_selected_retained']:
         raise ValueError('PREVIEW_SELECTION_LOST')
     for name, expected in {**summary['source_v69_assets'], **summary['adapter_sources']}.items():
-        if sha(bound(HERE.parent.parent, name)) != expected:
+        # Frozen examples keep their original provenance when the active
+        # collector evolves. A snapshot must match the original source hash.
+        snapshot=summary.get('archived_source_paths',{}).get(name)
+        path=bound(folder,snapshot) if snapshot else bound(HERE.parent.parent,name)
+        if sha(path) != expected:
             raise ValueError('SOURCE_V69_CHANGED:' + name)
     return {'passed': True, 'households': len(index['households']), 'cases': len(seen), 'new_EP_runs': 0, 'formal_collection': False}

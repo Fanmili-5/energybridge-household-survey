@@ -19,6 +19,8 @@ from server import Server
 def run(release_path=None):
     with tempfile.TemporaryDirectory(prefix='reference50-protocol-')as temp:
         temp=Path(temp);release=Release(release_path or make(temp));root=temp/'private'
+        whole_scores=release.answer_instructions['decimal_places']==0
+        minimum_score=release.answer_instructions['range'][0]
         server=Server(release,root,fixtures=True);thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
         bad_count=0
         def request(method,path,data=None,headers=None):
@@ -42,10 +44,11 @@ def run(release_path=None):
             assert request('POST','/api/consent',consent,h)[0]==200
             idx=request('GET','/index.json',headers=h)[2];assert len(idx['cases'])==10
             row=idx['cases'][0];model=release.models[row['case_id']]
-            shown={'fields':{k:model[k]for k in ['family','request','changes','impacts']},'schedule_seen':True,'schedule_text':model['schedule'],'presented_at':now()}
+            schedule_seen=bool(model['schedule'])
+            shown={'fields':{k:model[k]for k in ['family','request','changes','impacts']},'schedule_seen':schedule_seen,'schedule_text':model['schedule']if schedule_seen else None,'presented_at':now()}
             binding={'participant_id':identity['participant_id'],'release_sha256':release.signature,'ui_revision':UI_VERSION,'case_id':row['case_id'],'case_sha256':row['sha256']}
             assert request('POST','/api/view',{**binding,'presentation':shown},h)[0]==200
-            partial={k:None for k in ['decision','score','comfort_score','energy_score','vpp_score','reason']};partial['score']=2.3
+            partial={k:None for k in ['decision','score','comfort_score','energy_score','vpp_score','reason']};partial['score']=minimum_score if whole_scores else 2.3
             draft={**binding,'expected_version':0,'expected_answer_revision':0,'response':partial,'presentation':shown}
             assert request('POST','/api/draft',draft,h)[0]==200
             before=request('GET','/api/state',headers=h)[2]
@@ -55,23 +58,30 @@ def run(release_path=None):
             h2=session();assert request('POST','/api/recover',{'credential':identity['recovery_code']},h2)[0]==200
             recovered=request('GET','/api/state',headers=h2)[2]
             assert recovered['participant_id']==identity['participant_id']and recovered['drafts']==before['drafts']and recovered['views']==before['views']
-            assert recovered['answers']==[] and recovered['drafts'][0]['response']['score']==2.3
+            assert recovered['answers']==[] and recovered['drafts'][0]['response']['score']==partial['score']
             assert start(h2)['participant_id']==identity['participant_id']
-            values={'decision':'reject','score':1.2,'comfort_score':2.3,'energy_score':3.4,'vpp_score':4.5,'reason':'虚构隔离协议测试，不是真人答案。'}
+            values={'decision':'reject','score':minimum_score if whole_scores else 1.2,'comfort_score':2 if whole_scores else 2.3,'energy_score':3 if whole_scores else 3.4,'vpp_score':4 if whole_scores else 4.5,'reason':'虚构隔离协议测试，不是真人答案。'}
             closed=copy.deepcopy(shown);closed.update(schedule_seen=False,schedule_text=None)
             payload={**binding,'expected_answer_revision':0,'expected_draft_version':1,'request_id':str(uuid.uuid4()),'response':values,'presentation':closed}
             for field in values:
                 broken=copy.deepcopy(payload);broken['response'][field]=None;bad('/api/answers',broken,h2)
             for field in ['participant_id','release_sha256','ui_revision','case_sha256']:
                 broken=copy.deepcopy(payload);broken[field]='wrong';bad('/api/answers',broken,h2,409)
-            for value in [False,0,5.1,2.33]:
+            for value in [False,minimum_score-1,5.1,2.33]:
                 broken=copy.deepcopy(payload);broken['response']['score']=value;bad('/api/answers',broken,h2)
+            if whole_scores:
+                for field in ('score','comfort_score','energy_score','vpp_score'):
+                    broken=copy.deepcopy(payload);broken['response'][field]=2.5;bad('/api/answers',broken,h2)
+                    bad('/api/draft',{**draft,'response':broken['response']},h2)
+            if not schedule_seen:
+                broken=copy.deepcopy(payload);broken['presentation'].update(schedule_seen=True,schedule_text='')
+                bad('/api/answers',broken,h2)
             bad('/api/answers',payload,dict(h2,Origin='https://invalid.example'),403)
             other=next(r for r in release.records.values()if r['household_id']!=identity['household_id'])
             assert request('GET','/'+other['path'],headers=h2)[0]==403
             broken=copy.deepcopy(payload);broken.update(case_id=other['case_id'],case_sha256=other['sha256']);bad('/api/answers',broken,h2,403)
             broken=copy.deepcopy(payload);broken['objective_results']={'target_met':True};bad('/api/answers',broken,h2)
-            code,_,saved=request('POST','/api/answers',payload,h2);assert code==201 and saved['presentation']['schedule_seen']
+            code,_,saved=request('POST','/api/answers',payload,h2);assert code==201 and saved['presentation']['schedule_seen']==schedule_seen
             assert request('POST','/api/answers',payload,h2)[2]['receipt_id']==saved['receipt_id']
             review={'actor_id':identity['participant_id'],'case_id':row['case_id'],'answer_revision':1,'status':'valid','rule_version':'invented_fixture_rule','reviewer':'fixture_operator','reason':'Only testing revision binding.'}
             assert server.store.review(review)['status']=='valid'
@@ -84,7 +94,7 @@ def run(release_path=None):
             with server.store.connect()as db:
                 records=[json.loads(r[0])for r in db.execute('select record_json from responses_v69 order by rowid')]
                 assert records[0]['objective_results']==records[1]['objective_results']
-                assert all(r['human_label_count']==0 and r['input']['expanded_schedule']==model['schedule']for r in records)
+                assert all(r['human_label_count']==0 and r['input']['expanded_schedule']==(model['schedule']if schedule_seen else None)for r in records)
             for r in idx['cases'][1:]:
                 m=release.models[r['case_id']]
                 present={'fields':{k:m[k]for k in ['family','request','changes','impacts']},'schedule_seen':False,'schedule_text':None,'presented_at':now()}
@@ -142,6 +152,9 @@ def run(release_path=None):
                     'stable_participant_optional_rounds':True,'original_recovery_code_resumes_latest_round':True,
                     'next_round_idempotent_and_incomplete_blocked':True,'stale_round_writes_rejected':True,'withdrawal_all_rounds':True,
                     'negative_requests_rejected':bad_count,'human_labels_created':0,'production_records_written':0}
+            report['integer_scores_required']=whole_scores
+            report['score_range']=release.answer_instructions['range']
+            report['zero_score_saved_and_recovered']=whole_scores and minimum_score==0
             print(json.dumps(report));return report
         finally:server.shutdown();server.server_close();thread.join()
 

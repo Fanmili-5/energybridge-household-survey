@@ -22,15 +22,21 @@ class Conflict(ValueError):
     pass
 
 
-def response(value,complete):
+def response(value,complete,decimal_places=1,minimum_score=1):
+    if type(decimal_places)is not int or decimal_places not in (0,1):raise ValueError('评分精度配置无效。')
+    if type(minimum_score)is not int or minimum_score not in (0,1):raise ValueError('评分范围配置无效。')
     if not isinstance(value,dict)or set(value)!=FIELDS:raise ValueError('答卷字段不完整。')
     out=copy.deepcopy(value)
     if out['decision']not in ({'accept','reject'}if complete else{None,'accept','reject'}):raise ValueError('请选择接受或不接受。')
     for key in SCORES:
         v=out[key]
         if v is None and not complete:continue
-        if isinstance(v,bool)or not isinstance(v,(int,float))or not math.isfinite(v)or not 1<=v<=5 or abs(v*10-round(v*10))>1e-8:
-            raise ValueError('四项评分均须为1—5分，可填一位小数。')
+        if isinstance(v,bool)or not isinstance(v,(int,float))or not math.isfinite(v)or not minimum_score<=v<=5:
+            raise ValueError(f'四项评分均须为{minimum_score}—5分。')
+        if decimal_places==0:
+            if not float(v).is_integer():raise ValueError(f'四项评分均须为{minimum_score}—5的整数。')
+            out[key]=int(v)
+        elif abs(v*10-round(v*10))>1e-8:raise ValueError('四项评分均须为1—5分，可填一位小数。')
     reason=out['reason']
     if reason is None and not complete:return out
     if not isinstance(reason,str)or len(reason)>4000:raise ValueError('主要原因须为4000字以内的文本。')
@@ -53,6 +59,11 @@ class CollectionStore(IdentityStore):
                 except sqlite3.OperationalError:raise RuntimeError('此数据库不属于新版50户采集；请使用独立数据目录。')
                 if not prior or prior[0]!=release.signature:raise RuntimeError('发布版本与数据库不一致；保留原库并使用新版本目录。')
         self.public_release=release
+        self.score_decimal_places=release.answer_instructions['decimal_places']
+        if type(self.score_decimal_places)is not int or self.score_decimal_places not in (0,1):raise ValueError('评分精度配置无效。')
+        score_range=release.answer_instructions['range']
+        if type(score_range)is not list or len(score_range)!=2 or type(score_range[0])is not int or score_range[0]not in(0,1)or type(score_range[1])is not int or score_range[1]!=5:raise ValueError('评分范围配置无效。')
+        self.minimum_score=score_range[0]
         self.cohort=release.manifest['cohort_id'];self.lease_seconds=release.manifest['assignment_lease_seconds']
         super().__init__(root,release.signature,fixtures=fixtures)
         with self.connect()as db:
@@ -217,6 +228,7 @@ class CollectionStore(IdentityStore):
             if not isinstance(v,str)or len(v)>100000 or normalize(v)!=normalize(expected[k]):raise ValueError('所见页面与发布版本不一致，请刷新。')
         if type(value['schedule_seen'])is not bool:raise ValueError('排程显示标记无效。')
         if value['schedule_seen']:
+            if not expected['schedule']:raise ValueError('本版本不提供完整排程入口。')
             if not isinstance(value['schedule_text'],str)or normalize(value['schedule_text'])!=normalize(expected['schedule']):raise ValueError('展开排程与发布版本不一致。')
         elif value['schedule_text']is not None:raise ValueError('未查看排程不应进入角色输入。')
         if not isinstance(value['presented_at'],str)or not 10<=len(value['presented_at'])<=50:raise ValueError('页面时间记录无效。')
@@ -260,7 +272,7 @@ class CollectionStore(IdentityStore):
         fields={'participant_id','release_sha256','ui_revision','case_id','case_sha256','expected_version','expected_answer_revision'}| (set()if clear else{'response','presentation'})
         if not isinstance(payload,dict)or set(payload)not in (fields,fields|{'assignment_id'}):raise ValueError('草稿字段无效。')
         expected=integer(payload['expected_version']);answer_rev=integer(payload['expected_answer_revision'])
-        answer=None if clear else response(payload['response'],False)
+        answer=None if clear else response(payload['response'],False,self.score_decimal_places,self.minimum_score)
         with self.lock,self.connect()as db:
             db.execute('BEGIN IMMEDIATE');a,row,_=self.binding(session,payload,db)
             if not clear:
@@ -280,7 +292,7 @@ class CollectionStore(IdentityStore):
         required={'participant_id','release_sha256','ui_revision','case_id','case_sha256','expected_answer_revision','expected_draft_version','request_id','response','presentation'}
         if not isinstance(payload,dict)or set(payload)not in (required,required|{'assignment_id'}):raise ValueError('提交字段无效。')
         if not isinstance(payload['request_id'],str)or not re.fullmatch(r'[a-f0-9-]{36}',payload['request_id']):raise ValueError('提交标识无效。')
-        answer=response(payload['response'],True);prior_rev=integer(payload['expected_answer_revision']);draft_rev=integer(payload['expected_draft_version'])
+        answer=response(payload['response'],True,self.score_decimal_places,self.minimum_score);prior_rev=integer(payload['expected_answer_revision']);draft_rev=integer(payload['expected_draft_version'])
         with self.lock,self.connect()as db:
             db.execute('BEGIN IMMEDIATE');a,row,case=self.binding(session,payload,db)
             presentation=self.presentation(row['case_id'],payload['presentation']);phash=digest(payload)

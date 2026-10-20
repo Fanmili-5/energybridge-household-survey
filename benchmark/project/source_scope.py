@@ -9,6 +9,10 @@ PRESENTATION={
     'benchmark/project/test_reference_collection_release.py',
     'benchmark/project/source_scope.py','benchmark/project/test_source_scope.py',
     'benchmark/project/reference_refined_release.py',
+    'benchmark/project/reference_presentation_release.py',
+    'benchmark/project/questionnaire.py','benchmark/project/preview-client.js',
+    'benchmark/collector/ledger.py','benchmark/collector/collection-client.js',
+    'benchmark/collector/test_protocol.py','benchmark/collector/test_rounds.py',
     'benchmark/project/reference_collection_physics.py',
     'benchmark/project/reference_physics_results.py',
     'benchmark/project/reference_physics_selfcheck.py',
@@ -29,6 +33,7 @@ def requires_source_rebuild(paths):
         # Display assets and frozen-input export/readback adapters do not alter
         # family, housing or A/B source generation. Their tests still run.
         if name.startswith('benchmark/project/refined91/') and path.suffix in ('.html','.css','.js','.json'):continue
+        if name.startswith('benchmark/project/examples/questionnaire/')and(path.name in('MANIFEST.json','SUMMARY.json')or'/source-snapshots/'in name):continue
         if path.name=='PACKAGE_MANIFEST.json'and name.startswith('benchmark/'):continue
         if name.startswith('.github/workflows/')and path.suffix in ('.yml','.yaml'):continue
         if name.startswith('benchmark/ab_generation/validation/')and path.suffix=='.json':continue

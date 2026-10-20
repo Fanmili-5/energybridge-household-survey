@@ -7,7 +7,7 @@
   const keys=['decision','score','comfort_score','energy_score','vpp_score','reason'];
   let current=null,saved=null;
   function raw(){
-    return Object.fromEntries(keys.map(key=>[key,key==='decision' ? document.querySelector('input[name="decision"]:checked')?.value||null : $(key).value]));
+    return Object.fromEntries(keys.map(key=>[key,key==='decision' ? document.querySelector('input[name="decision"]:checked')?.value||null : $(key).matches('[data-score-options]')?$(key).querySelector('input:checked')?.value??'':$(key).value]));
   }
   function ready(){
     try {root.EBSimple50.answer(raw());$('submit-answer').disabled=false;}
@@ -17,6 +17,7 @@
     $('response-form').reset();
     for(const key of keys){
       if(key==='decision') document.querySelectorAll('input[name="decision"]').forEach(el=>{el.checked=value?.decision===el.value;});
+      else if($(key).matches('[data-score-options]'))$(key).querySelectorAll('input').forEach(el=>{el.checked=value?.[key]!=null&&Number(el.value)===value[key];});
       else $(key).value=value?.[key]??'';
     }
     ready();
