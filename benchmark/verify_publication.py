@@ -104,8 +104,11 @@ def check(controlled=None):
                     assert value['bindings']['label_condition']=='role_judgment_with_version_bound_physics'
                     assert value['bindings']['source_pair_sha256']==value['physical_review']['source_frozen_pair_sha256']
                     assert value['bindings']['source_profile_sha256']==profiles[row['household_id']]
-                    if value['outcome_status']=='computed':assert value['impact']==value['physical_review']['actual_outcomes']and value['VPP_results']==value['impact']['events']
-                    else:assert value['impact']is None and value['VPP_results']is None
+                    if value['outcome_status']=='computed':
+                        assert value['impact']==value['physical_review']['actual_outcomes']and value['VPP_results']==value['impact']['events']
+                        assert value['physical_review']['native_numerical_convergence']['passed']
+                        assert value['physical_review']['weather_input_quality']['passed']
+                    else:assert value['impact']is None and value['VPP_results']is None and value['physical_review']['actual_outcomes']is None
                 assert all(e['start_min']==1080 and e['end_min']==1140 for e in value['VPP_requests'])
             for hid,expected in index['profiles_sha256'].items():assert sha(controlled/'public/households'/(hid+'.json'))==expected
     return {'passed':True,'public_source_files_verified':len(source['files']),'public_payload_files_verified':len(publication['files']),

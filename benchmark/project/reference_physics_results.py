@@ -11,6 +11,7 @@ from pathlib import Path
 from benchmark.ab_generation.common import read, save, sha, verify, seal
 from benchmark.ab_generation.outcomes import consequences
 from benchmark.ab_generation.model import plan_hash
+from .reference_weather_audit import native_weather_review
 
 
 def integrity_failures(check):
@@ -97,17 +98,22 @@ def bind(collection, exported, compiled, runs, audit, out):
             row.update(status='audit_missing',reason='No complete paired audit;outcomes remain null');rows.append(row);continue
         numerical={s:{'failures':native_numerical_failures((runs/ident/s/'out/eplusout.err').read_text(errors='replace')),
                       'error_log_sha256':sha(runs/ident/s/'out/eplusout.err')} for s in ('A','B')}
+        weather_reviews={s:native_weather_review(compiled_rows[ident]['weather_path'],compiled_rows[ident]['weather_sha256'],
+                          (compiled/ident/s/'model.idf').read_text())for s in ('A','B')}
+        if weather_reviews['A']!=weather_reviews['B']:raise ValueError('PAIRED_WEATHER_SCOPE_MISMATCH')
         row.update(audit_status=check['status'],
             failed_checks=[k for k,v in check['checks'].items() if not v],
+            weather_input_quality=weather_reviews['A'],
             native_numerical_convergence={'passed':not any(v['failures']for v in numerical.values()),'arms':numerical,
                 'scope':'entire_supplied_history_primary_day_and_recovery;conservative_admission_not_a_claim_that_all_times_are_corrupt'},
             engine_warnings={s:results[s].get('warnings',[]) for s in ('A','B')},
             model_scope={s:{k:metas[s].get(k) for k in ('history_days','simulation_timestep_min','reference_air_changes_per_hour','multi_AC_execution','air_exchange_scope')} for s in ('A','B')},
             engine_runs=2,IDFs_compiled=True,
             receipts={s:{k:results[s][k] for k in ('engine_sha256','idf_sha256','SQL_sha256','trace_sha256')} for s in ('A','B')})
-        if not row['native_numerical_convergence']['passed']:
+        if not row['native_numerical_convergence']['passed'] or not row['weather_input_quality']['passed']:
             row['failed_checks'] += [s+'_native_numerical_convergence'for s in ('A','B')if numerical[s]['failures']]
-            row.update(status='audit_failed',reason='Native internal solver reported nonconvergence/severe/fatal error despite process completion;paired consequences remain unknown;original SQL and diagnostic estimates preserved without rerun or reselection')
+            row['failed_checks'] += row['weather_input_quality']['failures']
+            row.update(status='audit_failed',reason='Native numerical failure or source weather outside native RH bounds within supplied RunPeriod;paired consequences remain unknown;original SQL and diagnostic estimates preserved without rerun or reselection')
             rows.append(row);continue
         if integrity_failures(check):
             row.update(status='audit_failed',reason='Paired engineering integrity check failed;diagnostic results preserved without presenting them as reliable outcomes',

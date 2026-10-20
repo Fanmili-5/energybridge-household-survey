@@ -29,7 +29,7 @@ def build(proposal_release,results,out):
     for row in index['cases']:
         path=public/row['path'];case=read(path);r=rows[row['case_id']]
         if r['source_frozen_pair_sha256']!=case['bindings']['source_pair_sha256'] or any(r[s+'_commands_sha256']!=case['bindings'][s+'_commands_sha256'] for s in ('A','B')):raise ValueError('PHYSICS_PLAN_BINDING_MISMATCH')
-        review={k:r.get(k) for k in ('status','actual_outcomes','reason','audit_status','failed_checks','source_frozen_pair_sha256','receipts','engine_warnings','model_scope','native_numerical_convergence')}
+        review={k:r.get(k) for k in ('status','actual_outcomes','reason','audit_status','failed_checks','source_frozen_pair_sha256','receipts','engine_warnings','model_scope','native_numerical_convergence','weather_input_quality')}
         if r['status']=='computed' and r['actual_outcomes']['simulated_facility_cost']['currency']!='CNY':raise ValueError('CURRENCY_UNDECLARED')
         case.update(physical_review=review,outcome_status=r['status'],impact=r['actual_outcomes'],
                     VPP_results=r['actual_outcomes']['events'] if r['status']=='computed' else None)
