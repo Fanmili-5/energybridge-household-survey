@@ -9329,6 +9329,18 @@
           ]
         },
         {
+          "path_pattern": "/ac_precondition_min/*",
+          "origin": "project_pre_registered_AC_preconditioning_levels;not_a_paper_value",
+          "purpose_and_boundary": "independent_lead_time_axis;not_compressor_runtime_or_thermal_outcome",
+          "exact_value_from_paper": false,
+          "occurrences": 3,
+          "values": [
+            10,
+            30,
+            60
+          ]
+        },
+        {
           "exact_value_from_paper": false,
           "occurrences": 1,
           "origin": "predeclared_collection_pilot_experiment;original_EB_18_19_event_timing;remaining_values_project_settings",
@@ -9475,7 +9487,7 @@
           ]
         }
       ],
-      "sha256": "ca82220b1bd1751044db175dd6bd45e5b1848ec03699075cef19a872d0195f65"
+      "sha256": "96f0686a4bd9f85536f449275c6027fb65a4bfc0984e692e0dbd5ef042cef2f6"
     }
   ],
   "legacy_constraints": [

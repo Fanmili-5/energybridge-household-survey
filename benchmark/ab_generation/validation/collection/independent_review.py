@@ -12,6 +12,9 @@ def state(plan,aid,key,t):
 
 
 def audit(root):
+    if read(Path(root)/'DESIGN.json')['schema']=='eb.collection.design.v3':
+        from benchmark.ab_generation.validation.collection_v3.independent_semantics import audit as command_audit
+        return command_audit(root)
     root=Path(root);verify(root);selected=read(root/'ASSIGNMENT.json')['selected_ids'];records=[]
     for ident in selected:
         pair=read(root/'pairs'/(ident+'.json'));row=pair['row'];a,b=pair['A'],pair['B']

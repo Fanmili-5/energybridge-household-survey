@@ -8,13 +8,15 @@ import itertools
 import math
 from collections import Counter, defaultdict
 from .common import digest
-from .collection_design import (absolute_level, annotate_doses, event_status, issues,
+from .collection_design import (absolute_level, annotate_doses, amplitude_axes, event_status, issues,
     representatives, semantic_signature, tags, validate_context, working_context)
 from .energy import task_power
 from .generate import event_energy
 from .model import apply, chain_need_ids, overlap
 from .sampling import command_hash
 from .collection_admission import program_construction_issues, engineering_issues
+from .collection_thermal import describe as describe_ac
+from .collection_relevance import direct, explain, asset_reasons
 
 
 def _profile(c, tasks):
@@ -180,9 +182,14 @@ def _raw_thermal(c,d,config):
     for axis in config['ac_axes'] if family=='ac' else ['tank']:
         key=axis+'_setpoint_C' if family=='ac' else 'value_C'
         reference=next(r[key] for r in controls if r['start_min']<=lo<r['end_min'])
-        for delta,duration,direction,mechanism in itertools.product(
+        variants=itertools.product(
                 config['ac_delta_C'] if family=='ac' else config['tank_delta_C'],
-                config['thermal_duration_min'],('aligned','opposing'),('event_setpoint','precondition_and_relax')):
+                config['thermal_duration_min'],('aligned','opposing'),('event_setpoint','precondition_and_relax'))
+        variants=[(delta,duration,direction,mechanism,lead)
+            for delta,duration,direction,mechanism in variants
+            for lead in (config['ac_precondition_min'] if family=='ac' and mechanism=='precondition_and_relax'
+                         else [config['precondition_min'] if mechanism=='precondition_and_relax' else 0])]
+        for delta,duration,direction,mechanism,lead in variants:
             hi=lo+duration
             if not all(any(r['start_min']<=t and t+10<=r['end_min'] for r in controls) for t in range(lo,hi,10)):
                 continue
@@ -198,7 +205,7 @@ def _raw_thermal(c,d,config):
                         values['value_C']=values[key]
                     patches.append({'type':'control_interval','asset_id':d['asset_id'],'kind':kind,'start_min':a,'end_min':z,'values':values})
             if mechanism=='precondition_and_relax':
-                start=lo-config['precondition_min']
+                start=lo-lead
                 if start<c['decision_min'] or not all(any(r['start_min']<=t and t+10<=r['end_min'] for r in controls) for t in range(start,lo,10)):
                     continue
                 # Reference is the occupied event service target, not an away
@@ -210,12 +217,33 @@ def _raw_thermal(c,d,config):
                 patches.insert(0,{'type':'control_interval','asset_id':d['asset_id'],'kind':kind,'start_min':start,'end_min':lo,'values':values})
             max_delta=max(abs(p['values'][key]-r[key]) for p in patches for r in controls
                           if overlap(p['start_min'],p['end_min'],r['start_min'],r['end_min']))
+            magnitude={'dose_coordinate':delta,'service_delta_C':delta,'actual_max_command_delta_C':max_delta,
+                'duration_min':duration,'precondition_min':lead,
+                'axis':axis,'direction':direction,'mode_evidence':'declared_experimental_request_axis;not_observed_equipment_activity',
+                'manual_total_shift_min':0,'manual_max_shift_min':0}
+            if family=='ac':
+                magnitude['ac_intervention']=describe_ac(c,d['asset_id'],patches,axis,event,config['ac_delta_C'])
             yield {'unit':family+':'+d['asset_id']+':'+axis,'family':family,'asset_id':d['asset_id'],
                 'mechanism':mechanism,'branch':axis+':'+direction,'needs':[],'patches':patches,'profiles':None,
-                'magnitude':{'dose_coordinate':delta,'service_delta_C':delta,'actual_max_command_delta_C':max_delta,
-                    'duration_min':duration,'precondition_min':config['precondition_min'] if mechanism=='precondition_and_relax' else 0,
-                    'axis':axis,'direction':direction,'mode_evidence':'declared_experimental_request_axis;not_observed_equipment_activity',
-                    'manual_total_shift_min':0,'manual_max_shift_min':0}}
+                'magnitude':magnitude}
+        # Explicitly named stop-cooling request, retaining EB's fallback encoding.
+        # This interface has no native availability actuator: never claim hard OFF.
+        contract=c['reference'].get('ac_control_contract')
+        if family=='ac' and axis=='cooling' and contract:
+            for duration in config['thermal_duration_min']:
+                hi=lo+duration
+                if not all(any(r['start_min']<=t and t+10<=r['end_min'] for r in controls) for t in range(lo,hi,10)):
+                    continue
+                patches=[{'type':'control_interval','asset_id':d['asset_id'],'kind':kind,
+                    'start_min':lo,'end_min':hi,'values':{key:contract['cooling_off_fallback_C']}}]
+                ac=describe_ac(c,d['asset_id'],patches,axis,event,config['ac_delta_C'])
+                yield {'unit':family+':'+d['asset_id']+':'+axis,'family':family,'asset_id':d['asset_id'],
+                    'mechanism':'event_cooling_stop_fallback','branch':'cooling:aligned','needs':[],
+                    'patches':patches,'profiles':None,'magnitude':{'dose_coordinate':duration,
+                        'service_delta_C':None,'duration_min':duration,'precondition_min':0,
+                        'actual_max_command_delta_C':max(abs(contract['cooling_off_fallback_C']-r[key]) for r in controls if overlap(lo,hi,r['start_min'],r['end_min'])),
+                        'axis':axis,'direction':'aligned','ac_intervention':ac,
+                        'manual_total_shift_min':0,'manual_max_shift_min':0}}
 
 
 def _finish(c,raw,config):
@@ -244,11 +272,12 @@ def _finish(c,raw,config):
 
 
 def _features(children,check,changed):
-    levels={r['absolute_level'] for r in children}
+    amplitudes=amplitude_axes(children)
     manual=sum(r['magnitude'].get('manual_total_shift_min',0) for r in children)
     directions={r['magnitude']['direction'] for r in children if 'direction' in r['magnitude']}
     slack=min((r['magnitude']['service_slack_min'] for r in children if 'service_slack_min' in r['magnitude']),default=None)
-    return {'device_count':str(len(changed)),'intensity':next(iter(levels)) if len(levels)==1 else 'mixed' if levels else 'none',
+    return {'device_count':str(len(changed)),'intensity':'not_aggregated_use_amplitude_axes',
+        'amplitude_axes':sorted(amplitudes),'amplitude_profile':';'.join(sorted(amplitudes)) or 'none',
         'admission':'diagnostic' if check else 'control' if not children else 'plan_valid',
         'event':event_status(sum(r['known_event_reduction_kWh'] for r in children),any(r['unknown_thermal_response'] for r in children)),
         'manual':'unchanged' if manual==0 else 'changed',
@@ -276,6 +305,12 @@ def _request(c,children,config):
                 'component_ids':[r['id'] for r in children]},
             'request_sha256':digest([r['id'] for r in children]),
             'repaired':False,'replacement_generated':False}
+    relevance=explain(c,children,config['event'])
+    if not relevance['passed']:
+        return {'relevance_diagnostic':True,'relevance':relevance,
+            'request':{'patches':patches,'component_ids':[r['id'] for r in children]},
+            'request_sha256':digest([r['id'] for r in children]),
+            'repaired':False,'replacement_generated':False}
     changed=set()
     for r in children:
         for p in r['patches']:
@@ -287,8 +322,10 @@ def _request(c,children,config):
     row={'household_id':c['household_id'],'date':c['date'],'case_id':c['case_id'],
         'patches':patches,'component_ids':[r['id'] for r in children],
         'program_needs':sorted({n for r in children for n in r['needs']}),
-        'components':[{**{k:copy.deepcopy(r[k]) for k in ('id','unit','asset_id','family','mechanism','absolute_level','relative_level','magnitude')},
+        'components':[{**{k:copy.deepcopy(r[k]) for k in ('id','unit','asset_id','family','mechanism','absolute_level','relative_level','magnitude','patches')},
+                       'event_relevance':copy.deepcopy(relevance['components'][r['id']]),
                        'service_need_id':r.get('service_need_id')} for r in children],
+        'event_relevance':relevance,'asset_change_reasons':asset_reasons(c,children,relevance),
         'issues':check,'power_status':power['status'],'features':_features(children,check,changed),
         'changed_assets':sorted(changed),'independent_units':len(children),
         'known_event_reduction_kWh':sum(r['known_event_reduction_kWh'] for r in children),
@@ -322,7 +359,7 @@ def generate_day(context,config):
     baseline_logic=engineering_issues(c,c['A'],baseline_needs,baseline_check)
     if baseline_logic:
         raise ValueError('BASELINE_ENGINEERING_ERROR;A_NOT_MODIFIED:'+','.join(baseline_logic))
-    singles={}; gaps=[];evaluated=0;quarantined={};engineering={}
+    singles={}; gaps=[];evaluated=0;quarantined={};engineering={};unrelated={}
     for d in sorted(c['devices'],key=lambda d:d['asset_id']):
         if not c['authority']['assets'][d['asset_id']]['target_control_authorized']:
             gaps.append({'asset_id':d['asset_id'],'reason':'NOT_AUTHORIZED'});continue
@@ -347,7 +384,10 @@ def generate_day(context,config):
         candidate=_request(c,[r],config)
         if candidate.get('engineering_diagnostic'):
             raise ValueError('ATOMIC_CONSTRUCTION_ADMISSION_MISMATCH')
-        rows[candidate['id']]=candidate
+        if candidate.get('relevance_diagnostic'):
+            unrelated.setdefault(candidate['request_sha256'],candidate)
+        else:
+            rows[candidate['id']]=candidate
     control=_request(c,[],config)
     groups=defaultdict(list)
     for r in atomic:
@@ -356,7 +396,9 @@ def generate_day(context,config):
     for key,group in sorted(groups.items()):
         sub=defaultdict(list)
         for r in group:
-            sub[(r['mechanism'],r['absolute_level'],bool(r['issues']),r['branch'])].append(r)
+            ac=r['magnitude'].get('ac_intervention',{})
+            sub[(r['mechanism'],r['absolute_level'],bool(r['issues']),r['branch'],
+                 str(bool(direct(c,r,config['event']))),str(ac.get('amplitude_axes',{})))].append(r)
         domain=[]
         for feature,pool in sorted(sub.items()):
             # Dose representatives and event boundary witnesses, not best costs.
@@ -364,18 +406,39 @@ def generate_day(context,config):
             for x in coords:
                 domain.append(min((r for r in pool if r['magnitude']['dose_coordinate']==x),key=lambda r:digest([config['seed'],r['id']])))
         domains[key]=sorted({r['id']:r for r in domain}.values(),key=lambda r:digest([config['seed'],r['id']]))
-    keys=sorted(domains);required_subsets=2**len(keys)-1-len(keys)
+    root_domains={k:[r for r in v if direct(c,r,config['event'])] for k,v in domains.items()}
+    root_domains={k:v for k,v in root_domains.items() if v}
+    support_domains={k:[r for r in v if not direct(c,r,config['event'])] for k,v in domains.items()}
+    support_domains={k:v for k,v in support_domains.items() if v}
+    keys=sorted(root_domains);required_subsets=2**len(keys)-1-len(keys)
+    opportunity_ledger=[]
+    for d in c['devices']:
+        own=[r for r in atomic if r['asset_id']==d['asset_id']]
+        roots=[r for r in own if direct(c,r,config['event'])]
+        opportunity_ledger.append({'asset_id':d['asset_id'],
+            'authorized':c['authority']['assets'][d['asset_id']]['target_control_authorized'],
+            'independent_root_units':len({r['unit'] for r in roots}),
+            'event_root_requests':len(roots),'outside_event_requests':len(own)-len(roots),
+            'outside_event_request_is_independent_opportunity':False,
+            'absence_scope':'declared_bounded_daily_domain;not_global_infeasibility'})
+        if own and not roots:
+            gaps.append({'asset_id':d['asset_id'],'reason':'NO_EVENT_ROOT_IN_DECLARED_DAILY_DOMAIN',
+                'outside_event_requests_retained':len(own),'support_requires_specific_constraint_witness':True})
     # Every size gets a turn, then every subset, then further dose combinations.
     # The entire evaluated catalogue (including newly arising joint failures) stays.
-    ordered=presence_subsets(keys,config['joint_budget'])
+    # Separate a bounded search allowance for proved outside-event support.
+    # This is a computational allowance, never a requested sample proportion.
+    support_budget=config['joint_budget']//4
+    root_budget=config['joint_budget']-support_budget
+    ordered=presence_subsets(keys,root_budget)
     attempts=0;observed=set();attempted_subsets=set()
     for trial in range(config['joint_trials_per_subset']):
         for subset in ordered:
-            if attempts>=config['joint_budget']:
+            if attempts>=root_budget:
                 break
             children=[]
             for j,k in enumerate(subset):
-                pool=domains[k]
+                pool=root_domains[k]
                 # Reserve two predeclared trials for individually plan-valid
                 # components, then include the entire diagnostic domain. This
                 # is constraint-directed generation, not success/outcome sampling.
@@ -386,25 +449,48 @@ def generate_day(context,config):
             row=_request(c,children,config)
             if row.get('engineering_diagnostic'):
                 engineering.setdefault(row['request_sha256'],row)
+            elif row.get('relevance_diagnostic'):
+                unrelated.setdefault(row['request_sha256'],row)
             else:
                 rows.setdefault(row['id'],row)
                 observed.add(subset)
             # A structural conflict consumes its scheduled attempt. No retry,
             # alternative children, successful replacement or outcome reroll.
             attempts+=1;attempted_subsets.add(subset)
-        if attempts>=config['joint_budget']:
+        if attempts>=root_budget:
             break
+    support_attempts=0
+    support_pairs=[(a,b) for a in sorted(root_domains) for b in sorted(support_domains) if a!=b]
+    for trial in range(config['joint_trials_per_subset']):
+        for a,b in support_pairs:
+            if support_attempts>=support_budget:break
+            children=[root_domains[a][trial%len(root_domains[a])],
+                      support_domains[b][trial%len(support_domains[b])]]
+            row=_request(c,children,config)
+            if row.get('engineering_diagnostic'):
+                engineering.setdefault(row['request_sha256'],row)
+            elif row.get('relevance_diagnostic'):
+                unrelated.setdefault(row['request_sha256'],row)
+            else:
+                rows.setdefault(row['id'],row)
+            support_attempts+=1
+        if support_attempts>=support_budget:break
     if digest(context)!=before:
         raise ValueError('COLLECTION_MUTATED_A_INPUT')
     if not rows:
         control['fallback_reason']='no_change_in_declared_construction_domain;not_global_no_opportunity_proof'
         rows[control['id']]=control
-    return {'schema':'eb.collection.day.v2','context_sha256':before,'A_commands_sha256':command_hash(context['A']),
+    return {'schema':'eb.collection.day.v3','context_sha256':before,'A_commands_sha256':command_hash(context['A']),
         'rows':sorted(rows.values(),key=lambda r:r['id']),'quarantined_requests':list(quarantined.values()),
         'engineering_diagnostics':list(engineering.values()),'control_record':control,
+        'relevance_diagnostics':list(unrelated.values()),'relevance_diagnostics_retained':len(unrelated),
+        'event_opportunities':opportunity_ledger,
         'engineering_diagnostics_retained':len(engineering),'no_retries_or_replacements':True,
         'gaps':gaps,'evaluated_atomic_requests':evaluated,
-        'atomic_unique':len(atomic),'joint_evaluations':attempts,
+        'atomic_unique':len(atomic),'event_root_units':len(root_domains),
+        'joint_evaluations':attempts+support_attempts,'joint_root_evaluations':attempts,
+        'joint_support_evaluations':support_attempts,
+        'support_search_scope':'bounded_one_root_one_support;not_exhaustive_multi_support_closure',
         'joint_subset_required':required_subsets,'joint_subset_observed':len(observed),
         'joint_subset_attempted':len(attempted_subsets),
         'joint_search_status':'eligible_presence_missing;not_infeasibility_proof' if len(observed)<required_subsets else 'eligible_presence_covered;higher_order_doses_not_exhaustive',

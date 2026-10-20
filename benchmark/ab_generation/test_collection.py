@@ -11,6 +11,7 @@ from .collection_design import DEFAULT,design,representatives,working_context
 from .generate import binding
 from .information import information_set
 from .model import apply
+from .collection_thermal import AC_CONTRACT
 
 
 def fixture():
@@ -20,6 +21,7 @@ def fixture():
     span=c['reference']['information_set']['A_reference_span_min']
     c['reference']['information_set']=information_set('offline_unexecuted_A_plan',c['decision_min'],span)
     c['reference']['binding']=binding(c)
+    c['reference']['ac_control_contract']=copy.deepcopy(AC_CONTRACT)
     return c
 
 
@@ -41,14 +43,15 @@ class CollectionTests(unittest.TestCase):
         # with zero event contribution: whole-profile L1 is not the opportunity.
         rows=[r for r in self.result['rows'] if r['independent_units']==1 and r['features']['composition']=='washer'
               and r['features']['device_count']=='1' and r['features']['event']=='zero']
-        self.assertTrue(rows)
-        self.assertTrue(all(abs(r['known_event_reduction_kWh'])<1e-9 for r in rows))
+        self.assertFalse(rows)  # outside-only changes now have no event root
+        self.assertTrue(self.result['relevance_diagnostics'])
 
     def test_separate_handling_and_high_order_requests_are_real(self):
         rows=self.result['rows']
         self.assertTrue(any('retimed_handling' in r['features']['mechanisms'] and not r['issues'] for r in rows))
         self.assertTrue(any(int(r['features']['device_count'])>=3 for r in rows))
-        self.assertTrue(any(int(r['features']['device_count'])>=3 and r['features']['intensity']=='mixed' for r in rows))
+        self.assertTrue(any(int(r['features']['device_count'])>=3 and len(r['features']['amplitude_axes'])>=3 for r in rows))
+        self.assertTrue(all(r['features']['intensity']=='not_aggregated_use_amplitude_axes' for r in rows))
         self.assertTrue(any(r['issues'] and r['independent_units']>=2 for r in rows))
 
     def test_thermal_predictions_unknown_and_restore_A(self):
@@ -187,7 +190,9 @@ class CollectionTests(unittest.TestCase):
     def test_service_stress_zero_opposing_and_EV_shortfall_are_not_removed(self):
         rows=self.result['rows']
         self.assertTrue(any('CHARGE_EXCEEDS_ORIGINAL_CONNECTION' in r['issues'] for r in rows))
-        self.assertTrue(any(r['features']['event']=='zero' for r in rows))
+        # Genuine zero-net event roots are tested separately. This fixture's
+        # former zeroes were wholly outside the event and now stay in the ledger.
+        self.assertTrue(self.result['relevance_diagnostics_retained'])
         self.assertTrue(any(r['features']['thermal_direction']=='opposing' for r in rows))
         self.assertTrue(any(set(r['issues']) & {'OPERATOR_UNAVAILABLE','OPERATOR_DOUBLE_BOOKED','SERVICE_DEADLINE_MISSED'} for r in rows))
         for r in rows:self.assertIsNone(r['actual_outcomes'])
@@ -206,7 +211,7 @@ class CollectionTests(unittest.TestCase):
 
     def test_no_admission_or_control_coverage_reward_and_no_prescribed_proportions(self):
         targets=goals(self.result['rows'],[self.c['household_id']])
-        self.assertFalse(any('admission=' in t['tag'] or 'control' in t['tag'] for t in targets))
+        self.assertFalse(any('admission=' in t['tag'] or t['tag'] in ('composition=control','mechanism=control','device_count=0') for t in targets))
         bad=copy.deepcopy(self.result['rows'][0]);bad['engineering_issues']=['RETRIEVAL_BEFORE_PROGRAM_END']
         with self.assertRaisesRegex(ValueError,'ENGINEERING_DIAGNOSTIC'):assignment_frame([bad],self.config)
         with self.assertRaisesRegex(ValueError,'CONTROL_NOT_ELIGIBLE'):

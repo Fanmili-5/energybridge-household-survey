@@ -1,0 +1,73 @@
+{
+  "schema": "eb.collection.ac_encoding_evidence.v1",
+  "checked_date": "2026-10-20",
+  "upstream_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "identity_basis": "git object bytes;AST/read-only review;no engine imports",
+  "files": [
+    {
+      "path": "experiments/benchmark/family_runner.py",
+      "sha256": "697a955ae9a5a34132c030c8d0f3b96ef6c0f63ec2caa24a2c1def23989de1d7",
+      "git_blob": "9555146bf4889b1a8dfa9098369096c0c59cfc8d",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/experiments/benchmark/family_runner.py",
+      "anchor_lines": {
+        "AC_OFF_FALLBACK_COOLING_SETPOINT = 40.0": [
+          1938
+        ],
+        "def _set_hvac_availability": [
+          2531
+        ],
+        "if not hvac_avail_set:": [
+          2671,
+          13662
+        ],
+        "\"ac_mode\": \"off_unoccupied\"": [
+          13676
+        ]
+      },
+      "upstream_module_executed": false
+    },
+    {
+      "path": "experiments/benchmark/baselines/rule_milp.py",
+      "sha256": "019614837ba1e34087596e1d5419cf1ed78069580c75f2b4c6ae4657da56a431",
+      "git_blob": "b36cbcae5a010c0c5699c4ec24761d14cea12f95",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/experiments/benchmark/baselines/rule_milp.py",
+      "anchor_lines": {
+        "def _ac_setpoint_candidates": [
+          449
+        ],
+        "candidates.append(40.0)": [
+          457
+        ],
+        "def _standalone_vpp_hvac_off_allowed": [
+          461
+        ]
+      },
+      "upstream_module_executed": false
+    },
+    {
+      "path": "energybridge/simulation/actuator_writer.py",
+      "sha256": "43aefe9c9139e43ae0f3b06cd504ea0cc98ed6d4bb2861c0fd0bfb2bdd38552f",
+      "git_blob": "d6230745426e96904b31682462b985d51e996a67",
+      "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/simulation/actuator_writer.py",
+      "anchor_lines": {
+        "_COOLING_SETPOINT_MAX = 30.0": [
+          18
+        ],
+        "cooling_sp = max(": [
+          98
+        ]
+      },
+      "upstream_module_executed": false
+    }
+  ],
+  "findings": [
+    "family_runner prefers HVAC_Availability_Control=0;40C is its fallback when that actuator is absent, not occupied comfort or observed room temperature",
+    "rule_milp also includes40C as a conditional standalone VPP HVAC-off proxy;not a normal all-day thermostat dose",
+    "generic ActuatorWriter is a different path:normal cooling requests are clamped18..30C;do not generalize the runner fallback to every actuator",
+    "the project synthetic LIFE input explicitly chose cooling setback40C and heating setback5C;this is project encoding,not empirical preference",
+    "no native availability channel in the current collection literal patch interface;state is cooling_stop_fallback,not guaranteed hardware OFF"
+  ],
+  "original_A_commands_rewritten": false,
+  "upstream_code_copied": false,
+  "new_engine_runs": 0
+}

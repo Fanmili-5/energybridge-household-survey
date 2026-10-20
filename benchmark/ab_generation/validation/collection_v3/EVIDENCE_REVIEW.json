@@ -1,0 +1,48 @@
+{
+  "review_date": "2026-10-20",
+  "scope": "source-level structural evidence,not empirical device calibration",
+  "upstream_source_files_verified": 3,
+  "support_matrix": [
+    {
+      "rule": "40C is an off fallback in a specific EB runner,not comfort",
+      "source": "original_EB@2b17ae6:family_runner.py;rule_milp.py",
+      "status": "source code read;full bytes hashed",
+      "not_supported": "native availability OFF equivalence in this project"
+    },
+    {
+      "rule": "actual temperature,setpoint and switching state separated",
+      "source": "Hao et al.2013 sectionIII",
+      "url": "https://borhanji.com/my_papers/Allerton2013_TCL.pdf",
+      "status": "author full text read",
+      "not_supported": "our dose sizes,comfort tolerance or reduction"
+    },
+    {
+      "rule": "preconditioning and event timing linked",
+      "source": "Wang,Tang,Song2020",
+      "doi": "10.1016/j.enbuild.2020.109951",
+      "status": "publisher abstract and author publication list verified;full manuscript retrieval unavailable",
+      "not_supported": "implementation equivalence or exact10/30/60min"
+    },
+    {
+      "rule": "load,convenience,cost dimensions separated",
+      "source": "Yahia,Pradhan2020",
+      "doi": "10.1016/j.scs.2020.102058",
+      "status": "author institution abstract read",
+      "not_supported": "we implement its optimizer or preference weights"
+    },
+    {
+      "rule": "precedence and exclusive resources expressible as constraints",
+      "source": "OR-Tools Job Shop",
+      "url": "https://developers.google.com/optimization/scheduling/job_shop",
+      "status": "official documentation read",
+      "not_supported": "a proof all household plans or support graphs are exhaustively covered"
+    },
+    {
+      "rule": "event-root/leave-one-component-out admission and vector bins",
+      "source": "project method choice",
+      "status": "explicit pre-generation design and independent mutation tests",
+      "not_supported": "a paper prescribed these bins or dataset proportions"
+    }
+  ],
+  "user_authorization": "modify offline algorithm,docs,small plan validation and publish main;no online questionnaire,no simulation,no1000-household production"
+}
