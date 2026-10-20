@@ -546,5 +546,41 @@
     "old_v2_retained": "validation/collection_v2/;pinned268685d",
     "physical_runs": 0,
     "online_questionnaire_changed": false
+  },
+  "collection_selection_v4": {
+    "adopted_structure": "normalized hierarchical coverage;diminishing marginal information;semantic redundancy;fixed household-day slots",
+    "papers": [
+      {
+        "key": "LinBilmes2011Submodular",
+        "title": "A Class of Submodular Functions for Document Summarization",
+        "authors": [
+          "Hui Lin",
+          "Jeff Bilmes"
+        ],
+        "year": 2011,
+        "url": "https://aclanthology.org/P11-1052/",
+        "adopted": "coverage saturation and group diversity",
+        "not_claimed": "the paper validates our household concepts,weights or constrained optimizer approximation ratio"
+      },
+      {
+        "key": "GoldsteinCarbonell1998MMR",
+        "title": "Summarization: (1) Using MMR for Diversity-Based Reranking and (2) Evaluating Summaries",
+        "authors": [
+          "Jade Goldstein",
+          "Jaime Carbonell"
+        ],
+        "year": 1998,
+        "url": "https://aclanthology.org/X98-1025/",
+        "adopted": "joint novelty and redundancy objective",
+        "not_claimed": "our implementation is the MMR greedy reranker"
+      }
+    ],
+    "structural_sources": [
+      "NIST SP800-142",
+      "Yahia2020Multiobjective"
+    ],
+    "weights": "project settings,not population proportions;final policy fixed before final assignment;development structural diagnostics retained;no physical or human outcomes used",
+    "outcomes_used": false,
+    "catalogue_regeneration_required": false
   }
 }

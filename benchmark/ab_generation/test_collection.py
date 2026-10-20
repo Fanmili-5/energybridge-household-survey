@@ -288,9 +288,10 @@ class CollectionTests(unittest.TestCase):
             self.assertGreaterEqual(next(t['start_min'] for t in b['tasks'] if t['task_id']=='dry'),load['end_min'])
 
     def test_multi_label_frame_preserves_all_eligible_coverage(self):
+        from .collection_selection import tokens,view
         rows=self.result['rows'];active,report=assignment_frame(rows,self.config)
         self.assertTrue(report['coverage_universe_preserved'])
-        self.assertEqual({t for r in rows for t in r['tags']},{t for r in active for t in r['tags']})
+        self.assertEqual({t for r in rows for t in tokens(view(r))},{t for r in active for t in tokens(view(r))})
 
 
 if __name__=='__main__':unittest.main()

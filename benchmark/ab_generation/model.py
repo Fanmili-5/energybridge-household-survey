@@ -221,6 +221,8 @@ def control_issues(context, plan):
             heat, cool = c['heating_setpoint_C'], c['cooling_setpoint_C']
             if heat >= cool:
                 issues.add('THERMOSTAT_DEADBAND_INVERTED')
+            elif cool-heat < c.get('heating_and_cooling_deadband_C',0)-1e-9:
+                issues.add('THERMOSTAT_DEADBAND_TOO_NARROW')
             if not 5 <= heat <= 35 or not 15 <= cool <= 40:
                 issues.add('SETPOINT_OUTSIDE_REFERENCE_RANGE')
         elif c['kind'] == 'tank_setpoint' and not 10 <= c['value_C'] <= devices[c['asset_id']]['parameters']['maximum_C']:
