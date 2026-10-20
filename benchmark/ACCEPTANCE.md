@@ -1,3 +1,13 @@
+# 当前v4验收范围
+
+当前500题已通过原A等价、计划与覆盖、逐轴温控显示、v69与采集协议检查；物理后果未计算，人类效度未验证。计划可采集不等于物理或科学benchmark已全部验收。详见[本版验证](ab_generation/COLLECTION_VALIDATION.md)。
+
+[当前发布](releases/reference50-v4-proposal/MANIFEST.json) · [方法与来源](ab_generation/COLLECTION_METHOD.md)
+
+---
+
+以下为**历史reference50-v1 / A46-B57**说明，保留来源和验证历史，不代表当前新B的物理结果。
+
 # 11项验收状态
 
 本表区分工程落实与论文所需人类证据，不宣称11项研究有效性全部通过。
