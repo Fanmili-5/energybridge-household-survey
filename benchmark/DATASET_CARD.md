@@ -1,8 +1,8 @@
-# 当前数据卡：reference50-v4-proposal
+# 当前数据卡：reference50-v4-ui91-complete
 
-当前为原50户×10个原日期的新B提案采集。原A命令与画像保留，VPP固定18—19；500题的实际耗电、室温、任务完成与VPP响应未计算。评分针对时段、温控请求及生活安排。新B不属于旧B57主集，旧物理结果不能复用；未来结果不可追写为参与者已知信息。
+原50户500题已准备**UI91立体房间与完整配对后果**，当前入口暂停等待核验切换。每户十个不同日期，VPP固定18:00—19:00；500题均有可用估算，80题达标、420题未达标，100题服务或恢复问题照实保留。497条原选题不变，3条按事前工程补生成流程换为原全年A的新日期切片；原失败记录、设备和全年A保留，旧答卷不迁成新版答案。1000户继续暂缓。
 
-[当前发布](releases/reference50-v4-proposal/MANIFEST.json) · [方法与来源](ab_generation/COLLECTION_METHOD.md)
+[当前发布](releases/reference50-v4-ui91-complete/MANIFEST.json) · [全量自查与边界](project/FULL500_PHYSICS_REPAIR_VALIDATION.json) · [方法与来源](ab_generation/COLLECTION_METHOD.md)
 
 ---
 

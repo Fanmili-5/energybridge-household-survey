@@ -1,8 +1,8 @@
 # EnergyBridge 家庭用电偏好 Benchmark
 
-当前采集是**原50户、500组原A＋新方法B**，采用v69问卷，每名参与者评价固定一户的10个日期。VPP固定18:00—19:00；用电、室温、任务完成与VPP后果均为**未计算**。四项评分评价操作时段、温控请求和生活安排，不要求猜测实际后果。
+原50户500题已准备**UI91立体房间与完整配对后果**，当前入口暂停等待核验切换。每户十个不同日期，VPP固定18:00—19:00；500题均有可用估算，80题达标、420题未达标，100题服务或恢复问题照实保留。497条原选题不变，3条按事前工程补生成流程换为原全年A的新日期切片；原失败记录、设备和全年A保留，旧答卷不迁成新版答案。1000户继续暂缓。
 
-**[打开当前50户问卷](https://47.85.194.154/household50-current/)** · [当前版本](benchmark/releases/reference50-v4-proposal/MANIFEST.json) · [方法与验收](benchmark/ab_generation/COLLECTION_VALIDATION.md)
+**[打开当前50户问卷](https://47.85.194.154/household50-current/)** · [当前版本](benchmark/releases/reference50-v4-ui91-complete/MANIFEST.json) · [全量物理自查](benchmark/project/FULL500_PHYSICS_REPAIR_VALIDATION.json) · [方法与验收](benchmark/ab_generation/COLLECTION_VALIDATION.md)
 
 | 对象 | 状态 |
 |---|---|
@@ -24,7 +24,7 @@
 
 ## 家庭六类偏好方法
 
-[第一条方法主线 v1](benchmark/household_archetypes/README.md)固定EB六类的来源，逐类区分外部问卷依据、实验设定与实际验证结果，公开EB实验构成的配额计算、原始输入版本/哈希、离线重放及论文方法表述。外部调查支持相关特征与部分组合，不代表完整六类或人口比例已验证；拟议配额尚未应用于现有50/1000户，本轮保留原家庭和A，只更新50户B及其展示，未计算后果不冒充结果；1000户仿真继续暂停。
+[第一条方法主线 v1](benchmark/household_archetypes/README.md)固定EB六类的来源，逐类区分外部问卷依据、实验设定与实际验证结果，公开EB实验构成的配额计算、原始输入版本/哈希、离线重放及论文方法表述。外部调查支持相关特征与部分组合，不代表完整六类或人口比例已验证；拟议配额尚未应用于现有50/1000户，本轮保留原家庭和A，50户新B的配对参考仿真已独立绑定，不复用旧B后果或旧答案；1000户仿真继续暂停。
 
 ## 独立住房与仿真生成
 
@@ -47,4 +47,4 @@ python -B benchmark/collector/test_protocol.py
 
 ## 三条主线接入既定问卷
 
-[统一项目入口](benchmark/project/README.md)把家庭与设备、生活A/B、住房配置接到已定v69问卷。公开六户37个A/B资料包含探索、无效和A=B样本；后果逐项标为“未计算”。当前50户已接入新方法B；公开六户预览保留用于接口复现。保持v69布局、表单和量表，未计算条件下提示评价计划请求，线上新版使用独立库，1000户继续暂缓。[接口契约](benchmark/project/INTERFACES.md)明确当前已接通与后续待补边界。
+[统一项目入口](benchmark/project/README.md)把三条主线接到既定问卷。当前正式50户使用UI91与同版本新A/B物理结果，保留v69表单和量表，以独立库采集；旧版记录保留。公开六户37案仍为独立离线接口示例，其后果保持未计算，不混成正式50户。1000户继续暂缓。[接口契约](benchmark/project/INTERFACES.md)明确当前已接通与后续待补边界。

@@ -40,7 +40,7 @@ jobs:
         with:
           node-version: '22'
       - run: python -m pip install -r benchmark/housing_simulation/requirements.txt
-      - run: python -B -m unittest benchmark.project.test_source_scope benchmark.project.test_project benchmark.project.test_reference_collection_release benchmark.project.test_reference_collection_physics benchmark.project.test_reference_physical_release benchmark.ab_generation.test_plan_only benchmark.family_generation.test_generation benchmark.family_generation.test_connection -v
+      - run: python -B -m unittest benchmark.project.test_source_scope benchmark.project.test_project benchmark.project.test_reference_collection_release benchmark.project.test_reference_collection_physics benchmark.project.test_reference_physical_release benchmark.project.test_reference_repair benchmark.ab_generation.test_plan_only benchmark.family_generation.test_generation benchmark.family_generation.test_connection -v
       - run: python -B -m benchmark.project.verify_package
       - run: python -B -m benchmark.project verify-questionnaire benchmark/project/examples/questionnaire
       - run: node benchmark/project/verify_display.js benchmark/project/examples/questionnaire

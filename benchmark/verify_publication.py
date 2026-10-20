@@ -67,6 +67,27 @@ def check(controlled=None):
         activation=read(ROOT/current['activation_record'])
         assert activation['passed'] and activation['release_sha256']==current['release_sha256']
         assert activation['old_records_preserved'] and activation['backup_active']
+    elif dataset=='reference50-v4-ui91-complete':
+        current=read(ROOT/'benchmark/releases/reference50-v4-ui91-complete/MANIFEST.json')
+        assert current['release_sha256']==online['release_sha256']
+        assert current['formal_collection_ready']is True and current['physical_statuses']=={'computed':500}
+        assert current['cases']==500 and current['households']==50 and current['questions_per_household']==10
+        assert current['original_selected_cases_retained']==497 and current['engineering_replenished_cases']==3
+        assert current['old_records_preserved'] and current['unchanged_annual_A_hardware_and_family']
+        assert current['UI91_presentation_revision']=='eb.questionnaire50.refined.v91.newAB.v1'
+        assert sha(ROOT/current['aggregate_review_path'])==current['aggregate_review_sha256']
+        review=read(ROOT/current['aggregate_review_path'])
+        assert review['unknown_consequences']==0 and review['physical_statuses']=={'computed':500}
+        assert review['paired_integrity_failures']==0 and review['selection_by_VPP_savings_or_service_success']is False
+        assert review['HTTP_protocol']['passed'] and review['browser_QA']['passed'] and review['unit_tests']['passed']
+        if current['status']=='active_online':
+            assert sha(ROOT/current['activation_record'])==current['activation_record_sha256']
+            activation=read(ROOT/current['activation_record'])
+            assert activation['passed'] and activation['release_sha256']==current['release_sha256']
+            assert activation['old_records_preserved'] and activation['backup_active']
+        else:
+            assert current['status']=='prepared_zero_unknown_waiting_verified_cutover'
+            assert online['collection_state']=='paused_waiting_verified_cutover'
     else:raise AssertionError('Unknown current collection dataset: '+str(dataset))
     publication=read(ROOT/'benchmark/PUBLICATION_MANIFEST.json')
     for name,expected in publication['files'].items():assert sha(ROOT/name)==expected,name
@@ -83,7 +104,23 @@ def check(controlled=None):
         else:
             index=read(controlled/'INDEX50.json')
             assert len(index['cases'])==500 and len(index['households'])==50
-            assert {(x['household_id'],x['date'])for x in index['cases']}=={(x['household_id'],x['date'])for x in cases}
+            actual_dates={(x['household_id'],x['date'])for x in index['cases']};original_dates={(x['household_id'],x['date'])for x in cases}
+            if dataset=='reference50-v4-ui91-complete':
+                assert len(actual_dates)==500
+                assert release['formal_collection_ready'] and release['physical_statuses']=={'computed':500}
+                lineage=release['engineering_replenishment'];assert lineage['retained_original_cases']==497
+                assert len(lineage['records'])==3 and lineage['VPP_or_household_success_filters']is False
+                added=set();removed=set()
+                for entry in lineage['records']:
+                    matching=[x for x in index['cases']if x['path'].endswith('/'+entry['new_id']+'.json')]
+                    assert len(matching)==1 and matching[0]['date']==entry['new_date']
+                    hid=matching[0]['household_id'];added.add((hid,entry['new_date']));removed.add((hid,entry['old_date']))
+                assert actual_dates-original_dates==added and original_dates-actual_dates==removed
+                assert len(actual_dates&original_dates)==497
+                for hid in index['households']:
+                    dates=[x['date']for x in index['cases']if x['household_id']==hid]
+                    assert dates==sorted(dates) and len(set(dates))==10
+            else:assert actual_dates==original_dates
             profiles={x['household_id']:x['profile_sha256']for x in cases}
             if dataset=='reference50-v4-proposal':assert index['profiles_sha256']==profiles
             else:

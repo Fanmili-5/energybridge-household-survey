@@ -52,6 +52,8 @@ class Handler(BaseHTTPRequestHandler):
                 'entry_mode':'open_no_invitation','questions_per_participant':release.questions_per_household,'cohort_id':store.cohort,
                 'A_stage':release.manifest['A_stage'],'B_stage':release.manifest['B_stage'],
                 'physical_stage':release.manifest['physical_stage'],'impact_stage':release.manifest['impact_stage'],
+                'formal_collection_ready':release.manifest.get('formal_collection_ready',False),
+                'physical_statuses':release.manifest.get('physical_statuses',{}),
                 'human_collection_release':not store.fixtures,'training_release':False,'full1000_deferred_by_user':True})
             if path in ASSETS:
                 return self.send(200,release.file('public/'+path),mime=(mimetypes.guess_type(path)[0]or'application/octet-stream')+'; charset=utf-8')
