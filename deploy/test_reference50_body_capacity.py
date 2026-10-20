@@ -2,9 +2,10 @@
 import io
 import json
 import unittest
+import types
 import urllib.error
 from unittest.mock import patch
-from deploy.activate_reference50_ui91 import verify_public_body_capacity
+from deploy.activate_reference50_ui91 import verify_public_body_capacity,verify_presentation,storage_unit_guard
 
 
 def rejected(code,body):
@@ -16,6 +17,23 @@ def too_small(*args,**kwargs):
 
 
 class BodyCapacityTests(unittest.TestCase):
+    def test_clean_presentation_requires_its_parent_and_zero_to_five_integers(self):
+        release=types.SimpleNamespace(manifest={'presentation_revision':'eb.questionnaire50.refined.v91.clean.v2',
+            'source_pins':{'parent_information_release_sha256':'parent'},'presentation_update':{'case_bytes_unchanged':True}},
+            answer_instructions={'range':[0,5],'decimal_places':0,'score_values':[0,1,2,3,4,5]})
+        self.assertTrue(verify_presentation(release,'parent').endswith('clean.v2'))
+        with self.assertRaises(AssertionError):verify_presentation(release,'wrong-parent')
+        release.answer_instructions['decimal_places']=1
+        with self.assertRaises(AssertionError):verify_presentation(release,'parent')
+
+    def test_mount_guards_apply_to_the_new_layout_without_replacing_old_layout(self):
+        layout={'mount_root':'/srv/data','binds':{'/opt/current':'/srv/data/programs','/var/lib/current':'/srv/data/answers'}}
+        with patch('deploy.activate_reference50_ui91.command',side_effect=['srv-data.mount','opt-current.mount','var-lib-current.mount']):
+            text=storage_unit_guard('/etc/collection/new-layout.json',layout)
+        self.assertIn('RequiresMountsFor=/srv/data /opt/current /var/lib/current',text)
+        self.assertIn('BindsTo=srv-data.mount opt-current.mount var-lib-current.mount',text)
+        self.assertIn('--layout /etc/collection/new-layout.json',text)
+
     def test_full_application_bound_is_probed_without_identity(self):
         error=rejected(403,json.dumps({'error':'会话已失效'}).encode())
         with patch('deploy.activate_reference50_ui91.urllib.request.urlopen',side_effect=error)as opened:
