@@ -19,5 +19,7 @@ jobs:
         run: python -B benchmark/collector/test_protocol.py
       - name: Public proxy request bound and anonymous rejection contract
         run: python -B -m unittest deploy.test_reference50_body_capacity -v
+      - name: Missing volume, wrong bind and recovery guard (no disk operations)
+        run: python -B -m unittest deploy.test_reference50_data_mount -v
       - name: Tracked artifacts and credential signatures
         run: python -B scripts/check_secrets.py --history

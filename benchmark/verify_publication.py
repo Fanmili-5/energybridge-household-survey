@@ -82,6 +82,20 @@ def check(controlled=None):
             assert current['old_records_preserved']is False and current['old_records_preserved_at_activation']is True
             assert operations['complete_payload_check']['passed']and operations['public_body_capacity']['passed']
             assert operations['nginx_body_limit_bytes']==262144
+            if operations.get('storage_migration_record'):
+                storage_path=ROOT/operations['storage_migration_record']
+                assert sha(storage_path)==operations['storage_migration_record_sha256']
+                storage=read(storage_path)
+                assert storage['passed'] and storage['release_sha256']==current['release_sha256']
+                assert storage['only_raw_disk_operated']=='/dev/vdb' and storage['partition']=='/dev/vdb1'
+                assert storage['all_database_rows_schema_and_recovery_preserved_before_start']
+                assert storage['all_copied_files_identical_before_start']
+                assert storage['new_volume_isolated_HTTP_protocol']['passed']
+                assert storage['quiesced_backup_restore']['passed']and storage['rolling_backup_restore']['passed']
+                assert storage['public_anonymous_session_write_on_new_disk']['passed']
+                assert storage['backup_and_live_data_on_separate_disks']and storage['automatic_backup_timer_active']
+                assert storage['production_answers_created_by_checks']==0 and storage['full1000_started']is False
+                assert current['storage_migration_record_sha256']==sha(storage_path)
         else:assert current['old_records_preserved']
         assert current['UI91_presentation_revision']=='eb.questionnaire50.refined.v91.newAB.v1'
         assert sha(ROOT/current['aggregate_review_path'])==current['aggregate_review_sha256']
