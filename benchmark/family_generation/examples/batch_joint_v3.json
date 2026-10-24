@@ -1,0 +1,1 @@
+{"pool":{"path":"REFERENCE_POOL.json","sha256":"85565584408192350d63f969688d483de4873176e88b5bfaa7b558573845822c"},"preference_sampling":{"mode":"within_class_joint_v3"},"prefix":"family-demo","schema":"eb.family_generation.input.v1","seed":20261019,"subset_size":6,"total":6}

@@ -1,0 +1,724 @@
+{
+  "households": [
+    {
+      "anchor": "2025-03-01",
+      "comfort_requirements": [
+        {
+          "asset_id": "project-demo-000003-a04",
+          "origin": "unknown_individual_preference",
+          "temperature_band_C": null
+        }
+      ],
+      "end_exclusive": "2025-08-01",
+      "hot_water_minimum_C": 40.0,
+      "household_id": "project-demo-000003",
+      "member_calendars": {
+        "project-demo-000003-m01": {
+          "weekday": [
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 420,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 0
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 480,
+              "location": "home",
+              "room": "$living",
+              "start_min": 420
+            },
+            {
+              "activity": "work_or_school",
+              "available_for_operation": false,
+              "end_min": 1080,
+              "location": "away",
+              "room": null,
+              "start_min": 480
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1140,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1080
+            },
+            {
+              "activity": "dinner",
+              "available_for_operation": false,
+              "end_min": 1170,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1140
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1290,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1170
+            },
+            {
+              "activity": "bath",
+              "available_for_operation": false,
+              "end_min": 1300,
+              "location": "home",
+              "room": "$bath",
+              "start_min": 1290
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1380,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1300
+            },
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 1440,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 1380
+            }
+          ],
+          "weekend": [
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 420,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 0
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 480,
+              "location": "home",
+              "room": "$living",
+              "start_min": 420
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1080,
+              "location": "home",
+              "room": "$living",
+              "start_min": 480
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1140,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1080
+            },
+            {
+              "activity": "dinner",
+              "available_for_operation": false,
+              "end_min": 1170,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1140
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1290,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1170
+            },
+            {
+              "activity": "bath",
+              "available_for_operation": false,
+              "end_min": 1300,
+              "location": "home",
+              "room": "$bath",
+              "start_min": 1290
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1380,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1300
+            },
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 1440,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 1380
+            }
+          ]
+        },
+        "project-demo-000003-m02": {
+          "weekday": [
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 420,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 0
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 480,
+              "location": "home",
+              "room": "$living",
+              "start_min": 420
+            },
+            {
+              "activity": "work_or_school",
+              "available_for_operation": false,
+              "end_min": 1080,
+              "location": "away",
+              "room": null,
+              "start_min": 480
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1140,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1080
+            },
+            {
+              "activity": "dinner",
+              "available_for_operation": false,
+              "end_min": 1170,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1140
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1270,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1170
+            },
+            {
+              "activity": "bath",
+              "available_for_operation": false,
+              "end_min": 1280,
+              "location": "home",
+              "room": "$bath",
+              "start_min": 1270
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1380,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1280
+            },
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 1440,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 1380
+            }
+          ],
+          "weekend": [
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 420,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 0
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 480,
+              "location": "home",
+              "room": "$living",
+              "start_min": 420
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1080,
+              "location": "home",
+              "room": "$living",
+              "start_min": 480
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1140,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1080
+            },
+            {
+              "activity": "dinner",
+              "available_for_operation": false,
+              "end_min": 1170,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1140
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1270,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1170
+            },
+            {
+              "activity": "bath",
+              "available_for_operation": false,
+              "end_min": 1280,
+              "location": "home",
+              "room": "$bath",
+              "start_min": 1270
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1380,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1280
+            },
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 1440,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 1380
+            }
+          ]
+        },
+        "project-demo-000003-m03": {
+          "weekday": [
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 420,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 0
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 480,
+              "location": "home",
+              "room": "$living",
+              "start_min": 420
+            },
+            {
+              "activity": "work_or_school",
+              "available_for_operation": false,
+              "end_min": 1080,
+              "location": "away",
+              "room": null,
+              "start_min": 480
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1140,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1080
+            },
+            {
+              "activity": "dinner",
+              "available_for_operation": false,
+              "end_min": 1170,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1140
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1250,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1170
+            },
+            {
+              "activity": "bath",
+              "available_for_operation": false,
+              "end_min": 1260,
+              "location": "home",
+              "room": "$bath",
+              "start_min": 1250
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1380,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1260
+            },
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 1440,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 1380
+            }
+          ],
+          "weekend": [
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 420,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 0
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 480,
+              "location": "home",
+              "room": "$living",
+              "start_min": 420
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1080,
+              "location": "home",
+              "room": "$living",
+              "start_min": 480
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1140,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1080
+            },
+            {
+              "activity": "dinner",
+              "available_for_operation": false,
+              "end_min": 1170,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1140
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1250,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1170
+            },
+            {
+              "activity": "bath",
+              "available_for_operation": false,
+              "end_min": 1260,
+              "location": "home",
+              "room": "$bath",
+              "start_min": 1250
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1380,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1260
+            },
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 1440,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 1380
+            }
+          ]
+        },
+        "project-demo-000003-m04": {
+          "weekday": [
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 420,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 0
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 480,
+              "location": "home",
+              "room": "$living",
+              "start_min": 420
+            },
+            {
+              "activity": "work_or_school",
+              "available_for_operation": false,
+              "end_min": 1080,
+              "location": "away",
+              "room": null,
+              "start_min": 480
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1140,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1080
+            },
+            {
+              "activity": "dinner",
+              "available_for_operation": false,
+              "end_min": 1170,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1140
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1320,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1170
+            },
+            {
+              "activity": "bath",
+              "available_for_operation": false,
+              "end_min": 1330,
+              "location": "home",
+              "room": "$bath",
+              "start_min": 1320
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1380,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1330
+            },
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 1440,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 1380
+            }
+          ],
+          "weekend": [
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 420,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 0
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 480,
+              "location": "home",
+              "room": "$living",
+              "start_min": 420
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1080,
+              "location": "home",
+              "room": "$living",
+              "start_min": 480
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1140,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1080
+            },
+            {
+              "activity": "dinner",
+              "available_for_operation": false,
+              "end_min": 1170,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1140
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1320,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1170
+            },
+            {
+              "activity": "bath",
+              "available_for_operation": false,
+              "end_min": 1330,
+              "location": "home",
+              "room": "$bath",
+              "start_min": 1320
+            },
+            {
+              "activity": "home_idle",
+              "available_for_operation": true,
+              "end_min": 1380,
+              "location": "home",
+              "room": "$living",
+              "start_min": 1330
+            },
+            {
+              "activity": "sleep",
+              "available_for_operation": false,
+              "end_min": 1440,
+              "location": "home",
+              "room": "$sleep",
+              "start_min": 1380
+            }
+          ]
+        }
+      },
+      "program_policies": [
+        {
+          "asset_id": "project-demo-000003-a01",
+          "capacity_kg": 5.0,
+          "daily_quantity_kg": 1.2,
+          "daily_service": true,
+          "deadline_after_release_min": 1440,
+          "duration_min": 60,
+          "initial_inventory_kg": 0.0,
+          "kind": "washer",
+          "machine_windows_min": [
+            [
+              420,
+              1410
+            ]
+          ],
+          "maximum_preload_wait_min": 180,
+          "maximum_retrieval_wait_min": 180,
+          "no_arrival_release_min": 420,
+          "preferred_start_min": {
+            "weekday": 1100,
+            "weekend": 1100
+          },
+          "priority": 0,
+          "service_id": "laundry",
+          "timer_allowed": true,
+          "trigger": "textile"
+        },
+        {
+          "asset_id": "project-demo-000003-a02",
+          "deadline_after_release_min": 1440,
+          "duration_min": 50,
+          "kind": "dryer",
+          "machine_windows_min": [
+            [
+              420,
+              1410
+            ]
+          ],
+          "maximum_preload_wait_min": 180,
+          "maximum_retrieval_wait_min": 180,
+          "preferred_start_min": {
+            "weekday": 1190,
+            "weekend": 1190
+          },
+          "priority": 1,
+          "service_id": "drying",
+          "timer_allowed": true,
+          "trigger": "after_service",
+          "upstream_service_id": "laundry"
+        },
+        {
+          "asset_id": "project-demo-000003-a03",
+          "deadline_after_release_min": 360,
+          "duration_min": 40,
+          "kind": "dishwasher",
+          "machine_windows_min": [
+            [
+              420,
+              1410
+            ]
+          ],
+          "maximum_preload_wait_min": 180,
+          "maximum_retrieval_wait_min": 180,
+          "preferred_start_min": {
+            "weekday": 1210,
+            "weekend": 1210
+          },
+          "priority": 2,
+          "service_id": "dishes",
+          "timer_allowed": true,
+          "trigger": "after_dinner"
+        }
+      ],
+      "provenance": {
+        "archetype": "C",
+        "family_context_sha256": "f57a17c3d02b6a98b5cefca498efc9d5d3b238249c84a87aace423a83df52b3f",
+        "human_label_used": false,
+        "source_family_sha256": "c28e1b1bc40ab8f8e7d2d0992668e2fec94c48bd703f3c5c99b4daf8f02f824e"
+      },
+      "tank_policy": {
+        "after_draw_hold_min": 60,
+        "asset_id": "project-demo-000003-a05",
+        "mode": "continuous",
+        "preheat_lead_min": 120,
+        "setback_C": 10.0,
+        "target_C": 55.0
+      },
+      "thermostat_policies": [
+        {
+          "asset_id": "project-demo-000003-a04",
+          "cooling_setpoint_C": 26.0,
+          "fan_operating_mode": 0,
+          "heating_setpoint_C": 20.0,
+          "hold_min": 20,
+          "mode": "occupied_with_hold",
+          "setback_cooling_C": 40.0,
+          "setback_heating_C": 5.0
+        }
+      ]
+    }
+  ],
+  "schema": "eb.life_to_A.input.v1",
+  "worlds": {
+    "path": "resource_worlds.json",
+    "sha256": "70dd14d17692d82d40a71bc1f203465ee854b277cc9d66fcecd61e4942c960be"
+  }
+}

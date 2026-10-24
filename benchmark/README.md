@@ -12,3 +12,5 @@
 | [collector](collector/) | 正式问卷、版本绑定、采集与恢复协议 |
 
 [releases](releases/)保存各版本公开清单，[generation](generation/)保存历史生成源码目录。当前范围见[数据与验收](../docs/DATASET.md)。
+
+当前A/B研究入口：[v2.10统一生成方法](research_delivery/METHOD.md)、[配置及复现](research_delivery/REPRODUCE.md)、[精确联合任务数规则](research_delivery/JOINT_ORDER_SELECTION_METHOD.md)。与现有线上题集版本分开，未计算后果保持未知。

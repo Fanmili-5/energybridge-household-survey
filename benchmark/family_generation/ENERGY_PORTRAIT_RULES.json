@@ -1,0 +1,65 @@
+{
+  "schema": "eb.energy_portrait.rules.v1",
+  "version": "energy-portrait-v1",
+  "source_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "source_paths": [
+    "human_survey_materials/role_cards/fixed_role_cards_readable.md",
+    "energybridge/roleplay/personas/basic_role_a_commuter_price_cooperative.json",
+    "energybridge/roleplay/personas/basic_role_b_home_comfort_gated.json",
+    "energybridge/roleplay/personas/basic_role_c_irregular_cautious.json",
+    "energybridge/roleplay/personas/basic_role_d_commuter_ideal_dr.json",
+    "energybridge/roleplay/personas/basic_role_e_caregiver_low_dr.json",
+    "energybridge/roleplay/personas/basic_role_f_commuter_ev_optimizer.json"
+  ],
+  "provenance": "Researcher-authored Chinese summaries of EB experimental roles;not measured household preferences or acceptance labels",
+  "roles": {
+    "A": {
+      "priority": "关注电费，愿意商量调整，但希望先知道大致能省多少，并保证生活安排可靠。",
+      "grid_attitude": "愿意配合电网响应，但单说帮助电网不足以抵消生活安排的不确定。",
+      "control": "suggestion_first",
+      "confirmation": "修改前先说明并征求确认；设备支持预约不等于已同意本次调整。",
+      "thermal": "可商量短时小幅调整制冷设定，最好不超过26℃，并保护到家及有人使用房间时的舒适。",
+      "device_adjustment": "可以商量在原服务期限内调整机器时间，但应说明节省及装取安排。"
+    },
+    "B": {
+      "priority": "舒适和工作休息优先，不愿为小额节省承受明显不适或额外补救。",
+      "grid_attitude": "只有几乎不打扰生活和体感的响应建议才值得考虑。",
+      "control": "confirm_required",
+      "confirmation": "每次调整先确认；不能把在家或设备可预约当作同意自动控制。",
+      "thermal": "希望制冷温度维持在原EB角色描述的24—25℃附近，变化应很小且短暂。",
+      "device_adjustment": "优先维持既定生活节奏；时间调整先确认，并保护工作、休息与服务可用性。"
+    },
+    "C": {
+      "priority": "愿意听节能建议，但作息可能变化，重视清楚解释和自主决定。",
+      "grid_attitude": "支持意愿取决于当天安排是否可靠，不能只凭昨天的日程行动。",
+      "control": "confirm_same_day",
+      "confirmation": "行动前按当天安排再次确认，并说明如何撤回；不能默认已经授权移动任务。",
+      "thermal": "小幅温控建议需结合当天实际在家和房间使用情况确认。",
+      "device_adjustment": "任何移时均作为待确认建议；不能取消必要任务，日程变化后应重新协商。"
+    },
+    "D": {
+      "priority": "支持节能与电网响应，关注节省和响应收益，也希望了解节能结果。",
+      "grid_attitude": "愿意积极参与，但必要家务、热水和出行需求仍须完成。",
+      "control": "automatic_within_bounds",
+      "confirmation": "在明确约定的设备和边界内可自动优化；超出边界仍需重新确认。",
+      "thermal": "可考虑原EB描述的短时1—2℃变化，仍要保护已声明的舒适和服务要求。",
+      "device_adjustment": "在已有授权边界内可优化机器时间；不能遗漏任务或增加未经约定的人工操作。"
+    },
+    "E": {
+      "priority": "照护、舒适和生活稳定优先，节省不能以打乱照护或增加负担为代价。",
+      "grid_attitude": "只考虑影响很小、明确保护必要服务的建议。",
+      "control": "advice_only_default",
+      "confirmation": "默认提供提醒和建议，不把设备能力解释为自动控制授权。",
+      "thermal": "优先保护已声明照护对象的房间使用与舒适；不从年龄推断疾病或具体温度需要。",
+      "device_adjustment": "优先保留照护相关任务和时间；调整需说明受影响成员与额外操作，并征求确认。"
+    },
+    "F": {
+      "priority": "关注电价和充电优化，但出行电量与准备时间必须可靠。",
+      "grid_attitude": "在保护出行、热水和家务的前提下，愿意配合错峰。",
+      "control": "automatic_within_bounds",
+      "confirmation": "在明确声明的充电及设备授权范围内可优化；新增出行或越界调整需要确认。",
+      "thermal": "可商量适度温控配合，但不能牺牲已声明的舒适和出行服务。",
+      "device_adjustment": "可在已有边界内协同调整，必须保留本户声明的离车时间和目标电量。"
+    }
+  }
+}

@@ -17,7 +17,23 @@ permissions:
   contents: read
 
 jobs:
+  method-scope:
+    runs-on: ubuntu-latest
+    outputs:
+      method_only: ${{ steps.scope.outputs.method_only }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: scope
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: python3 -B benchmark/research_delivery/ci_scope.py
   public-reproduction:
+    needs: method-scope
+    if: needs.method-scope.outputs.method_only != 'true'
     timeout-minutes: 15
     runs-on: ubuntu-latest
     strategy:
@@ -60,6 +76,8 @@ jobs:
           python -B -m benchmark.ab_generation verify "$RUNNER_TEMP/life-example"
 
   gap-static-check:
+    needs: method-scope
+    if: needs.method-scope.outputs.method_only != 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

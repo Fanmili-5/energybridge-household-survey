@@ -10,11 +10,15 @@ def main():
     g = sub.add_parser('generate'); g.add_argument('--input', type=Path, required=True); g.add_argument('--out', type=Path, required=True)
     v = sub.add_parser('verify'); v.add_argument('folder', type=Path)
     c = sub.add_parser('connect'); c.add_argument('--families', type=Path, required=True); c.add_argument('--out', type=Path, required=True)
+    e = sub.add_parser('portrait'); e.add_argument('--input', type=Path, required=True); e.add_argument('--out', type=Path, required=True)
     a = p.parse_args()
     if a.command == 'generate':
         result = generate(a.input, a.out)
     elif a.command == 'verify':
         result = verify(a.folder)
+    elif a.command == 'portrait':
+        from .energy_portrait import build_portraits
+        result = build_portraits(a.input, a.out)
     else:
         from .connect import connect
         result = connect(a.families, a.out)

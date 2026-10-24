@@ -1,0 +1,204 @@
+{
+  "households": [
+    {
+      "devices": [
+        {
+          "asset_id": "project-demo-000001-a01",
+          "connections": [
+            "electricity",
+            "water",
+            "drain"
+          ],
+          "footprint_m": [
+            0.6,
+            0.65
+          ],
+          "kind": "washer",
+          "parameters": {
+            "nameplate_W": 500.0,
+            "power_kw": 0.5
+          },
+          "placement": "floor",
+          "room": "$living",
+          "room_id": "combined_bed_living",
+          "types": [
+            "washer"
+          ],
+          "using_household_ids": [
+            "project-demo-000001"
+          ]
+        },
+        {
+          "asset_id": "project-demo-000001-a02",
+          "connections": [
+            "electricity",
+            "water",
+            "drain"
+          ],
+          "footprint_m": [
+            0.6,
+            0.65
+          ],
+          "kind": "dishwasher",
+          "parameters": {
+            "nameplate_W": 1000.0,
+            "power_kw": 1.0
+          },
+          "placement": "floor",
+          "room": "$kitchen",
+          "room_id": "kitchen",
+          "types": [
+            "dishwasher"
+          ],
+          "using_household_ids": [
+            "project-demo-000001"
+          ]
+        },
+        {
+          "asset_id": "project-demo-000001-a03",
+          "connections": [
+            "electricity",
+            "outdoor_heat_exchange"
+          ],
+          "kind": "ac",
+          "mount_width_m": 0.9,
+          "parameters": {
+            "air_flow_m3_s": 0.2,
+            "cooling_COP": 3.2,
+            "cooling_capacity_W": 3500,
+            "defrost_capacity_W": 500,
+            "fan_power_W": 45,
+            "fan_pressure_Pa": 75,
+            "heating_COP": 3.0,
+            "heating_capacity_W": 3500,
+            "nameplate_W": 3500,
+            "sensible_heat_ratio": 0.75,
+            "supplemental_capacity_W": 1000
+          },
+          "placement": "wall",
+          "room": "$sleep:project-demo-000001-m01",
+          "room_id": "combined_bed_living",
+          "types": [
+            "ac"
+          ],
+          "using_household_ids": [
+            "project-demo-000001"
+          ]
+        },
+        {
+          "asset_id": "project-demo-000001-a04",
+          "connections": [
+            "electricity",
+            "water"
+          ],
+          "kind": "water_heater",
+          "mount_width_m": 0.6,
+          "parameters": {
+            "deadband_C": 2,
+            "efficiency": 1,
+            "heater_capacity_W": 2500,
+            "height_m": 1.2,
+            "maximum_C": 80,
+            "nameplate_W": 2500,
+            "number_of_nodes": 6,
+            "skin_loss_W_m2K": 0.8,
+            "volume_m3": 0.15
+          },
+          "placement": "wall",
+          "room": "$bath",
+          "room_id": "washroom",
+          "types": [
+            "water_heater"
+          ],
+          "using_household_ids": [
+            "project-demo-000001"
+          ]
+        },
+        {
+          "asset_id": "project-demo-000001-a05",
+          "connections": [
+            "electricity",
+            "dedicated_parking"
+          ],
+          "kind": "ev",
+          "parameters": {
+            "capacity_kwh": 60,
+            "charger_kw": 7,
+            "efficiency": 0.9,
+            "initial_energy_kwh": 42,
+            "minimum_soc": 0.1,
+            "nameplate_W": 7000,
+            "target_soc": 0.7
+          },
+          "placement": "exterior",
+          "room_id": null,
+          "types": [
+            "ev"
+          ],
+          "using_household_ids": [
+            "project-demo-000001"
+          ]
+        }
+      ],
+      "electrical": {
+        "background_upper_W": 1699.8672525001282,
+        "capacity_mode": "nameplate_sum",
+        "nameplate_plus_background_W": 16199.867252500128,
+        "supply_W": 24000
+      },
+      "household_id": "project-demo-000001",
+      "members": [
+        {
+          "age_years": 36,
+          "calendar_id": "project-demo-000001-m01",
+          "can_operate_asset_ids": [
+            "project-demo-000001-a01",
+            "project-demo-000001-a02",
+            "project-demo-000001-a03",
+            "project-demo-000001-a04",
+            "project-demo-000001-a05"
+          ],
+          "hot_water_liters": 25,
+          "household_id": "project-demo-000001",
+          "member_id": "project-demo-000001-m01"
+        }
+      ],
+      "room_map": {
+        "bath": "washroom",
+        "kitchen": "kitchen",
+        "living": "combined_bed_living"
+      },
+      "rooms": [
+        {
+          "room_id": "combined_bed_living",
+          "using_household_ids": [
+            "project-demo-000001"
+          ]
+        },
+        {
+          "room_id": "corridor",
+          "using_household_ids": [
+            "project-demo-000001"
+          ]
+        },
+        {
+          "room_id": "kitchen",
+          "using_household_ids": [
+            "project-demo-000001"
+          ]
+        },
+        {
+          "room_id": "washroom",
+          "using_household_ids": [
+            "project-demo-000001"
+          ]
+        }
+      ],
+      "sleep_room_by_member": {
+        "project-demo-000001-m01": "combined_bed_living"
+      }
+    }
+  ],
+  "schema": "eb.life_resource_worlds.v1",
+  "source_world_contract_sha256": "9e4e30ed973fa75325507ed6ff6caae8c5ebdfeddbe45f8f223aed8cac874968"
+}

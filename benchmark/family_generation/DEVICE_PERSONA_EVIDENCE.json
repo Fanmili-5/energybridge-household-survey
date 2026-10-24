@@ -1,0 +1,52 @@
+{
+  "EB": {
+    "commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+    "role_and_device_priors": "DEVICE_PERSONA_RULES.json",
+    "source_lock": "ENERGY_PORTRAIT_SOURCES.json"
+  },
+  "algorithm": {
+    "direct_algorithm_replication": false,
+    "method": "deterministic condition compiler over per-asset qualified handlers, unchanged calendars and pre-declared service contracts;independent static compatibility audit",
+    "not_an_empirically_fitted_personality_predictor": true
+  },
+  "date": "2026-10-21",
+  "experimental_settings": [
+    "calendar-conditioned handling/coordination habits",
+    "room-specific rest priority without diagnosis",
+    "explicit per-action consent scope including changed handlers and extra work",
+    "extension of an EB attitude to an owned device absent from its basic persona",
+    "operator-specific care and handoff tradeoffs, without changing assignment or granting consent",
+    "separate heating/cooling/tank-target proposal scopes;undefined numeric bounds remain unapproved",
+    "water-demand grouping by exact interval adjacency, original journey-purpose and departure protection"
+  ],
+  "human_acceptance_labels_generated": false,
+  "literature": [
+    {
+      "does_not_support": "a measured deterministic mapping from these Chinese households to a particular preference or consent",
+      "read_scope": "publisher abstract/highlights rechecked2026-10-21",
+      "supports": "appliance habits,context and perceived inconvenience vary;energy flexibility and readiness must be distinguished",
+      "title": "Beyond the average consumer: Mapping the potential of demand-side management among patterns of appliance usage",
+      "url": "https://doi.org/10.1016/j.erss.2024.103463",
+      "year": 2024
+    },
+    {
+      "does_not_support": "treating physical availability as automatic authorization,or claiming this rule compiler is the paper algorithm",
+      "doi": "10.1109/ACCESS.2020.3001763",
+      "read_scope": "author institutional repository abstract rechecked2026-10-21",
+      "supports": "separate appliance characteristics,usage preferences,comfort and voluntarily contributed flexibility",
+      "title": "Appliance-level Flexible Scheduling for Socio-technical Smart Grid Optimisation",
+      "url": "https://eprints.whiterose.ac.uk/id/eprint/165733/"
+    }
+  ],
+  "new_numeric_habit_parameters": false,
+  "schema": "eb.device_persona.evidence.v3",
+  "v4_household_first": {
+    "EB_household_precedence": "energybridge/roleplay/households.py:90",
+    "date": "2026-10-22",
+    "implemented": "household_preferences.py",
+    "limitations": "two-household validation; no population validity or human acceptance claim",
+    "member_assignment": "new deterministic joint experimental recipe, not psychological inference",
+    "method_doc": "HOUSEHOLD_PREFERENCES_METHOD.md",
+    "source_lock_files": 17
+  }
+}

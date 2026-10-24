@@ -1,0 +1,44 @@
+{
+  "schema": "eb.within_class_joint.rules.v1",
+  "version": "within_class_joint_v1",
+  "algorithm": "Gaussian copula with declared shared normal factors and inverse CDF mappings",
+  "dimensions": ["time_orientation", "routine_stability", "manual_burden", "thermal_level", "comfort_sensitivity", "autonomy"],
+  "loading_default": 0.7,
+  "loading_sensitivity": [0, 0.35, 0.7, 0.9],
+  "time_step_min": 10,
+  "handling_duration_min": 10,
+  "temperature_step_C": 0.1,
+  "authorization_confirmation_threshold": 0.5,
+  "dimension_consumers": {
+    "time_orientation": "program start quantile;EV ready-early versus defer preference",
+    "routine_stability": "routine-versus-handling tradeoff;soft shift-willingness fraction",
+    "manual_burden": "same tradeoff and shift fraction;dryer waiting sensitivity",
+    "thermal_level": "cooling preference only;not tied to early/late time preference",
+    "comfort_sensitivity": "soft cooling-change tolerance;hot-water readiness priority",
+    "autonomy": "experimental confirmation preference within original permission"
+  },
+  "class_cores": {
+    "A": "关注节省，重视解释和可靠性，调整先确认",
+    "B": "舒适和生活便利优先，不因小额节省接受明显打扰",
+    "C": "自主决定、当天确认、可以撤回",
+    "D": "积极响应，明确边界内支持自动优化",
+    "E": "照护、舒适和生活稳定优先，默认建议与确认",
+    "F": "出行和目标电量优先，支持边界内充电优化"
+  },
+  "parameter_ledger": {
+    "Gaussian_copula_transform": {"origin": "published_algorithm", "source": "Ghosh_Henderson_2002_section1", "use": "correlated latent uniforms;not empirical household fitting"},
+    "class_cores": {"origin": "EB_role_cards_project_operationalization", "source": "ENERGY_PORTRAIT_RULES.json", "use": "fixed household core;members never redraw A-F"},
+    "cooling_support_C": {"origin": "EB_basic_role_soft_reference", "source": "DEVICE_PERSONA_RULES.json:EB_roles.*.appliances.ac", "use": "experimental support for a cooling preference;not a heating/actuator permission"},
+    "latent_marginals": {"origin": "experimental_setting", "support": [0, 1], "distribution": "uniform via normal CDF", "use": "relative preference coordinates,not acceptance probabilities or population frequencies"},
+    "loading_default": {"origin": "experimental_setting_unfitted", "support": [0, 1], "use": "shared latent loading;pairwise latent correlation is loading squared;0.7 remains a pilot starting point"},
+    "time_domain": {"origin": "unchanged_declarations_plus_project_feasibility_mapping", "source": "original machine windows,release/deadline,program duration,operator rights and calendars", "use": "uniform quantile on sorted feasible clock grid;not exact conditioning of an unconstrained copula"},
+    "time_step_min": {"origin": "existing_pipeline_experiment", "source": "benchmark.ab_generation.life:LIFE_RULES.step_min"},
+    "handling_duration_min": {"origin": "existing_pipeline_experiment", "source": "benchmark.ab_generation.life:LIFE_RULES.operation_duration_min"},
+    "temperature_step_C": {"origin": "experimental_setting", "use": "discrete-uniform cooling preference grid inside EB support"},
+    "authorization_confirmation_threshold": {"origin": "experimental_setting", "use": "D/F may prefer confirmation above this autonomy coordinate;never grants absent standing permission"},
+    "member_context_mapping": {"origin": "experimental_setting", "use": "early/late via0.5,tradeoff via routine-versus-burden ranking;affected members retain separate opinions and may narrow standing consent;not independent schedules or psychological measurements"},
+    "willingness_mapping": {"origin": "experimental_setting", "formula": "(1-routine_stability)*(1-manual_burden)", "use": "fraction of existing reschedule bound one prefers to discuss,not hard feasibility or consent"},
+    "thermal_mapping": {"origin": "experimental_setting", "formula": "(1-comfort_sensitivity)*existing cooling change limit", "use": "soft desired maximum change;no heating,off or preconditioning permission"},
+    "device_mechanism_preferences": {"origin": "experimental_setting", "use": "dryer waiting sensitivity=manual_burden;hot-water readiness=comfort_sensitivity;EV readiness=1-time_orientation;all evaluation context only"}
+  }
+}

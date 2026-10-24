@@ -169,7 +169,9 @@ def remap(value, mapping, field=None):
     return value
 
 
-def construct(t, hid, role):
+def construct(t, hid, role, preference_sampling=None):
+    from .energy_portrait import RULES, role_attitude
+    from .device_persona import from_declared_family
     world = t['world']; old = world['household_id']
     contexts = sorted(t['facts']['context_household_ids'])
     mapping = {old: hid, **{k: hid + '-aux-%02d' % (i + 1) for i, k in enumerate(contexts)}}
@@ -184,6 +186,14 @@ def construct(t, hid, role):
     result['human_acceptance'] = None
     result['source_template_sha256'] = digest(t)
     result['source_evidence_kind'] = t['evidence_kind']
+    result['energy_attitude'] = role_attitude(role)
+    result['energy_attitude_rules_sha256'] = sha(RULES)
+    result['energy_portrait_status'] = 'pending_existing_calendar_and_service_requirements'
+    if preference_sampling is not None:
+        from .joint_sampling import configuration
+        result.setdefault('energy_preferences', {})['preference_sampling'] = configuration(preference_sampling)
+    result['energy_use_profile'] = from_declared_family(result)
+    result['energy_portrait_status'] = 'device_persona_constructed_before_A;bound_daily_requirements_pending'
     validate_template(result)
     # All demographic/relationship facts are conserved under ID renaming.
     require(result['facts'] == remap(t['facts'], mapping), 'FACTS_CHANGED_DURING_CONSTRUCTION')
@@ -191,13 +201,25 @@ def construct(t, hid, role):
 
 
 def generate(input_path, output):
+    from .energy_portrait import RULES, SOURCE_LOCK
+    from .device_persona import RULES as DEVICE_RULES
+    from .household_preferences import SOURCES as HOUSEHOLD_SOURCES
+    portrait_rules_sha, portrait_lock_sha = sha(RULES), sha(SOURCE_LOCK)
+    device_rules_sha = sha(DEVICE_RULES)
+    household_sources_sha, household_code_sha = sha(HOUSEHOLD_SOURCES), sha(HERE / 'household_preferences.py')
     input_sha = sha(input_path)
     cfg = read(input_path)
-    require(set(cfg) == {'schema', 'total', 'subset_size', 'seed', 'prefix', 'pool'}, 'UNKNOWN_GENERATION_INPUT')
+    require(set(cfg) - {'preference_sampling'} == {'schema', 'total', 'subset_size', 'seed', 'prefix', 'pool'}, 'UNKNOWN_GENERATION_INPUT')
     require(cfg['schema'] == 'eb.family_generation.input.v1', 'UNKNOWN_SCHEMA')
     require(type(cfg['total']) is int and 1 <= cfg['total'] <= 100000, 'INVALID_TOTAL')
     require(type(cfg['subset_size']) is int and 0 <= cfg['subset_size'] <= cfg['total'], 'INVALID_SUBSET_SIZE')
     require(type(cfg['seed']) is int and re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,40}', cfg['prefix']), 'INVALID_SEED_OR_PREFIX')
+    sampling = None
+    if 'preference_sampling' in cfg:
+        from .joint_sampling import configuration
+        require(isinstance(cfg['preference_sampling'], dict) and 'seed' not in cfg['preference_sampling'], 'JOINT_USES_BATCH_SEED_ONLY')
+        sampling = configuration({**cfg['preference_sampling'], 'seed': cfg['seed']})
+    joint_hashes = {p: sha(HERE / p) for p in ('joint_sampling.py', 'JOINT_SAMPLING_RULES.json')}
     source = (Path(input_path).parent / cfg['pool']['path']).resolve()
     require(source.is_relative_to(Path(input_path).parent.resolve()) and sha(source) == cfg['pool']['sha256'], 'POOL_PATH_OR_HASH')
     pool = read(source)
@@ -230,7 +252,7 @@ def generate(input_path, output):
             else:
                 t = min(candidates, key=lambda t: digest([cfg['seed'], hid, role, t['template_id']]))
                 try:
-                    result = construct(t, hid, role)
+                    result = construct(t, hid, role, sampling)
                     result['archetype_definition'] = {
                         'role': role, 'title': policy['archetypes'][role],
                         'EB_commit': policy['EB_source']['commit'],
@@ -255,9 +277,16 @@ def generate(input_path, output):
                'existing_data_migrated': False, 'EP_runs': 0, 'human_labels_generated': 0}
     save(root / 'SUMMARY.json', summary)
     require(sha(input_path) == input_sha and sha(source) == cfg['pool']['sha256']
-            and sha(policy_path) == policy_sha and sha(lock_path) == lock_sha,
+            and sha(policy_path) == policy_sha and sha(lock_path) == lock_sha
+            and sha(RULES) == portrait_rules_sha and sha(SOURCE_LOCK) == portrait_lock_sha and sha(DEVICE_RULES) == device_rules_sha
+            and sha(HOUSEHOLD_SOURCES) == household_sources_sha and sha(HERE / 'household_preferences.py') == household_code_sha,
             'INPUT_CHANGED_DURING_GENERATION')
+    require(all(sha(HERE / p) == h for p,h in joint_hashes.items()), 'JOINT_METHOD_CHANGED_DURING_GENERATION')
     seal(root, {'input_sha256': input_sha, 'pool_sha256': cfg['pool']['sha256'],
+                'joint_sampling_hashes': joint_hashes, 'preference_sampling': sampling,
+                'device_persona_rules_sha256': device_rules_sha,
+                'household_preferences_sources_sha256': household_sources_sha, 'household_preferences_code_sha256': household_code_sha,
+                'energy_portrait_rules_sha256': portrait_rules_sha, 'energy_portrait_source_lock_sha256': portrait_lock_sha,
                 'role_policy_sha256': policy_sha,
                 'role_allocator_sha256': sha(HERE.parent / 'household_archetypes/allocate.py'),
                 'role_source_lock_sha256': lock_sha,

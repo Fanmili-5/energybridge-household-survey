@@ -1,0 +1,21 @@
+{
+  "schema": "eb.program_capability_source.v1",
+  "contract": "reference50_A46_combo_v1",
+  "origin": "original_project_service_contract;not_manufacturer_or_population_evidence",
+  "source_original_path": "/Users/fanmili/studytest/energybridge-household-survey/docs/research/collection-adjustment-20260930/household1000/normal_A_v46_20261017/code/design.py",
+  "source_sha256": "6e03bf793a315d8aeb35d9e2f6aaeec84e7be85fe1d4dcac4b2a9251c83eed8f",
+  "bundled_source": "evidence/reference_A46_design.py.txt",
+  "read_scope_original_lines": [
+    85,
+    102
+  ],
+  "declaration": "same registered washer/dryer asset executes continuous automatic wash then dry with one handling chain",
+  "not_A_times_or_habits": true,
+  "does_not_support": [
+    "real_appliance_certification",
+    "behavior_distribution",
+    "execution_consent",
+    "new_device_or_operator"
+  ],
+  "parameters_remain_input_specific": true
+}

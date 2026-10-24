@@ -26,6 +26,15 @@ class ConnectionTests(unittest.TestCase):
                 normalized = read(folder / 'resource_worlds.json')
                 self.assertEqual(normalized['source_world_contract_sha256'], sha(folder / 'world_contracts.json'))
                 self.assertEqual(read(folder / 'family_context.json')['archetype_definition']['role'], r['archetype'])
+                portrait = read(root / 'connected' / r['energy_portrait'])
+                self.assertEqual(portrait['role'], r['archetype'])
+                self.assertFalse(portrait['source_calendar_or_A_modified'])
+                self.assertFalse(portrait['B_outcomes_or_answers_used'])
+                programmed = [d for d in portrait['devices'] if d['kind'] in ('washer', 'dishwasher')]
+                for device in programmed:
+                    self.assertTrue(device['declared_settings']['program_policies'])
+                    for need in device['requirements']:
+                        self.assertIn('preferred_start_at', need)
 
     def test_missing_source_support_stays_in_connection_denominator(self):
         with tempfile.TemporaryDirectory() as temp:

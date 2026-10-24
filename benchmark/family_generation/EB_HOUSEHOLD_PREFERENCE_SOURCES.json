@@ -1,0 +1,1015 @@
+{
+  "EB_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "authority": "source reference for experimental materials, not obtained real-user consent",
+  "excluded": [
+    "acceptance probabilities",
+    "scoring weights",
+    "generated human labels"
+  ],
+  "households": {
+    "household_s1_dual_commuter_standard": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.0
+        },
+        "dishwasher": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 19.0,
+          "latest_h": 7.0,
+          "power_kw": 1.2,
+          "preferred_h": 21.5,
+          "present": true,
+          "shiftable": true
+        },
+        "dryer": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 2.5,
+          "preferred_h": 15.0,
+          "present": true,
+          "shiftable": true
+        },
+        "ev": {
+          "arrival_h": 18.5,
+          "capacity_kwh": 60.0,
+          "charger_kw": 7.4,
+          "daily_drive_kwh": 20.0,
+          "departure_h": 7.5,
+          "min_soc": 0.2,
+          "present": true,
+          "target_soc": 0.8
+        },
+        "refrigerator": {
+          "power_kw": 0.15,
+          "present": true
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 13.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 20.5,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 18.0,
+          "pre_heat_window_start_h": 13.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "id": "household_s1_dual_commuter_standard",
+      "members": [
+        {
+          "decision_weight": 1.0,
+          "household_role": "EV commuter and charging owner",
+          "member_id": "father",
+          "persona_id": "basic_role_f_commuter_ev_optimizer"
+        },
+        {
+          "decision_weight": 1.0,
+          "household_role": "stable commuter and automation-friendly scheduler",
+          "member_id": "mother",
+          "persona_id": "basic_role_d_commuter_ideal_dr"
+        },
+        {
+          "decision_weight": 0.8,
+          "household_role": "student with fixed evening study and task windows",
+          "member_id": "child",
+          "persona_id": "atom_task_rigid"
+        },
+        {
+          "decision_weight": 1.2,
+          "household_role": "comfort-sensitive elder at home in evening",
+          "member_id": "elder",
+          "persona_id": "atom_comfort_sensitive"
+        }
+      ],
+      "source_path": "energybridge/roleplay/households/household_s1_dual_commuter_standard.json",
+      "source_sha256": "f5adfc3c3718bae1a83ec5593d6b8103a99cec5bb5cee59ed452cebdf21e95c9",
+      "tags": {
+        "comfort": "elder_priority",
+        "control": "household_consensus",
+        "grid_value": "moderate_flex",
+        "price": "mixed_price_sensitive",
+        "schedule": "multi_user_commuter_evening_home",
+        "task": "full_appliance_portfolio"
+      }
+    },
+    "household_s2_multigeneration_caregiver": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 25.5,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 0.7
+        },
+        "dishwasher": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 19.0,
+          "latest_h": 7.0,
+          "power_kw": 1.2,
+          "preferred_h": 21.0,
+          "present": true,
+          "shiftable": true
+        },
+        "dryer": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 9.0,
+          "latest_h": 21.0,
+          "power_kw": 2.5,
+          "preferred_h": 13.5,
+          "present": true,
+          "shiftable": true
+        },
+        "ev": {
+          "arrival_h": 18.5,
+          "capacity_kwh": 60.0,
+          "charger_kw": 7.4,
+          "daily_drive_kwh": 16.0,
+          "departure_h": 7.5,
+          "min_soc": 0.25,
+          "present": true,
+          "target_soc": 0.8
+        },
+        "refrigerator": {
+          "power_kw": 0.15,
+          "present": true
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 21.0,
+          "power_kw": 1.5,
+          "preferred_h": 11.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 20.0,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 17.0,
+          "pre_heat_window_start_h": 10.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "id": "household_s2_multigeneration_caregiver",
+      "members": [
+        {
+          "decision_weight": 1.4,
+          "household_role": "primary caregiver and safety proxy",
+          "member_id": "caregiver",
+          "persona_id": "basic_role_e_caregiver_low_dr"
+        },
+        {
+          "decision_weight": 1.3,
+          "household_role": "comfort-sensitive elder",
+          "member_id": "elder",
+          "persona_id": "atom_comfort_sensitive"
+        },
+        {
+          "decision_weight": 1.0,
+          "household_role": "commuter with EV charging requirement",
+          "member_id": "ev_commuter",
+          "persona_id": "basic_role_f_commuter_ev_optimizer"
+        },
+        {
+          "decision_weight": 1.1,
+          "household_role": "work-from-home comfort-gated member",
+          "member_id": "wfh_member",
+          "persona_id": "basic_role_b_home_comfort_gated"
+        },
+        {
+          "decision_weight": 0.8,
+          "household_role": "fixed routine child/student proxy",
+          "member_id": "child",
+          "persona_id": "atom_task_rigid"
+        }
+      ],
+      "source_path": "energybridge/roleplay/households/household_s2_multigeneration_caregiver.json",
+      "source_sha256": "45fd3d39a3a2935bb21bc9cf1f5843bd5175ab02c1009cb879c25ec7a6cf62bc",
+      "tags": {
+        "comfort": "vulnerable_members",
+        "control": "protective_confirmation",
+        "grid_value": "low_intrusion_flex",
+        "price": "low_price_priority",
+        "schedule": "multi_generation_high_occupancy",
+        "task": "full_appliance_portfolio"
+      }
+    },
+    "household_s3_hybrid_work_from_home": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 0.8
+        },
+        "dishwasher": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 19.0,
+          "latest_h": 7.0,
+          "power_kw": 1.2,
+          "preferred_h": 21.5,
+          "present": true,
+          "shiftable": true
+        },
+        "dryer": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 2.5,
+          "preferred_h": 16.0,
+          "present": true,
+          "shiftable": true
+        },
+        "ev": {
+          "arrival_h": 18.5,
+          "capacity_kwh": 60.0,
+          "charger_kw": 7.4,
+          "daily_drive_kwh": 18.0,
+          "departure_h": 7.5,
+          "min_soc": 0.2,
+          "present": true,
+          "target_soc": 0.8
+        },
+        "refrigerator": {
+          "power_kw": 0.15,
+          "present": true
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 14.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 20.0,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 18.0,
+          "pre_heat_window_start_h": 13.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "id": "household_s3_hybrid_work_from_home",
+      "members": [
+        {
+          "decision_weight": 1.2,
+          "household_role": "daytime work-from-home comfort priority",
+          "member_id": "wfh_member",
+          "persona_id": "basic_role_b_home_comfort_gated"
+        },
+        {
+          "decision_weight": 1.0,
+          "household_role": "commuter with EV and price sensitivity",
+          "member_id": "ev_partner",
+          "persona_id": "basic_role_f_commuter_ev_optimizer"
+        },
+        {
+          "decision_weight": 1.0,
+          "household_role": "irregular schedule and cautious consent expectations",
+          "member_id": "irregular_member",
+          "persona_id": "basic_role_c_irregular_cautious"
+        }
+      ],
+      "source_path": "energybridge/roleplay/households/household_s3_hybrid_work_from_home.json",
+      "source_sha256": "ad54838a4f221c92ee9bb23a7866df1ad6ee4c27c670f9e9a4bd7dcd0ef85582",
+      "tags": {
+        "comfort": "workday_stability",
+        "control": "cautious_consensus",
+        "grid_value": "moderate_flex",
+        "price": "mixed_price_sensitive",
+        "schedule": "hybrid_wfh_irregular",
+        "task": "full_appliance_portfolio"
+      }
+    },
+    "household_s4_ev_commuter_flexible": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.0
+        },
+        "dishwasher": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 19.0,
+          "latest_h": 7.0,
+          "power_kw": 1.2,
+          "preferred_h": 22.0,
+          "present": true,
+          "shiftable": true
+        },
+        "dryer": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 2.5,
+          "preferred_h": 15.0,
+          "present": true,
+          "shiftable": true
+        },
+        "ev": {
+          "arrival_h": 18.5,
+          "capacity_kwh": 60.0,
+          "charger_kw": 7.4,
+          "daily_drive_kwh": 22.0,
+          "departure_h": 7.5,
+          "min_soc": 0.2,
+          "present": true,
+          "target_soc": 0.85
+        },
+        "refrigerator": {
+          "power_kw": 0.15,
+          "present": true
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 13.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 20.5,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 18.0,
+          "pre_heat_window_start_h": 13.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "id": "household_s4_ev_commuter_flexible",
+      "members": [
+        {
+          "decision_weight": 1.3,
+          "household_role": "primary EV owner with next-day SOC constraint",
+          "member_id": "ev_owner",
+          "persona_id": "basic_role_f_commuter_ev_optimizer"
+        },
+        {
+          "decision_weight": 1.0,
+          "household_role": "high-trust commuter with flexible chores",
+          "member_id": "auto_partner",
+          "persona_id": "basic_role_d_commuter_ideal_dr"
+        },
+        {
+          "decision_weight": 0.9,
+          "household_role": "price-indifferent member who dislikes inconvenience",
+          "member_id": "convenience_member",
+          "persona_id": "atom_price_indifferent"
+        },
+        {
+          "decision_weight": 0.8,
+          "household_role": "automation-accepting member",
+          "member_id": "auto_member",
+          "persona_id": "atom_control_auto"
+        }
+      ],
+      "source_path": "energybridge/roleplay/households/household_s4_ev_commuter_flexible.json",
+      "source_sha256": "6a760e3c6509a282a00881e94ce902e6558f50766a7323e61f3dd3be0dc7a9b6",
+      "tags": {
+        "comfort": "normal_comfort",
+        "control": "high_trust_auto_consensus",
+        "grid_value": "high_flex",
+        "price": "price_sensitive_with_convenience_member",
+        "schedule": "ev_commuter_evening_home",
+        "task": "ev_plus_full_appliance_portfolio"
+      }
+    },
+    "household_s5_shared_roommates_irregular": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.0
+        },
+        "dishwasher": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 19.0,
+          "latest_h": 7.0,
+          "power_kw": 1.2,
+          "preferred_h": 22.0,
+          "present": true,
+          "shiftable": true
+        },
+        "dryer": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 8.0,
+          "latest_h": 23.0,
+          "power_kw": 2.5,
+          "preferred_h": 16.0,
+          "present": true,
+          "shiftable": true
+        },
+        "ev": {
+          "arrival_h": 18.5,
+          "capacity_kwh": 60.0,
+          "charger_kw": 7.4,
+          "daily_drive_kwh": 18.0,
+          "departure_h": 7.5,
+          "min_soc": 0.2,
+          "present": true,
+          "target_soc": 0.8
+        },
+        "refrigerator": {
+          "power_kw": 0.15,
+          "present": true
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 23.0,
+          "power_kw": 1.5,
+          "preferred_h": 20.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 18.0,
+          "pre_heat_window_start_h": 13.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "id": "household_s5_shared_roommates_irregular",
+      "members": [
+        {
+          "decision_weight": 1.0,
+          "household_role": "regular worker with EV and savings interest",
+          "member_id": "roommate_a_ev",
+          "persona_id": "basic_role_f_commuter_ev_optimizer"
+        },
+        {
+          "decision_weight": 1.0,
+          "household_role": "shift or irregular schedule member",
+          "member_id": "roommate_b_irregular",
+          "persona_id": "basic_role_c_irregular_cautious"
+        },
+        {
+          "decision_weight": 1.0,
+          "household_role": "price-indifferent convenience-oriented roommate",
+          "member_id": "roommate_c_convenience",
+          "persona_id": "atom_price_indifferent"
+        },
+        {
+          "decision_weight": 1.0,
+          "household_role": "fixed chore and hot-water routine member",
+          "member_id": "roommate_d_rigid",
+          "persona_id": "atom_task_rigid"
+        }
+      ],
+      "source_path": "energybridge/roleplay/households/household_s5_shared_roommates_irregular.json",
+      "source_sha256": "940e7cd65316c3226da58b5fd3ca58d1487793bc615521218f3af5e04ee5288b",
+      "tags": {
+        "comfort": "mixed_comfort",
+        "control": "conflict_mediation",
+        "grid_value": "uncertain_flex",
+        "price": "conflicting_price_incentives",
+        "schedule": "shared_irregular_overlay",
+        "task": "shared_full_appliance_portfolio"
+      }
+    }
+  },
+  "personas": {
+    "atom_comfort_sensitive": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 25.5,
+          "setpoint_preferred_min_c": 24.5,
+          "temp_tolerance_c": 0.5
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 14.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 18.0,
+          "pre_heat_window_start_h": 15.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "source_path": "energybridge/roleplay/personas/atom_comfort_sensitive.json",
+      "source_sha256": "56a8114c6fd3f828b220bd5c56caceb5bf71689479d944ac694b065b952a618f",
+      "tags": {
+        "comfort": "temp_sensitive",
+        "control": "suggestion_first",
+        "grid_value": "short_peak_cut",
+        "price": "needs_explanation",
+        "schedule": "regular_commuter",
+        "task": "semi_rigid"
+      }
+    },
+    "atom_control_auto": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.5
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 14.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 18.0,
+          "pre_heat_window_start_h": 15.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "source_path": "energybridge/roleplay/personas/atom_control_auto.json",
+      "source_sha256": "a7072e349e0beba942c2c9b06dc64822f8e4ba433092b57995399da999619687",
+      "tags": {
+        "comfort": "normal_comfort",
+        "control": "high_trust_auto",
+        "grid_value": "stable_flex",
+        "price": "price_sensitive",
+        "schedule": "regular_commuter",
+        "task": "flexible"
+      }
+    },
+    "atom_price_indifferent": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.0
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": false,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 19.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": false,
+          "pre_heat_window_end_h": 19.0,
+          "pre_heat_window_start_h": 16.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "source_path": "energybridge/roleplay/personas/atom_price_indifferent.json",
+      "source_sha256": "ecd430823ca9e49ef39ee5a38a0feb45b9c564ba911950f3ec1650659833e84a",
+      "tags": {
+        "comfort": "normal_comfort",
+        "control": "suggestion_first",
+        "grid_value": "low_value",
+        "price": "low_incentive",
+        "schedule": "regular_commuter",
+        "task": "semi_rigid"
+      }
+    },
+    "atom_task_rigid": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.0
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": false,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 19.0,
+          "present": true,
+          "shiftable": false
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": false,
+          "pre_heat_window_end_h": 20.0,
+          "pre_heat_window_start_h": 18.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "source_path": "energybridge/roleplay/personas/atom_task_rigid.json",
+      "source_sha256": "cfb7dc1777500c7a8272a71d5635bf427bb89d9f941307cf49a867fb146c6fae",
+      "tags": {
+        "comfort": "normal_comfort",
+        "control": "suggestion_first",
+        "grid_value": "low_value",
+        "price": "needs_explanation",
+        "schedule": "regular_commuter",
+        "task": "rigid"
+      }
+    },
+    "basic_role_a_commuter_price_cooperative": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.0
+        },
+        "dishwasher": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 9.0,
+          "latest_h": 23.0,
+          "power_kw": 1.2,
+          "preferred_h": 21.0,
+          "present": true,
+          "shiftable": true
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 19.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 18.0,
+          "pre_heat_window_start_h": 14.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "source_path": "energybridge/roleplay/personas/basic_role_a_commuter_price_cooperative.json",
+      "source_sha256": "fd83453396e201eb15eeaa7dee20dbad0b79cf8c7a4745b736add05bb5f25bb7",
+      "tags": {
+        "comfort": "normal_comfort",
+        "control": "suggestion_first",
+        "grid_value": "evening_peak",
+        "price": "price_sensitive",
+        "schedule": "regular_commuter",
+        "task": "flexible"
+      }
+    },
+    "basic_role_b_home_comfort_gated": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 25.5,
+          "setpoint_preferred_min_c": 24.5,
+          "temp_tolerance_c": 0.5
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": false,
+          "duration_h": 2.0,
+          "earliest_h": 9.0,
+          "latest_h": 20.0,
+          "power_kw": 1.5,
+          "preferred_h": 10.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": false,
+          "pre_heat_window_end_h": 20.0,
+          "pre_heat_window_start_h": 18.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "source_path": "energybridge/roleplay/personas/basic_role_b_home_comfort_gated.json",
+      "source_sha256": "fabb435b67cc6b0d8637ba7fdc5d44b411d7b65c057d71f5a684370ee54e2f2a",
+      "tags": {
+        "comfort": "temp_sensitive",
+        "control": "confirm_required",
+        "grid_value": "short_peak_cut",
+        "price": "low_incentive",
+        "schedule": "stay_at_home",
+        "task": "semi_rigid"
+      }
+    },
+    "basic_role_c_irregular_cautious": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.0
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": false,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 19.0,
+          "present": true,
+          "shiftable": false
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": false,
+          "pre_heat_window_end_h": 20.0,
+          "pre_heat_window_start_h": 18.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "source_path": "energybridge/roleplay/personas/basic_role_c_irregular_cautious.json",
+      "source_sha256": "595851f59693e7ed405aa0481114e01e8fc5454395010d42e7620c6bb248b361",
+      "tags": {
+        "comfort": "normal_comfort",
+        "control": "confirm_required",
+        "grid_value": "uncertain_flex",
+        "price": "needs_explanation",
+        "schedule": "irregular",
+        "task": "rigid"
+      }
+    },
+    "basic_role_d_commuter_ideal_dr": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 27.0,
+          "setpoint_preferred_min_c": 23.0,
+          "temp_tolerance_c": 2.0
+        },
+        "dishwasher": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 9.0,
+          "latest_h": 23.0,
+          "power_kw": 1.2,
+          "preferred_h": 22.0,
+          "present": true,
+          "shiftable": true
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 23.0,
+          "power_kw": 1.5,
+          "preferred_h": 13.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 18.0,
+          "pre_heat_window_start_h": 13.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "source_path": "energybridge/roleplay/personas/basic_role_d_commuter_ideal_dr.json",
+      "source_sha256": "a8847a1056ebb23147f7b54d325bd9eb742ac9fe64f7377c19cea3eac5f30a72",
+      "tags": {
+        "comfort": "temp_tolerant",
+        "control": "high_trust_auto",
+        "grid_value": "stable_flex",
+        "price": "price_sensitive",
+        "schedule": "regular_commuter",
+        "task": "flexible"
+      }
+    },
+    "basic_role_e_caregiver_low_dr": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 25.0,
+          "setpoint_preferred_min_c": 22.0,
+          "temp_tolerance_c": 0.5
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": false,
+          "duration_h": 2.0,
+          "earliest_h": 9.0,
+          "latest_h": 18.0,
+          "power_kw": 1.5,
+          "preferred_h": 10.0,
+          "present": true,
+          "shiftable": false
+        },
+        "water_heater": {
+          "bath_required_h": 20.0,
+          "dr_adjustable": false,
+          "pre_heat_window_end_h": 19.0,
+          "pre_heat_window_start_h": 17.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "source_path": "energybridge/roleplay/personas/basic_role_e_caregiver_low_dr.json",
+      "source_sha256": "f853a61de1fbffdb9184999462870a770179f91df4a876db200a23cddbb2c404",
+      "tags": {
+        "comfort": "temp_sensitive",
+        "control": "low_auto_accept",
+        "grid_value": "low_value",
+        "price": "low_incentive",
+        "schedule": "caregiver",
+        "task": "rigid"
+      }
+    },
+    "basic_role_f_commuter_ev_optimizer": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.0
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "arrival_h": 18.5,
+          "capacity_kwh": 60.0,
+          "charger_kw": 7.4,
+          "daily_drive_kwh": 20.0,
+          "departure_h": 7.5,
+          "min_soc": 0.2,
+          "present": true,
+          "target_soc": 0.8
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 20.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 20.0,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 19.0,
+          "pre_heat_window_start_h": 15.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "source_path": "energybridge/roleplay/personas/basic_role_f_commuter_ev_optimizer.json",
+      "source_sha256": "883871d9506bcdb51d60d114be1673b462e4378a958831f083b2c9f6fc7b8a41",
+      "tags": {
+        "comfort": "normal_comfort",
+        "control": "high_trust_auto",
+        "grid_value": "stable_flex",
+        "price": "price_sensitive",
+        "schedule": "regular_commuter",
+        "task": "ev_constrained"
+      }
+    }
+  },
+  "schema": "eb.household_preference.sources.v1"
+}

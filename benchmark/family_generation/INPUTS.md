@@ -1,5 +1,7 @@
 # 家庭生成输入与产物
 
+能源画像v3规范见 [ENERGY_PORTRAIT_METHOD.md](ENERGY_PORTRAIT_METHOD.md)。`generate`在A之前追加`energy_use_profile`；`connect`追加绑定房间的`energy_portraits`。独立`portrait`入口仍接受`eb.energy_portrait.batch.v1`，每户包含role/members/devices/existing_policy/declared_device_settings/habit_days/days/services等。`habit_days`是形成稳定家庭偏好的完整已有日历；`days/services`只用于选定案例日的需求/A核对。v3另接收`asset_authority/external_operator_ids/declared_service_contracts`，后者只保留事前需求白名单字段，不含A的装取、启动或实际等待决定。偏好函数不接收A/B动作、仿真后果或回答；缺少权限/需求时保留未知，不回退到全家成人空闲。输出`eb.energy_portrait.v2`（内含`eb.household_device_persona.v3`）含完整和简版受访者文本及逐设备habit/adjustment_preference/authorization；各字段有触发规则和来源。旧家庭与A不原地更新。
+
 生成配置`eb.family_generation.input.v1`只接受`total,subset_size,seed,prefix,pool`，其中`pool={path,sha256}`解析于配置目录内。数量为正整数，同源子集不能超过主批次。角色人数从固定EB实验构成用有理数最大余数法计算，不用外部簇占比或B结果。
 
 参考池`eb.family_reference_pool.v1`包含完整`templates`及公共`assembly,shell_defaults,world_defaults`。其中：
@@ -24,3 +26,6 @@ parent边默认15岁最小代际年龄差、partner双方至少18岁、操作人
 `connect`输出住房外壳与每户生活输入/需求/A及统一记录。共享住户使用与住房编译器一致的`-aux-01`身份。源中同房多台独立AC目前会保留明确不支持原因，不合并或删减设备。房型或A服务失败保留在总分母中；没有真实EP执行就不输出仿真通过结论。
 
 规范样例可直接阅读`examples/REFERENCE_POOL.json`。原数据许可、匿名化及人口抽样责任由来源持有人承担；“授权联合来源”不意味着可以公开其记录。本仓库只提交合成公开样例和汇总，不提交调查原件。
+# 可选类内联合随机
+
+批次配置可增加`preference_sampling: {"mode":"within_class_joint_v1","loading":0.7}`，种子复用批次`seed`，不另加种子。未配置时仍走原路径。完整字段、冻结和缺失规则见[JOINT_SAMPLING_METHOD.md](JOINT_SAMPLING_METHOD.md)。已有50户仅生成独立候选画像，不回写其A/B。

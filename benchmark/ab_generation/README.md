@@ -28,3 +28,5 @@ python -B -m benchmark.ab_generation.verify_package
 来源、数值和授权登记为`SOURCES.json`、`PARAMETERS.json`、`COLLECTION_PARAMETERS.json`、`AUTHORIZATION.json`。精确数值和搜索权重是明示实验设定，论文不自动证明本批数据的代表性或真人效度。
 
 旧联合上限、敏感性、长尾分层、缺额修订与自查均收在[历史方法与记录](docs/history/)，原版本结果保留。完整实验在研究计算环境显式运行，GitHub只做有界检查。
+
+> 当前研究入口：[unified v2.10](unified/README.md)。其CLI默认读取CURRENT_CONFIG.json；下列旧模块及已封存结果保留重放，新规则不回写原A/B或仿真。

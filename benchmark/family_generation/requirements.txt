@@ -1,0 +1,4 @@
+# Optional within_class_joint_v1 runtime; legacy generation remains stdlib-only.
+# Match the existing housing runtime to avoid a second numeric stack.
+numpy==2.5.2
+scipy==1.17.1

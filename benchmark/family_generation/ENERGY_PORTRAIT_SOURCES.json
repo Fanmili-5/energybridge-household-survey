@@ -1,0 +1,95 @@
+{
+  "EB_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "EB_files": [
+    {
+      "local_matches_pinned_source": true,
+      "path": "human_survey_materials/role_cards/fixed_role_cards_readable.md",
+      "sha256": "15a42b5872caa001ae7f8c30d8bfcac78d2ea29e30451a7ffb2dcb682f7262ca"
+    },
+    {
+      "path": "energybridge/roleplay/personas/basic_role_a_commuter_price_cooperative.json",
+      "sha256": "fd83453396e201eb15eeaa7dee20dbad0b79cf8c7a4745b736add05bb5f25bb7",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/personas/basic_role_b_home_comfort_gated.json",
+      "sha256": "fabb435b67cc6b0d8637ba7fdc5d44b411d7b65c057d71f5a684370ee54e2f2a",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/personas/basic_role_c_irregular_cautious.json",
+      "sha256": "595851f59693e7ed405aa0481114e01e8fc5454395010d42e7620c6bb248b361",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/personas/basic_role_d_commuter_ideal_dr.json",
+      "sha256": "a8847a1056ebb23147f7b54d325bd9eb742ac9fe64f7377c19cea3eac5f30a72",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/personas/basic_role_e_caregiver_low_dr.json",
+      "sha256": "f853a61de1fbffdb9184999462870a770179f91df4a876db200a23cddbb2c404",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/personas/basic_role_f_commuter_ev_optimizer.json",
+      "sha256": "883871d9506bcdb51d60d114be1673b462e4378a958831f083b2c9f6fc7b8a41",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/households.py",
+      "sha256": "8c8cc73011a3039ba9bf5954f254e9452be6c0428a36838c3c0a5adb8412a143",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/households/household_s1_dual_commuter_standard.json",
+      "sha256": "f5adfc3c3718bae1a83ec5593d6b8103a99cec5bb5cee59ed452cebdf21e95c9",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/households/household_s2_multigeneration_caregiver.json",
+      "sha256": "45fd3d39a3a2935bb21bc9cf1f5843bd5175ab02c1009cb879c25ec7a6cf62bc",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/households/household_s3_hybrid_work_from_home.json",
+      "sha256": "ad54838a4f221c92ee9bb23a7866df1ad6ee4c27c670f9e9a4bd7dcd0ef85582",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/households/household_s4_ev_commuter_flexible.json",
+      "sha256": "6a760e3c6509a282a00881e94ce902e6558f50766a7323e61f3dd3be0dc7a9b6",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/households/household_s5_shared_roommates_irregular.json",
+      "sha256": "940e7cd65316c3226da58b5fd3ca58d1487793bc615521218f3af5e04ee5288b",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/personas/atom_task_rigid.json",
+      "sha256": "cfb7dc1777500c7a8272a71d5635bf427bb89d9f941307cf49a867fb146c6fae",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/personas/atom_price_indifferent.json",
+      "sha256": "ecd430823ca9e49ef39ee5a38a0feb45b9c564ba911950f3ec1650659833e84a",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/personas/atom_control_auto.json",
+      "sha256": "a7072e349e0beba942c2c9b06dc64822f8e4ba433092b57995399da999619687",
+      "local_matches_pinned_source": true
+    },
+    {
+      "path": "energybridge/roleplay/personas/atom_comfort_sensitive.json",
+      "sha256": "56a8114c6fd3f828b220bd5c56caceb5bf71689479d944ac694b065b952a618f",
+      "local_matches_pinned_source": true
+    }
+  ],
+  "new_clock_or_inventory_or_acceptance_parameters": false,
+  "role_summaries_are_researcher_interpretations": true,
+  "schema": "eb.energy_portrait.sources.v2",
+  "source_lock_verification": "git show pinned EB blobs;no network or current online collection used",
+  "household_and_member_sources_added": "2026-10-22"
+}

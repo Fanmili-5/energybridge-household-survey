@@ -17,3 +17,5 @@
 - [早期问卷和工程记录](history/legacy-202609/)、[旧项目说明](history/project-20261020)、[项目复核记录](history/reviews/)。
 - [研究源码与逐版材料](research/)、[家庭批次与机器清单](household1000/)。历史说明只适用于其登记版本。
 - 各模块的原始依据、参数和验证文件由对应README引导，不作为并列的项目入口。
+
+当前生成方法研究版本：[统一算法](../benchmark/research_delivery/METHOD.md) · [v2.10联合任务数及配置修订](../benchmark/research_delivery/JOINT_ORDER_SELECTION_METHOD.md) · [复现与范围](../benchmark/research_delivery/REPRODUCE.md)。本次GitHub代码更新不改变线上正式采集。

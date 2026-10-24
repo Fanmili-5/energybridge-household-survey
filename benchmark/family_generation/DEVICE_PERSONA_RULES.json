@@ -1,0 +1,545 @@
+{
+  "EB_roles": {
+    "A": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.0
+        },
+        "dishwasher": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 9.0,
+          "latest_h": 23.0,
+          "power_kw": 1.2,
+          "preferred_h": 21.0,
+          "present": true,
+          "shiftable": true
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 19.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 18.0,
+          "pre_heat_window_start_h": 14.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "control_tag": "suggestion_first",
+      "source_path": "energybridge/roleplay/personas/basic_role_a_commuter_price_cooperative.json",
+      "source_sha256": "fd83453396e201eb15eeaa7dee20dbad0b79cf8c7a4745b736add05bb5f25bb7"
+    },
+    "B": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 25.5,
+          "setpoint_preferred_min_c": 24.5,
+          "temp_tolerance_c": 0.5
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": false,
+          "duration_h": 2.0,
+          "earliest_h": 9.0,
+          "latest_h": 20.0,
+          "power_kw": 1.5,
+          "preferred_h": 10.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": false,
+          "pre_heat_window_end_h": 20.0,
+          "pre_heat_window_start_h": 18.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "control_tag": "confirm_required",
+      "source_path": "energybridge/roleplay/personas/basic_role_b_home_comfort_gated.json",
+      "source_sha256": "fabb435b67cc6b0d8637ba7fdc5d44b411d7b65c057d71f5a684370ee54e2f2a"
+    },
+    "C": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.0
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": false,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 19.0,
+          "present": true,
+          "shiftable": false
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": false,
+          "pre_heat_window_end_h": 20.0,
+          "pre_heat_window_start_h": 18.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "control_tag": "confirm_required",
+      "source_path": "energybridge/roleplay/personas/basic_role_c_irregular_cautious.json",
+      "source_sha256": "595851f59693e7ed405aa0481114e01e8fc5454395010d42e7620c6bb248b361"
+    },
+    "D": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 27.0,
+          "setpoint_preferred_min_c": 23.0,
+          "temp_tolerance_c": 2.0
+        },
+        "dishwasher": {
+          "dr_adjustable": true,
+          "duration_h": 1.5,
+          "earliest_h": 9.0,
+          "latest_h": 23.0,
+          "power_kw": 1.2,
+          "preferred_h": 22.0,
+          "present": true,
+          "shiftable": true
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 23.0,
+          "power_kw": 1.5,
+          "preferred_h": 13.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 21.0,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 18.0,
+          "pre_heat_window_start_h": 13.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "control_tag": "high_trust_auto",
+      "source_path": "energybridge/roleplay/personas/basic_role_d_commuter_ideal_dr.json",
+      "source_sha256": "a8847a1056ebb23147f7b54d325bd9eb742ac9fe64f7377c19cea3eac5f30a72"
+    },
+    "E": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 25.0,
+          "setpoint_preferred_min_c": 22.0,
+          "temp_tolerance_c": 0.5
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "present": false
+        },
+        "washer": {
+          "dr_adjustable": false,
+          "duration_h": 2.0,
+          "earliest_h": 9.0,
+          "latest_h": 18.0,
+          "power_kw": 1.5,
+          "preferred_h": 10.0,
+          "present": true,
+          "shiftable": false
+        },
+        "water_heater": {
+          "bath_required_h": 20.0,
+          "dr_adjustable": false,
+          "pre_heat_window_end_h": 19.0,
+          "pre_heat_window_start_h": 17.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "control_tag": "low_auto_accept",
+      "source_path": "energybridge/roleplay/personas/basic_role_e_caregiver_low_dr.json",
+      "source_sha256": "f853a61de1fbffdb9184999462870a770179f91df4a876db200a23cddbb2c404"
+    },
+    "F": {
+      "appliances": {
+        "ac": {
+          "mode": "cooling",
+          "present": true,
+          "setpoint_preferred_max_c": 26.0,
+          "setpoint_preferred_min_c": 24.0,
+          "temp_tolerance_c": 1.0
+        },
+        "dishwasher": {
+          "present": false
+        },
+        "dryer": {
+          "present": false
+        },
+        "ev": {
+          "arrival_h": 18.5,
+          "capacity_kwh": 60.0,
+          "charger_kw": 7.4,
+          "daily_drive_kwh": 20.0,
+          "departure_h": 7.5,
+          "min_soc": 0.2,
+          "present": true,
+          "target_soc": 0.8
+        },
+        "washer": {
+          "dr_adjustable": true,
+          "duration_h": 2.0,
+          "earliest_h": 8.0,
+          "latest_h": 22.0,
+          "power_kw": 1.5,
+          "preferred_h": 20.0,
+          "present": true,
+          "shiftable": true
+        },
+        "water_heater": {
+          "bath_required_h": 20.0,
+          "dr_adjustable": true,
+          "pre_heat_window_end_h": 19.0,
+          "pre_heat_window_start_h": 15.0,
+          "present": true,
+          "rated_kw": 2.0
+        }
+      },
+      "control_tag": "high_trust_auto",
+      "source_path": "energybridge/roleplay/personas/basic_role_f_commuter_ev_optimizer.json",
+      "source_sha256": "883871d9506bcdb51d60d114be1673b462e4378a958831f083b2c9f6fc7b8a41"
+    }
+  },
+  "composition": "owned shared assets and declarations > EB household soft habits + scoped member profiles; experimental joint assignment, no A/B labels or random parameter assembly",
+  "habit_meaning": "declared benchmark role-play habit,not statistically inferred or measured human habit",
+  "household_assignment_origin": "experimental_joint_scenario_design;not_empirically_inferred",
+  "household_inheritance_implementation": "household_preferences.py",
+  "household_preference_sources": "EB_HOUSEHOLD_PREFERENCE_SOURCES.json",
+  "numeric_policy": "Existing declared service/control bounds only. Missing tank/heating adjustment bounds stay unknown and require confirmation. No empirical individual preference claimed.",
+  "retired_v2_rule_catalog": {
+    "AUTH_NEW_HELP": {
+      "condition": "extra handling or changed person/routine",
+      "origin": "experimental_setting",
+      "purpose": "不将家人空闲当作换人、增加操作或额外预约的授权"
+    },
+    "AUTH_SCOPE": {
+      "condition": "EB device flags + explicit existing consent + device action set",
+      "origin": "experimental_setting",
+      "purpose": "逐设备/逐动作的授权范围，控制能力与授权分开"
+    },
+    "H_AFTER_MEAL_DISHES": {
+      "condition": "dishwasher owned",
+      "origin": "experimental_setting",
+      "purpose": "餐后作为一批家务处理，优先方便取出而非临时手洗补救"
+    },
+    "H_EV_TARGET": {
+      "condition": "EV owned and existing journeys",
+      "origin": "experimental_setting",
+      "purpose": "连接后按原目标备电，不以低于原目标替代成功"
+    },
+    "H_LAUNDRY_LINKED": {
+      "condition": "owned washer+dryer",
+      "origin": "experimental_setting",
+      "purpose": "洗烘作为一项家务协调，避免只优化洗衣却增加取放负担"
+    },
+    "H_WASHER_RETRIEVAL": {
+      "condition": "washer without dryer",
+      "origin": "experimental_setting",
+      "purpose": "洗后仍需取出处理，偏好结束时间与本人可操作时间衔接"
+    },
+    "H_WATER_PREPARE": {
+      "condition": "water heater owned",
+      "origin": "experimental_setting",
+      "purpose": "按既定用水准备热水，不通过等待或挪洗浴换取节省"
+    },
+    "P_CARE_HANDLING": {
+      "condition": "explicit care in resident calendars",
+      "origin": "experimental_setting",
+      "purpose": "少临时召回照护者，优先减少额外干预"
+    },
+    "P_CARE_WATER": {
+      "condition": "explicit care and bathing calendars",
+      "origin": "experimental_setting",
+      "purpose": "倾向提前准备照护所需热水，降低临时补救负担"
+    },
+    "P_MULTIPLE_WINDOWS": {
+      "condition": "multiple existing handling opportunities, no declared care",
+      "origin": "experimental_setting",
+      "purpose": "倾向在原有机会中择时，非固定某个A启动时间"
+    },
+    "P_NO_KNOWN_WINDOWS": {
+      "condition": "no declared handling opportunity",
+      "origin": "experimental_setting",
+      "purpose": "不声称可随意移动，须先约定操作安排"
+    },
+    "P_ROOM_REST": {
+      "condition": "room explicitly used for child rest AND declared care",
+      "origin": "experimental_setting",
+      "purpose": "对该房间反复停开更谨慎，不推断疾病或新的温度需求"
+    },
+    "P_ROOM_USE": {
+      "condition": "occupied work/rest room",
+      "origin": "experimental_setting",
+      "purpose": "保护原房间工作/休息，以小幅调温优于临时停开"
+    }
+  },
+  "rule_catalog": {
+    "AUTH_NEW_HELP": {
+      "condition": "extra handling or changed person/routine",
+      "origin": "experimental_setting",
+      "purpose": "不将家人空闲当作换人、增加操作或额外预约的授权"
+    },
+    "AUTH_SCOPE": {
+      "condition": "EB device flags + explicit existing consent + device action set",
+      "origin": "experimental_setting",
+      "purpose": "逐设备/逐动作的授权范围，控制能力与授权分开"
+    },
+    "AUTOMATIC_COMBO_CHAIN": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "CONTIGUOUS_WATER_SERVICES": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "DISH_STOCK_UNKNOWN": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "DRYER_ORIGINAL_UPSTREAM": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "EV_NONCOMMUTE_DECLARED_TRIPS": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "EV_TARGET_NOT_MINIMUM": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "EV_TRAVEL_NOT_BOUND": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "EV_WORK_AND_OTHER_TRIPS": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "EV_WORK_TRIPS": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "EXISTING_VISIT_WINDOWS_ONLY": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "FIT_BOTH_HANDLING_WINDOWS": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "HANDLER_UNKNOWN": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "KEEP_HANDLER_AVOID_CARE_TRANSFER": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "KEEP_RETRIEVAL_CONTRACT": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "NO_ASSUMED_TIMER": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "NO_DECLARED_HANDLING_WINDOW": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "NO_UNAGREED_HANDOFF": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "OCCUPIED_COMMON_ROOM": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "PRESERVE_DISH_RELEASE_AND_DUE": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "PROTECT_ASSISTED_BATH": {
+      "activation": "explicit structured condition;see generated trigger and evidence_fields",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "PROTECT_CHILD_ROOM_REST": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "PROTECT_HANDLER_CARE": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "PROTECT_ROOM_SLEEP": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "PROTECT_ROOM_WORK": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "SAME_ASSET_CHAIN_UNSPECIFIED_HANDLING": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "SEPARATED_WATER_SERVICES": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "SEPARATE_HEATING_COOLING": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "SINGLE_HANDLER_COORDINATION": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "TANK_TARGET_DISTINCT_FROM_OUTLET": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "WASHED_NOT_WEARABLE": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    },
+    "WATER_REQUIREMENTS_PENDING": {
+      "activation": "explicit structured condition;see trigger and evidence_fields in generated conditional_preferences",
+      "implementation": "decision_conditions.py:decision_rules",
+      "not_empirically_fitted": true,
+      "origin": "conditional_experimental_setting"
+    }
+  },
+  "schema": "eb.device_persona.rules.v3",
+  "source_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "version": "device-persona-v4-household-first"
+}

@@ -1,0 +1,61 @@
+{
+  "scope": "targeted method verification,not systematic review or empirical preference calibration",
+  "checked_on": "2026-10-22",
+  "references": [
+    {
+      "id": "Ghosh_Henderson_2002_section1",
+      "title": "Chessboard Distributions and Random Vectors with Specified Marginals and Covariance Matrix",
+      "authors": [
+        "Soumyadip Ghosh",
+        "Shane G. Henderson"
+      ],
+      "year": 2002,
+      "venue": "Operations Research 50(5):820-834",
+      "doi": "10.1287/opre.50.5.820.364",
+      "url": "https://people.orie.cornell.edu/shane/pubs/ChessboardOR.pdf",
+      "read_scope": "section 1 NORTA formula and limitations;author manuscript dated July 6,2001;published version2002",
+      "supports": "normal vector -> normal CDF -> inverse marginal CDF;latent and output correlations differ",
+      "does_not_support": "project household marginals,loading0.7,behavioral realism or a claim to implement Chessboard"
+    },
+    {
+      "id": "Henderson_author_NORTA_software",
+      "url": "https://people.orie.cornell.edu/shane/NORTASoftware.html",
+      "read_scope": "author software description",
+      "supports": "Gaussian copula relation;not every prescribed covariance can be matched;discrete transformations affect rank correlation",
+      "does_not_support": "a fitted household correlation matrix"
+    },
+    {
+      "id": "SciPy_ndtr",
+      "url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.special.ndtr.html",
+      "read_scope": "official API formula",
+      "supports": "standard normal CDF numerical primitive",
+      "implementation": "scipy.special.ndtr;locked runtime1.17.1"
+    },
+    {
+      "id": "Fanitabasi_Pournaras_2020",
+      "title": "Appliance-Level Flexible Scheduling for Socio-Technical Smart Grid Optimization",
+      "authors": [
+        "F. Fanitabasi",
+        "E. Pournaras"
+      ],
+      "year": 2020,
+      "doi": "10.1109/ACCESS.2020.3001763",
+      "url": "https://eprints.whiterose.ac.uk/id/eprint/165733/",
+      "read_scope": "institutional abstract",
+      "supports": "separate appliance physical characteristics,usage preferences and comfort requirements",
+      "does_not_support": "our numerical preference distributions or automatic-consent rules"
+    }
+  ],
+  "EB_sources": [
+    "ENERGY_PORTRAIT_RULES.json",
+    "DEVICE_PERSONA_RULES.json",
+    "EB_HOUSEHOLD_PREFERENCE_SOURCES.json"
+  ],
+  "experiment_parameters": "JOINT_SAMPLING_RULES_V2.json:parameter_ledger",
+  "empirical_household_preference_data_used": false,
+  "novel_random_number_algorithm_claimed": false,
+  "version": "within_class_joint_v2",
+  "unchanged_sampling_stream": "within_class_joint_v1",
+  "mapping_revision": "dated lossless representation;independent machine and handling axes;explicit shared declaration priority;device-relevant member disagreement",
+  "validation_scope": "household semantic and engineering acceptance only;no new A/B,physical simulation,UI or online acceptance"
+}

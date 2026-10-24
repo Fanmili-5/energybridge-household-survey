@@ -21,3 +21,9 @@
 正式资料为原50户×10天的新A/B与对应参考物理后果；VPP固定18:00—19:00，沿用UI91。1000户扩展继续暂缓。版本及完成范围见[数据与验收](docs/DATASET.md)。
 
 公开仓库包含代码、合成示例、方法和聚合证据；受控原件与真人答卷按许可管理。详见[来源与许可](THIRD_PARTY.md)。
+
+## 当前生成方法 v2.10（研究版本）
+
+[统一方法与来源](benchmark/research_delivery/METHOD.md) · [精确联合任务数选题](benchmark/research_delivery/JOINT_ORDER_SELECTION_METHOD.md) · [复现入口](benchmark/research_delivery/REPRODUCE.md) · [小规模验收](benchmark/research_delivery/release_v2_10/SMALL_REVIEW.json)
+
+新版先覆盖原日期候选中已见证的不同任务数，再优化原设备/取舍覆盖和重复；不设正常、冲突或失败配比，不改A凑机会。CLI默认配置为`benchmark/ab_generation/unified/CURRENT_CONFIG.json`。本轮仅三户30日期选题验证，新题物理后果未计算；不替换线上正式题集，不启动1000户。此前500题及物理结果继续按原版本管理。

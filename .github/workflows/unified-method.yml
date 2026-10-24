@@ -1,0 +1,45 @@
+name: Unified method bounded checks
+on:
+  push:
+    paths:
+      - 'benchmark/ab_generation/**'
+      - 'benchmark/research_delivery/**'
+      - 'benchmark/family_generation/**'
+      - '.github/workflows/unified-method.yml'
+  pull_request:
+    paths:
+      - 'benchmark/ab_generation/**'
+      - 'benchmark/research_delivery/**'
+      - 'benchmark/family_generation/**'
+      - '.github/workflows/unified-method.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: unified-method-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  bounded:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+          cache: pip
+          cache-dependency-path: benchmark/ab_generation/unified/requirements-lock.txt
+      - name: Install locked method dependencies
+        run: python -m pip install -r benchmark/ab_generation/unified/requirements-lock.txt
+      - name: Verify published package inventories
+        run: |
+          python -B -m benchmark.ab_generation.verify_package
+          python -B -m benchmark.family_generation.verify_package
+      - name: Algorithm and interface tests only
+        run: |
+          python -B -m unittest discover -s benchmark/ab_generation/unified -t . -p 'test_*.py' -v
+          python -B -m unittest discover -s benchmark/research_delivery -t . -p 'test_*.py' -v
+          python -B -m unittest benchmark.family_generation.test_generation benchmark.family_generation.test_connection -v
+      - name: Recompile six public inputs without solving A or generating B
+        run: |
+          python -B -m benchmark.research_delivery.public_replay --inputs benchmark/research_delivery/public_fixtures/PUBLIC_REPLAY.json --config benchmark/ab_generation/unified/CURRENT_CONFIG.json --out "${{ runner.temp }}/public-compile" --stage compile
