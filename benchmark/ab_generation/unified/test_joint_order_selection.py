@@ -13,7 +13,7 @@ def row(count,date,identity):
     r.update(id=identity,date=date,independent_units=count,components=[],judgment_context=[],patches=[])
     for i in range(count):
         c,j=copy.deepcopy(component),copy.deepcopy(judgment)
-        c.update(id=identity+':'+str(i),asset_id='shared-washer',family='washer',service_need_id='batch'+str(i))
+        c.update(id=identity+':'+str(i),unit='batch'+str(i),asset_id='shared-washer',family='washer',service_need_id='batch'+str(i))
         j['asset_id']='shared-washer';r['components'].append(c);r['judgment_context'].append(j)
     return r
 
@@ -78,6 +78,25 @@ class JointOrderSelectionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'INVALID_INDEPENDENT_TASK_COUNT'):select_block([r],current())
         r['independent_units']=6
         with self.assertRaisesRegex(ValueError,'DOES_NOT_MATCH_COMPONENTS'):select_block([r],current())
+
+    def test_missing_unit_cannot_hide_duplicate_roots(self):
+        r=row(3,'d','a')
+        r['components'][1]['unit']=r['components'][0]['unit']
+        r['components'][2].pop('unit')
+        with self.assertRaisesRegex(ValueError,'MISSING_INDEPENDENT_TASK_UNIT'):select_block([r],current())
+        r['components'][2]['unit']='third'
+        with self.assertRaisesRegex(ValueError,'DUPLICATE_INDEPENDENT_TASK_UNIT'):select_block([r],current())
+
+    def test_no_task_identity_is_unknown_instead_of_component_count_fallback(self):
+        r=row(1,'d','a')
+        for invalid in (None,'',0,[]):
+            r['components'][0]['unit']=invalid
+            with self.subTest(unit=invalid),self.assertRaisesRegex(ValueError,'MISSING_INDEPENDENT_TASK_UNIT'):
+                select_block([r],current())
+
+    def test_duplicate_case_id_cannot_collapse_date_or_coverage_views(self):
+        with self.assertRaisesRegex(ValueError,'DUPLICATE_CANDIDATE_ID'):
+            select_block([row(1,'d1','same'),row(4,'d2','same')],current())
 
     def test_no_solver_incumbent_is_unknown_without_manufactured_choices(self):
         from types import SimpleNamespace

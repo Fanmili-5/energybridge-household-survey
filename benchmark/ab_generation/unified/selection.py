@@ -26,8 +26,10 @@ def concepts(row,joint_order_mode='legacy_buckets_v1'):
     if joint_order_mode=='exact_witnessed_v1':
         if count!=len(row['components']) or len({c['id'] for c in row['components']})!=count:
             raise ValueError('INDEPENDENT_TASK_COUNT_DOES_NOT_MATCH_COMPONENTS')
-        task_units=[c['unit'] for c in row['components'] if c.get('unit') is not None]
-        if len(task_units)==count and len(set(task_units))!=count:
+        task_units=[c.get('unit') for c in row['components']]
+        if any(not isinstance(unit,str) or not unit for unit in task_units):
+            raise ValueError('MISSING_INDEPENDENT_TASK_UNIT')
+        if len(set(task_units))!=count:
             raise ValueError('DUPLICATE_INDEPENDENT_TASK_UNIT')
     order=('no_change' if count==0 else 'tasks_'+str(count)) if joint_order_mode=='exact_witnessed_v1' else (
         'no_change' if count==0 else 'single' if count==1 else 'two' if count==2 else 'three_or_more')
@@ -96,6 +98,7 @@ def select_block(rows,cfg=None,carried=frozenset()):
         if r.get('engineering_issues') or any(r.get(k) is not None for k in
                 ('actual_outcomes','human_acceptance','human_score','human_reason')):
             raise ValueError('ENGINEERING_OR_OUTCOME_LEAKAGE')
+    if len({r['id'] for r in rows})!=len(rows):raise ValueError('DUPLICATE_CANDIDATE_ID')
     all_views={r['id']:concepts(r,cfg['selection_joint_order']) for r in rows}
     for r in rows:
         v=all_views[r['id']]

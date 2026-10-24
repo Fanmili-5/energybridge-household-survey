@@ -6,7 +6,7 @@
 实现范围、原生生成、后续检查分别记版本，不能混为同一次运行。
 
 当前v2.10增加精确任务数选题及CURRENT_CONFIG入口，核心为
-`8ab95d0f2cefde1d92de5966ca12992b4c697692bdf4e8c0b27a1c15685e391a`。
+`3bfe5f37c848af3e7ef19f62fa86551bd32015fec95939b2e231664d5bac305b`。
 本表设备契约继续沿用；新选题规则和三户30日期验证见JOINT_ORDER_SELECTION_METHOD.md及release_v2_10/。
 GitHub代码更新不等于重新生成旧500题、部署线上或计算新后果。
 
