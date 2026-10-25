@@ -13,4 +13,4 @@
 
 [releases](releases/)保存各版本公开清单，[generation](generation/)保存历史生成源码目录。当前范围见[数据与验收](../docs/DATASET.md)。
 
-当前A/B研究入口：[v2.10统一生成方法](research_delivery/METHOD.md)、[配置及复现](research_delivery/REPRODUCE.md)、[精确联合任务数规则](research_delivery/JOINT_ORDER_SELECTION_METHOD.md)。与现有线上题集版本分开，未计算后果保持未知。
+当前A/B研究入口：[v2.11统一生成方法](research_delivery/METHOD.md)、[配置及复现](research_delivery/REPRODUCE.md)、[动作幅度与事件阶段](research_delivery/ACTION_CHANGE_METHOD.md)。原精确联合任务数规则继续保留；当前研究修订与线上题集版本分开，未计算后果保持未知。

@@ -1,8 +1,9 @@
-# 当前公开复现入口 v2.10
+# 当前公开复现入口 v2.11
 
-当前CLI缺省读取`benchmark/ab_generation/unified/CURRENT_CONFIG.json`，开启精确任务数选题。
+当前CLI缺省读取`benchmark/ab_generation/unified/CURRENT_CONFIG.json`，开启精确任务数选题及分开的动作幅度/事件阶段。
 显式`--config`保留该文件指定模式；`DEFAULT_CONFIG.json`用于旧内部API，不是当前推荐配置。
-方法、来源和验收边界见METHOD.md、JOINT_ORDER_SELECTION_METHOD.md及release_v2_10/。
+方法、来源和验收边界见METHOD.md、ACTION_CHANGE_METHOD.md及release_v2_11/。
+原release_v2_10/和公开夹具FULL_CONFIG/SMOKE_CONFIG的显式v2.10配置继续保留，不能把历史重放标成v2.11。
 
 ## 环境和公开输入
 
@@ -52,6 +53,11 @@ python -B -m benchmark.ab_generation.unified fresh --life-batch LIFE_BATCH.json 
 新A/B不能绑定旧仿真。源码的规模由配置决定，本轮没有950/1000户性能证据，也不启动该生产。
 
 ## 验收范围
+
+当前v2.11复用两户原20道入选题及848份原候选，只新增动作解释层并检查接口。主张和聚合结果见
+[动作规则](ACTION_CHANGE_METHOD.md)及[小规模汇总](release_v2_11/README.md)。原入选ID保持不变，没有v2.11全50户再选题、物理结果或真人有效性证据。
+
+旧版本的本地协议绑定其核心和候选哈希；历史500日期审计使用fabcc48对应源码，不能直接把旧候选交给要求新轴的当前选择器。
 
 v2.10先在原两户及0841固定反例的30个原日期、1298份原候选上核对修订，
 再在全部50户500原日期、18,977份原候选上完成影子重选和独立工程/因果/最大匹配检查。

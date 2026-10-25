@@ -22,8 +22,8 @@
 
 公开仓库包含代码、合成示例、方法和聚合证据；受控原件与真人答卷按许可管理。详见[来源与许可](THIRD_PARTY.md)。
 
-## 当前生成方法 v2.10（研究版本）
+## 当前生成方法 v2.11（研究版本）
 
-[统一方法与来源](benchmark/research_delivery/METHOD.md) · [精确联合任务数选题](benchmark/research_delivery/JOINT_ORDER_SELECTION_METHOD.md) · [复现入口](benchmark/research_delivery/REPRODUCE.md) · [50户500日期影子验收汇总](benchmark/research_delivery/release_v2_10/shadow50_aggregate/README.md)
+[统一方法与来源](benchmark/research_delivery/METHOD.md) · [分开动作幅度与事件阶段](benchmark/research_delivery/ACTION_CHANGE_METHOD.md) · [复现入口](benchmark/research_delivery/REPRODUCE.md) · [原v2.10的500日期影子验收](benchmark/research_delivery/release_v2_10/shadow50_aggregate/README.md)
 
-新版先覆盖原日期候选中已见证的不同任务数，再优化原设备/取舍覆盖和重复；不设正常、冲突或失败配比，不改A凑机会。CLI默认配置为`benchmark/ab_generation/unified/CURRENT_CONFIG.json`。现已完成原50户500日期影子重选，各户已有联合规模缺额为0，小改动及长尾保留，另有1项选题描述标签未入选。公开代码与无身份汇总，逐户明细仅保存在本地；未重生成A/B或计算物理后果，不替换线上正式题集，不启动1000户。此前结果继续按原版本管理。
+CLI默认配置为`benchmark/ab_generation/unified/CURRENT_CONFIG.json`。v2.11分开机器移时、装取变化和控制幅度，小时级变化显示绝对分钟；VPP前准备与事件内调节按固定18:00边界分开，并进入候选分层、选题及问卷材料接口。小规模复用两户20道原题及848份原候选验证，保留冲突、名义无帮助及未知，不重选、不改A/B。原v2.10的50户500日期结果继续封存，不标成v2.11全量结果。公开代码与无身份汇总，个体明细保存在本地；不替换线上正式题集、不跑物理仿真、不启动1000户。

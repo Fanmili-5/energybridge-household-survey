@@ -435,9 +435,15 @@ def catalogue_domains(c,cfg):
             q=xs.index(x)/max(1,len(xs)-1)
             label='single_available_value' if len(xs)==1 else 'small_relative' if q<=cfg['relative_cuts'][0] else 'medium_relative' if q<=cfg['relative_cuts'][1] else 'large_relative'
             r['relative_level']=label;r['absolute_level']=absolute_level(r)
+            if cfg['method_revision']=='delivery_v2_11':
+                from .change_axes import annotate
+                annotate(c,r,cfg['event'])
             prof=r['profiles'];known=0 if prof is None else event_energy(prof['A'],cfg['event'])-event_energy(prof['B'],cfg['event'])
             r['known_event_reduction_kWh']=known;r['unknown_thermal_response']=prof is None
             r['dose_origin']='conditional_native_grid_position;experimental_cutpoints;not_discomfort'
+            if cfg['method_revision']=='delivery_v2_11':
+                from .change_axes import labels
+                label=labels(r['change_axes'])
             cell=canonical([r['mechanism'],r['branch'],label,
                 'manual_changed' if r['magnitude'].get('manual_total_shift_min') else 'manual_unchanged',
                 'event_root' if direct(c,r,cfg['event']) else 'support_requires_witness'])
@@ -476,6 +482,12 @@ def request(c,children,cfg,portrait=None):
             else:changed.add(p['asset_id'])
     components=[{**{k:copy.deepcopy(r[k]) for k in ('id','unit','family','asset_id','mechanism','relative_level','absolute_level','magnitude','patches')},
         'service_need_id':r.get('service_need_id'),'event_relevance':relevant['components'][r['id']]} for r in children]
+    if cfg['method_revision']=='delivery_v2_11':
+        from .change_axes import annotate
+        for component,child in zip(components,children):
+            if 'legacy_axis_metadata' in child:component['legacy_axis_metadata']=copy.deepcopy(child['legacy_axis_metadata'])
+            if 'construction_operator' in child:component['construction_operator']=child['construction_operator']
+            annotate(c,component,cfg['event'])
     preferences={d['asset_id']:d for d in (portrait or {}).get('joint_sampling',{}).get('devices',[])}
     authorizations={d['asset_id']:d.get('authorization',{}) for d in (portrait or {}).get('devices',[])}
     judgment=[]
@@ -488,7 +500,10 @@ def request(c,children,cfg,portrait=None):
         if auth.get('mode') in ('confirm_each_proposal','same_day_confirmation'):why.append('HOUSEHOLD_CONFIRMATION_REQUIRED')
         if axis=='heating' and auth.get('bounds',{}).get('heating_change_numeric_bound') is None:why.append('HEATING_SCOPE_NOT_DECLARED')
         if r['family']=='ac' and m.get('ac_intervention',{}).get('cooling_stop_requested_min') and pr.get('off_authorization') is not True:why.append('STOP_CONTROL_REQUIRES_CONFIRMATION')
-        if m.get('precondition_min',0):why.append('PRECONDITIONING_EXECUTION_CONSENT_NOT_OBTAINED')
+        if cfg['method_revision']=='delivery_v2_11':
+            if m.get('pre_event_preparation_min',0):why.append('PRE_EVENT_PREPARATION_REQUIRES_CONFIRMATION')
+            if m.get('in_event_preparation_min',0):why.append('IN_EVENT_PREPARATION_REQUIRES_CONFIRMATION')
+        elif m.get('precondition_min',0):why.append('PRECONDITIONING_EXECUTION_CONSENT_NOT_OBTAINED')
         if m.get('coupled_thermostat_axes'):why.append('COMPANION_SETPOINT_CHANGE_REQUIRES_CONFIRMATION')
         if why:pending=True
         machine_tension=bool(pr.get('preferred_shift_limit_min') is not None and shift>pr['preferred_shift_limit_min'])
@@ -518,7 +533,10 @@ def request(c,children,cfg,portrait=None):
         changes=child['magnitude'].get('companion_setpoint_changes')
         if changes:row['asset_change_reasons'][child['asset_id']].append(dict(role='necessary_original_deadband_companion',
             evidence=changes,execution_consent_obtained=False))
-    if cfg['method_revision'] in ('delivery_v2_9','delivery_v2_10'):
+    if cfg['method_revision']=='delivery_v2_11':
+        from .change_axes import refresh_row_features
+        refresh_row_features(row)
+    if cfg['method_revision'] in ('delivery_v2_9','delivery_v2_10','delivery_v2_11'):
         from .semantics import LINK_VERSION,linked_contexts
         row['judgment_context_version']=LINK_VERSION
         for component,judgment in zip(components,row['judgment_context']):
@@ -814,7 +832,12 @@ def generate_day(context,cfg=None,portrait=None):
     for i,values in enumerate(g['values']):
         named=defaultdict(list)
         for j,r in enumerate(values[1:],1):
-            m=r['magnitude'];key=(r['mechanism'],r['relative_level'],m.get('duration_min'),m.get('precondition_min'))
+            m=r['magnitude']
+            if cfg['method_revision']=='delivery_v2_11':
+                from .change_axes import labels
+                position=canonical(labels(r['change_axes']))
+            else:position=r['relative_level']
+            key=(r['mechanism'],position,m.get('duration_min'),m.get('precondition_min'))
             named[key].append(j)
         for target,ids in sorted(named.items(),key=lambda item:canonical(item[0])):
             status,_,reason=oracle({j:0 for j in range(n) if j!=i},native_required={i:ids})

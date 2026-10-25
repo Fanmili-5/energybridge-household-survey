@@ -28,6 +28,11 @@ def project(c, profile, row, B):
         physical_outcomes=None,physical_status='not_computed',
         participant_notice='方案B是待确认提议；用电、费用、室温和供水等实际后果尚未计算。请依据家庭资料和安排判断，不必猜测实际结果。',
         human_acceptance=None,human_score=None,human_reason=None)
+    if row.get('change_axes_version'):
+        from .change_axes import presentation
+        projection['action_changes']=[dict(component_id=x['id'],family=x['family'],
+            axes=copy.deepcopy(x['change_axes']),text=presentation(x)) for x in row['components']]
+        projection['change_axes_version']=row['change_axes_version']
     projection['binding']=dict(A_sha256=digest(c['A']),B_sha256=digest(B),
         portrait_sha256=digest(profile),context_sha256=digest(c))
     return projection

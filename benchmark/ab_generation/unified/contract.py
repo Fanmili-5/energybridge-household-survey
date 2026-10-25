@@ -28,10 +28,10 @@ def config(value=None):
     c = {**copy.deepcopy(DEFAULT), **copy.deepcopy(value)}
     # 2.1 non-granular routes remain source-compatible. Exact historical code
     # replay uses its frozen source archive, not this patched implementation.
-    if c['method_revision'] not in ('delivery_v2_1','delivery_v2_2','delivery_v2_3','delivery_v2_5','delivery_v2_6','delivery_v2_7','delivery_v2_8','delivery_v2_9','delivery_v2_10'):raise ValueError('REPLAY_OLDER_METHOD_FROM_PINNED_SOURCE_SNAPSHOT')
+    if c['method_revision'] not in ('delivery_v2_1','delivery_v2_2','delivery_v2_3','delivery_v2_5','delivery_v2_6','delivery_v2_7','delivery_v2_8','delivery_v2_9','delivery_v2_10','delivery_v2_11'):raise ValueError('REPLAY_OLDER_METHOD_FROM_PINNED_SOURCE_SNAPSHOT')
     if c['selection_joint_order'] not in ('legacy_buckets_v1','exact_witnessed_v1'):
         raise ValueError('UNKNOWN_JOINT_ORDER_SELECTION_POLICY')
-    if c['selection_joint_order']=='exact_witnessed_v1' and c['method_revision']!='delivery_v2_10':
+    if c['selection_joint_order']=='exact_witnessed_v1' and c['method_revision'] not in ('delivery_v2_10','delivery_v2_11'):
         raise ValueError('NEW_SELECTION_POLICY_REQUIRES_NEW_REVISION')
     e = c['event']
     if (c['schema'] != DEFAULT['schema'] or c['step_min'] != 10 or

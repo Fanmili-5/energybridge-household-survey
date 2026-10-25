@@ -5,7 +5,7 @@
 当时已整合判断绑定、输入边界、逐日目标转发和自动洗烘修订，尚未提交或部署。
 实现范围、原生生成、后续检查分别记版本，不能混为同一次运行。
 
-当前v2.10增加精确任务数选题及CURRENT_CONFIG入口，核心为
+v2.10曾增加精确任务数选题及CURRENT_CONFIG入口，核心为
 `3bfe5f37c848af3e7ef19f62fa86551bd32015fec95939b2e231664d5bac305b`。
 本表设备契约继续沿用；新选题规则和三户30日期验证见JOINT_ORDER_SELECTION_METHOD.md及release_v2_10/。
 GitHub代码更新不等于重新生成旧500题、部署线上或计算新后果。
@@ -58,3 +58,9 @@ B总回路检查也区分已知名义超限与尚无容量保证，均不宣称�
 
 来源支持范围以 `SOURCES_AND_PARAMETERS.md` 和 `unified/EVIDENCE.json`为准。
 规则映射、预算和语义分箱保留项目实验设定身份；成熟算法不证明行为真实性。
+# v2.11补充：动作解释与覆盖入口
+
+机器改时、装取改时、额外操作、许可暂停、温差、状态及时间阶段分别由`unified/change_axes.py`生成；规则在`unified/ACTION_AXIS_RULES.json`。
+`candidates.catalogue_domains/generate_day`使用分开的因素和探针，`selection.concepts`及`semantics.linked_relation_nodes`使用同一轴，`materials.project`生成`action_changes`和文字。
+VPP前分钟统一相对18:00计算；局部第二阶段lead单列为构造参数。机器移时和人工移时都保留原始分钟，不把分位或小时级变化称作小打扰。
+完整定义、来源及验证边界见[ACTION_CHANGE_METHOD.md](ACTION_CHANGE_METHOD.md)。原执行规则和旧A/B保留，当前修订不替换线上材料或封存后果。

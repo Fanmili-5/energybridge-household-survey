@@ -19,7 +19,9 @@ def row(count,date,identity):
 
 
 def current(**overrides):
-    return config({**entry_config(),**overrides})
+    # These pre-existing fixtures exercise the v2.10 exact-count policy. Current
+    # v2.11 additionally requires the literal action-axis annotation contract.
+    return config({**entry_config(),'method_revision':'delivery_v2_10',**overrides})
 
 
 class JointOrderSelectionTests(unittest.TestCase):
@@ -125,7 +127,7 @@ class JointOrderSelectionTests(unittest.TestCase):
 class CurrentEntryTests(unittest.TestCase):
     def test_implicit_CLI_config_is_current_and_explicit_legacy_is_preserved(self):
         cfg=entry_config()
-        self.assertEqual('delivery_v2_10',cfg['method_revision'])
+        self.assertEqual('delivery_v2_11',cfg['method_revision'])
         self.assertEqual('exact_witnessed_v1',cfg['selection_joint_order'])
         self.assertEqual('life_conditional_v1',cfg['A_target_context_mode'])
         self.assertEqual('include_life_conflicts',cfg['handling_calendar_domain'])

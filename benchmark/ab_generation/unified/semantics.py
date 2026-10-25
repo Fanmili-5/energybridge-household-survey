@@ -37,7 +37,10 @@ def program_window_issues(context, plan, needs):
 
 def mechanism(name):
     return {'retimed_handling_full_grid':'retimed_handling',
-            'event_pause_and_recover':'ev_pause_recover'}.get(name,name)
+            'event_pause_and_recover':'ev_pause_recover',
+            **{k:'precondition_and_relax' for k in ('pre_event_prepare_and_relax',
+                'in_event_prepare_and_relax','cross_event_prepare_and_relax',
+                'outside_event_prepare_and_relax','two_phase_without_changed_preparation')}}.get(name,name)
 
 
 def legacy_judgment_signature(row, details, axes):
@@ -112,6 +115,10 @@ def linked_relation_nodes(row):
             machine_direction=None if signed is None else 'earlier' if signed<0 else 'later' if signed>0 else 'unchanged',
             handling_changed=bool(magnitude.get('manual_total_shift_min')),
             service_margin='unknown' if slack is None else 'shortfall' if slack<0 else 'under_30' if slack<30 else 'ample')
+        if row.get('change_axes_version'):
+            from .change_axes import labels
+            node.pop('relative_position')
+            node['separate_action_axes']=labels(component['change_axes'])
         local=dict(components=[component],judgment_context=[judgment],issues=[])
         node['member_and_permission_relations']=legacy_judgment_signature(local,{}, {})
         nodes.append(node)
@@ -123,6 +130,6 @@ def judgment_signature(row,details,axes):
     if version is None:
         return legacy_judgment_signature(row,details,axes)
     if version!=LINK_VERSION:raise ValueError('UNKNOWN_JUDGMENT_CONTEXT_VERSION')
-    return digest(dict(version=LINKED_SIGNATURE_VERSION,
+    return digest(dict(version='eb.device_linked_judgment_signature.v4_axes' if row.get('change_axes_version') else LINKED_SIGNATURE_VERSION,
         detail={f:sorted(v) for f,v in details.items()},axes=axes,
         device_linked_positions=linked_relation_nodes(row),issues=sorted(set(row['issues']))))

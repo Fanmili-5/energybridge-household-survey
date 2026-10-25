@@ -12,8 +12,13 @@ def concepts(row,joint_order_mode='legacy_buckets_v1'):
     detail=defaultdict(set)
     for c in row['components']:
         if c['event_relevance']['role']!='direct_event_request':continue
-        detail[c['family']].update(['mechanism='+c['mechanism'], 'dose='+c['relative_level']])
-        if c['family'] in ('ac','water_heater'):
+        detail[c['family']].add('mechanism='+c['mechanism'])
+        if row.get('change_axes_version'):
+            from .change_axes import VERSION,labels
+            if row['change_axes_version']!=VERSION:raise ValueError('UNKNOWN_CHANGE_AXES_VERSION')
+            detail[c['family']].update(k+'='+v for k,v in labels(c['change_axes']).items())
+        else:detail[c['family']].add('dose='+c['relative_level'])
+        if not row.get('change_axes_version') and c['family'] in ('ac','water_heater'):
             minutes=c['magnitude'].get('duration_min',0)
             detail[c['family']].add('duration_position='+('brief' if minutes<=20 else 'partial' if minutes<=40 else 'full_event'))
     slack=[c['magnitude']['service_slack_min'] for c in row['components'] if 'service_slack_min' in c['magnitude']]
@@ -98,6 +103,9 @@ def select_block(rows,cfg=None,carried=frozenset()):
         if r.get('engineering_issues') or any(r.get(k) is not None for k in
                 ('actual_outcomes','human_acceptance','human_score','human_reason')):
             raise ValueError('ENGINEERING_OR_OUTCOME_LEAKAGE')
+        if cfg['method_revision']=='delivery_v2_11':
+            from .change_axes import VERSION
+            if r.get('change_axes_version')!=VERSION:raise ValueError('CURRENT_SELECTION_REQUIRES_SEPARATE_ACTION_AXES')
     if len({r['id'] for r in rows})!=len(rows):raise ValueError('DUPLICATE_CANDIDATE_ID')
     all_views={r['id']:concepts(r,cfg['selection_joint_order']) for r in rows}
     for r in rows:
