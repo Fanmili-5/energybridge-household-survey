@@ -54,8 +54,11 @@ python -B -m benchmark.ab_generation.unified fresh --life-batch LIFE_BATCH.json 
 
 ## 验收范围
 
-当前v2.11复用两户原20道入选题及848份原候选，只新增动作解释层并检查接口。主张和聚合结果见
-[动作规则](ACTION_CHANGE_METHOD.md)及[小规模汇总](release_v2_11/README.md)。原入选ID保持不变，没有v2.11全50户再选题、物理结果或真人有效性证据。
+v2.11的先行两户原20题/848候选解释验收见[小规模汇总](release_v2_11/README.md)。随后已完成
+[原50户500日期影子重选](release_v2_11/shadow50/README.md)：同一原候选池，95个日期改选另一份原候选，原A/B不变。
+全量入口为`benchmark.research_delivery.shadow_selection`；协议须绑定原候选、实际v2.10对照选题、日期、配置、种子和核心哈希。
+新注释保存在独立目录，不覆盖原候选。`axis_matrix`只作额外机器×人工组合诊断，不影响选择或补抽。
+声明目标通过不代表细分组合全覆盖，更不是物理结果、真人理解度或训练有效性证据。
 
 旧版本的本地协议绑定其核心和候选哈希；历史500日期审计使用fabcc48对应源码，不能直接把旧候选交给要求新轴的当前选择器。
 

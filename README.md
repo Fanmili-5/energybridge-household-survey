@@ -24,6 +24,6 @@
 
 ## 当前生成方法 v2.11（研究版本）
 
-[统一方法与来源](benchmark/research_delivery/METHOD.md) · [分开动作幅度与事件阶段](benchmark/research_delivery/ACTION_CHANGE_METHOD.md) · [复现入口](benchmark/research_delivery/REPRODUCE.md) · [原v2.10的500日期影子验收](benchmark/research_delivery/release_v2_10/shadow50_aggregate/README.md)
+[统一方法与来源](benchmark/research_delivery/METHOD.md) · [分开动作幅度与事件阶段](benchmark/research_delivery/ACTION_CHANGE_METHOD.md) · [复现入口](benchmark/research_delivery/REPRODUCE.md) · [v2.11的500日期影子验收](benchmark/research_delivery/release_v2_11/shadow50/README.md)
 
-CLI默认配置为`benchmark/ab_generation/unified/CURRENT_CONFIG.json`。v2.11分开机器移时、装取变化和控制幅度，小时级变化显示绝对分钟；VPP前准备与事件内调节按固定18:00边界分开，并进入候选分层、选题及问卷材料接口。小规模复用两户20道原题及848份原候选验证，保留冲突、名义无帮助及未知，不重选、不改A/B。原v2.10的50户500日期结果继续封存，不标成v2.11全量结果。公开代码与无身份汇总，个体明细保存在本地；不替换线上正式题集、不跑物理仿真、不启动1000户。
+CLI默认配置为`benchmark/ab_generation/unified/CURRENT_CONFIG.json`。v2.11分开机器移时、装取变化和控制幅度，小时级变化显示绝对分钟；VPP前准备与事件内调节按固定18:00边界分开。已在原18,977候选中完成50户500原日期影子重选：各户已有联合规模及1,264项声明目标缺额0；额外机器×装取细分仍缺全局5种、家庭条件下130项组合，不宣称全面覆盖。冲突、名义无帮助和未知保留，不改A/B、不重抽，原v2.10结果继续封存。公开代码与无身份汇总，个体明细保存在本地；不替换线上正式题集、不跑物理仿真、不启动1000户。
