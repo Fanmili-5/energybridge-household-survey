@@ -100,3 +100,7 @@ node benchmark/project/verify_display.js benchmark/project/examples/questionnair
 仍需独立完成：正式采集中的题意理解与标签质控；冻结按家庭/共享来源分组的训练验证测试清单、模型可见信息和指标；用有效人类评价验证roleplay模型。人口代表性、实际住宅校准和所有可能设备组合的穷尽覆盖均不是当前已证实结论。见[评测边界](EVALUATION.md)与[数据与验收](DATASET.md)。
 
 正式采集的数据库位置、JSONL导出、请求体边界和备份见[存储与维护说明](household1000/COLLECTION_STORAGE_AND_OPERATIONS.md)。后续维护已按当前要求清理退役采集记录及其备份；冻结源计划和工程失败谱系保留，历史上线时的保留策略不代表当前采集记录策略。
+
+## 家庭第一步的可复用算法
+
+八国V9输入之外，现提供独立的[生成器与算法规则](../benchmark/household_stage1/generator/README.md)：在真实源池中按国家和EB实验角色配额选唯一源户，补参考周，再以整数约束分配4—6类控制（空调必选），经源/生活/服务/覆盖审计后冻结。角色和具体日程的文献边界见[证据映射](../benchmark/household_stage1/generator/EVIDENCE_MAP.md)。新批次不会自动替换V9或既有线上50户，家庭输入通过也不代表A/B或物理通过。

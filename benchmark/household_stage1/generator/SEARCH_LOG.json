@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-08",
+  "exclusion": "secondary snippets, unverifiable bibliographic details, broad papers with no matching rule",
+  "included": [
+    "EB2026",
+    "RICHARDSON2008",
+    "LPG2022",
+    "FELL2015",
+    "PATERAKIS2015"
+  ],
+  "inclusion": "original EB paper and pinned public role material; primary peer-reviewed methods or official source manuals directly related to implemented rules",
+  "not_used": [
+    {
+      "item": "NREL EVI-Pro 75269 report",
+      "reason": "search identified potentially relevant charging discussion but full report did not fetch reliably; not used to support a rule"
+    },
+    {
+      "item": "ResearchGate EB copy",
+      "reason": "secondary mirror replaced by original arXiv full text"
+    }
+  ],
+  "queries": [
+    "EnergyBridge household persona six roles human roleplay 584",
+    "LoadProfileGenerator Pflugradt Stenzel Kotzur Stolten 2022",
+    "Richardson Thomson Infield 2008 high resolution domestic occupancy",
+    "Fell Shipworth Huebner Elwell 2015 automation direct load control",
+    "Paterakis Erdinc household appliances noninterruptible cycles EV scheduling 2015",
+    "NREL EVI-Pro continuous charging arrival departure managed charging"
+  ],
+  "registered_plan": "server packaging workspace PLAN.json before search",
+  "scope": "targeted evidence mapping, not systematic review",
+  "verification": "Each included record opened from arXiv, journal or author institution. Bibliographic fields and narrow supporting passages checked. Richardson rule support limited to institution abstract. No claim of exhaustive screening."
+}

@@ -2,6 +2,10 @@
 
 当前版本V9：八国各125户，共1000户；每户必须配备空调，且空调必须纳入4—6类可控电器。当前指针和数据内容摘要见[CURRENT.json](CURRENT.json)，验收证据见[VALIDATION.json](VALIDATION.json)。本批只验收家庭与结构化服务输入，实际A/B问题、物理结果和真人答案均为0；10000是每户十题的覆盖蓝图槽位。
 
+## 可复用生成器
+
+[算法、命令与扩展指南](generator/README.md)现已包含从八份原件准备候选池、生成新批次、逐户核验、跨进程重放和完整家庭卡输出。支持配置规模、国家、角色配额与种子；规则与一手文献逐项对应。它是独立的新批次生成入口，既有V9冻结1000户及本页摘要保持其原验收身份。
+
 ## 数据来源
 
 下列是筛选后的候选记录数，还需逐角色检查，不是原调查样本总量。各国最终均选125个不同源家庭。中国原件为项目已有CRECS2012文件。ENABLE.EU的2019是发布年，不是个人访问年。
@@ -51,6 +55,6 @@ python -B -m unittest benchmark.household_stage1.test_required_controls -v
 python -B -m benchmark.household_stage1.verify_publication --households /authorized/household_cases.jsonl
 ```
 
-公开核验器不重跑原始调查解码和完整服务器生成链；这批原件复读与全量生活验收证据由VALIDATION.json绑定，完整服务器依赖另行冻结。旧[family_generation](../family_generation/)六类合成画像v3保留其自己的来源与模式，不把Copula画像算法说成这1000户源家庭的选取方法，也不声称用六条合成模板可重建本批1000户。
+上述标准库核验器只检查V9公开摘要和空调契约；原件复读与全量生活证据由VALIDATION.json绑定。[新生成器](generator/README.md)另行提供准备原件、产生新批次与完整核验的入口，需安装其依赖并合法持有原件，不把新批次当成原V9的字节级重建。旧[family_generation](../family_generation/)六类合成画像v3保留其自己的来源与模式，不把Copula画像算法说成这1000户源家庭的选取方法，也不声称用六条合成模板可重建本批1000户。
 
 下一阶段：逐户IDF/安装/气象和价格绑定、A/B双方的生活合理性及同版本仿真、问卷小样理解与真人质控。本次GitHub更新不修改既有50户线上资料或问卷数据库。

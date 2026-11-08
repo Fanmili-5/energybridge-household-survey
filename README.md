@@ -10,7 +10,7 @@
 
 | 主线 | 内容 | 代码与详细方法 |
 |---|---|---|
-| 家庭与设备 | 成员、关系、实验角色、设备与权限形成一致的家庭情境 | [family_generation](benchmark/family_generation/) |
+| 家庭与设备 | 调查约束的家庭、EB角色态度、参考周、4—6类控制与服务合同 | [可复用生成器](benchmark/household_stage1/generator/)；[早期合成画像](benchmark/family_generation/) |
 | A/B策略 | 从生活需求生成A，围绕固定VPP生成单设备/联合B，覆盖取舍并保留长尾 | [ab_generation](benchmark/ab_generation/) |
 | 住房与仿真 | 匹配参考住房、装配设备、执行同世界A/B并审计后果 | [housing_simulation](benchmark/housing_simulation/) |
 
@@ -24,7 +24,7 @@
 
 ## 八国家庭生成第一步（V9）
 
-[数据来源与实际方法](benchmark/household_stage1/README.md) · [冻结批次摘要](benchmark/household_stage1/CURRENT.json) · [验收证据](benchmark/household_stage1/VALIDATION.json)
+[可复用生成算法与规则](benchmark/household_stage1/generator/README.md) · [数据来源与实际方法](benchmark/household_stage1/README.md) · [冻结批次摘要](benchmark/household_stage1/CURRENT.json) · [验收证据](benchmark/household_stage1/VALIDATION.json)
 
 中国、美国、英国、西班牙、印度、墨西哥、澳大利亚、德国各125户。真实调查约束家庭背景，EB定义角色态度，规则补齐参考生活，整数规划分配电器组合。**空调每户必备且必控**，每户共4—6类；原调查未确认或没有的设备明确标成实验增配。家庭输入验收不等于10000道A/B题、物理后果或真人标签已完成，也不改变既有50户线上资料。
 

@@ -20,3 +20,5 @@
 - 各模块的原始依据、参数和验证文件由对应README引导，不作为并列的项目入口。
 
 当前生成方法研究版本：[统一算法](../benchmark/research_delivery/METHOD.md) · [v2.10联合任务数及配置修订](../benchmark/research_delivery/JOINT_ORDER_SELECTION_METHOD.md) · [复现与范围](../benchmark/research_delivery/REPRODUCE.md)。本次GitHub代码更新不改变线上正式采集。
+
+家庭第一步的可复用实现：[调查约束的家庭生成算法](../benchmark/household_stage1/generator/README.md)，含角色/生活规则、证据表、规模配置、原件适配与独立重放。

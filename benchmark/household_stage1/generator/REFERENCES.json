@@ -1,0 +1,61 @@
+{
+  "checked_on": "2026-11-08",
+  "references": [
+    {
+      "does_not_support": "A population taxonomy, national role prevalences, or validation of this expanded eight-country generator.",
+      "doi": null,
+      "id": "EB2026",
+      "locator": "3.3, 5.5, Appendix A, Tables 4/7/8",
+      "supports": "Six assigned experimental roles; reference calendars, comfort and task protection; retained role-player counts 97/116/73/88/91/119.",
+      "title": "EnergyBridge: Benchmarking Household Energy Management, User Participation, and Grid Flexibility",
+      "type": "arXiv preprint",
+      "url": "https://arxiv.org/html/2608.08691v1",
+      "year": 2026
+    },
+    {
+      "does_not_support": "Our exact work/school/meal times, eight-country time-use calibration, or a claim that we implement their stochastic occupancy model.",
+      "doi": "10.1016/j.enbuild.2008.02.006",
+      "id": "RICHARDSON2008",
+      "locator": "Abstract and bibliographic record, author institution",
+      "supports": "Time-use-informed active occupancy and separate weekday/weekend states are useful inputs to energy-demand models.",
+      "title": "A high-resolution domestic building occupancy model for energy demand simulations",
+      "type": "peer-reviewed journal article",
+      "url": "https://pureportal.strath.ac.uk/en/publications/a-high-resolution-domestic-building-occupancy-model-for-energy-de/",
+      "year": 2008
+    },
+    {
+      "does_not_support": "Our household generator implements LPG, a desire-driven psychology model, or calibrated national activity frequencies.",
+      "doi": "10.21105/joss.03574",
+      "id": "LPG2022",
+      "locator": "PDF pages 1 and 3",
+      "supports": "Model residents and activities before translating activities into device demand; distinguish behavior from electrical profiles.",
+      "title": "LoadProfileGenerator: An Agent-Based Behavior Simulation for Generating Residential Load Profiles",
+      "type": "peer-reviewed software paper",
+      "url": "https://joss.theoj.org/papers/10.21105/joss.03574",
+      "year": 2022
+    },
+    {
+      "does_not_support": "Independent universal attitude weights, our six-category distribution, fixed temperature cutoffs, or automatic transfer of GB results to eight countries.",
+      "doi": "10.1016/j.erss.2015.08.023",
+      "id": "FELL2015",
+      "locator": "Abstract, GB bill-payer experiment N=2002",
+      "supports": "Acceptance depends on the automation/control offer; bounded direct control with override can be acceptable.",
+      "title": "Public acceptability of domestic demand-side response in Great Britain: The role of automation and direct load control",
+      "type": "peer-reviewed survey experiment",
+      "url": "https://discovery.ucl.ac.uk/id/eprint/1471898/",
+      "year": 2015
+    },
+    {
+      "does_not_support": "Our control-enrollment MILP is that day-ahead scheduling algorithm, that EV interruption is physically impossible, or that stage-one service contracts prove physical feasibility.",
+      "doi": "10.1109/TII.2015.2438534",
+      "id": "PATERAKIS2015",
+      "locator": "Section II, EV arrival/departure/SOE constraints; nonthermostatic loads equations 15-20; thermostatic loads 21 onward",
+      "supports": "Device-specific models: sequential complete washer/dishwasher phases, EV parking/energy balance and thermal-service constraints.",
+      "title": "Optimal Household Appliances Scheduling Under Day-Ahead Pricing and Load-Shaping Demand Response Strategies",
+      "type": "peer-reviewed modeling paper",
+      "url": "https://pure.tue.nl/ws/files/21421730/optimal.pdf",
+      "year": 2015
+    }
+  ],
+  "scope": "targeted rule-to-primary-evidence mapping; not a systematic literature review"
+}

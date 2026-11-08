@@ -1,0 +1,201 @@
+{
+  "scope": "project generation functions ported from frozen V9 dependency closure; third-party runtime libraries are not vendored",
+  "current_cohort_data_changed": false,
+  "files": [
+    {
+      "original_code": "stage1_benchmark_20261107_v4/legacy_components.py",
+      "original_sha256": "8435aaf422ebcc784edbea27ba55d6c7585431259b1b5fde80e8edae6d5f7f69",
+      "portable_code": "v4/legacy_components.py",
+      "portable_sha256": "b947a9732d40d2603f784cd9c19dd257b77702c8f7bdc2ab24a73a3ebd06121e",
+      "changes": [
+        "portable code paths; no source records embedded",
+        "IRES laundry count reads normalized source fact instead of hidden raw file"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v4/seed_builder.py",
+      "original_sha256": "7a25ed73ed40c54f2ae76a487750d2ff6bd248011ec3f8d07099d58d5c31d92a",
+      "portable_code": "v4/seed_builder.py",
+      "portable_sha256": "4621c399a25b8accab003207ce8f0b337e972c7fc78486b19e1932492bd79d4b",
+      "changes": [
+        "portable code paths; no source records embedded",
+        "remove unused ENABLE/IDEAL source reads from US/IN/MX normalizer"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v4/source_adapters.py",
+      "original_sha256": "d2e01e78cb7352a0cc236ad2bea03d410daa33209453d0ebfeb57f0fabd0e7db",
+      "portable_code": "v4/source_adapters.py",
+      "portable_sha256": "fc36525b7c2966c92e5f4c336d9b44d6e654f9ae8268b3f659acf46380d8b967",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v4/source_enrichment.py",
+      "original_sha256": "144b6d89e6767f806aa518b682fd76411ebed33fb6e04d2bc0d31ec858e5e028",
+      "portable_code": "v4/source_enrichment.py",
+      "portable_sha256": "4aa81db62e0581470d5a577366bee21c1a9477f24470b44435d8fe8b9bd72756",
+      "changes": [
+        "portable code paths; no source records embedded",
+        "explicit cache binding; remove unused RECS2024 route"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v5/activity_model.py",
+      "original_sha256": "5bb881c9d002978377fc7cb3e6512e6ae612e166edee1b1d16fc63c3cc070fc4",
+      "portable_code": "v5/activity_model.py",
+      "portable_sha256": "ebc6f3e1f6f43f236f07e496b3567537815a3432150b43b73016eec65f3e11a7",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v5/weekend_model.py",
+      "original_sha256": "a3da55cdb556d38b1743612f41cf8e411f89acbed06e66545850d2bf8aaedd51",
+      "portable_code": "v5/weekend_model.py",
+      "portable_sha256": "a3da55cdb556d38b1743612f41cf8e411f89acbed06e66545850d2bf8aaedd51",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v5/control_inventory.py",
+      "original_sha256": "9775434ffccb7f243a96035ca553fe4a87c6ad39b25bac0b1abf8617f33735d1",
+      "portable_code": "v5/control_inventory.py",
+      "portable_sha256": "9775434ffccb7f243a96035ca553fe4a87c6ad39b25bac0b1abf8617f33735d1",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v6/service_contracts.py",
+      "original_sha256": "7348ad46dc20e7ea492eb9cbafd0078f7dc6bd8dfacd2b267cc0703b70d5fd22",
+      "portable_code": "v6/service_contracts.py",
+      "portable_sha256": "7348ad46dc20e7ea492eb9cbafd0078f7dc6bd8dfacd2b267cc0703b70d5fd22",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v7/common.py",
+      "original_sha256": "f1dd3ffcf76ee801b80320900fc1740421d3097b4ef393f1ea2b11199172471f",
+      "portable_code": "v7/common.py",
+      "portable_sha256": "ceca39c0a0ea81fc497cd32934214bd07e445a72a6a4a833a4a105511754c123",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v7/build_cohort.py",
+      "original_sha256": "bdbde65d60f642ef8cdae13c2a90561b05e8da1ee0c2ea78a0627fd4a45de92a",
+      "portable_code": "v7/build_cohort.py",
+      "portable_sha256": "b3f5115aca969eac1aedd95fdd9fa4ebb1e597ce7835d6b38e2d325762ca6ebf",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v7/allocate_controls.py",
+      "original_sha256": "48e7aab2161c667342d9ca21fcb2cc0a9272f8b5e9d77d8865babc993afaa69b",
+      "portable_code": "v7/allocate_controls.py",
+      "portable_sha256": "85e1223842789fe03b3609f3d9b1e590ce2cdf2d878fd031dd7aa52b324684f1",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v7/build_sources.py",
+      "original_sha256": "a83be738a927a353989fc5bf14895779f3c13902616769199bd46cdf203fcf52",
+      "portable_code": "v7/build_sources.py",
+      "portable_sha256": "24fdf0335e10e1da86909e5d6a846abfac3723cd5df7cff005052ea7e70e3395",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v7/audit_life.py",
+      "original_sha256": "7e9ae6019479c584a4e7aaab68a57db76c6da5ef40a36846e0120f8217ae2254",
+      "portable_code": "v7/audit_life.py",
+      "portable_sha256": "7e9ae6019479c584a4e7aaab68a57db76c6da5ef40a36846e0120f8217ae2254",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v7/audit_raw.py",
+      "original_sha256": "0f62d504cd5256d6bf8f8c6d01b10c10d730cdaba11f0fd7e0bcf58c43c052b5",
+      "portable_code": "v7/audit_raw.py",
+      "portable_sha256": "aac5f2299ff9f0e6a0cd6a30ac6f1a023b3debb64443b2692ecba8402e38ebb6",
+      "changes": [
+        "portable code paths; no source records embedded",
+        "raw audit reads only the eight admitted source files; no IDEAL fixtures"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v7/audit_controls.py",
+      "original_sha256": "62410c4e62a8648bff71edda15bfc59bb19f9772cdada0420b8497119eeac47e",
+      "portable_code": "v7/audit_controls.py",
+      "portable_sha256": "62410c4e62a8648bff71edda15bfc59bb19f9772cdada0420b8497119eeac47e",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261107_v7/audit_services.py",
+      "original_sha256": "42b029df58fc7e2afea5790ebdd5406063d46d780adb207d1e77b8c18747cbc5",
+      "portable_code": "v7/audit_services.py",
+      "portable_sha256": "42b029df58fc7e2afea5790ebdd5406063d46d780adb207d1e77b8c18747cbc5",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "country_expansion_20261108_v8/integration_v1/country_adapter.py",
+      "original_sha256": "fbee254e36da669479806858160538ca1cd808f1af4f16f1c0824a990b9a21ec",
+      "portable_code": "admitted/country_adapter.py",
+      "portable_sha256": "a12a1610575740cdfa730cbd7859060f42223830860f5d825c39a621f4017c96",
+      "changes": [
+        "portable code paths; no source records embedded",
+        "inline exact original XLSX reader and raw core screening; remove historical screening ledger dependency"
+      ]
+    },
+    {
+      "original_code": "country_expansion_20261108_v8/integration_v1/audit_new_countries.py",
+      "original_sha256": "59eeed5b411e528a88004d5fa4b40502e6ec9f6df14caac62ecb2597c2963470",
+      "portable_code": "admitted/audit_new_countries.py",
+      "portable_sha256": "1399c7b7f554501fdcfb5cafc33da5c9a3f64ef9fc4c290f06590e7772f42273",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261108_v8/adapter_v8.py",
+      "original_sha256": "dac1faa1b7b4cab5c13a27769037e8ddb92b52c6c447268e658e2844bb262d1f",
+      "portable_code": "v8/adapter_v8.py",
+      "portable_sha256": "36f4def1e9bc536b9fe47ed34721dfc3f9812a09140f29031ad6260c45806f6c",
+      "changes": [
+        "portable code paths; no source records embedded",
+        "source code and caller-bound input paths are separate"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261108_v8/audit_v8.py",
+      "original_sha256": "4c433b5fd8d6e4e2f3943e9b718aeb9456a693467a05b0901beb70b7a6e88e20",
+      "portable_code": "v8/audit_v8.py",
+      "portable_sha256": "a01febb6fa26634a78acc8000699fb38e0a5d33e1bde99b4ec57619ed6ec69fd",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    },
+    {
+      "original_code": "stage1_benchmark_20261108_v8/render_v8.py",
+      "original_sha256": "706c315ec6828a635e4027d27bee6226b8935e01c86df6a7b5d9367e1ce3bcf6",
+      "portable_code": "v8/render_v8.py",
+      "portable_sha256": "a4f45fce3f3102bd3b1595942f8b3d28da01b21d298ea52995e2ee479ee48698",
+      "changes": [
+        "portable code paths; no source records embedded"
+      ]
+    }
+  ]
+}

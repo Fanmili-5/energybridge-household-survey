@@ -1,0 +1,27 @@
+{
+  "all_country_roles": true,
+  "countries": [
+    "CN",
+    "US",
+    "GB",
+    "ES",
+    "IN",
+    "MX",
+    "AU",
+    "DE"
+  ],
+  "coverage": {
+    "cell_function_minimum": 2,
+    "country_all_masks": true,
+    "nonfull_function_minimum": 20,
+    "nonfull_pair_minimum": 10,
+    "role_minimum_pattern_count": 2
+  },
+  "households": 1200,
+  "pair_CD": true,
+  "profile_alternatives": 4,
+  "raw_source_audit_required": true,
+  "seed": "source-supported-household-generator-1200-v1",
+  "solver_time_limit_seconds": 55,
+  "v9_cardinality_compatibility": false
+}

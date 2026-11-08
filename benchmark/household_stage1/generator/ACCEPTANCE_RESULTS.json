@@ -1,0 +1,210 @@
+{
+  "canonical_v9_unchanged": {
+    "AC_controlled": 1000,
+    "AC_present": 1000,
+    "artifacts_verified": 46,
+    "code_pins": 42,
+    "current_pointer_consistent": true,
+    "manifest_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+    "release_id": "eb-household-stage1-20261108-v9-ac-required",
+    "source_pins": 8,
+    "status": "pass"
+  },
+  "claim_boundary": [
+    "new cohorts are experimental acceptance runs, not replacement of frozen V9",
+    "household and service inputs only; no actual questionnaire, IDF, physical results or human answers",
+    "rules are operationalized experimental assumptions unless explicitly source-observed; cited research does not validate global numerical defaults",
+    "capacity and cross-batch source overlap must be checked before scaling beyond current support"
+  ],
+  "controlled_source_cohort_runs": [
+    {
+      "AC_present_and_controlled": 1000,
+      "C_D_pairs": 125,
+      "actual_AB_questions": 0,
+      "actual_human_answers": 0,
+      "actual_physical_results": 0,
+      "cardinality_counts": {
+        "4": 333,
+        "5": 333,
+        "6": 334
+      },
+      "control_solver": {
+        "all_integral_constraints_recomputed": true,
+        "cardinality_targets": {
+          "4": 333,
+          "5": 333,
+          "6": 334
+        },
+        "constraints": 3798,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "mip_gap": 0.0022134295623456087,
+        "objective": "prefer fewer experimental installations subject to declared coverage; never acceptance, savings, or later outcomes",
+        "optimality_claim": false,
+        "reproducibility": "freeze the returned control assignment; replay does not require cross-version solver tie equivalence",
+        "requested_mip_relative_gap": 0.01,
+        "solver_status": 0,
+        "solver_success_within_requested_gap": true,
+        "variables": 14870
+      },
+      "country_counts": {
+        "AU": 125,
+        "CN": 125,
+        "DE": 125,
+        "ES": 125,
+        "GB": 125,
+        "IN": 125,
+        "MX": 125,
+        "US": 125
+      },
+      "coverage_requirements": {
+        "cell_function_minimum": 2,
+        "country_all_masks": true,
+        "nonfull_function_minimum": 20,
+        "nonfull_pair_minimum": 10,
+        "role_minimum_pattern_count": 2
+      },
+      "frozen_run_manifest_sha256": "b6a5aad8b95ed01c86a1387037d602499306719822635cfc99cedfc309d3fb82",
+      "households": 1000,
+      "manifest_sha256": "61720c792dda9ca30fce062c48846e53e2d26a5685d4b1bd54ab6dc6392554ca",
+      "pool_sha256": "11043bbbe6ed8e0200d08438a28e3ee007cfe462b4155eb0a8ea9278ee0d0a5a",
+      "population_audit_sha256": "3b12c106cd27f87b22558b63bd16e84e988c35ba5e5011f3a9e0e20cff59421a",
+      "raw_sources_independently_checked": true,
+      "required_control_functions": [
+        "AC"
+      ],
+      "role_counts": {
+        "A": 166,
+        "B": 198,
+        "C": 125,
+        "D": 151,
+        "E": 156,
+        "F": 204
+      },
+      "runtime_versions": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "pyreadstat": "1.2.8",
+        "scipy": "1.15.3"
+      },
+      "verification": {
+        "AC_present_and_controlled": 1000,
+        "actual_AB_questions": 0,
+        "actual_human_answers": 0,
+        "actual_physical_results": 0,
+        "final_replay_byte_identical": true,
+        "households_checked": 1000,
+        "passed": true,
+        "raw_sources_checked": true,
+        "synthetic_fixture_only": false
+      }
+    },
+    {
+      "AC_present_and_controlled": 1200,
+      "C_D_pairs": 150,
+      "actual_AB_questions": 0,
+      "actual_human_answers": 0,
+      "actual_physical_results": 0,
+      "cardinality_counts": {
+        "4": 400,
+        "5": 400,
+        "6": 400
+      },
+      "control_solver": {
+        "all_integral_constraints_recomputed": true,
+        "cardinality_targets": {
+          "4": 400,
+          "5": 400,
+          "6": 400
+        },
+        "constraints": 4398,
+        "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "mip_gap": 0.0,
+        "objective": "prefer fewer experimental installations subject to declared coverage; never acceptance, savings, or later outcomes",
+        "optimality_claim": true,
+        "reproducibility": "freeze the returned control assignment; replay does not require cross-version solver tie equivalence",
+        "requested_mip_relative_gap": 0.01,
+        "solver_status": 0,
+        "solver_success_within_requested_gap": true,
+        "variables": 17854
+      },
+      "country_counts": {
+        "AU": 150,
+        "CN": 150,
+        "DE": 150,
+        "ES": 150,
+        "GB": 150,
+        "IN": 150,
+        "MX": 150,
+        "US": 150
+      },
+      "coverage_requirements": {
+        "cell_function_minimum": 2,
+        "country_all_masks": true,
+        "nonfull_function_minimum": 20,
+        "nonfull_pair_minimum": 10,
+        "role_minimum_pattern_count": 2
+      },
+      "frozen_run_manifest_sha256": "6cb1935f6e8d36fc5936fbf065a8a6b088ab74ffd65dd024830d01566d9ff33f",
+      "households": 1200,
+      "manifest_sha256": "a5a4acf07d4dffd77ba8883fb3a46fd35e92d8e10cd101ad56e47373223c522d",
+      "pool_sha256": "11043bbbe6ed8e0200d08438a28e3ee007cfe462b4155eb0a8ea9278ee0d0a5a",
+      "population_audit_sha256": "5e048e7b2c6433f1a298cecae1c47502b0154c07cdede484a53bb314eb0aa2c2",
+      "raw_sources_independently_checked": true,
+      "required_control_functions": [
+        "AC"
+      ],
+      "role_counts": {
+        "A": 199,
+        "B": 238,
+        "C": 150,
+        "D": 181,
+        "E": 187,
+        "F": 245
+      },
+      "runtime_versions": {
+        "numpy": "2.2.6",
+        "pandas": "2.3.3",
+        "pyreadstat": "1.2.8",
+        "scipy": "1.15.3"
+      },
+      "verification": {
+        "AC_present_and_controlled": 1200,
+        "actual_AB_questions": 0,
+        "actual_human_answers": 0,
+        "actual_physical_results": 0,
+        "final_replay_byte_identical": true,
+        "households_checked": 1200,
+        "passed": true,
+        "raw_sources_checked": true,
+        "synthetic_fixture_only": false
+      }
+    }
+  ],
+  "date": "2026-11-08",
+  "fresh_normalization": {
+    "country_candidates": {
+      "AU": 1000,
+      "CN": 505,
+      "DE": 539,
+      "ES": 615,
+      "GB": 750,
+      "IN": 291,
+      "MX": 543,
+      "US": 14404
+    },
+    "hidden_historical_inputs_required": false,
+    "pool_sha256": "11043bbbe6ed8e0200d08438a28e3ee007cfe462b4155eb0a8ea9278ee0d0a5a",
+    "records": 18647
+  },
+  "private_source_records_or_cards_published": false,
+  "public_checks": {
+    "generator_integration_and_counterexamples": 14,
+    "log_sha256": "29f8d72cbd02ea241301bf678fc5fb13509fcd9dce9a8fd28c4cdbd976abde1a",
+    "required_AC_contract": 9,
+    "separate_process_replay": true,
+    "synthetic_example_households": 96,
+    "total": 23
+  },
+  "schema": "eb.household.generator.acceptance.v1",
+  "status": "passed_for_reusable_household_input_generation"
+}

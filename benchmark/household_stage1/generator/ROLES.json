@@ -1,0 +1,82 @@
+{
+  "assigned_role_counts_584": {
+    "A": 97,
+    "B": 116,
+    "C": 73,
+    "D": 88,
+    "E": 91,
+    "F": 119
+  },
+  "default_1000_quotas": {
+    "A": 166,
+    "B": 198,
+    "C": 125,
+    "D": 151,
+    "E": 156,
+    "F": 204
+  },
+  "evidence_locator": "EB Appendix A, Table 7; pinned upstream role material in ../.. /household_archetypes/INPUTS.lock.json",
+  "not_validated": "joint distributions of attitudes, causal role effects, global population proportions, individual acceptance predictions",
+  "provenance": "EB experiment role conditions plus project operationalization; not survey labels or inferred national types",
+  "references": [
+    "EB2026"
+  ],
+  "roles": {
+    "A": {
+      "automation": "conditional",
+      "comfort_priority": "protect_evening_service",
+      "core": "价格敏感、务实合作的通勤者",
+      "grid_motive": "insufficient_alone",
+      "price_priority": "high",
+      "routine": "commuting",
+      "thermal_rule": "若有空调，短时调整应保护归家舒适，最好不超过26°C"
+    },
+    "B": {
+      "automation": "only_if_barely_noticeable",
+      "comfort_priority": "very_high",
+      "core": "经常有人在家、以温度舒适为前提",
+      "grid_motive": "secondary",
+      "price_priority": "secondary_to_comfort",
+      "routine": "daytime_home_presence",
+      "thermal_rule": "空调偏好24–25°C，25.5–26°C附近开始明显不适"
+    },
+    "C": {
+      "automation": "explain_and_allow_reversal",
+      "comfort_priority": "protect_required_service",
+      "core": "日常安排变化、谨慎对待自动控制",
+      "grid_motive": "conditional",
+      "price_priority": "conditional",
+      "routine": "variable",
+      "thermal_rule": "若有空调，可协商小幅调整；必要任务不可取消"
+    },
+    "D": {
+      "automation": "allow_bounded_automation",
+      "comfort_priority": "protect_required_service",
+      "core": "日常安排稳定、支持响应且较信任自动化",
+      "grid_motive": "high",
+      "price_priority": "conditional",
+      "routine": "stable",
+      "thermal_rule": "若有空调，可协商1–2°C短时变化；必要任务仍需完成"
+    },
+    "E": {
+      "automation": "minimal_disruption",
+      "comfort_priority": "very_high",
+      "core": "同住照护者，以照护、安全和舒适为首要",
+      "grid_motive": "below_care",
+      "price_priority": "below_care_safety_comfort",
+      "routine": "protect_care",
+      "thermal_rule": "若有空调，只接受几乎不影响照护舒适的变化"
+    },
+    "F": {
+      "automation": "conditional_optimization",
+      "comfort_priority": "protect_service_and_trip",
+      "core": "电动车通勤情境，优先保障次日出行",
+      "grid_motive": "conditional",
+      "price_priority": "high",
+      "routine": "ev_commuting_scenario",
+      "thermal_rule": "若有空调，可协商适度调整；不得损害出行或必要服务"
+    }
+  },
+  "rule_set": "ported-v9-reference-week-v1",
+  "schema": "eb.household.roles.v1"
+}

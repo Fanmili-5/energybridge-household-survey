@@ -1,0 +1,198 @@
+{
+  "editable_run_parameters": [
+    "households",
+    "countries",
+    "country_counts",
+    "role_counts",
+    "country_role_quotas",
+    "seed",
+    "coverage",
+    "profile_alternatives",
+    "solver_time_limit_seconds",
+    "pair_CD"
+  ],
+  "numeric_life_defaults": "fixed in versioned kernel; changing requires code/rule revision and rerun acceptance, not merely editing unused JSON",
+  "rule_set": "ported-v9-reference-week-v1",
+  "rules": [
+    {
+      "basis": "source_contract",
+      "id": "S01",
+      "implementation": "engine.bind_sources; _engine/v8/adapter_v8.build_source_pools; _engine/v7/audit_raw",
+      "limits": "历史调查不是当前家庭的实际日记；跨户住房匹配不是同户实测。",
+      "references": [],
+      "rule": "八份输入按SHA核对；源字段保留原值、原语义和来源状态。运行年龄、住房、职业日程、设备安装等补全写 household_provenance；不把未知变成源事实。",
+      "title": "调查事实与运行补全分开"
+    },
+    {
+      "basis": "source_contract",
+      "id": "S02",
+      "implementation": "sources.prepare; engine.FILES",
+      "limits": "",
+      "references": [],
+      "rule": "仅支持所列8个原始文件版本；不能只改expected_sha256就宣称新版本兼容。更新字典必须增加适配器和源语义审计。",
+      "title": "原始输入版本固定"
+    },
+    {
+      "basis": "benchmark_design",
+      "id": "Q01",
+      "implementation": "quotas.largest_remainder; quotas.plan",
+      "limits": "不是全球各类家庭发生率。",
+      "references": [
+        "EB2026"
+      ],
+      "rule": "默认按584个EB被分配角色计数做最大余数配额；1000户为166/198/125/151/156/204。国家数量为实验覆盖配额。",
+      "title": "六类实验配额"
+    },
+    {
+      "basis": "benchmark_design",
+      "id": "Q02",
+      "implementation": "pipeline.select; pipeline.population",
+      "limits": "确定性贪心搜索用尽不是全局不可行证明；新种子会改变选中户。",
+      "references": [],
+      "rule": "国家×角色整数矩阵保持两边总数并接近独立乘积；同一源调查户每批只用一次；相容性通过后按固定种子哈希排序选取。",
+      "title": "每国覆盖六类与唯一源户"
+    },
+    {
+      "basis": "EB_role_condition_and_project_operationalization",
+      "id": "R01",
+      "implementation": "ROLES.json; _engine/v4/seed_builder.ROLE_SPECS",
+      "limits": "GB接受度研究仅支持建模维度，不估计六类比例或个体标签。",
+      "references": [
+        "EB2026",
+        "FELL2015"
+      ],
+      "rule": "A价格/服务；B温度优先；C变化/谨慎；D稳定/有界合作；E照护；F出行。态度由实验角色赋予，不由国家、收入或真实调查回答自动推断。",
+      "title": "六类角色与态度"
+    },
+    {
+      "basis": "benchmark_design",
+      "id": "R02",
+      "implementation": "pipeline.select; allocation.allocate",
+      "limits": "并非同一家庭反事实，不可仅据此声称因果角色效应。",
+      "references": [],
+      "rule": "C、D使用不同源户，在同一国家/匹配块/设备来源签名中配对；配对采用相同控制组合；split_group将配对绑定。",
+      "title": "C/D成对控制"
+    },
+    {
+      "basis": "literature_principle_plus_benchmark_template",
+      "id": "L01",
+      "implementation": "_engine/v5/activity_model.build_activities/build_services/finalize_calendar",
+      "limits": "未运行文献中的随机Markov或需求驱动模拟器；没有八国时间使用调查的校准。",
+      "references": [
+        "RICHARDSON2008",
+        "LPG2022"
+      ],
+      "rule": "生成成员一周活动，再分配用餐、洗浴、操作和照护机会；按成员检查时间冲突；工作日和周末分开处理。",
+      "title": "先人和活动，再服务机会"
+    },
+    {
+      "basis": "source_anchor_plus_benchmark_completion",
+      "id": "L02",
+      "implementation": "_engine/v5/activity_model.work_parameters/build_activities",
+      "limits": "数值是实验默认值，不能引用文献宣称全球典型工作规律；超界或不相容候选拒绝。",
+      "references": [],
+      "rule": "有可用源工作时长/通勤量时保留为参考负荷；缺失全职40小时、兼职20小时/周、往返通勤40分钟，非原调查周重建。钟点在代码中版本化。",
+      "title": "工作量和通勤"
+    },
+    {
+      "basis": "benchmark_design",
+      "id": "L03",
+      "implementation": "_engine/v5/activity_model.build_activities/build_services",
+      "limits": "受控信息条件，不是观察到的随机性，也不是对真实不可预测性的估计。",
+      "references": [],
+      "rule": "C参考工作日偏移[0,60,-30,45,-60]分钟；变化活动前60分钟告知。D采用稳定参考条件；源在家/通勤限制优先。",
+      "title": "日程变化"
+    },
+    {
+      "basis": "benchmark_design",
+      "id": "L04",
+      "implementation": "_engine/v5/activity_model.build_services",
+      "limits": "这些具体钟点、时长及年龄阈值是可审计的模板参数，不是跨文化规范或医疗结论。",
+      "references": [],
+      "rule": "参考早餐不晚于07:30、午餐12:30附近、晚餐18:00以后随返家调整；优先在无交通冲突位置安排；默认洗浴10分钟，低于6岁15分钟并配协助；逐人检查非重叠。",
+      "title": "餐食和洗浴"
+    },
+    {
+      "basis": "source_anchor_plus_benchmark_completion",
+      "id": "L05",
+      "implementation": "_engine/v5/activity_model.schooling_and_care/refresh_supervision/accompany_school_runs",
+      "limits": "照护阈值/参考学校时间/外部服务是实验支持条件；不证明本地服务真实可获得。",
+      "references": [],
+      "rule": "尊重调查照护/就学信息；幼儿居家照护、接送和前后衔接有显式负责人；不能同时出现在相斥活动。必要时显式记录外部照护或拒绝候选。",
+      "title": "照护和学校衔接"
+    },
+    {
+      "basis": "benchmark_design",
+      "id": "L06",
+      "implementation": "_engine/v5/weekend_model.apply; _engine/v6/service_contracts.attach",
+      "limits": "周末模式比例是实验设计，非国家人口频率。",
+      "references": [
+        "RICHARDSON2008"
+      ],
+      "rule": "按源约束和可用成员安排无新增/短时/半日/分组外出；同时记录requested和realized层，不把未实现分层冒充成功。",
+      "title": "周末安排"
+    },
+    {
+      "basis": "explicit_user_requirement",
+      "id": "C01",
+      "implementation": "../required_controls.allowed_masks/validate_household; allocation.allocate",
+      "limits": "AC覆盖不等于当天需制冷，更不等于IDF已经匹配。",
+      "references": [],
+      "rule": "每户AC必须配备且纳入控制；总4—6类；F还必须EV；源没有AC时显式实验增配，不篡改原始拥有值。",
+      "title": "空调为必备控制项"
+    },
+    {
+      "basis": "benchmark_design",
+      "id": "C02",
+      "implementation": "allocation.allocate; pipeline.population",
+      "limits": "约束满足后才输出；不足或求解超时写失败，不暗中放宽。全6类户不独占细分覆盖。",
+      "references": [],
+      "rule": "生产配置按4/5/6类近似各三分之一；每国16合法模式、每角色每合法模式至少2、国家×角色每功能至少2；在非6类户中每角色各功能≥20、各二元组合≥10；C/D同组合。",
+      "title": "组合覆盖整数优化"
+    },
+    {
+      "basis": "literature_principle_plus_benchmark_service_contract",
+      "id": "T01",
+      "implementation": "_engine/v6/service_contracts.POLICY/attach",
+      "limits": "第一步只约定合同；尚无程序功率轨迹/实际任务；非每个覆盖槽都造一轮洗衣。",
+      "references": [
+        "PATERAKIS2015"
+      ],
+      "rule": "洗衣、烘干、洗碗按完整连续程序，不切成零碎开关；烘干绑定同一衣物洗衣前置；洗烘一体共享资源不并行；洗碗需实际积累餐具。",
+      "title": "完整洗衣/烘干/洗碗任务"
+    },
+    {
+      "basis": "energy_accounting_plus_benchmark_assumptions",
+      "id": "T02",
+      "implementation": "_engine/v4/legacy_components.complete; _engine/v6/service_contracts.attach",
+      "limits": "具体参数和连续策略为实验设定；智能充电可间断，不能称不连续充电物理错误；实际电能平衡待下一步验证。",
+      "references": [
+        "PATERAKIS2015"
+      ],
+      "rule": "需满足E=(目标SOC-到家SOC)×容量，T≥E/(功率×效率)，T≤停车窗口；参考容量50/60/75kWh、效率0.9、目标SOC0.8，缺失Level2功率3.6/7.2kW；默认一次连续充电，不每日重置一份SOC需求。",
+      "title": "EV停车与补能"
+    },
+    {
+      "basis": "role_operationalization_plus_service_contract",
+      "id": "T03",
+      "implementation": "_engine/v4/legacy_components.complete; _engine/v6/service_contracts.attach",
+      "limits": "不主张全部数值来自EB或为普遍舒适界限；存在合同不代表热工仿真通过。",
+      "references": [
+        "EB2026",
+        "PATERAKIS2015"
+      ],
+      "rule": "AC舒适参数为实验：B偏好24—25°C，其他24—26°C；A/B/C/D/E/F短调幅度1/0.5/1/2/0.5/1°C，26°C上界。储水热水以真实用水、初始状态、温度和安全约束实例化，不能为覆盖造用水。",
+      "title": "空调与热水服务"
+    },
+    {
+      "basis": "engineering_acceptance",
+      "id": "A01",
+      "implementation": "pipeline.generate/verify; _engine/v8/audit_v8.check_case",
+      "limits": "不要求不同求解器版本重新解MILP得到相同最优解；也不证明人类认可或全球代表性。",
+      "references": [],
+      "rule": "每户源/角色/一周/控制/服务审计，加整批配额、去重、覆盖、配对检查；冻结池SHA、代码SHA、配置、配额矩阵、成员基线和控制分配；新进程重放最终JSONL逐字节比较。",
+      "title": "验收和复现"
+    }
+  ],
+  "schema": "eb.household.rules.v1"
+}

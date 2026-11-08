@@ -1,0 +1,12 @@
+{
+  "files": {
+    "CRECS2012": "/authorized/CRECS2012.dta",
+    "ECA2025": "/authorized/eca_jun2025_data.xlsx",
+    "ENABLE_EU": "/authorized/enable.sav",
+    "ENASIC2022": "/authorized/enasic.zip",
+    "ENIGH2024_hogares": "/authorized/hogares.zip",
+    "ENIGH2024_viviendas": "/authorized/viviendas.zip",
+    "IRES2020": "/authorized/ires-data.tab",
+    "RECS2020_v7": "/authorized/recs2020_public_v7.csv"
+  }
+}

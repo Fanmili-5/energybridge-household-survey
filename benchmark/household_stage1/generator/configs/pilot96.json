@@ -1,0 +1,27 @@
+{
+  "all_country_roles": true,
+  "countries": [
+    "CN",
+    "US",
+    "GB",
+    "ES",
+    "IN",
+    "MX",
+    "AU",
+    "DE"
+  ],
+  "coverage": {
+    "cell_function_minimum": 0,
+    "country_all_masks": false,
+    "nonfull_function_minimum": 0,
+    "nonfull_pair_minimum": 0,
+    "role_minimum_pattern_count": 0
+  },
+  "households": 96,
+  "pair_CD": true,
+  "profile_alternatives": 4,
+  "raw_source_audit_required": true,
+  "scope": "small diagnostic example; not full production pattern coverage",
+  "seed": "public-reuse-pilot-v1",
+  "solver_time_limit_seconds": 55
+}
