@@ -103,4 +103,4 @@ node benchmark/project/verify_display.js benchmark/project/examples/questionnair
 
 ## 家庭第一步的可复用算法
 
-八国V9输入之外，现提供独立的[生成器与算法规则](../benchmark/household_stage1/generator/README.md)：在真实源池中按国家和EB实验角色配额选唯一源户，补参考周，再以整数约束分配4—6类控制（空调必选），经源/生活/服务/覆盖审计后冻结。角色和具体日程的文献边界见[证据映射](../benchmark/household_stage1/generator/EVIDENCE_MAP.md)。新批次不会自动替换V9或既有线上50户，家庭输入通过也不代表A/B或物理通过。
+八国V9输入之外，现提供独立的[生成器与算法规则](../benchmark/household_stage1/generator/README.md)：在真实源池中按国家和EB调查的六类角色比例选取唯一源户，生成参考周，再以整数约束分配4—6类控制（空调必选），经源/生活/服务/覆盖审计后冻结。角色、比例和生活安排的逐步依据见[生成依据表](../benchmark/household_stage1/generator/EVIDENCE_MAP.md)。新批次不会自动替换V9或既有线上50户，家庭输入通过也不代表A/B或物理通过。

@@ -14,7 +14,7 @@
 | A/B策略 | 从生活需求生成A，围绕固定VPP生成单设备/联合B，覆盖取舍并保留长尾 | [ab_generation](benchmark/ab_generation/) |
 | 住房与仿真 | 匹配参考住房、装配设备、执行同世界A/B并审计后果 | [housing_simulation](benchmark/housing_simulation/) |
 
-完整方法、来源、人工设定与验证边界见[方法说明](docs/METHOD.md)。[project](benchmark/project/)负责资料连接与UI91适配，[collector](benchmark/collector/)负责版本绑定、分户、回答与恢复。
+完整方法、来源、规则参数与验收结果见[方法说明](docs/METHOD.md)。[project](benchmark/project/)负责资料连接与UI91适配，[collector](benchmark/collector/)负责版本绑定、分户、回答与恢复。
 
 ## 当前版本
 
@@ -26,7 +26,7 @@
 
 [可复用生成算法与规则](benchmark/household_stage1/generator/README.md) · [数据来源与实际方法](benchmark/household_stage1/README.md) · [冻结批次摘要](benchmark/household_stage1/CURRENT.json) · [验收证据](benchmark/household_stage1/VALIDATION.json)
 
-中国、美国、英国、西班牙、印度、墨西哥、澳大利亚、德国各125户。真实调查约束家庭背景，EB定义角色态度，规则补齐参考生活，整数规划分配电器组合。**空调每户必备且必控**，每户共4—6类；原调查未确认或没有的设备明确标成实验增配。家庭输入验收不等于10000道A/B题、物理后果或真人标签已完成，也不改变既有50户线上资料。
+中国、美国、英国、西班牙、印度、墨西哥、澳大利亚、德国各125户。家庭背景由真实调查提供，角色态度沿用EB定义，六类配额按EB人类角色扮演调查样本比例分配；结合活动与服务规则生成生活安排，以整数规划分配电器组合。**空调每户必备且必控**，每户共4—6类。生成代码、逐步依据、规则参数、验收证据及扩量入口均已打包，家庭生成第一步通过，可用于后续benchmark构造。正式V9与既有50户线上资料分别管理。
 
 ## 当前生成方法 v2.11（研究版本）
 
