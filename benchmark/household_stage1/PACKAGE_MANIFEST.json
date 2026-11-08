@@ -1,0 +1,16 @@
+{
+  "EP_runs": 0,
+  "contains_individual_survey_records": false,
+  "files": {
+    "COHORT_POLICY.json": "5b4f01970bb1342b34b08528e2eb18119a9333646ca8a3b5e20935e61e10afe6",
+    "CURRENT.json": "d0109ac264237c3ea5ec5e6222488efa71cbcc2a1e2f37a6f5f7e8ee281cf847",
+    "README.md": "9c60aff7d4013b74be84f90a2dd1b7c60db32b5a8dce0b65eb7d115726d21077",
+    "SOURCES.json": "93cc29e6fbb76eda7ab5079fb99491b477fd1e00f3c3c9945de4e79a8a44a162",
+    "VALIDATION.json": "f52fa1bdf2c7039e7b2ae00a3d0094e37d2c3dde05fcae34765e3527852c740d",
+    "__init__.py": "3377adcf37e29667955a1631ee6a8e780c56f97bff381ae049a294f4f6413c19",
+    "required_controls.py": "a627ab8389dcc1771310951834eae2bec0cb9710172f1e759a4d53528632e1c8",
+    "test_required_controls.py": "61ef48f8a6b5a1c198e989c0b2ea8073242e72a55ab6e94345497379b4a5d29e",
+    "verify_publication.py": "f64871597ae61dfff20770db5e0a67794ef3b8e6d7b5ef3ffb0a574b641a34ff"
+  },
+  "schema": "eb.household_stage1.public.v1"
+}

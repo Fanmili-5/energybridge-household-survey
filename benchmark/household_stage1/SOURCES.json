@@ -1,0 +1,98 @@
+{
+  "China_source_file_origin": "project-provided frozen CRECS2012.dta; public site documents survey, not a claim that this exact file was downloaded there",
+  "ENABLE_2019_is_release_not_interview_year": true,
+  "additional_housing_donor": {
+    "dataset": "ENIGH2024",
+    "not_same_household_as_ENASIC": true,
+    "url": "https://www.inegi.org.mx/programas/enigh/nc/2024/default.html"
+  },
+  "candidate_counts_are_filtered_not_original_sample_sizes": true,
+  "candidate_pool_not_all_role_eligible": true,
+  "national_survey_weights_not_used": true,
+  "raw_individual_records_redistributed": false,
+  "raw_source_sha256_by_filename": {
+    "CRECS2012.dta": "4889122eef03a639993358c4c74a019d2856e767d3fc044cd90135beba5ddcff",
+    "eca_jun2025_data.xlsx": "ceb26da8c07a06983254dc1d19a1d21f119fd9d9dcfe76730e0a141f3a3c3a07",
+    "enable.sav": "9e9d466dd932f79db63dde742a823ab84025e24dc69abd90915f12cc53e15aff",
+    "enasic.zip": "8a5e8c5ed2dcda6e25dfe2dd630c0ac7273e0736e7b99662a15a4ef68c3ab36e",
+    "hogares.zip": "8f8eb3a74eff8faad5fe5bcc3d6938ba3edf51abf9f22d2ab9c4a1f20bd85218",
+    "ires-data.tab": "9e305d8361afbbb8f5cf7513e736e1fb82d477988c0d9e4dfd5d00f67da556f6",
+    "recs2020_public_v7.csv": "8d5f6d3120d2cbc2535151c7d455e7a536ca9768f773e15edd45932ec38b3592",
+    "viviendas.zip": "ac1a56ed6e23b9feec952a28cb757fc0baa9a06fa303579996db9156553758cf"
+  },
+  "source_access_and_redistribution_follow_original_terms": true,
+  "sources": [
+    {
+      "candidate_records": 505,
+      "country": "CN",
+      "dataset": "CRECS2012",
+      "selected_households": 125,
+      "title": "CRECS 2012 中国家庭能源消费调查",
+      "url": "https://crecs.ruc.edu.cn/jj/gyCRECS/index.htm",
+      "used_fields_and_limits": "逐人成员、亲属、出生年、就业、面积档、设备和通常在家/居家工作人数"
+    },
+    {
+      "candidate_records": 14404,
+      "country": "US",
+      "dataset": "RECS2020_v7",
+      "selected_households": 125,
+      "title": "EIA Residential Energy Consumption Survey 2020 v7",
+      "url": "https://www.eia.gov/consumption/residential/data/2020/index.php?view=microdata",
+      "used_fields_and_limits": "年龄人数、受访者、住房、设备、工作日在家天数；源调查插补状态保留"
+    },
+    {
+      "candidate_records": 750,
+      "country": "GB",
+      "dataset": "ENABLE_EU",
+      "selected_households": 125,
+      "title": "ENABLE.EU 1.0, released 2019-10-31",
+      "url": "https://zenodo.org/records/3523916",
+      "used_fields_and_limits": "性别年龄组人数、受访者出生年/就业、住房和设备；在家字段未确认"
+    },
+    {
+      "candidate_records": 615,
+      "country": "ES",
+      "dataset": "ENABLE_EU",
+      "selected_households": 125,
+      "title": "ENABLE.EU 1.0, released 2019-10-31",
+      "url": "https://zenodo.org/records/3523916",
+      "used_fields_and_limits": "同体系家庭字段；C4G是个人供暖语境而非整户天数"
+    },
+    {
+      "candidate_records": 539,
+      "country": "DE",
+      "dataset": "ENABLE_EU",
+      "selected_households": 125,
+      "title": "ENABLE.EU 1.0, released 2019-10-31",
+      "url": "https://zenodo.org/records/3523916",
+      "used_fields_and_limits": "同体系家庭字段；个人供暖语境在家约束"
+    },
+    {
+      "candidate_records": 291,
+      "country": "IN",
+      "dataset": "IRES2020",
+      "selected_households": 125,
+      "title": "India Residential Energy Survey 2020",
+      "url": "https://www.ceew.in/sites/default/files/CEEW-IRES-Design-and-data-quality-4Oct20.pdf",
+      "used_fields_and_limits": "年龄组、学生人数、设备、每周洗衣机使用次数和可用热水容量"
+    },
+    {
+      "candidate_records": 543,
+      "country": "MX",
+      "dataset": "ENASIC2022",
+      "selected_households": 125,
+      "title": "INEGI ENASIC 2022",
+      "url": "https://www.inegi.org.mx/programas/enasic/2022/default.html",
+      "used_fields_and_limits": "逐人成员年龄/就业/照护/工作量；住房参考另用ENIGH2024跨户匹配"
+    },
+    {
+      "candidate_records": 1000,
+      "country": "AU",
+      "dataset": "ECA2025",
+      "selected_households": 125,
+      "title": "Consumer Energy Report Card, June2025 labelled raw workbook",
+      "url": "https://energyconsumersaustralia.com.au/our-work/surveys/energy-consumer-survey-data",
+      "used_fields_and_limits": "成人儿童、就业、按日在家/WFH、设备与停车；功能使用不等于产权"
+    }
+  ]
+}

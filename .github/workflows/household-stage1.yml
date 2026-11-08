@@ -1,0 +1,23 @@
+name: Household stage-one AC contract
+on:
+  push:
+    paths:
+      - 'benchmark/household_stage1/**'
+      - '.github/workflows/household-stage1.yml'
+  pull_request:
+    paths:
+      - 'benchmark/household_stage1/**'
+      - '.github/workflows/household-stage1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -B -m benchmark.household_stage1.verify_publication
+      - run: python -B -m unittest benchmark.household_stage1.test_required_controls -v

@@ -1,0 +1,95 @@
+{
+  "EB_role_proportions_are_experimental_not_national_prevalence": true,
+  "actual_need_required_before_instantiating_blueprint": true,
+  "all16_AC_compatible_masks_per_country": true,
+  "controlled_functions": [
+    "AC",
+    "WM",
+    "DR",
+    "DW",
+    "WH",
+    "EV"
+  ],
+  "country_role_quotas": {
+    "AU": {
+      "A": 21,
+      "B": 24,
+      "C": 16,
+      "D": 19,
+      "E": 20,
+      "F": 25
+    },
+    "CN": {
+      "A": 21,
+      "B": 25,
+      "C": 15,
+      "D": 19,
+      "E": 20,
+      "F": 25
+    },
+    "DE": {
+      "A": 21,
+      "B": 24,
+      "C": 16,
+      "D": 19,
+      "E": 19,
+      "F": 26
+    },
+    "ES": {
+      "A": 20,
+      "B": 25,
+      "C": 16,
+      "D": 19,
+      "E": 20,
+      "F": 25
+    },
+    "GB": {
+      "A": 21,
+      "B": 25,
+      "C": 15,
+      "D": 19,
+      "E": 20,
+      "F": 25
+    },
+    "IN": {
+      "A": 21,
+      "B": 25,
+      "C": 15,
+      "D": 19,
+      "E": 19,
+      "F": 26
+    },
+    "MX": {
+      "A": 20,
+      "B": 25,
+      "C": 16,
+      "D": 19,
+      "E": 19,
+      "F": 26
+    },
+    "US": {
+      "A": 21,
+      "B": 25,
+      "C": 16,
+      "D": 18,
+      "E": 19,
+      "F": 26
+    }
+  },
+  "global_role_counts": {
+    "A": 166,
+    "B": 198,
+    "C": 125,
+    "D": 151,
+    "E": 156,
+    "F": 204
+  },
+  "maximum_control_functions": 6,
+  "minimum_control_functions": 4,
+  "required_control_functions": [
+    "AC"
+  ],
+  "role_status": "benchmark_assigned_from_EB_role_definition",
+  "source_device_absence_or_unknown_not_relabelled_observed": true,
+  "source_household_role_member_dwelling_calendar_frozen": true
+}

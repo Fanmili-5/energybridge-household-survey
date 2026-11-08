@@ -14,6 +14,8 @@
 
 ### 第一条：家庭与设备生成
 
+**当前八国家庭输入批次为V9**，实际来源、选户算法、规则补全和组合分配见[家庭第一步](../benchmark/household_stage1/README.md)，配额与验收见[CURRENT](../benchmark/household_stage1/CURRENT.json)。八国各125户、空调每户必备且必控、每户共4—6类。调查事实、源插补、跨户匹配、实验角色/作息和设备增配分别标记；1000户输入已验收，IDF、A/B和真人验证未由此完成。以下原有family_generation描述对应公开合成画像及其接口，不把其Copula类内画像模式冒称本批源家庭选择算法。
+
 - **输入**：完整联合家庭参考记录或声明的合成情境，成员关系、住房条件、生活输入，以及设备使用权和操作权限。
 - **依据**：[六类方法与外部问卷证据](../benchmark/household_archetypes/README.md)、[家庭来源登记](../benchmark/family_generation/SOURCES.json)。EB六类是预定义实验条件；外部调查支持相关维度及部分组合，不证明总体六类份额。
 - **规则**：整体抽取家庭记录，保持成员、年龄和关系一致；显式装配共享住户、床位、设备与权限，再连接住房和生活A。实现见[core.py](../benchmark/family_generation/core.py)与[connect.py](../benchmark/family_generation/connect.py)。

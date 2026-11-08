@@ -19,3 +19,9 @@
 新家庭生成模块的新增代码、方法文档及声明的合成参考示例按其[模块MIT许可](benchmark/family_generation/LICENSE)发布；未重新许可EB、第三方调查、住房/仿真模块或受控家庭输入。公开参考池由本项目公开接口示例构造，来源逐项记录于[家庭模块SOURCES](benchmark/family_generation/SOURCES.json)。个体调查原件、真人答卷及凭据不在该模块发布范围。
 
 独立EnergyPlus24.1湿球数值修复的补丁、头文件、纯C++测试及适用边界见[修复说明](benchmark/project/numerical_repair/v24_1/README.md)，沿用EnergyPlus已有BSD许可及其声明。三份新天气仅记录公开下载来源与哈希，不据此重新许可第三方数据；ISD/ERA5/TMYx的来源与典型年边界单列在[生产修复方法](benchmark/project/PHYSICS_REPAIR_PRODUCTION.md)。
+
+## 八国调查支持的家庭输入（2026-11-08）
+
+本次接入CRECS2012、RECS2020 v7、ENABLE.EU 1.0（英国/西班牙/德国）、IRES2020、ENASIC2022、ECA Consumer Energy Report Card June2025；墨西哥住房另用ENIGH2024统计匹配。调查链接、实际取用范围和原件SHA-256见[来源目录](benchmark/household_stage1/SOURCES.json)。中国原件为项目已有的CRECS2012文件，调查官网链接不代表此特定文件的下载凭据。ENABLE.EU的2019为发布年，不冒称访问年。这里的ECA June2025是源家庭输入，区别于此前六类外部证据中的June2026调查。
+
+本次公开代码契约、方法、文件哈希和无身份聚合证据；不再分发调查原件、源户键、逐户家庭卡、完整仿真或真人答卷。各来源的使用和再分发遵守原条款，不能从“公开可访问”推断统一许可。源插补、跨户匹配和实验增配不冒称同户调查事实。新代码不为第三方数据重新授予许可。

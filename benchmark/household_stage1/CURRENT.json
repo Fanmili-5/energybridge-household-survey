@@ -1,0 +1,46 @@
+{
+  "AC_controlled_households": 1000,
+  "AC_present_households": 1000,
+  "AC_reference_installations": 311,
+  "actual_AB_question_rows": 0,
+  "actual_human_answers": 0,
+  "actual_physical_results": 0,
+  "allowed_control_masks": 16,
+  "control_cardinalities": {
+    "4": 333,
+    "5": 333,
+    "6": 334
+  },
+  "country_counts": {
+    "AU": 125,
+    "CN": 125,
+    "DE": 125,
+    "ES": 125,
+    "GB": 125,
+    "IN": 125,
+    "MX": 125,
+    "US": 125
+  },
+  "feasible_binary_pair_states_per_country": 50,
+  "first_step_complete": true,
+  "households": 1000,
+  "manifest_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+  "original_source_households_roles_members_dwelling_calendar_unchanged": true,
+  "previous_v8_manifest_sha256": "31a3c39bd588b95d09066938d3cf9dfbf0088b181d01f65550dfa85b920599e6",
+  "question_blueprint_slots": 10000,
+  "raw_records_published": false,
+  "release_id": "eb-household-stage1-20261108-v9-ac-required",
+  "required_control_functions": [
+    "AC"
+  ],
+  "role_counts": {
+    "A": 166,
+    "B": 198,
+    "C": 125,
+    "D": 151,
+    "E": 156,
+    "F": 204
+  },
+  "scope": "household input only; physical, A/B, and human stages separately pending",
+  "status": "frozen_household_input_pass"
+}

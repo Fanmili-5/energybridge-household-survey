@@ -4,6 +4,7 @@
 
 | 模块 | 职责 |
 |---|---|
+| [household_stage1](household_stage1/) | 八国调查支持的1000户第一步，空调每户必备且必控；公开方法、契约及聚合验收 |
 | [family_generation](family_generation/) | 生成家庭、设备和权限，并连接住房与生活A |
 | [household_archetypes](household_archetypes/) | 六类实验角色的来源、证据与拟议配额 |
 | [ab_generation](ab_generation/) | 生活A、设备机会、B候选、联合调整与十天选题 |

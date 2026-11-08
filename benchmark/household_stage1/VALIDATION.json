@@ -1,0 +1,18 @@
+{
+  "AC_controlled": 1000,
+  "AC_present": 1000,
+  "actual_AB_question_rows": 0,
+  "actual_human_answers": 0,
+  "actual_physical_results": 0,
+  "allowed_masks_per_country": 16,
+  "faults_attempted": 40,
+  "faults_detected": 40,
+  "feasible_binary_pair_states_per_country": 50,
+  "final_projection_replay_byte_identical": true,
+  "independent_cases_checked": 1000,
+  "manifest_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+  "raw_sources_reread": true,
+  "selected_cohort_byte_identical_to_v8": true,
+  "source_households_roles_members_dwelling_calendar_unchanged": true,
+  "status": "passed"
+}
