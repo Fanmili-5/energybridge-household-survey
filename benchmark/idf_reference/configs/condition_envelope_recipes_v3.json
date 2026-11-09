@@ -1,0 +1,46 @@
+{
+  "public_recipe_not_country_stock_or_current_code": true,
+  "recipes": [
+    {
+      "id": "England_historical_roof_design",
+      "source_pack": {
+        "path": "reports/multicountry_extension_20261108/GB/ENVELOPE_PACK.json",
+        "sha256": "fdabfb1b0d4293352f67c992044e1df4d1cb84eee683816d813b981a7e9ba9c6"
+      },
+      "source_roof_zone": "attic - unvented"
+    },
+    {
+      "id": "Mexico_historical_roof_design",
+      "source_pack": {
+        "path": "reports/multicountry_extension_20261108/MX/ENVELOPE_PACK.json",
+        "sha256": "8975ac9dac8eabdcad26794fb481f74225f884a7d268cb90eb99b68e676f8129"
+      },
+      "source_roof_zone": "attic - unvented"
+    },
+    {
+      "id": "India_historical_roof_design",
+      "source_pack": {
+        "path": "reports/multicountry_envelope_review_20261108/IN_Mumbai_controlled_roof/ENVELOPE_PACK.json",
+        "sha256": "a709f841ece809917ade04ee68689c8b6db248818a5ceb4f311415f2f594bb91"
+      },
+      "source_roof_zone": "attic - unvented"
+    },
+    {
+      "adapter": "complete_reference_constructions_v1",
+      "country": "CN",
+      "id": "CN_SETA_A1_complete_reference",
+      "source_pack": {
+        "path": "reports/regional_envelope_correction_20261109/reference_material_libraries/A1/LIBRARY.json",
+        "sha256": "e1c513acd49d16cc434178ab34b1c24324f9b83103807bdb1edd97f9fc043976"
+      },
+      "supported_vertical_contexts": [
+        "slab_flat_roof",
+        "bottom",
+        "middle",
+        "top_flat_roof"
+      ]
+    }
+  ],
+  "schema": "national_idf.condition_envelope_recipe_catalog.v1",
+  "unknown_materials_inferred_from_U": false
+}

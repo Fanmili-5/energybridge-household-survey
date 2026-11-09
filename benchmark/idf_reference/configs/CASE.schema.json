@@ -1,0 +1,355 @@
+{
+  "$id": "urn:national-idf:case:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "case_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,159}$",
+      "type": "string"
+    },
+    "controls": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {},
+        "cooling_C": {},
+        "daily_overrides": {},
+        "dated_overrides": {},
+        "ev_daily_windows": {},
+        "ev_target_SOC": {},
+        "ev_window_overrides": {},
+        "heating_C": {},
+        "hvac_available": {},
+        "program_start_overrides": {},
+        "program_starts_daily": {},
+        "tank_target_C": {}
+      },
+      "required": [
+        "basis",
+        "heating_C",
+        "cooling_C",
+        "hvac_available",
+        "daily_overrides",
+        "tank_target_C",
+        "ev_target_SOC"
+      ],
+      "type": "object"
+    },
+    "design": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {},
+        "cooling_C": {},
+        "heating_C": {},
+        "lighting_W_m2": {},
+        "margin": {},
+        "max_units_per_zone": {},
+        "misc_W_m2": {},
+        "people_per_m2": {
+          "maximum": 0.2,
+          "minimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "basis",
+        "heating_C",
+        "cooling_C",
+        "margin",
+        "max_units_per_zone"
+      ],
+      "type": "object"
+    },
+    "environment": {
+      "additionalProperties": false,
+      "properties": {
+        "airflow_model": {
+          "enum": [
+            "prescribed_infiltration",
+            "pressure_network"
+          ]
+        },
+        "area_basis": {
+          "const": "source_thermal_floor_area"
+        },
+        "area_m2": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "devices": {
+          "additionalProperties": false,
+          "properties": {
+            "air_conditioner": {
+              "additionalProperties": false,
+              "properties": {
+                "control": {},
+                "evidence_class": {},
+                "profile_id": {},
+                "room_ids": {},
+                "supplemental_heat_W": {},
+                "supplemental_heat_source": {}
+              },
+              "type": "object"
+            },
+            "dishwasher": {
+              "additionalProperties": false,
+              "properties": {
+                "evidence_class": {},
+                "internal_water_heating": {},
+                "latent_fraction": {},
+                "lost_fraction": {},
+                "phases": {},
+                "radiant_fraction": {},
+                "room_id": {},
+                "water_connection": {}
+              },
+              "type": "object"
+            },
+            "dryer": {
+              "additionalProperties": false,
+              "properties": {
+                "evidence_class": {},
+                "exhaust_flow_m3_s": {},
+                "fan_input_W": {},
+                "internal_water_heating": {},
+                "latent_fraction": {},
+                "lost_fraction": {},
+                "phases": {},
+                "phases_exclude_exhaust_fan": {},
+                "radiant_fraction": {},
+                "room_id": {},
+                "technology": {},
+                "water_connection": {}
+              },
+              "type": "object"
+            },
+            "ev": {
+              "additionalProperties": false,
+              "properties": {
+                "capacity_kWh": {},
+                "charger_kW": {},
+                "efficiency": {},
+                "evidence_class": {},
+                "initial_SOC": {},
+                "meter_scope": {},
+                "minimum_SOC": {},
+                "room_id": {}
+              },
+              "type": "object"
+            },
+            "washer": {
+              "additionalProperties": false,
+              "properties": {
+                "evidence_class": {},
+                "internal_water_heating": {},
+                "latent_fraction": {},
+                "lost_fraction": {},
+                "phases": {},
+                "radiant_fraction": {},
+                "room_id": {},
+                "water_connection": {}
+              },
+              "type": "object"
+            },
+            "water_heater": {
+              "additionalProperties": false,
+              "properties": {
+                "efficiency": {},
+                "evidence_class": {},
+                "heater_W": {},
+                "height_m": {},
+                "minimum_delivery_C": {},
+                "mixed_target_C": {},
+                "nodes": {},
+                "room_id": {},
+                "skin_loss_W_m2K": {},
+                "target_C": {},
+                "volume_m3": {}
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "air_conditioner",
+            "washer",
+            "dryer",
+            "dishwasher",
+            "water_heater",
+            "ev"
+          ],
+          "type": "object"
+        },
+        "floor_position": {},
+        "ground_model": {},
+        "neighbors": {},
+        "outdoor_co2_ppm": {
+          "maximum": 2000,
+          "minimum": 250,
+          "type": "number"
+        },
+        "parameter_stress": {},
+        "prototype_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "reference_ach": {
+          "maximum": 5,
+          "minimum": 0,
+          "type": "number"
+        },
+        "site": {
+          "properties": {
+            "elevation_m": {
+              "maximum": 9000,
+              "minimum": -500,
+              "type": "number"
+            },
+            "latitude": {
+              "maximum": 90,
+              "minimum": -90,
+              "type": "number"
+            },
+            "longitude": {
+              "maximum": 180,
+              "minimum": -180,
+              "type": "number"
+            },
+            "timezone": {
+              "maximum": 14,
+              "minimum": -12,
+              "type": "number"
+            }
+          },
+          "required": [
+            "province",
+            "city",
+            "latitude",
+            "longitude",
+            "elevation_m",
+            "timezone",
+            "terrain_context",
+            "location_basis"
+          ],
+          "type": "object"
+        },
+        "supply_capacity_W": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        "supply_capacity_is_design": {},
+        "unit_zones": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "weather_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "xy_scale": {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        }
+      },
+      "required": [
+        "prototype_id",
+        "weather_id",
+        "site",
+        "xy_scale",
+        "unit_zones",
+        "devices",
+        "neighbors",
+        "reference_ach",
+        "airflow_model",
+        "supply_capacity_W"
+      ],
+      "type": "object"
+    },
+    "life": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {},
+        "ev_daily": {},
+        "lighting_W_m2": {},
+        "maximum_persons": {},
+        "misc_W_m2": {},
+        "mixed_water_daily": {},
+        "mixed_water_overrides": {},
+        "occupancy": {},
+        "people_values_basis": {},
+        "programs_daily": {},
+        "services_daily": {}
+      },
+      "required": [
+        "basis",
+        "maximum_persons",
+        "occupancy",
+        "lighting_W_m2",
+        "misc_W_m2",
+        "mixed_water_daily",
+        "ev_daily"
+      ],
+      "type": "object"
+    },
+    "run": {
+      "properties": {
+        "end_date": {
+          "format": "date",
+          "type": "string"
+        },
+        "reporting": {
+          "enum": [
+            "Hourly",
+            "Timestep"
+          ]
+        },
+        "solver_step_min": {
+          "enum": [
+            1,
+            2,
+            5,
+            10,
+            15
+          ]
+        },
+        "start_date": {
+          "format": "date",
+          "type": "string"
+        },
+        "warmup_max_days": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "warmup_min_days": {
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start_date",
+        "end_date",
+        "solver_step_min",
+        "reporting",
+        "warmup_min_days",
+        "warmup_max_days"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "national_idf.case.v1"
+    }
+  },
+  "required": [
+    "schema",
+    "case_id",
+    "environment",
+    "life",
+    "controls",
+    "run",
+    "design"
+  ],
+  "type": "object"
+}

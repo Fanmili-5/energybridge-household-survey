@@ -1,0 +1,15 @@
+{
+  "basis": "Pinned HPXML Geometry.apply_windows/apply_doors create slightly larger parent surfaces; calculate_subsurface_parent_buffer sets 0.005 m2 net area. Constructions.apply_adiabatic_construction gives R99 reference resistance. Keep these software buffers, do not treat them as ordinary building walls.",
+  "net_parent_area_m2": 0.005,
+  "schema": "national_idf.public_builder_subsurface_proxy.v1",
+  "source_files": {
+    "constructions.rb": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/constructions.rb",
+      "sha256": "56049bd86459d43940cc0c72fca92d7a141c0d023b188c0f9b96c2f4d01af815"
+    },
+    "geometry.rb": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/geometry.rb",
+      "sha256": "b213d7d92df80af67fdd7ff80b1e203c79cc24add762ece2cd2124686c93997c"
+    }
+  }
+}

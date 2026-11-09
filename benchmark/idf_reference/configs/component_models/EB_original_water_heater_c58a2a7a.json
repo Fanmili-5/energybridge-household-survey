@@ -1,0 +1,63 @@
+{
+  "evidence_kind": "public_experimental_model",
+  "formal_admitted": false,
+  "household_specific_demands_may_be_unmet": true,
+  "id": "EB_c58a2a7a_120L_3kW_1node",
+  "installation_method": "national_idf.tank_reference.replace_complete_tank; only names, two control schedules, ambient-zone and use-side nodes are bound",
+  "not_a_measured_or_certified_product": true,
+  "not_a_source_of_household_routines": true,
+  "numerical_support": {
+    "annual_validation": false,
+    "location": "fixed Guangzhou test configuration",
+    "recovery_days": [
+      7,
+      14
+    ],
+    "seasons": [
+      "winter",
+      "summer",
+      "transition"
+    ],
+    "step_min": 2,
+    "warmup_min_days": [
+      14,
+      28
+    ]
+  },
+  "numerical_validation": {
+    "path": "reports/guangzhou_EB_original_tank_20261102/THREE_SEASON_RESULT.json",
+    "sha256": "7c081330c03ffc692b14adfb25b1805e1b0ef30f96dfd29bd89f0c6e3847061a"
+  },
+  "official_validation_engine": "25.2.0; EB 24.1 tank fields and defaults transferred without physical edits",
+  "physical_parameters": {
+    "heater_1_capacity": "3000",
+    "heater_1_deadband_temperature_difference": "4",
+    "heater_2_capacity": "0",
+    "maximum_temperature_limit": "65",
+    "number_of_nodes": "1",
+    "tank_height": "1.05",
+    "tank_volume": "0.12",
+    "uniform_skin_loss_coefficient_per_unit_area_to_ambient_temperature": "1.2",
+    "use_side_design_flow_rate": "0.000493808"
+  },
+  "publication_receipts": {
+    "path": "reports/eb_appliance_alignment_20261023/SOURCE_RECEIPTS.json",
+    "sha256": "68b16ef971bebb126ab389dc1d409709821cde3139f91ffb4851c72454118bb6"
+  },
+  "schema": "national_idf.public_reference_tank.v1",
+  "single_node_does_not_support_stratification_claims": true,
+  "source_commit": "c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0",
+  "source_model": {
+    "path": "data/source/eb_appliance_alignment_20261023/experiments/models/family_home/family_simple.idf",
+    "sha256": "5ae863fc41c2997540eb991b2c09976f5b5c3455793151070c52a1cf9b80a6d1"
+  },
+  "source_schema": {
+    "path": "data/source/unified_assembly_20261028/EnergyPlus_24_1.schema.epJSON",
+    "sha256": "d94276ce43d7673d752392f1d1fbc0f66884700ecbbba12d50bfa5f8c709bc72"
+  },
+  "source_tank_name": "Water Heater_Tank_unit1",
+  "tested_installation": {
+    "path": "reports/guangzhou_EB_original_tank_20261102/CONTROLLED_INSTALLATION.json",
+    "sha256": "a1e09bbebb06a36e27126f03c17d1b57e51e1db201ada5f3ad2641b6f86809bf"
+  }
+}

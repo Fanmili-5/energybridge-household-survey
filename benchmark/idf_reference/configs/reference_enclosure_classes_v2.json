@@ -1,0 +1,878 @@
+{
+  "classes": [
+    {
+      "country": "CN",
+      "housing_conditions": {
+        "attached_walls": [
+          "None"
+        ],
+        "kind": [
+          "detached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "CN_complete_reference_detached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": "CN_SETA_A1_complete_reference",
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/CN/PACKAGE.json",
+        "sha256": "43253f26ec8a1e4a333e5588f1544d4930b5e8bc5613dc61fdfbba359303e004"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "CN",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "attached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "CN_complete_reference_attached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": "CN_SETA_A1_complete_reference",
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/CN/PACKAGE.json",
+        "sha256": "43253f26ec8a1e4a333e5588f1544d4930b5e8bc5613dc61fdfbba359303e004"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "CN",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "apartment"
+        ],
+        "stories_above_grade": [
+          1
+        ],
+        "vertical_context": [
+          "bottom",
+          "middle",
+          "top_flat_roof"
+        ]
+      },
+      "id": "CN_complete_reference_apartment_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": "CN_SETA_A1_complete_reference",
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/CN/PACKAGE.json",
+        "sha256": "43253f26ec8a1e4a333e5588f1544d4930b5e8bc5613dc61fdfbba359303e004"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "US",
+      "housing_conditions": {
+        "attached_walls": [
+          "None"
+        ],
+        "kind": [
+          "detached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "US_complete_reference_detached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/US/PACKAGE.json",
+        "sha256": "de1cd7f0269c1dc62536456a49e6b30ee1ebc8a6294f18a4941422ff5fa4265b"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "US",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "attached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "US_complete_reference_attached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/US/PACKAGE.json",
+        "sha256": "de1cd7f0269c1dc62536456a49e6b30ee1ebc8a6294f18a4941422ff5fa4265b"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "US",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "apartment"
+        ],
+        "stories_above_grade": [
+          1
+        ],
+        "vertical_context": [
+          "bottom",
+          "middle",
+          "top_flat_roof"
+        ]
+      },
+      "id": "US_complete_reference_apartment_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/US/PACKAGE.json",
+        "sha256": "de1cd7f0269c1dc62536456a49e6b30ee1ebc8a6294f18a4941422ff5fa4265b"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "GB",
+      "housing_conditions": {
+        "attached_walls": [
+          "None"
+        ],
+        "kind": [
+          "detached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "GB_complete_reference_detached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/GB/PACKAGE.json",
+        "sha256": "934ff90d7a70b583265820d6dfe7a0b5e68d8dc11b4942677c57f0268a06dddf"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "GB",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "attached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "GB_complete_reference_attached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/GB/PACKAGE.json",
+        "sha256": "934ff90d7a70b583265820d6dfe7a0b5e68d8dc11b4942677c57f0268a06dddf"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "GB",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "apartment"
+        ],
+        "stories_above_grade": [
+          1
+        ],
+        "vertical_context": [
+          "bottom",
+          "middle",
+          "top_flat_roof"
+        ]
+      },
+      "id": "GB_complete_reference_apartment_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/GB/PACKAGE.json",
+        "sha256": "934ff90d7a70b583265820d6dfe7a0b5e68d8dc11b4942677c57f0268a06dddf"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "ES",
+      "housing_conditions": {
+        "attached_walls": [
+          "None"
+        ],
+        "kind": [
+          "detached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "ES_complete_reference_detached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/ES/PACKAGE.json",
+        "sha256": "eff9199f561e22edfea4737b45c21e7ab32a7bdf0836d06f2a70ac052e9a5bbd"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "ES",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "attached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "ES_complete_reference_attached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/ES/PACKAGE.json",
+        "sha256": "eff9199f561e22edfea4737b45c21e7ab32a7bdf0836d06f2a70ac052e9a5bbd"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "ES",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "apartment"
+        ],
+        "stories_above_grade": [
+          1
+        ],
+        "vertical_context": [
+          "bottom",
+          "middle",
+          "top_flat_roof"
+        ]
+      },
+      "id": "ES_complete_reference_apartment_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/ES/PACKAGE.json",
+        "sha256": "eff9199f561e22edfea4737b45c21e7ab32a7bdf0836d06f2a70ac052e9a5bbd"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "DE",
+      "housing_conditions": {
+        "attached_walls": [
+          "None"
+        ],
+        "kind": [
+          "detached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "DE_complete_reference_detached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/DE/PACKAGE.json",
+        "sha256": "ef819f65319f04bf6ed99619fc3f70e7e6f1835d2338f668ee90a3863ab9b1a7"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "DE",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "attached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "DE_complete_reference_attached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/DE/PACKAGE.json",
+        "sha256": "ef819f65319f04bf6ed99619fc3f70e7e6f1835d2338f668ee90a3863ab9b1a7"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "DE",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "apartment"
+        ],
+        "stories_above_grade": [
+          1
+        ],
+        "vertical_context": [
+          "bottom",
+          "middle",
+          "top_flat_roof"
+        ]
+      },
+      "id": "DE_complete_reference_apartment_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/DE/PACKAGE.json",
+        "sha256": "ef819f65319f04bf6ed99619fc3f70e7e6f1835d2338f668ee90a3863ab9b1a7"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "MX",
+      "housing_conditions": {
+        "attached_walls": [
+          "None"
+        ],
+        "kind": [
+          "detached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "MX_complete_reference_detached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/MX/PACKAGE.json",
+        "sha256": "4a0f79a50453c3fc6f97139ee4f76b973481050b37d6cd72cfcd450b7a8773d2"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "MX",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "attached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "MX_complete_reference_attached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/MX/PACKAGE.json",
+        "sha256": "4a0f79a50453c3fc6f97139ee4f76b973481050b37d6cd72cfcd450b7a8773d2"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "MX",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "apartment"
+        ],
+        "stories_above_grade": [
+          1
+        ],
+        "vertical_context": [
+          "bottom",
+          "middle",
+          "top_flat_roof"
+        ]
+      },
+      "id": "MX_complete_reference_apartment_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/MX/PACKAGE.json",
+        "sha256": "4a0f79a50453c3fc6f97139ee4f76b973481050b37d6cd72cfcd450b7a8773d2"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "IN",
+      "housing_conditions": {
+        "attached_walls": [
+          "None"
+        ],
+        "kind": [
+          "detached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "IN_complete_reference_detached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/IN/PACKAGE.json",
+        "sha256": "c16913a38beaf4ad59fddc2263f5eb44cad6bf7ce0f773d2563ad7dd6aab940d"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "IN",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "attached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "IN_complete_reference_attached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/IN/PACKAGE.json",
+        "sha256": "c16913a38beaf4ad59fddc2263f5eb44cad6bf7ce0f773d2563ad7dd6aab940d"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "IN",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "apartment"
+        ],
+        "stories_above_grade": [
+          1
+        ],
+        "vertical_context": [
+          "bottom",
+          "middle",
+          "top_flat_roof"
+        ]
+      },
+      "id": "IN_complete_reference_apartment_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/IN/PACKAGE.json",
+        "sha256": "c16913a38beaf4ad59fddc2263f5eb44cad6bf7ce0f773d2563ad7dd6aab940d"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "AU",
+      "housing_conditions": {
+        "attached_walls": [
+          "None"
+        ],
+        "kind": [
+          "detached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "AU_complete_reference_detached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/AU/PACKAGE.json",
+        "sha256": "c98e83c8a5022cd0457b728c00079e4c91324db6bfcdd30e0dbcc9983ef796ad"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "AU",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "attached"
+        ],
+        "stories_above_grade": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "vertical_context": [
+          "slab_flat_roof"
+        ]
+      },
+      "id": "AU_complete_reference_attached_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/AU/PACKAGE.json",
+        "sha256": "c98e83c8a5022cd0457b728c00079e4c91324db6bfcdd30e0dbcc9983ef796ad"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    },
+    {
+      "country": "AU",
+      "housing_conditions": {
+        "attached_walls": [
+          "1 Side: Left",
+          "2 Sides: Left, Right"
+        ],
+        "kind": [
+          "apartment"
+        ],
+        "stories_above_grade": [
+          1
+        ],
+        "vertical_context": [
+          "bottom",
+          "middle",
+          "top_flat_roof"
+        ]
+      },
+      "id": "AU_complete_reference_apartment_v1",
+      "measured_home_or_stock_claimed": false,
+      "recipe_catalog": {
+        "path": "configs/condition_envelope_recipes_v3.json",
+        "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+      },
+      "recipe_id": null,
+      "regional_package": {
+        "path": "reports/housing_region_coverage_20261109/packages/AU/PACKAGE.json",
+        "sha256": "c98e83c8a5022cd0457b728c00079e4c91324db6bfcdd30e0dbcc9983ef796ad"
+      },
+      "selection_basis": [
+        "Explicit shared controlled-reference class, not inferred stock or survey construction",
+        "Complete public construction algorithm with bound regional design profile;source boundaries retained",
+        "Area comes from declared reference input;new CASE still needs original native checks"
+      ]
+    }
+  ],
+  "schema": "national_idf.reference_enclosure_class_catalog.v1",
+  "selection_is_experimental_reference_not_household_fact": true
+}

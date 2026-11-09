@@ -1,0 +1,34 @@
+{
+  "derived_boundaries": {
+    "path": "reports/multicountry_envelope_review_20261108/IN_Mumbai_controlled_roof/HPXML_SITE_BOUNDARIES.json",
+    "sha256": "da92a75ebe58ee25a1018c70c38d4d0a80893afb1e4b87373e52d85f80519bca"
+  },
+  "design_conditions": {
+    "capacity_selected_from_local_design_load": false,
+    "ddy": {
+      "path": "data/source/multicountry_controlled_20261108/Mumbai_430030_TMYx_2009_2023/IND_MH_Mumbai-Shivaji.Intl.AP.430030_TMYx.2009-2023.ddy",
+      "sha256": "3f8e33adb937767dc890cbbadf92475d5667c9493a04ee72607533093393ffa9"
+    },
+    "reason": "Inherited reference size;local design load/domain not yet admitted"
+  },
+  "ground_basis": "Complete public Kiva soil and basement reference; unchanged source EPW algorithm for shallow temperatures,not measured local soil",
+  "id": "IN_BEE2018_Mumbai_controlled_detached_v1__site",
+  "schema": "national_idf.reference_site.v1",
+  "terrain_basis": "Complete published suburban reference exposure; airport EPW is explicit forcing,not survey-site equivalence",
+  "time_basis": "local_standard_time_no_DST",
+  "weather": {
+    "path": "data/source/multicountry_controlled_20261108/Mumbai_430030_TMYx_2009_2023/IND_MH_Mumbai-Shivaji.Intl.AP.430030_TMYx.2009-2023.epw",
+    "sha256": "8aa08093d331a43d9f0ed560ba73103398b1ea7773606f5a72a111cb5e15e77b"
+  },
+  "weather_identity": {
+    "city": "Mumbai-Shivaji.Intl.AP",
+    "country": "IND",
+    "elevation_m": 11.3,
+    "latitude": 19.089,
+    "longitude": 72.868,
+    "region": "MH",
+    "source_label": "SRC-TMYx",
+    "timezone": 5.5,
+    "wmo": "430030"
+  }
+}

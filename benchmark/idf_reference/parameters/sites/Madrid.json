@@ -1,0 +1,34 @@
+{
+  "derived_boundaries": {
+    "path": "reports/multicountry_idf_20261107/ES_HPXML_SITE_BOUNDARIES.json",
+    "sha256": "8c07aef25e3630471df510ec88ede83a8e2199a2c23fd641adc19806c3518913"
+  },
+  "design_conditions": {
+    "capacity_selected_from_local_design_load": false,
+    "ddy": {
+      "path": "data/source/multicountry_20261107/Madrid_082210_TMYx_2009_2023/ESP_MD_Madrid-Barajas-Suarez.AP.082210_TMYx.2009-2023.ddy",
+      "sha256": "d496735f2b3c0883595ac2cfc80e03743ee08f945c1c3bc2493ba65486fe03d4"
+    },
+    "reason": "Inherited published experimental heat-pump size; no automatic capacity-admission claim"
+  },
+  "ground_basis": "Published Kiva foundation and soil retained; shallow monthly temperatures recomputed by unchanged public HPXML algorithm. These are reference-model conditions, not measured local soil",
+  "id": "ES_source_algorithms_v1",
+  "schema": "national_idf.reference_site.v1",
+  "terrain_basis": "Published suburban exposure retained as explicit reference, not inferred survey terrain",
+  "time_basis": "local_standard_time_no_DST",
+  "weather": {
+    "path": "data/source/multicountry_20261107/Madrid_082210_TMYx_2009_2023/ESP_MD_Madrid-Barajas-Suarez.AP.082210_TMYx.2009-2023.epw",
+    "sha256": "2137be4961ebe634fe6f09f392ec3a320dfefcff34b4152c155334574bf8ba16"
+  },
+  "weather_identity": {
+    "city": "Madrid-Barajas-Suarez.AP",
+    "country": "ESP",
+    "elevation_m": 609.6,
+    "latitude": 40.467,
+    "longitude": -3.556,
+    "region": "MD",
+    "source_label": "SRC-TMYx",
+    "timezone": 1.0,
+    "wmo": "082210"
+  }
+}

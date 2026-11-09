@@ -1,0 +1,26 @@
+{
+  "design_conditions": {
+    "capacity_selected_from_local_design_load": false,
+    "reason": "New geometry must receive independent design/curve and numerical checks"
+  },
+  "ground_basis": "Complete public source foundation/soil reference;source weather algorithm for shallow ground,not locally measured ground",
+  "id": "Denver_TMY3_source_reference",
+  "schema": "national_idf.reference_site.v1",
+  "terrain_basis": "Complete published suburban reference;not an actual household site",
+  "time_basis": "local_standard_time_no_DST",
+  "weather": {
+    "path": "work/p1_hpxml_004ca3ce/weather/USA_CO_Denver.Intl.AP.725650_TMY3.epw",
+    "sha256": "6aacee75402057baefa50d14873d07b70e33c535d3aded200f4393bf2ae6077d"
+  },
+  "weather_identity": {
+    "city": "Denver Intl Ap",
+    "country": "USA",
+    "elevation_m": 1650.0,
+    "latitude": 39.83,
+    "longitude": -104.65,
+    "region": "CO",
+    "source_label": "TMY3",
+    "timezone": -7.0,
+    "wmo": "725650"
+  }
+}

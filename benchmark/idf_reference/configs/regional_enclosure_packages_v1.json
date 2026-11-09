@@ -1,0 +1,62 @@
+{
+  "new_households_do_not_supply_or_research_material_values": true,
+  "packages": [
+    {
+      "country": "CN",
+      "package": {
+        "path": "reports/housing_region_coverage_20261109/packages/CN/PACKAGE.json",
+        "sha256": "43253f26ec8a1e4a333e5588f1544d4930b5e8bc5613dc61fdfbba359303e004"
+      }
+    },
+    {
+      "country": "US",
+      "package": {
+        "path": "reports/housing_region_coverage_20261109/packages/US/PACKAGE.json",
+        "sha256": "de1cd7f0269c1dc62536456a49e6b30ee1ebc8a6294f18a4941422ff5fa4265b"
+      }
+    },
+    {
+      "country": "GB",
+      "package": {
+        "path": "reports/housing_region_coverage_20261109/packages/GB/PACKAGE.json",
+        "sha256": "934ff90d7a70b583265820d6dfe7a0b5e68d8dc11b4942677c57f0268a06dddf"
+      }
+    },
+    {
+      "country": "ES",
+      "package": {
+        "path": "reports/housing_region_coverage_20261109/packages/ES/PACKAGE.json",
+        "sha256": "eff9199f561e22edfea4737b45c21e7ab32a7bdf0836d06f2a70ac052e9a5bbd"
+      }
+    },
+    {
+      "country": "DE",
+      "package": {
+        "path": "reports/housing_region_coverage_20261109/packages/DE/PACKAGE.json",
+        "sha256": "ef819f65319f04bf6ed99619fc3f70e7e6f1835d2338f668ee90a3863ab9b1a7"
+      }
+    },
+    {
+      "country": "MX",
+      "package": {
+        "path": "reports/housing_region_coverage_20261109/packages/MX/PACKAGE.json",
+        "sha256": "4a0f79a50453c3fc6f97139ee4f76b973481050b37d6cd72cfcd450b7a8773d2"
+      }
+    },
+    {
+      "country": "IN",
+      "package": {
+        "path": "reports/housing_region_coverage_20261109/packages/IN/PACKAGE.json",
+        "sha256": "c16913a38beaf4ad59fddc2263f5eb44cad6bf7ce0f773d2563ad7dd6aab940d"
+      }
+    },
+    {
+      "country": "AU",
+      "package": {
+        "path": "reports/housing_region_coverage_20261109/packages/AU/PACKAGE.json",
+        "sha256": "c98e83c8a5022cd0457b728c00079e4c91324db6bfcdd30e0dbcc9983ef796ad"
+      }
+    }
+  ],
+  "schema": "national_idf.regional_reference_enclosure_catalog.v1"
+}

@@ -1,0 +1,262 @@
+{
+  "additional_reported_output": "mixed_water_delivery_profile with quantifiedresolution sensitivity;no personalbath success criterion inferred",
+  "arbitrary_country_dates_demands_or_materials_not_admitted": true,
+  "area": "Explicit reference conditioned-floor-area design input;officialconstructor feasibility andsource-exact geometry checks required;no continuousarea validation inferred frompoint tests",
+  "complete_regional_enclosure": "Eight controlled reference design packages;no whole-code,stock or all-input numerical admission",
+  "device_domain": {
+    "background": [
+      "washer",
+      "dryer",
+      "dishwasher",
+      "water_heater"
+    ],
+    "logical_shared": [
+      "washer",
+      "dryer"
+    ],
+    "optional_isolated": [
+      "washer",
+      "dryer",
+      "dishwasher",
+      "ev"
+    ],
+    "physical_count": [
+      4,
+      5,
+      6
+    ],
+    "required_physical": [
+      "air_conditioner",
+      "water_heater"
+    ]
+  },
+  "enclosure_classes": {
+    "path": "configs/reference_enclosure_classes_v2.json",
+    "sha256": "81df2c6c549599641ec1c495d46babffba965c83f32a75699b04c0fcef1c98a6"
+  },
+  "envelope_recipes": {
+    "path": "configs/condition_envelope_recipes_v3.json",
+    "sha256": "5d7f1985341b8300237a6a34c45f52fbad626a53a7ef50b18233a32f335429c2"
+  },
+  "experiment_input_frame": {
+    "path": "configs/reference_experiment_frame_v1.json",
+    "sha256": "b968a16b6356d30ff6fb512efbe0efffec4d3221e826744a363a2c1923c72745"
+  },
+  "explicit_source_occupancy_design": {
+    "path": "configs/condition_occupancy_v1.json",
+    "sha256": "176d29a23c7bf6a243041d7c53fcbb0f04f2d0d6b13d5254e2714fbcc5d4c19c"
+  },
+  "explicit_source_occupancy_design_is_donor_not_full_enduse_scaling": true,
+  "fixed_EB_people_capacity": {
+    "path": "configs/condition_people_capacity_v1.json",
+    "sha256": "6f1c29d4cfe96d2912cb45be43b14e522f1cd28c47e4e2d3724ec7d90df081c1"
+  },
+  "fixed_configuration_ID_whitelist_is_not_the_domain": true,
+  "household_generation_or_production_assignments_changed": false,
+  "housing_catalogs": {
+    "configs/condition_housing_linux_v3.json": {
+      "path": "configs/condition_housing_linux_v3.json",
+      "sha256": "b6e93e19d6e5c3091045188af76d1fccb09791b20df46faeafc27211a4c4ee82"
+    },
+    "configs/condition_housing_v3.json": {
+      "path": "configs/condition_housing_v3.json",
+      "sha256": "b010911d04c22d3befeed938e18f686a74fd14033dcb3b06ebf7702f83ce441c"
+    }
+  },
+  "housing_condition_families": {
+    "apartment": {
+      "attached_walls": [
+        "1 Side: Left",
+        "2 Sides: Left, Right"
+      ],
+      "explicit_reference_conditions_not_survey_reconstruction": true,
+      "stories_above_grade": [
+        1
+      ],
+      "unit_type_by_stories": {
+        "1": "Apartment Unit, 1 Story"
+      },
+      "vertical_contexts": {
+        "bottom": {
+          "geometry_attic_type": "Below Apartment",
+          "geometry_foundation_type": "Slab-on-Grade"
+        },
+        "middle": {
+          "geometry_attic_type": "Below Apartment",
+          "geometry_foundation_type": "Above Apartment"
+        },
+        "top": {
+          "geometry_foundation_type": "Above Apartment"
+        },
+        "top_flat_roof": {
+          "geometry_attic_type": "Flat Roof",
+          "geometry_foundation_type": "Above Apartment"
+        }
+      }
+    },
+    "attached": {
+      "attached_walls": [
+        "1 Side: Left",
+        "2 Sides: Left, Right"
+      ],
+      "explicit_reference_conditions_not_survey_reconstruction": true,
+      "stories_above_grade": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "unit_type_by_stories": {
+        "1": "Single-Family Attached, 1 Story",
+        "2": "Single-Family Attached, 2 Stories",
+        "3": "Single-Family Attached, 3 Stories",
+        "4": "Single-Family Attached, 4 Stories"
+      },
+      "vertical_contexts": {
+        "slab_flat_roof": {
+          "geometry_attic_type": "Flat Roof",
+          "geometry_foundation_type": "Slab-on-Grade"
+        },
+        "source_basement_attic": {}
+      }
+    },
+    "detached": {
+      "attached_walls": [
+        "None"
+      ],
+      "explicit_reference_conditions_not_survey_reconstruction": true,
+      "stories_above_grade": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "unit_type_by_stories": {
+        "1": "Single-Family Detached, 1 Story",
+        "2": "Single-Family Detached, 2 Stories",
+        "3": "Single-Family Detached, 3 Stories",
+        "4": "Single-Family Detached, 4 Stories"
+      },
+      "vertical_contexts": {
+        "slab_flat_roof": {
+          "geometry_attic_type": "Flat Roof",
+          "geometry_foundation_type": "Slab-on-Grade"
+        },
+        "source_basement_attic": {}
+      }
+    }
+  },
+  "new_households_may_reuse_packages_without_material_research_or_IDF_editing": true,
+  "new_occupancy_configuration_needs_own_native_quality": true,
+  "optional_water_input_normalization": {
+    "path": "configs/condition_water_input_v1.json",
+    "sha256": "6e1573afa545043eac48a1cdd2f09a04b10938376ecd6f7e4cea806a3121b3ce"
+  },
+  "outputs_with_original_numeric_acceptance": [
+    "whole_home_electricity",
+    "whole_home_temperature",
+    "device_resource_accounts",
+    "EV_energy_and_departure_state"
+  ],
+  "reference_calendar_policy": {
+    "path": "configs/reference_calendar_policy_v1.json",
+    "sha256": "76c70e3f04da4e0b588793845950d475cb90253a6da61df80daadf475be6ebca"
+  },
+  "reference_inputs": "OriginalCASE bounds from installedfixed fixture;unknown fieldsmust remainunknown;explicit publicreferencepolicy required for unobserved housingcontext",
+  "regional_enclosure_packages": {
+    "path": "configs/regional_enclosure_packages_v1.json",
+    "sha256": "c9b4325ce4eab91e1b4b15790dd516d2a9b7a41d2ea21d818fec0ed44b4ddf08"
+  },
+  "representation": "Explicit controlled reference;not nationalstock or surveyhome reconstruction",
+  "request_acceptance_predicate": [
+    "Complete bound public source andall declared changes replay exactly",
+    "Native geometry,enclosure layerR/C,defaults,weather andinstalled sourceequipment are accounted",
+    "OriginalEB tank,accounts,control andservice ports executed without hiddenheat",
+    "Own original1/2/5min,14/28warmup,7/14recovery comparisons determine accepted step",
+    "Own observedcurve domains andfixed/shared permissions pass"
+  ],
+  "schema": "national_idf.rule_based_reference_domain.v2",
+  "sites": [
+    {
+      "country": "US",
+      "id": "Denver",
+      "site_pack": {
+        "path": "reports/condition_housing_20261108/DENVER_SITE_PACK.json",
+        "sha256": "c94ce6178eed910f0f8fec196d4be6f0c3190d7424232c11376cd693d09081c5"
+      }
+    },
+    {
+      "country": "ES",
+      "id": "Madrid",
+      "site_pack": {
+        "path": "reports/multicountry_idf_20261107/ES_SITE_PACK_v2.json",
+        "sha256": "e64995866beefa405707baafaec346ab931958eb11db30547babc8d171128602"
+      }
+    },
+    {
+      "country": "GB",
+      "id": "London",
+      "site_pack": {
+        "path": "reports/multicountry_extension_20261108/GB/SITE_PACK.json",
+        "sha256": "938247e16494e54ba642e4c664c7875910b39783bac869154531c666f5039be1"
+      }
+    },
+    {
+      "country": "MX",
+      "id": "MexicoCity",
+      "site_pack": {
+        "path": "reports/multicountry_extension_20261108/MX/SITE_PACK.json",
+        "sha256": "68e2413aa2fab09a6973bb9e05471f8d8a3a194014d4aafe6c9b41d7cbefd4e2"
+      }
+    },
+    {
+      "country": "IN",
+      "id": "Mumbai",
+      "site_pack": {
+        "path": "reports/multicountry_envelope_review_20261108/IN_Mumbai_controlled_roof/SITE_PACK.json",
+        "sha256": "3cc4bd188c9c4686cea46eceac83d5ae5ef939bbe98ab695bc1adf94535aec02"
+      }
+    },
+    {
+      "country": "CN",
+      "id": "Guangzhou",
+      "site_pack": {
+        "path": "reports/v9_service_adaptation_20261109/sites/CN/SITE_PACK.json",
+        "sha256": "268885f5aba4e895f525b349bc05fb08cecae81b150cf90e34557fbed3f52482"
+      }
+    },
+    {
+      "country": "DE",
+      "id": "Berlin",
+      "site_pack": {
+        "path": "reports/v9_service_adaptation_20261109/sites/DE/SITE_PACK.json",
+        "sha256": "bc9a8da26d6bea321fff28d21dc45e01dff99ec0820a144817e6fb9e5e3603cd"
+      }
+    },
+    {
+      "country": "AU",
+      "id": "Sydney",
+      "site_pack": {
+        "path": "reports/v9_service_adaptation_20261109/sites/AU/SITE_PACK.json",
+        "sha256": "da08861fa4311eccd05287997dee14149dbe4eeb68dfa97018762fe6989abb7a"
+      }
+    },
+    {
+      "country": "CN",
+      "id": "Shanghai",
+      "site_pack": {
+        "path": "reports/complete_enclosure_installation_20261109/Shanghai/SITE_PACK.json",
+        "sha256": "737956c2e0c86a19f733977c6aa6da5645eb41b8cce3bcd9c1efb977b49825c4"
+      }
+    }
+  ],
+  "supported_calendar_expression": "Declared7day windows in frozen source calendar year,including14dayrecovery insideyear;eachrequest needsown originalquality checks",
+  "unsupported_outputs": [
+    "HVAC_capacity_selection",
+    "national_stock_or_real_home_equivalence",
+    "room_level_temperature",
+    "cleanliness_or_dryness",
+    "event_specific_water_room_gains",
+    "bath_success"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "changes_physical_parameters_or_solver_methods": false,
+  "hosts": {
+    "Darwin_arm64": {
+      "catalog": "configs/condition_housing_v3.json",
+      "engine_directory": "work/official-openstudio-3.11.0/OpenStudio-3.11.0+241b8abb4d-Darwin-arm64/EnergyPlus",
+      "sdk": {
+        "path": "data/source/p1_reference_components_20261029/OFFICIAL_SDK.json",
+        "sha256": "7e88d641c2cf5f59f9429955d85321b6e80ba284203a1caed35b6535ed456123"
+      }
+    },
+    "Linux_x86_64": {
+      "catalog": "configs/condition_housing_linux_v3.json",
+      "engine_directory": "runtime/EnergyPlus-25.2.0-cf7368216c-Linux-Ubuntu22.04-x86_64",
+      "official_physics_engine_archive_sha256": "e454fecd0f40be2e7ad8b574722b58ef8b9adc15aadfa31716f1c70a93ced4da",
+      "sdk": {
+        "path": "data/source/v9_remote_runtime_20261109/OFFICIAL_OPENSTUDIO_LINUX.json",
+        "sha256": "54071dfaf9366b53dcec2853022ee1a94e9e1a736c47a29678be4f498602f876"
+      }
+    }
+  },
+  "reason_for_python_pin": "Frozen weather-derived parameters useCPython3.13float summation;3.10recomputationchangeslastbits. Keepfrozenparametersandstrictchecks,not tolerancewaivers.",
+  "required_python_release": [
+    3,
+    13,
+    13
+  ],
+  "schema": "national_idf.native_build_platform_policy.v1"
+}

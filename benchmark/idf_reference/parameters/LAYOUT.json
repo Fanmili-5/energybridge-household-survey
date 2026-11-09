@@ -1,0 +1,77 @@
+{
+  "files": {
+    "reports/complete_enclosure_installation_20261109/Shanghai/SITE_PACK.json": {
+      "path": "parameters/sites/Shanghai.json",
+      "sha256": "737956c2e0c86a19f733977c6aa6da5645eb41b8cce3bcd9c1efb977b49825c4"
+    },
+    "reports/condition_housing_20261108/DENVER_SITE_PACK.json": {
+      "path": "parameters/sites/Denver.json",
+      "sha256": "c94ce6178eed910f0f8fec196d4be6f0c3190d7424232c11376cd693d09081c5"
+    },
+    "reports/housing_region_coverage_20261109/packages/AU/PACKAGE.json": {
+      "path": "parameters/enclosures/AU.json",
+      "sha256": "c98e83c8a5022cd0457b728c00079e4c91324db6bfcdd30e0dbcc9983ef796ad"
+    },
+    "reports/housing_region_coverage_20261109/packages/CN/PACKAGE.json": {
+      "path": "parameters/enclosures/CN.json",
+      "sha256": "43253f26ec8a1e4a333e5588f1544d4930b5e8bc5613dc61fdfbba359303e004"
+    },
+    "reports/housing_region_coverage_20261109/packages/DE/PACKAGE.json": {
+      "path": "parameters/enclosures/DE.json",
+      "sha256": "ef819f65319f04bf6ed99619fc3f70e7e6f1835d2338f668ee90a3863ab9b1a7"
+    },
+    "reports/housing_region_coverage_20261109/packages/ES/PACKAGE.json": {
+      "path": "parameters/enclosures/ES.json",
+      "sha256": "eff9199f561e22edfea4737b45c21e7ab32a7bdf0836d06f2a70ac052e9a5bbd"
+    },
+    "reports/housing_region_coverage_20261109/packages/GB/PACKAGE.json": {
+      "path": "parameters/enclosures/GB.json",
+      "sha256": "934ff90d7a70b583265820d6dfe7a0b5e68d8dc11b4942677c57f0268a06dddf"
+    },
+    "reports/housing_region_coverage_20261109/packages/IN/PACKAGE.json": {
+      "path": "parameters/enclosures/IN.json",
+      "sha256": "c16913a38beaf4ad59fddc2263f5eb44cad6bf7ce0f773d2563ad7dd6aab940d"
+    },
+    "reports/housing_region_coverage_20261109/packages/MX/PACKAGE.json": {
+      "path": "parameters/enclosures/MX.json",
+      "sha256": "4a0f79a50453c3fc6f97139ee4f76b973481050b37d6cd72cfcd450b7a8773d2"
+    },
+    "reports/housing_region_coverage_20261109/packages/US/PACKAGE.json": {
+      "path": "parameters/enclosures/US.json",
+      "sha256": "de1cd7f0269c1dc62536456a49e6b30ee1ebc8a6294f18a4941422ff5fa4265b"
+    },
+    "reports/multicountry_envelope_review_20261108/IN_Mumbai_controlled_roof/SITE_PACK.json": {
+      "path": "parameters/sites/Mumbai.json",
+      "sha256": "3cc4bd188c9c4686cea46eceac83d5ae5ef939bbe98ab695bc1adf94535aec02"
+    },
+    "reports/multicountry_extension_20261108/GB/SITE_PACK.json": {
+      "path": "parameters/sites/London.json",
+      "sha256": "938247e16494e54ba642e4c664c7875910b39783bac869154531c666f5039be1"
+    },
+    "reports/multicountry_extension_20261108/MX/SITE_PACK.json": {
+      "path": "parameters/sites/MexicoCity.json",
+      "sha256": "68e2413aa2fab09a6973bb9e05471f8d8a3a194014d4aafe6c9b41d7cbefd4e2"
+    },
+    "reports/multicountry_idf_20261107/ES_SITE_PACK_v2.json": {
+      "path": "parameters/sites/Madrid.json",
+      "sha256": "e64995866beefa405707baafaec346ab931958eb11db30547babc8d171128602"
+    },
+    "reports/regional_envelope_correction_20261109/reference_material_libraries/A1/LIBRARY.json": {
+      "path": "parameters/constructions/CN_A1.json",
+      "sha256": "e1c513acd49d16cc434178ab34b1c24324f9b83103807bdb1edd97f9fc043976"
+    },
+    "reports/v9_service_adaptation_20261109/sites/AU/SITE_PACK.json": {
+      "path": "parameters/sites/Sydney.json",
+      "sha256": "da08861fa4311eccd05287997dee14149dbe4eeb68dfa97018762fe6989abb7a"
+    },
+    "reports/v9_service_adaptation_20261109/sites/CN/SITE_PACK.json": {
+      "path": "parameters/sites/Guangzhou.json",
+      "sha256": "268885f5aba4e895f525b349bc05fb08cecae81b150cf90e34557fbed3f52482"
+    },
+    "reports/v9_service_adaptation_20261109/sites/DE/SITE_PACK.json": {
+      "path": "parameters/sites/Berlin.json",
+      "sha256": "bc9a8da26d6bea321fff28d21dc45e01dff99ec0820a144817e6fb9e5e3603cd"
+    }
+  },
+  "schema": "national_idf.public_parameter_layout.v1"
+}

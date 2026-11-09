@@ -1,0 +1,230 @@
+{
+  "builder_geometry_only_system_overrides": {
+    "geometry_window_areas_or_wwrs": "0.15, 0.15, 0.15, 0.15",
+    "hvac_cooling_system": "None",
+    "hvac_heating_system": "None"
+  },
+  "builder_override_reason": "Intermediate source furnace/ducts are explicitly absent;complete published ductless HVAC is installed next. Avoid constructing an irrelevant attic duct network when reference geometry has no attic. No final device/geometry/physics input is relaxed.",
+  "checkout": "work/p1_hpxml_004ca3ce",
+  "families": {
+    "apartment": {
+      "attached_walls": [
+        "1 Side: Left",
+        "2 Sides: Left, Right"
+      ],
+      "explicit_reference_conditions_not_survey_reconstruction": true,
+      "stories_above_grade": [
+        1
+      ],
+      "unit_type_by_stories": {
+        "1": "Apartment Unit, 1 Story"
+      },
+      "vertical_contexts": {
+        "bottom": {
+          "geometry_attic_type": "Below Apartment",
+          "geometry_foundation_type": "Slab-on-Grade"
+        },
+        "middle": {
+          "geometry_attic_type": "Below Apartment",
+          "geometry_foundation_type": "Above Apartment"
+        },
+        "top": {
+          "geometry_foundation_type": "Above Apartment"
+        },
+        "top_flat_roof": {
+          "geometry_attic_type": "Flat Roof",
+          "geometry_foundation_type": "Above Apartment"
+        }
+      }
+    },
+    "attached": {
+      "attached_walls": [
+        "1 Side: Left",
+        "2 Sides: Left, Right"
+      ],
+      "explicit_reference_conditions_not_survey_reconstruction": true,
+      "stories_above_grade": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "unit_type_by_stories": {
+        "1": "Single-Family Attached, 1 Story",
+        "2": "Single-Family Attached, 2 Stories",
+        "3": "Single-Family Attached, 3 Stories",
+        "4": "Single-Family Attached, 4 Stories"
+      },
+      "vertical_contexts": {
+        "slab_flat_roof": {
+          "geometry_attic_type": "Flat Roof",
+          "geometry_foundation_type": "Slab-on-Grade"
+        },
+        "source_basement_attic": {}
+      }
+    },
+    "detached": {
+      "attached_walls": [
+        "None"
+      ],
+      "explicit_reference_conditions_not_survey_reconstruction": true,
+      "stories_above_grade": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "unit_type_by_stories": {
+        "1": "Single-Family Detached, 1 Story",
+        "2": "Single-Family Detached, 2 Stories",
+        "3": "Single-Family Detached, 3 Stories",
+        "4": "Single-Family Detached, 4 Stories"
+      },
+      "vertical_contexts": {
+        "slab_flat_roof": {
+          "geometry_attic_type": "Flat Roof",
+          "geometry_foundation_type": "Slab-on-Grade"
+        },
+        "source_basement_attic": {}
+      }
+    }
+  },
+  "geometry_policy_note": "slab_flat_roof uses the pinned official builder flat roof, slab and published default 15 percent WWR; reference choices, not survey facts",
+  "not_inferred_from_country": [
+    "wall construction",
+    "floor area",
+    "number of stories",
+    "vertical adjacency",
+    "product performance"
+  ],
+  "regional_enclosure_packages": {
+    "path": "configs/regional_enclosure_packages_v1.json",
+    "sha256": "c9b4325ce4eab91e1b4b15790dd516d2a9b7a41d2ea21d818fec0ed44b4ddf08"
+  },
+  "schema": "national_idf.condition_housing_catalog.v1",
+  "sites": [
+    {
+      "country": "US",
+      "id": "Denver",
+      "site_pack": {
+        "path": "reports/condition_housing_20261108/DENVER_SITE_PACK.json",
+        "sha256": "c94ce6178eed910f0f8fec196d4be6f0c3190d7424232c11376cd693d09081c5"
+      }
+    },
+    {
+      "country": "ES",
+      "id": "Madrid",
+      "site_pack": {
+        "path": "reports/multicountry_idf_20261107/ES_SITE_PACK_v2.json",
+        "sha256": "e64995866beefa405707baafaec346ab931958eb11db30547babc8d171128602"
+      }
+    },
+    {
+      "country": "GB",
+      "id": "London",
+      "site_pack": {
+        "path": "reports/multicountry_extension_20261108/GB/SITE_PACK.json",
+        "sha256": "938247e16494e54ba642e4c664c7875910b39783bac869154531c666f5039be1"
+      }
+    },
+    {
+      "country": "MX",
+      "id": "MexicoCity",
+      "site_pack": {
+        "path": "reports/multicountry_extension_20261108/MX/SITE_PACK.json",
+        "sha256": "68e2413aa2fab09a6973bb9e05471f8d8a3a194014d4aafe6c9b41d7cbefd4e2"
+      }
+    },
+    {
+      "country": "IN",
+      "id": "Mumbai",
+      "site_pack": {
+        "path": "reports/multicountry_envelope_review_20261108/IN_Mumbai_controlled_roof/SITE_PACK.json",
+        "sha256": "3cc4bd188c9c4686cea46eceac83d5ae5ef939bbe98ab695bc1adf94535aec02"
+      }
+    },
+    {
+      "country": "CN",
+      "id": "Guangzhou",
+      "site_pack": {
+        "path": "reports/v9_service_adaptation_20261109/sites/CN/SITE_PACK.json",
+        "sha256": "268885f5aba4e895f525b349bc05fb08cecae81b150cf90e34557fbed3f52482"
+      }
+    },
+    {
+      "country": "DE",
+      "id": "Berlin",
+      "site_pack": {
+        "path": "reports/v9_service_adaptation_20261109/sites/DE/SITE_PACK.json",
+        "sha256": "bc9a8da26d6bea321fff28d21dc45e01dff99ec0820a144817e6fb9e5e3603cd"
+      }
+    },
+    {
+      "country": "AU",
+      "id": "Sydney",
+      "site_pack": {
+        "path": "reports/v9_service_adaptation_20261109/sites/AU/SITE_PACK.json",
+        "sha256": "da08861fa4311eccd05287997dee14149dbe4eeb68dfa97018762fe6989abb7a"
+      }
+    },
+    {
+      "country": "CN",
+      "id": "Shanghai",
+      "site_pack": {
+        "path": "reports/complete_enclosure_installation_20261109/Shanghai/SITE_PACK.json",
+        "sha256": "737956c2e0c86a19f733977c6aa6da5645eb41b8cce3bcd9c1efb977b49825c4"
+      }
+    }
+  ],
+  "sources": {
+    "attic_choices": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/geometry_attic_type.tsv",
+      "sha256": "04fb535e3163c0e5f8176c4c78458d5b1ed8159a12f36daaef7b54506c3b6b90"
+    },
+    "boundary_choices": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/geometry_attached_walls.tsv",
+      "sha256": "711b7fb2ac37e8b23093dfdec38f82a8fc20d014c5776780d7062131a29fec69"
+    },
+    "builder": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/measure.rb",
+      "sha256": "a25fa1d6ce394ae87eb25e38b431a6ca502437007bd2b48c493b8289b1f9e014"
+    },
+    "builder_workflow": {
+      "path": "work/p1_hpxml_004ca3ce/workflow/template-build-hpxml.osw",
+      "sha256": "785a4c07440c957354c8d380bed7bb23a81e176535c220b5ffeb340547cba80d"
+    },
+    "equipment_xml": {
+      "path": "data/source/v9_remote_runtime_20261109/six_source_linux_paths.xml",
+      "sha256": "e03817f5bfe56c0c08aaf5411204028d04d3bb14113870e65853dd854ae518d3"
+    },
+    "foundation_choices": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/geometry_foundation_type.tsv",
+      "sha256": "b1e43aa64a068ce48ede69e538d1cb9bd1d35b1989652e95ae3ad5287497aca3"
+    },
+    "hvac_cooling_system_choices": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/hvac_cooling_system.tsv",
+      "sha256": "65631709da3c06eb5ef13cd4958c917b6e10a39f80fd3c0ad6249d30c1322aee"
+    },
+    "hvac_heating_system_choices": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/hvac_heating_system.tsv",
+      "sha256": "b3f003e44efad6b1e00cb040c91c25399531bf759220444c236c73f8f3852e88"
+    },
+    "platform_XML_path_port": {
+      "path": "data/source/v9_remote_runtime_20261109/LINUX_XML_PATH_PORT.json",
+      "sha256": "bef955e49e40311fb9553b5f89b02b7639b3141558be9752f8195d52d1285b75"
+    },
+    "sdk": {
+      "path": "data/source/v9_remote_runtime_20261109/OFFICIAL_OPENSTUDIO_LINUX.json",
+      "sha256": "54071dfaf9366b53dcec2853022ee1a94e9e1a736c47a29678be4f498602f876"
+    },
+    "source_weather": {
+      "path": "work/p1_hpxml_004ca3ce/weather/USA_CO_Denver.Intl.AP.725650_TMY3.epw",
+      "sha256": "6aacee75402057baefa50d14873d07b70e33c535d3aded200f4393bf2ae6077d"
+    },
+    "unit_choices": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/geometry_unit_type.tsv",
+      "sha256": "f3ba5a43fd77cef03ed20ae44564f766fa2f31df7936e14abbd4db4d217c0724"
+    }
+  },
+  "support_claim": "Official public reference geometry/complete source construction;not local national stock;new geometry/site needs own full validation"
+}

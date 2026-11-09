@@ -1,0 +1,45 @@
+{
+  "intermediate_sites_by_country": {
+    "AU": {
+      "country": "AU",
+      "site_id": "Sydney"
+    },
+    "CN": {
+      "country": "CN",
+      "site_id": "Guangzhou"
+    },
+    "DE": {
+      "country": "DE",
+      "site_id": "Berlin"
+    },
+    "ES": {
+      "country": "ES",
+      "site_id": "Madrid"
+    },
+    "GB": {
+      "country": "GB",
+      "site_id": "London"
+    },
+    "IN": {
+      "country": "IN",
+      "site_id": "Mumbai"
+    },
+    "MX": {
+      "country": "MX",
+      "site_id": "MexicoCity"
+    },
+    "US": {
+      "country": "US",
+      "site_id": "Denver"
+    }
+  },
+  "only_complete_public_controlled_reference_sources": true,
+  "public_builder_weather": {
+    "path": "work/p1_hpxml_004ca3ce/weather/USA_CO_Denver.Intl.AP.725650_TMY3.epw",
+    "sha256": "6aacee75402057baefa50d14873d07b70e33c535d3aded200f4393bf2ae6077d"
+  },
+  "schema": "national_idf.shared_complete_template_policy.v1",
+  "selection": "Exact publicbuilder arguments,referencegeometry conditions andcomplete physicalsources;stable templateindex;no selection byenergy result",
+  "site_replacement_must_follow": true,
+  "target_location_and_unknown_survey_facts_are_not_rewritten": true
+}

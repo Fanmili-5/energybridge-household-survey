@@ -1,0 +1,38 @@
+{
+  "AC": {
+    "physically_present": true,
+    "control_enabled": true,
+    "asset_id": "public_engineering_AC",
+    "presence_basis": "Explicit six-function public reference experiment using the existing EB and complete public component pack;not household ownership facts"
+  },
+  "WM": {
+    "physically_present": true,
+    "control_enabled": true,
+    "asset_id": "public_engineering_WM",
+    "presence_basis": "Explicit six-function public reference experiment using the existing EB and complete public component pack;not household ownership facts"
+  },
+  "DR": {
+    "physically_present": true,
+    "control_enabled": true,
+    "asset_id": "public_engineering_DR",
+    "presence_basis": "Explicit six-function public reference experiment using the existing EB and complete public component pack;not household ownership facts"
+  },
+  "DW": {
+    "physically_present": true,
+    "control_enabled": true,
+    "asset_id": "public_engineering_DW",
+    "presence_basis": "Explicit six-function public reference experiment using the existing EB and complete public component pack;not household ownership facts"
+  },
+  "WH": {
+    "physically_present": true,
+    "control_enabled": true,
+    "asset_id": "public_engineering_WH",
+    "presence_basis": "Explicit six-function public reference experiment using the existing EB and complete public component pack;not household ownership facts"
+  },
+  "EV": {
+    "physically_present": true,
+    "control_enabled": true,
+    "asset_id": "public_engineering_EV",
+    "presence_basis": "Explicit six-function public reference experiment using the existing EB and complete public component pack;not household ownership facts"
+  }
+}

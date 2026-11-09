@@ -1,0 +1,90 @@
+{
+  "builder_enclosure_overrides": {
+    "enclosure_roof": "R-38",
+    "enclosure_wall": "Wood Stud, R-21",
+    "enclosure_window": "Double, Low-E, Insulated, Air, Med Gain"
+  },
+  "code_compliance_claimed": false,
+  "complete_actual_material_rows_provided_by_pinned_builder": true,
+  "country": "AU",
+  "declared_reference_sites": [
+    "Sydney"
+  ],
+  "design_targets": {
+    "Roof_R_min_m2K_W": 6.0,
+    "Roof_U_max_W_m2K": null,
+    "Wall_R_min_m2K_W": 2.5,
+    "Wall_U_max_W_m2K": null,
+    "Window_U_max_W_m2K": null
+  },
+  "films_basis": "Existing public CTE/ISO6946 reference static films only;native EnergyPlus convection unchanged",
+  "id": "AU_complete_reference_enclosure_v1",
+  "measured_home_or_stock_claimed": false,
+  "option_files": {
+    "enclosure_roof": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/enclosure_roof.tsv",
+      "sha256": "c4c69e5e6ef0a155be8990a820cf226d791d623e3a29e6e10118bb70e1e28ead"
+    },
+    "enclosure_wall": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/enclosure_wall.tsv",
+      "sha256": "3703ab6ae941c4230e46e89a64842f6d53b10a35bb0d9df87c9f702dbbe844ba"
+    },
+    "enclosure_window": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/enclosure_window.tsv",
+      "sha256": "304660b146b525635cf60b85ecbdbe2486e31203a0b3982b7af92b5df6350fdf"
+    }
+  },
+  "post_recipe_id": null,
+  "representation": "controlled_reference",
+  "schema": "national_idf.regional_reference_enclosure_package.v1",
+  "selection_basis": "Government-published Sydney insulation reference, not Australian product certification, measured stock or NCC compliance",
+  "selection_calculations": {
+    "interpretation": "R6 andR2.5 are declared reference assembly design levels informed by the published guide, not claims of equivalence of AS/NZS and US product ratings"
+  },
+  "selection_fixed_before_native_energy_results": true,
+  "shared_reference_components": [
+    "source slab, soil and foundation;not plane-U code floor claim",
+    "source internal floors/party-wall assemblies for native path",
+    "source leakage, internal mass, overhangs, orientation, capacity multipliers",
+    "original EB equipment and tank"
+  ],
+  "sources": {
+    "builder": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/measure.rb",
+      "sha256": "a25fa1d6ce394ae87eb25e38b431a6ca502437007bd2b48c493b8289b1f9e014"
+    },
+    "construction_algorithm": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/constructions.rb",
+      "sha256": "56049bd86459d43940cc0c72fca92d7a141c0d023b188c0f9b96c2f4d01af815"
+    },
+    "enclosure_roof": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/enclosure_roof.tsv",
+      "sha256": "c4c69e5e6ef0a155be8990a820cf226d791d623e3a29e6e10118bb70e1e28ead"
+    },
+    "enclosure_wall": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/enclosure_wall.tsv",
+      "sha256": "3703ab6ae941c4230e46e89a64842f6d53b10a35bb0d9df87c9f702dbbe844ba"
+    },
+    "enclosure_window": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/enclosure_window.tsv",
+      "sha256": "304660b146b525635cf60b85ecbdbe2486e31203a0b3982b7af92b5df6350fdf"
+    },
+    "material_properties": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/materials.rb",
+      "sha256": "c1476092e042f4a9ea8d99fabcd0416b4695cf588e2d95ca5263dfa72e7f9500"
+    },
+    "regional_design_reference": {
+      "path": "data/source/regional_coverage_20261109/AU_REFERENCE_EXTRACTION.json",
+      "sha256": "e49ef8104f4e4ffa59e8c8793fe36f8181dde1dc37adfb3cf1ca2ac729a57d11"
+    },
+    "translator": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/measure.rb",
+      "sha256": "dcac8c03331c9022b81b2aeed7a4882c8c70489c3a0df903223637baa90008ba"
+    }
+  },
+  "static_design_films_m2K_W": {
+    "Roof": 0.14,
+    "Wall": 0.17
+  },
+  "unknown_regional_stock_facts_filled": false
+}

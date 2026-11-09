@@ -1,0 +1,51 @@
+{
+  "full_source_translator_must_recompute_defaults": true,
+  "mode": "Explicit source operational design;not demographics or imputation",
+  "no_guarantee_of_thermal_capacity_or_national_stock_validity": true,
+  "positive_design_occupants": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "runtime_validator_only_override_forbidden": true,
+  "schema": "national_idf.public_source_occupancy_design.v1",
+  "source_argument": "geometry_unit_num_occupants",
+  "source_options": {
+    "builder": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/measure.rb",
+      "sha256": "a25fa1d6ce394ae87eb25e38b431a6ca502437007bd2b48c493b8289b1f9e014"
+    },
+    "choices": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/geometry_unit_num_occupants.tsv",
+      "sha256": "83ae1ed5f98fa17fbfc4fca58b413b25057b23cc8638085b4379a3cf87e7878b"
+    },
+    "defaults": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/defaults.rb",
+      "sha256": "fd8a8cd1fcc4f0400374044c92877729ece2af946dbba194517ed411824648fa"
+    },
+    "internal_gains": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/internal_gains.rb",
+      "sha256": "a989701f7776278afd2f7f1e5ef46bf089461e084cc1a34d4a215c47970cdd08"
+    },
+    "water_appliances": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/hotwater_appliances.rb",
+      "sha256": "f5f58da106f16c18b2cb7a631bbc8ba2f968bbf2a97f7587bc1351c9d7b44e6d"
+    },
+    "xml_setter": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/hpxml.rb",
+      "sha256": "c2355eb5eda375911bad3c9d39b4c56133acfc824abf92b219ea7ea0e822c0dd"
+    }
+  },
+  "source_systems_and_appliances_still_complete_same_models": true,
+  "unknown_actual_household_size_unchanged": true,
+  "xml_property": "BuildingSummary/BuildingOccupancy/NumberofResidents"
+}

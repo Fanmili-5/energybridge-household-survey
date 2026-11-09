@@ -1,0 +1,56 @@
+{
+  "builder_enclosure_overrides": {},
+  "code_compliance_claimed": false,
+  "complete_actual_material_rows_provided_by_pinned_builder": true,
+  "country": "CN",
+  "declared_reference_sites": [
+    "Guangzhou",
+    "Shanghai"
+  ],
+  "design_targets": {
+    "Roof_R_min_m2K_W": null,
+    "Roof_U_max_W_m2K": null,
+    "Wall_R_min_m2K_W": null,
+    "Wall_U_max_W_m2K": null,
+    "Window_U_max_W_m2K": null
+  },
+  "films_basis": "Existing public CTE/ISO6946 reference static films only;native EnergyPlus convection unchanged",
+  "id": "CN_complete_reference_enclosure_v1",
+  "measured_home_or_stock_claimed": false,
+  "option_files": {},
+  "post_recipe_id": "CN_SETA_A1_complete_reference",
+  "representation": "controlled_reference",
+  "schema": "national_idf.regional_reference_enclosure_package.v1",
+  "selection_basis": "Complete unchanged public HPXML reference constructor, not country-stock reconstruction",
+  "selection_calculations": {},
+  "selection_fixed_before_native_energy_results": true,
+  "shared_reference_components": [
+    "source slab, soil and foundation;not plane-U code floor claim",
+    "source internal floors/party-wall assemblies for native path",
+    "source leakage, internal mass, overhangs, orientation, capacity multipliers",
+    "original EB equipment and tank"
+  ],
+  "sources": {
+    "builder": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/measure.rb",
+      "sha256": "a25fa1d6ce394ae87eb25e38b431a6ca502437007bd2b48c493b8289b1f9e014"
+    },
+    "construction_algorithm": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/constructions.rb",
+      "sha256": "56049bd86459d43940cc0c72fca92d7a141c0d023b188c0f9b96c2f4d01af815"
+    },
+    "material_properties": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/materials.rb",
+      "sha256": "c1476092e042f4a9ea8d99fabcd0416b4695cf588e2d95ca5263dfa72e7f9500"
+    },
+    "translator": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/measure.rb",
+      "sha256": "dcac8c03331c9022b81b2aeed7a4882c8c70489c3a0df903223637baa90008ba"
+    }
+  },
+  "static_design_films_m2K_W": {
+    "Roof": 0.14,
+    "Wall": 0.17
+  },
+  "unknown_regional_stock_facts_filled": false
+}

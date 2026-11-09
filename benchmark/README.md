@@ -9,6 +9,7 @@
 | [household_archetypes](household_archetypes/) | 六类实验角色的来源、证据与拟议配额 |
 | [ab_generation](ab_generation/) | 生活A、设备机会、B候选、联合调整与十天选题 |
 | [housing_simulation](housing_simulation/) | 住房构造、设备执行、配对仿真与审计 |
+| [idf_reference](idf_reference/) | 当前 EB 整户参考适配：共享住房类别、八国完整围护包、地点包、CASE v2/v3 与统一编译入口 |
 | [project](project/) | 三条线的数据交接、UI91资料封存和显示验证 |
 | [collector](collector/) | 正式问卷、版本绑定、采集与恢复协议 |
 

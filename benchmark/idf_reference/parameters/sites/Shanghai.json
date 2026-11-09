@@ -1,0 +1,34 @@
+{
+  "derived_boundaries": {
+    "path": "reports/complete_enclosure_installation_20261109/Shanghai/HPXML_SITE_BOUNDARIES.json",
+    "sha256": "2031f09882cc14d7fcf1f8108f321749a001bba93d509fd686a9f7d233a0e8da"
+  },
+  "design_conditions": {
+    "capacity_selected_from_local_design_load": false,
+    "ddy": {
+      "path": "data/source/weather/shanghai/TMYx/CHN_SH_Shanghai-Baoshan.583620_TMYx.2009-2023.ddy",
+      "sha256": "dcaf63752202d5782e13eae23a519b6433bb7b2dd3111dba8325d672ee58fba4"
+    },
+    "reason": "Complete reference equipment unchanged; each request needs native curve and original numerical checks"
+  },
+  "ground_basis": "Complete public Kiva soil and foundation context retained; unchanged public HPXML shallow-ground algorithm, not measured local soil",
+  "id": "Shanghai_source_reference_v1",
+  "schema": "national_idf.reference_site.v1",
+  "terrain_basis": "Complete published suburban reference exposure; station is an explicit experiment forcing, not household address",
+  "time_basis": "local_standard_time_no_DST",
+  "weather": {
+    "path": "data/source/weather/shanghai/TMYx/CHN_SH_Shanghai-Baoshan.583620_TMYx.2009-2023.epw",
+    "sha256": "1a13b4fef3dd7a42d98a2acc746c91ddb38c3c7c202b60dfb7cdf405c75bb095"
+  },
+  "weather_identity": {
+    "city": "Shanghai-Baoshan",
+    "country": "CHN",
+    "elevation_m": 4.0,
+    "latitude": 31.3908,
+    "longitude": 121.4447,
+    "region": "SH",
+    "source_label": "SRC-TMYx",
+    "timezone": 8.0,
+    "wmo": "583620"
+  }
+}

@@ -12,7 +12,7 @@
 |---|---|---|
 | 家庭与设备 | 调查约束的家庭、EB角色态度、参考周、4—6类控制与服务合同 | [可复用生成器](benchmark/household_stage1/generator/)；[早期合成画像](benchmark/family_generation/) |
 | A/B策略 | 从生活需求生成A，围绕固定VPP生成单设备/联合B，覆盖取舍并保留长尾 | [ab_generation](benchmark/ab_generation/) |
-| 住房与仿真 | 匹配参考住房、装配设备、执行同世界A/B并审计后果 | [housing_simulation](benchmark/housing_simulation/) |
+| 住房与仿真 | 按共享住房类别选择完整地区包，沿 EB 和统一编译器执行整户请求 | [当前整户适配](benchmark/idf_reference/)；[原24.1构造示例](benchmark/housing_simulation/) |
 
 完整方法、来源、规则参数与验收结果见[方法说明](docs/METHOD.md)。[project](benchmark/project/)负责资料连接与UI91适配，[collector](benchmark/collector/)负责版本绑定、分户、回答与恢复。
 
@@ -21,6 +21,12 @@
 正式资料为原50户×10天的新A/B与对应参考物理后果；VPP固定18:00—19:00，沿用UI91。新八国1000户的家庭生成第一步已完成，当前每户均配备并控制空调；其IDF、A/B和真人问卷仍待后续阶段验收。版本及完成范围见[数据与验收](docs/DATASET.md)。
 
 公开仓库包含代码、合成示例、方法和聚合证据；受控原件与真人答卷按许可管理。详见[来源与许可](THIRD_PARTY.md)。
+
+## 可复用住房与地区适配
+
+[整户适配模块](benchmark/idf_reference/README.md)公开现有 EB 链路的住房构造、来源适配、设备安装和统一运行入口，以及八国完整参考围护包、九个示例地点包和公开工程输入。新家庭复用“模板算法＋参数包＋地点包”，生活需求和控制独立接入；支持范围、缺项处理和扩展规则见[构造方法](benchmark/idf_reference/METHOD.md)。
+
+该模块使用固定官方 EnergyPlus 25.2 与 OpenStudio-HPXML；原24.1模块保留。源码分发不含原生引擎、天气、外部原型资源、内部验收记录或家庭日程；需按[资源说明](benchmark/idf_reference/SOURCES.md)准备共享环境。公开类别和软件测试不代表所有家庭或工况均已通过物理及数值检查。本次不修改家庭生成和 A/B。
 
 ## 八国家庭生成第一步（V9）
 

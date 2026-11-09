@@ -1,0 +1,14 @@
+{
+  "actual_survey_people_count_not_inferred": true,
+  "all_other_model_rows_and_programme_consumer_values_must_be_exactly_preserved": true,
+  "donor": "Complete publicsource translatedwithrequestedNumberofResidents;copy completePeopleobject",
+  "operational_enduse_scaling_not_applied_to_EB_programmes": true,
+  "physical_capacity_and_original_numeric_checks_required": true,
+  "replacement": "OnlyPeople design capacity;allotherfields mustmatch base aftersource schedulebindings",
+  "schema": "national_idf.fixed_EB_people_capacity_policy.v1",
+  "source_occupancy_policy": {
+    "path": "configs/condition_occupancy_v1.json",
+    "sha256": "176d29a23c7bf6a243041d7c53fcbb0f04f2d0d6b13d5254e2714fbcc5d4c19c"
+  },
+  "water_fixture_capacity_and_background_remain_independent_fixed_source": true
+}

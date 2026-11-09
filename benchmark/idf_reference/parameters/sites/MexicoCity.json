@@ -1,0 +1,34 @@
+{
+  "derived_boundaries": {
+    "path": "reports/multicountry_extension_20261108/MX/HPXML_SITE_BOUNDARIES.json",
+    "sha256": "cf28ce9bec4c8ed0b151a517df945e39708b6e7cd6419398b6150efceaa466a1"
+  },
+  "design_conditions": {
+    "capacity_selected_from_local_design_load": false,
+    "ddy": {
+      "path": "data/source/multicountry_extension_20261108/MexicoCity_766793_TMYx_2009_2023/MEX_CMX_Cuidad.Mexico-Mexico.City.Intl.AP-Juarez.Intl.AP.766793_TMYx.2009-2023.ddy",
+      "sha256": "93c60c8ce21674cd95405ee611d60423f459ce94aac954d410073d7917ef0ae2"
+    },
+    "reason": "Inherited reference size;local design load/domain not yet admitted"
+  },
+  "ground_basis": "Complete public Kiva soil and basement reference; unchanged source EPW algorithm for shallow temperatures,not measured local soil",
+  "id": "MX_controlled_detached_roof_v1__site",
+  "schema": "national_idf.reference_site.v1",
+  "terrain_basis": "Complete published suburban reference exposure; airport EPW is explicit forcing,not survey-site equivalence",
+  "time_basis": "local_standard_time_no_DST",
+  "weather": {
+    "path": "data/source/multicountry_extension_20261108/MexicoCity_766793_TMYx_2009_2023/MEX_CMX_Cuidad.Mexico-Mexico.City.Intl.AP-Juarez.Intl.AP.766793_TMYx.2009-2023.epw",
+    "sha256": "af1baaf933c76c2b442a82bc173278c0b5a9683ff40564a9fd3bf895bbdc66a2"
+  },
+  "weather_identity": {
+    "city": "Cuidad.Mexico-Mexico.City.Intl.AP-Juarez.Intl.AP",
+    "country": "MEX",
+    "elevation_m": 2229.9,
+    "latitude": 19.436,
+    "longitude": -99.072,
+    "region": "CMX",
+    "source_label": "SRC-TMYx",
+    "timezone": -6.0,
+    "wmo": "766793"
+  }
+}

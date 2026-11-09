@@ -1,0 +1,36 @@
+{
+  "background_permissions_native_evidence": {
+    "path": "reports/v9_service_adaptation_20261109/NATIVE_BACKGROUND_RESULTS.json",
+    "sha256": "4d7114cf88a05253dbfe51461fae331ddd616f8efa080d7a3ee1524081ea9021"
+  },
+  "computational_defaults_are_not_household_facts": true,
+  "control_input_policy": "EB_source_control_inputs_v1",
+  "control_native_admission": {
+    "path": "reports/v9_service_adaptation_20261109/CONTROL_POLICY_NATIVE_ADMISSION_V4.json",
+    "sha256": "553c8700d4266d9d2bd751978b59dce6602765bfb58588e69c15bb3223748d85"
+  },
+  "default_is_reference_adaptation_not_survey_fact_imputation": true,
+  "explicit_null_water_or_people_design_preserves_legacy_source_mode": true,
+  "fractional_libraries": {
+    "path": "reports/condition_housing_20261108/FRACTIONAL_PROFILE_LIBRARY.json",
+    "sha256": "209198246b7be56eb681a2463d7000ced80dc2f6fe3fd794a81a8eab7c1ad5f5"
+  },
+  "native_admission": {
+    "path": "reports/v9_service_adaptation_20261109/WATER_POLICY_ADMISSION_V4.json",
+    "sha256": "496ced5a958f68b0f9844b72f11b3503dc1e3d70a843bb86fea068572ffad8e7"
+  },
+  "numerical_method": {
+    "path": "configs/condition_numerical_method_analytic_v1.json",
+    "sha256": "226270a99a03e5a4c8e0347702df06c0eaab852dab62593fb78aaedfd3c00bee"
+  },
+  "people_capacity_rule": "Extend only when declaredCASE maximum_persons exceeds source andnoexplicitdesign selection;usespublicpositivechoices",
+  "prior_default_policy": {
+    "path": "configs/reference_runtime_defaults_v6.json",
+    "sha256": "e9df00e1aadb91dcb70fd6f044b2e79533607ed593cfbcb7b529a16466955878"
+  },
+  "schema": "national_idf.shared_runtime_defaults.v1",
+  "selection_precedes_control_simulation_and_never_uses_energy_outcomes": true,
+  "water_input_policy": "source_design_flow_normalization_v1",
+  "weekly_occupancy_time_semantics": "Exact source minute overlaps atnative solver-step means;not clockrounding orfuture observedbehavior",
+  "weekly_recovery_semantics": "Explicit experimental reference-week replay with known Sunday overnight tail;not observed future behavior"
+}

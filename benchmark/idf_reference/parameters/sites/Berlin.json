@@ -1,0 +1,34 @@
+{
+  "derived_boundaries": {
+    "path": "reports/v9_service_adaptation_20261109/sites/DE/HPXML_SITE_BOUNDARIES.json",
+    "sha256": "520b9ffe1265b996ab4fc5c7b7ad8ec5218ea9f1a258e4265234dd5cb51a8da8"
+  },
+  "design_conditions": {
+    "capacity_selected_from_local_design_load": false,
+    "ddy": {
+      "path": "data/source/v9_sites_20261109/Berlin/DEU_BE_Berlin-Schonefeld.AP.103850_TMYx.2009-2023.ddy",
+      "sha256": "95f8fd06af690168d7bed917dc2a888bb56a4159e9e11e46bb96258382e092f2"
+    },
+    "reason": "Complete reference equipment unchanged; each request needs native curve and original numerical checks"
+  },
+  "ground_basis": "Complete public Kiva soil and foundation context retained; unchanged public HPXML shallow-ground algorithm, not measured local soil",
+  "id": "Berlin_source_reference_v1",
+  "schema": "national_idf.reference_site.v1",
+  "terrain_basis": "Complete published suburban reference exposure; station is an explicit experiment forcing, not household address",
+  "time_basis": "local_standard_time_no_DST",
+  "weather": {
+    "path": "data/source/v9_sites_20261109/Berlin/DEU_BE_Berlin-Schonefeld.AP.103850_TMYx.2009-2023.epw",
+    "sha256": "7d7691301a3dc28b39cebbb13c0b93ea4b65e30668d4e74735d8faaa5b47932c"
+  },
+  "weather_identity": {
+    "city": "Berlin-Schonefeld.AP",
+    "country": "DEU",
+    "elevation_m": 50.3,
+    "latitude": 52.3808,
+    "longitude": 13.5306,
+    "region": "BE",
+    "source_label": "SRC-TMYx",
+    "timezone": 1.0,
+    "wmo": "103850"
+  }
+}

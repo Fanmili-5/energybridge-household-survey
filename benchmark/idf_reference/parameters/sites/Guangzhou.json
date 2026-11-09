@@ -1,0 +1,34 @@
+{
+  "derived_boundaries": {
+    "path": "reports/v9_service_adaptation_20261109/sites/CN/HPXML_SITE_BOUNDARIES.json",
+    "sha256": "e818ec87752950660880cc74cb636bda718440d2b983eb84f1f722f11fffee59"
+  },
+  "design_conditions": {
+    "capacity_selected_from_local_design_load": false,
+    "ddy": {
+      "path": "data/source/weather/guangzhou/TMYx/CHN_GD_Guangzhou.592870_TMYx.2009-2023.ddy",
+      "sha256": "d1fa9a3af33ce78164b86bbaef78e873cc8861ff5e8bdb1e78509909a0e5273c"
+    },
+    "reason": "Complete reference equipment unchanged; each request needs native curve and original numerical checks"
+  },
+  "ground_basis": "Complete public Kiva soil and foundation context retained; unchanged public HPXML shallow-ground algorithm, not measured local soil",
+  "id": "Guangzhou_source_reference_v1",
+  "schema": "national_idf.reference_site.v1",
+  "terrain_basis": "Complete published suburban reference exposure; station is an explicit experiment forcing, not household address",
+  "time_basis": "local_standard_time_no_DST",
+  "weather": {
+    "path": "data/source/weather/guangzhou/TMYx/CHN_GD_Guangzhou.592870_TMYx.2009-2023.epw",
+    "sha256": "503c92790169241f7fddcc633b2c4a2f17d6bfa33b6acbfa7dddca8c2eba3562"
+  },
+  "weather_identity": {
+    "city": "Guangzhou",
+    "country": "CHN",
+    "elevation_m": 15.2,
+    "latitude": 23.2099,
+    "longitude": 113.4822,
+    "region": "GD",
+    "source_label": "SRC-TMYx",
+    "timezone": 8.0,
+    "wmo": "592870"
+  }
+}

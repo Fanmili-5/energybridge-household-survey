@@ -1,0 +1,34 @@
+{
+  "derived_boundaries": {
+    "path": "reports/multicountry_extension_20261108/GB/HPXML_SITE_BOUNDARIES.json",
+    "sha256": "d80e6cd39bf321f9b31900afb932ca4e0ed1b5f75371cebd5410028aec9546c7"
+  },
+  "design_conditions": {
+    "capacity_selected_from_local_design_load": false,
+    "ddy": {
+      "path": "data/source/multicountry_extension_20261108/London_037720_TMYx_2009_2023/GBR_ENG_London-Heathrow.Intl.AP.037720_TMYx.2009-2023.ddy",
+      "sha256": "769d0dd3f325cb39b6e26cb7330b642f7eec95563b1c6f0181ddd38bdd143b40"
+    },
+    "reason": "Inherited reference size;local design load/domain not yet admitted"
+  },
+  "ground_basis": "Complete public Kiva soil and basement reference; unchanged source EPW algorithm for shallow temperatures,not measured local soil",
+  "id": "GB_controlled_detached_roof_v1__site",
+  "schema": "national_idf.reference_site.v1",
+  "terrain_basis": "Complete published suburban reference exposure; airport EPW is explicit forcing,not survey-site equivalence",
+  "time_basis": "local_standard_time_no_DST",
+  "weather": {
+    "path": "data/source/multicountry_extension_20261108/London_037720_TMYx_2009_2023/GBR_ENG_London-Heathrow.Intl.AP.037720_TMYx.2009-2023.epw",
+    "sha256": "2ae3b347890699acb2f7dce270c06fd53efffb3bf3e75eeae866f815b89191de"
+  },
+  "weather_identity": {
+    "city": "London-Heathrow.Intl.AP",
+    "country": "GBR",
+    "elevation_m": 25.3,
+    "latitude": 51.4792,
+    "longitude": -0.4506,
+    "region": "ENG",
+    "source_label": "SRC-TMYx",
+    "timezone": 0.0,
+    "wmo": "037720"
+  }
+}

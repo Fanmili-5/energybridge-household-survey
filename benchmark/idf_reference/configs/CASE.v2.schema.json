@@ -1,0 +1,799 @@
+{
+  "$id": "urn:national-idf:case:v2",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Typed input for fixed physics. No defaults, implicit EV connection/state or task starts in life. Lighting/misc values are compatibility echoes checked against frozen source values. Syntax/domain validation cannot grant formal execution.",
+  "properties": {
+    "case_id": {
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,159}$",
+      "type": "string"
+    },
+    "controls": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "cooling_C": {
+          "type": "number"
+        },
+        "daily_overrides": {
+          "items": {
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "else": {
+                  "properties": {
+                    "value": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "if": {
+                  "properties": {
+                    "field": {
+                      "const": "hvac_available"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "value": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "field": {
+                      "const": "ev_target_SOC"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "value": {
+                      "maximum": 1,
+                      "minimum": 0,
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            ],
+            "properties": {
+              "end_min": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "field": {
+                "enum": [
+                  "heating_C",
+                  "cooling_C",
+                  "hvac_available",
+                  "tank_target_C",
+                  "ev_target_SOC"
+                ]
+              },
+              "start_min": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "value": {}
+            },
+            "required": [
+              "field",
+              "start_min",
+              "end_min",
+              "value"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "dated_overrides": {
+          "items": {
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "else": {
+                  "properties": {
+                    "value": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "if": {
+                  "properties": {
+                    "field": {
+                      "const": "hvac_available"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "value": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "field": {
+                      "const": "ev_target_SOC"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "value": {
+                      "maximum": 1,
+                      "minimum": 0,
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            ],
+            "properties": {
+              "date": {
+                "format": "date",
+                "type": "string"
+              },
+              "end_min": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "field": {
+                "enum": [
+                  "heating_C",
+                  "cooling_C",
+                  "hvac_available",
+                  "tank_target_C",
+                  "ev_target_SOC"
+                ]
+              },
+              "start_min": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "value": {}
+            },
+            "required": [
+              "field",
+              "start_min",
+              "end_min",
+              "value",
+              "date"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "ev_daily_windows": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "end_min": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "start_min": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "start_min",
+              "end_min"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "ev_target_SOC": {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "ev_window_overrides": {
+          "additionalProperties": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "end_min": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "start_min": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "start_min",
+                "end_min"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "propertyNames": {
+            "format": "date",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "heating_C": {
+          "type": "number"
+        },
+        "hvac_available": {
+          "type": "boolean"
+        },
+        "program_start_overrides": {
+          "additionalProperties": {
+            "additionalProperties": false,
+            "properties": {
+              "dishwasher": {
+                "items": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              "dryer": {
+                "items": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              "washer": {
+                "items": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "type": "array"
+              }
+            },
+            "required": [],
+            "type": "object"
+          },
+          "propertyNames": {
+            "format": "date",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "program_starts_daily": {
+          "additionalProperties": false,
+          "properties": {
+            "dishwasher": {
+              "items": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "dryer": {
+              "items": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "washer": {
+              "items": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "washer",
+            "dryer",
+            "dishwasher"
+          ],
+          "type": "object"
+        },
+        "tank_target_C": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "basis",
+        "heating_C",
+        "cooling_C",
+        "hvac_available",
+        "tank_target_C",
+        "ev_target_SOC",
+        "daily_overrides",
+        "program_starts_daily",
+        "ev_daily_windows"
+      ],
+      "type": "object"
+    },
+    "environment": {
+      "additionalProperties": false,
+      "properties": {
+        "physics_configuration_id": {
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]{0,159}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "physics_configuration_id"
+      ],
+      "type": "object"
+    },
+    "life": {
+      "additionalProperties": false,
+      "dependentRequired": {
+        "occupancy_recovery_weekly": [
+          "occupancy_weekly"
+        ]
+      },
+      "properties": {
+        "basis": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "ev_connection_daily": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "end_min": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "start_min": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "start_min",
+              "end_min"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "ev_daily": {
+          "additionalProperties": false,
+          "properties": {
+            "departure_min": {
+              "maximum": 1440,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "required_departure_SOC": {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            "return_min": {
+              "maximum": 1440,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "traction_kWh": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          "required": [
+            "departure_min",
+            "return_min",
+            "traction_kWh",
+            "required_departure_SOC"
+          ],
+          "type": "object"
+        },
+        "ev_initial_SOC": {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "lighting_W_m2": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "maximum_persons": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "misc_W_m2": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "mixed_water_daily": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "duration_min": {
+                "maximum": 1440,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "liters": {
+                "minimum": 0,
+                "type": "number"
+              },
+              "start_min": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "target_C": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "start_min",
+              "duration_min",
+              "liters",
+              "target_C"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "mixed_water_overrides": {
+          "additionalProperties": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "duration_min": {
+                  "maximum": 1440,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "liters": {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "start_min": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "target_C": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "start_min",
+                "duration_min",
+                "liters",
+                "target_C"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "propertyNames": {
+            "format": "date",
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "occupancy": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "activity_W": {
+                "exclusiveMinimum": 0,
+                "type": "number"
+              },
+              "end_min": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "persons": {
+                "minimum": 0,
+                "type": "number"
+              },
+              "room_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "start_min": {
+                "maximum": 1440,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "room_id",
+              "start_min",
+              "end_min",
+              "persons",
+              "activity_W"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "occupancy_recovery_weekly": {
+          "additionalProperties": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "activity_W": {
+                  "exclusiveMinimum": 0,
+                  "type": "number"
+                },
+                "end_min": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "persons": {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "room_id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "start_min": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "room_id",
+                "start_min",
+                "end_min",
+                "persons",
+                "activity_W"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "description": "Explicit periodicreference replay used afterthefirst7days;preserves known Sunday overnight tails into next Monday.Not observed future occupancy.",
+          "propertyNames": {
+            "enum": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6"
+            ]
+          },
+          "required": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "type": "object"
+        },
+        "occupancy_weekly": {
+          "additionalProperties": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "activity_W": {
+                  "exclusiveMinimum": 0,
+                  "type": "number"
+                },
+                "end_min": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "persons": {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "room_id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "start_min": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "room_id",
+                "start_min",
+                "end_min",
+                "persons",
+                "activity_W"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "description": "Explicit seven-day reference-week occupancy anchored at run start;exact integer-minute boundaries are integrated to native solver-step mean People counts,not rounded.Replayed periodically for numerical recovery,not observed future behavior.Allseven days required.",
+          "propertyNames": {
+            "enum": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4",
+              "5",
+              "6"
+            ]
+          },
+          "required": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ],
+          "type": "object"
+        },
+        "people_values_basis": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "services_daily": {
+          "additionalProperties": false,
+          "properties": {
+            "dishwasher": {
+              "additionalProperties": false,
+              "properties": {
+                "cycles": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "deadline_min": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "release_min": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "cycles",
+                "release_min",
+                "deadline_min"
+              ],
+              "type": "object"
+            },
+            "dryer": {
+              "additionalProperties": false,
+              "properties": {
+                "cycles": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "deadline_min": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "release_min": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "cycles",
+                "release_min",
+                "deadline_min"
+              ],
+              "type": "object"
+            },
+            "washer": {
+              "additionalProperties": false,
+              "properties": {
+                "cycles": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "deadline_min": {
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "release_min": {
+                  "maximum": 1440,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "cycles",
+                "release_min",
+                "deadline_min"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "washer",
+            "dryer",
+            "dishwasher"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "basis",
+        "maximum_persons",
+        "occupancy",
+        "lighting_W_m2",
+        "misc_W_m2",
+        "people_values_basis",
+        "mixed_water_daily",
+        "services_daily",
+        "ev_initial_SOC",
+        "ev_connection_daily",
+        "ev_daily"
+      ],
+      "type": "object"
+    },
+    "run": {
+      "additionalProperties": false,
+      "properties": {
+        "end_date": {
+          "format": "date",
+          "type": "string"
+        },
+        "start_date": {
+          "format": "date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start_date",
+        "end_date"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "national_idf.case.v2"
+    }
+  },
+  "required": [
+    "schema",
+    "case_id",
+    "environment",
+    "life",
+    "controls",
+    "run"
+  ],
+  "type": "object"
+}

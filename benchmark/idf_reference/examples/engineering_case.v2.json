@@ -1,0 +1,146 @@
+{
+  "case_id": "public_engineering_regional_enclosure",
+  "controls": {
+    "basis": "Fixed engineering six-device commands, not household generation or A/B",
+    "cooling_C": 25.5555555555556,
+    "daily_overrides": [],
+    "dated_overrides": [
+      {
+        "date": "2007-07-16",
+        "end_min": 960,
+        "field": "hvac_available",
+        "start_min": 780,
+        "value": false
+      },
+      {
+        "date": "2007-07-17",
+        "end_min": 960,
+        "field": "cooling_C",
+        "start_min": 780,
+        "value": 27.5555555555556
+      },
+      {
+        "date": "2007-07-16",
+        "end_min": 900,
+        "field": "tank_target_C",
+        "start_min": 720,
+        "value": 55.6666666666667
+      }
+    ],
+    "ev_daily_windows": [
+      {
+        "end_min": 120,
+        "start_min": 0
+      },
+      {
+        "end_min": 1440,
+        "start_min": 1080
+      }
+    ],
+    "ev_target_SOC": 0.8,
+    "ev_window_overrides": {
+      "2007-07-17": []
+    },
+    "heating_C": 20.0,
+    "hvac_available": true,
+    "program_start_overrides": {
+      "2007-07-16": {
+        "dishwasher": [
+          1380
+        ],
+        "dryer": [
+          780
+        ],
+        "washer": [
+          480
+        ]
+      }
+    },
+    "program_starts_daily": {
+      "dishwasher": [],
+      "dryer": [],
+      "washer": []
+    },
+    "tank_target_C": 52.6666666666667
+  },
+  "environment": {
+    "physics_configuration_id": null
+  },
+  "life": {
+    "basis": "Fixed previously defined public engineering life-port instructions;not generated households or finalAB",
+    "ev_connection_daily": [
+      {
+        "end_min": 480,
+        "start_min": 0
+      },
+      {
+        "end_min": 1440,
+        "start_min": 1080
+      }
+    ],
+    "ev_daily": {
+      "departure_min": 480,
+      "required_departure_SOC": 0.8,
+      "return_min": 1080,
+      "traction_kWh": 12
+    },
+    "ev_initial_SOC": 0.3,
+    "lighting_W_m2": 0,
+    "maximum_persons": 3,
+    "misc_W_m2": 0,
+    "mixed_water_daily": [
+      {
+        "duration_min": 10,
+        "liters": 60.0,
+        "start_min": 420,
+        "target_C": 40.5555555555556
+      },
+      {
+        "duration_min": 20,
+        "liters": 120.0,
+        "start_min": 1080,
+        "target_C": 40.5555555555556
+      }
+    ],
+    "mixed_water_overrides": {},
+    "occupancy": [
+      {
+        "activity_W": 105.200418211933,
+        "end_min": 480,
+        "persons": 1,
+        "room_id": "conditioned space",
+        "start_min": 360
+      },
+      {
+        "activity_W": 105.200418211933,
+        "end_min": 1320,
+        "persons": 3,
+        "room_id": "conditioned space",
+        "start_min": 1080
+      }
+    ],
+    "people_values_basis": "Unchanged source People activity and heat fractions",
+    "services_daily": {
+      "dishwasher": {
+        "cycles": 0,
+        "deadline_min": 2880,
+        "release_min": 0
+      },
+      "dryer": {
+        "cycles": 0,
+        "deadline_min": 2880,
+        "release_min": 0
+      },
+      "washer": {
+        "cycles": 0,
+        "deadline_min": 2880,
+        "release_min": 0
+      }
+    }
+  },
+  "run": {
+    "end_date": "2007-07-21",
+    "start_date": "2007-07-15"
+  },
+  "schema": "national_idf.case.v2"
+}

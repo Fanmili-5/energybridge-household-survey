@@ -1,0 +1,34 @@
+{
+  "derived_boundaries": {
+    "path": "reports/v9_service_adaptation_20261109/sites/AU/HPXML_SITE_BOUNDARIES.json",
+    "sha256": "d4280228ecf2611e7411a3a1a4d68a504555164a7050c804811fb20e3862d75c"
+  },
+  "design_conditions": {
+    "capacity_selected_from_local_design_load": false,
+    "ddy": {
+      "path": "data/source/v9_sites_20261109/Sydney/AUS_NSW_Mascot.AP-Sydney.Intl.AP.947670_TMYx.2009-2023.ddy",
+      "sha256": "716b81833767bb3248dfb49e1c63a234755057ffecb28b754f925dd31f079b3e"
+    },
+    "reason": "Complete reference equipment unchanged; each request needs native curve and original numerical checks"
+  },
+  "ground_basis": "Complete public Kiva soil and foundation context retained; unchanged public HPXML shallow-ground algorithm, not measured local soil",
+  "id": "Sydney_source_reference_v1",
+  "schema": "national_idf.reference_site.v1",
+  "terrain_basis": "Complete published suburban reference exposure; station is an explicit experiment forcing, not household address",
+  "time_basis": "local_standard_time_no_DST",
+  "weather": {
+    "path": "data/source/v9_sites_20261109/Sydney/AUS_NSW_Mascot.AP-Sydney.Intl.AP.947670_TMYx.2009-2023.epw",
+    "sha256": "9ec675a432fb7730a8ff6a3a891ecf1b3f3d35f91eabcf9f8230363d07d079c6"
+  },
+  "weather_identity": {
+    "city": "Mascot.AP-Sydney.Intl.AP",
+    "country": "AUS",
+    "elevation_m": 6.4,
+    "latitude": -33.9464,
+    "longitude": 151.1731,
+    "region": "NSW",
+    "source_label": "SRC-TMYx",
+    "timezone": 10.0,
+    "wmo": "947670"
+  }
+}

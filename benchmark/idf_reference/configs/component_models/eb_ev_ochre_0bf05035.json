@@ -1,0 +1,51 @@
+{
+  "EB_module": {
+    "path": "work/eb-native-component-20261029/appliance_sim.py",
+    "sha256": "f555f4f66bb8602976121f6c728e7c8d9654bef4c6736fcfd20b90d3d1babd5b"
+  },
+  "HPXML_LiIonNMC_temperature_or_home_fraction_spliced": false,
+  "OCHRE_event_generator_or_arrival_SOC_resets_adopted": false,
+  "ambient_voltage_and_SOC_dependent_performance": null,
+  "battery_thermal_or_degradation_model_claimed": false,
+  "charging_kernel_comparison": {
+    "path": "reports/eb_ev_reference_20261030/KERNEL_COMPARISON.json",
+    "sha256": "5667692f840f3fe0df6b637a927de159600cac09867a62d3313d2a8b4df03fbd"
+  },
+  "formal_admitted": false,
+  "gaps": [
+    "Published generic reference, not an empirically validated Chinese vehicle/charger",
+    "No cold/voltage/SOC-dependent efficiency data; constant efficiency is an explicit reference simplification",
+    "Chinese installation and supply compatibility plus joint weather/design scope need review",
+    "Four-day component step comparison is not annual six-device or 14/28-day initialization/recovery acceptance"
+  ],
+  "hardware": {
+    "capacity_kwh": 32.5,
+    "charger_kw": 7.2,
+    "efficiency": 0.9
+  },
+  "id": "eb_ev_ochre_0bf05035_BEV100",
+  "kernel_comparison_domain": "0 <= SOC_before_charge <= target_SOC <= 1; AC charging only; fixed reference capacity/power/efficiency",
+  "parameter_basis": {
+    "capacity": "Unmodified ElectricVehicle constructor: BEV 100-mile reference, source 325 Wh/mile",
+    "charger": "Same source EV_MAX_POWER, Level2 BEV100 = 7.2 kW AC",
+    "efficiency": "Same source EV_EFFICIENCY = 0.9; constant reference, no measured curve claimed"
+  },
+  "required_independent_inputs": [
+    "Initial SOC",
+    "Explicit connection",
+    "Trip traction energy",
+    "Charging window",
+    "Target SOC"
+  ],
+  "schema": "national_idf.eb_ev_component_reference.v1",
+  "source_archive": {
+    "path": "data/source/ochre_ev_20261030/ochre_0bf05035.tar.gz",
+    "sha256": "b31e9b4a35c4d427b493fc68b843a63c330e6580ffd8155e18cd951ce1a2fe39"
+  },
+  "source_commit": "0bf050355048a92301ece3122f8e5043889ad81c",
+  "source_module": {
+    "path": "work/ochre_reference_0bf05035/OCHRE-0bf050355048a92301ece3122f8e5043889ad81c/ochre/Equipment/EV.py",
+    "sha256": "a218e969b3ee627f39a4ec763c13649eb37150a85bb1a70ae84accb90ac8d387"
+  },
+  "supported_use": "EB constant-efficiency charging and energy ledger with explicit life/control inputs"
+}

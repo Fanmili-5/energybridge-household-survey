@@ -1,0 +1,14 @@
+{
+  "base_window_days": 7,
+  "both_windows_must_stay_within_source_year": true,
+  "no_housing_device_or_initial_state_modified": true,
+  "recovery_window_days": 14,
+  "reference_year_from_source_case": true,
+  "schema": "national_idf.reference_calendar_policy.v1",
+  "source_engineering_case": {
+    "path": "reports/condition_housing_20261108/dev_apartment_70_mid_EB/CASE.json",
+    "sha256": "0087909b9699a44d2a34cfca25603b8478b3829c4c8dc4c8a2cc8e6bbe5eef8a"
+  },
+  "user_life_and_control_dates_not_shifted_by_runtime": true,
+  "weather_time": "Pinned typicalyear forcing,localstandard time,noDST;calendarlabel isnot measured weather year"
+}

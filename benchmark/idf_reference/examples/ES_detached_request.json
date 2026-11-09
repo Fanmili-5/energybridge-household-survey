@@ -1,0 +1,30 @@
+{
+  "case": {
+    "path": "examples/engineering_case.v2.json",
+    "sha256": "1476e598d2e27767a0022a8d2789686f9b6c7e02bab74ae3c6934fb87e77b2e2"
+  },
+  "control_input_policy": "EB_source_control_inputs_v1",
+  "envelope_recipe_id": null,
+  "equipment": {
+    "path": "examples/equipment_six.json",
+    "sha256": "c6dd240099753368c59bc761aa11d587bf7882d31d802109af6ea8d0d19d38c4"
+  },
+  "housing": {
+    "country": "ES",
+    "reference_housing": {
+      "acknowledge_reference_not_survey_home": true,
+      "area_basis": "declared_reference_conditioned_floor_area",
+      "attached_walls": "None",
+      "conditioned_area_m2": 140,
+      "kind": "detached",
+      "stories_above_grade": 1,
+      "vertical_context": "slab_flat_roof"
+    },
+    "schema": "national_idf.housing_condition_request.v1",
+    "site_id": "Madrid",
+    "survey_housing": {}
+  },
+  "request_id": "11_ES_detached_s1_slab_flat_roof_a140",
+  "schema": "national_idf.reference_pipeline_request.v1",
+  "water_input_policy": "source_design_flow_normalization_v1"
+}

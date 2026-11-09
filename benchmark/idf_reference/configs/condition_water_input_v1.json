@@ -1,0 +1,29 @@
+{
+  "all_hardware_people_programmes_connections_and_background_fixed": true,
+  "derived_flow_envelope_is_not_tap_rating_pressure_or_thermal_service_guarantee": true,
+  "existing_numeric_standards_and_same_demand_native_equivalence_required": true,
+  "id": "source_design_flow_normalization_v1",
+  "normalization_formula": "min(tank_use_design_flow,loop_design_flow,pump_design_flow) minus other sourceWaterUse peaks;divide by sum of controlled fixture/waste peaks;apply common scale to controlled peaks only",
+  "only_two_general_fixture_peak_parameters_may_change": true,
+  "same_requested_flow_inverse_fraction_binding": true,
+  "scale_not_selected_from_household_demand_or_AB_outcomes": true,
+  "schema": "national_idf.reference_water_input_normalization.v1",
+  "source_basis": {
+    "daily_water_to_peak": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/hotwater_appliances.rb",
+      "sha256": "f5f58da106f16c18b2cb7a631bbc8ba2f968bbf2a97f7587bc1351c9d7b44e6d"
+    },
+    "schedule_integral": {
+      "path": "work/p1_hpxml_004ca3ce/HPXMLtoOpenStudio/resources/schedules.rb",
+      "sha256": "76a570b26a8eac6a238b1e266d660290b5a6defaa370948da4cddc31cef10f97"
+    },
+    "unchanged_flow_binding": {
+      "path": "national_idf/life_binding.py",
+      "sha256": "cd2ce8c4ca852ee2cb4054e6588f7449b25fa7571e2a977526c9da3a97453164"
+    },
+    "unchanged_tank": {
+      "path": "configs/component_models/EB_original_water_heater_c58a2a7a.json",
+      "sha256": "cb706b5976f85f32186409cdd5afe2daf7fa673173505de09cbcd250c5b2325b"
+    }
+  }
+}

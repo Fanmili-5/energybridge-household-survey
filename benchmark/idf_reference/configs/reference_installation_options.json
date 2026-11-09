@@ -1,0 +1,30 @@
+{
+  "background_is_explicit_experiment_not_population_calibration": true,
+  "candidate_assembly_id": "tengchong_a1_reference_boundary_review_20261031",
+  "distinct_condensing_option": {
+    "path": "configs/component_models/eb_condensing_reference_20261031.json",
+    "sha256": "957972f04b7b607893c6a213769064643723d2312493757702eb1e259b331ba7"
+  },
+  "existing_vented_options_retained": {
+    "path": "configs/installation_catalog.json",
+    "sha256": "c5e952c28f7988173ed1aa02fdec75883b49cca37569cfe0d0bffd64378e29cf"
+  },
+  "formal_Chinese_configurations": 0,
+  "id": "EB_reference_boundary_options_20261031",
+  "mains_candidates": {
+    "path": "reports/installation_boundary_breakthrough_20261031/MAINS_BOUNDARIES.json",
+    "sha256": "81721f1e0750302a8f8480dc1d79033e21d99e776e55e01a2146e825ea5a538b"
+  },
+  "mains_is_modelled_not_measured": true,
+  "published_supply_reference_option": {
+    "path": "reports/installation_boundary_breakthrough_20261031/SUPPLY_REFERENCE_OPTION.json",
+    "sha256": "aac172fab309925b63d7ce55225cdb3894424bbd05525592d147d0c975667258"
+  },
+  "reference_technology_is_selected_per_fixed_configuration_not_silently_changed_per_family": true,
+  "schema": "national_idf.reference_installation_options.v1",
+  "task_control_metering_framework": "Existing EB and CASE, existing source assembly compiler and official EnergyPlus",
+  "whole_aggregate_replacement": {
+    "path": "configs/installation_packs/tengchong_a1_whole_plug_reference_20261031.json",
+    "sha256": "19c5d903363c1c5104b8873e07a0e74016fc15d921f2ed3aa9c24c2e8460b635"
+  }
+}

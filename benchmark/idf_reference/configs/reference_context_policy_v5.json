@@ -1,0 +1,170 @@
+{
+  "area_rule": "Use only upstream explicitly marked reference area as experiment conditioned-area design input;retain originalsource_size_measure unchanged;no observed gross/net conversion",
+  "consent_required": true,
+  "context_provenance": {
+    "apartment": {
+      "attached_walls": "Public unit example has one attached side;left is an explicit official-option experimental orientation,not an inferred household wall",
+      "construction": "Registered complete reference package;not measured national stock",
+      "example": {
+        "path": "work/p1_hpxml_004ca3ce/workflow/sample_files/base-bldgtype-mf-unit.xml",
+        "sha256": "58fdae943bbd92f5e2af16a25ff86e12faaff1f19bc3e0b6020d6342823169fd"
+      },
+      "stories_above_grade": "Published complete example has1 above-grade conditioned floor",
+      "vertical_context": "Published apartment unit has units above/below"
+    },
+    "attached": {
+      "attached_walls": "Public unit example has one attached side;left is an explicit official-option experimental orientation,not an inferred household wall",
+      "construction": "Registered complete reference package;not measured national stock",
+      "example": {
+        "path": "work/p1_hpxml_004ca3ce/workflow/sample_files/base-bldgtype-sfa-unit.xml",
+        "sha256": "a9fda3ddc7998975ce869aa54c62eb2b3b6a02f1294c20f7e919ef6bc07e4fd5"
+      },
+      "stories_above_grade": "Published complete example has1 above-grade conditioned floor",
+      "vertical_context": "Explicit experimental flat-roof/slab-on-grade options from frozen official builder;not household fact"
+    },
+    "detached": {
+      "attached_walls": "Public detached example has no attached wall",
+      "construction": "Registered complete reference package;not measured national stock",
+      "example": {
+        "path": "work/p1_hpxml_004ca3ce/workflow/sample_files/base.xml",
+        "sha256": "1865a635dce8ca9b83753b534cf42f4e1f44b8fe866a4a178e143f3075bf74bc"
+      },
+      "stories_above_grade": "Published complete example has1 above-grade conditioned floor",
+      "vertical_context": "Explicit experimental flat-roof/slab-on-grade options from frozen official builder;not household fact"
+    }
+  },
+  "households_or_AB_generated": false,
+  "id": "eight_country_complete_reference_contexts_v5",
+  "missing_real_floors_or_materials_not_filled": true,
+  "new_country_scope": "Wholehome publicsource controlledreferences at declared example stations,not localstock or actualaddresses;source unknowns remainunknown",
+  "physical_support_or_global_coverage_claimed": false,
+  "previous_policy": {
+    "path": "configs/reference_context_policy_v2.json",
+    "sha256": "6a9d55f41a5f29badf47297aca90f1d9531e959ca07c29556bc2a7ede4c0912f"
+  },
+  "purpose": "Explicitly selected engineering reference contexts,not factual imputation,national stock or adopted production-family assignment",
+  "reference_contexts": {
+    "apartment": {
+      "attached_walls": "1 Side: Left",
+      "stories_above_grade": 1,
+      "vertical_context": "middle"
+    },
+    "attached": {
+      "attached_walls": "1 Side: Left",
+      "stories_above_grade": 1,
+      "vertical_context": "slab_flat_roof"
+    },
+    "detached": {
+      "attached_walls": "None",
+      "stories_above_grade": 1,
+      "vertical_context": "slab_flat_roof"
+    }
+  },
+  "reference_weather_exemplars": {
+    "AU": "Sydney",
+    "CN": "Guangzhou",
+    "DE": "Berlin",
+    "ES": "Madrid",
+    "GB": "London",
+    "IN": "Mumbai",
+    "MX": "MexicoCity",
+    "US": "Denver"
+  },
+  "schema": "national_idf.shared_reference_context_policy.v1",
+  "source_type_context_provenance": {
+    "A larger, free-standing house (e.g. double story or 4+ bedrooms)  ": "Explicit experimental two-story selection from the large-house label example and official buildertwo-story option;not a measured dwelling floor count"
+  },
+  "source_type_reference_contexts": {
+    "A larger, free-standing house (e.g. double story or 4+ bedrooms)  ": {
+      "stories_above_grade": 2
+    }
+  },
+  "source_type_to_reference_kinds": {
+    "A larger, free-standing house (e.g. double story or 4+ bedrooms)  ": [
+      "detached"
+    ],
+    "A semi-detached house (e.g. terraces, townhouse, duplex) ": [
+      "attached"
+    ],
+    "A smaller, freestanding house (e.g. single story and 3 or less bedrooms)": [
+      "detached"
+    ],
+    "An apartment or unit ": [
+      "apartment"
+    ],
+    "Apartment in a building with 2 to 5 flats": [
+      "apartment"
+    ],
+    "Apartment in a building with 6 or more flats": [
+      "apartment"
+    ],
+    "Single-family house attached to one or more other houses (for example: duplex, row or terraced house, or townhome)": [
+      "attached"
+    ],
+    "Single-family house detached from any other house": [
+      "detached"
+    ],
+    "apartment": [
+      "apartment"
+    ],
+    "attached_house": [
+      "attached"
+    ],
+    "detached_house": [
+      "detached"
+    ],
+    "flat": [
+      "apartment"
+    ],
+    "house_or_bungalow": [
+      "detached",
+      "attached"
+    ],
+    "independent_house_or_bungalow": [
+      "detached"
+    ],
+    "large_apartment_building": [
+      "apartment"
+    ],
+    "multi_storey_apartment": [
+      "apartment"
+    ],
+    "reference_apartment": [
+      "apartment"
+    ],
+    "small_apartment_building": [
+      "apartment"
+    ]
+  },
+  "sources": {
+    "frozen_V9_housing_labels": {
+      "path": "data/source/v9_remote_runtime_20261109/V9_HOUSING_INTERFACE_LABELS.json",
+      "sha256": "da11d91be1214687af486cac29f69a2613e8eb7365398737e0c86a20e5c3c88f"
+    },
+    "official_boundary_choices": {
+      "path": "work/p1_hpxml_004ca3ce/BuildResidentialHPXML/resources/options/geometry_attached_walls.tsv",
+      "sha256": "711b7fb2ac37e8b23093dfdec38f82a8fc20d014c5776780d7062131a29fec69"
+    },
+    "official_full_builder_workflow": {
+      "path": "work/p1_hpxml_004ca3ce/workflow/template-build-hpxml.osw",
+      "sha256": "785a4c07440c957354c8d380bed7bb23a81e176535c220b5ffeb340547cba80d"
+    },
+    "shared_enclosure_classes": {
+      "path": "configs/reference_enclosure_classes_v2.json",
+      "sha256": "81df2c6c549599641ec1c495d46babffba965c83f32a75699b04c0fcef1c98a6"
+    },
+    "source_apartment": {
+      "path": "work/p1_hpxml_004ca3ce/workflow/sample_files/base-bldgtype-mf-unit.xml",
+      "sha256": "58fdae943bbd92f5e2af16a25ff86e12faaff1f19bc3e0b6020d6342823169fd"
+    },
+    "source_attached": {
+      "path": "work/p1_hpxml_004ca3ce/workflow/sample_files/base-bldgtype-sfa-unit.xml",
+      "sha256": "a9fda3ddc7998975ce869aa54c62eb2b3b6a02f1294c20f7e919ef6bc07e4fd5"
+    },
+    "source_detached": {
+      "path": "work/p1_hpxml_004ca3ce/workflow/sample_files/base.xml",
+      "sha256": "1865a635dce8ca9b83753b534cf42f4e1f44b8fe866a4a178e143f3075bf74bc"
+    }
+  },
+  "unknown_type_not_guessed": true
+}

@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+reports/
+work/
+data/
+runtime/
+outputs/
+*.sql
+*.eso
+*.mtr
+*.log

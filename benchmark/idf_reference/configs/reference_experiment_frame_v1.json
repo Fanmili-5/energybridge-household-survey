@@ -1,0 +1,20 @@
+{
+  "area_basis": "declared_reference_conditioned_floor_area",
+  "basis": {
+    "path": "reports/condition_calendar_20261108/BOUNDARY_AREA_BASIS.json",
+    "sha256": "92f7d2a2636c616d0664c870aaa6ebe3b0a7d48bef4113391193ed273bb4c201"
+  },
+  "conditioned_area_m2_inclusive": [
+    27,
+    1300.64
+  ],
+  "future_requests_still_need_original_quality_checks": true,
+  "not_claiming_every_combination_numerically_validated": true,
+  "not_empirical_physical_or_stock_area_limits": true,
+  "outside_frame_requires_shared_scope_extension_not_per_city_material_search": true,
+  "schema": "national_idf.reference_experiment_input_frame.v1",
+  "target_projection": {
+    "path": "data/source/multicountry_20261107/household_interface_projection.json",
+    "sha256": "1f82ca380380195e078630b6d7765969ba5e688136ea11041702bc45886c94d6"
+  }
+}

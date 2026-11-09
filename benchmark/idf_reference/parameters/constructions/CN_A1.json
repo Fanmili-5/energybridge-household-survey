@@ -1,0 +1,337 @@
+{
+  "assemblies": [
+    {
+      "construction_row": [
+        "Construction",
+        "Win_SinglePane",
+        "SinglePane_Clear"
+      ],
+      "name": "Win_SinglePane",
+      "properties": {
+        "opaque_R_or_C_inferred": false,
+        "representation": "Complete source window model;not inferred from an opaque U value",
+        "source_layers": [
+          [
+            "WindowMaterial:SimpleGlazingSystem",
+            "SinglePane_Clear",
+            "5.8",
+            "0.87"
+          ]
+        ]
+      }
+    },
+    {
+      "construction_row": [
+        "Construction",
+        "ExtWall",
+        "Brick_240mm",
+        "Plaster_15mm"
+      ],
+      "name": "ExtWall",
+      "properties": {
+        "C_layers_J_m2K": 401328.0,
+        "R_layers_m2K_W": 0.3171296296296296,
+        "dynamic_admittance_claimed": false,
+        "layer_order": "outside_to_inside",
+        "layers": [
+          {
+            "C_areal_J_m2K": 380160.0,
+            "R_m2K_W": 0.2962962962962963,
+            "row": [
+              "Material",
+              "Brick_240mm",
+              "Rough",
+              "0.240",
+              "0.810",
+              "1800.0",
+              "880.0",
+              "0.9",
+              "0.7",
+              "0.7"
+            ],
+            "values": {
+              "conductivity": 0.81,
+              "density": 1800.0,
+              "roughness": "Rough",
+              "solar_absorptance": 0.7,
+              "specific_heat": 880.0,
+              "thermal_absorptance": 0.9,
+              "thickness": 0.24,
+              "visible_absorptance": 0.7
+            }
+          },
+          {
+            "C_areal_J_m2K": 21168.0,
+            "R_m2K_W": 0.020833333333333332,
+            "row": [
+              "Material",
+              "Plaster_15mm",
+              "Smooth",
+              "0.015",
+              "0.72",
+              "1680.0",
+              "840.0",
+              "0.9",
+              "0.7",
+              "0.7"
+            ],
+            "values": {
+              "conductivity": 0.72,
+              "density": 1680.0,
+              "roughness": "Smooth",
+              "solar_absorptance": 0.7,
+              "specific_heat": 840.0,
+              "thermal_absorptance": 0.9,
+              "thickness": 0.015,
+              "visible_absorptance": 0.7
+            }
+          }
+        ],
+        "surface_films_included": false
+      }
+    },
+    {
+      "construction_row": [
+        "Construction",
+        "RoofConst",
+        "RoofTile_10mm",
+        "Concrete_120mm",
+        "Plaster_15mm"
+      ],
+      "name": "RoofConst",
+      "properties": {
+        "C_layers_J_m2K": 262414.92,
+        "R_layers_m2K_W": 0.10210225708780621,
+        "dynamic_admittance_claimed": false,
+        "layer_order": "outside_to_inside",
+        "layers": [
+          {
+            "C_areal_J_m2K": 15960.0,
+            "R_m2K_W": 0.011904761904761906,
+            "row": [
+              "Material",
+              "RoofTile_10mm",
+              "Rough",
+              "0.010",
+              "0.84",
+              "1900.0",
+              "840.0",
+              "0.9",
+              "0.6",
+              "0.6"
+            ],
+            "values": {
+              "conductivity": 0.84,
+              "density": 1900.0,
+              "roughness": "Rough",
+              "solar_absorptance": 0.6,
+              "specific_heat": 840.0,
+              "thermal_absorptance": 0.9,
+              "thickness": 0.01,
+              "visible_absorptance": 0.6
+            }
+          },
+          {
+            "C_areal_J_m2K": 225286.91999999998,
+            "R_m2K_W": 0.06936416184971098,
+            "row": [
+              "Material",
+              "Concrete_120mm",
+              "MediumRough",
+              "0.120",
+              "1.73",
+              "2243.0",
+              "837.0",
+              "0.9",
+              "0.65",
+              "0.65"
+            ],
+            "values": {
+              "conductivity": 1.73,
+              "density": 2243.0,
+              "roughness": "MediumRough",
+              "solar_absorptance": 0.65,
+              "specific_heat": 837.0,
+              "thermal_absorptance": 0.9,
+              "thickness": 0.12,
+              "visible_absorptance": 0.65
+            }
+          },
+          {
+            "C_areal_J_m2K": 21168.0,
+            "R_m2K_W": 0.020833333333333332,
+            "row": [
+              "Material",
+              "Plaster_15mm",
+              "Smooth",
+              "0.015",
+              "0.72",
+              "1680.0",
+              "840.0",
+              "0.9",
+              "0.7",
+              "0.7"
+            ],
+            "values": {
+              "conductivity": 0.72,
+              "density": 1680.0,
+              "roughness": "Smooth",
+              "solar_absorptance": 0.7,
+              "specific_heat": 840.0,
+              "thermal_absorptance": 0.9,
+              "thickness": 0.015,
+              "visible_absorptance": 0.7
+            }
+          }
+        ],
+        "surface_films_included": false
+      }
+    },
+    {
+      "construction_row": [
+        "Construction",
+        "FloorConst",
+        "Concrete_Floor_100mm",
+        "Timber_20mm"
+      ],
+      "name": "FloorConst",
+      "properties": {
+        "C_layers_J_m2K": 203339.1,
+        "R_layers_m2K_W": 0.20066061106523533,
+        "dynamic_admittance_claimed": false,
+        "layer_order": "outside_to_inside",
+        "layers": [
+          {
+            "C_areal_J_m2K": 187739.1,
+            "R_m2K_W": 0.05780346820809249,
+            "row": [
+              "Material",
+              "Concrete_Floor_100mm",
+              "MediumRough",
+              "0.100",
+              "1.73",
+              "2243.0",
+              "837.0",
+              "0.9",
+              "0.65",
+              "0.65"
+            ],
+            "values": {
+              "conductivity": 1.73,
+              "density": 2243.0,
+              "roughness": "MediumRough",
+              "solar_absorptance": 0.65,
+              "specific_heat": 837.0,
+              "thermal_absorptance": 0.9,
+              "thickness": 0.1,
+              "visible_absorptance": 0.65
+            }
+          },
+          {
+            "C_areal_J_m2K": 15600.0,
+            "R_m2K_W": 0.14285714285714285,
+            "row": [
+              "Material",
+              "Timber_20mm",
+              "Smooth",
+              "0.020",
+              "0.14",
+              "650.0",
+              "1200.0",
+              "0.9",
+              "0.65",
+              "0.65"
+            ],
+            "values": {
+              "conductivity": 0.14,
+              "density": 650.0,
+              "roughness": "Smooth",
+              "solar_absorptance": 0.65,
+              "specific_heat": 1200.0,
+              "thermal_absorptance": 0.9,
+              "thickness": 0.02,
+              "visible_absorptance": 0.65
+            }
+          }
+        ],
+        "surface_films_included": false
+      }
+    }
+  ],
+  "construction_IDF": {
+    "path": "reports/regional_envelope_correction_20261109/reference_material_libraries/A1/CONSTRUCTIONS.idf",
+    "sha256": "670aca15a458c281ba5c7a00a85a2e00aaca8d4b7afac2efa7a84c82f917b9d4"
+  },
+  "engine_schema": {
+    "path": "work/official-openstudio-3.11.0/OpenStudio-3.11.0+241b8abb4d-Darwin-arm64/EnergyPlus/Energy+.schema.epJSON",
+    "sha256": "256211b0a756913383254d986c12dcc476294098a7bd4bf524d029facfab6f36"
+  },
+  "experimental_reference_not_stock_distribution": true,
+  "id": "CN_SETA_A1_published_reference",
+  "literal_object_digest": "a4fb082f7ba69491004dbc0c769168663a083374daca7160b6c517b62271769d",
+  "literal_source_object_set_preserved": true,
+  "measured_household_or_site_data_required": false,
+  "origin_country": "CN",
+  "publication_metadata": {
+    "path": "reports/regional_envelope_correction_20261109/CURRENT_CN_SOURCE_METADATA.json",
+    "sha256": "fe4b32efc2b9f3d41479f482f85f786ac60cc17b4d2cbf55d750ebdabab7924e"
+  },
+  "regional_assignment_or_installation_validated": false,
+  "remaining_work": [
+    "Declare target class and face-role compatibility",
+    "Install by semantic surface roles and audit all changes",
+    "Check thermal and dynamic effects through unchanged EB compiler/criteria"
+  ],
+  "schema": "national_idf.complete_reference_enclosure_library.v1",
+  "source_archive": {
+    "path": "data/source/repository_discovery_20261023/SETA_D_26_06283_R1_REPRO_ZENODO_FINAL.zip",
+    "sha256": "6692197c747878735be466937443e3510eeccb3c3f4039808a4dd6c4ac9d7483"
+  },
+  "source_geometry_weather_ground_HVAC_and_routines_imported": false,
+  "source_model": {
+    "path": "data/source/tengchong_envelope_radiation_20261027/SETA_original_members/models/nominal/A1_A/in.idf",
+    "sha256": "d4c2d770254012c6d971aa7227ce4e8188cce90f95dfffafee49b6ca92e69d63"
+  },
+  "source_parameter_pack": {
+    "path": "configs/housing_rules/A1.json",
+    "sha256": "36ef5a2617d6060115634472dbfe9e6c4f32bf894da5b29146d297fdebd5a1bf"
+  },
+  "source_usage": [
+    {
+      "source_construction": "ExtWall",
+      "surface_type": "Wall"
+    },
+    {
+      "source_construction": "ExtWall",
+      "surface_type": "Wall"
+    },
+    {
+      "source_construction": "ExtWall",
+      "surface_type": "Wall"
+    },
+    {
+      "source_construction": "ExtWall",
+      "surface_type": "Wall"
+    },
+    {
+      "source_construction": "RoofConst",
+      "surface_type": "Roof"
+    },
+    {
+      "source_construction": "FloorConst",
+      "surface_type": "Floor"
+    },
+    {
+      "source_construction": "Win_SinglePane",
+      "surface_type": "Window"
+    },
+    {
+      "source_construction": "Win_SinglePane",
+      "surface_type": "Window"
+    },
+    {
+      "source_construction": "Win_SinglePane",
+      "surface_type": "Window"
+    }
+  ]
+}
