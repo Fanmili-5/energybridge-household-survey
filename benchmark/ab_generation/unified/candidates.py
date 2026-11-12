@@ -45,7 +45,375 @@ def issues(c,patches,needs=()):
         if original:view['A']['controls'].append({**original,'start_min':p['start_min'],'end_min':p['end_min']})
     corrected=site_capacity(view,apply(c['A'],patches))
     checks=sorted(set([x for x in checks if not x.startswith('SITE_')]+corrected['issues']))
-    corrected[…6439 tokens truncated…e:
+    corrected['EV_basis']='explicit_scheduled_A_energy_and_literal_B_windows_inside_declared_physical_connection'
+    return checks,gates,corrected
+
+
+def engineering_issues(c,b,needs=(),reported=()):
+    from ..eb_primary import active
+    if active(c):
+        from ..eb_primary_candidates import engineering
+        return engineering(c,b)
+    errors=legacy_engineering_issues(c,b,needs,reported)
+    if 'INCOMPLETE_EV_CONNECTION' not in errors:return errors
+    from ..connection_states import covers
+    if covers(c,b):return [e for e in errors if e!='INCOMPLETE_EV_CONNECTION']
+    # A declared already-plugged initial state is evidence, not a new plug
+    # operation. Only this explicit source origin can discharge a missing plug.
+    invalid=False
+    for row in b['controls']:
+        if row['kind']!='ev_charge_window':continue
+        ops=[o for o in b['operations'] if o['asset_id']==row['asset_id'] and o['need_id']==row['need_id']]
+        plug=[o for o in ops if o['kind']=='EV_plug'];unplug=[o for o in ops if o['kind']=='EV_unplug']
+        if len(plug)==len(unplug)==1:continue
+        if row in c['A']['controls'] and (row['end_min']<=c['horizon_min'][0] or row['start_min']>=c['horizon_min'][1]):continue
+        evidence=[p for p in c.get('physical_ev_connections',[]) if p['need_id']==row['need_id'] and p.get('origin')=='given_anchor_connection'
+            and p['start_min']<=row['start_min']<row['end_min']<=p['end_min']]
+        if not (not plug and len(unplug)==1 and evidence and evidence[0]['end_min']==unplug[0]['start_min']):invalid=True
+    return errors if invalid else [e for e in errors if e!='INCOMPLETE_EV_CONNECTION']
+
+
+def numeric_handling_slots(c,op,left,right):
+    """Original time grid without the soft calendar/reservation admission gate.
+
+    Qualification, past-operation immutability and service-chain engineering
+    remain separate constraints. An unavailable operator is a proposal conflict,
+    never evidence of consent or of a newly available helper.
+    """
+    length=op['end_min']-op['start_min']
+    lo=((max(left,c['decision_min'])+9)//10)*10
+    hi=min(right,c['horizon_min'][1]-length)//10*10
+    return list(range(lo,hi+1,10))
+
+
+def program_grammar(c,d,lc,handling_calendar_domain='convenience_only'):
+    """Independent physical stages, full local load/retrieval Cartesian grid.
+
+    Separately installed dryers are separate variables. An automatic combo
+    remains one inseparable service. Source dependencies are restored on every
+    literal task; the temporary adapter view only disables legacy chain shifting.
+    """
+    from ..eb_primary import active
+    if active(c):
+        from ..eb_primary_candidates import programmes
+        yield from programmes(c,d)
+        return
+    slots=numeric_handling_slots if handling_calendar_domain=='include_life_conflicts' else _slots
+    view={**c,'A':{**c['A'],'tasks':[dict(t) for t in c['A']['tasks']]}}
+    original={t['task_id']:t for t in c['A']['tasks']}
+    for task in view['A']['tasks']:
+        if task.get('depends_on_need_id'):task.pop('depends_on_need_id')
+    # A future timer-controlled program can already be loaded at decision time.
+    # Enumerate its machine choices, then keep every executed operation fixed.
+    starts=[o['start_min'] for o in c['A']['operations'] if o['asset_id']==d['asset_id']]
+    view['decision_min']=min([c['decision_min']]+starts)
+    handled=set();needs={n['need_id']:n for n in c['needs']}
+    for raw in _raw_programs(view,d,lc):
+        raw=copy.deepcopy(raw)
+        original_tasks=[original[t['task_id']] for p in raw['patches'] if p.get('collection')=='tasks' for t in p['rows']]
+        if c.get('question_unit')=='one_dated_household_day':
+            from ..primary_day_clock import start_supported
+            if any(not start_supported(c,original[t['task_id']],t)
+                   for patch in raw['patches'] if patch.get('collection')=='tasks' for t in patch['rows']):continue
+        if any(t['start_min']<c['decision_min'] for t in original_tasks):continue
+        for patch in raw['patches']:
+            if patch.get('collection')=='tasks':
+                for t in patch['rows']:
+                    if original[t['task_id']].get('depends_on_need_id'):
+                        t['depends_on_need_id']=original[t['task_id']]['depends_on_need_id']
+        parent_ids={t.get('depends_on_need_id') for p in raw['patches'] if p.get('collection')=='tasks' for t in p['rows']}-{None}
+        raw['needs']=sorted(set(raw['needs'])|parent_ids)
+        if raw['mechanism']!='retimed_handling':yield raw
+        tasks=next(p['rows'] for p in raw['patches'] if p.get('collection')=='tasks')
+        key=tuple((t['task_id'],t['start_min'],t['end_min']) for t in tasks)
+        if key in handled:continue
+        handled.add(key);nid=raw['service_need_id'];need=needs[nid]
+        ops=[o for o in c['A']['operations'] if o['need_id']==nid]
+        if len(ops)!=2 or {o['kind'] for o in ops}!={'load','unload'}:continue
+        load=next(o for o in ops if o['kind']=='load');unload=next(o for o in ops if o['kind']=='unload')
+        first=min(t['start_min'] for t in tasks);end=max(t['end_min'] for t in tasks)
+        loads=slots(c,load,max(need['release_min'],first-(load['end_min']-load['start_min'])-need['maximum_preload_wait_min']),first-(load['end_min']-load['start_min']))
+        if load['start_min']<c['decision_min']:
+            loads=[load['start_min']] if load['end_min']<=first and load['start_min']>=need['release_min'] else []
+        if not need['timer_allowed']:loads=[x for x in loads if x+load['end_min']-load['start_min']==first]
+        unloads=slots(c,unload,end,min(need['deadline_min']-(unload['end_min']-unload['start_min']),end+need.get('maximum_retrieval_wait_min',180)))
+        raw['_deadline']=need['deadline_min']
+        permitted=[]
+        for op,points in ((load,loads),(unload,unloads)):
+            movable=(op['start_min']>=c['decision_min'] and op['operator_id'] not in c['authority']['immutable_operator_ids'] and
+                     op['operator_id'] in c['authority']['assets'][op['asset_id']]['authorized_operator_ids'])
+            permitted.append(points if movable else [t for t in points if t==op['start_min']])
+        excluded=len(loads)*len(unloads)-len(permitted[0])*len(permitted[1])
+        if excluded:
+            yield dict(symbolic_exclusion=True,request_count=excluded,
+                family=raw['family'],asset_id=raw['asset_id'],service_need_id=nid,
+                issues=['HARD_OPERATION_PERMISSION_DOMAIN'],
+                template=raw,load=load,unload=unload,all_loads=loads,all_unloads=unloads,
+                allowed_loads=permitted[0],allowed_unloads=permitted[1],
+                encoding='cartesian_minus_allowed_cartesian;lossless_expandable',
+                repaired=False,replacement_generated=False)
+        loads,unloads=permitted
+        prepared=prepare_template(raw)
+        for a,z in itertools.product(loads,unloads):
+            yield ProgramRecipe(raw,load,unload,a,z,prepared)
+
+
+def relevance(c,children,event):
+    result=explain(c,children,event)
+    if result['passed']:return result
+    roots=[r for r in children if direct(c,r,event)]
+    root_tasks={t['task_id']:t for r in roots for p in r['patches'] if p.get('collection')=='tasks' for t in p['rows']}
+    before=apply(c['A'],[p for r in roots for p in r['patches']]);after=apply(c['A'],[p for r in children for p in r['patches']])
+    def bad(plan,own):
+        problems=set();tasks=plan['tasks'];ops=plan['operations']
+        for t in tasks:
+            if t['need_id'] not in own:continue
+            parent=t.get('depends_on_need_id')
+            if parent and c.get('source',{}).get('appliance_command_protocol')=='eb.primary_appliance_calls.v1':
+                upstream=next((p for p in tasks if p['need_id']==parent),None)
+                if upstream and upstream['end_min']>t['start_min']:problems.add(('programme_order',parent,t['need_id']))
+            if parent:
+                unload=next((o for o in ops if o['need_id']==parent and o['kind']=='unload'),None)
+                load=next((o for o in ops if o['need_id']==t['need_id'] and o['kind']=='load'),None)
+                if unload and load and unload['end_min']>load['start_min']:problems.add(('material_transfer',parent,t['need_id']))
+            for other in tasks:
+                if other['task_id'] in root_tasks and other['asset_id']==t['asset_id'] and other['task_id']!=t['task_id'] and max(t['start_min'],other['start_min'])<min(t['end_min'],other['end_min']):
+                    problems.add(('machine_occupancy',other['need_id'],t['need_id']))
+        return problems
+    for child in children:
+        if child['id'] in result['components']:continue
+        own={t['need_id'] for p in child['patches'] if p.get('collection')=='tasks' for t in p['rows']}
+        introduced=bad(before,own)-bad(c['A'],own);resolved=introduced-bad(after,own)
+        if resolved:
+            result['components'][child['id']]=dict(role='necessary_service_or_machine_dependency',
+                evidence=[dict(kind=k,root_need_id=p,support_need_id=s,absent_in_A=True,present_without_support=True,absent_with_support=True) for k,p,s in sorted(resolved)])
+    result['unrelated_component_ids']=[r['id'] for r in children if r['id'] not in result['components']]
+    result['passed']=not result['unrelated_component_ids'];return result
+
+
+def prepare(context,cfg):
+    if context['reference']['information_set']['mode']!='offline_unexecuted_A_plan':
+        raise ValueError('UNIFIED_DEFAULT_FORBIDS_FUTURE_THERMAL_OBSERVATIONS')
+    if context['reference'].get('thermal'):raise ValueError('UNDECLARED_FUTURE_A_STATE')
+    if any(context.get(k) is not None for k in ('actual_outcomes','human_acceptance','human_score','human_reason')):
+        raise ValueError('OUTCOME_OR_ANSWER_IN_GENERATOR_INPUT')
+    if context.get('source',{}).get('appliance_command_protocol')=='eb.primary_appliance_calls.v1':
+        from ..eb_agent_contract import plan_errors
+        errors=plan_errors(context,context['A'])
+        if errors:raise ValueError('A_OUTSIDE_ORIGINAL_AGENT_CONTRACT:'+','.join(errors))
+    # A display cutoff is not an EV departure or a service deadline. Extend the
+    # planning view only using already supplied original endpoint evidence.
+    view=copy.deepcopy(context);end=view['horizon_min'][1]
+    active={t['need_id'] for t in context['A']['tasks'] if context['decision_min']<=t['start_min']<1440}
+    for n in context['needs']:
+        if n['need_id'] in active:end=max(end,n['deadline_min'])
+    for row in context['A']['controls']:
+        if row['kind']!='ev_charge_window' or row['start_min']>=1440 or row['end_min']<=context['decision_min']:continue
+        endpoints=[o['start_min'] for o in context['A']['operations'] if o['kind']=='EV_unplug' and o['need_id']==row['need_id']]
+        if endpoints:end=max(end,max(endpoints))
+    view['horizon_min']=[context['horizon_min'][0],end]
+    c=working_context(view);c['events']=[copy.deepcopy(cfg['event'])]
+    c['reference']=copy.deepcopy(c['reference'])
+    if context.get('question_unit')=='one_dated_household_day':
+        # Midnight and next08:00 cannot cut an already-given continuous need.
+        c['reference']['ev_charging_steps']=copy.deepcopy(context['reference'].get('ev_charging_steps',[]))
+    c['reference']['binding']={'A_commands_sha256':command_hash(context['A']),
+        'context_sha256':digest({k:v for k,v in context.items() if k!='reference'}),'method':digest(cfg)}
+    return c
+
+
+def legacy_config(cfg):
+    # Reuse literal command adapters, never the old selection/budget policy.
+    from ..collection_design import DEFAULT
+    c=copy.deepcopy(DEFAULT);c.update(seed=cfg['seed'],event=copy.deepcopy(cfg['event']),
+        ac_axes=['cooling','heating'],
+        ac_delta_C=[i/2 for i in range(1,round(max(cfg['ac_delta_C'])*2)+1)],
+        tank_delta_C=list(range(1,round(max(cfg['tank_delta_C']))+1)),
+        thermal_duration_min=cfg['thermal_duration_min'],ac_precondition_min=cfg['precondition_min'])
+    return c
+
+
+def ev_grammar(c,d,cfg):
+    """Full resume grid; explicit CP schedules can recover within real plug spans.
+
+    Moving a scheduled control row never moves plug/unplug or creates a charger.
+    Failed pause-only requests remain available with their original energy need.
+    """
+    from ..eb_primary import active
+    if active(c):
+        from ..eb_primary_candidates import ev_windows
+        yield from ev_windows(c,d)
+        return
+    groups=defaultdict(list)
+    for s in c['reference'].get('ev_charging_steps',[]):
+        if s['start_min']>=c['decision_min'] and s['grid_kWh']>0:groups[s['need_id']].append(s)
+    for nid,steps in sorted(groups.items()):
+        if not any(s['start_min']<1440 for s in steps):continue
+        controls=[r for r in c['A']['controls'] if r['asset_id']==d['asset_id'] and r['kind']=='ev_charge_window' and r['need_id']==nid]
+        if not controls:continue
+        explicit=all('_unified_id' in r for r in controls)
+        physical=[r for r in c.get('physical_ev_connections',[]) if r['need_id']==nid]
+        if explicit and not physical:continue
+        end=max(r['end_min'] for r in physical) if explicit else c['_original_ev_connection_ends'][(d['asset_id'],nid)]
+        end=min(end,c['horizon_min'][1]);anchor=min(s['start_min'] for s in steps);energy=sum(s['grid_kWh'] for s in steps)
+        starts=[('ev_defer',anchor,z) for z in range(anchor+10,end,10)]
+        if d['parameters'].get('charge_session_policy')!='single_contiguous_session_per_episode':
+            starts.extend(('event_pause_and_recover',lo,hi) for lo in range(1080,1140,10) for hi in range(lo+10,1141,10))
+        for mechanism,lo,hi in starts:
+            if explicit:
+                moving=sorted(controls,key=lambda r:r['start_min']);at=max(anchor,hi) if mechanism=='ev_defer' else anchor
+                moved=[];after=[]
+                for r,s in zip(moving,sorted(steps,key=lambda r:r['start_min'])):
+                    while at<end and (lo<=at<hi or not any(p['start_min']<=at and at+10<=p['end_min'] for p in physical)):at+=10
+                    if at+10>end:break
+                    moved.append({**r,'start_min':at,'end_min':at+10})
+                    after.append(dict(asset_id=d['asset_id'],start_min=at,end_min=at+10,power_kw=s['grid_kWh']*6));at+=10
+                if len(moved)==len(moving):
+                    patches=[dict(type='rows',collection='controls',identity='_unified_id',rows=moved)]
+                    left=0
+                else:
+                    # Literal failed pause; do not invent recovery outside plug span.
+                    patches=[dict(type='control_pause',asset_id=d['asset_id'],kind='ev_charge_window',need_id=nid,start_min=lo,end_min=hi)]
+                    after=[dict(asset_id=d['asset_id'],start_min=s['start_min'],end_min=s['end_min'],power_kw=s['grid_kWh']*6) for s in steps if not lo<=s['start_min']<hi]
+                    left=energy-sum(s['power_kw']/6 for s in after)
+            else:
+                left=energy;after=[]
+                for t in range(max(anchor,hi) if mechanism=='ev_defer' else anchor,end,10):
+                    if lo<=t<hi or not any(r['start_min']<=t and t+10<=r['end_min'] for r in controls):continue
+                    amount=min(d['parameters']['charger_kw']/6,left)
+                    if amount>1e-10:after.append(dict(asset_id=d['asset_id'],start_min=t,end_min=t+10,power_kw=amount*6));left-=amount
+                patches=[dict(type='control_pause',asset_id=d['asset_id'],kind='ev_charge_window',need_id=nid,start_min=lo,end_min=hi)]
+            yield dict(unit='ev:'+d['asset_id']+':'+nid,family='ev',asset_id=d['asset_id'],service_need_id=nid,
+                mechanism=mechanism,branch='later' if mechanism=='ev_defer' else 'event_pause',needs=[],patches=patches,
+                profiles={'A':[{**s,'asset_id':d['asset_id'],'power_kw':s['grid_kWh']*6} for s in steps],'B':after},
+                extra_issues=['CHARGE_EXCEEDS_ORIGINAL_CONNECTION'] if left>1e-8 else [],
+                magnitude=dict(dose_coordinate=hi-lo,pause_min=hi-lo,
+                    **({'permission_pause_interval_min':[lo,hi]} if explicit else {}),
+                    service_slack_min=end-max((s['end_min'] for s in after),default=hi),
+                    energy_shortfall_kWh=max(0,left),required_A_grid_kWh=energy,manual_total_shift_min=0,manual_max_shift_min=0))
+
+
+def heating_precondition(c,d,local):
+    """Known occupied heating reference only; no invented heating-OFF sentinel."""
+    lo=local['event']['start_min'];controls=[r for r in c['A']['controls'] if r['asset_id']==d['asset_id'] and r['kind']=='ac_setpoint']
+    refs=[r for r in controls if r['start_min']<=lo<r['end_min'] and r['heating_setpoint_C']>5]
+    if not refs:return
+    reference=refs[0]['heating_setpoint_C']
+    for delta,duration,lead,direction in itertools.product(local['ac_delta_C'],local['thermal_duration_min'],local['ac_precondition_min'],('aligned','opposing')):
+        start=lo-lead;hi=lo+duration
+        if start<c['decision_min'] or not all(any(r['start_min']<=t and t+10<=r['end_min'] for r in controls) for t in range(start,hi,10)):continue
+        if not all(any(a<=t and t+10<=z for a,z in c['occupancy'].get(d['room_id'],[])) for t in range(lo,hi,10)):continue
+        change=-delta if direction=='aligned' else delta
+        patches=[dict(type='control_interval',asset_id=d['asset_id'],kind='ac_setpoint',start_min=start,end_min=lo,values={'heating_setpoint_C':reference-change})]
+        patches.extend(dict(type='control_interval',asset_id=d['asset_id'],kind='ac_setpoint',start_min=max(lo,r['start_min']),end_min=min(hi,r['end_min']),values={'heating_setpoint_C':r['heating_setpoint_C']+change}) for r in controls if r['start_min']<hi and r['end_min']>lo)
+        yield dict(unit='ac:'+d['asset_id']+':heating',family='ac',asset_id=d['asset_id'],mechanism='precondition_and_relax',branch='heating:'+direction,needs=[],patches=patches,profiles=None,
+            magnitude=dict(dose_coordinate=delta,service_delta_C=delta,duration_min=duration,precondition_min=lead,axis='heating',direction=direction,
+                actual_max_command_delta_C=max(abs(p['values']['heating_setpoint_C']-r['heating_setpoint_C']) for p in patches for r in controls if p['start_min']<r['end_min'] and p['end_min']>r['start_min']),
+                manual_total_shift_min=0,manual_max_shift_min=0))
+
+
+def heating_description(c,raw):
+    # Cooling's 40C fallback says nothing about heating availability. Keep axes
+    # independent instead of suppressing heating delta when cooling is stopped.
+    before=[r for r in c['A']['controls'] if r['asset_id']==raw['asset_id'] and r['kind']=='ac_setpoint'];phases=[]
+    for p in raw['patches']:
+        for a in before:
+            lo=max(p['start_min'],a['start_min']);hi=min(p['end_min'],a['end_min'])
+            if lo<hi:phases.append(dict(start_min=lo,end_min=hi,A_heating_setpoint_C=a['heating_setpoint_C'],B_heating_setpoint_C=p['values']['heating_setpoint_C'],same_time_setpoint_delta_C=p['values']['heating_setpoint_C']-a['heating_setpoint_C']))
+    return dict(schema='eb.heating_intervention.v1',axis='heating',phases=phases,
+        state_change='unchanged',preconditioning_min=raw['magnitude'].get('precondition_min',0),
+        cooling_stop_requested_min=0,additional_thermostat_enabled_min=0,
+        amplitude_axes={'temperature_offset':'small' if raw['magnitude']['service_delta_C']<=.5 else 'medium' if raw['magnitude']['service_delta_C']<=1 else 'large',
+            'preconditioning':'none' if not raw['magnitude'].get('precondition_min') else 'record_raw_minutes',
+            'event_duration':'record_raw_minutes'},
+        state='heating_threshold_request;availability_and_actual_runtime_unknown',
+        native_availability_off_claimed=False,cooling_fallback_is_not_heating_state=True,
+        actual_compressor_runtime_min=None,actual_room_temperature_C=None,response_kWh=None)
+
+
+def coupled_precondition(c,raw,local):
+    """Construct the nearest companion bound satisfying the original deadband.
+
+    This is a separate native operator, not a repair after outcome evaluation.
+    Single-axis requests remain in the diagnostic grammar. Each companion change
+    has the algebraic withdrawal witness: restoring it violates the deadband.
+    """
+    if raw['family']!='ac' or raw['mechanism']!='precondition_and_relax':return None
+    axis=raw['magnitude']['axis'];controls=[r for r in c['A']['controls'] if r['asset_id']==raw['asset_id'] and r['kind']=='ac_setpoint']
+    patches=[];changes=[]
+    for patch in raw['patches']:
+        for a in controls:
+            lo=max(patch['start_min'],a['start_min']);hi=min(patch['end_min'],a['end_min'])
+            if lo>=hi:continue
+            values=dict(patch['values']);heat=values.get('heating_setpoint_C',a['heating_setpoint_C']);cool=values.get('cooling_setpoint_C',a['cooling_setpoint_C'])
+            gap=a.get('heating_and_cooling_deadband_C',0)
+            if axis=='cooling' and heat>cool-gap:
+                values['heating_setpoint_C']=cool-gap
+                changes.append(dict(start_min=lo,end_min=hi,field='heating_setpoint_C',A=a['heating_setpoint_C'],B=cool-gap,
+                    required_deadband_C=gap,without_companion_gap_C=cool-heat,reason='necessary_original_deadband_companion'))
+            elif axis=='heating' and cool<heat+gap:
+                values['cooling_setpoint_C']=heat+gap
+                if 'value_C' in a:values['value_C']=heat+gap
+                changes.append(dict(start_min=lo,end_min=hi,field='cooling_setpoint_C',A=a['cooling_setpoint_C'],B=heat+gap,
+                    required_deadband_C=gap,without_companion_gap_C=cool-heat,reason='necessary_original_deadband_companion'))
+            patches.append({**patch,'start_min':lo,'end_min':hi,'values':values})
+    if not changes:return None
+    item=copy.deepcopy(raw);item['patches']=patches
+    item['magnitude'].update(coupled_thermostat_axes=True,companion_setpoint_changes=changes,
+        max_companion_delta_C=max(abs(r['B']-r['A']) for r in changes),
+        construction_operator='minimal_companion_projection_onto_original_deadband',
+        companion_is_not_pre_authorized=True)
+    if axis=='heating':item['magnitude']['ac_intervention']=heating_description(c,item)
+    else:
+        from ..collection_thermal import describe
+        item['magnitude']['ac_intervention']=describe(c,raw['asset_id'],patches,axis,local['event'],local['ac_delta_C'])
+    return item
+
+
+def raw_grammar(c,cfg):
+    lc=legacy_config(cfg)
+    for d in sorted(c['devices'],key=lambda d:d['asset_id']):
+        kinds=set(d['types'])
+        if kinds&{'washer','dryer','dishwasher'}:yield from program_grammar(c,d,lc,cfg.get('handling_calendar_domain','convenience_only'))
+        elif 'ev' in kinds:
+            yield from ev_grammar(c,d,cfg)
+        elif kinds&{'ac','water_heater'}:
+            if 'water_heater' in kinds and c.get('source',{}).get('appliance_command_protocol')=='eb.primary_appliance_calls.v1':
+                from ..eb_primary_candidates import wh_windows
+                yield from wh_windows(c,d,cfg)
+                continue
+            # All event start-grid points and complete 10-minute duration grid.
+            for lo in range(1080,1140,10):
+                local=copy.deepcopy(lc);local['event']['start_min']=lo
+                local['thermal_duration_min']=[x for x in cfg['thermal_duration_min'] if lo+x<=1140]
+                primary_agent=c.get('source',{}).get('appliance_command_protocol')=='eb.primary_appliance_calls.v1'
+                if primary_agent:
+                    local['ac_axes']=['cooling']
+                    local['thermal_duration_min']=[x for x in local['thermal_duration_min'] if x>15]
+
+                raws=itertools.chain(_raw_thermal(c,d,local,require_occupied=c.get('source',{}).get('appliance_command_protocol')!='eb.primary_appliance_calls.v1'),heating_precondition(c,d,local) if 'ac' in kinds and not primary_agent else ())
+                for raw in raws:
+                    # value_C is a legacy cooling alias, never another state.
+                    if raw['family']=='ac':
+                        for p in raw['patches']:
+                            values=p.get('values',{})
+                            if 'cooling_setpoint_C' in values and any('value_C' in r for r in c['A']['controls'] if r['asset_id']==d['asset_id'] and r['kind']=='ac_setpoint'):
+                                values['value_C']=values['cooling_setpoint_C']
+                    if raw['magnitude'].get('axis')=='heating':raw['magnitude']['ac_intervention']=heating_description(c,raw)
+                    yield raw
+                    paired=coupled_precondition(c,raw,local)
+                    if paired:yield paired
+
+
+def catalogue_domains(c,cfg):
+    units=defaultdict(dict);raw_count=0;unmodified=0;diagnostics=[];gaps=[];supports=[]
+    indexed={k:{r[idkey]:r for r in c['A'][k]} for k,idkey in [('tasks','task_id'),('operations','operation_id')]}
+    def changes(raw):
+        for p in raw['patches']:
+            if p['type']=='rows':
+                originals=indexed.get(p['collection']) or {r[p['identity']]:r for r in c['A'][p['collection']]}
+                if any(r!=originals.get(r[p['identity']]) for r in p['rows']):return True
+            else:
                 for r in c['A']['controls']:
                     if r['asset_id']!=p['asset_id'] or r['kind']!=p['kind'] or r['start_min']>=p['end_min'] or r['end_min']<=p['start_min']:continue
                     if p['type']=='control_pause' and r.get('need_id')==p['need_id']:return True
