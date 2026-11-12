@@ -1,0 +1,69 @@
+{
+  "commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "url": "https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/experiments/benchmark/family_runner.py",
+  "source_blob_sha": "9555146bf4889b1a8dfa9098369096c0c59cfc8d",
+  "excerpts": [
+    {
+      "lines": [
+        12431,
+        12505
+      ],
+      "code": "            if _agent_model_owns_valid_plan(method):\n                # Adaptive planning advertises this exact hard envelope.  An\n                # uncertain/protective profile is decision evidence, not a\n                # hidden clamp that silently replaces the model's valid plan.\n                sp_lower = _run_sp_min\n                sp_upper = _run_sp_max\n            raw_sp = float(data.get(\"setpoint\", fb_sp))\n            sp_lower = locals().get(\"sp_lower\", _energy_saving_sp_floor)\n            if mpc_direct_control:\n                sp_lower = _run_sp_min\n                sp_upper = _rule_milp_sp_max\n                if agent_pre_vpp_precool:\n                    pre_vpp_target = _agent_pre_vpp_setpoint_c(\n                        loop,\n                        ac_sp_min_c=_ac_sp_min,\n                        ac_sp_max_c=_ac_sp_max,\n                        ac_sp_default_c=_ac_sp_default,\n                        run_sp_max_c=_run_sp_max,\n                        protective_mode=_protective_mode,\n                        multi_user_comfort_first=_agent_multi_user_comfort_first,\n                    )\n                    sp_lower = max(_run_sp_min, min(_run_sp_max, pre_vpp_target))\n                    sp_upper = sp_lower\n                elif agent_post_vpp_restore:\n                    sp_upper = max(_run_sp_min, min(_run_sp_max, _ac_sp_default))\n                elif not vpp_active:\n                    economic_grid_mode = (\n                        method == \"agent\"\n                        and _agent_memory_is_cost_grid_oriented(loop)\n                        and not agent_memory_protective\n                    )\n                    economic_cap = min(_run_sp_max, _ac_sp_max + 1.0)\n                    sp_upper = min(sp_upper, economic_cap if economic_grid_mode else _ac_sp_max)\n                    feedback_floor = _agent_rule_milp_hvac_feedback_adjustment_c(\n                        loop.vpp_event_log,\n                        preferred_max_c=_ac_sp_max,\n                        run_sp_min_c=_run_sp_min,\n                        run_sp_max_c=_run_sp_max,\n                    )\n                    if feedback_floor is not None:\n                        efficient_floor = feedback_floor\n                    elif economic_grid_mode:\n                        efficient_floor = economic_cap\n                    else:\n                        efficient_floor = min(_run_sp_max, _ac_sp_max)\n                    sp_lower = max(sp_lower, efficient_floor)\n            elif not _agent_model_owns_valid_plan(method):\n                learned_floor = _learned_efficiency_floor_c(\n                    loop.vpp_event_log,\n                    persona_config,\n                    default_sp_c=_ac_sp_default,\n                    preferred_max_c=_ac_sp_max,\n                    vpp_active=bool(vpp_active),\n                )\n                if learned_floor is not None:\n                    sp_lower = max(sp_lower, learned_floor)\n            if sp_lower > sp_upper:\n                sp_lower = sp_upper\n            sp = round(max(sp_lower, min(sp_upper, raw_sp)), 1)\n            if sp < raw_sp:\n                suffix = f\" | comfort cap {sp_upper:.1f}C\"\n                data[\"reason\"] = (str(data.get(\"reason\", \"\"))[: max(0, 100 - len(suffix))] + suffix)[:100]\n            elif sp > raw_sp:\n                suffix = f\" | efficient floor {sp_lower:.1f}C\"\n                data[\"reason\"] = (str(data.get(\"reason\", \"\"))[: max(0, 100 - len(suffix))] + suffix)[:100]\n            nch = data.get(\"next_check_hour\")\n            if nch is not None:\n                nch = float(nch)\n                if nch <= sim_h + 0.25 or nch > total_sim_hours:\n                    nch = None\n            reason = str(data.get(\"reason\", \"\"))\n            if not _agent_model_owns_valid_plan(method):\n                # V1 generated a deterministic household-facing explanation here.\n                # V2 keeps the model's own rationale so model/prompt differences\n                # remain observable, while the English/length validator below is"
+    },
+    {
+      "lines": [
+        11004,
+        11051
+      ],
+      "code": "    print(f\"  [VPP Schedule] {describe_vpp_events(vpp_events)}  source={loop.vpp_schedule_source}\")\n    if disable_acceptance_fallback:\n        print(\"  [Acceptance/Fallback] disabled for strategy-adaptability experiment\")\n\n    # \u2500\u2500 Read persona AC config (from appliances.ac field in persona JSON) \u2500\u2500\u2500\u2500\u2500\u2500\n    _ac_cfg   = (appliance_config or {}).get(\"ac\", {})\n    if method == \"agent\" and _adaptive_harness_v2():\n        _ac_sp_min, _ac_sp_max, _ac_sp_tol = _agent_observable_ac_bounds(loop)\n    else:\n        _ac_sp_min = float(_ac_cfg.get(\"setpoint_preferred_min_c\", 24.0))\n        _ac_sp_max = float(_ac_cfg.get(\"setpoint_preferred_max_c\", 26.0))\n        _ac_sp_tol = float(_ac_cfg.get(\"temp_tolerance_c\", 1.0))\n    _ac_sp_default = round((_ac_sp_min + _ac_sp_max) / 2, 1)\n    if method == \"agent\" and _adaptive_harness_v2():\n        # V2 controller protection comes from observable onboarding evidence,\n        # never hidden persona tags or evaluator-only household profiles.\n        _protective_mode = _agent_memory_is_protective(loop)\n        _agent_multi_user_comfort_first = bool(\n            _protective_mode\n            and _agent_memory_comfort_priority(loop) == \"high\"\n        )\n    else:\n        _protective_mode = method == \"agent\" and _protective_control_mode(persona_config)\n        _agent_multi_user_comfort_first = (\n            method == \"agent\" and _multi_user_household_comfort_first_mode(persona_config)\n        )\n    if method == \"agent\" and not _adaptive_harness_v2():\n        _member_strict_max = _household_member_min_preferred_max_c(persona_config)\n        if _member_strict_max is not None:\n            _ac_sp_max = min(_ac_sp_max, float(_member_strict_max))\n            _ac_sp_default = round(min(_ac_sp_default, _ac_sp_max), 1)\n    _auto_saving_mode = (\n        False\n        if method == \"agent\" and _adaptive_harness_v2()\n        else _price_sensitive_auto_saving_mode(persona_config)\n    )\n    _ac_sp_vpp_min = round(_ac_sp_max + 0.5, 1)   # minimum raise during VPP\n    _ac_sp_vpp_max = round(_ac_sp_max + 1.5, 1)   # typical VPP raise ceiling\n    # Override global SP_MIN based on persona comfort floor\n    if method == \"agent\":\n        _run_sp_min = max(SP_MIN, _ac_sp_min - _ac_sp_tol)\n        _run_sp_max = min(SP_MAX, _ac_sp_max + 2.0)  # allow VPP raise headroom\n    else:\n        _run_sp_min = SP_MIN\n        _run_sp_max = SP_MAX\n    _rule_milp_sp_min = SP_MIN\n    _rule_milp_sp_max = AC_OFF_FALLBACK_COOLING_SETPOINT\n    _energy_saving_sp_floor = _run_sp_min"
+    },
+    {
+      "lines": [
+        11130,
+        11178
+      ],
+      "code": "[APPLIANCE CONTROL \u2014 explicit commands & available parameters]\n\nThere are no hidden appliance defaults in the simulator. If this JSON does not\nemit a concrete command for a present appliance, that appliance will not be\nstarted by code. Record only the command this policy actually chooses.\n\nWASHER / DISHWASHER / DRYER (run once per day)\n  Choose a start time inside the user window shown in appliance status.\n  The status window's latest_h is the latest FINISH time, not latest start. Therefore latest valid\n  start_h = latest_h - duration_h. If dryer duration is 1.5h and window ends 23:00, start at or before 21.5.\n  For overnight windows marked (+1d), next-morning start_h is valid only if the cycle finishes before latest_h.\n  On VPP days: choose a start time so the full cycle [start_h, start_h+duration_h] does not overlap VPP_WINDOW.\n  If the appliance status or constraints say fixed/non-DR-adjustable, emit its preferred routine start_h and skip=false; do not leave it null.\n  If the current clock is already at/inside VPP_WINDOW, do not choose a past start_h as a workaround; schedule after VPP_WINDOW unless the appliance status already says the task is finished.\n  Service rule: these tasks should normally still be completed the same day.\n  Skip is an exception only when the task is truly unnecessary that day. If you choose skip,\n  the system may ask you once to confirm; otherwise reschedule instead.\n  Parameters:\n    washer_start_h      : float  \u2014 hour-of-day to start (e.g. 10.0 = 10:00). Allowed window shown in status.\n    washer_skip         : bool   \u2014 true = do not run today only if the task is genuinely unnecessary.\n    (same pattern for dishwasher_start_h, dishwasher_skip, dryer_start_h, dryer_skip)\n\nWATER HEATER (electric tank, thermal storage)\n  Emit a preheat schedule if hot water should be prepared for bath time.\n  On VPP days: move the preheat window away from VPP_WINDOW, preferably ending about 1 hour before the event.\n  If the water heater is fixed/non-DR-adjustable, emit its configured routine preheat window and temperature; do not leave it null.\n  Preheat is a short preparation window, not all-day heating. Keep duration near the configured/candidate window and never exceed it by more than about 1 hour.\n  At a later replan, do not rewrite water-heater preheat into a time window that has already ended.\n  Hotter tank = more thermal storage = less chance of heating during VPP.\n  Parameters:\n    water_heater_preheat_start_h : float  \u2014 hour-of-day to begin preheating.\n    water_heater_preheat_end_h   : float  \u2014 hour-of-day to stop preheating; avoid VPP_WINDOW on VPP days.\n    water_heater_preheat_temp_c  : float  \u2014 tank setpoint during preheat, 45\u201375\u00b0C.\n    water_heater_preheat         : bool   \u2014 true = activate, false = disable (you can omit if setting times).\n\nEV CHARGER (home charger, arrival/departure shown in status)\n  On VPP days: set an explicit charge window that does not overlap VPP_WINDOW.\n  For EV-constrained users, start charging as soon as VPP_WINDOW ends if needed for departure SOC.\n  SOC and arrival time shown in status each step.\n  HARD SERVICE RULE: the EV must reach target SOC by the departure/check time. Plan for this at daily planning time.\n  For evening-arrival EVs, charge after the vehicle returns. A same-day early-morning window\n  such as 0.0-8.0 happens before arrival and is not a valid main charge plan for that evening's commute energy.\n  Parameters:\n    ev_mode             : optional \"smart\"|\"delay\"|\"normal\" metadata only; it is not a substitute for a charging window.\n    ev_charge_start_h   : float  \u2014 override: begin charging at this hour (e.g. 22.0).\n    ev_charge_end_h     : float  \u2014 override: stop  charging at this hour (e.g. 7.0 = 07:00 next morning).\n\n[VPP STRATEGY EXPLANATION]\nWhen VPP_ACTIVE or VPP_TODAY is present, include a concise `strategy_explanation` object for collaborator review."
+    },
+    {
+      "lines": [
+        14785,
+        14798
+      ],
+      "code": "                            if _adaptive_harness_v2()\n                            else str(_ce)\n                        )\n                        print(f\"  [Capacity Window] failed: {detail}\")\n\n            # VPP role-play scoring is intentionally deferred to the event day's\n            # 24:00 boundary above, after service outcomes are observable.\n\n        if loop.h_cool != -1: ex.set_actuator_value(s, loop.h_cool, loop.sp)\n        if loop.h_heat != -1: ex.set_actuator_value(s, loop.h_heat, HTG_SP)\n\n        loop.prev_sim_h = sim_h\n        if wu: return\n        pmv = _compute_pmv(temp)"
+    }
+  ],
+  "scope": "Pinned original main Agent API;physical primitives,not PPO action space.",
+  "functions": {
+    "_adaptive_v3_appliance_action_contract_errors": {
+      "start_line": 3274,
+      "end_line": 3328,
+      "sha256": "2021b5dc9967220ea51a8af4c53e9b480c8cd96cf78acb67a20e7013cb394dd7"
+    },
+    "_adaptive_v3_water_heater_action_errors": {
+      "start_line": 3219,
+      "end_line": 3273,
+      "sha256": "024f8e11e08fcc42b3d812ca72ffcad190e03414ab8dc9489cd5076f193af418"
+    },
+    "_adaptive_v3_plan_control_errors": {
+      "start_line": 3329,
+      "end_line": 3372,
+      "sha256": "feae55ddff3d7992fccbbd925175cc305f0a04d9e58f4ffac6c1d9f35b94f2d0"
+    },
+    "_missing_explicit_appliance_actions": {
+      "start_line": 4452,
+      "end_line": 4503,
+      "sha256": "03668f70c4625884149523be2a641cdc17f977cee0e8ac8fbcd76f2b7613fa0a"
+    },
+    "_present_agent_controlled_appliances": {
+      "start_line": 3801,
+      "end_line": 3816,
+      "sha256": "9ee036d0f981b8346cd93c41a4c951e107276ada6047c91fd318b3e974192ad7"
+    },
+    "_agent_observable_ac_bounds": {
+      "start_line": 145,
+      "end_line": 171,
+      "sha256": "6968704a053a92f2e60d9d387371367e5e35f0ff60f6d68b5d29ff8e93d3d266"
+    }
+  },
+  "observable_profile_adapter": "Only the benchmark adapter _agent_memory_profile is supplied;listed original function bodies are unchanged."
+}

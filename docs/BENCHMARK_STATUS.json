@@ -1,0 +1,98 @@
+{
+  "schema": "eb.benchmark.pipeline_status.v1",
+  "as_of": "2026-11-12",
+  "scope": "V9 eight-country household pipeline;separate from historic online50 release",
+  "source_households_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+  "households": {
+    "count": 1000,
+    "countries": {
+      "CN": 125,
+      "US": 125,
+      "GB": 125,
+      "ES": 125,
+      "DE": 125,
+      "IN": 125,
+      "MX": 125,
+      "AU": 125
+    },
+    "roles": {
+      "A": 166,
+      "B": 198,
+      "C": 125,
+      "D": 151,
+      "E": 156,
+      "F": 204
+    },
+    "controlled_class_counts": {
+      "4": 333,
+      "5": 333,
+      "6": 334
+    },
+    "AC_present_and_controlled": 1000,
+    "AC_reference_augmentation": 311,
+    "accepted_scope": "source/life/service/coverage/replay;not human preference validity"
+  },
+  "AB": {
+    "rules": "six_original_Agent_actions_v3",
+    "pilot_households": 49,
+    "pilot_pairs": 490,
+    "producer_guard_connected": true,
+    "eligible_AC_cells": {
+      "covered": 102,
+      "total": 102,
+      "min_countries_per_cell": 2
+    },
+    "initial_pool_joint_targets": {
+      "covered": 178,
+      "total": 178,
+      "globally_exhaustive": false
+    },
+    "corrected_pilot_EnergyPlus_runs": 0,
+    "old_pairs_audited": 10000,
+    "old_B_current_contract_failures": 4335,
+    "formal10000_regeneration_complete": false
+  },
+  "IDF": {
+    "public_snapshot": "benchmark/idf_reference/SOURCE_LOCK.json",
+    "public_example_sites": 9,
+    "server_research_city_candidate": 35,
+    "server_research_extensions_fully_ported_to_public_snapshot": false,
+    "old_AB_pairs": {
+      "total": 76,
+      "full_recovery_passed": 62,
+      "question_window_passed": 68,
+      "independent_denominators": false
+    },
+    "replacement_attempts": {
+      "total": 9,
+      "passed": 7,
+      "failed": 2,
+      "not_additive_to_original76": true
+    },
+    "candidate_housing_routing_resolved": 1000,
+    "reference_city_reassigned": 57,
+    "remaining_original_failed_requests_without_passing_alternative": 2,
+    "default_city_candidate_activated": false,
+    "corrected_AB_physics_accepted": false
+  },
+  "questionnaire": {
+    "planned": "UI91 with version-bound simulation consequences",
+    "new_V9_release_accepted": false,
+    "new_V9_human_validity_demonstrated": false,
+    "illustrative_answers_not_training_labels": true,
+    "proposed_API_answer_count": 2000,
+    "API_allocation_frozen": false,
+    "human_and_synthetic_labels_separate": true
+  },
+  "scope_of_this_update": {
+    "source_docs_aggregate_only": true,
+    "new_physics_runs": 0,
+    "paid_API_calls": 0,
+    "training_runs": 0,
+    "online_release_changed": false,
+    "private_records_published": false
+  },
+  "acceptance": "not yet a complete validated benchmark",
+  "method": "docs/METHOD.md",
+  "review": "docs/ACL_BENCHMARK_REVIEW_20261112.md"
+}

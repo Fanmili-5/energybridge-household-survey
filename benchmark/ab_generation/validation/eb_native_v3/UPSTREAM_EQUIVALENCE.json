@@ -1,0 +1,77 @@
+{
+  "upstream_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "checks": {
+    "vendored_contract": {
+      "file_sha256": "e2a21168d7e7dfa8afca158b1ddcbe8339215efe57b274fd94df40226e757fd8",
+      "verified_functions": [
+        {
+          "function": "_adaptive_v3_water_heater_action_errors",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_adaptive_v3_appliance_action_contract_errors",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_adaptive_v3_plan_control_errors",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_missing_explicit_appliance_actions",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_present_agent_controlled_appliances",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_agent_observable_ac_bounds",
+          "unchanged_source_body": true
+        }
+      ]
+    },
+    "original_applier": {
+      "file_sha256": "e2f9619b323d162390406bcff0f2e461afc45de9ad0858a6f74fa6cf833df70b",
+      "verified_functions": [
+        {
+          "function": "_adaptive_v3_apply_appliance_actions",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_shiftable_has_existing_service_plan",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_ev_window_remaining_hours",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_ev_replan_would_reduce_existing_charge",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_abs_interval_from_hod",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_bounded_water_heater_preheat_window",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_water_heater_configured_preheat_hours",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_adaptive_v3_water_heater_action_errors",
+          "unchanged_source_body": true
+        },
+        {
+          "function": "_adaptive_v2_plan_patches",
+          "unchanged_source_body": true
+        }
+      ]
+    }
+  },
+  "original_native_appliance_source_unchanged": true,
+  "observable_profile_adapter_explicit": true
+}

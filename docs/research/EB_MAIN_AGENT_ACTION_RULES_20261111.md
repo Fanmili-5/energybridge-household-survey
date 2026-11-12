@@ -1,0 +1,24 @@
+# 六类电器A→B规则：原EB Agent动作复核
+
+固定依据：[EB family_runner.py](https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/experiments/benchmark/family_runner.py)，提交2b17ae63e613da776c93e900f5dace50d63a88a8。核对Agent的字段、校验、执行前归一化及电器实际执行；未运行完整LLM/规划器/同意流程。动作接口对齐不等于照搬原规划器全部保守择优政策。
+
+| 电器 | 原Agent开放字段 | 本批A→B采用的子集 |
+|---|---|---|
+| 空调 | setpoint、next_check_hour | 只改制冷设定温度；按家庭可观察范围与原上限；温度1位小数；10分钟网格上的20/30/60分钟调温段，逐次验证恢复时点 |
+| 洗衣机 | washer_start_h、washer_skip | 每日完整程序保留，skip=false，只移动开始时间 |
+| 烘干机 | dryer_start_h、dryer_skip | 完整程序保留，只移动开始时间；若家庭声明同批衣物，保留先洗后烘约束 |
+| 洗碗机 | dishwasher_start_h、dishwasher_skip | 每日完整程序保留，skip=false，只移动开始时间 |
+| 热水器 | preheat开关、start/end、temp | 一段当日预热，目标是储水温度；45—75℃与物理硬件范围取交集；窗口不超过原执行器实际配置上限 |
+| EV | charge_start/end、可选normal/smart/delay模式 | 固定充电功率、初始SOC与离场目标，只改合法充电时段；连续运行，允许跨夜开始；显式窗口下模式不算独立物理覆盖维度 |
+
+40℃停冷回退、制热、风机和直接功率控制均不属于本批Agent动作。原EB有跳过任务、关闭预热接口；本批已约定每日服务必须保留，因此采用上述受限子集。其他电器的功率、程序、时长、设备参数、EV目标SOC不能通过B修改。B可以与家庭软偏好冲突，接受与否留给真人。
+
+本轮修复了空调0.25℃名义变化被实际四舍五入、10分钟主动调温段无法通过next_check执行、完整Agent响应缺少显式布尔字段，以及非法动作进入覆盖分母的问题。生成器的A入口、覆盖因子构造、B请求组合和原生导出审核现已共用六类动作检查。
+
+125项相关测试通过，其中21项专门测试六类动作与生产入口。49户×10题重新选出的490组均通过真实生产request重编译（动作不变），980份完整A/B响应通过原校验器，再通过原生电器回放。合法空调覆盖102/102，每项至少两个不同国家；既定联合组合178/178。停冷、制热改动、温度舍入不一致和不可表达的主动检查时间均为0。原6个合同函数、9个执行函数和原电器源码均经过固定版本核对，未为了通过而改写。
+
+旧10000组静态复核：A全部通过动作规则；4335个B不通过新合同。旧导出已标为需重生成，尚未替换。该静态结果不证明旧A的热仿真已通过。
+
+动作规则与490组试跑这一关通过。1000户全量重新生成、正式覆盖分母冻结、同源A/B EnergyPlus热后果和UI91展示仍待验收。原1000户、八国各125户、六类配额及真人标签未改变。
+
+审查流程软件引用（只说明审查工作流）：Kassis, T., Agarwal, V., He, Y., Patel, D., & Brueckner, A. M. (2026). *Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents*. https://doi.org/10.48550/arXiv.2609.00065 。已核对当前arXiv记录。

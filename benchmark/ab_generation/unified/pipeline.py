@@ -181,12 +181,15 @@ def fresh_context(problem,result,date,portrait,cfg):
     needs=[]
     for j in problem['jobs']:
         n={k:copy.deepcopy(v) for k,v in j.items() if k not in ('policy','preferred_start_min','date')}
-        n.update({k:copy.deepcopy(j['policy'][k]) for k in ('duration_min','maximum_preload_wait_min','maximum_retrieval_wait_min','timer_allowed','machine_windows_min')})
+        n.update({k:copy.deepcopy(j['policy'][k]) for k in ('duration_min','maximum_preload_wait_min','maximum_retrieval_wait_min','timer_allowed','machine_windows_min') if k in j['policy']})
         if j.get('automatic_child_need_id'):
             n.update(wash_only_delivery='auto combo wash then dry',wearable_clothes_ready_at_program_end=False)
         if j.get('automatic_parent_need_id'):
             n.update(upstream_need_id=j['automatic_parent_need_id'],batch_id=j['automatic_parent_need_id'])
-        n['release_min']-=base;n['deadline_min']-=base;needs.append(n)
+        n['release_min']-=base;n['deadline_min']-=base
+        if 'start_window_min' in n:n['start_window_min']=[v-base for v in n['start_window_min']]
+        if n.get('exact_source_release_min') is not None:n['exact_source_release_min']-=base
+        needs.append(n)
     needs.extend({**n,'release_min':n['release_min']-base,'deadline_min':n['deadline_min']-base}
         for n in problem['nonprogram_requirements'])
     authority=dict(schema='eb.ab_authority.v1',immutable_operator_ids=[],origin='source_qualification;proposal_not_execution_consent',assets={})
@@ -198,6 +201,8 @@ def fresh_context(problem,result,date,portrait,cfg):
         operator_windows=windows,occupancy=occupancy,reservations=reservations,authority=authority,
         events=[copy.deepcopy(cfg['event'])],tariff=[],event_meter_scope='modeled_controlled_equipment',assignment=dict(mode='fresh_candidates'),
         source=dict(mode='fresh_generation',A_source_sha256=result['input_sha256'],portrait_sha256=digest(portrait),physical_outputs_used=False))
+    if problem.get('input_lineage',{}).get('appliance_command_protocol'):
+        c['source']['appliance_command_protocol']=problem['input_lineage']['appliance_command_protocol']
     c['physical_ev_connections']=[shift(r) for r in result.get('physical_ev_connections',[])]
     if result.get('conditional_target_context'):
         targets=result['conditional_target_context']

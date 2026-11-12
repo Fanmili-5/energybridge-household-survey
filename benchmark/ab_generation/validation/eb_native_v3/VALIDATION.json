@@ -1,0 +1,78 @@
+{
+  "schema": "eb.six_agent_actions.validation.v3",
+  "status": "reviewed_pilot_six_agent_action_contracts_and_full_native_execution_passed",
+  "counts": {
+    "AC_scalar_checkpoint_commands": 1682,
+    "native_programme_calls": 2760,
+    "WH_native_windows": 980,
+    "EV_native_replays": 440,
+    "EV_starts_after_midnight": 35,
+    "pairs": 490,
+    "AC": 346,
+    "stop": 0,
+    "plain_AC": 336
+  },
+  "households": 49,
+  "common_anchor_grid_hit": 102,
+  "common_anchor_grid_total": 102,
+  "declared_joint_cells": 178,
+  "selected_declared_joint_cells": 178,
+  "each_common_grid_cell_countries_min": 2,
+  "role_reference_counts": {
+    "role_a_price_cooperative_commuter": {
+      "ac.reference:below": 14,
+      "ac.reference:at": 13,
+      "ac.reference:above": 23
+    },
+    "role_b_home_comfort_gated": {
+      "ac.reference:above": 39,
+      "ac.reference:at": 16,
+      "ac.reference:below": 5
+    },
+    "role_c_irregular_cautious": {
+      "ac.reference:below": 16,
+      "ac.reference:at": 23,
+      "ac.reference:above": 22
+    },
+    "role_d_ideal_dr_participant": {
+      "ac.reference:below": 34,
+      "ac.reference:at": 14,
+      "ac.reference:above": 9
+    },
+    "role_e_caregiver_low_dr": {
+      "ac.reference:above": 35,
+      "ac.reference:at": 18,
+      "ac.reference:below": 2
+    },
+    "role_f_ev_commuter_optimizer": {
+      "ac.reference:above": 20,
+      "ac.reference:below": 20,
+      "ac.reference:at": 13
+    }
+  },
+  "counterexample_checks": {
+    "original_agent_ac_action_domain_checked": 490,
+    "production_request_recompiled_unchanged": 490,
+    "original_full_appliance_payload_checked": 980,
+    "misleading_magnitude_metadata_ignored": 490,
+    "hidden_unrepresented_patch_rejected": 490,
+    "truncated_programme_rejected": 490
+  },
+  "all_household_controlled_classes_covered": true,
+  "literal_descriptors_recomputed": true,
+  "native_EV_source_connection_and_target_preserved": true,
+  "original_agent_AC_domain_checked": true,
+  "all_six_original_agent_contracts_checked": true,
+  "AC_setpoint_rounding_mismatches": 0,
+  "AC_unexpressible_next_checks": 0,
+  "independent_cooling_stop_action_allowed": false,
+  "agent_heating_setpoint_changes": 0,
+  "human_labels_used": false,
+  "source_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+  "EnergyPlus_runs": 0,
+  "AC_room_response_validated": false,
+  "hot_water_delivery_validated": false,
+  "production_10000_changed": false,
+  "scope": "bounded command coverage andnative action semantics;not population prevalence,all global cases orphysical outcome validation",
+  "seconds": 7.89
+}

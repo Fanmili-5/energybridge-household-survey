@@ -1,32 +1,26 @@
 # A/B策略生成
 
-从给定家庭的生活需求生成日常A；冻结A后，围绕18:00—19:00的VPP构造有不同取舍的B，再分配每户十题。生活安排、设备和授权不为凑覆盖而改写，没帮助、生活冲突及可计算失败保留；工程逻辑错误隔离诊断。
+当前八国V9路线：按固定EB noDR规则生成完整日常A；从原EB Agent合法动作构造B候选，按覆盖约束选择每户十个不同日期、每天一个B。完整上下游见[项目方法](../../docs/METHOD.md)，当前状态见[状态表](../../docs/BENCHMARK_STATUS.json)。
 
-## 当前方法
+## 当前入口
 
-| 内容 | 阅读入口 |
-|---|---|
-| 新版机会识别、逐设备变化、事件关联、联合与去重 | [十天采集方法](docs/collection/COLLECTION_METHOD.md) |
-| 计划、覆盖、缺额和实际验证范围 | [采集验证](docs/collection/COLLECTION_VALIDATION.md) |
-| 生活需求如何形成A | [生活到A](docs/life/LIFE_METHOD.md)、[生活输入](docs/life/LIFE_INPUTS.md) |
-| 原EB对应、完整未来A的离线条件、论文与参数 | [设计](docs/core/DESIGN.md)、[离线实验](docs/core/OFFLINE_EXPERIMENT.md)、[证据](docs/core/EVIDENCE.md)、[参数](docs/core/PARAMETERS.md) |
-| 基础接口及独立实验复现 | [接口](docs/core/INPUTS.md)、[复现](docs/core/REPRODUCE.md) |
+- [一天题目合同](DAY_QUESTION_CONTRACT.md)、[V9生产连接](V9_PRODUCTION_CONNECTION.md)：日期、服务与源绑定。
+- [六类原Agent动作](../../docs/research/EB_MAIN_AGENT_ACTION_RULES_20261111.md)、[eb_agent_contract.py](eb_agent_contract.py)：原生动作守卫。
+- [eb_primary.py](eb_primary.py)、[v9_date_adapter.py](v9_date_adapter.py)：原日常A与家庭日期适配。
+- [eb_primary_candidates.py](eb_primary_candidates.py)、[unified/candidates.py](unified/candidates.py)：原生修改候选与组合。
+- [新版规则与490题试跑](validation/eb_native_v3/README.md)：有限覆盖、原生执行和未完成项。
 
-现有50户从冻结A侧导入，新B独立生成；正式物理结果和UI91接入由[project](../project/)完成。当前数据范围见[数据与验收](../../docs/DATASET.md)。基础三策略实验、旧分层和新版正式十天选题分别管理。
+原生动作守卫已接入A入口、候选因子、合并请求与导出检查。空调不添加停冷/独立制热；程序设备保留每日完整任务；EV为停车连接内连续一段，可跨夜。B可违背软偏好，真人接受标签不由算法提前决定。
 
-## 入口与核验
+**生产CLI旧默认配置与服务器V3试跑编排分开。** 不能仅运行旧默认入口就宣称重建新版490题或正式10000题。全量新版尚未生成，旧10000题有4335个B不满足当前动作合同；本轮490题的EnergyPlus后果未验收。
 
-- `benchmark.ab_generation build-life`：生活条件→服务需求与A。
-- `benchmark.ab_generation.collection`：固定A→新版候选、准入、十天分配与回放。
-- `benchmark.ab_generation.reference_collection`：既有50户A侧导入。
+## 检查与历史
+
+按[试跑说明](validation/eb_native_v3/README.md)运行相关动作/服务反例测试。原生源代码缺失时部分测试会跳过，应如实报告，不能将其计作原生回放通过。
 
 ```bash
 python -B -m benchmark.ab_generation.audit_design
 python -B -m benchmark.ab_generation.verify_package
 ```
 
-来源、数值和授权登记为`SOURCES.json`、`PARAMETERS.json`、`COLLECTION_PARAMETERS.json`、`AUTHORIZATION.json`。精确数值和搜索权重是明示实验设定，论文不自动证明本批数据的代表性或真人效度。
-
-旧联合上限、敏感性、长尾分层、缺额修订与自查均收在[历史方法与记录](docs/history/)，原版本结果保留。完整实验在研究计算环境显式运行，GitHub只做有界检查。
-
-> 当前研究入口：[unified v2.10](unified/README.md)。其CLI默认读取CURRENT_CONFIG.json；下列旧模块及已封存结果保留重放，新规则不回写原A/B或仿真。
+[旧十天采集方法](docs/collection/COLLECTION_METHOD.md)、[v2.10/v2.11](../research_delivery/METHOD.md)、[早期生活到A](docs/life/LIFE_METHOD.md)及[历史复现](docs/core/REPRODUCE.md)按原版本保留。其装取动作、默认配置、候选和物理后果不能自动继承到新版原Agent动作规则。当前实现测试不启动模型API、训练、EnergyPlus或采集数据库。

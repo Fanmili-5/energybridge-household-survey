@@ -63,6 +63,21 @@ def thermal_timing(context, component, event):
     No inference about temperature, compressor state or realized response.
     """
     m = component['magnitude']
+    native=m.get('native_preheat_window')
+    if native:
+        a,z,temp=native['A'];b,y,target=native['B'];lo,hi=event['start_min'],event['end_min']
+        points=sorted({a,z,b,y,lo,hi});changed=[];prep=[]
+        for x,t in zip(points,points[1:]):
+            A=temp if a<=x<z else None;B=target if b<=x<y else None
+            if A!=B:changed.append((x,t))
+            if B is not None and A is None:prep.append((x,t))
+        before=union_minutes(prep,min(a,b,lo),lo);inside=union_minutes(prep,lo,hi);after=union_minutes(prep,hi,max(z,y,hi))
+        return dict(event_start_min=lo,event_end_min=hi,construction_lead_min=max(0,a-b),
+            preparation_interval_min=None,pre_event_preparation_min=before,in_event_preparation_min=inside,
+            after_event_preparation_min=after,event_changed_request_min=union_minutes(changed,lo,hi),
+            phase='pre_event_preparation' if before else 'in_event_preparation' if inside else 'no_changed_preparation',
+            preparation_kind='single_native_preheat_window' if prep else None,
+            before_event_cooling_request=False,before_event_heating_request=bool(before),actual_response_known=False)
     patches = [p for p in component['patches'] if p['type'] == 'control_interval']
     lo, hi = event['start_min'], event['end_min']
     axis = m.get('axis', 'tank')

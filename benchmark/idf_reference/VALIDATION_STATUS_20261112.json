@@ -1,0 +1,473 @@
+{
+  "schema": "eb.idf.aggregate_status_publication.v1",
+  "as_of": "2026-11-12",
+  "status": "research_candidates_not_new_AB_physics_admission",
+  "source_AB_version": "EB-native-1000x10-20261110-v1",
+  "corrected_agent_v3_AB_covered_by_these_results": false,
+  "public_source_snapshot": "SOURCE_LOCK.json",
+  "server_research_extensions_fully_ported_to_public_snapshot": false,
+  "default_activated": false,
+  "counts_are_not_additive": true,
+  "source_aggregates": {
+    "question_window": {
+      "sha256": "14f49325ae5919f5ea0f8d6f268026a338ec10894c4b43e338dd17e7a0f48201",
+      "aggregate": {
+        "cities": {
+          "Adelaide": {
+            "completed": 2,
+            "failed": 1,
+            "passed": 1
+          },
+          "Ahmedabad": {
+            "completed": 2,
+            "failed": 1,
+            "passed": 1
+          },
+          "Bangalore": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Barcelona": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Beijing": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Berlin": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Bilbao": {
+            "completed": 2,
+            "failed": 1,
+            "passed": 1
+          },
+          "Birmingham": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Brisbane": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Canberra": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Chicago": {
+            "completed": 5,
+            "failed": 3,
+            "passed": 2
+          },
+          "Glasgow": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Guadalajara": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Guangzhou": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Houston": {
+            "completed": 3,
+            "passed": 3
+          },
+          "Kolkata": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Kunming": {
+            "completed": 2,
+            "passed": 2
+          },
+          "London": {
+            "completed": 2,
+            "failed": 1,
+            "passed": 1
+          },
+          "LosAngeles": {
+            "completed": 2,
+            "failed": 1,
+            "passed": 1
+          },
+          "Madrid": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Manchester": {
+            "completed": 2,
+            "passed": 2
+          },
+          "MexicoCity": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Monterrey": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Munich": {
+            "completed": 4,
+            "passed": 4
+          },
+          "NewDelhi": {
+            "completed": 2,
+            "passed": 2
+          },
+          "NewYorkCity": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Perth": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Puebla": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Seville": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Shanghai": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Shenyang": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Sydney": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Torreon": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Valencia": {
+            "completed": 2,
+            "passed": 2
+          },
+          "WashingtonDC": {
+            "completed": 2,
+            "passed": 2
+          }
+        },
+        "completed_AB_pairs": 76,
+        "default_city_assignment_activated": false,
+        "failed_AB_pairs": 8,
+        "fixed_gap_counts": {
+          "QUESTION_WINDOW_CAUSAL_CURVE_DOMAIN": 2,
+          "QUESTION_WINDOW_NUMERICAL_REQUIREMENTS": 6
+        },
+        "full_recovery_cumulative_energy_savings_supported": false,
+        "original_AB_dates_life_and_thresholds_changed": false,
+        "passed_AB_pairs": 68,
+        "passed_equipment_signatures": 23,
+        "passed_housing_context_strata": 21,
+        "passed_pairs_by_control_count": {
+          "4": 32,
+          "5": 21,
+          "6": 15
+        },
+        "passed_pairs_by_country": {
+          "AU": 9,
+          "CN": 10,
+          "DE": 6,
+          "ES": 9,
+          "GB": 7,
+          "IN": 7,
+          "MX": 10,
+          "US": 10
+        },
+        "passed_pairs_by_reference_housing_kind": {
+          "apartment": 28,
+          "attached": 10,
+          "detached": 30
+        },
+        "private_rows_ids_dates_schedules_and_numeric_values_exported": false,
+        "schema": "national_idf.question_window_aggregate_progress.v1",
+        "target_AB_pairs": 76
+      }
+    },
+    "full_recovery": {
+      "sha256": "42704a6eb8942248b61321010abe0f2e552647595b998d95c20ba5bb21efb2a3",
+      "aggregate": {
+        "actual_AB_test_not_1000_household_or_all_date_admission": true,
+        "arm_status_counts": {
+          "request_not_executed_or_not_publishable": 4,
+          "requested_CASE_outputs_validated": 144,
+          "requested_outputs_not_fully_supported": 4
+        },
+        "cities": {
+          "Adelaide": {
+            "completed": 2,
+            "failed": 1,
+            "passed": 1
+          },
+          "Ahmedabad": {
+            "completed": 2,
+            "failed": 1,
+            "passed": 1
+          },
+          "Bangalore": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Barcelona": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Beijing": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Berlin": {
+            "completed": 2,
+            "failed": 1,
+            "passed": 1
+          },
+          "Bilbao": {
+            "completed": 2,
+            "failed": 1,
+            "passed": 1
+          },
+          "Birmingham": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Brisbane": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Canberra": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Chicago": {
+            "completed": 5,
+            "failed": 4,
+            "passed": 1
+          },
+          "Glasgow": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Guadalajara": {
+            "completed": 2,
+            "failed": 1,
+            "passed": 1
+          },
+          "Guangzhou": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Houston": {
+            "completed": 3,
+            "passed": 3
+          },
+          "Kolkata": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Kunming": {
+            "completed": 2,
+            "passed": 2
+          },
+          "London": {
+            "completed": 2,
+            "failed": 1,
+            "passed": 1
+          },
+          "LosAngeles": {
+            "completed": 2,
+            "failed": 2
+          },
+          "Madrid": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Manchester": {
+            "completed": 2,
+            "passed": 2
+          },
+          "MexicoCity": {
+            "completed": 2,
+            "failed": 2
+          },
+          "Monterrey": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Munich": {
+            "completed": 4,
+            "passed": 4
+          },
+          "NewDelhi": {
+            "completed": 2,
+            "passed": 2
+          },
+          "NewYorkCity": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Perth": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Puebla": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Seville": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Shanghai": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Shenyang": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Sydney": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Torreon": {
+            "completed": 2,
+            "passed": 2
+          },
+          "Valencia": {
+            "completed": 2,
+            "passed": 2
+          },
+          "WashingtonDC": {
+            "completed": 2,
+            "passed": 2
+          }
+        },
+        "completed_AB_pairs": 76,
+        "default_assignment_activated": false,
+        "expected_missing_hotwater_source_households": 2,
+        "failed_AB_pairs": 14,
+        "fixed_gap_counts": {
+          "CONDITION_OUTPUT_CURVE_DOMAIN_FAILED": 4
+        },
+        "native_arms_reused_with_exact_input_and_code_proof": 8,
+        "passed_AB_pairs": 62,
+        "passed_equipment_signature_strata": 21,
+        "passed_housing_context_strata": 21,
+        "passed_pairs_by_control_count": {
+          "4": 29,
+          "5": 19,
+          "6": 14
+        },
+        "passed_pairs_by_country": {
+          "AU": 9,
+          "CN": 10,
+          "DE": 5,
+          "ES": 9,
+          "GB": 7,
+          "IN": 7,
+          "MX": 7,
+          "US": 8
+        },
+        "passed_pairs_by_installed_count": {
+          "4": 6,
+          "5": 29,
+          "6": 27
+        },
+        "passed_pairs_by_reference_housing_kind": {
+          "apartment": 28,
+          "attached": 9,
+          "detached": 25
+        },
+        "passed_shared_asset_pairs": 2,
+        "private_household_rows_ids_dates_schedules_CASEs_and_numeric_values_exported": false,
+        "sample_freeze_sha256": "eb8f0a40ea2697fb30dfa86956f0717f921d9b3bbacdc7ac1f525bb30b96cc79",
+        "schema": "national_idf.actual_household_aggregate_progress.v1",
+        "source_AB_manifest_sha256": "e3f0a6de269b9425901371aec2180e0bf14ff670a979163a128c17674bb284e5",
+        "source_available_months": [
+          7
+        ],
+        "source_manifest_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+        "target_AB_pairs": 76
+      }
+    },
+    "replacements": {
+      "sha256": "91514e9bd712fa1255bd833efccc431aabd536c4eff985a5c9fa59797b148037",
+      "aggregate": {
+        "capital_and_climate_coverage_losses_explicit": true,
+        "cities": 35,
+        "city_replacements": [
+          {
+            "completed_original_pairs": 5,
+            "country": "US",
+            "new_site_id": "Miami",
+            "old_site_id": "Chicago",
+            "quota_unchanged": 25,
+            "target_original_pairs": 5
+          },
+          {
+            "completed_original_pairs": 2,
+            "country": "GB",
+            "new_site_id": "Edinburgh",
+            "old_site_id": "London",
+            "quota_unchanged": 32,
+            "target_original_pairs": 2
+          }
+        ],
+        "completed_AB_pairs": 9,
+        "countries": 8,
+        "country_quota": 125,
+        "default_activated": false,
+        "failed_AB_pairs": 2,
+        "native_archive_verified": true,
+        "new_mapping_households": 1000,
+        "original_failed_requests_with_passing_alternative": 4,
+        "passed_AB_pairs": 7,
+        "private_data_exported": false,
+        "reassigned_households": 57,
+        "remaining_original_failed_requests_without_passing_alternative": 2,
+        "source_household_generation_AB_dates_and_thresholds_changed": false,
+        "unchanged_other_assignments": 943,
+        "whole1000_native_or_all35_same_version_acceptance_claimed": false
+      }
+    },
+    "candidate_routing": {
+      "sha256": "03187eb48776aac071023709bc894caa239dda58942cfc930f0a33437485d59b",
+      "aggregate": {
+        "all_other_943_assignments_unchanged": true,
+        "cities": 35,
+        "countries": {
+          "AU": 125,
+          "CN": 125,
+          "DE": 125,
+          "ES": 125,
+          "GB": 125,
+          "IN": 125,
+          "MX": 125,
+          "US": 125
+        },
+        "default_activated": false,
+        "households_resolved": 1000,
+        "housing_routing_check_not_1000_native_acceptance": true,
+        "new_site_household_counts": {
+          "Edinburgh": 32,
+          "Miami": 25
+        },
+        "private_rows_or_ids_exported": false,
+        "source_households_AB_dates_and_thresholds_changed": false
+      }
+    }
+  }
+}

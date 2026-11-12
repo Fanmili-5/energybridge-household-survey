@@ -100,6 +100,10 @@ def select_block(rows,cfg=None,carried=frozenset()):
     from scipy.sparse import coo_array
     cfg=config(cfg);cells=defaultdict(list)
     for r in rows:
+        if 'native_execution' in r:
+            native=r['native_execution']
+            if not isinstance(native,dict) or native.get('enabled') is not True or native.get('passed') is not True or native.get('hard_errors')!=[]:
+                raise ValueError('NATIVE_EXECUTION_NOT_PASSED_IN_SELECTION')
         if r.get('engineering_issues') or any(r.get(k) is not None for k in
                 ('actual_outcomes','human_acceptance','human_score','human_reason')):
             raise ValueError('ENGINEERING_OR_OUTCOME_LEAKAGE')

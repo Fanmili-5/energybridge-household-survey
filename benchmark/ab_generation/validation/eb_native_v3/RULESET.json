@@ -1,0 +1,349 @@
+{
+  "schema": "eb.ab_generation_rules.six_agent_actions.v3",
+  "client_date": "2026-11-11",
+  "status": "six_action_rules_and49household_pilot_passed;formal10000regeneration_andphysics_pending",
+  "objective": "Generate native-executable paired daily plans spanning different appliance actions,amounts,combinations andsupplied preference/routine relations;humans provide acceptance andsatisfaction.",
+  "scope": {
+    "households": 1000,
+    "questions_per_household": 10,
+    "countries": "existing8x125 unchanged",
+    "roles": "existingA166B198C125D151E156F204 unchanged",
+    "control_classes": "existing4-6 includingAC;do not change inventory",
+    "event": "current18:00-19:00local experimental event;not a global peak-time claim",
+    "question_unit": "one independent dated day;ten distinct dates;not a continuous ten-day SOC trajectory"
+  },
+  "source_precedence": [
+    "latest user-approved contracts",
+    "frozen household and source-bound hardware",
+    "pinned EB native call semantics",
+    "declared benchmark sampling design"
+  ],
+  "source_map": [
+    {
+      "supports": "four decision dimensions and0.5C/1C/1-2C flexibility anchors;1-2h shift option",
+      "source": "public_EB_sources/human_survey_materials__questionnaires__onboarding_questionnaire_schema.json",
+      "does_not_support": "individual household shift threshold,empirical modification frequencies or human labels"
+    },
+    {
+      "supports": "role-specific priorities androutine/comfort/EV concerns",
+      "source": "public_EB_sources/human_survey_materials__role_cards__fixed_role_cards_zh_en.json",
+      "does_not_support": "per-proposal accept/reject or guaranteed acceptance probabilities"
+    },
+    {
+      "supports": "noDR A ignoresVPP;programme starts within native windows;WH/EV ordinary windows",
+      "source": "public_EB_sources/experiments__benchmark__family_runner.py_L3734_L3787",
+      "does_not_support": "A is an observed real household diary"
+    },
+    {
+      "supports": "once-daily full programme,WH single-window actuator andSOC-based EV interface",
+      "source": "public_EB_sources/energybridge__simulation__appliance_sim.py",
+      "does_not_support": "all user contracts such as no nonEV overnight or fixed EV contiguity are universal EB physics"
+    },
+    {
+      "supports": "display actual executed actions and genuine consequences;no invented text actions",
+      "source": "public_EB_sources/human_survey_materials__questionnaires__strategy_presentation_protocol.md",
+      "does_not_support": "replacement of currentUI91 or adoption of old outcome approximations"
+    },
+    {
+      "supports": "original Agent cooling action bounds,fixed heating20C;40C only unoccupied fallback or rule_milp baseline",
+      "source": "server-evidence/OFFICIAL_AC_ACTION_EVIDENCE.json"
+    }
+  ],
+  "A": {
+    "method": "pinned EB noDR routine plus declared deterministic10min encoding andsource asset/precedence checks",
+    "input": "frozen dated household,hardware,ordinary service windows,SOC/targets andcomfort baseline",
+    "independence": [
+      "no VPP-target orB-outcome input",
+      "no tariff/acceptance optimization",
+      "no resampling A to increase response opportunity"
+    ],
+    "failure": "record andrepair unsupported binding/physics rather than dropping required daily services"
+  },
+  "hard_constraints": [
+    "same household,date,weather,tariff,hardware,initial state,task identities andfixed services on both sides",
+    "only enrolled native controls changed",
+    "all daily required full programmes retained withfixed duration/power profile",
+    "same-load wash-before-dry andshared-asset constraints retained when present",
+    "no invented manual loading/unloading requirements",
+    "nonEV programmes finish same calendar day;onlyEV may cross midnight",
+    "EV uses one connected contiguous positive-power session andspecified departure SOC target",
+    "no past command rewrite;10min command grid",
+    "commands remain within actual hardware limits withno silent clamping",
+    "original planner8h reserve andfull VPP avoidance are not questionnaire admission gates",
+    "comfort dissatisfaction orsoft-routine disagreement is not automatically an execution failure",
+    "AC changes intersect actual original Agent cooling limits;no independently changed heating or40C fallback action",
+    "original Agent payload fields explicit for all present services;required programmes use skip=false",
+    "no task power,programme duration,hardware,EVtarget orinitial state maychange betweenAandB",
+    "original Agent action guard applies atAingress,candidate factors,combined request,andnative export audit"
+  ],
+  "native_modification_grammar": {
+    "WM_DR_DW": {
+      "command": "programme_start_h only",
+      "fixed": [
+        "task_id",
+        "programme duration",
+        "programme power",
+        "asset",
+        "load dependency"
+      ],
+      "domain": "all supported10min starts;explicit anchors aroundA at±30,±60,±120min andlater/larger legal starts",
+      "coverage_bins": [
+        "abs shift<=30min",
+        "30<abs shift<=120min",
+        "abs shift>120min"
+      ],
+      "provenance": "1-2h is an EB survey option;30min andstress bins are benchmark probes,not person-specific tolerances"
+    },
+    "AC": {
+      "commands": [
+        "cooling setpoint within original Agent runtime bounds",
+        "coherent preparation/response/restoration blocks using only admitted cooling setpoints"
+      ],
+      "main_temperature_anchors_C": [
+        0.5,
+        1,
+        2
+      ],
+      "relative_boundary_probes": "round experimental amplitudes to executable0.1C before constructing actions;describe actual literal delta andreference relation;no nominal0.25C claim",
+      "duration_anchors_min": [
+        20,
+        30,
+        60
+      ],
+      "signs": [
+        "positive",
+        "negative"
+      ],
+      "time_semantics": "original scalar next_check validation andconsumer require a gap greaterthan15min;use20/30/60on10minbenchmarkgrid;not compressor on/off commands",
+      "heating": "original Agent heating actuator is fixed at20C;no independently changed heating setpoint",
+      "stop": "not an Agent action;40C fallback belongs to unoccupied environment handling or rule_milp baseline;excluded",
+      "agent_bounds": {
+        "source_commit": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+        "min_formula": "max(22,observable_preferred_min-tolerance)",
+        "max_formula": "min(28,observable_preferred_max+2)",
+        "observable_onboarding_projection": "existing household card range and short-adjustment reference;not hidden human preference labels"
+      },
+      "temperature_decimals": 1
+    },
+    "WH": {
+      "command": "one contiguous native preheat window plus storage target",
+      "window_options": [
+        "earlier",
+        "later",
+        "unchanged"
+      ],
+      "storage_temperature_delta_C": [
+        -5,
+        -3,
+        -1,
+        0,
+        1,
+        3,
+        5
+      ],
+      "bind": "actual existing household bathing/use sequence,source tank state,volume andheater power",
+      "semantics": "preheat finishing afterfirst use does not itself prove lackofhotwater;measure actual delivery;storage target is not shower outlet temperature",
+      "bounds": "Original scalar45-75C intersect matched hardware;actualruntime windowcap=min(8h,configured preheat duration+1h);no silent bounding"
+    },
+    "EV": {
+      "command": "move one continuous charging window inside source parking connection;stopatfixedtarget",
+      "energy": "required grid energy=max(0,(targetSOC-initialSOC)*capacity/efficiency)",
+      "time": "Fullgiven parkingconnectionincludingafter-midnightstarts;onecontinuouspositivepower session,targetunchanged;permissionwindow andactualruntimeareseparate.",
+      "coverage": [
+        "small delay",
+        "larger delay",
+        "ample completion margin",
+        "near departure margin while targetmet"
+      ],
+      "no_op": "ifAalready starts atarrival,earlier charging is not fabricated;mark notapplicable"
+    }
+  },
+  "preference_projection": {
+    "use": [
+      "household.attitudes",
+      "household.comfort",
+      "household.routine.daily_services",
+      "household.calendar",
+      "household.decision_authorization",
+      "actual EV state andconnection"
+    ],
+    "not_inferred": [
+      "member-specific opinions",
+      "numeric appliance shift limit from role label",
+      "heating comfort fromcooling range",
+      "noise disturbance from mere programme/sleep overlap",
+      "human consent oracceptance"
+    ],
+    "labels": [
+      "command inside/at/above supplied short-change reference",
+      "command crossing supplied cooling preference ceiling",
+      "temporal exposure toexisting bathing,return,care,sleep events",
+      "actual EV completion margin",
+      "confirmation preference"
+    ],
+    "interpretation": "These are descriptive coverage tags,not acceptance probabilities orproof of experienced discomfort.",
+    "all_proposals": "explicitly proposal-only;consent notyet obtained",
+    "implementation": "reviewed_rules.project/wrap/describe;conditionhashbound perrecord;legacyunboundflagsarenotused"
+  },
+  "candidate_construction": {
+    "stage1": "reserve witnesses for each controlled class andcommon mechanisms on multiple dates before detailed search",
+    "stage2": "generate ordinary cooling offsets independently within original Agent bounds;exclude fallback OFF and heating changes",
+    "stage3": "combine independent native modifications withpairwise covering designs andrepresentative3-6class combinations;keep necessary dependency changes",
+    "stage4": "validate combined literal actions;retain both favorable andunfavorable soft-preference relations",
+    "search_status": "distinguish witnessed,proven infeasible andbudget-unresolved;missing old-pool row is not physical impossibility"
+  },
+  "selection": {
+    "slots": "one B per date,ten per household",
+    "base": "Everyhousehold exposes everyenrolled class atleastonce;singleandmulti proposals present. Per-classsolo anchors pooledwithinrole;prefer,notforce,aboutMsoloquestions.",
+    "dependency": "if a focal class requires coupled changes,show actual changed classes andrecord dependency;never call a multi-class plan single-class",
+    "remaining": "Jointmechanism/direction/amount coverage ispooled acrosssame-rolehouseholds;do not requireeveryscale ineachhousehold.",
+    "lexicographic_priority": [
+      "nativeexecution andsame-householdsourcecontracts",
+      "oneBperdate,10perhousehold,allenrolled-class exposure",
+      "102eligible pilot cooling direction/magnitude/duration cells at20/30/60min and178frozen jointtargets;fullcohortdenominator mustbefrozen beforeproduction",
+      "soft basic-question exposure preference",
+      "repetition minimization"
+    ],
+    "AC_rules": {
+      "ordinary_event_setpoint_per_household_min": 1,
+      "independent_stop_action_count": 0,
+      "denominator": "role-specific legitimate cells from original Agent bounds;explicit excluded-cell ledger"
+    },
+    "finite_pool_conflict": "expand missing ordinary/compound candidate cells before changing execution rules;record any coverage exception rather than silently passing",
+    "cross_role_anchor_control": "Keep common absolute0.5/1/2C anchors andshared timing anchors ineachrole where native/country conditions allow;relative tau probes supplement rather than replace them. Report any role-action confounding.",
+    "country_counting": "Group households byunique ISOcountry;twohouseholds inonecountry do notconstitute twocountries. Independentlyrecompute afterselection."
+  },
+  "coverage_levels": {
+    "household": "all4-6controlled classes andcoherent low/high-complexity examples",
+    "country_role": "basic function/mechanism coverage with eligible counts",
+    "role": "finer directionxmagnitudexduration andpreference-relation pairwise coverage pooled acrosscountries",
+    "global": "all witnessed combination orders andsame-role cross-country cases",
+    "denominator": "predeclared eligible grammar andsource support;not only tags thathappenedtoappear",
+    "pilot_scope": "49households490pairs;102/102legitimate ACcells eachintwoactualcountries;178/178frozenjointcells;not complete global action/effect space",
+    "rare_cells": "If mutuallyexclusivecells compete foronehousehold-date,assign acrossotheralreadyfrozen householdsfirst;do not changephysicalrequirements orquestioncardinality tohide conflict."
+  },
+  "outcomes": {
+    "simulate": "A andB with same matchedIDF,hardware,weather andinitial state;bind actual household water-use times",
+    "measure": [
+      "VPP-window kWh",
+      "whole-day kWh andrebound",
+      "bill onlyunderverifiedtariff",
+      "occupied-room temperatures andduration beyond supplied comfort reference",
+      "actual hot-water service aroundeach supplied use",
+      "actual EVtarget andcompletion"
+    ],
+    "interpretation": "event reduction,whole-day energy reduction,bill savings andcomfort are separate;do not label unknown thermal response zero",
+    "coverage_audit": "report actual effect diversity afterpairedsimulation;not a requirement thatB improvesallaxes;do not silently introduce outcome-based reselection"
+  },
+  "display": {
+    "UI": "originalUI91 with verified simulation consequences asalreadydecided",
+    "facts": "render actual A/B command diff andcounterfactual results;merge continuous sessions visually",
+    "explanation": "one consistent factual format;no invented savings,consent orpersuasive claims not supported byoutcomes",
+    "labels": "all human acceptance,reasons andscores remain null until collection"
+  },
+  "acceptance": [
+    "source andcode versions andRNGseeds pinned",
+    "frozen1000households unchanged",
+    "10000 pairs each uniqueB andcomplete matching inputs",
+    "zero hard native violations,service deletion,nonEVovernight orEVtarget/contiguity failures",
+    "family attitude/comfort projection100percent;missing individual shift boundsremain explicitlyunknown",
+    "selected coverage,not candidate-pool coverage,reported byhousehold/role/country withdeficits",
+    "ordinaryAC andoriginal Agent scalar bounds checked;independent stop excluded;soft-preference-conflicting proposals retained",
+    "same-source A/B physics anddisplay consistency verified before questionnaire release",
+    "alltenhouseholdquestions andshared-source/paired groups stay inone downstream data split",
+    "no inherited orsynthetic humanlabels"
+  ],
+  "current_validation": {
+    "schema": "eb.six_agent_actions.validation.v3",
+    "status": "reviewed_pilot_six_agent_action_contracts_and_full_native_execution_passed",
+    "counts": {
+      "AC_scalar_checkpoint_commands": 1682,
+      "native_programme_calls": 2760,
+      "WH_native_windows": 980,
+      "EV_native_replays": 440,
+      "EV_starts_after_midnight": 35,
+      "pairs": 490,
+      "AC": 346,
+      "stop": 0,
+      "plain_AC": 336
+    },
+    "households": 49,
+    "common_anchor_grid_hit": 102,
+    "common_anchor_grid_total": 102,
+    "declared_joint_cells": 178,
+    "selected_declared_joint_cells": 178,
+    "each_common_grid_cell_countries_min": 2,
+    "role_reference_counts": {
+      "role_a_price_cooperative_commuter": {
+        "ac.reference:below": 14,
+        "ac.reference:at": 13,
+        "ac.reference:above": 23
+      },
+      "role_b_home_comfort_gated": {
+        "ac.reference:above": 39,
+        "ac.reference:at": 16,
+        "ac.reference:below": 5
+      },
+      "role_c_irregular_cautious": {
+        "ac.reference:below": 16,
+        "ac.reference:at": 23,
+        "ac.reference:above": 22
+      },
+      "role_d_ideal_dr_participant": {
+        "ac.reference:below": 34,
+        "ac.reference:at": 14,
+        "ac.reference:above": 9
+      },
+      "role_e_caregiver_low_dr": {
+        "ac.reference:above": 35,
+        "ac.reference:at": 18,
+        "ac.reference:below": 2
+      },
+      "role_f_ev_commuter_optimizer": {
+        "ac.reference:above": 20,
+        "ac.reference:below": 20,
+        "ac.reference:at": 13
+      }
+    },
+    "counterexample_checks": {
+      "original_agent_ac_action_domain_checked": 490,
+      "production_request_recompiled_unchanged": 490,
+      "original_full_appliance_payload_checked": 980,
+      "misleading_magnitude_metadata_ignored": 490,
+      "hidden_unrepresented_patch_rejected": 490,
+      "truncated_programme_rejected": 490
+    },
+    "all_household_controlled_classes_covered": true,
+    "literal_descriptors_recomputed": true,
+    "native_EV_source_connection_and_target_preserved": true,
+    "original_agent_AC_domain_checked": true,
+    "all_six_original_agent_contracts_checked": true,
+    "AC_setpoint_rounding_mismatches": 0,
+    "AC_unexpressible_next_checks": 0,
+    "independent_cooling_stop_action_allowed": false,
+    "agent_heating_setpoint_changes": 0,
+    "human_labels_used": false,
+    "source_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+    "EnergyPlus_runs": 0,
+    "AC_room_response_validated": false,
+    "hot_water_delivery_validated": false,
+    "production_10000_changed": false,
+    "scope": "bounded command coverage andnative action semantics;not population prevalence,all global cases orphysical outcome validation",
+    "seconds": 7.89
+  },
+  "implementation_notes": [
+    "Production worktree now contains mandatory six-action guard andoriginal validators;current10000exportsareunchanged andblockedforreuse.",
+    "V3originalnativeapplier andnativeappliance sources areunchanged;9applierfunctions and6contractfunctions compared againstpinnedsource.",
+    "Only primitives,canonical field/type/range rules,checkpoint expressibility andnative execution arealigned;fulloriginal AgentLLM/planner/consent orchestration notrun.",
+    "Previously user-excluded conservative8hEV planning reserve anduniversal VPP avoidance are notadded asbenchmark admission policies.",
+    "Aremains a declared noDR reference routine,not anobserved household diary;human labels remain unset.",
+    "No claim thatcommand coverage establishes thermal outcome orpopulation preference coverage."
+  ],
+  "native_day_projection": {
+    "queue": "EV activation noearlier thanactualsourceconnection;apply oncorrectcalendar day andcontinue onlyoverlappingdays",
+    "common_prefix": "retain givenApredecisionhistory",
+    "numeric_boundary": "canonical exactminute viaoneULP forwardrepresentational adjustment only;dt andSOCtolerances unchanged",
+    "audit": "full0-to-actualdeparturetrace;zero power outsidegivenconnection,continuouspower,targetmet"
+  },
+  "source_action_matrix": "server-evidence/SIX_ACTION_MATRIX.json"
+}

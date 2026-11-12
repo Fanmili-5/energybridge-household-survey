@@ -13,6 +13,18 @@ def explicit_ev(component):
 
 
 def direct(c,component,event):
+    if c.get('source',{}).get('appliance_command_protocol')=='eb.primary_appliance_calls.v1':
+        if component['family']=='ev':
+            profile=component.get('profiles') or {}
+            def energy(rows):
+                return sum((r.get('power_kw',r.get('grid_kWh',0)*6))*overlap(r['start_min'],r['end_min'],event['start_min'],event['end_min'])/60 for r in rows)
+            before=energy(profile.get('A',[]));after=energy(profile.get('B',[]))
+            return [dict(kind='native_EV_event_energy_change',A_nominal_grid_kWh=before,B_nominal_grid_kWh=after,physical_outcomes_used=False)] if abs(before-after)>1e-9 else []
+        window=component.get('magnitude',{}).get('native_preheat_window')
+        if window:
+            a,z,temp=window['A'];b,y,target=window['B'];points=sorted({event['start_min'],event['end_min'],a,z,b,y})
+            changed=any(max(x,event['start_min'])<min(t,event['end_min']) and (temp if a<=x<z else None)!=(target if b<=x<y else None) for x,t in zip(points,points[1:]))
+            return [dict(kind='native_single_preheat_window_change',A=window['A'],B=window['B'],actual_thermal_response_known=False)] if changed else []
     if not explicit_ev(component):return legacy_direct(c,component,event)
     pause=component['magnitude'].get('permission_pause_interval_min')
     if pause is None:return []  # Missing request semantics are not invented.
@@ -25,7 +37,7 @@ def direct(c,component,event):
 
 
 def explain(c,children,event):
-    if not any(explicit_ev(r) for r in children):return legacy_explain(c,children,event)
+    if c.get('source',{}).get('appliance_command_protocol')!='eb.primary_appliance_calls.v1' and not any(explicit_ev(r) for r in children):return legacy_explain(c,children,event)
     roots={r['id']:direct(c,r,event) for r in children}
     linked={k:dict(role='direct_event_request',evidence=v) for k,v in roots.items() if v}
     root_children=[r for r in children if r['id'] in linked]

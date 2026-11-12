@@ -170,14 +170,14 @@ def _raw_ev(c,d,config):
                     'slack_basis':'original_declared_connection_end;observation_limit_is_separate'}}
 
 
-def _raw_thermal(c,d,config):
+def _raw_thermal(c,d,config,*,require_occupied=True):
     family='ac' if 'ac' in d['types'] else 'water_heater'
     kind='ac_setpoint' if family=='ac' else 'tank_setpoint'
     controls=[r for r in c['A']['controls'] if r['asset_id']==d['asset_id'] and r['kind']==kind]
     event=config['event']; lo=event['start_min']
     if not any(r['start_min']<=lo<r['end_min'] for r in controls):
         return
-    if family=='ac' and not any(a<=lo<z for a,z in c['occupancy'].get(d['room_id'],[])):
+    if require_occupied and family=='ac' and not any(a<=lo<z for a,z in c['occupancy'].get(d['room_id'],[])):
         return
     for axis in config['ac_axes'] if family=='ac' else ['tank']:
         key=axis+'_setpoint_C' if family=='ac' else 'value_C'
@@ -198,7 +198,7 @@ def _raw_thermal(c,d,config):
             hi=lo+duration
             if not all(any(r['start_min']<=t and t+10<=r['end_min'] for r in controls) for t in range(lo,hi,10)):
                 continue
-            if family=='ac' and not all(any(a<=t and t+10<=z for a,z in c['occupancy'].get(d['room_id'],[])) for t in range(lo,hi,10)):
+            if require_occupied and family=='ac' and not all(any(a<=t and t+10<=z for a,z in c['occupancy'].get(d['room_id'],[])) for t in range(lo,hi,10)):
                 continue
             change=delta*(1 if axis=='cooling' else -1)*(1 if direction=='aligned' else -1)
             patches=[]

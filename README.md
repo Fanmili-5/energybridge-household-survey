@@ -6,6 +6,10 @@
 
 家庭与设备 → 住房和生活安排 → 日常A → 不同取舍的B → 配对仿真后果 → UI91问卷 → 人类评价。
 
+**[最新完整构造方法](docs/METHOD.md) · [阶段状态](docs/BENCHMARK_STATUS.json) · [ACL视角复核](docs/ACL_BENCHMARK_REVIEW_20261112.md)**
+
+八国1000户输入已完成；六类原生动作新版通过49户490题回放。新版全量重生成及其IDF后果尚未验收，旧10000题不能作为新版发放。代码更新不改变既有线上50户题集。
+
 ## 三条主线
 
 | 主线 | 内容 | 代码与详细方法 |
@@ -34,8 +38,8 @@
 
 中国、美国、英国、西班牙、印度、墨西哥、澳大利亚、德国各125户。家庭背景由真实调查提供，角色态度沿用EB定义，六类配额按EB人类角色扮演调查样本比例分配；结合活动与服务规则生成生活安排，以整数规划分配电器组合。**空调每户必备且必控**，每户共4—6类。生成代码、逐步依据、规则参数、验收证据及扩量入口均已打包，家庭生成第一步通过，可用于后续benchmark构造。正式V9与既有50户线上资料分别管理。
 
-## 当前生成方法 v2.11（研究版本）
+## A/B与IDF当前进展
 
-[统一方法与来源](benchmark/research_delivery/METHOD.md) · [分开动作幅度与事件阶段](benchmark/research_delivery/ACTION_CHANGE_METHOD.md) · [复现入口](benchmark/research_delivery/REPRODUCE.md) · [v2.11的500日期影子验收](benchmark/research_delivery/release_v2_11/shadow50/README.md)
+A按EB noDR生成；B从原Agent合法动作构造候选，按覆盖约束选定每户十题。见[新版动作规则](docs/research/EB_MAIN_AGENT_ACTION_RULES_20261111.md)和[试跑聚合证据](benchmark/ab_generation/validation/eb_native_v3/README.md)。旧v2.10/v2.11的装取变化和影子重选作为[历史研究方法](benchmark/research_delivery/METHOD.md)保留，不作为新版原生动作规则。
 
-CLI默认配置为`benchmark/ab_generation/unified/CURRENT_CONFIG.json`。v2.11分开机器移时、装取变化和控制幅度，小时级变化显示绝对分钟；VPP前准备与事件内调节按固定18:00边界分开。已在原18,977候选中完成50户500原日期影子重选：各户已有联合规模及1,264项声明目标缺额0；额外机器×装取细分仍缺全局5种、家庭条件下130项组合，不宣称全面覆盖。冲突、名义无帮助和未知保留，不改A/B、不重抽，原v2.10结果继续封存。公开代码与无身份汇总，个体明细保存在本地；不替换线上正式题集、不跑物理仿真、不启动1000户A/B及物理批次；家庭输入V9另行验收。
+IDF公开共享构造实现继续保留自己的源码锁；服务器35城、题窗及换城试验的[最新聚合状态](benchmark/idf_reference/VALIDATION_STATUS_20261112.json)单独登记，尚未证明新版A/B的全量物理后果。方法与完成状态统一从[完整构造说明](docs/METHOD.md)阅读。

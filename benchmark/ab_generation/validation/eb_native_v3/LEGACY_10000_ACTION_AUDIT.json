@@ -1,0 +1,28 @@
+{
+  "scope": "read-only static literal action contract audit of existing10000pairs;not regeneration,native replay,thermal validation orhuman labels",
+  "counts": {
+    "A_checked": 10000,
+    "A_current_action_contract_pass": 10000,
+    "B_checked": 10000,
+    "B_current_action_contract_pass": 5665,
+    "pairs_checked": 10000
+  },
+  "rejection_reasons": {
+    "A": {},
+    "B": {
+      "OUTSIDE_ORIGINAL_AGENT_COOLING_RANGE": 2941,
+      "OUTSIDE_ORIGINAL_AGENT_SCALAR_PLAN_CONTRACT": 3332,
+      "AGENT_AC_NEXT_CHECK_WOULD_BE_REJECTED_OR_CLEARED": 1010,
+      "AGENT_AC_ONLY_COOLING_SETPOINT_IS_MUTABLE": 1003,
+      "AGENT_HEATING_SETPOINT_MUST_REMAIN_20C": 1003
+    }
+  },
+  "households_with_any_rejected_side": {
+    "B": 1000
+  },
+  "source_households_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+  "source_households_changed": false,
+  "old_exports_changed": false,
+  "old_exports_must_be_regenerated_before_release": true,
+  "seconds": 29.85
+}

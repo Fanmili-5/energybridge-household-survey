@@ -203,7 +203,9 @@ def solve(problem, portrait=None, *, seed=0, deterministic_time=20, target_mode=
         else:
             model.add_allowed_assignments([l,li],loadrows).only_enforce_if(assumption)
             model.add_allowed_assignments([u,ui],loadrows).only_enforce_if(assumption)
-        starts=[t for t in range(max(0,release+1),max(0,deadline-duration)) if all(
+        start_lo,start_hi=j.get('start_window_min',[0,limit+10])
+        starts=[t for t in range(max(0,release+1),max(0,deadline-duration))
+                if start_lo<=t*10<start_hi and all(
             any(a<=q%1440 and q%1440+10<=z for a,z in policy['machine_windows_min'])
             for q in range(t*10,(t+duration)*10,10))]
         if not starts:model.add(assumption==0)
@@ -237,6 +239,15 @@ def solve(problem, portrait=None, *, seed=0, deterministic_time=20, target_mode=
     for nid,(j,l,*_) in variables.items():
         parent=j.get('depends_on_need_id')
         if parent:model.add(l>=variables[parent][3]+1)
+    if world.get('native_single_program_per_day'):
+        daily_starts=defaultdict(list)
+        for nid,values in variables.items():
+            j,_,start,*_=values
+            day_var=model.new_int_var(0,len(p['days'])-1,nid+':native_day')
+            model.add_division_equality(day_var,start,144)
+            daily_starts[(j['asset_id'],j['kind'])].append(day_var)
+        for values in daily_starts.values():
+            if len(values)>1:model.add_all_different(values)
     # EV charging is optimized jointly with program power, on fixed connections.
     evdevice=next((d for d in world['devices'] if d['kind']=='ev'),None);evvars=[];evstates=[]
     if evdevice:
@@ -258,7 +269,20 @@ def solve(problem, portrait=None, *, seed=0, deterministic_time=20, target_mode=
             model.add(state[t+1]==state[t]-used+inc)
             power_intervals.append(model.new_optional_fixed_size_interval_var(t,1,b,'EV_power:'+str(t)));power_W.append(math.ceil(ep['charger_kw']*1000))
             costs.append((t+1)*b) # Earlier readiness; not VPP/tariff aware.
+        # A new V9 household may require one uninterrupted positive session.
+        # Adjacent 10-minute bookkeeping bins remain valid; 0-1-0-1 is forbidden
+        # within one fixed parking connection. Existing frozen routes opt out.
+        if ep.get('charge_session_policy')=='single_contiguous_session_per_episode':
+            for connection in p['EV']['connections']:
+                indices=[t for t in range(horizon) if connection['start_min']<=t*10 and (t+1)*10<=connection['end_min']]
+                if indices:
+                    # Parking intervals are opportunities, not new energy demands.
+                    # The existing journey/departure constraints own the SOC target.
+                    model.add_automaton([evvars[t] for t in indices],0,[0,1,2],
+                        [(0,0,0),(0,1,1),(1,1,1),(1,0,2),(2,0,2)])
         evstates=state
+    if evdevice and world.get('native_ev_contiguous_session',False):
+        limit_native_charge_starts(model,evvars,p['EV']['connections'])
     for groups in (person,rooms,machine):
         for intervals in groups.values():model.add_no_overlap(intervals)
     supply=world.get('electrical',{}).get('supply_W')
@@ -328,3 +352,15 @@ def solve(problem, portrait=None, *, seed=0, deterministic_time=20, target_mode=
     result['context_only_preferences']=['water_heater','ev_adjustment_consent','unknown_heating_or_off_preferences']
     result['thermal_service_status']='required_but_not_physically_computed'
     return result
+
+def limit_native_charge_starts(model,charge_flags,connections,step_min=10):
+    """At most one uninterrupted base charging run per physical connection."""
+    for index,connection in enumerate(connections):
+        ticks=[t for t in range(len(charge_flags)) if connection['start_min']<=t*step_min and (t+1)*step_min<=connection['end_min']]
+        if not ticks:continue
+        starts=[]
+        for t in ticks:
+            start=model.new_bool_var('EV_native_start:'+str(index)+':'+str(t))
+            previous=charge_flags[t-1] if t-1 in ticks else 0
+            model.add(start>=charge_flags[t]-previous);starts.append(start)
+        model.add(sum(starts)<=1)

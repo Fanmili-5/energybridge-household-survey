@@ -1,0 +1,27 @@
+{
+  "schema": "eb.publication_checks.v1",
+  "checked_at": "2026-11-12",
+  "exit_code": 0,
+  "test_modules": [
+    "benchmark.ab_generation.test_eb_agent_contract",
+    "benchmark.ab_generation.test_eb_alignment",
+    "benchmark.ab_generation.test_daily_problem",
+    "benchmark.ab_generation.test_daily_services",
+    "benchmark.ab_generation.test_v9_episode_contract",
+    "benchmark.ab_generation.unified.test_household_entry",
+    "benchmark.ab_generation.unified.test_selection_execution_gate"
+  ],
+  "scope": "current producer native action/day service regression;not EnergyPlus orhuman validity",
+  "dependency_versions": {
+    "numpy": "2.5.2",
+    "ortools": "9.15.6755",
+    "scipy": "1.17.1"
+  },
+  "test_count": 127,
+  "skipped": 0,
+  "stale_fixture_fix": "explicit1.0C observable short-adjustment reference added tosyntheticnativefixture;productionguardunchanged",
+  "log_sha256": "e2ea63fe8b4f07ff9ba02acb1d4ae9f0cad5ddcb6dd892a26c18c3ebe666639c",
+  "historical_125_test_record_separate": true,
+  "new_physics_runs": 0,
+  "human_labels_used": false
+}
