@@ -82,7 +82,11 @@
     "illustrative_answers_not_training_labels": true,
     "proposed_API_answer_count": 2000,
     "API_allocation_frozen": false,
-    "human_and_synthetic_labels_separate": true
+    "human_and_synthetic_labels_separate": true,
+    "existing_public_pointer_dataset_id": "reference50-v4-ui91-trial",
+    "existing_public_pointer_formal_collection_ready": false,
+    "existing_public_pointer_synthetic_display_values": true,
+    "actual_online_live_version_checked_this_turn": false
   },
   "scope_of_this_update": {
     "source_docs_aggregate_only": true,
