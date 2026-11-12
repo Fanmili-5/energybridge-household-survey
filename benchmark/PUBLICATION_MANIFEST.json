@@ -675,7 +675,7 @@
   },
   "files": {
     ".github/workflows/ab-collection-plan.yml": "e6845bd15f8b89e97eb37a7b4c6526bfec09ce3fb5da8011ef5c8c1975529719",
-    ".github/workflows/ab-generation.yml": "9a4ea17a16ae4f746bbed0f859d9980c127a2289d9c78bbdbba3ca8b63797288",
+    ".github/workflows/ab-generation.yml": "a351f9046bf0458e63c4e42013029a257c2e0a8216785e103648f974f00f1c59",
     ".github/workflows/family-generation.yml": "bac5a040b677c0888bdc7b5c2ec47a34a9ab5d45dd4461e8f5471021b9de771d",
     ".github/workflows/household-stage1.yml": "82bbf681d630a1336170eb2f6959624738bfe4cf59e717dadf03c5b2440e1243",
     ".github/workflows/housing-simulation.yml": "86c1bf931c3d4c3c897b8f0bccfe64499ba6c193a3ed7135af81f09c21a6cfb3",
@@ -3748,6 +3748,7 @@
     "formal_new10000_regeneration_complete": false,
     "historic_stage_receipts_retained": true,
     "idf_aggregate_status": "benchmark/idf_reference/VALIDATION_STATUS_20261112.json",
+    "legacy_python39_ci_runner": "ubuntu-22.04;retainlegacytestcoverage",
     "old_IDF_results_do_not_validate_corrected_AB": true,
     "online_release_changed": false,
     "paid_API_or_training_or_new_physics_started": false,

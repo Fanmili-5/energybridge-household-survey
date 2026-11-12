@@ -35,7 +35,7 @@ jobs:
     needs: method-scope
     if: needs.method-scope.outputs.method_only != 'true'
     timeout-minutes: 15
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         python-version: ['3.9', '3.12']
