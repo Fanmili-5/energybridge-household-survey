@@ -1,0 +1,165 @@
+{
+  "summary": {
+    "completed": 1000,
+    "passed": 1000,
+    "failed": 0,
+    "pairs": 10000
+  },
+  "native_plan_generation_passed": true,
+  "source_unchanged": true,
+  "implementation_unchanged": true,
+  "countries": {
+    "AU": 125,
+    "CN": 125,
+    "DE": 125,
+    "ES": 125,
+    "GB": 125,
+    "IN": 125,
+    "MX": 125,
+    "US": 125
+  },
+  "roles": {
+    "role_a_price_cooperative_commuter": 166,
+    "role_b_home_comfort_gated": 198,
+    "role_c_irregular_cautious": 125,
+    "role_d_ideal_dr_participant": 151,
+    "role_e_caregiver_low_dr": 156,
+    "role_f_ev_commuter_optimizer": 204
+  },
+  "appliance_component_counts": {
+    "dishwasher": 4036,
+    "ac": 4637,
+    "washer": 5036,
+    "dryer": 1186,
+    "water_heater": 3313,
+    "ev": 2295
+  },
+  "component_orders": {
+    "1": 4506,
+    "2": 2685,
+    "5": 471,
+    "3": 1346,
+    "4": 859,
+    "6": 133
+  },
+  "meal_load_counts": {
+    "dinner": 8976,
+    "breakfast": 18,
+    "lunch": 6
+  },
+  "nominal_event_effects": {
+    "negative": 1743,
+    "thermal_unknown": 6181,
+    "zero": 856,
+    "positive": 1220
+  },
+  "role_family_counts": {
+    "role_a_price_cooperative_commuter": {
+      "dishwasher": 689,
+      "ac": 766,
+      "washer": 858,
+      "dryer": 209,
+      "water_heater": 580,
+      "ev": 303
+    },
+    "role_b_home_comfort_gated": {
+      "ac": 916,
+      "dishwasher": 867,
+      "washer": 1031,
+      "dryer": 264,
+      "ev": 342,
+      "water_heater": 655
+    },
+    "role_c_irregular_cautious": {
+      "washer": 614,
+      "dishwasher": 500,
+      "ac": 580,
+      "dryer": 133,
+      "ev": 244,
+      "water_heater": 484
+    },
+    "role_d_ideal_dr_participant": {
+      "washer": 748,
+      "dishwasher": 609,
+      "ac": 708,
+      "dryer": 161,
+      "ev": 268,
+      "water_heater": 557
+    },
+    "role_e_caregiver_low_dr": {
+      "washer": 764,
+      "dishwasher": 644,
+      "ac": 712,
+      "dryer": 189,
+      "ev": 287,
+      "water_heater": 585
+    },
+    "role_f_ev_commuter_optimizer": {
+      "ac": 955,
+      "washer": 1021,
+      "dishwasher": 727,
+      "ev": 851,
+      "water_heater": 452,
+      "dryer": 230
+    }
+  },
+  "household_family_gaps": 57,
+  "soft_cooling_preference_conflict_pairs": 2544,
+  "selected_pair_native_replays": 20000,
+  "formal_questionnaire_release": false,
+  "all_10000_physics_qualified": false,
+  "human_answers_generated": false,
+  "cohort_refined": true,
+  "unique_reselected_pairs": 107,
+  "original_generation_result": "RESULT_BEFORE_COHORT.json",
+  "raw_cell_coverage": {
+    "role_a_price_cooperative_commuter": {
+      "declared_raw_cells": 158,
+      "selected_at_least_one": 158,
+      "selected_country_goals_met": 157,
+      "materialized_country_goals_met": 158,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    },
+    "role_b_home_comfort_gated": {
+      "declared_raw_cells": 155,
+      "selected_at_least_one": 155,
+      "selected_country_goals_met": 155,
+      "materialized_country_goals_met": 155,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    },
+    "role_c_irregular_cautious": {
+      "declared_raw_cells": 158,
+      "selected_at_least_one": 158,
+      "selected_country_goals_met": 157,
+      "materialized_country_goals_met": 158,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    },
+    "role_d_ideal_dr_participant": {
+      "declared_raw_cells": 158,
+      "selected_at_least_one": 158,
+      "selected_country_goals_met": 158,
+      "materialized_country_goals_met": 158,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    },
+    "role_e_caregiver_low_dr": {
+      "declared_raw_cells": 163,
+      "selected_at_least_one": 160,
+      "selected_country_goals_met": 158,
+      "materialized_country_goals_met": 162,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    },
+    "role_f_ev_commuter_optimizer": {
+      "declared_raw_cells": 177,
+      "selected_at_least_one": 160,
+      "selected_country_goals_met": 160,
+      "materialized_country_goals_met": 177,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    }
+  }
+}

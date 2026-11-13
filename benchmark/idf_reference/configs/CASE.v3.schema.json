@@ -318,6 +318,36 @@
         },
         "tank_target_C": {
           "type": "number"
+        },
+        "water_heater_windows_by_date": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "maxItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "start_min": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1440
+                },
+                "end_min": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 1440
+                }
+              },
+              "required": [
+                "start_min",
+                "end_min"
+              ]
+            }
+          }
+        },
+        "water_heater_window_encoding": {
+          "const": "paper_v1_native_permission_window.v1"
         }
       },
       "required": [
@@ -331,7 +361,15 @@
         "program_starts_daily",
         "ev_daily_windows"
       ],
-      "type": "object"
+      "type": "object",
+      "dependentRequired": {
+        "water_heater_windows_by_date": [
+          "water_heater_window_encoding"
+        ],
+        "water_heater_window_encoding": [
+          "water_heater_windows_by_date"
+        ]
+      }
     },
     "environment": {
       "additionalProperties": false,

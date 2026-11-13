@@ -1,0 +1,25 @@
+{
+  "repo": "Agentic-Intelligence-Lab/EnergyBridge",
+  "tag": "paper-v1-final",
+  "commit": "c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0",
+  "full_source_sha256": "e5096d3007a99392fcb53e33e35569bed771022d81dc694e8e651aae65962e8d",
+  "executable_blocks": {
+    "next_check": [
+      7132,
+      7136
+    ],
+    "clamp": [
+      7123,
+      7125
+    ],
+    "trigger": [
+      8205,
+      8239
+    ],
+    "schedule": [
+      8741,
+      8757
+    ]
+  },
+  "scope": "literal plan replay at original decision opportunities;no learned preference policy or human acceptance filtering"
+}

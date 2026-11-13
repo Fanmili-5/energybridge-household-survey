@@ -89,7 +89,7 @@ jobs:
       - name: Replay final frozen strata and audit all selected full plans without simulation
         run: python -B -m benchmark.ab_generation.static_sampling recheck --require-coverage --out "${{ runner.temp }}/final-static-sampling"
 
-  native-v3-contracts:
+  paper-v1-contracts:
     needs: method-scope
     if: needs.method-scope.outputs.method_only != 'true'
     runs-on: ubuntu-latest
@@ -108,7 +108,7 @@ jobs:
           import hashlib, os, urllib.request
           from pathlib import Path
           from benchmark.ab_generation.eb_primary import NATIVE_SHA
-          url = "https://raw.githubusercontent.com/Agentic-Intelligence-Lab/EnergyBridge/2b17ae63e613da776c93e900f5dace50d63a88a8/energybridge/simulation/appliance_sim.py"
+          url = "https://raw.githubusercontent.com/Agentic-Intelligence-Lab/EnergyBridge/c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0/energybridge/simulation/appliance_sim.py"
           data = urllib.request.urlopen(url, timeout=45).read()
           assert hashlib.sha256(data).hexdigest() == NATIVE_SHA
           Path(os.environ["EB_NATIVE_SOURCE"]).write_bytes(data)
@@ -121,6 +121,9 @@ jobs:
               "benchmark.ab_generation.test_eb_agent_contract",
               "benchmark.ab_generation.test_eb_alignment",
               "benchmark.ab_generation.test_daily_problem",
+              "benchmark.ab_generation.test_cohort_coverage",
+              "benchmark.ab_generation.unified.test_joint_order_selection",
+              "benchmark.ab_generation.unified.test_input_boundaries",
               "benchmark.ab_generation.test_daily_services",
               "benchmark.ab_generation.test_v9_episode_contract",
               "benchmark.ab_generation.unified.test_household_entry",

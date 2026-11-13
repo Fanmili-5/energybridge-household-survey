@@ -8,7 +8,7 @@
 
 **[最新完整构造方法](docs/METHOD.md) · [阶段状态](docs/BENCHMARK_STATUS.json) · [ACL视角复核](docs/ACL_BENCHMARK_REVIEW_20261112.md)**
 
-八国1000户输入已完成；六类原生动作新版通过49户490题回放。新版整批修订及其IDF后果尚未验收。旧10000题保留；原4335一概判废结论已按论文版重审更正，不能据此整批删掉负面取舍题。代码更新不改变既有线上50户题集。
+八国1000户输入不变；新版1000户×10题已生成并完成20000次原版电器执行回放。美国、印度各一组新A/B通过配对物理验收，一个UI91隔离预览通过桌面/手机检查；全量物理后果与正式发放仍未完成。旧10000题保留；原4335一概判废结论已按论文版重审更正，不能据此整批删掉负面取舍题。代码更新不改变既有线上50户题集。
 
 ## 三条主线
 
@@ -30,7 +30,7 @@
 
 [整户适配模块](benchmark/idf_reference/README.md)公开现有 EB 链路的住房构造、来源适配、设备安装和统一运行入口，以及八国完整参考围护包、九个示例地点包和公开工程输入。新家庭复用“模板算法＋参数包＋地点包”，生活需求和控制独立接入；支持范围、缺项处理和扩展规则见[构造方法](benchmark/idf_reference/METHOD.md)。
 
-该模块使用固定官方 EnergyPlus 25.2 与 OpenStudio-HPXML；原24.1模块保留。源码分发不含原生引擎、天气、外部原型资源、内部验收记录或家庭日程；需按[资源说明](benchmark/idf_reference/SOURCES.md)准备共享环境。公开类别和软件测试不代表所有家庭或工况均已通过物理及数值检查。本次不修改家庭生成和 A/B。
+该模块使用固定官方 EnergyPlus 25.2 与 OpenStudio-HPXML；原24.1模块保留。源码分发不含原生引擎、天气、外部原型资源、内部验收记录或家庭日程；需按[资源说明](benchmark/idf_reference/SOURCES.md)准备共享环境。公开类别和软件测试不代表所有家庭或工况均已通过物理及数值检查。本轮另行修正A/B和热水器窗口编译，记录见[本轮报告](docs/research/AB_GENERATION_REPAIR_20261114.md)。
 
 ## 八国家庭生成第一步（V9）
 
@@ -44,6 +44,6 @@
 
 ## A/B与IDF当前进展
 
-A按EB noDR生成；B从原Agent合法动作构造候选，按覆盖约束选定每户十题。见[新版动作规则](docs/research/EB_MAIN_AGENT_ACTION_RULES_20261111.md)和[试跑聚合证据](benchmark/ab_generation/validation/eb_native_v3/README.md)。旧v2.10/v2.11的装取变化和影子重选作为[历史研究方法](benchmark/research_delivery/METHOD.md)保留，不作为新版原生动作规则。
+A依据家庭生活参考联合排程；B沿论文冻结版的六类动作生成候选，以整数规划及同类覆盖重选选定每户十题。见[可复用入口](benchmark/ab_generation/README.md)和[本轮实际结果](docs/research/AB_GENERATION_REPAIR_20261114.md)。旧v2.10/v2.11的装取变化和影子重选作为[历史研究方法](benchmark/research_delivery/METHOD.md)保留，不作为新版原生动作规则。
 
 IDF公开共享构造实现继续保留自己的源码锁；服务器35城、题窗及换城试验的[最新聚合状态](benchmark/idf_reference/VALIDATION_STATUS_20261112.json)单独登记，尚未证明新版A/B的全量物理后果。方法与完成状态统一从[完整构造说明](docs/METHOD.md)阅读。

@@ -11,6 +11,7 @@ import sys
 import traceback
 
 from .case_commands import CaseTimeline, CommandClock
+from .eb_water_heater_window import effective_setpoint
 from .common import ROOT, read, require, save, sha
 from .idf import Fields, objects, one, parse
 from .source_adapter import source_file
@@ -118,7 +119,7 @@ def run_probe(pack_ref, out, *, root=ROOT):
             frame = clock.take_exchange(api.exchange, s)
             current[:] = [frame]
             c = frame['control']
-            power = {'water_heater_setpoint_C': c['tank_target_C']} if 'water_heater' in channels else {}
+            power = {'water_heater_setpoint_C': effective_setpoint(c)} if 'water_heater' in channels else {}
             binding.write(api.exchange, s, power, heating_C=c['heating_C'], cooling_C=c['cooling_C'], available=c['hvac_available'])
             trace.append({'frame_index': frame['frame_index'], 'date': frame['date'], 'start_min': frame['start_min'],
                 'elapsed_start_min': frame['elapsed_start_min'], 'duration_min': frame['duration_min'], **c})

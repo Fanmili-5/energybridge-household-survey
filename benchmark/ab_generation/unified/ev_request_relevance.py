@@ -19,7 +19,8 @@ def direct(c,component,event):
             def energy(rows):
                 return sum((r.get('power_kw',r.get('grid_kWh',0)*6))*overlap(r['start_min'],r['end_min'],event['start_min'],event['end_min'])/60 for r in rows)
             before=energy(profile.get('A',[]));after=energy(profile.get('B',[]))
-            return [dict(kind='native_EV_event_energy_change',A_nominal_grid_kWh=before,B_nominal_grid_kWh=after,physical_outcomes_used=False)] if abs(before-after)>1e-9 else []
+            linked=any(overlap(r['start_min'],r['end_min'],event['start_min'],event['end_min']) for rows in profile.values() for r in rows)
+            return [dict(kind='native_EV_event_schedule_change',A_nominal_grid_kWh=before,B_nominal_grid_kWh=after,positive_reduction_required=False,physical_outcomes_used=False)] if linked else []
         window=component.get('magnitude',{}).get('native_preheat_window')
         if window:
             a,z,temp=window['A'];b,y,target=window['B'];points=sorted({event['start_min'],event['end_min'],a,z,b,y})

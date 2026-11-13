@@ -31,7 +31,9 @@ def programmes(c,d):
         duration=t['end_min']-t['start_min']
         lo=max(c['decision_min'],n['start_window_min'][0]);hi=min(n['start_window_min'][1]-1,n['deadline_min']-duration,1440-duration)
         for start in range(math.ceil(lo/10)*10,math.floor(hi/10)*10+1,10):
-            delta=start-t['start_min'];after={**t,'start_min':start,'end_min':start+duration}
+            delta=start-t['start_min']
+            if not delta:continue
+            after={**t,'start_min':start,'end_min':start+duration}
             yield dict(unit=n['need_id'],family=n['kind'],asset_id=d['asset_id'],service_need_id=n['need_id'],
                 mechanism='start_time_shift',construction_route='original_EB_start_h_command',
                 branch='earlier' if delta<0 else 'later',needs=[n['need_id']],
@@ -55,8 +57,8 @@ def ev_windows(c,d):
         # Canonical local hours are applied by the dated queue;EV alone may start/finish after midnight.
         lo=max(c['decision_min'],physical['start_min']);hi=physical['end_min']-length
         for start in range(math.ceil(lo/10)*10,math.floor(hi/10)*10+1,10):
+            if start==anchor:continue  # unchanged delivered schedule is not a retiming coverage hit
             end=start+length
-            if any(start<e['end_min'] and end>e['start_min'] for e in c['events']):continue
             row={**original,'start_min':start,'end_min':end}
             patch=dict(type='rows',collection='controls',identity='_unified_id',rows=[row])
             plan=apply(c['A'],[patch]);after=_ev_profiles(c,plan,(),side='B').get((aid,nid),[])
@@ -87,7 +89,7 @@ def wh_windows(c,d,cfg):
     temp=original['value_C'];maximum=min(75,d['parameters']['maximum_C'])
     temperatures={temp}|{temp+sign*delta for delta in cfg['tank_delta_C'] for sign in (-1,1)}
     for start,end in sorted(windows):
-        if not c['decision_min']<=start<end<=min(1440,round(native['bath_required_h']*60)):continue
+        if not c['decision_min']<=start<end<=1440:continue
         if end-start>min(480,preend-prestart+60):continue
         for target in sorted(temperatures):
             if not 45<=target<=maximum:continue

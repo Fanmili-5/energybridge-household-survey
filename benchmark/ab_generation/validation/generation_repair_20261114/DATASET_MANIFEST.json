@@ -1,0 +1,14 @@
+{
+  "schema": "eb.sealed_native_plan_batch.v1",
+  "households": 1000,
+  "pairs": 10000,
+  "source_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+  "pair_index_sha256": "e78444d527a32b05ad8a9e74357ee2ccb670b6774fa62ef864a01121b5fa1eb1",
+  "result_sha256": "655b0d36dde2d4ba4d4acebcf4867b0b3c57e4f990f06d19f46ad1e2d4882027",
+  "generator_snapshot_checked": true,
+  "current_pair_hashes_checked": true,
+  "unique_reselected_pairs": 107,
+  "physics_qualification_not_inherited": true,
+  "formal_questionnaire_release": false,
+  "human_answers_generated": false
+}

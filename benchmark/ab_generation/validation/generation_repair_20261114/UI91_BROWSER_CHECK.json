@@ -1,0 +1,32 @@
+{
+  "scope": "server-local private offline UI91 preview",
+  "real_human_answers_written": false,
+  "external_requests_allowed": false,
+  "viewports": [
+    {
+      "width": 1280,
+      "height": 900,
+      "page_loaded": true,
+      "actual_consequences_visible": true,
+      "complete_schedule_expandable": true,
+      "no_horizontal_overflow": true,
+      "page_error_count": 0,
+      "blocked_external_request_count": 0,
+      "blank_form_cannot_submit": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "page_loaded": true,
+      "actual_consequences_visible": true,
+      "complete_schedule_expandable": true,
+      "no_horizontal_overflow": true,
+      "page_error_count": 0,
+      "blocked_external_request_count": 0,
+      "blank_form_cannot_submit": true
+    }
+  ],
+  "passed": true,
+  "answers_generated": false,
+  "official_UI91_response_form_unchanged": true
+}

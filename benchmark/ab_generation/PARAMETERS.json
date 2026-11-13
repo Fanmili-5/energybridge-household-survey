@@ -9488,6 +9488,212 @@
         }
       ],
       "sha256": "96f0686a4bd9f85536f449275c6027fb65a4bfc0984e692e0dbd5ef042cef2f6"
+    },
+    {
+      "path": "examples/EB_REFERENCE_RULES.json",
+      "sha256": "4e31874fa2d7d951903b9b682a25ba69bc7b22c18dc280e40acc906441ba0a9d",
+      "quantitative_fields": [
+        {
+          "path_pattern": "/EV_reserve_SOC",
+          "occurrences": 1,
+          "values": [
+            0.15
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/dishwasher_next_morning_deadline_min",
+          "occurrences": 1,
+          "values": [
+            600
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/facts_not_modified",
+          "occurrences": 1,
+          "values": [
+            true
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/heating_C",
+          "occurrences": 1,
+          "values": [
+            20.0
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/maximum_preload_wait_min",
+          "occurrences": 1,
+          "values": [
+            720
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/maximum_retrieval_wait_min/dishwasher",
+          "occurrences": 1,
+          "values": [
+            1440
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/maximum_retrieval_wait_min/dryer",
+          "occurrences": 1,
+          "values": [
+            720
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/maximum_retrieval_wait_min/washer",
+          "occurrences": 1,
+          "values": [
+            720
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/mixed_water_target_C",
+          "occurrences": 1,
+          "values": [
+            40.5555555555556
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/physical_outputs_used",
+          "occurrences": 1,
+          "values": [
+            false
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/programs/dishwasher/duration_min",
+          "occurrences": 1,
+          "values": [
+            240
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/programs/dishwasher/nominal_peak_kw",
+          "occurrences": 1,
+          "values": [
+            0.4128531584521265
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/programs/dryer/duration_min",
+          "occurrences": 1,
+          "values": [
+            60
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/programs/dryer/nominal_peak_kw",
+          "occurrences": 1,
+          "values": [
+            1.2222753880483284
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/programs/washer/duration_min",
+          "occurrences": 1,
+          "values": [
+            240
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/programs/washer/nominal_peak_kw",
+          "occurrences": 1,
+          "values": [
+            0.36963719963106173
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/reference_running_water_duration_min",
+          "occurrences": 1,
+          "values": [
+            8
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/reference_shower_flow_L_min",
+          "occurrences": 1,
+          "values": [
+            7.6
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/tank_maximum_C",
+          "occurrences": 1,
+          "values": [
+            65.0
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/tank_normal_C",
+          "occurrences": 1,
+          "values": [
+            55.0
+          ],
+          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
+          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "exact_value_from_paper": false
+        }
+      ]
     }
   ],
   "legacy_constraints": [

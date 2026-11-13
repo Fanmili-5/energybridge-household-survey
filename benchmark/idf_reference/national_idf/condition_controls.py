@@ -55,6 +55,7 @@ def validate(case,timeline,equipment,contract_ref,*,root=ROOT):
     require(fixed['run']==case['run'],'CONDITION_FIXED_SERVICE_WINDOW')
     for device in uncontrolled:
         if device == 'water_heater':
+            require(case['controls'].get('water_heater_windows_by_date')==fixed['controls'].get('water_heater_windows_by_date'),'CONDITION_UNCONTROLLED_HEATER_WINDOW_CHANGED')
             # Demand is an input, not permission to preheat the fixed asset.
             for field in ('mixed_water_daily', 'mixed_water_overrides'):
                 require(case['life'].get(field, {}) == fixed['life'].get(field, {}),

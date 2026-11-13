@@ -26,7 +26,7 @@ def implementation():
     from .release import compiler_identity
     from .runtime_release import runtime_identity
     from .housing_pipeline import implementation as housing_identity
-    paths=('configs/CASE.v3.schema.json','configs/condition_primary_control_inputs_v2.json','national_idf/dated_case.py','national_idf/reference_pipeline.py','national_idf/condition_actions.py','national_idf/condition_inventory.py',
+    paths=('national_idf/thermal_case_runtime.py','scripts/analyze_multicountry_reference.py','national_idf/eb_water_heater_window.py','configs/CASE.v2.schema.json','national_idf/case_commands.py','national_idf/reference_inventory.py','national_idf/joint_case_runtime.py','configs/CASE.v3.schema.json','configs/condition_primary_control_inputs_v2.json','national_idf/dated_case.py','national_idf/reference_pipeline.py','national_idf/condition_actions.py','national_idf/condition_inventory.py',
         'national_idf/condition_controls.py','national_idf/condition_quality.py','scripts/check_condition_housing.py',
         'scripts/check_condition_inventory.py','national_idf/condition_outputs.py','national_idf/condition_physics.py',
         'national_idf/condition_calendar.py','national_idf/condition_occupancy.py','national_idf/condition_people_capacity.py','national_idf/condition_water_port.py','national_idf/condition_control_domain.py','scripts/prepare_condition_solver.py',

@@ -1,6 +1,6 @@
 {
   "schema": "eb.benchmark.pipeline_status.v1",
-  "as_of": "2026-11-12",
+  "as_of": "2026-11-14",
   "scope": "V9 eight-country household pipeline;separate from historic online50 release",
   "source_households_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
   "households": {
@@ -33,21 +33,8 @@
     "accepted_scope": "source/life/service/coverage/replay;not human preference validity"
   },
   "AB": {
-    "rules": "six_original_Agent_actions_v3",
-    "pilot_households": 49,
-    "pilot_pairs": 490,
+    "rules": "paper-v1-final primitive and actual checkpoint mapping;explicit benchmark service subset",
     "producer_guard_connected": true,
-    "eligible_AC_cells": {
-      "covered": 102,
-      "total": 102,
-      "min_countries_per_cell": 2
-    },
-    "initial_pool_joint_targets": {
-      "covered": 178,
-      "total": 178,
-      "globally_exhaustive": false
-    },
-    "corrected_pilot_EnergyPlus_runs": 0,
     "old_pairs_audited": 10000,
     "old_B_current_contract_failures": 4335,
     "formal10000_regeneration_complete": false,
@@ -65,8 +52,103 @@
       "full_physics_or_human_acceptance_claim": false,
       "report": "docs/research/original_eb_reaudit_20261113/REPORT.md",
       "current_V3_guard_not_legacy_paper_admission_oracle": true,
-      "producer_gate_targeted_revision_complete": false
-    }
+      "producer_gate_targeted_revision_complete": true
+    },
+    "historical_v3_pilot": {
+      "pilot_households": 49,
+      "pilot_pairs": 490,
+      "eligible_AC_cells": {
+        "covered": 102,
+        "total": 102,
+        "min_countries_per_cell": 2
+      },
+      "initial_pool_joint_targets": {
+        "covered": 178,
+        "total": 178,
+        "globally_exhaustive": false
+      },
+      "corrected_pilot_EnergyPlus_runs": 0
+    },
+    "native_batch": {
+      "households": 1000,
+      "pairs": 10000,
+      "native_plan_qualification_passed": true,
+      "selected_pair_native_replays": 20000,
+      "source_unchanged": true,
+      "unique_reselected_pairs": 107,
+      "formal_questionnaire_release": false,
+      "all_10000_physics_qualified": false
+    },
+    "native_batch_coverage": {
+      "schema": "eb.same_role_raw_cell_review.v1",
+      "denominator": "pre-selection raw root cells with intrinsic checks;not selected examples or materialized pool",
+      "country_goal": "two per role/cell when raw support spans at least two countries;otherwise one",
+      "final": {
+        "role_a_price_cooperative_commuter": {
+          "declared_raw_cells": 158,
+          "selected_at_least_one": 158,
+          "selected_country_goals_met": 157,
+          "materialized_country_goals_met": 158,
+          "cells_without_materialized_witness": 0,
+          "source_intrinsic_exclusion_instances": 0
+        },
+        "role_b_home_comfort_gated": {
+          "declared_raw_cells": 155,
+          "selected_at_least_one": 155,
+          "selected_country_goals_met": 155,
+          "materialized_country_goals_met": 155,
+          "cells_without_materialized_witness": 0,
+          "source_intrinsic_exclusion_instances": 0
+        },
+        "role_c_irregular_cautious": {
+          "declared_raw_cells": 158,
+          "selected_at_least_one": 158,
+          "selected_country_goals_met": 157,
+          "materialized_country_goals_met": 158,
+          "cells_without_materialized_witness": 0,
+          "source_intrinsic_exclusion_instances": 0
+        },
+        "role_d_ideal_dr_participant": {
+          "declared_raw_cells": 158,
+          "selected_at_least_one": 158,
+          "selected_country_goals_met": 158,
+          "materialized_country_goals_met": 158,
+          "cells_without_materialized_witness": 0,
+          "source_intrinsic_exclusion_instances": 0
+        },
+        "role_e_caregiver_low_dr": {
+          "declared_raw_cells": 163,
+          "selected_at_least_one": 160,
+          "selected_country_goals_met": 158,
+          "materialized_country_goals_met": 162,
+          "cells_without_materialized_witness": 0,
+          "source_intrinsic_exclusion_instances": 0
+        },
+        "role_f_ev_commuter_optimizer": {
+          "declared_raw_cells": 177,
+          "selected_at_least_one": 160,
+          "selected_country_goals_met": 160,
+          "materialized_country_goals_met": 177,
+          "cells_without_materialized_witness": 0,
+          "source_intrinsic_exclusion_instances": 0
+        }
+      },
+      "reselected_slots": 15,
+      "all_declared_goals_met": false,
+      "unmaterialized_is_unknown_not_infeasible": true,
+      "original_household_base_coverage_preserved": true,
+      "physics_or_human_answers_used": false,
+      "optimizer": "bounded household CP-SAT joint reselection",
+      "global_optimality_claimed": false,
+      "total_declared_raw_cells": 969,
+      "total_selected_at_least_one": 949,
+      "total_selected_country_goals_met": 945,
+      "initial_selected_at_least_one": 931,
+      "initial_selected_country_goals_met": 861,
+      "unique_reselected_pairs": 107,
+      "unselected_cells": 20
+    },
+    "native10000_regeneration_complete": true
   },
   "IDF": {
     "public_snapshot": "benchmark/idf_reference/SOURCE_LOCK.json",
@@ -89,7 +171,10 @@
     "reference_city_reassigned": 57,
     "remaining_original_failed_requests_without_passing_alternative": 2,
     "default_city_candidate_activated": false,
-    "corrected_AB_physics_accepted": false
+    "corrected_AB_physics_accepted": false,
+    "corrected_AB_pipeline_probe_pairs": 2,
+    "corrected_AB_probe_physics_passed": true,
+    "heater_window_mapping_preserved": true
   },
   "questionnaire": {
     "planned": "UI91 with version-bound simulation consequences",
@@ -102,17 +187,24 @@
     "existing_public_pointer_dataset_id": "reference50-v4-ui91-trial",
     "existing_public_pointer_formal_collection_ready": false,
     "existing_public_pointer_synthetic_display_values": true,
-    "actual_online_live_version_checked_this_turn": false
+    "actual_online_live_version_checked_this_turn": false,
+    "new_V9_isolated_UI91_preview_passed": true,
+    "new_V9_preview_pairs": 1,
+    "new_V9_real_human_answers": 0,
+    "pricing_and_incentive_policy_pending": true
   },
   "scope_of_this_update": {
-    "source_docs_aggregate_only": true,
-    "new_physics_runs": 0,
+    "source_docs_aggregate_only": false,
+    "new_physics_runs": 4,
     "paid_API_calls": 0,
     "training_runs": 0,
     "online_release_changed": false,
-    "private_records_published": false
+    "private_records_published": false,
+    "new_physics_pipeline_pairs": 2,
+    "new_physics_runs_basis": "four accepted main-arm executions;registered numerical comparisons and retained diagnostic attempts separate"
   },
-  "acceptance": "not yet a complete validated benchmark",
+  "acceptance": "native10000 sealed;coverage tail,full physics,pricing and human validation pending",
   "method": "docs/METHOD.md",
-  "review": "docs/ACL_BENCHMARK_REVIEW_20261112.md"
+  "review": "docs/ACL_BENCHMARK_REVIEW_20261112.md",
+  "current_generation_report": "docs/research/AB_GENERATION_REPAIR_20261114.md"
 }

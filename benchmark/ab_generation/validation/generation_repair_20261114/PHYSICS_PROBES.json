@@ -1,0 +1,46 @@
+{
+  "pairs": [
+    {
+      "A_24h_kWh": 61.01840468380928,
+      "B_24h_kWh": 60.87636132961722,
+      "actual_native_step_min": 2,
+      "causal_curves_passed": true,
+      "difference_B_minus_A_kWh": -0.1420433541920616,
+      "formal_10000_release": false,
+      "human_labels_generated": false,
+      "numerical_comparisons": {
+        "2_vs_1min": true,
+        "5_vs_2min": true,
+        "published_main_vs_registered_2min": true,
+        "tail_7_vs_14days": true,
+        "warmup_14_vs_28days": true
+      },
+      "pair_count": 1,
+      "status": "original_question_window_validated",
+      "country": "US"
+    },
+    {
+      "A_24h_kWh": 24.168534856835677,
+      "B_24h_kWh": 21.433473434353346,
+      "actual_native_step_min": 2,
+      "causal_curves_passed": true,
+      "difference_B_minus_A_kWh": -2.7350614224823317,
+      "formal_10000_release": false,
+      "human_labels_generated": false,
+      "numerical_comparisons": {
+        "2_vs_1min": true,
+        "5_vs_2min": true,
+        "published_main_vs_registered_2min": true,
+        "tail_7_vs_14days": true,
+        "warmup_14_vs_28days": true
+      },
+      "pair_count": 1,
+      "status": "original_question_window_validated",
+      "country": "IN"
+    }
+  ],
+  "exact_current_A_B_hashes_matched": true,
+  "scope": "two registered pipeline probes;not representative or all10000 physics qualification",
+  "all_10000_physics_qualified": false,
+  "criteria_relaxed": false
+}

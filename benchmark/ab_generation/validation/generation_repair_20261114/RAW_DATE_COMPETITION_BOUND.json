@@ -1,0 +1,18 @@
+{
+  "schema": "eb.raw_date_competition_bound.v1",
+  "role": "F",
+  "family": "water_heater",
+  "raw_cells": 20,
+  "countries": [
+    "US"
+  ],
+  "households": 2,
+  "household_date_slots": 4,
+  "max_distinct_cells_in_four_slots": 4,
+  "minimum_unselected_in_this_subset": 16,
+  "source": "all raw root occurrences across every F household in every supported country;frozen native domains",
+  "one_native_daily_heater_window_per_pair": true,
+  "raw_denominator_unchanged": true,
+  "physical_infeasibility_or_resident_refusal_claimed": false,
+  "private_proof_sha256": "c5286a53bdbe13ff233b2fd923382d5d12e48a105b08ac0ca99af8e89108ce08"
+}

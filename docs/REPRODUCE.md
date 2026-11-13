@@ -15,7 +15,11 @@ python -B -m benchmark.project.verify_package
 
 这些命令检查来源、参数、文件身份和接口资料，不运行EnergyPlus、不连接生产数据库、不产生真人标签。
 
-## 2. 生成公开家庭并连接生活A
+## 2. 原生十天A/B入口
+
+当前家庭到A/B使用[generate_native命令](../benchmark/ab_generation/README.md#复用)，输入获准的家庭JSONL、参考参数和固定原版电器模块。它输出同源A/B、候选分母、选题及原版执行证明，不自动运行物理引擎或制造真人答案。A使用CP-SAT；候选使用有限枚举/IPOG-C/CP-SAT；选题使用SciPy/HiGHS。
+
+## 3. 历史公开家庭与生活A示例
 
 ```bash
 python -m pip install -r benchmark/housing_simulation/requirements.txt
@@ -26,7 +30,7 @@ python -B -m benchmark.family_generation verify /tmp/eb-life-new
 
 公开池为六个声明的合成情境，用于实现与接口验证。增加复制数量不证明人口多样性。
 
-## 3. B、物理与UI91分别复现
+## 4. 历史物理与UI91入口
 
 | 阶段 | 入口与所需资料 |
 |---|---|
@@ -38,8 +42,8 @@ python -B -m benchmark.family_generation verify /tmp/eb-life-new
 
 公开六户37案仍按[旧接口示例](../benchmark/project/README.md)独立复现，不能代替新版18:00—19:00的正式500题。受控500题重建需要相应许可输入；公开代码不等于公开提供这些原件。
 
-## 4. 采集协议与正式部署
+## 5. 采集协议与正式部署
 
 `python -B benchmark/collector/test_protocol.py`使用隔离虚构数据测试HTTP/SQLite，不产生真人答案；运行环境须允许本地回环监听。多轮身份检查见[采集器](../benchmark/collector/README.md)。
 
-生成和封存命令不自动激活线上服务。正式发布须核对资料、代码、数据库版本和恢复材料，并保留旧记录。文档或CI通过不表示任意新物理批次已经通过验收。完整研究实验在研究计算环境显式执行，1000户继续暂缓。
+生成和封存命令不自动激活线上服务。正式发布须核对资料、代码、数据库版本和恢复材料，并保留旧记录。文档或CI通过不表示任意新物理批次已经通过验收。本轮1000户已完成计划与原版执行，全量物理验证及正式发放仍待完成。两组新配对物理验收与隔离UI91预览见[本轮报告](research/AB_GENERATION_REPAIR_20261114.md)。

@@ -32,6 +32,7 @@ class NativeDailyTests(TestCase):
                      'arrival_soc':.4,'departure_soc_target':.8,'reference_battery_kwh':60,'reference_charger_kw':3.6,
                      'charge_efficiency':.9,'service_scope':'one selected parking-session episode; not repeated daily charging demand',
                      'charging_contiguity':'one_continuous_session_is_required_for_base_need'}
+        h['routine']={'daily_services':[{'day':day,'flexible_chore_window':[1080,1200],'meals':[{'kind':'dinner','location':'home','start':1080,'end':1110}], 'bathing_services':[{'start':1140,'end':1150,'member_id':'M'}]} for day in range(7)]}
         case={'case_id':'synthetic-native','household':h}
         ref={'programs':{k:{'duration_min':d,'nominal_peak_kw':kw} for k,d,kw in [('washer',120,1.5),('dryer',60,2),('dishwasher',90,1)]},
              'AC_nominal_upper_W':None,'tank_normal_C':55,'tank_maximum_C':65,'heating_C':20,'EV_reserve_SOC':.15}
@@ -45,7 +46,7 @@ class NativeDailyTests(TestCase):
         return case,ref,cfg,result
     def test_native_path_does_not_require_any_manual_household_fields(self):
         case,ref,cfg,result=self.generate()
-        self.assertNotIn('routine',case['household'])
+        self.assertFalse(any('manual_operation_opportunities' in r for r in case['household']['routine']['daily_services']))
         self.assertEqual(result['result']['A']['operations'],[])
         self.assertEqual(result['context']['operator_windows'],{})
         self.assertEqual(result['context']['source']['appliance_command_protocol'],PROTOCOL)
@@ -56,7 +57,8 @@ class NativeDailyTests(TestCase):
         if not NATIVE.exists():self.skipTest('original EB source unavailable')
         with patch('benchmark.ab_generation.eb_primary._schedule_no_dr_routine_appliances',wraps=_schedule_no_dr_routine_appliances) as sampler:
             r=generate_day_baseline(case,'2007-07-18',ref,cfg,MANIFEST,native_appliance_source_path=NATIVE)
-        self.assertEqual(r['status'],'accepted_plan_only');self.assertGreaterEqual(sampler.call_count,2)
+        self.assertEqual(r['status'],'accepted_plan_only');self.assertGreaterEqual(sampler.call_count,1)
+        self.assertIn('household_routine_schedule',r['result'])
     def test_daily_complete_programmes_finish_same_date(self):
         _,ref,_,r=self.generate()
         self.assertEqual(len(r['result']['A']['tasks']),3)
@@ -198,3 +200,40 @@ class NativeServiceContractTests(TestCase):
         _,_,_,r=self.generate()
         for task in r['result']['A']['tasks']:
             self.assertEqual(r['result']['native_accepted_programme_start_h'][task['kind']+'_start_h']*60,task['start_min'])
+
+
+class HouseholdRoutineBindingTests(TestCase):
+    fixture=NativeDailyTests.fixture
+    def test_A_responds_to_household_routine_without_mutating_source(self):
+        from .common import digest
+        case,ref,cfg=self.fixture()
+        if not NATIVE.exists():self.skipTest('original EB source unavailable')
+        before=digest(case);a=generate_day_baseline(case,'2007-07-18',ref,cfg,MANIFEST,native_appliance_source_path=NATIVE)
+        self.assertEqual(before,digest(case))
+        for day in case['household']['routine']['daily_services']:
+            day['flexible_chore_window']=[900,960]
+        b=generate_day_baseline(case,'2007-07-18',ref,cfg,MANIFEST,native_appliance_source_path=NATIVE)
+        starts=lambda e:{t['kind']:t['start_min'] for t in e['context']['A']['tasks']}
+        self.assertNotEqual(starts(a)['washer'],starts(b)['washer'])
+        self.assertEqual([t['end_min']-t['start_min'] for t in a['context']['A']['tasks']],[t['end_min']-t['start_min'] for t in b['context']['A']['tasks']])
+    def test_odd_minute_baths_do_not_create_off_grid_heater_commands(self):
+        case,ref,cfg=self.fixture(ev=True)
+        if not NATIVE.exists():self.skipTest('original EB source unavailable')
+        for day in case['household']['routine']['daily_services']:
+            day['bathing_services'][0].update(start=1145,end=1155)
+        e=generate_day_baseline(case,'2007-07-18',ref,cfg,MANIFEST,native_appliance_source_path=NATIVE)
+        for c in e['context']['A']['controls']:
+            if c['kind']=='tank_setpoint':self.assertEqual((c['start_min']%10,c['end_min']%10),(0,0))
+        self.assertEqual(case['household']['routine']['daily_services'][2]['bathing_services'][0]['start'],1145)
+
+    def test_late_dinner_uses_an_existing_earlier_meal_without_overnight(self):
+        case,ref,cfg=self.fixture();ref['programs']['dishwasher']['duration_min']=240
+        if not NATIVE.exists():self.skipTest('original EB source unavailable')
+        for day in case['household']['routine']['daily_services']:
+            day['meals']=[dict(kind='breakfast',location='home',start=440,end=470,participants=['M']),dict(kind='dinner',location='home',start=1260,end=1290,participants=['M'])]
+        e=generate_day_baseline(case,'2007-07-18',ref,cfg,MANIFEST,native_appliance_source_path=NATIVE)
+        job=next(j for j in e['problem']['jobs'] if j['kind']=='dishwasher')
+        task=next(t for t in e['context']['A']['tasks'] if t['kind']=='dishwasher')
+        self.assertEqual(job['A_reference_dish_load']['meal_kind'],'breakfast')
+        self.assertGreaterEqual(task['start_min'],470);self.assertLessEqual(task['end_min'],1440)
+        self.assertEqual(job['release_min'],480) # Native B window is not replaced by the meal preference.

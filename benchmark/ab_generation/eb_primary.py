@@ -38,7 +38,7 @@ def build_problem(case,date,reference):
             byfun[f]=aid;k=KINDS[f]
             if f in ('WM','DR','DW'):
                 ref=reference['programs'][k];duration=ref['duration_min']/60
-                earliest=float(ref.get('earliest_h',8.0));latest=float(ref.get('latest_h',22.0))
+                earliest=float(ref.get('earliest_h',8.0));latest=float(ref.get('latest_h',24.0))
                 if latest<earliest:latest+=24
                 latest=min(24.0,latest)
                 if earliest<0 or duration<=0 or latest-earliest<duration:raise ValueError('NO_COMPLETE_SAME_DAY_PROGRAMME_WINDOW:'+k)
@@ -110,7 +110,7 @@ def build_problem(case,date,reference):
         if 'WH' in byfun:
             cfg=configs['water_heater'];controls.append(dict(asset_id=byfun['WH'],kind='tank_setpoint',
               start_min=i*1440+round(cfg['normal_start_h']*60),end_min=i*1440+round(cfg['normal_end_h']*60),value_C=cfg['normal_temp_c']))
-    return dict(household_id=case['case_id'],anchor=date,end_exclusive=(q+dt.timedelta(days=2)).isoformat(),
+    problem=dict(household_id=case['case_id'],anchor=date,end_exclusive=(q+dt.timedelta(days=2)).isoformat(),
         world=dict(household_id=case['case_id'],members=[dict(member_id=m['id'],household_id=case['case_id'],can_operate_asset_ids=[]) for m in h['members']],
             devices=list(assets.values()),native_single_program_per_day=True),
         jobs=jobs,days=days,fixed_operations=[],controls=controls,EV=EV,thermostat_policies=[],nonprogram_requirements=[],
@@ -119,6 +119,8 @@ def build_problem(case,date,reference):
             source_facts_modified=False,requested_days=1,technical_EV_tail_days=1,
             A_method='original_EB_no_DR_allowed_window_sampling_on_declared10min_command_grid',
             manual_handling_fields_consulted=False,programme_completion='same_calendar_date;EV_only_may_overnight'))
+    from .household_routine_A import bind_routine
+    return bind_routine(problem,h,reference)
 
 class GridSuite:
     """10min command encoding around the unmodified original EB routine."""
@@ -133,25 +135,15 @@ class GridSuite:
     def set_ev_charge_window(self,*a,**k):return self.suite.set_ev_charge_window(*a,**k)
 
 def sample_A(problem,native_path,seed):
-    native=native_module(native_path);configs=problem['native_appliance_configuration'];last=None
-    for attempt in range(256):
-        suite=native.ApplianceSuite(deepcopy(configs),sim_days=2,explicit_only=True);proxy=GridSuite(suite)
-        record=_schedule_no_dr_routine_appliances(proxy,deepcopy(configs),1,f"{seed}:{problem['household_id']}:{problem['anchor']}:{attempt}")
-        tasks=[]
-        for j in problem['jobs']:
-            rec=suite._shiftable[j['kind']]._days[0]
-            if rec.scheduled_abs_h is None:break
-            start=round(rec.scheduled_abs_h*60);end=start+j['policy']['duration_min']
-            tasks.append(dict(task_id=j['need_id'],need_id=j['need_id'],asset_id=j['asset_id'],kind=j['kind'],
-                start_min=start,end_min=end,power_kw=configs[j['kind']]['power_kw'],
-                **({'depends_on_need_id':j['depends_on_need_id']} if j.get('depends_on_need_id') else {})))
-        if len(tasks)!=len(problem['jobs']):continue
-        byneed={t['need_id']:t for t in tasks}
-        if any(t.get('depends_on_need_id') and byneed[t['depends_on_need_id']]['end_min']>t['start_min'] for t in tasks):continue
-        if any(a['asset_id']==b['asset_id'] and a['start_min']<b['end_min'] and b['start_min']<a['end_min'] for i,a in enumerate(tasks) for b in tasks[i+1:]):continue
-        last=(suite,tasks,record,attempt);break
-    if last is None:return dict(status='infeasible',A=None,causes=[{'reason':'DECLARED_NATIVE_WINDOWS_OR_ASSET_ORDER_INFEASIBLE'}])
-    suite,tasks,record,attempt=last
+    from .household_routine_A import solve_programmes
+    native=native_module(native_path);configs=problem['native_appliance_configuration']
+    tasks,schedule=solve_programmes(problem,seed)
+    if tasks is None:return dict(status='infeasible',A=None,causes=[schedule])
+    suite=native.ApplianceSuite(deepcopy(configs),sim_days=2,explicit_only=True)
+    for task in tasks:
+        if not suite.shift_appliance(task['kind'],0,task['start_min']/60):
+            raise ValueError('NATIVE_A_ROUTINE_START_REJECTED:'+task['kind'])
+    record=schedule;attempt=0
     background=deepcopy(configs)
     for k in ('washer','dryer','dishwasher'):background[k]={'present':False}
     _schedule_no_dr_routine_appliances(GridSuite(suite),background,2,f'{seed}:EV_completion_background')
@@ -159,7 +151,7 @@ def sample_A(problem,native_path,seed):
     if problem['EV']['connections']:
         connection=problem['EV']['connections'][0];aid=problem['EV']['episode']['asset_id'];cfg=configs['ev']
         for t in range(connection['start_min'],connection['end_min'],10):
-            power=suite._ev.step(t/60,1/6,False)
+            power=suite._ev.step(math.nextafter(t/60,math.inf),1/6,False)
             if power>1e-10:steps.append(dict(need_id=connection['need_id'],start_min=t,end_min=t+10,grid_kWh=power/6))
         if suite._ev._soc<cfg['target_soc']-1e-7:raise ValueError('NATIVE_A_EV_DEPARTURE_TARGET_UNMET')
         controls.append(dict(asset_id=aid,kind='ev_charge_window',need_id=connection['need_id'],
@@ -167,8 +159,8 @@ def sample_A(problem,native_path,seed):
             _unified_id='EB_EV_window:'+connection['need_id']))
     return dict(schema='eb.primary.A.v1',household_id=problem['household_id'],status='feasible',
         A=dict(tasks=tasks,operations=[],controls=controls),input_sha256=digest(problem),portrait_sha256=digest(None),
-        service_ledger=[dict(need_id=t['need_id'],actual_start_min=t['start_min'],actual_end_min=t['end_min'],source='original_EB_no_DR_routine') for t in tasks],
-        native_routine_record_raw_before_command_grid=record,
+        service_ledger=[dict(need_id=t['need_id'],actual_start_min=t['start_min'],actual_end_min=t['end_min'],source='household_conditioned_A_with_original_EB_native_primitives') for t in tasks],
+        household_routine_schedule=record,
         native_accepted_programme_start_h={t['kind']+'_start_h':t['start_min']/60 for t in tasks},
         native_sampler_attempts=attempt+1,ev_charging_steps=steps,
         physical_ev_connections=deepcopy(problem['EV']['connections']),events_prices_B_or_answers_used=False,

@@ -1,28 +1,58 @@
-# A/B策略生成
+# A/B方案生成
 
-当前八国V9路线：按固定EB noDR规则生成完整日常A；从原EB Agent合法动作构造B候选，按覆盖约束选择每户十个不同日期、每天一个B。完整上下游见[项目方法](../../docs/METHOD.md)，当前状态见[状态表](../../docs/BENCHMARK_STATUS.json)。
+当前入口是 [generate_native.py](generate_native.py)。冻结家庭输入后，每户生成十个不同日期的日常A，再从原EB六类动作中生成候选，最后每天只选一个B。完整来源和结果见[本轮记录](../../docs/research/AB_GENERATION_REPAIR_20261114.md)。
 
-## 当前入口
+## 算法
 
-**统一V3检查器属于本项目新增包装，仍可重放历史试跑，但不作为论文原版的旧题库判废裁判。家庭偏好、原Agent策略与本批实验约束须分开登记；生产准入对齐仍待按本次重审针对性修订。**
+1. **生成A：OR-Tools CP-SAT。** 根据家庭参考周、吃饭/家务/洗浴时间联合安排完整程序；同批衣物先洗后烘，洗碗对应已经完成的一餐，热水器窗口围绕洗浴，EV在给定停车连接内连续充电。保留原程序资源、时长和硬件；不读取VPP收益、B后果或真人答案。A是有家庭依据的实验参考日程，不冒称实测生活日记。
+2. **构造B：有限动作枚举＋IPOG-C覆盖设计＋CP-SAT约束求解。** 洗衣、烘干、洗碗只移动完整程序；空调只改变原版制冷设定值；热水器改变原有窗口/目标；EV保持一段连续充电。原版来源固定到官方paper-v1-final的c58a2a7a；实际检查时钟由冻结原文件的相关AST执行，不用后来V2/V3限制回判旧题。
+3. **选一个B：SciPy/HiGHS整数规划。** 每日期一题；优先覆盖已有完整见证的联合任务数，再优化电器/取舍覆盖和重复，用固定种子破同分。同类家庭可共同补齐细分组合；[cohort_coverage.py](cohort_coverage.py)只做保持原有基础覆盖的重选，并重新执行改动后的B。它不保证全局最优，未覆盖单元照实登记。
 
-- [一天题目合同](DAY_QUESTION_CONTRACT.md)、[V9生产连接](V9_PRODUCTION_CONNECTION.md)：日期、服务与源绑定。
-- [六类原Agent动作](../../docs/research/EB_MAIN_AGENT_ACTION_RULES_20261111.md)、[eb_agent_contract.py](eb_agent_contract.py)：原生动作守卫。
-- [eb_primary.py](eb_primary.py)、[v9_date_adapter.py](v9_date_adapter.py)：原日常A与家庭日期适配。
-- [eb_primary_candidates.py](eb_primary_candidates.py)、[unified/candidates.py](unified/candidates.py)：原生修改候选与组合。
-- [新版规则与490题试跑](validation/eb_native_v3/README.md)：有限覆盖、原生执行和未完成项。
+家庭温度偏好是软属性；偏好冲突、预计收益差和居民可能拒绝都可保留。未知热效应不能算成“零影响”。执行接口错误、擅改硬件或破坏同批洗烘先后关系单独报错。
 
-原生动作守卫已接入A入口、候选因子、合并请求与导出检查。空调不添加停冷/独立制热；程序设备保留每日完整任务；EV为停车连接内连续一段，可跨夜。B可违背软偏好，真人接受标签不由算法提前决定。
+连续EV、每日完整服务和非EV不跨夜是本批明确采用的实验约束。十分钟记录网格不表示十分钟开关一次。原EB资源窗口也不冒称实测电机连续工作的时长。
 
-**生产CLI旧默认配置与服务器V3试跑编排分开。** 不能仅运行旧默认入口就宣称重建新版490题或正式10000题。全量新版尚未完成。旧4335是V2/V3包装检查计数，不能直接判数据无效；论文冻结版重审恢复130条，4205条需核对执行映射。旧题全部保留，详见[原版重审](../../docs/research/original_eb_reaudit_20261113/REPORT.md)。本轮490题的EnergyPlus后果仍未验收。
+## 复用
 
-## 检查与历史
-
-按[试跑说明](validation/eb_native_v3/README.md)运行相关动作/服务反例测试。原生源代码缺失时部分测试会跳过，应如实报告，不能将其计作原生回放通过。
+先准备获准的家庭JSONL、参考参数与固定原生电器模块，并安装[依赖](unified/requirements-lock.txt)。
 
 ```bash
-python -B -m benchmark.ab_generation.audit_design
+python -B -m benchmark.ab_generation.generate_native \
+  --households /path/to/household_cases.jsonl \
+  --case-id YOUR_CASE_ID \
+  --reference benchmark/ab_generation/examples/EB_REFERENCE_RULES.json \
+  --start-date 2007-07-18 --days 10 \
+  --native-source /path/to/pinned/appliance_sim.py \
+  --out /path/to/new-output-directory
+```
+
+输出包括冻结输入/代码指纹、每日A、完整已生成候选、选择凭据和逐日A/B及原版执行回放。物理后果和真人答案保持null。公开参考参数是本轮来源原型的资源窗口，不适用于任意硬件或国家；新硬件须重新核对来源和能力。
+
+整批生成复用同一算法，无服务器路径写死：
+
+```bash
+python -B -m benchmark.ab_generation.generate_cohort \
+  --households /path/to/household_cases.jsonl \
+  --reference benchmark/ab_generation/examples/EB_REFERENCE_RULES.json \
+  --start-date 2007-07-18 --days 10 --workers 4 \
+  --native-source /path/to/pinned/appliance_sim.py --out /path/to/new-batch
+```
+
+批次覆盖检查：
+
+```bash
+python -B -m benchmark.ab_generation.cohort_coverage --batch /path/to/native-batch
+# --apply --native-source ... 才会重选；保存原PAIR并回放新B。
+# 剩余目标可用 cohort_optimize --batch ... --native-source ... 做有预算的联合补选。
+python -B -m benchmark.ab_generation.seal_native_cohort \
+  --batch /path/to/native-batch --households /path/to/household_cases.jsonl
 python -B -m benchmark.ab_generation.verify_package
 ```
 
-[旧十天采集方法](docs/collection/COLLECTION_METHOD.md)、[v2.10/v2.11](../research_delivery/METHOD.md)、[早期生活到A](docs/life/LIFE_METHOD.md)及[历史复现](docs/core/REPRODUCE.md)按原版本保留。其装取动作、默认配置、候选和物理后果不能自动继承到新版原Agent动作规则。当前实现测试不启动模型API、训练、EnergyPlus或采集数据库。
+批次检查读取同版生成批次的STATUS、PRE_RUN及分户CATALOGUES/PAIR。重选后须重新封存，更新全局索引和SELECTION_CURRENT；原索引和初选凭据保留。若使用原生成器的独立快照，可给封存命令传--generator-code。逐户/整批CLI不自动创造人口源池或调用EnergyPlus。
+
+## 当前验收与历史
+
+新1000户×10题已完成计划生成和20000次原版A/B执行回放。细分覆盖、两组新配对物理验证及一个UI91隔离预览分别登记；全量物理验收和正式发放仍未完成，见[状态](../../docs/BENCHMARK_STATUS.json)。
+
+旧10000题全部保留。原“4335个B一概不合格”已撤回，见[论文版重审](../../docs/research/original_eb_reaudit_20261113/REPORT.md)。旧[490题V3试跑](validation/eb_native_v3/README.md)、[十天采集方法](docs/collection/COLLECTION_METHOD.md)、[v2.10/v2.11研究方法](../research_delivery/METHOD.md)按原版本留档，不能继承其后果或答案到本轮新方案。

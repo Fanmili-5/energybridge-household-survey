@@ -1,0 +1,69 @@
+{
+  "schema": "eb.same_role_raw_cell_review.v1",
+  "denominator": "pre-selection raw root cells with intrinsic checks;not selected examples or materialized pool",
+  "country_goal": "two per role/cell when raw support spans at least two countries;otherwise one",
+  "final": {
+    "role_a_price_cooperative_commuter": {
+      "declared_raw_cells": 158,
+      "selected_at_least_one": 158,
+      "selected_country_goals_met": 157,
+      "materialized_country_goals_met": 158,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    },
+    "role_b_home_comfort_gated": {
+      "declared_raw_cells": 155,
+      "selected_at_least_one": 155,
+      "selected_country_goals_met": 155,
+      "materialized_country_goals_met": 155,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    },
+    "role_c_irregular_cautious": {
+      "declared_raw_cells": 158,
+      "selected_at_least_one": 158,
+      "selected_country_goals_met": 157,
+      "materialized_country_goals_met": 158,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    },
+    "role_d_ideal_dr_participant": {
+      "declared_raw_cells": 158,
+      "selected_at_least_one": 158,
+      "selected_country_goals_met": 158,
+      "materialized_country_goals_met": 158,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    },
+    "role_e_caregiver_low_dr": {
+      "declared_raw_cells": 163,
+      "selected_at_least_one": 160,
+      "selected_country_goals_met": 158,
+      "materialized_country_goals_met": 162,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    },
+    "role_f_ev_commuter_optimizer": {
+      "declared_raw_cells": 177,
+      "selected_at_least_one": 160,
+      "selected_country_goals_met": 160,
+      "materialized_country_goals_met": 177,
+      "cells_without_materialized_witness": 0,
+      "source_intrinsic_exclusion_instances": 0
+    }
+  },
+  "reselected_slots": 15,
+  "all_declared_goals_met": false,
+  "unmaterialized_is_unknown_not_infeasible": true,
+  "original_household_base_coverage_preserved": true,
+  "physics_or_human_answers_used": false,
+  "optimizer": "bounded household CP-SAT joint reselection",
+  "global_optimality_claimed": false,
+  "total_declared_raw_cells": 969,
+  "total_selected_at_least_one": 949,
+  "total_selected_country_goals_met": 945,
+  "initial_selected_at_least_one": 931,
+  "initial_selected_country_goals_met": 861,
+  "unique_reselected_pairs": 107,
+  "unselected_cells": 20
+}

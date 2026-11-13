@@ -39,7 +39,7 @@ def concepts(row,joint_order_mode='legacy_buckets_v1'):
     order=('no_change' if count==0 else 'tasks_'+str(count)) if joint_order_mode=='exact_witnessed_v1' else (
         'no_change' if count==0 else 'single' if count==1 else 'two' if count==2 else 'three_or_more')
     axes={'manual':row['features']['manual'],
-        'nominal_event_sign':'reduction' if known>1e-8 else 'increase' if known<-1e-8 else 'zero',
+        'nominal_event_sign':'thermal_unknown' if row.get('unknown_thermal_response') else 'reduction' if known>1e-8 else 'increase' if known<-1e-8 else 'zero',
         'joint_order':order,
         'same_family_multibatch':str(any(n>1 for f,n in units.items() if f in ('washer','dishwasher','dryer'))),
         'service_slack':'unknown' if not slack else 'shortfall' if min(slack)<0 else 'under_30' if min(slack)<30 else 'ample',

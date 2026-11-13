@@ -1,4 +1,4 @@
-"""Executable subset of the pinned EB main Agent action contract.
+"""Paper-v1 primitive mapping and explicit benchmark construction rules.
 
 Benchmark choices (continuous EV, required daily services and no non-EV
 overnight) are explicit subsets, not claims that EB has no other operations.
@@ -8,26 +8,20 @@ from types import SimpleNamespace
 from collections import defaultdict
 import math
 
-from . import upstream_eb_agent_contract as upstream
+from .paper_v1_clock import replay_clock, NS as PAPER_CONSTANTS
 
-VERSION = "eb.main_agent.six_actions.v1"
+VERSION = "eb.paper_v1.operational_domain.v2"
 KINDS = {"AC":"ac", "WM":"washer", "DR":"dryer", "DW":"dishwasher", "WH":"water_heater", "EV":"ev"}
 AC_KEYS = {"cooling_setpoint_C"}
 TASK_NAMES = {"washer", "dryer", "dishwasher"}
 
 def household_bounds(household):
-    comfort = household["comfort"]
-    low, high = comfort["preferred_cooling_c"]
-    tolerance = comfort["allowed_short_adjustment_c"]
-    loop = SimpleNamespace(
-        agent_preference_memory={"onboarding":{"answers":[
-            {"id":"thermostat_flexibility", "answer":f"{low}-{high} C"}]}},
-        observable_profile={"thermostat_flexibility_c":tolerance})
-    low, high, tolerance = upstream._agent_observable_ac_bounds(loop)
-    return {"min_c":max(22.0,low-tolerance), "max_c":min(28.0,high+2.0),
-            "temperature_decimals":1, "heating_fixed_c":20.0,
-            "projection":"visible household comfort fields represented as observable onboarding",
-            "source_commit":upstream.SOURCE_COMMIT}
+    # Household comfort is a soft questionnaire attribute, not admission bounds.
+    return {"min_c":22.0,"max_c":28.0,"temperature_decimals":1,
+            "heating_fixed_c":20.0,"projection":"paper_v1_global_operational_domain",
+            "source_commit":"c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0",
+            "preferred_cooling_c":household["comfort"]["preferred_cooling_c"],
+            "preference_conflicts_are_admitted":True}
 
 def _finite(value):
     return not isinstance(value,bool) and isinstance(value,(int,float)) and math.isfinite(value)
@@ -146,31 +140,15 @@ def plan_errors(context,plan):
                         errors.append("AGENT_WH_WINDOW_WOULD_BE_BOUNDED")
                     if start//1440 != (end-1)//1440:
                         errors.append("NON_EV_WATER_HEATER_OVERNIGHT_FORBIDDEN")
-                    payload = {"water_heater_preheat":True,
-                        "water_heater_preheat_start_h":(start%1440)/60,
-                        "water_heater_preheat_end_h":24.0 if end%1440==0 else (end%1440)/60,
-                        "water_heater_preheat_temp_c":row["value_C"]}
-                    if upstream._adaptive_v3_water_heater_action_errors(payload,{"water_heater":{"present":True}}):
-                        errors.append("OUTSIDE_ORIGINAL_AGENT_WATER_HEATER_CONTRACT")
-    payload=complete_appliance_payload(plan)
-    cfg={name:{"present":any(t["kind"]==name for t in plan["tasks"]),"service_required_today":True} for name in TASK_NAMES}
-    cfg["water_heater"]={"present":any(r["kind"]=="tank_setpoint" for r in plan["controls"])}
-    cfg["ev"]={"present":any(r["kind"]=="ev_charge_window" for r in plan["controls"])}
-    if upstream._adaptive_v3_appliance_action_contract_errors(payload,cfg):
-        errors.append("OUTSIDE_ORIGINAL_AGENT_APPLIANCE_ACTION_SCHEMA")
-    if upstream._missing_explicit_appliance_actions(payload,cfg,adaptive_contract=True):
-        errors.append("ORIGINAL_AGENT_EXPLICIT_APPLIANCE_FIELDS_MISSING")
-    calls=ac_calls(context,plan)
-    for i,call in enumerate(calls):
-        following=next((r for r in calls[i+1:] if r["asset_id"]==call["asset_id"]),None)
-        payload={"setpoint":call["setpoint"],"appliances":{}}
-        if following:
-            payload["next_check_hour"]=following["minute"]/60
-            # The original response consumer discards checks <= sim_h+0.25.
-            if following["minute"]-call["minute"]<=15+1e-7:
-                errors.append("AGENT_AC_NEXT_CHECK_WOULD_BE_REJECTED_OR_CLEARED")
-        if upstream._adaptive_v3_plan_control_errors(payload,sim_h=call["minute"]/60,total_sim_hours=48,setpoint_min_c=limits["min_c"],setpoint_max_c=limits["max_c"]):
-            errors.append("OUTSIDE_ORIGINAL_AGENT_SCALAR_PLAN_CONTRACT")
+                    if not _finite(row.get("value_C")) or not 45<=row["value_C"]<=75:
+                        errors.append("PAPER_V1_WH_TEMPERATURE_WOULD_BE_CLIPPED")
+    for (asset,kind),rows in after_groups.items():
+        if kind != "ac_setpoint":
+            continue
+        ordered=sorted(rows,key=lambda x:x["start_min"])
+        clock=replay_clock(ordered,{**context,"events":context.get("events",[])})
+        if clock["mismatches"]:
+            errors.append("PAPER_V1_CHECKPOINT_CLOCK_CANNOT_REPRODUCE_LITERAL_PLAN")
     return sorted(set(errors))
 
 def complete_appliance_payload(plan):

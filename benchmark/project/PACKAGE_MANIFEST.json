@@ -2,7 +2,7 @@
   "date": "2026-10-20",
   "dependencies": {
     "benchmark/__init__.py": "64451c197a4f82e4815a5daee3f2ec4dd518da48855e2da1d36807b0249e017c",
-    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "05e5436a5eda7bb4ea965d206d6b97734fecf6593c5d7ab41415280f6468d5e2",
+    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "0d8fa7c66cf07f1bc9cdc634eb088b5debef6cdd527018d6b407deed64e82d01",
     "benchmark/collector/README.md": "26026cac6f86d16e202d65768ed688d93f3579aef84f51a2db8428b08abb324a",
     "benchmark/collector/admin.py": "dd92017c396dd1e3285092627633f5ae9bdc2c65c44b4ef5a9df4ab14ebb965c",
     "benchmark/collector/answer_contract.py": "125a2408299519fd14f8c65fa708fb8e940c1fd83319bb02f57c16510d9ff0bd",
@@ -21,7 +21,7 @@
     "benchmark/collector/test_protocol.py": "79a2a9d7eab42f7b5f7cb7d8bd1ff81a9f4e802b4b7c48f47734a32807150be9",
     "benchmark/collector/view.css": "22f0158a79449120981e8500609ddb27cd3e494bd73506ea46cc61f300e9c969",
     "benchmark/collector/view.js": "4cff389151ba083443c8c676d3f9b80eceec6caa90d5531f01ffdb3a5563fee2",
-    "benchmark/family_generation/PACKAGE_MANIFEST.json": "5a9410ce524d7cb54b6f8f9816c1345dc0d64b2f8b2e9a32939aa98286d0654f",
+    "benchmark/family_generation/PACKAGE_MANIFEST.json": "f9e95f1524089236e25a2a55bb6d2d4eca2378badccf18922b2ce2a83449ed7b",
     "benchmark/housing_simulation/PACKAGE_MANIFEST.json": "95c3851fe56d8a76f97b1386d48261dfe5b035ef6e53e21beab4abc1189de331"
   },
   "files": {

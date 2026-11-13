@@ -22,6 +22,8 @@ class CaseTimeline:
         require(self.step_min in (1, 2, 5) and 1440 % self.step_min == 0, 'CASE_COMMAND_STEP_UNSUPPORTED')
         self.days = (self.end - self.begin).days + 1
         self.steps = self.days * 1440 // self.step_min
+        from .eb_water_heater_window import validate
+        validate(case,domain)
         self.input_sha256 = digest({'case': self.case, 'domain': self.domain})
         self._dated_views={}
         if case.get('schema')=='national_idf.case.v3':
@@ -76,6 +78,8 @@ class CaseTimeline:
                  for device in PROGRAMS if minute in starts[device]]
         windows = control.get('ev_window_overrides', {}).get(date, control['ev_daily_windows'])
         ev = life['ev_daily']
+        from .eb_water_heater_window import available
+        values['water_heater_window_open']=available(self.case,date,minute)
         return {'schema': 'national_idf.case_command_frame.v1', 'frame_index': index,
             'date': date, 'day_index': day, 'start_min': minute, 'elapsed_start_min': elapsed,
             'duration_min': self.step_min, 'control': values, 'people': people,

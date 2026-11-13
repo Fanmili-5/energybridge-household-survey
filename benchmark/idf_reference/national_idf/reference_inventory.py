@@ -185,9 +185,11 @@ def run(compiled, out, *, root=ROOT):
                 electric = plan['definition']['programs'][device]['electric_schedule']
                 powers[device] = channels[electric]*binding.equipment[device]['design_W']/1000
                 for name, value in channels.items(): api.exchange.set_actuator_value(s, handles[name], value)
-            control = frame['control']; powers['water_heater_setpoint_C'] = control['tank_target_C']
+            control = frame['control']
+            from .eb_water_heater_window import effective_setpoint
+            powers['water_heater_setpoint_C'] = effective_setpoint(control)
             binding.write(api.exchange, s, powers, heating_C=control['heating_C'], cooling_C=control['cooling_C'], available=control['hvac_available'])
-            trace.append({'frame_index': frame['frame_index'], 'date': frame['date'], 'start_min': frame['start_min'], **control,
+            trace.append({'frame_index': frame['frame_index'], 'date': frame['date'], 'start_min': frame['start_min'], **control, 'water_heater_effective_setpoint_C':powers['water_heater_setpoint_C'],
                           'EV_connected': frame['ev']['connected'], 'EV_window_open': frame['ev']['charge_window_open'],
                           **{d+'_command_kW': powers[d] for d in [*selected, *(['ev'] if ev_present else [])]}})
             if life is not None:

@@ -167,8 +167,8 @@ def relevance(c,children,event):
     def bad(plan,own):
         problems=set();tasks=plan['tasks'];ops=plan['operations']
         for t in tasks:
-            if t['need_id'] not in own:continue
             parent=t.get('depends_on_need_id')
+            if t['need_id'] not in own and parent not in own:continue
             if parent and c.get('source',{}).get('appliance_command_protocol')=='eb.primary_appliance_calls.v1':
                 upstream=next((p for p in tasks if p['need_id']==parent),None)
                 if upstream and upstream['end_min']>t['start_min']:problems.add(('programme_order',parent,t['need_id']))
@@ -389,7 +389,7 @@ def raw_grammar(c,cfg):
                 primary_agent=c.get('source',{}).get('appliance_command_protocol')=='eb.primary_appliance_calls.v1'
                 if primary_agent:
                     local['ac_axes']=['cooling']
-                    local['thermal_duration_min']=[x for x in local['thermal_duration_min'] if x>15]
+                    # Short intervals at forced EB checkpoints may be executable.
 
                 raws=itertools.chain(_raw_thermal(c,d,local,require_occupied=c.get('source',{}).get('appliance_command_protocol')!='eb.primary_appliance_calls.v1'),heating_precondition(c,d,local) if 'ac' in kinds and not primary_agent else ())
                 for raw in raws:
@@ -580,6 +580,7 @@ def request(c,children,cfg,portrait=None):
         event_relevance=relevant,asset_change_reasons=asset_reasons(c,children,relevant),issues=checks,
         changed_assets=sorted(changed),independent_units=len(children),features=_features(children,checks,changed),
         known_event_reduction_kWh=sum(r['known_event_reduction_kWh'] for r in children),
+        nominal_whole_plan_event_reduction_kWh=None if any(r['unknown_thermal_response'] for r in children) else sum(r['known_event_reduction_kWh'] for r in children),
         unknown_thermal_response=any(r['unknown_thermal_response'] for r in children),power_status=power['status'],
         actual_outcomes=None,human_acceptance=None,human_score=None,human_reason=None,actual_results_used_for_selection=False,
         engineering_issues=[],judgment_context=judgment,consent_status='new_confirmation_required' if pending else 'proposal_only;execution_consent_not_obtained',
@@ -832,6 +833,55 @@ class Oracle:
         return ('unknown',None,'oracle_query_budget')
 
 
+def seed_declared_programme_dependencies(c,g,cfg,portrait,oracle):
+    """Construct legal joint start commands before bounded combinatorial search.
+
+    Moving a same-load dryer can require moving its washer. These are two
+    original start_h actions, not a new machine action or a post-hoc repair.
+    Only existing enumerated literals are used; no outcomes rank the choices.
+    """
+    if c.get('source',{}).get('appliance_command_protocol')!='eb.primary_appliance_calls.v1':return []
+    originals={t['need_id']:t for t in c['A']['tasks']}
+    factors={values[1].get('service_need_id'):i for i,values in enumerate(g['values']) if values[1]['family'] in ('washer','dryer','dishwasher')}
+    ledger=[]
+    # Net-zero event effect is a command-derived reporting cell, not an
+    # unknown thermal response and not evidence that a person accepts it.
+    for i,values in enumerate(g['values']):
+        for j,child in enumerate(values):
+            if not child or child['profiles'] is None or abs(child['known_event_reduction_kWh'])>1e-8 or not direct(c,child,cfg['event']):continue
+            row=request(c,[child],cfg,portrait)
+            if row.get('engineering_diagnostic') or row.get('relevance_diagnostic'):continue
+            native=[0]*len(g['values']);native[i]=j
+            oracle.materializations+=1;oracle.remember(native,row)
+            ledger.append(dict(family=child['family'],cell='known_nominal_zero',proposal_id=row['id'],outcomes_used=False))
+            break
+    for nid,task in sorted(originals.items()):
+        parent=task.get('depends_on_need_id')
+        if not parent or nid not in factors:continue
+        i=factors[nid];pi=factors.get(parent)
+        successful=set()
+        for j,child in enumerate(g['values'][i]):
+            if not j or not direct(c,child,cfg['event']):continue
+            branch=child['branch']
+            if branch in successful:continue
+            start=next(t['start_min'] for patch in child['patches'] if patch.get('collection')=='tasks' for t in patch['rows'] if t['need_id']==nid)
+            options=[(0,None,originals[parent])]
+            if pi is not None:
+                options.extend((k,row,next(t for p in row['patches'] if p.get('collection')=='tasks' for t in p['rows'] if t['need_id']==parent)) for k,row in enumerate(g['values'][pi]) if k)
+            options=[x for x in options if x[2]['end_min']<=start]
+            options.sort(key=lambda x:(abs(x[2]['start_min']-originals[parent]['start_min']),digest([cfg['seed'],x[0],child['id']])))
+            for k,support,_ in options[:4]:
+                children=[child]+([support] if support else [])
+                row=request(c,children,cfg,portrait)
+                if row.get('engineering_diagnostic') or row.get('relevance_diagnostic'):continue
+                native=[0]*len(g['values']);native[i]=j
+                if support:native[pi]=k
+                oracle.materializations+=1;oracle.remember(native,row)
+                ledger.append(dict(need_id=nid,parent_need_id=parent,branch=branch,proposal_id=row['id'],outcomes_used=False))
+                successful.add(branch);break
+    return ledger
+
+
 def generate_day(context,cfg=None,portrait=None):
     require_no_downstream_fields(context,'B_CONTEXT')
     require_no_downstream_fields(portrait,'B_PORTRAIT')
@@ -848,6 +898,7 @@ def generate_day(context,cfg=None,portrait=None):
     if baseeng:return dict(schema=cfg['schema'],status='baseline_engineering_error',rows=[],engineering_diagnostics=baseeng,
         A_input_unchanged=True,physical_status='not_computed')
     g=catalogue_domains(c,cfg);oracle=Oracle(c,g,cfg,portrait);n=len(g['domains']);budget=cfg['rows_per_unit']*max(1,n)
+    dependency_seeds=seed_declared_programme_dependencies(c,g,cfg,portrait,oracle)
     orders=[];within=[];mechanism_probes=[];same_family_probes=[]
     def breadth():
         from collections import deque
@@ -987,7 +1038,7 @@ def generate_day(context,cfg=None,portrait=None):
         A_commands_sha256=command_hash(context['A']),context_sha256=before,
         coverage=cover,factors=g['descriptors'],joint_orders=orders,
         within_device_interactions=within,
-        mechanism_probes=mechanism_probes,same_family_probes=same_family_probes,
+        mechanism_probes=mechanism_probes,same_family_probes=same_family_probes,declared_dependency_seeds=dependency_seeds,
         engineering_diagnostics=g['engineering_diagnostics']+[r for r in oracle.diagnostics if r.get('engineering_diagnostic')],
         relevance_diagnostics=[r for r in oracle.diagnostics if r.get('relevance_diagnostic')],
         raw_requests=g['raw_count'],raw_zero_changes=g['unmodified'],native_alternatives=sum(len(v)-1 for v in g['values']),

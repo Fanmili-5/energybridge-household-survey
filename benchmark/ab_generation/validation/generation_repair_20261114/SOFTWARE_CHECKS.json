@@ -1,0 +1,41 @@
+{
+  "checks": {
+    "PUBLICATION_AB_TESTS.log": {
+      "tests": 87,
+      "passed": true,
+      "skips": 0
+    },
+    "PUBLICATION_NATIVE_INTERFACES.log": {
+      "tests": 72,
+      "passed": true,
+      "skips": 0
+    },
+    "PUBLICATION_PROJECT_INTERFACES_COMPLETE_ENV.log": {
+      "tests": 57,
+      "passed": true,
+      "skips": 0
+    },
+    "PUBLICATION_PARAMETER_REGISTER_RETEST.log": {
+      "tests": 29,
+      "passed": true,
+      "skips": 0
+    },
+    "PUBLICATION_UNIFIED_ALL_TESTS.log": {
+      "tests": 135,
+      "passed": true,
+      "skips": 0
+    },
+    "PUBLICATION_RESEARCH_DELIVERY_TESTS.log": {
+      "tests": 62,
+      "passed": true,
+      "skips": 0
+    }
+  },
+  "idf_software_tests": 12,
+  "idf_software_tests_passed": true,
+  "public_batch_cli_households": 2,
+  "public_batch_cli_pairs": 20,
+  "public_batch_cli_native_replays": 40,
+  "physics_or_human_acceptance_inferred_from_tests": false,
+  "batch_seal_cli_passed": true
+}

@@ -149,3 +149,14 @@ class CurrentEntryTests(unittest.TestCase):
 
 
 if __name__=='__main__':unittest.main()
+
+
+class NominalEffectKnowledgeTests(unittest.TestCase):
+    def test_unknown_thermal_effect_is_not_zero(self):
+        r=row(1,'d','unknown');r['known_event_reduction_kWh']=0;r['unknown_thermal_response']=True
+        tokens=concepts(r)['tokens']
+        self.assertIn('trade.nominal_event_sign=thermal_unknown',tokens)
+        self.assertNotIn('trade.nominal_event_sign=zero',tokens)
+    def test_known_zero_keeps_its_separate_reporting_cell(self):
+        r=row(1,'d','known');r['known_event_reduction_kWh']=0;r['unknown_thermal_response']=False
+        self.assertIn('trade.nominal_event_sign=zero',concepts(r)['tokens'])

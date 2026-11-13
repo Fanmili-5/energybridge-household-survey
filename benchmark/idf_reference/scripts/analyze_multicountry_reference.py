@@ -39,7 +39,8 @@ def analyze(folder,fixture,installed):
         powers[device]={'kWh':sum(values)/3.6e6,'command_minus_native_max_J':maximum(a-b for a,b in zip(commands,values))}
     control={}
     for schedule,key in [('heating setpoint','heating_C'),('cooling setpoint','cooling_C'),('EB source HVAC availability','hvac_available'),('EB_WATER_water heater setpoint','tank_target_C')]:
-        expected=[float(row[key]) if key!='hvac_available' else float(row[key]=='True') for row in trace]
+        trace_key='water_heater_effective_setpoint_C' if key=='tank_target_C' and 'water_heater_effective_setpoint_C' in trace[0] else key
+        expected=[float(row[trace_key]) if key!='hvac_available' else float(row[key]=='True') for row in trace]
         control[key]=maximum(a-b for a,b in zip(expected,get('Schedule Value',schedule)))
     off=[i for i,row in enumerate(trace) if row['hvac_available']=='False']
     off_error=max((abs(get(variable,key)[i]) for variable,key in [('Heating Coil Electricity Energy','mshp htg coil'),('Cooling Coil Electricity Energy','mshp clg coil'),('Fan Electricity Energy','mshp supply fan')] for i in off),default=None)
@@ -53,7 +54,10 @@ def analyze(folder,fixture,installed):
             electricity=get('Electric Equipment Electricity Energy',name)
             gains[device]=maximum(electricity[i]-sum(v[i] for v in heat) for i in range(count))
     passed=max(facility,tank,interior,*gains.values(),*[v['command_minus_native_max_J'] for v in powers.values()])<1e-7
+    heater_off=[i for i,row in enumerate(trace) if row.get('water_heater_window_open')=='False']
+    heater_off_error=max((abs(heaters[0][i]) for i in heater_off),default=None)
     passed=passed and (off_error is None or off_error<1e-7)
+    passed=passed and (heater_off_error is None or heater_off_error<1e-7)
     passed=passed and connection<1e-12 and all(v['hot_plus_cold_residual_m3']<1e-12 for v in water.values()) and max(control.values())<1e-12 and tank_trace_error<1e-9
     if ev is not None:passed=passed and max(ev_error,abs(ev['residual_kwh']))<1e-9
     else:require(runtime['EV'] is None,'ABSENT_EV_WAS_SIMULATED')
@@ -63,6 +67,7 @@ def analyze(folder,fixture,installed):
             'fan_kWh':sum(get('Fans:Electricity'))/3.6e6,
             'facility_enduse_residual_J':facility,'tank_meter_residual_J':tank,'interior_equipment_residual_J':interior,
             'water_connection_residual_m3':connection,'water_uses':water,'appliances':powers,'heat_partition_residual_J':gains,
+            'WH_window_off_steps_checked':len(heater_off),'WH_window_off_heater_max_J':heater_off_error,
             'control_readback_errors':control,'off_compressor_fan_max_J':off_error,
             'HVAC_off_check_applicable':bool(off),'HVAC_off_steps_checked':len(off),
             'EV_native_grid_minus_ledger_kWh':ev_error,'EV_battery_ledger_residual_kWh':ev['residual_kwh'] if ev is not None else None,

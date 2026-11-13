@@ -43,7 +43,7 @@ class MainAgentActionContractTests(TestCase):
         self.assertIn("AGENT_AC_TEMPERATURE_WOULD_BE_ROUNDED",plan_errors(c,b))
     def test_ac10min_is_rejected_and20_30_60_accepted(self):
         c,b=self.fixture();self.cool(b,27,10)
-        self.assertIn("AGENT_AC_NEXT_CHECK_WOULD_BE_REJECTED_OR_CLEARED",plan_errors(c,b))
+        self.assertIn("PAPER_V1_CHECKPOINT_CLOCK_CANNOT_REPRODUCE_LITERAL_PLAN",plan_errors(c,b))
         for duration in [20,30,60]:
             c,b=self.fixture();self.cool(b,27,duration);self.assertEqual(plan_errors(c,b),[])
     def test_soft_preference_violation_is_still_eligible(self):
@@ -59,7 +59,7 @@ class MainAgentActionContractTests(TestCase):
         c,b=self.fixture();b["controls"][2]["start_min"]=960
         self.assertIn("AGENT_WH_WINDOW_WOULD_BE_BOUNDED",plan_errors(c,b))
         c,b=self.fixture();b["controls"][2]["value_C"]=80
-        self.assertIn("OUTSIDE_ORIGINAL_AGENT_WATER_HEATER_CONTRACT",plan_errors(c,b))
+        self.assertIn("PAPER_V1_WH_TEMPERATURE_WOULD_BE_CLIPPED",plan_errors(c,b))
     def test_ev_start_after_midnight_is_expressible_in_dated_queue(self):
         c,b=self.fixture();b["controls"][-1].update(start_min=1500,end_min=1800)
         self.assertEqual(plan_errors(c,b),[])
@@ -70,13 +70,11 @@ class MainAgentActionContractTests(TestCase):
     def test_ev_multiple_windows_are_rejected(self):
         c,b=self.fixture();b["controls"].append({**b["controls"][-1],"start_min":1500,"end_min":1600})
         self.assertIn("AGENT_REQUIRES_SINGLE_CONTIGUOUS_SERVICE_WINDOW",plan_errors(c,b))
-    def test_original_schema_is_explicit_and_rejects_wrong_modes_and_booleans(self):
+    def test_serialized_service_targets_are_explicit(self):
         c,b=self.fixture();actions=complete_appliance_payload(b)
-        cfg={k:{"present":True,"service_required_today":True} for k in ["washer","dryer","dishwasher","water_heater","ev"]}
-        self.assertEqual(original._missing_explicit_appliance_actions(actions,cfg,adaptive_contract=True),[])
-        self.assertEqual(original._adaptive_v3_appliance_action_contract_errors(actions,cfg),[])
-        for patch in [{"ev_mode":"slow"},{"washer_skip":True},{"dryer_skip":"false"},{"water_heater_preheat":1}]:
-            self.assertTrue(original._adaptive_v3_appliance_action_contract_errors({**actions,**patch},cfg))
+        for kind in ["washer","dryer","dishwasher"]:
+            self.assertIs(actions[kind+"_skip"],False)
+        self.assertIs(actions["water_heater_preheat"],True)
     def test_uncontrolled_service_cannot_be_changed(self):
         c,b=self.fixture();c["authority"]["assets"]["water_heater"]["target_control_authorized"]=False;b["controls"][2]["value_C"]=61
         self.assertIn("TARGET_CONTROL_NOT_AUTHORIZED",plan_errors(c,b))
@@ -118,3 +116,19 @@ class MainAgentActionContractTests(TestCase):
         self.assertEqual(len(frame["values"]),1)
         self.assertEqual(len(frame["values"][0]),2)
         self.assertEqual(frame["engineering_diagnostics"][0]["rejection_stage"],"original_agent_action_domain")
+
+    def test_preference_policy_is_not_a_generation_gate(self):
+        c,b=self.fixture()
+        c["native_execution_contract"]["agent_action_bounds"]=household_bounds({"comfort":{"preferred_cooling_c":[23,24],"allowed_short_adjustment_c":0}})
+        self.cool(b,28)
+        self.assertEqual(plan_errors(c,b),[])
+    def test_original_event_checkpoint_rescues_ten_minute_pulse(self):
+        from benchmark.ab_generation.model import apply
+        c,b=self.fixture();c["events"]=[{"start_min":1080,"end_min":1140}]
+        b=apply(b,[dict(type="control_interval",asset_id="ac",kind="ac_setpoint",start_min=1070,end_min=1080,values={"cooling_setpoint_C":27})])
+        self.assertEqual(plan_errors(c,b),[])
+    def test_original_pre_event_checkpoint_can_interrupt_a_longer_gap(self):
+        from benchmark.ab_generation.model import apply
+        c,b=self.fixture();c["events"]=[{"start_min":1080,"end_min":1140}]
+        b=apply(b,[dict(type="control_interval",asset_id="ac",kind="ac_setpoint",start_min=1000,end_min=1030,values={"cooling_setpoint_C":27})])
+        self.assertIn("PAPER_V1_CHECKPOINT_CLOCK_CANNOT_REPRODUCE_LITERAL_PLAN",plan_errors(c,b))

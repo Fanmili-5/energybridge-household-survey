@@ -16,7 +16,7 @@ from .program_resources import DEVICES, bind_program_domain, model_signature, pl
 from .source_adapter import source_file
 from .thermal_case_runtime import load_module
 
-IMPLEMENTATION = ['national_idf/joint_case_runtime.py', 'national_idf/joint_installation.py', 'national_idf/hvac_network.py',
+IMPLEMENTATION = ['national_idf/eb_water_heater_window.py', 'national_idf/joint_case_runtime.py', 'national_idf/joint_installation.py', 'national_idf/hvac_network.py',
     'national_idf/retained_context.py', 'national_idf/dwelling_metering.py', 'national_idf/assembly.py',
     'national_idf/program_resources.py', 'national_idf/program_case_runtime.py',
     'national_idf/case_commands.py', 'national_idf/request_support.py', 'national_idf/dated_case.py',
@@ -186,10 +186,12 @@ def run_joint_case(compiled, out, *, mode, root=ROOT, tank_diagnostics=None):
                 electric = plan['definition']['programs'][device]['electric_schedule']
                 powers[device] = channels[electric]*binding.equipment[device]['design_W']/1000
                 for name, value in channels.items(): api.exchange.set_actuator_value(s, handles[name], value)
-            control = frame['control']; powers['water_heater_setpoint_C'] = control['tank_target_C']
+            control = frame['control']
+            from .eb_water_heater_window import effective_setpoint
+            powers['water_heater_setpoint_C'] = effective_setpoint(control)
             binding.write(api.exchange, s, powers, heating_C=control['heating_C'], cooling_C=control['cooling_C'], available=control['hvac_available'])
             trace.append({'frame_index': frame['frame_index'], 'date': frame['date'], 'start_min': frame['start_min'],
-                **control, 'EV_connected': frame['ev']['connected'], 'EV_window_open': frame['ev']['charge_window_open'],
+                **control, 'water_heater_effective_setpoint_C':powers['water_heater_setpoint_C'], 'EV_connected': frame['ev']['connected'], 'EV_window_open': frame['ev']['charge_window_open'],
                 **{name+'_command_kW': powers[name] for name in (*DEVICES, 'ev')}})
             if life is not None:
                 trace[-1].update(requested_persons=sum(r['persons'] for r in frame['people'].values()),
