@@ -1,0 +1,36 @@
+{
+  "schema": "eb.original_reaudit.independent_verification.v1",
+  "passed": true,
+  "method": "independent10-minute fixed-grid oracle versus event-driven source-block replay",
+  "counts": {
+    "pairs_verified": 10000,
+    "old_unflagged_still_representable": 5496,
+    "historical_flagged_verified": 4335,
+    "historical_flagged_mapping_review": 4205,
+    "all_requested_preference_conflict": 3384,
+    "all_representable_requested_preference_conflict": 260,
+    "old_unflagged_mapping_review": 169,
+    "historical_flagged_retained": 130,
+    "retained_preference_conflict": 90
+  },
+  "overlapping_reasons_in4335": {
+    "paper_v1_global_setpoint_envelope_would_clip": 2807,
+    "paper_v1_checkpoint_clock_cannot_reproduce_literal_plan": 1511,
+    "paper_v1_no_independent_heating_action": 1003
+  },
+  "retained4335_mutually_exclusive_groups": {
+    "policy_and_clock_boundary": 7,
+    "preference_policy_only": 46,
+    "clock_boundary_only": 77
+  },
+  "all10000_mutually_exclusive_groups": {
+    "no_mapping_mismatch_found": 5626,
+    "mapping_review": 4374
+  },
+  "every_pair_file_sha256_reverified": true,
+  "every_B_content_digest_reverified": true,
+  "frozen_household_sha256_reverified": true,
+  "new_EnergyPlus_or_API_or_training": false,
+  "human_answer_source_accessed": false,
+  "seconds": 8.99
+}

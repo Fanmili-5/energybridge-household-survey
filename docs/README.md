@@ -6,6 +6,7 @@
 |---|---|
 | [八国家庭生成第一步](../benchmark/household_stage1/README.md) | 实际调查来源、1000户构造方法、每户空调必备且必控和验收范围 |
 | [最新完整方法](METHOD.md) | 八国调查→家庭→原生A/B→参考IDF→问卷，算法、来源及版本交接 |
+| [原EB论文版重审](research/original_eb_reaudit_20261113/REPORT.md) | 后加校验的来源，4335误报与执行映射逐条核对，居民负面候选保留 |
 | [当前状态](BENCHMARK_STATUS.json) / [ACL视角复核](ACL_BENCHMARK_REVIEW_20261112.md) | 哪些已经验收，哪些还不足以支持论文结论？ |
 | [数据与验收](DATASET.md) | 当前50户是什么版本，哪些完成、哪些仍待验证？ |
 | [复现指南](REPRODUCE.md) | 公开环境可以运行什么，受控输入需要什么？ |

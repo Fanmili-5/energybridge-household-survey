@@ -1,0 +1,46 @@
+{
+  "schema": "eb.original_paper_v1_reaudit.v1",
+  "paper_commit": "c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0",
+  "later_commit_used_in_old_checker": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "counts": {
+    "all_pairs_checked": 10000,
+    "historical_unflagged": 5665,
+    "historical_unflagged_still_representable": 5496,
+    "historical_flagged": 4335,
+    "historical_flagged_execution_mapping_review": 4205,
+    "historical_flagged_requested_preference_conflict": 3140,
+    "historical_unflagged_clock_or_mapping_review": 169,
+    "historical_flagged_retained_without_command_change": 130,
+    "retained_requested_preference_conflict": 90,
+    "retained_old_short_gap_flag": 84
+  },
+  "overlapping_execution_reason_counts_within4335": {
+    "paper_v1_global_setpoint_envelope_would_clip": 2807,
+    "paper_v1_checkpoint_clock_cannot_reproduce_literal_plan": 1511,
+    "paper_v1_no_independent_heating_action": 1003
+  },
+  "mutually_exclusive_reason_combinations_within4335": {
+    "paper_v1_global_setpoint_envelope_would_clip": 1691,
+    "paper_v1_checkpoint_clock_cannot_reproduce_literal_plan+paper_v1_global_setpoint_envelope_would_clip": 1116,
+    "paper_v1_no_independent_heating_action": 1003,
+    "paper_v1_checkpoint_clock_cannot_reproduce_literal_plan": 395,
+    "none": 130
+  },
+  "retained_policy_reason_counts": {
+    "household_preference_derived_policy_only": 53
+  },
+  "all10000_overlapping_reason_counts": {
+    "paper_v1_global_setpoint_envelope_would_clip": 2807,
+    "paper_v1_checkpoint_clock_cannot_reproduce_literal_plan": 1680,
+    "paper_v1_no_independent_heating_action": 1003
+  },
+  "original_households_changed": false,
+  "original_pair_files_opened_read_only": true,
+  "old_exports_or_labels_rewritten": false,
+  "human_answers_read_or_inferred": false,
+  "EnergyPlus_runs": 0,
+  "scope": "source-bound command expressibility;not thermal outcome,human acceptance orfullLLMpolicy replay",
+  "policy_bounds_are_not_physical_invalidity": true,
+  "audit_does_not_require_savings_comfort_or_acceptance": true,
+  "seconds": 29.29
+}

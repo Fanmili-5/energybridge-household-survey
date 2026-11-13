@@ -50,7 +50,23 @@
     "corrected_pilot_EnergyPlus_runs": 0,
     "old_pairs_audited": 10000,
     "old_B_current_contract_failures": 4335,
-    "formal10000_regeneration_complete": false
+    "formal10000_regeneration_complete": false,
+    "old_B_current_contract_failures_basis": "historical laterV2/V3 wrapper flags;not originalpaper invaliditycount",
+    "blanket_4335_invalidity_claim_withdrawn": true,
+    "original_paper_reaudit": {
+      "baseline": "paper-v1-final/c58a2a7a",
+      "historical_flagged": 4335,
+      "retained_unchanged": 130,
+      "mapping_review": 4205,
+      "additional_old_passed_clock_review": 169,
+      "retained_130_requested_preference_conflicts": 90,
+      "original_Bs_deleted_or_regenerated": 0,
+      "human_acceptance_used": false,
+      "full_physics_or_human_acceptance_claim": false,
+      "report": "docs/research/original_eb_reaudit_20261113/REPORT.md",
+      "current_V3_guard_not_legacy_paper_admission_oracle": true,
+      "producer_gate_targeted_revision_complete": false
+    }
   },
   "IDF": {
     "public_snapshot": "benchmark/idf_reference/SOURCE_LOCK.json",

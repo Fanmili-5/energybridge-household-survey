@@ -1,0 +1,28 @@
+{
+  "refs": {
+    "paper_v1": "c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0",
+    "later_v3": "2b17ae63e613da776c93e900f5dace50d63a88a8"
+  },
+  "paper_tag": "paper-v1-final",
+  "paper_tag_object": "37f77c5f2fe450374b59400fd928746e4b353881",
+  "tag_verified_against_official_GitHub": true,
+  "files": {
+    "paper_v1_family_runner.py": {
+      "sha256": "e5096d3007a99392fcb53e33e35569bed771022d81dc694e8e651aae65962e8d",
+      "path": "source/paper_v1_family_runner.py"
+    },
+    "paper_v1_appliance_sim.py": {
+      "sha256": "be072673de26228a286e5ab9223d160a2a71084fa7b6c9146dbc5d024a879de9",
+      "path": "source/paper_v1_appliance_sim.py"
+    },
+    "later_v3_family_runner.py": {
+      "sha256": "697a955ae9a5a34132c030c8d0f3b96ef6c0f63ec2caa24a2c1def23989de1d7",
+      "path": "source/later_v3_family_runner.py"
+    },
+    "later_v3_appliance_sim.py": {
+      "sha256": "be072673de26228a286e5ab9223d160a2a71084fa7b6c9146dbc5d024a879de9",
+      "path": "source/later_v3_appliance_sim.py"
+    }
+  },
+  "scope": "source snapshot only;no data rewritten;later validators not original admission standard"
+}

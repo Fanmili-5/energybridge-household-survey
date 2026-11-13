@@ -1,0 +1,74 @@
+{
+  "schema": "eb.rule_origins.original_v1.v1",
+  "baseline": {
+    "tag": "paper-v1-final",
+    "commit": "c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0",
+    "family_runner_sha256": "e5096d3007a99392fcb53e33e35569bed771022d81dc694e8e651aae65962e8d"
+  },
+  "later_reference": "2b17ae63e613da776c93e900f5dace50d63a88a8",
+  "new_wrapper": "benchmark/ab_generation/eb_agent_contract.py;project-added November2026",
+  "rules": [
+    {
+      "id": "global_cooling_and_rounding",
+      "origin": "paper_v1",
+      "lines": [
+        64,
+        7123,
+        7125
+      ],
+      "meaning": "interface normalization,not hardware impossibility"
+    },
+    {
+      "id": "fixed_heating",
+      "origin": "paper_v1",
+      "lines": [
+        65,
+        8857,
+        8858
+      ],
+      "meaning": "no independent heating action"
+    },
+    {
+      "id": "next_check_scalar",
+      "origin": "paper_v1",
+      "lines": [
+        7132,
+        7136
+      ],
+      "meaning": "must account for automatic checkpoint scheduling"
+    },
+    {
+      "id": "automatic_checkpoints",
+      "origin": "paper_v1",
+      "lines": [
+        245,
+        264,
+        8205,
+        8238,
+        8741,
+        8757
+      ],
+      "meaning": "can rescue boundary short gap andcan introduce intermediate callbacks"
+    },
+    {
+      "id": "household_preference_bounds",
+      "origin": "paper_v1_policy",
+      "lines": [
+        6313,
+        6342
+      ],
+      "used_for_hard_data_rejection": false
+    },
+    {
+      "id": "adaptive_v3_validator_functions",
+      "origin": "later_20260827_ac25cd7f",
+      "present_in_paper_v1": false,
+      "used_for_new_admission": false
+    },
+    {
+      "id": "daily_continuous_and_overnight_subset",
+      "origin": "declared_benchmark_user_design",
+      "not_universal_EB_physical_constraint": true
+    }
+  ]
+}

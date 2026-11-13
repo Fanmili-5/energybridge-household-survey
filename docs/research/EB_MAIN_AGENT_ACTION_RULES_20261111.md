@@ -1,4 +1,6 @@
-# 六类电器A→B规则：原EB Agent动作复核
+# 六类电器V2/V3动作检查：历史记录
+
+**2026-11-13更正：下文4335是后来的V2/V3包装检查计数，不能直接当作论文原版的无效题数。原版重审恢复130条、另4205条需核对执行映射；没有按居民接受或偏好冲突筛题。见[原版重审](original_eb_reaudit_20261113/REPORT.md)。**
 
 固定依据：[EB family_runner.py](https://github.com/Agentic-Intelligence-Lab/EnergyBridge/blob/2b17ae63e613da776c93e900f5dace50d63a88a8/experiments/benchmark/family_runner.py)，提交2b17ae63e613da776c93e900f5dace50d63a88a8。核对Agent的字段、校验、执行前归一化及电器实际执行；未运行完整LLM/规划器/同意流程。动作接口对齐不等于照搬原规划器全部保守择优政策。
 
