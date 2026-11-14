@@ -303,10 +303,13 @@ def generate_day_baseline(case,date,reference,configuration,manifest_sha256,*,na
     question_date=dt.date.fromisoformat(date)
     anchor=(question_date-dt.timedelta(days=question_date.weekday())).isoformat()
     problem=build_problem(case,anchor,reference,days=7,service_date=date)
-    result=sample_A(problem,native_appliance_source_path,configuration['seed'])
+    result=sample_A(problem,native_appliance_source_path,configuration['seed'],
+                    deterministic_time=configuration['A_deterministic_time'])
     output=dict(schema='eb.daily_baseline_generation.v1',problem=problem,result=result,
                 status=result['status'],context=None,daily_acceptance=None,native_acceptance=None,
-                physical_outcomes_computed=False,human_answers_generated=False)
+                physical_outcomes_computed=False,human_answers_generated=False,
+                A_solver_execution=dict(deterministic_time_budget=configuration['A_deterministic_time'],
+                    budget_unit='OR-Tools deterministic time',construction_method_version_preserved=True))
     if result['status']!='feasible':return output
     context=dated_context(case,problem,result,date,configuration,manifest_sha256)
     context['native_execution_contract']['native_target']=target

@@ -10,7 +10,9 @@ import gzip,hashlib,json
 def load(path):
     with gzip.open(path,'rt') if str(path).endswith('.gz') else open(path) as stream:return json.load(stream)
 def write_gzip(path,value):
-    with gzip.open(path,'wt',encoding='utf-8') as stream:json.dump(value,stream,ensure_ascii=False,separators=(',',':'))
+    path=Path(path);temp=path.with_suffix(path.suffix+'.part')
+    with gzip.open(temp,'wt',encoding='utf-8') as stream:json.dump(value,stream,ensure_ascii=False,separators=(',',':'))
+    temp.replace(path)
 _TOKEN_CACHE={}
 def simple_tokens(row):
     from benchmark.ab_generation.unified.selection import concepts
@@ -28,6 +30,7 @@ def catalogues_with_extras(folder):
     return days
 
 def scan(root):
+    _TOKEN_CACHE.clear()
     root=Path(root);status=load(root/'RESULT.json')
     if not status['native_plan_generation_passed']:raise ValueError('FULL_NATIVE_BATCH_NOT_COMPLETE')
     rows=load(root/'STATUS.json')['rows'];raw=defaultdict(lambda:defaultdict(set));pool=defaultdict(lambda:defaultdict(set));chosen=defaultdict(lambda:defaultdict(Counter))
@@ -54,6 +57,36 @@ def scan(root):
         required[i]=set(base_counts[i])
         if (i+1)%100==0:print(json.dumps(dict(phase='cohort_scan',households=i+1)),flush=True)
     return dict(rows=rows,raw=raw,pool=pool,chosen=chosen,slots=slots,base_counts=base_counts,required=required,examples=examples,intrinsic=intrinsic)
+
+def state_from_ledger(root):
+    _TOKEN_CACHE.clear()
+    root=Path(root);ledger=load(root/'COHORT_COVERAGE_LEDGER.json.gz')
+    rows=load(root/'STATUS.json')['rows'];raw=defaultdict(lambda:defaultdict(set));pool=defaultdict(lambda:defaultdict(set));chosen=defaultdict(lambda:defaultdict(Counter));examples=defaultdict(lambda:defaultdict(list))
+    for role,entries in ledger.items():
+        for e in entries:
+            raw[role][e['key']].update(e['raw_countries']);pool[role][e['key']].update(e['witness_countries']);examples[role][e['key']]=e['examples']
+    slots={};counts=defaultdict(Counter);required={}
+    for house in rows:
+        path=root/str(house['index']).zfill(4)/'COVERAGE_EXTRA_CANDIDATES.json.gz'
+        if path.exists():
+            for day in load(path):
+                for row in day['rows']:
+                    if not row['native_execution']['passed']:raise ValueError('NONQUALIFIED_EXTRA_WITNESS')
+                    for key in row['raw_root_cells']:
+                        if key not in raw[house['role']]:raise ValueError('EXTRA_CELL_NOT_IN_FROZEN_RAW_DENOMINATOR')
+                        pool[house['role']][key].add(house['country'])
+    for house in rows:
+        folder=root/str(house['index']).zfill(4);i=house['index'];role=house['role'];country=house['country']
+        for p in sorted(folder.glob('*_PAIR.json.gz')):
+            if p.name.endswith('_INITIAL_PAIR.json.gz'):continue
+            pair=load(p);row=pair['selected_proposal'];slots[(i,pair['date'])]=dict(index=i,role=role,country=country,path=p,row=row)
+            counts[i].update(simple_tokens(row))
+            for key in row['raw_root_cells']:chosen[role][key][country]+=1
+        required[i]=set(counts[i])
+    return dict(rows=rows,raw=raw,pool=pool,chosen=chosen,slots=slots,base_counts=counts,required=required,examples=examples,intrinsic=Counter())
+
+def needed_cells(state,role,country):
+    return {key for key,countries in state["raw"][role].items() if not state["chosen"][role][key][country] and country_count(state["chosen"][role][key])<min(2,len(countries))}
 
 def country_count(counter):return sum(v>0 for v in counter.values())
 
@@ -99,24 +132,32 @@ def report(state):
 def all_known_goals_met(state):
     return all(country_count(state['chosen'][role][key])>=min(2,len(countries),len(state['pool'][role].get(key,set()))) for role,cells in state['raw'].items() for key,countries in cells.items())
 
-def review(root,apply=False,native_source=None):
-    root=Path(root);state=scan(root);initial,_=report(state);changes=[]
+def review(root,apply=False,native_source=None,*,from_ledger=False,extra_only=False,state=None,passes=3):
+    if type(passes) is not int or passes<0:raise ValueError('INVALID_COVERAGE_PASS_BUDGET')
+    root=Path(root)
+    if state is None:state=state_from_ledger(root) if from_ledger else scan(root)
+    initial,_=report(state);changes=[]
     if apply:
         if native_source is None:raise ValueError('NATIVE_SOURCE_REQUIRED_FOR_RESELECTION')
         # Deterministic monotone refinement: preserve each household's original
         # family/trade coverage and never lose a country from an attained cell.
-        for _ in range(3):
+        for _ in range(passes):
             if all_known_goals_met(state):break
             updated=0
             for house in state['rows']:
+                needed=needed_cells(state,house['role'],house['country'])
+                if not needed:continue
                 folder=root/str(house['index']).zfill(4)
-                for day in catalogues_with_extras(folder):
+                extra=folder/'COVERAGE_EXTRA_CANDIDATES.json.gz'
+                days=(load(extra) if extra.exists() else []) if extra_only else catalogues_with_extras(folder)
+                for day in days:
                     slot=state['slots'][(house['index'],day['date'])]
                     for candidate in sorted(day['rows'],key=lambda r:r['id']):
-                        if candidate['id']==slot['row']['id'] or not can_swap(state,slot,candidate):continue
+                        if not needed.intersection(candidate['raw_root_cells']) or candidate['id']==slot['row']['id'] or not can_swap(state,slot,candidate):continue
                         before=slot['row']['id'];adopt(state,slot,candidate)
                         changes.append(dict(index=house['index'],date=day['date'],before=before,after=candidate['id']))
                         updated+=1
+                        needed=needed_cells(state,house['role'],house['country'])
                 if all_known_goals_met(state):break
             if not updated:break
         # Store only final changes, with fresh original-source execution proof.
@@ -161,7 +202,9 @@ def main():
     parser.add_argument('--batch',required=True,type=Path)
     parser.add_argument('--apply',action='store_true',help='reselect; preserve previous pair and replay changed B')
     parser.add_argument('--native-source')
+    parser.add_argument('--from-ledger',action='store_true')
+    parser.add_argument('--extra-only',action='store_true')
     args=parser.parse_args()
-    answer=review(args.batch,args.apply,args.native_source)
+    answer=review(args.batch,args.apply,args.native_source,from_ledger=args.from_ledger,extra_only=args.extra_only)
     print(json.dumps({k:v for k,v in answer.items() if k!='selection_history'}))
 if __name__=='__main__':main()

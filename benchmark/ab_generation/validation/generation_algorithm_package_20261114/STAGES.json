@@ -1,0 +1,158 @@
+{
+  "reproduced1000": [
+    {
+      "phase": "04_native_generation",
+      "returncode": 0,
+      "seconds": 1137.794
+    },
+    {
+      "phase": "05_raw_coverage",
+      "returncode": 0,
+      "seconds": 306.717
+    },
+    {
+      "phase": "06_complete_root_witnesses",
+      "returncode": 0,
+      "seconds": 60.289
+    },
+    {
+      "phase": "07_cohort_selection",
+      "returncode": 0,
+      "seconds": 589.071
+    },
+    {
+      "phase": "08_complete_programme_dependencies",
+      "returncode": 0,
+      "seconds": 5.158
+    },
+    {
+      "phase": "09_extra_candidate_selection",
+      "returncode": 0,
+      "seconds": 9.687
+    },
+    {
+      "phase": "10_joint_coverage_selection",
+      "returncode": 0,
+      "seconds": 16.345
+    },
+    {
+      "phase": "11_native_seal",
+      "returncode": 0,
+      "seconds": 26.085
+    }
+  ],
+  "final_demo96": [
+    {
+      "phase": "01_example_pool",
+      "returncode": 0,
+      "seconds": 0.106
+    },
+    {
+      "phase": "02_households",
+      "returncode": 0,
+      "seconds": 3.999
+    },
+    {
+      "phase": "03_household_verification",
+      "returncode": 0,
+      "seconds": 1.46
+    },
+    {
+      "phase": "04_native_generation",
+      "returncode": 0,
+      "seconds": 339.697
+    },
+    {
+      "phase": "05_raw_coverage",
+      "returncode": 0,
+      "seconds": 28.963
+    },
+    {
+      "phase": "06_complete_root_witnesses",
+      "returncode": 0,
+      "seconds": 17.657
+    },
+    {
+      "phase": "07_cohort_selection",
+      "returncode": 0,
+      "seconds": 91.218
+    },
+    {
+      "phase": "08_complete_programme_dependencies",
+      "returncode": 0,
+      "seconds": 5.654
+    },
+    {
+      "phase": "09_extra_candidate_selection",
+      "returncode": 0,
+      "seconds": 1.499
+    },
+    {
+      "phase": "10_joint_coverage_selection",
+      "returncode": 0,
+      "seconds": 27.188
+    },
+    {
+      "phase": "11_native_seal",
+      "returncode": 0,
+      "seconds": 4.027
+    }
+  ],
+  "standalone_final_demo96": [
+    {
+      "phase": "01_example_pool",
+      "returncode": 0,
+      "seconds": 0.11
+    },
+    {
+      "phase": "02_households",
+      "returncode": 0,
+      "seconds": 4.138
+    },
+    {
+      "phase": "03_household_verification",
+      "returncode": 0,
+      "seconds": 1.623
+    },
+    {
+      "phase": "04_native_generation",
+      "returncode": 0,
+      "seconds": 359.328
+    },
+    {
+      "phase": "05_raw_coverage",
+      "returncode": 0,
+      "seconds": 29.587
+    },
+    {
+      "phase": "06_complete_root_witnesses",
+      "returncode": 0,
+      "seconds": 17.93
+    },
+    {
+      "phase": "07_cohort_selection",
+      "returncode": 0,
+      "seconds": 93.972
+    },
+    {
+      "phase": "08_complete_programme_dependencies",
+      "returncode": 0,
+      "seconds": 5.781
+    },
+    {
+      "phase": "09_extra_candidate_selection",
+      "returncode": 0,
+      "seconds": 1.371
+    },
+    {
+      "phase": "10_joint_coverage_selection",
+      "returncode": 0,
+      "seconds": 26.779
+    },
+    {
+      "phase": "11_native_seal",
+      "returncode": 0,
+      "seconds": 4.186
+    }
+  ]
+}

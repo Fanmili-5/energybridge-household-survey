@@ -1,10 +1,10 @@
 """Batch the native daily-plan generator; no physics or labels are created."""
-import argparse,datetime as dt,gzip,hashlib,json,time
+import argparse,datetime as dt,gzip,hashlib,json,time,shutil,math
 from pathlib import Path
 from collections import Counter,defaultdict
 from concurrent.futures import ProcessPoolExecutor,as_completed
 from .common import digest
-from .generate_native import generate,implementation
+from .generate_native import generate,implementation,DailyBaselineError
 from .unified.contract import entry_config
 
 def save(path,value):
@@ -41,6 +41,9 @@ def worker(item):
     except Exception as error:
         folder.mkdir(exist_ok=True)
         row=dict(index=index,country=case['household']['country'],role=case['household']['role_id'],status='failed',error_type=type(error).__name__,error=str(error))
+        if isinstance(error,DailyBaselineError):
+            row.update(baseline_status=error.status,baseline_causes=error.causes,
+                daily_programme_domain_proven_infeasible=error.status=='infeasible',date=error.date)
         save(folder/'FAILURE.json',row)
     row['seconds']=round(time.monotonic()-started,3);return row
 
@@ -64,7 +67,9 @@ def main():
     for name in ['households','reference','native-source','out']:parser.add_argument('--'+name,required=True,type=Path)
     parser.add_argument('--start-date',required=True);parser.add_argument('--days',type=int,default=10)
     parser.add_argument('--workers',type=int,default=4);parser.add_argument('--configuration',type=Path)
+    parser.add_argument('--min-free-gib',type=float,default=.5)
     args=parser.parse_args()
+    if not math.isfinite(args.min_free_gib) or args.min_free_gib<0:parser.error('min-free-gib must be finite and nonnegative')
     if min(args.days,args.workers)<1:parser.error('days and workers must be positive')
     raw=args.households.read_bytes();reference_raw=args.reference.read_bytes()
     cases=[json.loads(line) for line in raw.splitlines() if line.strip()]
@@ -83,6 +88,10 @@ def main():
             row=future.result();rows.append(row)
             summary=dict(completed=len(rows),passed=sum(v['status']=='passed' for v in rows),failed=sum(v['status']!='passed' for v in rows),pairs=sum(v.get('pairs',0) for v in rows),seconds=round(time.monotonic()-started,2))
             save(args.out/'STATUS.json',dict(summary=summary,rows=[{k:v for k,v in x.items() if k!='pair_index'} for x in sorted(rows,key=lambda v:v['index'])]))
+            if len(rows)%25==0 or len(rows)==len(cases):print(json.dumps(summary),flush=True)
+            if shutil.disk_usage(args.out).free<args.min_free_gib*2**30:
+                for pending in futures:pending.cancel()
+                raise RuntimeError('DISK_RESOURCE_FLOOR_REACHED;completed_cases_preserved')
     with (args.out/'PAIR_INDEX.jsonl').open('w') as stream:
         for x in sorted((p for row in rows for p in row.get('pair_index',[])),key=lambda p:(p['index'],p['date'])):stream.write(json.dumps(x,ensure_ascii=False)+'\n')
     source_ok=args.households.read_bytes()==raw and args.reference.read_bytes()==reference_raw

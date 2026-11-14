@@ -1,0 +1,83 @@
+{
+  "schema": "eb.generation_algorithm.v1",
+  "name": "调查约束的家庭用电决策情境生成",
+  "entry": "benchmark.ab_generation.generation_pipeline",
+  "supported_country_adapters": [
+    "CN",
+    "US",
+    "GB",
+    "ES",
+    "IN",
+    "MX",
+    "AU",
+    "DE"
+  ],
+  "days_per_household": 10,
+  "grid_min": 10,
+  "event_local_min": [
+    1080,
+    1140
+  ],
+  "stages": [
+    "source normalization or provided frozen households",
+    "quota and compatible household construction",
+    "household-conditioned daily A",
+    "bounded original-EB B catalogue",
+    "raw-cell audit",
+    "root candidate completion",
+    "monotone cohort selection",
+    "programme dependency completion",
+    "extra-only cohort selection",
+    "bounded joint coverage refinement",
+    "native replay and current-index seal"
+  ],
+  "constraints": {
+    "mandatory_control": "AC",
+    "controlled_classes": [
+      4,
+      5,
+      6
+    ],
+    "role_F_requires": "EV",
+    "daily_complete_programmes": true,
+    "EV_contiguous": true,
+    "non_EV_overnight": false,
+    "soft_preferences_not_hard_admission": true
+  },
+  "outputs": [
+    "household_cases.jsonl",
+    "native/PAIR_INDEX.jsonl",
+    "native/DATASET_MANIFEST.json",
+    "native/COHORT_COVERAGE_LEDGER.json.gz",
+    "native/COVERAGE_TARGETED_SEARCH.json",
+    "native/COVERAGE_PROGRAMME_COMPLETION.json",
+    "PIPELINE_RESULT.json",
+    "PHYSICS_HANDOFF.json"
+  ],
+  "algorithm_configuration": [
+    "GENERATION_REPAIR_CONFIG.json",
+    "COMPLETION_CONFIG.json",
+    "household generator config supplied explicitly"
+  ],
+  "inactive_legacy_configuration_notes": {
+    "block_households": "used by legacy assign;complete recipe selects per household then refines cohorts",
+    "handling_calendar_domain": "manual-operation variants only;native route introduces no loading/unloading actions"
+  },
+  "guarantees_scope": "input lineage,declared constraints,selected original native execution,current hashes;coverage not exhaustive",
+  "not_generated": [
+    "physical outcomes by this CLI",
+    "human answers",
+    "online release",
+    "training"
+  ],
+  "third_party_methods": [
+    "largest remainder allocation",
+    "mixed integer programming",
+    "OR-Tools CP-SAT",
+    "IPOG-C-style bounded covering search"
+  ],
+  "construction_method_version": "eb.household_conditioned_daily_A.v2",
+  "maintenance_revision": "wired-budget-typed-status-public-completion-deterministic-cohort-v1",
+  "provenance_note": "actual A execution budget logged outside the historical outcome hash;code and configuration fully pinned by run manifests",
+  "deterministic_cohort_constraint_order": true
+}

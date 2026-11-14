@@ -1,6 +1,6 @@
-# A/B方案生成
+# 家庭与A/B完整生成算法
 
-当前入口是 [generate_native.py](generate_native.py)。冻结家庭输入后，每户生成十个不同日期的日常A，再从原EB六类动作中生成候选，最后每天只选一个B。完整来源和结果见[本轮记录](../../docs/research/AB_GENERATION_REPAIR_20261114.md)。
+完整公共入口是 [generation_pipeline.py](generation_pipeline.py)，见[算法1、目标与复现命令](ALGORITHM.md)。单户入口保留[generate_native.py](generate_native.py)。冻结家庭输入后，每户生成十个不同日期的日常A，再从原EB六类动作中生成候选，最后每天只选一个B。完整来源和结果见[本轮记录](../../docs/research/AB_GENERATION_REPAIR_20261114.md)。
 
 ## 算法
 
@@ -14,7 +14,7 @@
 
 ## 复用
 
-先准备获准的家庭JSONL、参考参数与固定原生电器模块，并安装[依赖](unified/requirements-lock.txt)。
+完整链从[统一配方](ALGORITHM.md#统一入口)运行，安装[generation-requirements-lock.txt](generation-requirements-lock.txt)。以下分步入口保留用于调试与单户研究，整批完整验收应使用generation_pipeline。
 
 ```bash
 python -B -m benchmark.ab_generation.generate_native \
@@ -50,6 +50,8 @@ python -B -m benchmark.ab_generation.verify_package
 ```
 
 批次检查读取同版生成批次的STATUS、PRE_RUN及分户CATALOGUES/PAIR。重选后须重新封存，更新全局索引和SELECTION_CURRENT；原索引和初选凭据保留。若使用原生成器的独立快照，可给封存命令传--generator-code。逐户/整批CLI不自动创造人口源池或调用EnergyPlus。
+
+完整配方本次已在新目录生成1000户×10题，并通过两份96户公开示例的逐题A/B哈希复现。修复和范围见[算法验收自查](../../docs/research/GENERATION_ALGORITHM_REVIEW_20261114.md)。
 
 ## 当前验收与历史
 

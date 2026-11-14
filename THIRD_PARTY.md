@@ -29,3 +29,7 @@
 ## EB 整户参考适配
 
 `benchmark/idf_reference` 发布本项目可复用构造/安装/编译代码、固定参数定义及公开工程示例。其完整几何与构造算法固定到 OpenStudio-HPXML `004ca3ce1cc378aac3fdecd82d950d37f01e8c3e`，使用官方 OpenStudio 3.11.0、EnergyPlus 25.2.0 和分别锁定的 EB 设备/控制来源。上游代码、引擎、原型及天气不在本次新增目录中重新分发；应按各自原许可取得，版本与来源见[模块资源说明](benchmark/idf_reference/SOURCES.md)和参数包。本次未发布家庭数据、内部验收台账或原生逐时结果，亦未为第三方构造、标准或模型重新授予许可。
+
+## 完整生成配方的依赖与方法
+
+`benchmark/ab_generation/generation-requirements-lock.txt`统一固定家庭到原生A/B的依赖，追加pyreadstat1.3.7（Apache-2.0）与narwhals2.28.0（MIT）；依赖使用各自许可，不在本次代码包中重新分发其二进制。CP-SAT、HiGHS、最大余数配额及IPOG-C式覆盖均保留原有方法归属，具体引用和本项目采用范围见[算法说明](benchmark/ab_generation/ALGORITHM.md)。新配方不发布调查逐户记录、完整原生批次或真人答案。

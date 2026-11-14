@@ -148,7 +148,8 @@
       "unique_reselected_pairs": 107,
       "unselected_cells": 20
     },
-    "native10000_regeneration_complete": true
+    "native10000_regeneration_complete": true,
+    "formal10000_regeneration_complete_definition": "formal same-version materials with all physical consequences;native generation has its separate completed field"
   },
   "IDF": {
     "public_snapshot": "benchmark/idf_reference/SOURCE_LOCK.json",
@@ -195,16 +196,152 @@
   },
   "scope_of_this_update": {
     "source_docs_aggregate_only": false,
-    "new_physics_runs": 4,
+    "new_native_plan_rebuild_pairs": 10000,
+    "new_public_synthetic_full_pipeline_runs": 2,
+    "new_physics_runs": 0,
     "paid_API_calls": 0,
     "training_runs": 0,
     "online_release_changed": false,
     "private_records_published": false,
-    "new_physics_pipeline_pairs": 2,
-    "new_physics_runs_basis": "four accepted main-arm executions;registered numerical comparisons and retained diagnostic attempts separate"
+    "frozen_household_source_changed": false,
+    "all_current_A_B_hashes_equal_frozen_batch": true
   },
-  "acceptance": "native10000 sealed;coverage tail,full physics,pricing and human validation pending",
+  "acceptance": "reusable generation algorithm accepted;native10000 reproduced and sealed;coverage tail,full physics,pricing and human validation pending",
   "method": "docs/METHOD.md",
   "review": "docs/ACL_BENCHMARK_REVIEW_20261112.md",
-  "current_generation_report": "docs/research/AB_GENERATION_REPAIR_20261114.md"
+  "current_generation_report": "docs/research/AB_GENERATION_REPAIR_20261114.md",
+  "generation_algorithm_package": {
+    "as_of": "2026-11-14",
+    "entry": "benchmark.ab_generation.generation_pipeline",
+    "algorithm": "benchmark/ab_generation/ALGORITHM.md",
+    "review": "docs/research/GENERATION_ALGORITHM_REVIEW_20261114.md",
+    "acceptance": "benchmark/ab_generation/validation/generation_algorithm_package_20261114/RESULT.json",
+    "three_requested_fixes_completed": true,
+    "production_rebuild": {
+      "households": 1000,
+      "pairs": 10000,
+      "native_replays_passed": 20000,
+      "source_unchanged": true,
+      "A_actual_deterministic_time_budgets": {
+        "20.0": 10000
+      },
+      "A_programme_solver_statuses": {
+        "OPTIMAL": 10000
+      },
+      "coverage": {
+        "declared_raw_cells": 969,
+        "selected_at_least_one": 949,
+        "selected_country_goals_met": 945
+      },
+      "all_declared_coverage_goals_met": false,
+      "nominal_negative_event_reductions_retained": 1743,
+      "unknown_thermal_effects_retained": 6181,
+      "old_batch_plan_comparison": {
+        "schema": "eb.native_plan_reproduction.v1",
+        "actual_pairs": 10000,
+        "reference_pairs": 10000,
+        "case_date_keys_equal": true,
+        "A_hashes_equal": 10000,
+        "B_hashes_equal": 10000,
+        "all_current_A_B_plans_equal": true,
+        "scope": "actual plans only;not gzip bytes,metadata identity,physics or labels"
+      },
+      "initial_plan_comparison": {
+        "pairs": 10000,
+        "case_date_keys_equal": true,
+        "A_hashes_equal": 10000,
+        "B_hashes_equal": 10000,
+        "scope": "before cohort reselection;comparison only;not generation input"
+      },
+      "event_linked_family_coverage_tail": {
+        "households": 57,
+        "dryer": 53,
+        "EV": 4,
+        "basis": "unchanged source and all10000 final A/B hashes identical to frozen batch;these are B modification gaps,not missing daily use"
+      }
+    },
+    "public_portability": {
+      "households": 96,
+      "pairs": 960,
+      "independent_copies": 2,
+      "hash_seeds": [
+        1,
+        23
+      ],
+      "public_packages_only": [
+        "ab_generation",
+        "household_stage1"
+      ],
+      "historical_private_project_reads_blocked": true,
+      "household_bytes_equal": true,
+      "current_plan_comparison": {
+        "schema": "eb.native_plan_reproduction.v1",
+        "actual_pairs": 960,
+        "reference_pairs": 960,
+        "case_date_keys_equal": true,
+        "A_hashes_equal": 960,
+        "B_hashes_equal": 960,
+        "all_current_A_B_plans_equal": true,
+        "scope": "actual plans only;not gzip bytes,metadata identity,physics or labels"
+      }
+    },
+    "regressions": {
+      "native_contracts": {
+        "tests_run": 169,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      "unified_all": {
+        "tests_run": 135,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      "research_delivery_all": {
+        "tests_run": 62,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      "household": {
+        "tests_run": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      },
+      "project_interfaces": {
+        "tests_run": 57,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": true
+      }
+    },
+    "old_native_batch_preserved": true,
+    "online_release_changed": false,
+    "new_physics_runs": 0,
+    "new_human_answers": 0,
+    "complete_physical_or_human_benchmark_claimed": false
+  },
+  "scope_history": [
+    {
+      "commit": "de2ea50513615d72fd804def8779612afa806ecb",
+      "scope": {
+        "source_docs_aggregate_only": false,
+        "new_physics_runs": 4,
+        "paid_API_calls": 0,
+        "training_runs": 0,
+        "online_release_changed": false,
+        "private_records_published": false,
+        "new_physics_pipeline_pairs": 2,
+        "new_physics_runs_basis": "four accepted main-arm executions;registered numerical comparisons and retained diagnostic attempts separate"
+      }
+    }
+  ],
+  "current_algorithm_packaging_report": "docs/research/GENERATION_ALGORITHM_REVIEW_20261114.md"
 }

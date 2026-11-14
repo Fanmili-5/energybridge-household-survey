@@ -134,11 +134,14 @@ class GridSuite:
     def set_ev_mode(self,*a,**k):return self.suite.set_ev_mode(*a,**k)
     def set_ev_charge_window(self,*a,**k):return self.suite.set_ev_charge_window(*a,**k)
 
-def sample_A(problem,native_path,seed):
+def sample_A(problem,native_path,seed,*,deterministic_time=5.0):
     from .household_routine_A import solve_programmes
     native=native_module(native_path);configs=problem['native_appliance_configuration']
-    tasks,schedule=solve_programmes(problem,seed)
-    if tasks is None:return dict(status='infeasible',A=None,causes=[schedule])
+    tasks,schedule=solve_programmes(problem,seed,deterministic_time=deterministic_time)
+    if tasks is None:
+        status={'INFEASIBLE':'infeasible','MODEL_INVALID':'model_invalid',
+                'FEASIBLE':'feasible_not_proven_optimal','UNKNOWN':'search_unresolved'}.get(schedule.get('solver_status'),'search_unresolved')
+        return dict(status=status,A=None,causes=[schedule],daily_programme_domain_proven_infeasible=status=='infeasible')
     suite=native.ApplianceSuite(deepcopy(configs),sim_days=2,explicit_only=True)
     for task in tasks:
         if not suite.shift_appliance(task['kind'],0,task['start_min']/60):

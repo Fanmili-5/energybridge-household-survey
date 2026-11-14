@@ -1,0 +1,210 @@
+{
+  "schema": "eb.generation_algorithm_package.acceptance.v1",
+  "as_of": "2026-11-14",
+  "three_requested_fixes": {
+    "configured_A_budget_reaches_solver": true,
+    "typed_search_outcomes": true,
+    "public_two_stage_completion": true
+  },
+  "additional_determinism_fix": "sorted cohort constraint iteration",
+  "production_rebuild": {
+    "households": 1000,
+    "pairs": 10000,
+    "native_replays_passed": 20000,
+    "source_unchanged": true,
+    "A_actual_deterministic_time_budgets": {
+      "20.0": 10000
+    },
+    "A_programme_solver_statuses": {
+      "OPTIMAL": 10000
+    },
+    "coverage": {
+      "declared_raw_cells": 969,
+      "selected_at_least_one": 949,
+      "selected_country_goals_met": 945
+    },
+    "all_declared_coverage_goals_met": false,
+    "nominal_negative_event_reductions_retained": 1743,
+    "unknown_thermal_effects_retained": 6181,
+    "old_batch_plan_comparison": {
+      "schema": "eb.native_plan_reproduction.v1",
+      "actual_pairs": 10000,
+      "reference_pairs": 10000,
+      "case_date_keys_equal": true,
+      "A_hashes_equal": 10000,
+      "B_hashes_equal": 10000,
+      "all_current_A_B_plans_equal": true,
+      "scope": "actual plans only;not gzip bytes,metadata identity,physics or labels"
+    },
+    "initial_plan_comparison": {
+      "pairs": 10000,
+      "case_date_keys_equal": true,
+      "A_hashes_equal": 10000,
+      "B_hashes_equal": 10000,
+      "scope": "before cohort reselection;comparison only;not generation input"
+    },
+    "event_linked_family_coverage_tail": {
+      "households": 57,
+      "dryer": 53,
+      "EV": 4,
+      "basis": "unchanged source and all10000 final A/B hashes identical to frozen batch;these are B modification gaps,not missing daily use"
+    }
+  },
+  "public_portability": {
+    "households": 96,
+    "pairs": 960,
+    "independent_copies": 2,
+    "hash_seeds": [
+      1,
+      23
+    ],
+    "public_packages_only": [
+      "ab_generation",
+      "household_stage1"
+    ],
+    "historical_private_project_reads_blocked": true,
+    "household_bytes_equal": true,
+    "current_plan_comparison": {
+      "schema": "eb.native_plan_reproduction.v1",
+      "actual_pairs": 960,
+      "reference_pairs": 960,
+      "case_date_keys_equal": true,
+      "A_hashes_equal": 960,
+      "B_hashes_equal": 960,
+      "all_current_A_B_plans_equal": true,
+      "scope": "actual plans only;not gzip bytes,metadata identity,physics or labels"
+    }
+  },
+  "two_previous_physics_probe_plan_identities": [
+    {
+      "country": "US",
+      "A_unchanged": true,
+      "B_unchanged": true,
+      "scope": "plan identity only;no new physical computation"
+    },
+    {
+      "country": "IN",
+      "A_unchanged": true,
+      "B_unchanged": true,
+      "scope": "plan identity only;no new physical computation"
+    }
+  ],
+  "regressions": {
+    "native_contracts": {
+      "tests_run": 169,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "seconds": 3.537,
+      "modules": [
+        "benchmark.ab_generation.test_eb_agent_contract",
+        "benchmark.ab_generation.test_eb_alignment",
+        "benchmark.ab_generation.test_daily_problem",
+        "benchmark.ab_generation.test_generation_recipe",
+        "benchmark.ab_generation.test_cohort_coverage",
+        "benchmark.ab_generation.test_daily_services",
+        "benchmark.ab_generation.test_v9_episode_contract",
+        "benchmark.ab_generation.unified.test_joint_order_selection",
+        "benchmark.ab_generation.unified.test_input_boundaries",
+        "benchmark.ab_generation.unified.test_household_entry",
+        "benchmark.ab_generation.unified.test_selection_execution_gate"
+      ]
+    },
+    "unified_all": {
+      "tests_run": 135,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "seconds": 22.541,
+      "modules": [
+        "benchmark.ab_generation.unified.test_automatic_programs",
+        "benchmark.ab_generation.unified.test_change_axes",
+        "benchmark.ab_generation.unified.test_dated_target_context",
+        "benchmark.ab_generation.unified.test_delivery",
+        "benchmark.ab_generation.unified.test_handling_domain",
+        "benchmark.ab_generation.unified.test_household_entry",
+        "benchmark.ab_generation.unified.test_input_boundaries",
+        "benchmark.ab_generation.unified.test_interval_propagation",
+        "benchmark.ab_generation.unified.test_interval_search",
+        "benchmark.ab_generation.unified.test_joint_order_selection",
+        "benchmark.ab_generation.unified.test_linked_semantics",
+        "benchmark.ab_generation.unified.test_selection_execution_gate",
+        "benchmark.ab_generation.unified.test_service_bounds",
+        "benchmark.ab_generation.unified.test_unified"
+      ]
+    },
+    "research_delivery_all": {
+      "tests_run": 62,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "seconds": 10.588,
+      "modules": [
+        "benchmark.research_delivery.test_acceptance",
+        "benchmark.research_delivery.test_axis_acceptance",
+        "benchmark.research_delivery.test_axis_matrix",
+        "benchmark.research_delivery.test_ci_scope",
+        "benchmark.research_delivery.test_column_order_protocol",
+        "benchmark.research_delivery.test_comparison_audit",
+        "benchmark.research_delivery.test_coverage_layers",
+        "benchmark.research_delivery.test_evidence_report",
+        "benchmark.research_delivery.test_input_evidence_audit",
+        "benchmark.research_delivery.test_interval_backtracking",
+        "benchmark.research_delivery.test_joint_order_review",
+        "benchmark.research_delivery.test_literal_bank_review",
+        "benchmark.research_delivery.test_production",
+        "benchmark.research_delivery.test_public_replay",
+        "benchmark.research_delivery.test_replay_relocation",
+        "benchmark.research_delivery.test_selection_protocol",
+        "benchmark.research_delivery.test_semantic_links",
+        "benchmark.research_delivery.test_shadow_selection",
+        "benchmark.research_delivery.test_shared_domain_comparison",
+        "benchmark.research_delivery.test_strata"
+      ]
+    },
+    "household": {
+      "tests_run": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "seconds": 6.313,
+      "execution": "fresh interpreter after mixed historical suite;see HOUSEHOLD_ISOLATED.log",
+      "modules": [
+        "benchmark.household_stage1.test_required_controls",
+        "benchmark.household_stage1.generator.test_generator"
+      ]
+    },
+    "project_interfaces": {
+      "tests_run": 57,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": true,
+      "seconds": 10.44,
+      "modules": [
+        "benchmark.project.test_source_scope",
+        "benchmark.project.test_project",
+        "benchmark.project.test_reference_collection_release",
+        "benchmark.project.test_reference_collection_physics",
+        "benchmark.project.test_reference_physical_release",
+        "benchmark.project.test_reference_repair",
+        "benchmark.ab_generation.test_plan_only",
+        "benchmark.family_generation.test_generation",
+        "benchmark.family_generation.test_connection"
+      ]
+    }
+  },
+  "old_native_data_and_online_release_preserved": true,
+  "private_records_published": false,
+  "new_physics_runs": 0,
+  "new_human_answers": 0,
+  "paid_calls": 0,
+  "training_runs": 0,
+  "formal_release": false,
+  "reviewer_scope": "reusable generation within declared country/reference/date/action domain;not full physical or human benchmark validity",
+  "reviewer_decision": "pass_as_reusable_generation_module_with_declared_scope"
+}

@@ -20,6 +20,11 @@ from .unified.contract import entry_config
 from .unified.selection import select_block
 from .v9_date_adapter import generate_day_baseline
 
+class DailyBaselineError(ValueError):
+    def __init__(self,date,baseline):
+        self.date=date;self.status=baseline['status'];self.causes=baseline.get('result',{}).get('causes',[])
+        super().__init__('DAILY_A_REJECTED:'+date+':'+self.status)
+
 def implementation():
     root=Path(__file__).resolve().parent
     files=[p for p in root.rglob("*") if p.is_file() and
@@ -64,7 +69,7 @@ def generate(case,dates,reference,manifest_sha256,out,native_source,configuratio
     contexts={};candidates=[];catalogues=[]
     for date in dates:
         baseline=generate_day_baseline(case,date,reference,cfg,manifest_sha256,native_appliance_source_path=native_source)
-        if baseline['status']!='accepted_plan_only':raise ValueError('DAILY_A_REJECTED:'+date+':'+baseline['status'])
+        if baseline['status']!='accepted_plan_only':raise DailyBaselineError(date,baseline)
         contexts[date]=baseline
         zipped(out/(date+'_A.json.gz'),baseline)
         catalogue=generate_household_day(baseline['context'],case,manifest_sha256,cfg,native_appliance_source_path=native_source)

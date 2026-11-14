@@ -15,9 +15,23 @@ python -B -m benchmark.project.verify_package
 
 这些命令检查来源、参数、文件身份和接口资料，不运行EnergyPlus、不连接生产数据库、不产生真人标签。
 
-## 2. 原生十天A/B入口
+## 2. 完整生成算法
 
-当前家庭到A/B使用[generate_native命令](../benchmark/ab_generation/README.md#复用)，输入获准的家庭JSONL、参考参数和固定原版电器模块。它输出同源A/B、候选分母、选题及原版执行证明，不自动运行物理引擎或制造真人答案。A使用CP-SAT；候选使用有限枚举/IPOG-C/CP-SAT；选题使用SciPy/HiGHS。
+以[算法与统一入口](../benchmark/ab_generation/ALGORITHM.md)为准。主验收环境Python3.14.3，统一安装：
+
+```bash
+python -m pip install -r benchmark/ab_generation/generation-requirements-lock.txt
+python -B -m benchmark.ab_generation.generation_pipeline \
+  --make-example-pool \
+  --household-config benchmark/household_stage1/generator/configs/pilot96.json \
+  --reference benchmark/ab_generation/examples/EB_REFERENCE_RULES.json \
+  --native-source /path/to/pinned/appliance_sim.py \
+  --start-date 2007-07-18 --workers 4 --out /path/to/new-demo96
+```
+
+原生文件固定到官方paper-v1-final/c58a2a7a，确切路径和SHA见算法说明。公开演示从320条声明的合成池生成96户×10题，自动补候选、重选并封存。真实源池/原件和冻结家庭的两种入口、扩量步骤、预算及失败含义均在同一说明中。--reference-batch在封存后核对实际A/B哈希，不参与选题。
+
+该入口不运行物理引擎或制造真人答案。单户和逐阶段研究可继续用[分步CLI](../benchmark/ab_generation/README.md#复用)。
 
 ## 3. 历史公开家庭与生活A示例
 

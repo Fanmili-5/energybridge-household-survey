@@ -62,14 +62,16 @@ def bind_routine(problem, household, reference):
         exact_routine_clocks="frozen experimental household card")
     return problem
 
-def solve_programmes(problem, seed):
+def solve_programmes(problem, seed, *, deterministic_time=5.0):
+    if isinstance(deterministic_time,bool) or not isinstance(deterministic_time,(int,float)) or not math.isfinite(deterministic_time) or deterministic_time<=0:
+        raise ValueError("INVALID_A_DETERMINISTIC_TIME")
     model=cp_model.CpModel();starts={};ends={};intervals={};costs=[];anchors={}
     identity=f"{seed}:{problem['household_id']}:{problem['anchor']}"
     for job in problem["jobs"]:
         lo=math.ceil(job["release_min"]/10)*10
         hi=min(job["deadline_min"]-job["policy"]["duration_min"],1439)
         domain=list(range(lo,math.floor(hi/10)*10+1,10))
-        if not domain:return None,{"reason":"EMPTY_NATIVE_PROGRAMME_DOMAIN","need_id":job["need_id"]}
+        if not domain:return None,{"reason":"EMPTY_NATIVE_PROGRAMME_DOMAIN","need_id":job["need_id"],"solver_status":"INFEASIBLE","proof_scope":"empty_declared_programme_domain"}
         key=job["need_id"];start=model.NewIntVarFromDomain(cp_model.Domain.FromValues(domain),key)
         end=model.NewIntVar(0,1440,key+":end");model.Add(end==start+job["policy"]["duration_min"])
         if "A_routine_start_not_before_min" in job:model.Add(start>=job["A_routine_start_not_before_min"])
@@ -94,9 +96,16 @@ def solve_programmes(problem, seed):
         model.AddNoOverlap([intervals[j["need_id"]] for j in problem["jobs"] if j["asset_id"]==asset])
     model.Minimize(sum(costs))
     solver=cp_model.CpSolver();solver.parameters.num_search_workers=1
-    solver.parameters.max_deterministic_time=5.0
+    solver.parameters.max_deterministic_time=float(deterministic_time)
     status=solver.Solve(model)
-    if status!=cp_model.OPTIMAL:return None,{"reason":"A_OPTIMAL_ROUTINE_SCHEDULE_NOT_ESTABLISHED","solver_status":solver.StatusName(status)}
+    if status!=cp_model.OPTIMAL:
+        reason=("A_PROGRAMME_MODEL_PROVEN_INFEASIBLE" if status==cp_model.INFEASIBLE else
+                "A_PROGRAMME_MODEL_INVALID" if status==cp_model.MODEL_INVALID else
+                "A_FEASIBLE_SCHEDULE_NOT_PROVEN_OPTIMAL" if status==cp_model.FEASIBLE else
+                "A_SEARCH_UNRESOLVED_WITHIN_BUDGET")
+        return None,dict(reason=reason,solver_status=solver.StatusName(status),
+                         deterministic_time_budget=float(deterministic_time),
+                         optimal_baseline_required=True)
     tasks=[]
     for job in problem["jobs"]:
         tasks.append(dict(task_id=job["need_id"],need_id=job["need_id"],asset_id=job["asset_id"],kind=job["kind"],

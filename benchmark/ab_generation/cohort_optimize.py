@@ -6,21 +6,7 @@ from ortools.sat.python import cp_model
 from . import cohort_coverage as m
 
 def state_from_ledger(root):
-    root=Path(root);ledger=m.load(root/'COHORT_COVERAGE_LEDGER.json.gz')
-    rows=m.load(root/'STATUS.json')['rows'];raw=defaultdict(lambda:defaultdict(set));pool=defaultdict(lambda:defaultdict(set));chosen=defaultdict(lambda:defaultdict(Counter));examples=defaultdict(lambda:defaultdict(list))
-    for role,entries in ledger.items():
-        for e in entries:
-            raw[role][e['key']].update(e['raw_countries']);pool[role][e['key']].update(e['witness_countries']);examples[role][e['key']]=e['examples']
-    slots={};counts=defaultdict(Counter);required={}
-    for house in rows:
-        folder=root/str(house['index']).zfill(4);i=house['index'];role=house['role'];country=house['country']
-        for p in sorted(folder.glob('*_PAIR.json.gz')):
-            if p.name.endswith('_INITIAL_PAIR.json.gz'):continue
-            pair=m.load(p);row=pair['selected_proposal'];slots[(i,pair['date'])]=dict(index=i,role=role,country=country,path=p,row=row)
-            counts[i].update(m.simple_tokens(row))
-            for key in row['raw_root_cells']:chosen[role][key][country]+=1
-        required[i]=set(counts[i])
-    return dict(rows=rows,raw=raw,pool=pool,chosen=chosen,slots=slots,base_counts=counts,required=required,examples=examples,intrinsic=Counter())
+    return m.state_from_ledger(root)
 
 def refine(root,native_source,deterministic_time=2.0):
     root=Path(root);state=state_from_ledger(root);initial,ledger=m.report(state)
@@ -50,7 +36,7 @@ def refine(root,native_source,deterministic_time=2.0):
                 if key not in by_key or row['id']==old or by_key[key]['id']!=old and row['id']<by_key[key]['id']:by_key[key]=row
         candidates=list(by_key.values());model=cp_model.CpModel();x=[model.new_bool_var('r'+str(j)) for j in range(len(candidates))]
         for slot in slots:model.add(sum(x[j] for j,row in enumerate(candidates) if row['date']==slot['row']['date'])==1)
-        for token in state['required'][index]:model.add(sum(x[j] for j,row in enumerate(candidates) if token in m.simple_tokens(row))>=1)
+        for token in sorted(state['required'][index]):model.add(sum(x[j] for j,row in enumerate(candidates) if token in m.simple_tokens(row))>=1)
         for key in protected:model.add(sum(x[j] for j,row in enumerate(candidates) if key in row['raw_root_cells'])>=1)
         hits=[]
         for k,key in enumerate(goals):
@@ -72,11 +58,7 @@ def refine(root,native_source,deterministic_time=2.0):
             if any(min(min(2,len(countries)),m.country_count(state['chosen'][role][key]))<before[key] for key,countries in state['raw'][role].items()):raise ValueError('GLOBAL_ATTAINED_COUNTRY_GOAL_LOST')
         logs.append(record);print(json.dumps(record),flush=True)
     # Reuse the same source audit, fresh native replay and previous-pair archive.
-    old_scan,old_catalogues=m.scan,m.catalogues_with_extras
-    try:
-        m.scan=lambda root:state;m.catalogues_with_extras=lambda folder:[]
-        result=m.review(root,True,native_source)
-    finally:m.scan,m.catalogues_with_extras=old_scan,old_catalogues
+    result=m.review(root,True,native_source,state=state,passes=0)
     result.update(initial=initial,reselected_slots=len(changed),optimizer='bounded household CP-SAT joint reselection',optimizer_log=logs,global_optimality_claimed=False)
     (root/'COHORT_COVERAGE_REVIEW.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
     (root/'COHORT_CP_REVIEW.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')

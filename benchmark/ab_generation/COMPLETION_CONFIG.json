@@ -1,0 +1,10 @@
+{
+  "schema": "eb.raw_cell_completion.config.v1",
+  "rows_per_unit": 128,
+  "queries_per_row": 64,
+  "oracle_deterministic_time": 0.5,
+  "oracle_native_encoding_budget": 30000,
+  "oracle_forward_node_budget": 16384,
+  "attempts_per_country": 3,
+  "attempts_per_cell": 8
+}

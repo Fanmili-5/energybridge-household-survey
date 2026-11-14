@@ -6,11 +6,13 @@ on:
     paths:
       - 'benchmark/ab_generation/**'
       - 'benchmark/housing_simulation/**'
+      - 'benchmark/household_stage1/**'
       - '.github/workflows/ab-generation.yml'
   pull_request:
     paths:
       - 'benchmark/ab_generation/**'
       - 'benchmark/housing_simulation/**'
+      - 'benchmark/household_stage1/**'
       - '.github/workflows/ab-generation.yml'
 
 permissions:
@@ -121,6 +123,7 @@ jobs:
               "benchmark.ab_generation.test_eb_agent_contract",
               "benchmark.ab_generation.test_eb_alignment",
               "benchmark.ab_generation.test_daily_problem",
+              "benchmark.ab_generation.test_generation_recipe",
               "benchmark.ab_generation.test_cohort_coverage",
               "benchmark.ab_generation.unified.test_joint_order_selection",
               "benchmark.ab_generation.unified.test_input_boundaries",
@@ -133,3 +136,51 @@ jobs:
               unittest.defaultTestLoader.loadTestsFromNames(names))
           raise SystemExit(0 if result.wasSuccessful() and not result.skipped else 1)
           PY
+
+  complete-generation-recipe:
+    needs: method-scope
+    if: needs.method-scope.outputs.method_only != 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      EB_NATIVE_SOURCE: /tmp/eb-recipe-appliance-sim.py
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - run: python -m pip install -r benchmark/ab_generation/generation-requirements-lock.txt
+      - name: Prepare pinned upstream appliance source
+        run: |
+          python - <<'PY'
+          import hashlib, os, urllib.request
+          from pathlib import Path
+          from benchmark.ab_generation.eb_primary import NATIVE_SHA
+          url = "https://raw.githubusercontent.com/Agentic-Intelligence-Lab/EnergyBridge/c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0/energybridge/simulation/appliance_sim.py"
+          data = urllib.request.urlopen(url, timeout=45).read()
+          assert hashlib.sha256(data).hexdigest() == NATIVE_SHA
+          Path(os.environ["EB_NATIVE_SOURCE"]).write_bytes(data)
+          PY
+      - name: Reproduce source-pool to sealed native pairs twice
+        shell: bash
+        run: |
+          PYTHONHASHSEED=1 python -B -m benchmark.ab_generation.generation_pipeline \
+            --make-example-pool \
+            --household-config benchmark/household_stage1/generator/configs/pilot96.json \
+            --reference benchmark/ab_generation/examples/EB_REFERENCE_RULES.json \
+            --native-source "$EB_NATIVE_SOURCE" \
+            --start-date 2007-07-18 --workers 2 --out "$RUNNER_TEMP/recipe-reference"
+          mkdir -p "$RUNNER_TEMP/recipe-independent/benchmark"
+          cp benchmark/__init__.py "$RUNNER_TEMP/recipe-independent/benchmark/"
+          cp -R benchmark/ab_generation benchmark/household_stage1 "$RUNNER_TEMP/recipe-independent/benchmark/"
+          cd "$RUNNER_TEMP/recipe-independent"
+          PYTHONHASHSEED=23 python -B -m benchmark.ab_generation.generation_pipeline \
+            --make-example-pool \
+            --household-config benchmark/household_stage1/generator/configs/pilot96.json \
+            --reference benchmark/ab_generation/examples/EB_REFERENCE_RULES.json \
+            --native-source "$EB_NATIVE_SOURCE" \
+            --start-date 2007-07-18 --workers 2 \
+            --reference-batch "$RUNNER_TEMP/recipe-reference/native" \
+            --out "$RUNNER_TEMP/recipe-independent-output"
