@@ -1,12 +1,16 @@
 # EnergyBridge
 
+最新全流程（2026-11-15）：[家庭→A/B→IDF→问卷](docs/METHOD.md) · [交接合同](docs/PIPELINE_CONTRACTS.md) · [ACL视角复核](docs/research/PIPELINE_REVIEW_20261115/REVIEW.md)。
+
+当前1000户×10题已完成原生计划生成；全量同场景物理及真人标注尚未完成。
+
 让模型站在具体家庭的立场，比较日常方案A与VPP调整方案B，判断是否接受、如何评分，以及为什么。
 
 **[问卷入口](https://47.85.194.154/household50-current/) · [项目文档](docs/README.md) · [复现指南](docs/REPRODUCE.md)**
 
 家庭与设备 → 住房和生活安排 → 日常A → 不同取舍的B → 配对仿真后果 → UI91问卷 → 人类评价。
 
-**[最新完整构造方法](docs/METHOD.md) · [阶段状态](docs/BENCHMARK_STATUS.json) · [ACL视角复核](docs/ACL_BENCHMARK_REVIEW_20261112.md)**
+**[最新完整构造方法](docs/METHOD.md) · [阶段状态](docs/BENCHMARK_STATUS.json) · [ACL视角复核](docs/research/PIPELINE_REVIEW_20261115/REVIEW.md)**
 
 八国1000户输入不变；新版1000户×10题已生成并完成20000次原版电器执行回放。美国、印度各一组新A/B通过配对物理验收，一个UI91隔离预览通过桌面/手机检查；全量物理后果与正式发放仍未完成。旧10000题保留；原4335一概判废结论已按论文版重审更正，不能据此整批删掉负面取舍题。代码更新不改变既有线上50户题集。
 

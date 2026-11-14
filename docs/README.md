@@ -1,5 +1,9 @@
 # 项目文档
 
+最新全流程（2026-11-15）：[家庭→A/B→IDF→问卷](METHOD.md) · [交接合同](PIPELINE_CONTRACTS.md) · [ACL视角复核](research/PIPELINE_REVIEW_20261115/REVIEW.md)。
+
+当前1000户×10题已完成原生计划生成；全量同场景物理及真人标注尚未完成。
+
 最新场景补齐与生成验收：[969项覆盖报告](research/SCENE_COVERAGE_REVIEW_20261114.md)。
 
 当前场景修订与统一入口见[容量分配算法](../benchmark/ab_generation/SCENE_ALGORITHM.md)。家庭与A保持不变，原细分目标969/969已覆盖；扩展事件必须使用逐题的场景和上下文身份对接物理结果。
@@ -12,9 +16,9 @@
 | [最新完整方法](METHOD.md) | 八国调查→家庭→原生A/B→参考IDF→问卷，算法、来源及版本交接 |
 | [完整可复用算法](../benchmark/ab_generation/ALGORITHM.md) | 输入输出、阶段目标、参数/失败合同、一条命令与扩量验收 |
 | [算法封装与审稿自查](research/GENERATION_ALGORITHM_REVIEW_20261114.md) | 三项修复、独立复现和验收范围 |
-| [本轮A/B生成与实际验收](research/AB_GENERATION_REPAIR_20261114.md) | 新10000题、949/969细分覆盖、两组物理试例及仍未完成项 |
+| [历史父批次生成验收](research/AB_GENERATION_REPAIR_20261114.md) | 当时949/969覆盖与两组物理试例；当前969/969见最新全流程复核 |
 | [原EB论文版重审](research/original_eb_reaudit_20261113/REPORT.md) | 后加校验的来源，4335误报与执行映射逐条核对，居民负面候选保留 |
-| [当前状态](BENCHMARK_STATUS.json) / [ACL视角复核](ACL_BENCHMARK_REVIEW_20261112.md) | 哪些已经验收，哪些还不足以支持论文结论？ |
+| [当前状态](BENCHMARK_STATUS.json) / [ACL视角复核](research/PIPELINE_REVIEW_20261115/REVIEW.md) | 哪些已经验收，哪些还不足以支持论文结论？ |
 | [数据与验收](DATASET.md) | 当前50户是什么版本，哪些完成、哪些仍待验证？ |
 | [复现指南](REPRODUCE.md) | 公开环境可以运行什么，受控输入需要什么？ |
 | [采集与质控](COLLECTION.md) | UI91如何分户、作答、恢复，以及标签怎样管理？ |

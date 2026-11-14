@@ -1,5 +1,9 @@
 # 复现指南
 
+最新全流程（2026-11-15）：[家庭→A/B→IDF→问卷](METHOD.md) · [交接合同](PIPELINE_CONTRACTS.md) · [ACL视角复核](research/PIPELINE_REVIEW_20261115/REVIEW.md)。
+
+当前1000户×10题已完成原生计划生成；全量同场景物理及真人标注尚未完成。
+
 最新场景补齐与生成验收：[969项覆盖报告](research/SCENE_COVERAGE_REVIEW_20261114.md)。
 
 当前场景修订与统一入口见[容量分配算法](../benchmark/ab_generation/SCENE_ALGORITHM.md)。家庭与A保持不变，原细分目标969/969已覆盖；扩展事件必须使用逐题的场景和上下文身份对接物理结果。
