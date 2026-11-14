@@ -1,0 +1,691 @@
+{
+  "schema": "eb.scene_coverage_acceptance.v1",
+  "as_of": "2026-11-14",
+  "verdict": "generation_stage_accepted_for_downstream_benchmark_construction",
+  "user_constraints": {
+    "households": 1000,
+    "questions_per_household": 10,
+    "household_and_daily_A_unchanged": true,
+    "native_appliance_grammar_unchanged": true
+  },
+  "frozen_household_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+  "native_manifest": {
+    "schema": "eb.sealed_scene_native_plan_batch.v1",
+    "households": 1000,
+    "pairs": 10000,
+    "source_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+    "pair_index_sha256": "d7559b71746f3a44208259306ff343f41a35042c0a21439b6a40d1de7a9cd0cf",
+    "current_plan_and_scenario_hashes_checked": true,
+    "all_full_A_plans_unchanged": true,
+    "all_basic_tokens_preserved": true,
+    "source_households_unchanged": true,
+    "A_hashes_equal": 10000,
+    "B_hashes_changed": 634,
+    "fresh_original_native_replays": 20000,
+    "coverage": {
+      "original_raw_targets": 969,
+      "selected_at_least_one": 969,
+      "selected_country_goals_met": 964,
+      "selected_additional_scene_cells": {
+        "role_a_price_cooperative_commuter": 0,
+        "role_b_home_comfort_gated": 0,
+        "role_c_irregular_cautious": 0,
+        "role_d_ideal_dr_participant": 0,
+        "role_e_caregiver_low_dr": 0,
+        "role_f_ev_commuter_optimizer": 0
+      },
+      "explored_scene_raw_cells": {
+        "role_e_caregiver_low_dr": 216,
+        "role_f_ev_commuter_optimizer": 157
+      },
+      "explored_scene_domain_is_not_claimed_exhaustive": true,
+      "target_definition": "frozen pre-scene raw root-cell ledger;not every possible external event or joint plan"
+    },
+    "event_counts": {
+      "1080": 9376,
+      "1040": 240,
+      "1000": 96,
+      "960": 48,
+      "970": 144,
+      "980": 48,
+      "990": 48
+    },
+    "max_changed_questions_per_household": 4,
+    "matched_event_counts_equal_across_all_country_role_strata": true,
+    "physical_qualification_not_inherited": true,
+    "formal_questionnaire_release": false,
+    "human_answers_generated": false
+  },
+  "coverage_before": {
+    "declared": 969,
+    "selected": 949,
+    "country_goals_met": 945
+  },
+  "closed_missing_cells": [
+    {
+      "role": "role_e_caregiver_low_dr",
+      "family": "dryer",
+      "raw_label": [
+        "start_time_shift",
+        "later",
+        {
+          "handling_retime": "unchanged",
+          "machine_shift": "up_to_30_min"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "MX"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_e_caregiver_low_dr",
+      "family": "dryer",
+      "raw_label": [
+        "start_time_shift",
+        "later",
+        {
+          "handling_retime": "unchanged",
+          "machine_shift": "over_30_to_60_min"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "ES"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_e_caregiver_low_dr",
+      "family": "dryer",
+      "raw_label": [
+        "start_time_shift",
+        "earlier",
+        {
+          "handling_retime": "unchanged",
+          "machine_shift": "up_to_30_min"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "CN"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "up_to_30_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "over_60_to_120_min",
+          "temperature_delta": "0_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "ES"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "in_event_preparation",
+          "pre_event_preparation": "unchanged",
+          "temperature_delta": "1_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "US"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "up_to_30_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "up_to_30_min",
+          "temperature_delta": "0_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "MX"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "over_120_min",
+          "temperature_delta": "5_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "US"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "over_120_min",
+          "temperature_delta": "3_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "CN"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "up_to_30_min",
+          "temperature_delta": "1_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "US"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "over_30_to_60_min",
+          "temperature_delta": "1_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "US"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "up_to_30_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "over_120_min",
+          "temperature_delta": "0_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "CN"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "up_to_30_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "in_event_preparation",
+          "pre_event_preparation": "unchanged",
+          "temperature_delta": "0_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "MX"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "in_event_preparation",
+          "pre_event_preparation": "unchanged",
+          "temperature_delta": "5_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "MX"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "up_to_30_min",
+          "temperature_delta": "3_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "ES"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "over_30_to_60_min",
+          "temperature_delta": "3_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "CN"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "up_to_30_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "over_30_to_60_min",
+          "temperature_delta": "0_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "MX"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "over_60_to_120_min",
+          "temperature_delta": "3_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "MX"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "over_120_min",
+          "temperature_delta": "1_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "ES"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "over_30_to_60_min",
+          "temperature_delta": "5_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "MX"
+      ],
+      "closed": true
+    },
+    {
+      "role": "role_f_ev_commuter_optimizer",
+      "family": "water_heater",
+      "raw_label": [
+        "preheat_window_shift",
+        "earlier",
+        {
+          "cooling_stop_duration": "unchanged",
+          "event_control_duration": "over_30_to_60_min",
+          "in_event_preparation": "up_to_30_min",
+          "phase": "pre_event_preparation",
+          "pre_event_preparation": "over_60_to_120_min",
+          "temperature_delta": "5_C"
+        },
+        "manual_unchanged",
+        "event_root"
+      ],
+      "selected_countries": [
+        "US"
+      ],
+      "closed": true
+    }
+  ],
+  "remaining_country_replication_goals": [
+    {
+      "role": "role_a_price_cooperative_commuter",
+      "key": "[\"dishwasher\",\"[\\\"start_time_shift\\\",\\\"later\\\",{\\\"handling_retime\\\":\\\"unchanged\\\",\\\"machine_shift\\\":\\\"over_120_min\\\"},\\\"manual_unchanged\\\",\\\"event_root\\\"]\"]",
+      "selected_countries": [
+        "GB"
+      ],
+      "target_countries": 2,
+      "selected_goal_met": false,
+      "pool_goal_met": true
+    },
+    {
+      "role": "role_c_irregular_cautious",
+      "key": "[\"washer\",\"[\\\"start_time_shift\\\",\\\"later\\\",{\\\"handling_retime\\\":\\\"unchanged\\\",\\\"machine_shift\\\":\\\"over_30_to_60_min\\\"},\\\"manual_unchanged\\\",\\\"event_root\\\"]\"]",
+      "selected_countries": [
+        "DE"
+      ],
+      "target_countries": 2,
+      "selected_goal_met": false,
+      "pool_goal_met": true
+    },
+    {
+      "role": "role_e_caregiver_low_dr",
+      "key": "[\"dryer\",\"[\\\"start_time_shift\\\",\\\"earlier\\\",{\\\"handling_retime\\\":\\\"unchanged\\\",\\\"machine_shift\\\":\\\"over_30_to_60_min\\\"},\\\"manual_unchanged\\\",\\\"event_root\\\"]\"]",
+      "selected_countries": [
+        "CN"
+      ],
+      "target_countries": 2,
+      "selected_goal_met": false,
+      "pool_goal_met": true
+    },
+    {
+      "role": "role_e_caregiver_low_dr",
+      "key": "[\"dryer\",\"[\\\"start_time_shift\\\",\\\"earlier\\\",{\\\"handling_retime\\\":\\\"unchanged\\\",\\\"machine_shift\\\":\\\"over_60_to_120_min\\\"},\\\"manual_unchanged\\\",\\\"event_root\\\"]\"]",
+      "selected_countries": [
+        "MX"
+      ],
+      "target_countries": 2,
+      "selected_goal_met": false,
+      "pool_goal_met": true
+    },
+    {
+      "role": "role_e_caregiver_low_dr",
+      "key": "[\"dryer\",\"[\\\"start_time_shift\\\",\\\"earlier\\\",{\\\"handling_retime\\\":\\\"unchanged\\\",\\\"machine_shift\\\":\\\"up_to_30_min\\\"},\\\"manual_unchanged\\\",\\\"event_root\\\"]\"]",
+      "selected_countries": [
+        "CN"
+      ],
+      "target_countries": 2,
+      "selected_goal_met": false,
+      "pool_goal_met": true
+    }
+  ],
+  "base_household_feature_coverage_preserved": true,
+  "allocation": {
+    "schema": "eb.event_scene_coverage.v1",
+    "stage": "allocation",
+    "status": "FEASIBLE",
+    "candidates": 5688,
+    "active_households": 19,
+    "original_raw_targets": 969,
+    "base_tokens_preserved": true,
+    "max_changed_per_household": 4,
+    "deterministic_time_budget": 60.0,
+    "objective": "minimize changed questions subject to all original targets and per-household coverage",
+    "optimal": false,
+    "global_all_possible_scenes_optimality_claimed": false,
+    "changed_questions": 30,
+    "event_scene_questions": 20,
+    "changed_households": 15
+  },
+  "matched_event_panel": {
+    "country_role_strata": 48,
+    "questions": 624,
+    "core_scene_questions": 20,
+    "matched_control_questions": 604,
+    "quotas_per_stratum": {
+      "980": 1,
+      "970": 3,
+      "960": 1,
+      "1040": 5,
+      "1000": 2,
+      "990": 1
+    },
+    "global_event_counts": {
+      "1080": 9376,
+      "1040": 240,
+      "1000": 96,
+      "960": 48,
+      "970": 144,
+      "980": 48,
+      "990": 48
+    },
+    "statistical_independence_of_full_dataset_claimed": false
+  },
+  "changed_B_questions": 634,
+  "unchanged_A_questions": 10000,
+  "independent_coverage_audit": {
+    "schema": "eb.independent_scene_coverage_recomputation.v1",
+    "passed": true,
+    "questions": 10000,
+    "counts": {
+      "unchanged_parent_identity": 9366,
+      "changed_proposal_recomputed": 634
+    },
+    "input_pair_index_sha256": "d7559b71746f3a44208259306ff343f41a35042c0a21439b6a40d1de7a9cd0cf",
+    "audit_code_sha256": "073b9f1dbabf917d221706dcdf776a154c2b2950d4d05591acbde467e1f0ad92",
+    "claims": "changed labels/features rebuilt from source-domain commands;unchanged rows equal frozen parent;not human realism or physical outcomes"
+  },
+  "independent_recipe_reproduction": {
+    "schema": "eb.full_scene_recipe_reproduction.v1",
+    "passed": true,
+    "questions": 10000,
+    "actual_pair_fields_equal": {
+      "A_sha256": 10000,
+      "B_sha256": 10000,
+      "event": 10000,
+      "scenario_sha256": 10000,
+      "pair_id": 10000,
+      "context_sha256": 10000
+    },
+    "scope": "actual plans,events and scenario identities;not gzip file byte equality",
+    "source_households_unchanged": true,
+    "fresh_native_replays_across_two_batches": 40000,
+    "replay_PYTHONHASHSEED": 23,
+    "primary_environment_hash_seed": "not recorded in primary receipt"
+  },
+  "recipe_stages": [
+    {
+      "phase": "01_scene_discovery",
+      "returncode": 0,
+      "seconds": 97.388
+    },
+    {
+      "phase": "02_joint_allocation",
+      "returncode": 0,
+      "seconds": 54.983
+    },
+    {
+      "phase": "03_matched_event_panel",
+      "returncode": 0,
+      "seconds": 399.507
+    },
+    {
+      "phase": "04_materialize_and_replay",
+      "returncode": 0,
+      "seconds": 47.215
+    }
+  ],
+  "nominal_event_effects": {
+    "negative": 1742,
+    "thermal_unknown": 6181,
+    "zero": 856,
+    "positive": 1221
+  },
+  "joint_action_orders": {
+    "1": 4510,
+    "2": 2682,
+    "5": 471,
+    "3": 1345,
+    "4": 859,
+    "6": 133
+  },
+  "soft_cooling_preference_conflict_pairs": 2538,
+  "household_B_family_modification_gaps": {
+    "households": 57,
+    "dryer": 53,
+    "ev": 4,
+    "unchanged_from_parent": true,
+    "not_missing_daily_service": true
+  },
+  "regressions": {
+    "native_contracts": {
+      "tests_run": 179,
+      "returncode": 0
+    },
+    "unified_all": {
+      "tests_run": 135,
+      "returncode": 0
+    },
+    "research_delivery_all": {
+      "tests_run": 62,
+      "returncode": 0
+    },
+    "project_interfaces": {
+      "tests_run": 57,
+      "returncode": 0
+    }
+  },
+  "physical_handoff_schema": "eb.native_to_physics.handoff.v2",
+  "public_replay_scope": "new1000 scene extension reproduced from sealed parent;prior full parent generation and public96x2 reproduction separately archived",
+  "all10000_physical_outcomes_accepted": false,
+  "new_physics_runs": 0,
+  "human_answers_generated": false,
+  "formal_questionnaire_release": false,
+  "online_release_changed": false,
+  "private_household_records_published": false,
+  "algorithm_claim": "survey-constrained native-action-aligned capacity-aware semi-synthetic scenario generation with matched controls;not a novel global optimizer"
+}

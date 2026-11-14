@@ -124,6 +124,7 @@ jobs:
               "benchmark.ab_generation.test_eb_alignment",
               "benchmark.ab_generation.test_daily_problem",
               "benchmark.ab_generation.test_generation_recipe",
+              "benchmark.ab_generation.test_scene_coverage",
               "benchmark.ab_generation.test_cohort_coverage",
               "benchmark.ab_generation.unified.test_joint_order_selection",
               "benchmark.ab_generation.unified.test_input_boundaries",

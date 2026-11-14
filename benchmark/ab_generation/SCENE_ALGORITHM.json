@@ -1,0 +1,76 @@
+{
+  "schema": "eb.capacity_aware_scene_algorithm.v1",
+  "name": "Survey-constrained native-plan generation with capacity-aware scene allocation",
+  "entry": "benchmark.ab_generation.generation_pipeline --complete-scene-coverage",
+  "repair_entry": "benchmark.ab_generation.scene_pipeline",
+  "outputs": [
+    "full dated A/B plans",
+    "original raw target ledger",
+    "explicit external event and context identities",
+    "matched event panel",
+    "fresh original native replays",
+    "physics handoff v2"
+  ],
+  "fixed_boundaries": [
+    "household identity and source fields",
+    "daily A plans",
+    "10 existing dates per household",
+    "original EB action grammar",
+    "daily full services",
+    "original preselection target set"
+  ],
+  "optimization": {
+    "core": "bounded CP-SAT feasible allocation;minimize changed questions;preserve per-household basic coverage and attained country coverage",
+    "matching": "bounded CP-SAT matched event counts per country-role stratum;preserve basic tokens and old raw country coverage",
+    "global_optimality_claimed": false
+  },
+  "event_grid": {
+    "policy": "evening_scene_grid_v1",
+    "start_min": [
+      960,
+      970,
+      980,
+      990,
+      1000,
+      1010,
+      1020,
+      1030,
+      1040,
+      1050,
+      1060,
+      1070,
+      1080,
+      1090,
+      1100,
+      1110,
+      1120,
+      1130,
+      1140,
+      1150,
+      1160,
+      1170,
+      1180,
+      1190,
+      1200
+    ],
+    "duration_min": 60,
+    "origin": "declared experimental context grid;not a survey estimate"
+  },
+  "defaults": {
+    "dates_per_cell_per_household": 3,
+    "core_deterministic_time": 60,
+    "max_changed_questions_per_household": 4,
+    "matched_control_deterministic_time": 10,
+    "workers_limit": 8
+  },
+  "acceptance": [
+    "exact household/source/A identities",
+    "1000x10 for this cohort;ten per input household generally",
+    "all frozen original raw targets selected",
+    "no attained country coverage lost",
+    "equal supplemental event counts across all country-role strata",
+    "all full A/B plans execute through pinned original source",
+    "no inherited physical/human outcomes"
+  ],
+  "claim_boundary": "reusable benchmark construction algorithm combining existing constraint and coverage methods;not a new general optimizer or a learned population distribution"
+}

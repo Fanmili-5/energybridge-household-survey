@@ -109,6 +109,27 @@ def run(args):
             model_assignment_manifest=None,physical_outcomes=None,
             same_building_weather_hardware_demands_and_initial_state_required=True,
             predicted_or_real_human_answers=None,physical_qualification=False))
+        result['current_native_batch']=str(batch)
+        if getattr(args,'complete_scene_coverage',False):
+            phase('12_scene_capacity_completion','benchmark.ab_generation.scene_pipeline',
+                ['--batch',batch,'--households',households,'--native-source',args.native_source,
+                 '--out',root/'scenes','--workers',args.workers,'--min-free-gib',args.min_free_gib])
+            scene=load(root/'scenes/PIPELINE_RESULT.json')
+            result['parent_native_coverage']=result['coverage']
+            result['scene_completion']=scene
+            result['native_manifest']=scene['manifest']
+            c=scene['manifest']['coverage']
+            result['coverage']=dict(declared_raw_cells=c['original_raw_targets'],
+                selected_at_least_one=c['selected_at_least_one'],
+                selected_country_goals_met=c['selected_country_goals_met'])
+            result['all_original_raw_cells_selected']=c['selected_at_least_one']==c['original_raw_targets']
+            result['all_declared_coverage_goals_met']=c['selected_country_goals_met']==c['original_raw_targets']
+            result['current_native_batch']=str(root/'scenes/native')
+            handoff=load(root/'scenes/native/PHYSICS_HANDOFF.json')
+            handoff.update(household_input=str(households),pair_index=str(root/'scenes/native/PAIR_INDEX.jsonl'))
+            save(root/'PHYSICS_HANDOFF.json',handoff)
+            if implementation()!=frozen:raise ValueError('PIPELINE_CODE_CHANGED_DURING_SCENE_COMPLETION')
+            result['seconds']=round(time.monotonic()-started,2)
         save(root/'PIPELINE_RESULT.json',result);print(json.dumps(result),flush=True);return result
     except Exception as error:
         save(root/'PIPELINE_FAILURE.json',dict(schema='eb.generation_recipe.failure.v1',status='failed',error_type=type(error).__name__,error=str(error),completed_stages=steps,output_not_a_release=True))
@@ -125,8 +146,10 @@ def main():
     parser.add_argument('--start-date',required=True);parser.add_argument('--days',type=int,default=10)
     parser.add_argument('--workers',type=int,default=4);parser.add_argument('--configuration',type=Path)
     parser.add_argument('--completion-configuration',type=Path);parser.add_argument('--reference-batch',type=Path)
+    parser.add_argument('--complete-scene-coverage',action='store_true',help='complete frozen raw-cell targets using explicit external scenes and matched controls')
     parser.add_argument('--cohort-deterministic-time',type=float,default=2.0);parser.add_argument('--min-free-gib',type=float,default=.5)
     args=parser.parse_args()
+    if args.complete_scene_coverage and args.reference_batch:parser.error('scene repair changes B;compare a frozen reference in the parent recipe separately')
     if args.days!=10:parser.error('the complete recipe currently qualifies exactly ten dates per household')
     if args.workers<1:parser.error('workers must be positive')
     if args.households and any([args.pool,args.household_config,args.data_config,args.make_example_pool]):parser.error('provided household mode cannot be mixed with source-pool generation mode')

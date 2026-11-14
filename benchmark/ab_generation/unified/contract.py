@@ -24,7 +24,7 @@ DEFAULT = dict(schema='eb.unified_generation.v1', method_revision='delivery_v2_3
 
 def config(value=None):
     value = value or {}
-    if set(value)-set(DEFAULT): raise ValueError('UNKNOWN_UNIFIED_CONFIGURATION')
+    if set(value)-set(DEFAULT)-{'event_policy'}: raise ValueError('UNKNOWN_UNIFIED_CONFIGURATION')
     c = {**copy.deepcopy(DEFAULT), **copy.deepcopy(value)}
     # 2.1 non-granular routes remain source-compatible. Exact historical code
     # replay uses its frozen source archive, not this patched implementation.
@@ -34,10 +34,17 @@ def config(value=None):
     if c['selection_joint_order']=='exact_witnessed_v1' and c['method_revision'] not in ('delivery_v2_10','delivery_v2_11'):
         raise ValueError('NEW_SELECTION_POLICY_REQUIRES_NEW_REVISION')
     e = c['event']
+    policy = c.get('event_policy', 'fixed_18_19_v1')
+    if policy not in ('fixed_18_19_v1', 'evening_scene_grid_v1'):
+        raise ValueError('UNKNOWN_EVENT_SCENE_POLICY')
+    fixed = e.get('start_min') == 1080 and e.get('end_min') == 1140
+    scene = (type(e.get('start_min')) is int and type(e.get('end_min')) is int and
+             960 <= e['start_min'] <= 1200 and e['start_min'] % 10 == 0 and
+             e['end_min'] == e['start_min'] + 60)
     if (c['schema'] != DEFAULT['schema'] or c['step_min'] != 10 or
-        e.get('start_min') != 1080 or e.get('end_min') != 1140 or
+        not (fixed if policy == 'fixed_18_19_v1' else scene) or
         e.get('direction') != 'down' or set(e) != set(DEFAULT['event'])):
-        raise ValueError('UNIFIED_REQUIRES_FIXED_18_19_EVENT')
+        raise ValueError('UNIFIED_REQUIRES_FIXED_18_19_EVENT' if policy == 'fixed_18_19_v1' else 'INVALID_EVENING_EVENT_SCENE')
     if e['target_kw'] is not None and (type(e['target_kw']) not in (int,float) or
         not math.isfinite(e['target_kw']) or e['target_kw'] <= 0):
         raise ValueError('INVALID_DECLARED_EVENT_TARGET')

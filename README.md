@@ -14,12 +14,14 @@
 
 [完整算法、目标和一条命令](benchmark/ab_generation/ALGORITHM.md)统一接通调查源池或冻结家庭、日常A、原生B候选、缺口补候选、十题选取及当前索引封存。实际A求解预算、各类失败状态及补候选参数均可追溯；完整配方附带依赖锁与独立目录复现检查。物理后果和真人答案继续单独验收。
 
+[场景容量分配与匹配对照](benchmark/ab_generation/SCENE_ALGORITHM.md)补齐了原20个缺项，原目标覆盖达到969/969。1000户和10000个A保持不变；9376题保留原事件时段，624题构成跨国家、角色的等量补充面板。原生生成验收与物理／真人验收分别报告。
+
 ## 三条主线
 
 | 主线 | 内容 | 代码与详细方法 |
 |---|---|---|
 | 家庭与设备 | 调查约束的家庭、EB角色态度、参考周、4—6类控制与服务合同 | [可复用生成器](benchmark/household_stage1/generator/)；[早期合成画像](benchmark/family_generation/) |
-| A/B策略 | 从生活需求生成A，围绕固定VPP生成单设备/联合B，覆盖取舍并保留长尾 | [ab_generation](benchmark/ab_generation/) |
+| A/B策略 | 从生活需求生成A，围绕明确VPP场景生成单设备/联合B，覆盖取舍并保留长尾 | [ab_generation](benchmark/ab_generation/) |
 | 住房与仿真 | 按共享住房类别选择完整地区包，沿 EB 和统一编译器执行整户请求 | [当前整户适配](benchmark/idf_reference/)；[原24.1构造示例](benchmark/housing_simulation/) |
 
 完整方法、来源、规则参数与验收结果见[方法说明](docs/METHOD.md)。[project](benchmark/project/)负责资料连接与UI91适配，[collector](benchmark/collector/)负责版本绑定、分户、回答与恢复。

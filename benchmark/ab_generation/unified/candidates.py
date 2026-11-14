@@ -383,9 +383,9 @@ def raw_grammar(c,cfg):
                 yield from wh_windows(c,d,cfg)
                 continue
             # All event start-grid points and complete 10-minute duration grid.
-            for lo in range(1080,1140,10):
+            for lo in range(cfg['event']['start_min'],cfg['event']['end_min'],10):
                 local=copy.deepcopy(lc);local['event']['start_min']=lo
-                local['thermal_duration_min']=[x for x in cfg['thermal_duration_min'] if lo+x<=1140]
+                local['thermal_duration_min']=[x for x in cfg['thermal_duration_min'] if lo+x<=cfg['event']['end_min']]
                 primary_agent=c.get('source',{}).get('appliance_command_protocol')=='eb.primary_appliance_calls.v1'
                 if primary_agent:
                     local['ac_axes']=['cooling']
@@ -601,6 +601,8 @@ def request(c,children,cfg,portrait=None):
             judgment.update(component_id=component['id'],service_need_id=component.get('service_need_id'))
         linked_contexts(row)
     row['id']=digest([c['reference']['binding'],row['working_B_sha256'],row['portrait_sha256']])
+    if cfg.get('event_policy')=='evening_scene_grid_v1':
+        row['scene_event']=copy.deepcopy(cfg['event']);row['scene_policy']='evening_scene_grid_v1'
     return row
 
 

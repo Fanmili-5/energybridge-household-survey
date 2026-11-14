@@ -5,6 +5,16 @@ from ..common import digest
 
 def project(c, profile, row, B):
     from benchmark.family_generation.portrait_v3 import render
+    events=c.get('events', [])
+    event=copy.deepcopy(row.get('scene_event') or (events[0] if len(events)==1 else None))
+    scene=bool(row.get('scene_event') or row.get('scene_policy'))
+    if scene and event is None:raise ValueError('QUESTIONNAIRE_EVENT_CONTEXT_REQUIRED')
+    if scene and (len(events)!=1 or event!=events[0]):
+        raise ValueError('QUESTIONNAIRE_SCENE_EVENT_MISMATCH')
+    # Pre-scene public fixtures declared the fixed event via their recipe.
+    # This compatibility path is never available to a scene-marked proposal.
+    legacy_fixed_event=event is None
+    if legacy_fixed_event:event=dict(start_min=1080,end_min=1140)
     needs=set(row['program_needs'])
     related=[n for n in c['needs'] if n['need_id'] in needs or
              (n['release_min']<1920 and n['deadline_min']>480 and
@@ -19,7 +29,7 @@ def project(c, profile, row, B):
         original_authority=copy.deepcopy(c.get('authority',{})),
         nominal_EV_steps=copy.deepcopy(c['reference'].get('ev_charging_steps',[])),
         physical_EV_connections=copy.deepcopy(c.get('physical_ev_connections',[])),
-        event=dict(start_min=1080,end_min=1140),
+        event=event,event_context_source='legacy_fixed18_19_recipe' if legacy_fixed_event else 'explicit_scene_context',
         reasons=copy.deepcopy(row['asset_change_reasons']),
         member_and_permission_context=copy.deepcopy(row['judgment_context']),
         plan_checks=copy.deepcopy(row['issues']),

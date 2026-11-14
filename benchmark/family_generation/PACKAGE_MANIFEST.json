@@ -3,7 +3,7 @@
   "date": "2026-10-20",
   "dependencies": {
     "benchmark/ab_generation/LAUNDRY_MODEL.json": "bd35508ecd981c17108303d99b3cc624f30b533a46a469894096a76bdcd9373d",
-    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "a4bdfd03c7fb573f997ba19aba65def31325399380929a9b3a6749f6a1255062",
+    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "4a951aaa9346b97d4ae62e49d11035d3b234d4035bac7b61bddc0be07a82ee48",
     "benchmark/ab_generation/__init__.py": "a591d8b46bebc41f63b28f301f0ff891926009485a02f0cbf5fb65a20fb130dc",
     "benchmark/ab_generation/__main__.py": "7d5c7922190df9a0616976ea903b3025df6939b9854db73605078242f6b96fea",
     "benchmark/ab_generation/audit_design.py": "382dbd6c68b9190cda13c5d27b840fc93712323fe53ec7bb6da041d4cf8dffe1",

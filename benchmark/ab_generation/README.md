@@ -2,6 +2,8 @@
 
 完整公共入口是 [generation_pipeline.py](generation_pipeline.py)，见[算法1、目标与复现命令](ALGORITHM.md)。单户入口保留[generate_native.py](generate_native.py)。冻结家庭输入后，每户生成十个不同日期的日常A，再从原EB六类动作中生成候选，最后每天只选一个B。完整来源和结果见[本轮记录](../../docs/research/AB_GENERATION_REPAIR_20261114.md)。
 
+新增[场景容量分配算法](SCENE_ALGORITHM.md)已把原969项补齐：家庭和全部A不变，以明确的外部事件场景及跨国家／角色匹配对照解决题位竞争。完整入口增加--complete-scene-coverage；已有父批次可直接运行scene_pipeline。
+
 ## 算法
 
 1. **生成A：OR-Tools CP-SAT。** 根据家庭参考周、吃饭/家务/洗浴时间联合安排完整程序；同批衣物先洗后烘，洗碗对应已经完成的一餐，热水器窗口围绕洗浴，EV在给定停车连接内连续充电。保留原程序资源、时长和硬件；不读取VPP收益、B后果或真人答案。A是有家庭依据的实验参考日程，不冒称实测生活日记。

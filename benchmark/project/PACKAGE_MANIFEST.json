@@ -2,7 +2,7 @@
   "date": "2026-10-20",
   "dependencies": {
     "benchmark/__init__.py": "64451c197a4f82e4815a5daee3f2ec4dd518da48855e2da1d36807b0249e017c",
-    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "a4bdfd03c7fb573f997ba19aba65def31325399380929a9b3a6749f6a1255062",
+    "benchmark/ab_generation/PACKAGE_MANIFEST.json": "4a951aaa9346b97d4ae62e49d11035d3b234d4035bac7b61bddc0be07a82ee48",
     "benchmark/collector/README.md": "26026cac6f86d16e202d65768ed688d93f3579aef84f51a2db8428b08abb324a",
     "benchmark/collector/admin.py": "dd92017c396dd1e3285092627633f5ae9bdc2c65c44b4ef5a9df4ab14ebb965c",
     "benchmark/collector/answer_contract.py": "125a2408299519fd14f8c65fa708fb8e940c1fd83319bb02f57c16510d9ff0bd",
@@ -21,7 +21,7 @@
     "benchmark/collector/test_protocol.py": "79a2a9d7eab42f7b5f7cb7d8bd1ff81a9f4e802b4b7c48f47734a32807150be9",
     "benchmark/collector/view.css": "22f0158a79449120981e8500609ddb27cd3e494bd73506ea46cc61f300e9c969",
     "benchmark/collector/view.js": "4cff389151ba083443c8c676d3f9b80eceec6caa90d5531f01ffdb3a5563fee2",
-    "benchmark/family_generation/PACKAGE_MANIFEST.json": "af3a665b7188eaf94afbf8e8703ca7d3cb548e90080cddb760fe18806c2c8b1a",
+    "benchmark/family_generation/PACKAGE_MANIFEST.json": "5b881ef437352795e9750a08ec1ace6d426d9dea09ce273a837647b9e5ab47e5",
     "benchmark/housing_simulation/PACKAGE_MANIFEST.json": "95c3851fe56d8a76f97b1386d48261dfe5b035ef6e53e21beab4abc1189de331"
   },
   "files": {
@@ -132,6 +132,7 @@
     "refined91/pending_nodes.js": "757fae2a103c3800f09767cf51bdc145c14789540ef6cf7410f519819ff76a0a",
     "refined91/required-response.js": "81888f9a683f6e077799a83ec726f489830c517f309407e2a8058c37cc967988",
     "refined91/view.css": "4c84371330b24f44b402a58c59bfa97c2924a0ec42c97e359c322a88602a50a3",
+    "scene_coverage_audit.py": "073b9f1dbabf917d221706dcdf776a154c2b2950d4d05591acbde467e1f0ad92",
     "server.py": "d3b664df3c84c2a82909f7aa87e27efe5bba0dcec820ebd69702bdc8f764f57b",
     "source_scope.py": "d25f9c4be1e3b7c13c3de30c45175521e41d28cd2d4a3ceb51536434fdf1fe51",
     "test_project.py": "897001656514af72e286f79121fd69baf2140b5f7cb1180528562c9d9e4f0564",
