@@ -1,6 +1,6 @@
 # EB论文冻结版原始规则重审
 
-[结论与来源](REPORT.md) · [重审统计](PUBLIC_REAUDIT_SUMMARY.json) · [独立复核](INDEPENDENT_VERIFICATION.json) · [规则出处](RULE_PROVENANCE.json)
+[方法说明](../../METHOD.md) · [重审统计](PUBLIC_REAUDIT_SUMMARY.json) · [独立复核](INDEPENDENT_VERIFICATION.json) · [规则出处](RULE_PROVENANCE.json)
 
 原4335是后来V2/V3包装检查的失败数。本轮以官方paper-v1-final/c58a2a7a为源，恢复130条原B，4205条需要接口/时钟映射核对；不把偏好冲突当硬剔除理由，也不称其为物理无效或居民拒绝。
 

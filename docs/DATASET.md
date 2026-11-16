@@ -12,7 +12,7 @@
 
 [来源、方法与验收](../benchmark/household_stage1/README.md) · [机器摘要](../benchmark/household_stage1/CURRENT.json)。八国各125户，全球六类166/198/125/151/156/204；4/5/6类333/333/334户。新要求下AC配备与控制均为1000/1000，每国16种合法组合。40项错误注入全部检出，最终投影字节复现。
 
-本轮新10000组A/B已生成并通过原版执行检查；另有两组同源A/B通过物理验收，一个UI91隔离预览通过浏览器检查。全量物理后果尚未验收，真人回答为0；这些计划材料不是已标注训练集。见[本轮记录](research/AB_GENERATION_REPAIR_20261114.md)。它与下文历史1000户A46/B57、既有50户及公开六条合成画像分别管理。原调查、逐户卡和全部计算留在研究服务器，公开内容只含代码契约、方法、哈希及无身份汇总。
+本轮新10000组A/B已生成并通过原版执行检查；另有两组同源A/B通过物理验收，一个UI91隔离预览通过浏览器检查。全量物理后果尚未验收，真人回答为0；这些计划材料不是已标注训练集。见[方法说明](METHOD.md)。它与下文历史1000户A46/B57、既有50户及公开六条合成画像分别管理。原调查、逐户卡和全部计算留在研究服务器，公开内容只含代码契约、方法、哈希及无身份汇总。
 
 ## 当前资料
 
@@ -37,7 +37,7 @@
 | 采集 | 独立版本库、跨轮身份、草稿、恢复、撤回与修订协议 | 工程测试不计为真人标签，匿名身份不证明自然人唯一 |
 | 研究有效性 | 信息边界与分组原则已有说明 | 真人理解、标签质控、最终划分/指标及模型成绩仍需实际完成 |
 
-批次细节见[完整后果自查](../benchmark/project/FULL500_PHYSICS_REPAIR_VALIDATION.json)、[物理修复与补生成方法](../benchmark/project/PHYSICS_REPAIR_PRODUCTION.md)及[计划覆盖验收](../benchmark/ab_generation/docs/collection/COLLECTION_VALIDATION.md)。
+批次细节见[完整后果自查](../benchmark/project/FULL500_PHYSICS_REPAIR_VALIDATION.json)、[方法说明](METHOD.md)及[计划覆盖验收](../benchmark/ab_generation/docs/collection/COLLECTION_VALIDATION.md)。
 
 ## 发布与许可
 

@@ -55,4 +55,4 @@ python -B -m benchmark.family_generation.validate_portrait_v2 \
 
 授权原50户资料不随公开代码重新发布为原始调查。检查入口只读声明事实、原日历、事前服务要求；A/B和后果仅核对哈希，绝不参与偏好采样。公开六类样例与反例测试无需原50户。历史`within_class_joint_v1`、原规则及冻结产物保留，`joint_sampling_v1.py`保存原实现字节，原配置可精确重放。
 
-[本轮结果、自查与限制](validation/household_portrait_v2/READOUT.md) · [两户简短补前补后](validation/household_portrait_v2/PAIR_BRIEF.md) · [50户检查表](validation/household_portrait_v2/CHECKS50.json)。
+实验资料（未随仓库分发） · 实验资料（未随仓库分发） · 实验资料（未随仓库分发）。

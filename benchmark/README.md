@@ -1,18 +1,16 @@
 # 源码入口
 
-项目概览见[仓库首页](../README.md)，使用说明见[项目文档](../docs/README.md)。
+[仓库首页](../README.md) · [方法与来源](../docs/METHOD.md) · [复现指南](../docs/REPRODUCE.md)
 
 | 模块 | 职责 |
 |---|---|
-| [household_stage1](household_stage1/) | 八国调查支持的1000户第一步，空调每户必备且必控；公开方法、契约及聚合验收 |
-| [family_generation](family_generation/) | 生成家庭、设备和权限，并连接住房与生活A |
-| [household_archetypes](household_archetypes/) | 六类实验角色的来源、证据与拟议配额 |
-| [ab_generation](ab_generation/) | 生活A、设备机会、B候选、联合调整与十天选题 |
-| [housing_simulation](housing_simulation/) | 住房构造、设备执行、配对仿真与审计 |
-| [idf_reference](idf_reference/) | 当前 EB 整户参考适配：共享住房类别、八国完整围护包、地点包、CASE v2/v3 与统一编译入口 |
-| [project](project/) | 三条线的数据交接、UI91资料封存和显示验证 |
-| [collector](collector/) | 正式问卷、版本绑定、采集与恢复协议 |
+| [household_stage1](household_stage1/) | 八国调查家庭、角色、参考周、设备和服务需求 |
+| [ab_generation](ab_generation/) | 日常A、EB动作候选B、覆盖与题位分配 |
+| [idf_reference](idf_reference/) | 当前参考住宅、地区/地点包及EB统一物理适配 |
+| [project](project/) | 数据交接、UI91材料与版本绑定 |
+| [collector](collector/) | 采集、答卷存储与恢复 |
+| [housing_simulation](housing_simulation/) | 独立EnergyPlus24.1公开构造示例，与主25.2路线分开 |
+| [family_generation](family_generation/) | 早期合成家庭与可复用组件 |
+| [household_archetypes](household_archetypes/) | 六类角色的依据和配额 |
 
-[releases](releases/)保存各版本公开清单，[generation](generation/)保存历史生成源码目录。当前范围见[数据与验收](../docs/DATASET.md)。
-
-当前A/B研究入口：[v2.11统一生成方法](research_delivery/METHOD.md)、[配置及复现](research_delivery/REPRODUCE.md)、[动作幅度与事件阶段](research_delivery/ACTION_CHANGE_METHOD.md)。原精确联合任务数规则继续保留；当前研究修订与线上题集版本分开，未计算后果保持未知。
+当前批次和可用范围见[数据说明](../docs/DATASET.md)及[状态](../docs/BENCHMARK_STATUS.json)。各模块保留对应源锁、依赖和验证数据。

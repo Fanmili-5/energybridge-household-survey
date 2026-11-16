@@ -1,37 +1,17 @@
 # 项目文档
 
-最新全流程（2026-11-15）：[家庭→A/B→IDF→问卷](METHOD.md) · [交接合同](PIPELINE_CONTRACTS.md) · [ACL视角复核](research/PIPELINE_REVIEW_20261115/REVIEW.md)。
-
-当前1000户×10题已完成原生计划生成；全量同场景物理及真人标注尚未完成。
-
-最新场景补齐与生成验收：[969项覆盖报告](research/SCENE_COVERAGE_REVIEW_20261114.md)。
-
-当前场景修订与统一入口见[容量分配算法](../benchmark/ab_generation/SCENE_ALGORITHM.md)。家庭与A保持不变，原细分目标969/969已覆盖；扩展事件必须使用逐题的场景和上下文身份对接物理结果。
-
-按以下顺序阅读即可了解和使用项目。
-
-| 文档 | 回答的问题 |
+| 文档 | 内容 |
 |---|---|
-| [八国家庭生成第一步](../benchmark/household_stage1/README.md) | 实际调查来源、1000户构造方法、每户空调必备且必控和验收范围 |
-| [最新完整方法](METHOD.md) | 八国调查→家庭→原生A/B→参考IDF→问卷，算法、来源及版本交接 |
-| [完整可复用算法](../benchmark/ab_generation/ALGORITHM.md) | 输入输出、阶段目标、参数/失败合同、一条命令与扩量验收 |
-| [算法封装与审稿自查](research/GENERATION_ALGORITHM_REVIEW_20261114.md) | 三项修复、独立复现和验收范围 |
-| [历史父批次生成验收](research/AB_GENERATION_REPAIR_20261114.md) | 当时949/969覆盖与两组物理试例；当前969/969见最新全流程复核 |
-| [原EB论文版重审](research/original_eb_reaudit_20261113/REPORT.md) | 后加校验的来源，4335误报与执行映射逐条核对，居民负面候选保留 |
-| [当前状态](BENCHMARK_STATUS.json) / [ACL视角复核](research/PIPELINE_REVIEW_20261115/REVIEW.md) | 哪些已经验收，哪些还不足以支持论文结论？ |
-| [数据与验收](DATASET.md) | 当前50户是什么版本，哪些完成、哪些仍待验证？ |
-| [复现指南](REPRODUCE.md) | 公开环境可以运行什么，受控输入需要什么？ |
-| [采集与质控](COLLECTION.md) | UI91如何分户、作答、恢复，以及标签怎样管理？ |
-| [评测协议](EVALUATION.md) | 模型输入输出、数据分组和正式指标怎样确定？ |
+| [方法与来源](METHOD.md) | 调查家庭、角色、A/B、参考IDF和问卷的完整流程 |
+| [家庭生成](../benchmark/household_stage1/generator/README.md) | 国家数据源、规则参数、相容性选取与扩量入口 |
+| [A/B生成算法](../benchmark/ab_generation/ALGORITHM.md) | 日常A、EB动作候选、选题目标和复用命令 |
+| [场景与题位分配](../benchmark/ab_generation/SCENE_ALGORITHM.md) | 每户十题、细分覆盖及匹配场景 |
+| [参考住宅与物理环境](../benchmark/idf_reference/README.md) | 构造算法、地区包、共享资源和支持范围 |
+| [输入输出规范](PIPELINE_CONTRACTS.md) | 家庭、计划、物理结果和答卷的身份连接 |
+| [当前状态](BENCHMARK_STATUS.json) | 当前批次、实际通过范围和尚未完成部分 |
+| [数据说明](DATASET.md) | 新1000户与既有界面试用版本的区别 |
+| [复现指南](REPRODUCE.md) | 依赖、公开示例及受控输入准备 |
+| [采集与质控](COLLECTION.md) | UI91、版本绑定、回答和恢复 |
+| [评测协议](EVALUATION.md) | 评测目标、分组和指标 |
 
-源码入口见[benchmark](../benchmark/README.md)，当前机器可读版本见[CURRENT_QUESTIONNAIRE50.json](household1000/CURRENT_QUESTIONNAIRE50.json)。
-
-## 历史与证据
-
-- [早期问卷和工程记录](history/legacy-202609/)、[旧项目说明](history/project-20261020)、[项目复核记录](history/reviews/)。
-- [研究源码与逐版材料](research/)、[家庭批次与机器清单](household1000/)。历史说明只适用于其登记版本。
-- 各模块的原始依据、参数和验证文件由对应README引导，不作为并列的项目入口。
-
-历史生成方法研究版本：[统一算法](../benchmark/research_delivery/METHOD.md) · [v2.10联合任务数及配置修订](../benchmark/research_delivery/JOINT_ORDER_SELECTION_METHOD.md) · [复现与范围](../benchmark/research_delivery/REPRODUCE.md)。本次GitHub代码更新不改变线上正式采集。
-
-家庭第一步的可复用实现：[调查约束的家庭生成算法](../benchmark/household_stage1/generator/README.md)，含角色/生活规则、证据表、规模配置、原件适配与独立重放。
+[源码入口](../benchmark/README.md)列出模块职责。必要的来源、参数、测试与验证数据随代码保留。

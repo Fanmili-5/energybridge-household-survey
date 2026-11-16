@@ -1,6 +1,6 @@
 # 独立EnergyPlus24.1有界湿球数值修复
 
-[方法、证据与适用边界](../../PHYSICS_REPAIR_PRODUCTION.md)。补丁改变真实返回/缓存路径；必须保留原警告、APPLIED、UNRESOLVED和原有边界裁剪记录，不能仅以进程退出码判定可靠。
+[方法说明](../../METHOD.md)。补丁改变真实返回/缓存路径；必须保留原警告、APPLIED、UNRESOLVED和原有边界裁剪记录，不能仅以进程退出码判定可靠。
 
 源码起点为官方24.1.0-9d7789a3ac，cached Hyland–Wexler构建。`energyplus_v24_1_twb_repair_candidate.patch`包含新增头文件；从官方源码根目录以`patch -p1`应用。完整构建与原生实验在独立计算环境执行，GitHub不重跑批量实验。
 

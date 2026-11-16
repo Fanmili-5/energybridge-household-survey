@@ -47,7 +47,7 @@
     {
       "path": "deploy/formal_questionnaires_20261014/RELEASE.md",
       "source_sha256": "9216aadc42f7e43de525ea093cb1997c4ae630fec3391294ae73dc388ae66d53",
-      "published_sha256": "9216aadc42f7e43de525ea093cb1997c4ae630fec3391294ae73dc388ae66d53",
+      "published_sha256": "1af0994d109aea3a61a1e0ed460ad1526f163cb567f21b87072fb85339766fb4",
       "kind": "formal_collection_source_or_aggregate",
       "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately"
     },
@@ -323,20 +323,6 @@
       "published_sha256": "3cceeed832d082c1dd4a6c5924c8c54bb59161692c06a28fc1d00f34ee6ec418",
       "kind": "v30_source_or_aggregate",
       "transformation": "first-party source or authored aggregate; no household instances, SQL, actors, answers, credentials"
-    },
-    {
-      "path": "docs/household1000/AUDIT_20261015.md",
-      "kind": "first_party_self_audit_source_or_aggregate",
-      "transformation": "source or aggregate acceptance only; no private instances or credentials",
-      "published_sha256": "ae4b0ca7cc06e8ab7a262bd50585ddd27a6dec3708c412eb16dd234feba7c44f",
-      "source_sha256": "ae4b0ca7cc06e8ab7a262bd50585ddd27a6dec3708c412eb16dd234feba7c44f"
-    },
-    {
-      "path": "docs/household1000/CONTRAST_REVIEW_20261015.md",
-      "source_sha256": "809015d6d8ca7e9991d55c867ad1afdbe24458c8f08299cd27f474fa0dbf701c",
-      "published_sha256": "809015d6d8ca7e9991d55c867ad1afdbe24458c8f08299cd27f474fa0dbf701c",
-      "kind": "v29_source_or_aggregate",
-      "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately"
     },
     {
       "path": "docs/household1000/audit_20261015/ACTIVATION_RECEIPT.json",
@@ -6501,7 +6487,7 @@
     {
       "path": "scripts/household1000.py",
       "source_sha256": "219ea4a777e6a9b42aa3ff6b2673e2986ade3652393964719cea9ad7e9845b59",
-      "published_sha256": "219ea4a777e6a9b42aa3ff6b2673e2986ade3652393964719cea9ad7e9845b59",
+      "published_sha256": "46964c63ccd57c24d9edc662c2ce623d9d2db734c3e4340747cf1f273f157768",
       "kind": "V27_reference_source_or_aggregate",
       "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately"
     },
@@ -6509,7 +6495,7 @@
       "path": "scripts/verify_household1000_publication.py",
       "kind": "first_party_self_audit_source_or_aggregate",
       "transformation": "current reviewed first-party bytes or explicit aggregate projection; historical pre-transform receipts retained separately",
-      "published_sha256": "c21b1974505313f018fb6ad1c16b753da6116d3394cbfd1078f384cfe43e19bd",
+      "published_sha256": "e2bd62e92eaf873b31fbc5c9a1d9ae2ebf22243a46a2231656e4c667f0721d97",
       "source_sha256": "c21b1974505313f018fb6ad1c16b753da6116d3394cbfd1078f384cfe43e19bd"
     },
     {

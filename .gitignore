@@ -58,3 +58,16 @@ realtime_pilot/ui_audit_20260911/options_audit/*
 
 # Internal presentation captures can embed full requests/session metadata.
 docs/notion-review/
+
+# Internal review and work notes are kept in the private project workspace.
+**/REVIEW.md
+**/SELF_REVIEW.md
+**/*_SELF_REVIEW*.md
+**/*SELF-AUDIT*.md
+**/*_REVIEW.md
+**/*_AUDIT.md
+docs/*REVIEW*.md
+docs/research/*REVIEW*/
+docs/research/*REVIEW*.md
+docs/research/*REPAIR*.md
+docs/history/reviews/

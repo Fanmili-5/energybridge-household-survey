@@ -6,7 +6,7 @@
 
 三条主线及接口见[完整项目](../../METHOD.md)。方法版本不等于某批数据的运行或上线状态；以[当前资料指针](../../household1000/CURRENT_QUESTIONNAIRE50.json)、对应发布清单及激活凭据核对。
 
-[十天方法与来源](../../../benchmark/ab_generation/docs/collection/COLLECTION_METHOD.md) · [物理修复及补生成](../../../benchmark/project/PHYSICS_REPAIR_PRODUCTION.md)
+[十天方法与来源](../../../benchmark/ab_generation/docs/collection/COLLECTION_METHOD.md) · [方法说明](../../METHOD.md)
 
 ---
 

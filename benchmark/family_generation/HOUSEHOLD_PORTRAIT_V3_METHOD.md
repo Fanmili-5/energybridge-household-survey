@@ -57,4 +57,4 @@ python -B -m benchmark.family_generation.validate_portrait_v3 \
 
 原A接口只支持统一工作日/周末钟点，无法无损表达的逐日目标仍标待接入。本轮不处理该下游接口，也不声称已生成相应A/B或后果。当前验收支持规则一致性、归属清楚和可复现，不证明真实家庭代表性或真人行为有效性。
 
-[结果、自查和两户资料](validation/household_portrait_v3/READOUT.md)。
+实验资料（未随仓库分发）。

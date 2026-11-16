@@ -1,4 +1,4 @@
-此记录固定于提交 `ff118e213fa3f865dae8b913b581aead2f3c042e`；当时的机器回执见 [LIFE_A_VALIDATION.json](../../LIFE_A_VALIDATION.json)，本次策略复核见 [REVIEW.md](../history/REVIEW.md)。
+此记录固定于提交 `ff118e213fa3f865dae8b913b581aead2f3c042e`；当时的机器回执见 [LIFE_A_VALIDATION.json](../../LIFE_A_VALIDATION.json)，本次策略复核见 [方法说明](../../ALGORITHM.md)。
 
 # 历史验证：生活到A阶段
 

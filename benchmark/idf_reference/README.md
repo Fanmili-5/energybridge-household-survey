@@ -87,4 +87,4 @@ python -B -m scripts.run_shared_housing \
 
 ## 原EB热水器窗口交接（2026-11-14）
 
-可选controls字段water_heater_windows_by_date与water_heater_window_encoding现在保留原EB的一段加热许可窗口；窗外编译为已有绑定支持的内部关闭值，目标温度与用水需求本身不改。它不是新增Agent停止/温度动作。指定空数组可明确关闭尾段日期，避免缺省继承。新公开路径有软件回归；两组完整配对物理试例来自另外锁定的服务器候选环境，见[本轮记录](../../docs/research/AB_GENERATION_REPAIR_20261114.md)，不冒称全部公开地点和10000题均已验收。
+可选controls字段water_heater_windows_by_date与water_heater_window_encoding现在保留原EB的一段加热许可窗口；窗外编译为已有绑定支持的内部关闭值，目标温度与用水需求本身不改。它不是新增Agent停止/温度动作。指定空数组可明确关闭尾段日期，避免缺省继承。新公开路径有软件回归；两组完整配对物理试例来自另外锁定的服务器候选环境，见[方法说明](METHOD.md)，不冒称全部公开地点和10000题均已验收。

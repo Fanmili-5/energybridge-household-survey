@@ -62,4 +62,4 @@ python -B -m benchmark.project prepare-idf --project /tmp/eb-project-new \
 
 使用 `python -B -m benchmark.project.reference_collection_release --collection /controlled/new-v4-selection --profiles-release /controlled/original-v69 --original-a /controlled/normal-A46 --out /controlled/reference50-v4`。只沿用原封存家庭背景，500题全部取自新B选择。实际物理后果保持未计算，答卷标为后果展示前的提案判断；同一对A/B后续可单独仿真并绑定摘要。新发布保留v69表单与收集协议，不能复用旧B的物理数值，也不能改写旧答卷。该命令只生成封存包，不激活线上服务。
 
-正式50户的完整500组新配对结果已经接入UI91，见[正式方法](UI91_FORMAL_PHYSICS.md)、[全量自查](FULL500_PHYSICS_VALIDATION.json)和[上线凭据](../releases/reference50-v4-ui91-physics/ACTIVATION.json)。[早期小规模连接记录](UI91_PHYSICS_HANDOFF.md)仅保留开发历史，不代表当前完成范围。
+正式50户的完整500组新配对结果已经接入UI91，见[正式方法](UI91_FORMAL_PHYSICS.md)、[全量自查](FULL500_PHYSICS_VALIDATION.json)和[上线凭据](../releases/reference50-v4-ui91-physics/ACTIVATION.json)。[方法说明](METHOD.md)仅保留开发历史，不代表当前完成范围。

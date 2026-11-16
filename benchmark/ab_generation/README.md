@@ -1,6 +1,6 @@
 # 家庭与A/B完整生成算法
 
-完整公共入口是 [generation_pipeline.py](generation_pipeline.py)，见[算法1、目标与复现命令](ALGORITHM.md)。单户入口保留[generate_native.py](generate_native.py)。冻结家庭输入后，每户生成十个不同日期的日常A，再从原EB六类动作中生成候选，最后每天只选一个B。完整来源和结果见[本轮记录](../../docs/research/AB_GENERATION_REPAIR_20261114.md)。
+完整公共入口是 [generation_pipeline.py](generation_pipeline.py)，见[算法1、目标与复现命令](ALGORITHM.md)。单户入口保留[generate_native.py](generate_native.py)。冻结家庭输入后，每户生成十个不同日期的日常A，再从原EB六类动作中生成候选，最后每天只选一个B。完整来源和结果见[方法说明](ALGORITHM.md)。
 
 新增[场景容量分配算法](SCENE_ALGORITHM.md)已把原969项补齐：家庭和全部A不变，以明确的外部事件场景及跨国家／角色匹配对照解决题位竞争。完整入口增加--complete-scene-coverage；已有父批次可直接运行scene_pipeline。
 
@@ -53,10 +53,10 @@ python -B -m benchmark.ab_generation.verify_package
 
 批次检查读取同版生成批次的STATUS、PRE_RUN及分户CATALOGUES/PAIR。重选后须重新封存，更新全局索引和SELECTION_CURRENT；原索引和初选凭据保留。若使用原生成器的独立快照，可给封存命令传--generator-code。逐户/整批CLI不自动创造人口源池或调用EnergyPlus。
 
-完整配方本次已在新目录生成1000户×10题，并通过两份96户公开示例的逐题A/B哈希复现。修复和范围见[算法验收自查](../../docs/research/GENERATION_ALGORITHM_REVIEW_20261114.md)。
+完整配方本次已在新目录生成1000户×10题，并通过两份96户公开示例的逐题A/B哈希复现。修复和范围见[方法说明](ALGORITHM.md)。
 
 ## 当前验收与历史
 
 新1000户×10题已完成计划生成和20000次原版A/B执行回放。细分覆盖、两组新配对物理验证及一个UI91隔离预览分别登记；全量物理验收和正式发放仍未完成，见[状态](../../docs/BENCHMARK_STATUS.json)。
 
-旧10000题全部保留。原“4335个B一概不合格”已撤回，见[论文版重审](../../docs/research/original_eb_reaudit_20261113/REPORT.md)。旧[490题V3试跑](validation/eb_native_v3/README.md)、[十天采集方法](docs/collection/COLLECTION_METHOD.md)、[v2.10/v2.11研究方法](../research_delivery/METHOD.md)按原版本留档，不能继承其后果或答案到本轮新方案。
+旧10000题全部保留。原“4335个B一概不合格”已撤回，见[方法说明](ALGORITHM.md)。旧[490题V3试跑](validation/eb_native_v3/README.md)、[十天采集方法](docs/collection/COLLECTION_METHOD.md)、[v2.10/v2.11研究方法](../research_delivery/METHOD.md)按原版本留档，不能继承其后果或答案到本轮新方案。

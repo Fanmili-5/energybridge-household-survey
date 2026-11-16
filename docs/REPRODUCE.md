@@ -1,10 +1,10 @@
 # 复现指南
 
-最新全流程（2026-11-15）：[家庭→A/B→IDF→问卷](METHOD.md) · [交接合同](PIPELINE_CONTRACTS.md) · [ACL视角复核](research/PIPELINE_REVIEW_20261115/REVIEW.md)。
+当前流程见[方法与来源](METHOD.md)及[输入输出规范](PIPELINE_CONTRACTS.md)。
 
 当前1000户×10题已完成原生计划生成；全量同场景物理及真人标注尚未完成。
 
-最新场景补齐与生成验收：[969项覆盖报告](research/SCENE_COVERAGE_REVIEW_20261114.md)。
+最新场景补齐与生成验收：[方法说明](METHOD.md)。
 
 当前场景修订与统一入口见[容量分配算法](../benchmark/ab_generation/SCENE_ALGORITHM.md)。家庭与A保持不变，原细分目标969/969已覆盖；扩展事件必须使用逐题的场景和上下文身份对接物理结果。
 
@@ -60,7 +60,7 @@ python -B -m benchmark.family_generation verify /tmp/eb-life-new
 | 既有50户导入 | `benchmark.ab_generation.reference_collection`，需获准的原家庭和A侧输入；不读取旧B后果 |
 | 配对物理交接 | `benchmark.project.reference_collection_physics`，绑定同一冻结A/B、需求、住房、天气和初态 |
 | 住房物理复现 | [住房指南](../benchmark/housing_simulation/REPRODUCE.md)，需固定依赖、登记资源和EnergyPlus24.1；这是显式运行步骤 |
-| UI91封存 | `benchmark.project.reference_physical_release`，将同版可用结果与资料绑定；工程修复见[专项方法](../benchmark/project/PHYSICS_REPAIR_PRODUCTION.md) |
+| UI91封存 | `benchmark.project.reference_physical_release`，将同版可用结果与资料绑定；工程修复见[方法说明](METHOD.md) |
 
 公开六户37案仍按[旧接口示例](../benchmark/project/README.md)独立复现，不能代替新版18:00—19:00的正式500题。受控500题重建需要相应许可输入；公开代码不等于公开提供这些原件。
 
@@ -68,4 +68,4 @@ python -B -m benchmark.family_generation verify /tmp/eb-life-new
 
 `python -B benchmark/collector/test_protocol.py`使用隔离虚构数据测试HTTP/SQLite，不产生真人答案；运行环境须允许本地回环监听。多轮身份检查见[采集器](../benchmark/collector/README.md)。
 
-生成和封存命令不自动激活线上服务。正式发布须核对资料、代码、数据库版本和恢复材料，并保留旧记录。文档或CI通过不表示任意新物理批次已经通过验收。本轮1000户已完成计划与原版执行，全量物理验证及正式发放仍待完成。两组新配对物理验收与隔离UI91预览见[本轮报告](research/AB_GENERATION_REPAIR_20261114.md)。
+生成和封存命令不自动激活线上服务。正式发布须核对资料、代码、数据库版本和恢复材料，并保留旧记录。文档或CI通过不表示任意新物理批次已经通过验收。本轮1000户已完成计划与原版执行，全量物理验证及正式发放仍待完成。两组新配对物理验收与隔离UI91预览见[方法说明](METHOD.md)。

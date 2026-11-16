@@ -55,7 +55,7 @@ GitHub 只执行源文件/接口检查和公开三对 A/B（六臂）的有界�
 - [证据边界与追踪矩阵](EVIDENCE.md)：逐阶段输入、来源、项目规则、实现及验收对应关系。
 - [固定参数登记](ASSUMPTIONS.json)与[输入字段映射](FIELD_MAP.json)：参数性质及Schema字段覆盖。
 - [注册验证计划](STUDY_PLAN.json)、[协议修订记录](STUDY_PLAN_HISTORY.json)与[敏感性/收敛结果](ROBUSTNESS_RESULTS.json)：参数域、判据、全部配置及实际结果。
-- [整体审查记录](REVIEW.md)：本次发现、修订及验证范围。
+- [方法说明](METHOD.md)：本次发现、修订及验证范围。
 - [来源登记](SOURCES.json)、[规则与依据映射](RULES.json)、[代码来源映射](SOURCE_MAP.json)：证据支持范围及实现定位。
 - [公开家庭输入](examples/world_batch.json)与[机器可读输入规范](WORLD.schema.json)。
 

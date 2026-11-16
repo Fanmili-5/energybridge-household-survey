@@ -90,4 +90,4 @@ python -B -m benchmark.family_generation.validate_device_personas \
 python -B -m benchmark.family_generation verify /tmp/persona-release-audit
 ```
 
-正式本地记录：[报告与自查](validation/device_persona_v3/READOUT.md)、[规则对应表](validation/device_persona_v3/RULE_MAPPING.md)、[两户阅读版](validation/device_persona_v3/PARTICIPANT_FAMILIES.md)、[500组检查](validation/device_persona_v3/AB_CHECKS500.json)。v1/v2报告保留为历史，不作为本版验收。此次不部署、不跑仿真、不启动1000户。
+正式本地记录：实验资料（未随仓库分发）、实验资料（未随仓库分发）、实验资料（未随仓库分发）、实验资料（未随仓库分发）。v1/v2报告保留为历史，不作为本版验收。此次不部署、不跑仿真、不启动1000户。
