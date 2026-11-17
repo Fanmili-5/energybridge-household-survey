@@ -2,7 +2,7 @@
 
 给定家庭背景、当天任务、完整用电计划A、调整方案B及同版本仿真后果，收集真人对整份计划的接受判断、评分和原因。
 
-[家庭与A/B方法](docs/METHOD.md) · [可复用算法](benchmark/ab_generation/ALGORITHM.md) · [复现](docs/REPRODUCE.md) · [交接规范](docs/PIPELINE_CONTRACTS.md)
+[生成总览](docs/GENERATION.md) · [完整方法](docs/METHOD.md) · [可复用算法](benchmark/ab_generation/ALGORITHM.md) · [复现](docs/REPRODUCE.md) · [交接规范](docs/PIPELINE_CONTRACTS.md)
 
 ## 当前生成版本
 

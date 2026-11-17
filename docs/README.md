@@ -2,10 +2,11 @@
 
 | 文档 | 内容 |
 |---|---|
+| [家庭与A/B生成总览](GENERATION.md) | 来源、生成顺序、算法与当前验收范围 |
 | [方法与来源](METHOD.md) | 调查家庭、角色、A/B、参考IDF和问卷的完整流程 |
 | [家庭生成](../benchmark/household_stage1/generator/README.md) | 国家数据源、规则参数、相容性选取与扩量入口 |
 | [A/B生成算法](../benchmark/ab_generation/ALGORITHM.md) | 日常A、EB动作候选、选题目标和复用命令 |
-| [场景与题位分配](../benchmark/ab_generation/SCENE_ALGORITHM.md) | 每户十题、细分覆盖及匹配场景 |
+| [全队列分配与复现](../benchmark/ab_generation/COHORT_RECIPE.md) | 新求解、封存版重建及各自的验证边界 |
 | [参考住宅与物理环境](../benchmark/idf_reference/README.md) | 构造算法、地区包、共享资源和支持范围 |
 | [输入输出规范](PIPELINE_CONTRACTS.md) | 家庭、计划、物理结果和答卷的身份连接 |
 | [当前状态](BENCHMARK_STATUS.json) | 当前批次、实际通过范围和尚未完成部分 |

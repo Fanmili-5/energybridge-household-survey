@@ -241,5 +241,6 @@
       "country_goals_met": 964,
       "physical_or_coverage_admission_inherited_by_V4": false
     }
-  }
+  },
+  "generation_overview": "docs/GENERATION.md"
 }
