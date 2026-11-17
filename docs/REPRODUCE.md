@@ -1,5 +1,7 @@
 # 复现指南
 
+[规则依据表](GENERATION_RULES.md) · [复现层级与命令](GENERATION_REPRODUCIBILITY.md) · [覆盖和分组统计](GENERATION_STATISTICS.md)
+
 当前流程见[方法与来源](METHOD.md)及[输入输出规范](PIPELINE_CONTRACTS.md)。
 
 当前1000户×10题已完成原生计划生成；全量同场景物理及真人标注尚未完成。

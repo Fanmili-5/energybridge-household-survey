@@ -1,0 +1,1524 @@
+{
+  "schema": "eb.generation_method_statistics.v1",
+  "scope": "frozen reference scenarios;static input statistics;not physical or human validation",
+  "household_count": 1000,
+  "pair_count": 10000,
+  "questions_per_household": 10,
+  "countries": {
+    "AU": 125,
+    "CN": 125,
+    "DE": 125,
+    "ES": 125,
+    "GB": 125,
+    "IN": 125,
+    "MX": 125,
+    "US": 125
+  },
+  "roles": {
+    "role_a_price_cooperative_commuter": 166,
+    "role_b_home_comfort_gated": 198,
+    "role_c_irregular_cautious": 125,
+    "role_d_ideal_dr_participant": 151,
+    "role_e_caregiver_low_dr": 156,
+    "role_f_ev_commuter_optimizer": 204
+  },
+  "country_role_counts": {
+    "AU": {
+      "role_a_price_cooperative_commuter": 21,
+      "role_b_home_comfort_gated": 24,
+      "role_c_irregular_cautious": 16,
+      "role_d_ideal_dr_participant": 19,
+      "role_e_caregiver_low_dr": 20,
+      "role_f_ev_commuter_optimizer": 25
+    },
+    "CN": {
+      "role_a_price_cooperative_commuter": 21,
+      "role_b_home_comfort_gated": 25,
+      "role_c_irregular_cautious": 15,
+      "role_d_ideal_dr_participant": 19,
+      "role_e_caregiver_low_dr": 20,
+      "role_f_ev_commuter_optimizer": 25
+    },
+    "DE": {
+      "role_a_price_cooperative_commuter": 21,
+      "role_b_home_comfort_gated": 24,
+      "role_c_irregular_cautious": 16,
+      "role_d_ideal_dr_participant": 19,
+      "role_e_caregiver_low_dr": 19,
+      "role_f_ev_commuter_optimizer": 26
+    },
+    "ES": {
+      "role_a_price_cooperative_commuter": 20,
+      "role_b_home_comfort_gated": 25,
+      "role_c_irregular_cautious": 16,
+      "role_d_ideal_dr_participant": 19,
+      "role_e_caregiver_low_dr": 20,
+      "role_f_ev_commuter_optimizer": 25
+    },
+    "GB": {
+      "role_a_price_cooperative_commuter": 21,
+      "role_b_home_comfort_gated": 25,
+      "role_c_irregular_cautious": 15,
+      "role_d_ideal_dr_participant": 19,
+      "role_e_caregiver_low_dr": 20,
+      "role_f_ev_commuter_optimizer": 25
+    },
+    "IN": {
+      "role_a_price_cooperative_commuter": 21,
+      "role_b_home_comfort_gated": 25,
+      "role_c_irregular_cautious": 15,
+      "role_d_ideal_dr_participant": 19,
+      "role_e_caregiver_low_dr": 19,
+      "role_f_ev_commuter_optimizer": 26
+    },
+    "MX": {
+      "role_a_price_cooperative_commuter": 20,
+      "role_b_home_comfort_gated": 25,
+      "role_c_irregular_cautious": 16,
+      "role_d_ideal_dr_participant": 19,
+      "role_e_caregiver_low_dr": 19,
+      "role_f_ev_commuter_optimizer": 26
+    },
+    "US": {
+      "role_a_price_cooperative_commuter": 21,
+      "role_b_home_comfort_gated": 25,
+      "role_c_irregular_cautious": 16,
+      "role_d_ideal_dr_participant": 18,
+      "role_e_caregiver_low_dr": 19,
+      "role_f_ev_commuter_optimizer": 26
+    }
+  },
+  "country_role_cells": 48,
+  "control_function_enrollment": {
+    "AU|role_a_price_cooperative_commuter": {
+      "AC": 21,
+      "DR": 20,
+      "DW": 19,
+      "EV": 8,
+      "WH": 16,
+      "WM": 21
+    },
+    "AU|role_b_home_comfort_gated": {
+      "AC": 24,
+      "DR": 23,
+      "DW": 24,
+      "EV": 8,
+      "WH": 18,
+      "WM": 23
+    },
+    "AU|role_c_irregular_cautious": {
+      "AC": 16,
+      "DR": 16,
+      "DW": 16,
+      "EV": 6,
+      "WH": 11,
+      "WM": 16
+    },
+    "AU|role_d_ideal_dr_participant": {
+      "AC": 19,
+      "DR": 19,
+      "DW": 19,
+      "EV": 6,
+      "WH": 12,
+      "WM": 19
+    },
+    "AU|role_e_caregiver_low_dr": {
+      "AC": 20,
+      "DR": 20,
+      "DW": 18,
+      "EV": 6,
+      "WH": 15,
+      "WM": 20
+    },
+    "AU|role_f_ev_commuter_optimizer": {
+      "AC": 25,
+      "DR": 19,
+      "DW": 21,
+      "EV": 25,
+      "WH": 16,
+      "WM": 20
+    },
+    "CN|role_a_price_cooperative_commuter": {
+      "AC": 21,
+      "DR": 21,
+      "DW": 19,
+      "EV": 11,
+      "WH": 14,
+      "WM": 19
+    },
+    "CN|role_b_home_comfort_gated": {
+      "AC": 25,
+      "DR": 25,
+      "DW": 25,
+      "EV": 10,
+      "WH": 17,
+      "WM": 24
+    },
+    "CN|role_c_irregular_cautious": {
+      "AC": 15,
+      "DR": 12,
+      "DW": 15,
+      "EV": 7,
+      "WH": 13,
+      "WM": 13
+    },
+    "CN|role_d_ideal_dr_participant": {
+      "AC": 19,
+      "DR": 16,
+      "DW": 19,
+      "EV": 9,
+      "WH": 16,
+      "WM": 17
+    },
+    "CN|role_e_caregiver_low_dr": {
+      "AC": 20,
+      "DR": 19,
+      "DW": 16,
+      "EV": 8,
+      "WH": 17,
+      "WM": 19
+    },
+    "CN|role_f_ev_commuter_optimizer": {
+      "AC": 25,
+      "DR": 22,
+      "DW": 19,
+      "EV": 25,
+      "WH": 9,
+      "WM": 25
+    },
+    "DE|role_a_price_cooperative_commuter": {
+      "AC": 21,
+      "DR": 20,
+      "DW": 17,
+      "EV": 7,
+      "WH": 20,
+      "WM": 20
+    },
+    "DE|role_b_home_comfort_gated": {
+      "AC": 24,
+      "DR": 23,
+      "DW": 22,
+      "EV": 9,
+      "WH": 18,
+      "WM": 24
+    },
+    "DE|role_c_irregular_cautious": {
+      "AC": 16,
+      "DR": 11,
+      "DW": 16,
+      "EV": 5,
+      "WH": 16,
+      "WM": 16
+    },
+    "DE|role_d_ideal_dr_participant": {
+      "AC": 19,
+      "DR": 14,
+      "DW": 19,
+      "EV": 6,
+      "WH": 18,
+      "WM": 19
+    },
+    "DE|role_e_caregiver_low_dr": {
+      "AC": 19,
+      "DR": 15,
+      "DW": 19,
+      "EV": 7,
+      "WH": 17,
+      "WM": 19
+    },
+    "DE|role_f_ev_commuter_optimizer": {
+      "AC": 26,
+      "DR": 14,
+      "DW": 21,
+      "EV": 26,
+      "WH": 22,
+      "WM": 21
+    },
+    "ES|role_a_price_cooperative_commuter": {
+      "AC": 20,
+      "DR": 18,
+      "DW": 19,
+      "EV": 10,
+      "WH": 16,
+      "WM": 18
+    },
+    "ES|role_b_home_comfort_gated": {
+      "AC": 25,
+      "DR": 25,
+      "DW": 23,
+      "EV": 12,
+      "WH": 19,
+      "WM": 22
+    },
+    "ES|role_c_irregular_cautious": {
+      "AC": 16,
+      "DR": 13,
+      "DW": 13,
+      "EV": 9,
+      "WH": 13,
+      "WM": 15
+    },
+    "ES|role_d_ideal_dr_participant": {
+      "AC": 19,
+      "DR": 16,
+      "DW": 16,
+      "EV": 11,
+      "WH": 16,
+      "WM": 18
+    },
+    "ES|role_e_caregiver_low_dr": {
+      "AC": 20,
+      "DR": 20,
+      "DW": 15,
+      "EV": 11,
+      "WH": 16,
+      "WM": 18
+    },
+    "ES|role_f_ev_commuter_optimizer": {
+      "AC": 25,
+      "DR": 21,
+      "DW": 15,
+      "EV": 25,
+      "WH": 15,
+      "WM": 25
+    },
+    "GB|role_a_price_cooperative_commuter": {
+      "AC": 21,
+      "DR": 21,
+      "DW": 20,
+      "EV": 9,
+      "WH": 14,
+      "WM": 20
+    },
+    "GB|role_b_home_comfort_gated": {
+      "AC": 25,
+      "DR": 24,
+      "DW": 22,
+      "EV": 11,
+      "WH": 17,
+      "WM": 25
+    },
+    "GB|role_c_irregular_cautious": {
+      "AC": 15,
+      "DR": 14,
+      "DW": 11,
+      "EV": 8,
+      "WH": 13,
+      "WM": 14
+    },
+    "GB|role_d_ideal_dr_participant": {
+      "AC": 19,
+      "DR": 18,
+      "DW": 15,
+      "EV": 10,
+      "WH": 16,
+      "WM": 18
+    },
+    "GB|role_e_caregiver_low_dr": {
+      "AC": 20,
+      "DR": 18,
+      "DW": 17,
+      "EV": 11,
+      "WH": 18,
+      "WM": 15
+    },
+    "GB|role_f_ev_commuter_optimizer": {
+      "AC": 25,
+      "DR": 19,
+      "DW": 20,
+      "EV": 25,
+      "WH": 10,
+      "WM": 25
+    },
+    "IN|role_a_price_cooperative_commuter": {
+      "AC": 21,
+      "DR": 21,
+      "DW": 20,
+      "EV": 8,
+      "WH": 15,
+      "WM": 20
+    },
+    "IN|role_b_home_comfort_gated": {
+      "AC": 25,
+      "DR": 25,
+      "DW": 24,
+      "EV": 10,
+      "WH": 17,
+      "WM": 24
+    },
+    "IN|role_c_irregular_cautious": {
+      "AC": 15,
+      "DR": 13,
+      "DW": 13,
+      "EV": 8,
+      "WH": 12,
+      "WM": 14
+    },
+    "IN|role_d_ideal_dr_participant": {
+      "AC": 19,
+      "DR": 17,
+      "DW": 17,
+      "EV": 9,
+      "WH": 15,
+      "WM": 18
+    },
+    "IN|role_e_caregiver_low_dr": {
+      "AC": 19,
+      "DR": 15,
+      "DW": 19,
+      "EV": 9,
+      "WH": 17,
+      "WM": 17
+    },
+    "IN|role_f_ev_commuter_optimizer": {
+      "AC": 26,
+      "DR": 21,
+      "DW": 20,
+      "EV": 26,
+      "WH": 11,
+      "WM": 25
+    },
+    "MX|role_a_price_cooperative_commuter": {
+      "AC": 20,
+      "DR": 20,
+      "DW": 19,
+      "EV": 9,
+      "WH": 13,
+      "WM": 19
+    },
+    "MX|role_b_home_comfort_gated": {
+      "AC": 25,
+      "DR": 25,
+      "DW": 25,
+      "EV": 8,
+      "WH": 18,
+      "WM": 24
+    },
+    "MX|role_c_irregular_cautious": {
+      "AC": 16,
+      "DR": 13,
+      "DW": 14,
+      "EV": 11,
+      "WH": 14,
+      "WM": 11
+    },
+    "MX|role_d_ideal_dr_participant": {
+      "AC": 19,
+      "DR": 16,
+      "DW": 17,
+      "EV": 12,
+      "WH": 16,
+      "WM": 14
+    },
+    "MX|role_e_caregiver_low_dr": {
+      "AC": 19,
+      "DR": 17,
+      "DW": 18,
+      "EV": 8,
+      "WH": 16,
+      "WM": 18
+    },
+    "MX|role_f_ev_commuter_optimizer": {
+      "AC": 26,
+      "DR": 23,
+      "DW": 20,
+      "EV": 26,
+      "WH": 8,
+      "WM": 26
+    },
+    "US|role_a_price_cooperative_commuter": {
+      "AC": 21,
+      "DR": 14,
+      "DW": 19,
+      "EV": 14,
+      "WH": 18,
+      "WM": 19
+    },
+    "US|role_b_home_comfort_gated": {
+      "AC": 25,
+      "DR": 18,
+      "DW": 23,
+      "EV": 18,
+      "WH": 18,
+      "WM": 22
+    },
+    "US|role_c_irregular_cautious": {
+      "AC": 16,
+      "DR": 16,
+      "DW": 15,
+      "EV": 7,
+      "WH": 12,
+      "WM": 14
+    },
+    "US|role_d_ideal_dr_participant": {
+      "AC": 18,
+      "DR": 18,
+      "DW": 17,
+      "EV": 8,
+      "WH": 13,
+      "WM": 16
+    },
+    "US|role_e_caregiver_low_dr": {
+      "AC": 19,
+      "DR": 15,
+      "DW": 18,
+      "EV": 12,
+      "WH": 13,
+      "WM": 18
+    },
+    "US|role_f_ev_commuter_optimizer": {
+      "AC": 26,
+      "DR": 21,
+      "DW": 25,
+      "EV": 26,
+      "WH": 9,
+      "WM": 24
+    }
+  },
+  "control_mask_counts": {
+    "AU|role_a_price_cooperative_commuter": {
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH+WM": 7,
+      "AC+DR+DW+WM": 5,
+      "AC+DR+WH+WM": 1,
+      "AC+EV+WH+WM": 1
+    },
+    "AU|role_b_home_comfort_gated": {
+      "AC+DR+DW+EV+WH+WM": 8,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 8,
+      "AC+DR+DW+WM": 6,
+      "AC+DW+WH+WM": 1
+    },
+    "AU|role_c_irregular_cautious": {
+      "AC+DR+DW+EV+WH+WM": 6,
+      "AC+DR+DW+WH+WM": 5,
+      "AC+DR+DW+WM": 5
+    },
+    "AU|role_d_ideal_dr_participant": {
+      "AC+DR+DW+EV+WH+WM": 6,
+      "AC+DR+DW+WH+WM": 6,
+      "AC+DR+DW+WM": 7
+    },
+    "AU|role_e_caregiver_low_dr": {
+      "AC+DR+DW+EV+WH+WM": 6,
+      "AC+DR+DW+WH+WM": 7,
+      "AC+DR+DW+WM": 5,
+      "AC+DR+WH+WM": 2
+    },
+    "AU|role_f_ev_commuter_optimizer": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH": 1,
+      "AC+DR+DW+EV+WH+WM": 9,
+      "AC+DR+DW+EV+WM": 4,
+      "AC+DR+EV+WH": 1,
+      "AC+DR+EV+WH+WM": 2,
+      "AC+DR+EV+WM": 1,
+      "AC+DW+EV+WH": 2,
+      "AC+DW+EV+WH+WM": 1,
+      "AC+DW+EV+WM": 3
+    },
+    "CN|role_a_price_cooperative_commuter": {
+      "AC+DR+DW+EV+WH": 1,
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+EV+WM": 1,
+      "AC+DR+DW+WH+WM": 4,
+      "AC+DR+DW+WM": 6,
+      "AC+DR+EV+WH": 1,
+      "AC+DR+EV+WH+WM": 1
+    },
+    "CN|role_b_home_comfort_gated": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH+WM": 9,
+      "AC+DR+DW+WH+WM": 8,
+      "AC+DR+DW+WM": 7
+    },
+    "CN|role_c_irregular_cautious": {
+      "AC+DR+DW+EV+WH+WM": 5,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 4,
+      "AC+DR+DW+WM": 2,
+      "AC+DW+EV+WH": 1,
+      "AC+DW+EV+WH+WM": 1,
+      "AC+DW+WH+WM": 1
+    },
+    "CN|role_d_ideal_dr_participant": {
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 5,
+      "AC+DR+DW+WM": 3,
+      "AC+DW+EV+WH": 1,
+      "AC+DW+EV+WH+WM": 1,
+      "AC+DW+WH+WM": 1
+    },
+    "CN|role_e_caregiver_low_dr": {
+      "AC+DR+DW+EV+WH+WM": 6,
+      "AC+DR+DW+EV+WM": 1,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 6,
+      "AC+DR+DW+WM": 2,
+      "AC+DR+WH+WM": 3,
+      "AC+EV+WH+WM": 1
+    },
+    "CN|role_f_ev_commuter_optimizer": {
+      "AC+DR+DW+EV+WH+WM": 8,
+      "AC+DR+DW+EV+WM": 9,
+      "AC+DR+EV+WM": 5,
+      "AC+DW+EV+WM": 2,
+      "AC+EV+WH+WM": 1
+    },
+    "DE|role_a_price_cooperative_commuter": {
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 7,
+      "AC+DR+DW+WM": 1,
+      "AC+DR+WH+WM": 4,
+      "AC+DW+WH+WM": 1
+    },
+    "DE|role_b_home_comfort_gated": {
+      "AC+DR+DW+EV+WH+WM": 8,
+      "AC+DR+DW+WH+WM": 8,
+      "AC+DR+DW+WM": 5,
+      "AC+DR+EV+WM": 1,
+      "AC+DR+WH+WM": 1,
+      "AC+DW+WH+WM": 1
+    },
+    "DE|role_c_irregular_cautious": {
+      "AC+DR+DW+EV+WH+WM": 5,
+      "AC+DR+DW+WH+WM": 6,
+      "AC+DW+WH+WM": 5
+    },
+    "DE|role_d_ideal_dr_participant": {
+      "AC+DR+DW+EV+WH+WM": 6,
+      "AC+DR+DW+WH+WM": 7,
+      "AC+DR+DW+WM": 1,
+      "AC+DW+WH+WM": 5
+    },
+    "DE|role_e_caregiver_low_dr": {
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH+WM": 6,
+      "AC+DR+DW+WM": 2,
+      "AC+DW+WH+WM": 4
+    },
+    "DE|role_f_ev_commuter_optimizer": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH": 1,
+      "AC+DR+DW+EV+WH+WM": 9,
+      "AC+DR+DW+EV+WM": 1,
+      "AC+DR+EV+WH": 1,
+      "AC+DR+EV+WH+WM": 1,
+      "AC+DW+EV+WH": 2,
+      "AC+DW+EV+WH+WM": 5,
+      "AC+DW+EV+WM": 2,
+      "AC+EV+WH+WM": 3
+    },
+    "ES|role_a_price_cooperative_commuter": {
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+EV+WM": 1,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 6,
+      "AC+DR+DW+WM": 2,
+      "AC+DR+EV+WM": 1,
+      "AC+DW+EV+WH": 1,
+      "AC+DW+WH+WM": 1
+    },
+    "ES|role_b_home_comfort_gated": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH+WM": 9,
+      "AC+DR+DW+WH+WM": 8,
+      "AC+DR+DW+WM": 5,
+      "AC+DR+EV+WH": 2
+    },
+    "ES|role_c_irregular_cautious": {
+      "AC+DR+DW+EV+WH+WM": 5,
+      "AC+DR+DW+EV+WM": 1,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 4,
+      "AC+DR+EV+WM": 1,
+      "AC+DR+WH+WM": 1,
+      "AC+DW+EV+WM": 1,
+      "AC+DW+WH+WM": 1,
+      "AC+EV+WH+WM": 1
+    },
+    "ES|role_d_ideal_dr_participant": {
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+EV+WM": 1,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 5,
+      "AC+DR+EV+WM": 1,
+      "AC+DR+WH+WM": 1,
+      "AC+DW+EV+WM": 1,
+      "AC+DW+WH+WM": 1,
+      "AC+EV+WH+WM": 1
+    },
+    "ES|role_e_caregiver_low_dr": {
+      "AC+DR+DW+EV+WH": 1,
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH+WM": 4,
+      "AC+DR+DW+WM": 3,
+      "AC+DR+EV+WH": 1,
+      "AC+DR+EV+WH+WM": 1,
+      "AC+DR+EV+WM": 1,
+      "AC+DR+WH+WM": 2
+    },
+    "ES|role_f_ev_commuter_optimizer": {
+      "AC+DR+DW+EV+WH+WM": 9,
+      "AC+DR+DW+EV+WM": 3,
+      "AC+DR+EV+WH+WM": 2,
+      "AC+DR+EV+WM": 7,
+      "AC+DW+EV+WH+WM": 3,
+      "AC+EV+WH+WM": 1
+    },
+    "GB|role_a_price_cooperative_commuter": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH+WM": 7,
+      "AC+DR+DW+WM": 5,
+      "AC+DR+EV+WM": 1
+    },
+    "GB|role_b_home_comfort_gated": {
+      "AC+DR+DW+EV+WH+WM": 8,
+      "AC+DR+DW+EV+WM": 1,
+      "AC+DR+DW+WH+WM": 7,
+      "AC+DR+DW+WM": 6,
+      "AC+DR+EV+WM": 1,
+      "AC+DR+WH+WM": 1,
+      "AC+EV+WH+WM": 1
+    },
+    "GB|role_c_irregular_cautious": {
+      "AC+DR+DW+EV+WH+WM": 5,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 3,
+      "AC+DR+DW+WM": 1,
+      "AC+DR+EV+WH+WM": 2,
+      "AC+DR+EV+WM": 1,
+      "AC+DR+WH+WM": 1,
+      "AC+DW+WH+WM": 1
+    },
+    "GB|role_d_ideal_dr_participant": {
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 4,
+      "AC+DR+DW+WM": 2,
+      "AC+DR+EV+WH+WM": 2,
+      "AC+DR+EV+WM": 1,
+      "AC+DR+WH+WM": 1,
+      "AC+DW+WH+WM": 1
+    },
+    "GB|role_e_caregiver_low_dr": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH": 1,
+      "AC+DR+DW+EV+WH+WM": 6,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 5,
+      "AC+DR+DW+WM": 1,
+      "AC+DR+EV+WH": 1,
+      "AC+DR+EV+WH+WM": 1,
+      "AC+DR+WH+WM": 1,
+      "AC+DW+EV+WH": 1,
+      "AC+DW+WH+WM": 1
+    },
+    "GB|role_f_ev_commuter_optimizer": {
+      "AC+DR+DW+EV+WH+WM": 8,
+      "AC+DR+DW+EV+WM": 7,
+      "AC+DR+EV+WM": 4,
+      "AC+DW+EV+WH+WM": 1,
+      "AC+DW+EV+WM": 4,
+      "AC+EV+WH+WM": 1
+    },
+    "IN|role_a_price_cooperative_commuter": {
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH+WM": 7,
+      "AC+DR+DW+WM": 6,
+      "AC+DR+EV+WH": 1
+    },
+    "IN|role_b_home_comfort_gated": {
+      "AC+DR+DW+EV+WH": 1,
+      "AC+DR+DW+EV+WH+WM": 8,
+      "AC+DR+DW+WH+WM": 7,
+      "AC+DR+DW+WM": 8,
+      "AC+DR+EV+WH+WM": 1
+    },
+    "IN|role_c_irregular_cautious": {
+      "AC+DR+DW+EV+WH+WM": 5,
+      "AC+DR+DW+EV+WM": 1,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 4,
+      "AC+DR+DW+WM": 1,
+      "AC+DR+WH+WM": 1,
+      "AC+DW+EV+WM": 1,
+      "AC+EV+WH+WM": 1
+    },
+    "IN|role_d_ideal_dr_participant": {
+      "AC+DR+DW+EV+WH+WM": 6,
+      "AC+DR+DW+EV+WM": 1,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 6,
+      "AC+DR+DW+WM": 2,
+      "AC+DR+WH+WM": 1,
+      "AC+DW+EV+WM": 1,
+      "AC+EV+WH+WM": 1
+    },
+    "IN|role_e_caregiver_low_dr": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH+WM": 6,
+      "AC+DR+DW+WM": 1,
+      "AC+DW+EV+WH": 1,
+      "AC+DW+WH+WM": 3
+    },
+    "IN|role_f_ev_commuter_optimizer": {
+      "AC+DR+DW+EV+WH+WM": 8,
+      "AC+DR+DW+EV+WM": 8,
+      "AC+DR+EV+WH": 1,
+      "AC+DR+EV+WM": 4,
+      "AC+DW+EV+WH+WM": 1,
+      "AC+DW+EV+WM": 3,
+      "AC+EV+WH+WM": 1
+    },
+    "MX|role_a_price_cooperative_commuter": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH+WM": 5,
+      "AC+DR+DW+WM": 6,
+      "AC+DR+EV+WH+WM": 1
+    },
+    "MX|role_b_home_comfort_gated": {
+      "AC+DR+DW+EV+WH+WM": 8,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 9,
+      "AC+DR+DW+WM": 7
+    },
+    "MX|role_c_irregular_cautious": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH": 2,
+      "AC+DR+DW+EV+WH+WM": 5,
+      "AC+DR+DW+WH+WM": 2,
+      "AC+DR+DW+WM": 1,
+      "AC+DR+EV+WH": 1,
+      "AC+DR+WH+WM": 1,
+      "AC+DW+EV+WH": 1,
+      "AC+DW+EV+WH+WM": 1,
+      "AC+DW+WH+WM": 1
+    },
+    "MX|role_d_ideal_dr_participant": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH": 2,
+      "AC+DR+DW+EV+WH+WM": 6,
+      "AC+DR+DW+WH+WM": 3,
+      "AC+DR+DW+WM": 2,
+      "AC+DR+EV+WH": 1,
+      "AC+DR+WH+WM": 1,
+      "AC+DW+EV+WH": 1,
+      "AC+DW+EV+WH+WM": 1,
+      "AC+DW+WH+WM": 1
+    },
+    "MX|role_e_caregiver_low_dr": {
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 6,
+      "AC+DR+DW+WM": 3,
+      "AC+DW+WH+WM": 1,
+      "AC+EV+WH+WM": 1
+    },
+    "MX|role_f_ev_commuter_optimizer": {
+      "AC+DR+DW+EV+WH+WM": 8,
+      "AC+DR+DW+EV+WM": 9,
+      "AC+DR+EV+WM": 6,
+      "AC+DW+EV+WM": 3
+    },
+    "US|role_a_price_cooperative_commuter": {
+      "AC+DR+DW+EV+WH": 1,
+      "AC+DR+DW+EV+WH+WM": 7,
+      "AC+DR+DW+WH+WM": 4,
+      "AC+DR+DW+WM": 1,
+      "AC+DR+WH+WM": 1,
+      "AC+DW+EV+WH": 1,
+      "AC+DW+EV+WH+WM": 2,
+      "AC+DW+EV+WM": 2,
+      "AC+DW+WH+WM": 1,
+      "AC+EV+WH+WM": 1
+    },
+    "US|role_b_home_comfort_gated": {
+      "AC+DR+DW+EV+WH": 1,
+      "AC+DR+DW+EV+WH+WM": 8,
+      "AC+DR+DW+EV+WM": 1,
+      "AC+DR+DW+WH+WM": 3,
+      "AC+DR+DW+WM": 4,
+      "AC+DR+EV+WH+WM": 1,
+      "AC+DW+EV+WH": 2,
+      "AC+DW+EV+WH+WM": 2,
+      "AC+DW+EV+WM": 2,
+      "AC+EV+WH+WM": 1
+    },
+    "US|role_c_irregular_cautious": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH+WM": 5,
+      "AC+DR+DW+WH+WM": 6,
+      "AC+DR+DW+WM": 3,
+      "AC+DR+EV+WH": 1
+    },
+    "US|role_d_ideal_dr_participant": {
+      "AC+DR+DW+EV": 1,
+      "AC+DR+DW+EV+WH+WM": 6,
+      "AC+DR+DW+WH+WM": 6,
+      "AC+DR+DW+WM": 4,
+      "AC+DR+EV+WH": 1
+    },
+    "US|role_e_caregiver_low_dr": {
+      "AC+DR+DW+EV+WH+WM": 6,
+      "AC+DR+DW+EV+WM": 1,
+      "AC+DR+DW+WH": 1,
+      "AC+DR+DW+WH+WM": 4,
+      "AC+DR+DW+WM": 2,
+      "AC+DR+EV+WM": 1,
+      "AC+DW+EV+WH+WM": 2,
+      "AC+DW+EV+WM": 2
+    },
+    "US|role_f_ev_commuter_optimizer": {
+      "AC+DR+DW+EV": 2,
+      "AC+DR+DW+EV+WH+WM": 9,
+      "AC+DR+DW+EV+WM": 9,
+      "AC+DR+EV+WM": 1,
+      "AC+DW+EV+WM": 5
+    }
+  },
+  "controlled_function_counts": {
+    "4": 333,
+    "5": 333,
+    "6": 334
+  },
+  "ac_controlled_households": 1000,
+  "key_field_origins": {
+    "AU": {
+      "calendar.weekly_events": {
+        "benchmark_assigned": 125
+      },
+      "comfort": {
+        "benchmark_assigned": 125
+      },
+      "dwelling.reference_area_m2": {
+        "benchmark_assigned": 125
+      },
+      "equipment.space_ac_available.present": {
+        "benchmark_installed": 4,
+        "observed": 121
+      }
+    },
+    "CN": {
+      "calendar.weekly_events": {
+        "benchmark_assigned": 125
+      },
+      "comfort": {
+        "benchmark_assigned": 125
+      },
+      "dwelling.reference_area_m2": {
+        "benchmark_assigned": 125
+      },
+      "equipment.space_ac_available.present": {
+        "observed": 125
+      }
+    },
+    "DE": {
+      "calendar.weekly_events": {
+        "benchmark_assigned": 125
+      },
+      "comfort": {
+        "benchmark_assigned": 125
+      },
+      "dwelling.reference_area_m2": {
+        "benchmark_assigned": 125
+      },
+      "equipment.space_ac_available.present": {
+        "benchmark_installed": 121,
+        "observed": 4
+      }
+    },
+    "ES": {
+      "calendar.weekly_events": {
+        "benchmark_assigned": 125
+      },
+      "comfort": {
+        "benchmark_assigned": 125
+      },
+      "dwelling.reference_area_m2": {
+        "benchmark_assigned": 125
+      },
+      "equipment.space_ac_available.present": {
+        "benchmark_installed": 59,
+        "observed": 66
+      }
+    },
+    "GB": {
+      "calendar.weekly_events": {
+        "benchmark_assigned": 125
+      },
+      "comfort": {
+        "benchmark_assigned": 125
+      },
+      "dwelling.reference_area_m2": {
+        "benchmark_assigned": 125
+      },
+      "equipment.space_ac_available.present": {
+        "benchmark_installed": 110,
+        "observed": 15
+      }
+    },
+    "IN": {
+      "calendar.weekly_events": {
+        "benchmark_assigned": 125
+      },
+      "comfort": {
+        "benchmark_assigned": 125
+      },
+      "dwelling.reference_area_m2": {
+        "benchmark_assigned": 125
+      },
+      "equipment.space_ac_available.present": {
+        "observed": 125
+      }
+    },
+    "MX": {
+      "calendar.weekly_events": {
+        "benchmark_assigned": 125
+      },
+      "comfort": {
+        "benchmark_assigned": 125
+      },
+      "dwelling.reference_area_m2": {
+        "benchmark_assigned": 125
+      },
+      "equipment.space_ac_available.present": {
+        "observed": 125
+      }
+    },
+    "US": {
+      "calendar.weekly_events": {
+        "benchmark_assigned": 125
+      },
+      "comfort": {
+        "benchmark_assigned": 125
+      },
+      "dwelling.reference_area_m2": {
+        "derived": 125
+      },
+      "equipment.space_ac_available.present": {
+        "benchmark_installed": 17,
+        "observed": 108
+      }
+    }
+  },
+  "root_coverage": {
+    "declared_cells": 939,
+    "selected_cells": 939,
+    "selected_in_at_least_two_countries": 924,
+    "selected_in_one_country": 15,
+    "selected_question_occurrences": {
+      "count": 939,
+      "minimum": 1,
+      "median": 7,
+      "p90": 34,
+      "maximum": 844
+    },
+    "role_function_counts": {
+      "role_a_price_cooperative_commuter|AC": {
+        "declared": 96,
+        "selected": 96,
+        "selected_in_at_least_two_countries": 96
+      },
+      "role_a_price_cooperative_commuter|DR": {
+        "declared": 3,
+        "selected": 3,
+        "selected_in_at_least_two_countries": 3
+      },
+      "role_a_price_cooperative_commuter|DW": {
+        "declared": 5,
+        "selected": 5,
+        "selected_in_at_least_two_countries": 5
+      },
+      "role_a_price_cooperative_commuter|EV": {
+        "declared": 4,
+        "selected": 4,
+        "selected_in_at_least_two_countries": 4
+      },
+      "role_a_price_cooperative_commuter|WH": {
+        "declared": 41,
+        "selected": 41,
+        "selected_in_at_least_two_countries": 41
+      },
+      "role_a_price_cooperative_commuter|WM": {
+        "declared": 8,
+        "selected": 8,
+        "selected_in_at_least_two_countries": 8
+      },
+      "role_b_home_comfort_gated|AC": {
+        "declared": 96,
+        "selected": 96,
+        "selected_in_at_least_two_countries": 96
+      },
+      "role_b_home_comfort_gated|DR": {
+        "declared": 1,
+        "selected": 1,
+        "selected_in_at_least_two_countries": 1
+      },
+      "role_b_home_comfort_gated|DW": {
+        "declared": 5,
+        "selected": 5,
+        "selected_in_at_least_two_countries": 5
+      },
+      "role_b_home_comfort_gated|EV": {
+        "declared": 3,
+        "selected": 3,
+        "selected_in_at_least_two_countries": 3
+      },
+      "role_b_home_comfort_gated|WH": {
+        "declared": 41,
+        "selected": 41,
+        "selected_in_at_least_two_countries": 41
+      },
+      "role_b_home_comfort_gated|WM": {
+        "declared": 1,
+        "selected": 1,
+        "selected_in_at_least_two_countries": 1
+      },
+      "role_c_irregular_cautious|AC": {
+        "declared": 96,
+        "selected": 96,
+        "selected_in_at_least_two_countries": 96
+      },
+      "role_c_irregular_cautious|DR": {
+        "declared": 3,
+        "selected": 3,
+        "selected_in_at_least_two_countries": 3
+      },
+      "role_c_irregular_cautious|DW": {
+        "declared": 5,
+        "selected": 5,
+        "selected_in_at_least_two_countries": 5
+      },
+      "role_c_irregular_cautious|EV": {
+        "declared": 4,
+        "selected": 4,
+        "selected_in_at_least_two_countries": 4
+      },
+      "role_c_irregular_cautious|WH": {
+        "declared": 41,
+        "selected": 41,
+        "selected_in_at_least_two_countries": 41
+      },
+      "role_c_irregular_cautious|WM": {
+        "declared": 8,
+        "selected": 8,
+        "selected_in_at_least_two_countries": 8
+      },
+      "role_d_ideal_dr_participant|AC": {
+        "declared": 96,
+        "selected": 96,
+        "selected_in_at_least_two_countries": 96
+      },
+      "role_d_ideal_dr_participant|DR": {
+        "declared": 4,
+        "selected": 4,
+        "selected_in_at_least_two_countries": 3
+      },
+      "role_d_ideal_dr_participant|DW": {
+        "declared": 5,
+        "selected": 5,
+        "selected_in_at_least_two_countries": 5
+      },
+      "role_d_ideal_dr_participant|EV": {
+        "declared": 4,
+        "selected": 4,
+        "selected_in_at_least_two_countries": 3
+      },
+      "role_d_ideal_dr_participant|WH": {
+        "declared": 41,
+        "selected": 41,
+        "selected_in_at_least_two_countries": 41
+      },
+      "role_d_ideal_dr_participant|WM": {
+        "declared": 4,
+        "selected": 4,
+        "selected_in_at_least_two_countries": 3
+      },
+      "role_e_caregiver_low_dr|AC": {
+        "declared": 96,
+        "selected": 96,
+        "selected_in_at_least_two_countries": 96
+      },
+      "role_e_caregiver_low_dr|DR": {
+        "declared": 1,
+        "selected": 1,
+        "selected_in_at_least_two_countries": 1
+      },
+      "role_e_caregiver_low_dr|DW": {
+        "declared": 5,
+        "selected": 5,
+        "selected_in_at_least_two_countries": 5
+      },
+      "role_e_caregiver_low_dr|EV": {
+        "declared": 3,
+        "selected": 3,
+        "selected_in_at_least_two_countries": 3
+      },
+      "role_e_caregiver_low_dr|WH": {
+        "declared": 41,
+        "selected": 41,
+        "selected_in_at_least_two_countries": 41
+      },
+      "role_e_caregiver_low_dr|WM": {
+        "declared": 1,
+        "selected": 1,
+        "selected_in_at_least_two_countries": 1
+      },
+      "role_f_ev_commuter_optimizer|AC": {
+        "declared": 96,
+        "selected": 96,
+        "selected_in_at_least_two_countries": 96
+      },
+      "role_f_ev_commuter_optimizer|DR": {
+        "declared": 3,
+        "selected": 3,
+        "selected_in_at_least_two_countries": 3
+      },
+      "role_f_ev_commuter_optimizer|DW": {
+        "declared": 5,
+        "selected": 5,
+        "selected_in_at_least_two_countries": 5
+      },
+      "role_f_ev_commuter_optimizer|EV": {
+        "declared": 4,
+        "selected": 4,
+        "selected_in_at_least_two_countries": 4
+      },
+      "role_f_ev_commuter_optimizer|WH": {
+        "declared": 61,
+        "selected": 61,
+        "selected_in_at_least_two_countries": 49
+      },
+      "role_f_ev_commuter_optimizer|WM": {
+        "declared": 8,
+        "selected": 8,
+        "selected_in_at_least_two_countries": 8
+      }
+    },
+    "definition": "role x family x root mechanism/direction/separate-dose descriptor;per-question presence",
+    "higher_order_or_continuous_coverage_claim": false
+  },
+  "controlled_household_functions": 5001,
+  "selected_changed_household_functions": 4990,
+  "unselected_household_functions": {
+    "EV": 2,
+    "WM": 9
+  },
+  "unselected_function_semantics": "counts only;no-opportunity status requires separate frozen-domain proof",
+  "changed_function_compositions": {
+    "AC": 1250,
+    "AC+DR": 265,
+    "AC+DR+DW": 155,
+    "AC+DR+DW+EV": 74,
+    "AC+DR+DW+EV+WH": 243,
+    "AC+DR+DW+EV+WH+WM": 192,
+    "AC+DR+DW+EV+WM": 43,
+    "AC+DR+DW+WH": 235,
+    "AC+DR+DW+WH+WM": 150,
+    "AC+DR+DW+WM": 77,
+    "AC+DR+EV": 33,
+    "AC+DR+EV+WH": 69,
+    "AC+DR+EV+WH+WM": 20,
+    "AC+DR+EV+WM": 26,
+    "AC+DR+WH": 104,
+    "AC+DR+WH+WM": 31,
+    "AC+DR+WM": 92,
+    "AC+DW": 397,
+    "AC+DW+EV": 76,
+    "AC+DW+EV+WH": 105,
+    "AC+DW+EV+WH+WM": 91,
+    "AC+DW+EV+WM": 56,
+    "AC+DW+WH": 165,
+    "AC+DW+WH+WM": 125,
+    "AC+DW+WM": 78,
+    "AC+EV": 196,
+    "AC+EV+WH": 80,
+    "AC+EV+WH+WM": 46,
+    "AC+EV+WM": 41,
+    "AC+WH": 217,
+    "AC+WH+WM": 88,
+    "AC+WM": 158,
+    "DR": 653,
+    "DR+DW": 174,
+    "DR+DW+EV": 21,
+    "DR+DW+EV+WH": 50,
+    "DR+DW+EV+WH+WM": 2,
+    "DR+DW+EV+WM": 4,
+    "DR+DW+WH": 75,
+    "DR+DW+WH+WM": 4,
+    "DR+DW+WM": 16,
+    "DR+EV": 39,
+    "DR+EV+WH": 30,
+    "DR+EV+WH+WM": 1,
+    "DR+EV+WM": 9,
+    "DR+WH": 129,
+    "DR+WH+WM": 33,
+    "DR+WM": 464,
+    "DW": 786,
+    "DW+EV": 60,
+    "DW+EV+WH": 50,
+    "DW+EV+WH+WM": 23,
+    "DW+EV+WM": 24,
+    "DW+WH": 172,
+    "DW+WH+WM": 37,
+    "DW+WM": 87,
+    "EV": 456,
+    "EV+WH": 112,
+    "EV+WH+WM": 20,
+    "EV+WM": 134,
+    "WH": 730,
+    "WH+WM": 97,
+    "WM": 530
+  },
+  "mechanism_question_counts": {
+    "cross_event_prepare_and_relax": 968,
+    "ev_defer": 2426,
+    "event_setpoint": 2618,
+    "in_event_prepare_and_relax": 628,
+    "pre_event_prepare_and_relax": 764,
+    "preheat_window_shift": 2915,
+    "start_time_shift": 6959,
+    "tank_temperature": 611
+  },
+  "programme_start_shift_counts": {
+    "dishwasher": {
+      "earlier": 407,
+      "later": 3440,
+      "unchanged": 5153
+    },
+    "dryer": {
+      "earlier": 657,
+      "later": 2856,
+      "unchanged": 5567
+    },
+    "washer": {
+      "earlier": 2113,
+      "later": 686,
+      "unchanged": 7201
+    }
+  },
+  "event_counts": {
+    "[1000,1060]": 3,
+    "[1030,1090]": 1,
+    "[1040,1100]": 10,
+    "[1080,1140]": 9955,
+    "[1100,1160]": 1,
+    "[1140,1200]": 1,
+    "[1170,1230]": 2,
+    "[1190,1250]": 1,
+    "[1200,1260]": 2,
+    "[960,1020]": 12,
+    "[970,1030]": 8,
+    "[980,1040]": 1,
+    "[990,1050]": 3
+  },
+  "country_role_event_counts": {
+    "AU|role_a_price_cooperative_commuter": {
+      "[1080,1140]": 210
+    },
+    "AU|role_b_home_comfort_gated": {
+      "[1080,1140]": 240
+    },
+    "AU|role_c_irregular_cautious": {
+      "[1080,1140]": 160
+    },
+    "AU|role_d_ideal_dr_participant": {
+      "[1080,1140]": 189,
+      "[960,1020]": 1
+    },
+    "AU|role_e_caregiver_low_dr": {
+      "[1080,1140]": 200
+    },
+    "AU|role_f_ev_commuter_optimizer": {
+      "[1080,1140]": 250
+    },
+    "CN|role_a_price_cooperative_commuter": {
+      "[1080,1140]": 210
+    },
+    "CN|role_b_home_comfort_gated": {
+      "[1080,1140]": 250
+    },
+    "CN|role_c_irregular_cautious": {
+      "[1080,1140]": 150
+    },
+    "CN|role_d_ideal_dr_participant": {
+      "[1080,1140]": 189,
+      "[960,1020]": 1
+    },
+    "CN|role_e_caregiver_low_dr": {
+      "[1080,1140]": 200
+    },
+    "CN|role_f_ev_commuter_optimizer": {
+      "[1080,1140]": 244,
+      "[1170,1230]": 1,
+      "[960,1020]": 2,
+      "[970,1030]": 3
+    },
+    "DE|role_a_price_cooperative_commuter": {
+      "[1080,1140]": 210
+    },
+    "DE|role_b_home_comfort_gated": {
+      "[1080,1140]": 240
+    },
+    "DE|role_c_irregular_cautious": {
+      "[1080,1140]": 160
+    },
+    "DE|role_d_ideal_dr_participant": {
+      "[1080,1140]": 190
+    },
+    "DE|role_e_caregiver_low_dr": {
+      "[1080,1140]": 189,
+      "[1100,1160]": 1
+    },
+    "DE|role_f_ev_commuter_optimizer": {
+      "[1080,1140]": 259,
+      "[1140,1200]": 1
+    },
+    "ES|role_a_price_cooperative_commuter": {
+      "[1080,1140]": 200
+    },
+    "ES|role_b_home_comfort_gated": {
+      "[1080,1140]": 250
+    },
+    "ES|role_c_irregular_cautious": {
+      "[1080,1140]": 160
+    },
+    "ES|role_d_ideal_dr_participant": {
+      "[1080,1140]": 190
+    },
+    "ES|role_e_caregiver_low_dr": {
+      "[1080,1140]": 200
+    },
+    "ES|role_f_ev_commuter_optimizer": {
+      "[1040,1100]": 4,
+      "[1080,1140]": 246
+    },
+    "GB|role_a_price_cooperative_commuter": {
+      "[1080,1140]": 209,
+      "[960,1020]": 1
+    },
+    "GB|role_b_home_comfort_gated": {
+      "[1080,1140]": 250
+    },
+    "GB|role_c_irregular_cautious": {
+      "[1080,1140]": 150
+    },
+    "GB|role_d_ideal_dr_participant": {
+      "[1080,1140]": 188,
+      "[960,1020]": 1,
+      "[970,1030]": 1
+    },
+    "GB|role_e_caregiver_low_dr": {
+      "[1080,1140]": 200
+    },
+    "GB|role_f_ev_commuter_optimizer": {
+      "[1080,1140]": 250
+    },
+    "IN|role_a_price_cooperative_commuter": {
+      "[1080,1140]": 209,
+      "[980,1040]": 1
+    },
+    "IN|role_b_home_comfort_gated": {
+      "[1080,1140]": 250
+    },
+    "IN|role_c_irregular_cautious": {
+      "[1080,1140]": 150
+    },
+    "IN|role_d_ideal_dr_participant": {
+      "[1080,1140]": 187,
+      "[960,1020]": 3
+    },
+    "IN|role_e_caregiver_low_dr": {
+      "[1080,1140]": 190
+    },
+    "IN|role_f_ev_commuter_optimizer": {
+      "[1000,1060]": 2,
+      "[1080,1140]": 258
+    },
+    "MX|role_a_price_cooperative_commuter": {
+      "[1080,1140]": 199,
+      "[990,1050]": 1
+    },
+    "MX|role_b_home_comfort_gated": {
+      "[1080,1140]": 250
+    },
+    "MX|role_c_irregular_cautious": {
+      "[1080,1140]": 159,
+      "[1200,1260]": 1
+    },
+    "MX|role_d_ideal_dr_participant": {
+      "[1080,1140]": 189,
+      "[1200,1260]": 1
+    },
+    "MX|role_e_caregiver_low_dr": {
+      "[1080,1140]": 189,
+      "[1190,1250]": 1
+    },
+    "MX|role_f_ev_commuter_optimizer": {
+      "[1000,1060]": 1,
+      "[1080,1140]": 253,
+      "[960,1020]": 1,
+      "[970,1030]": 3,
+      "[990,1050]": 2
+    },
+    "US|role_a_price_cooperative_commuter": {
+      "[1080,1140]": 210
+    },
+    "US|role_b_home_comfort_gated": {
+      "[1080,1140]": 250
+    },
+    "US|role_c_irregular_cautious": {
+      "[1080,1140]": 160
+    },
+    "US|role_d_ideal_dr_participant": {
+      "[1080,1140]": 176,
+      "[1170,1230]": 1,
+      "[960,1020]": 2,
+      "[970,1030]": 1
+    },
+    "US|role_e_caregiver_low_dr": {
+      "[1080,1140]": 190
+    },
+    "US|role_f_ev_commuter_optimizer": {
+      "[1030,1090]": 1,
+      "[1040,1100]": 6,
+      "[1080,1140]": 253
+    }
+  },
+  "nominal_event_change_sign_when_complete": {
+    "negative": 1794,
+    "positive": 1255,
+    "unknown_thermal_or_missing": 6543,
+    "zero": 408
+  },
+  "nominal_event_change_semantics": "analytic stated-load change only;unknown thermal is not zero or measured energy",
+  "groups": {
+    "source_household_groups": 1000,
+    "construction_groups": 875,
+    "cd_pairs": 125,
+    "construction_group_household_sizes": {
+      "1": 750,
+      "2": 125
+    },
+    "existing_group_question_sizes": {
+      "10": 750,
+      "20": 125
+    },
+    "assigned_train_validation_test": false,
+    "participant_linkage": "no responses yet;merge by repeated-participant links before final evaluation splitting",
+    "construction_groups_are_proven_independent_samples": false
+  },
+  "input_sha256": {
+    "households": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+    "pair_index": "66a95e74cc83611f9235830d6d887d8e1ce55a028f7fc4d6a07d90574a8f9cb1",
+    "coverage_ledger": "f2dcd862d406e441480ab721dd82a8756b4e281b47aa458a380b6f161f0e5d8f"
+  },
+  "statistics_implementation_sha256": "2a91803fb2940299fa3c019ed17c5092247138f7fd7ebf5313c8c249568cadaf"
+}

@@ -1,5 +1,7 @@
 # 调查约束、任务先行的配对计划构造
 
+规则与参数依据见[统一依据表](../../docs/GENERATION_RULES.md)，复现范围见[流程](../../docs/GENERATION_REPRODUCIBILITY.md)，覆盖和分组见[聚合统计](../../docs/GENERATION_STATISTICS.md)。
+
 本模块把调查约束的家庭、参考生活、明确任务与EB原版动作连接为完整A/B判断题。使用既有配额、整数规划、CP-SAT和IPOG-C式搜索，不声称新的通用优化器或实测行为模型。
 
 ## 输入输出

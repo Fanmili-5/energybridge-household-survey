@@ -16,3 +16,5 @@
 | [评测协议](EVALUATION.md) | 评测目标、分组和指标 |
 
 [源码入口](../benchmark/README.md)列出模块职责。必要的来源、参数、测试与验证数据随代码保留。
+
+家庭与A/B：[规则依据](GENERATION_RULES.md)、[复现流程](GENERATION_REPRODUCIBILITY.md)、[覆盖及分组统计](GENERATION_STATISTICS.md)。

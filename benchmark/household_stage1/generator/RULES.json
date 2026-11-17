@@ -154,7 +154,7 @@
       "basis": "literature_principle_plus_benchmark_service_contract",
       "id": "T01",
       "implementation": "_engine/v6/service_contracts.POLICY/attach",
-      "limits": "第一步只约定合同；尚无程序功率轨迹/实际任务；非每个覆盖槽都造一轮洗衣。",
+      "limits": "第一步只约定合同；尚无程序功率轨迹/实际任务；非每个覆盖槽都造一轮洗衣。 当前A/B的每日完整程序是task_context预先声明的独立日工作负荷，不能据本阶段覆盖蓝图推断调查使用频率。",
       "references": [
         "PATERAKIS2015"
       ],
@@ -169,7 +169,7 @@
       "references": [
         "PATERAKIS2015"
       ],
-      "rule": "需满足E=(目标SOC-到家SOC)×容量，T≥E/(功率×效率)，T≤停车窗口；参考容量50/60/75kWh、效率0.9、目标SOC0.8，缺失Level2功率3.6/7.2kW；默认一次连续充电，不每日重置一份SOC需求。",
+      "rule": "需满足E=(目标SOC-到家SOC)×容量，T≥E/(功率×效率)，T≤停车窗口；参考容量50/60/75kWh、效率0.9、目标SOC0.8，缺失Level2功率3.6/7.2kW；默认一次连续充电；同一情境内不重置SOC需求。后续十题各为独立日情境，分别给定到家SOC和目标，不组成连续十天车辆轨迹。",
       "title": "EV停车与补能"
     },
     {

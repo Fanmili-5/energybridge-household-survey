@@ -1,5 +1,7 @@
 # 家庭、A/B、IDF与真人问卷
 
+[规则依据表](GENERATION_RULES.md) · [复现层级与命令](GENERATION_REPRODUCIBILITY.md) · [覆盖和分组统计](GENERATION_STATISTICS.md)
+
 本项目构造有调查依据的参考家庭用电决策情境：真人获得家庭、当天生活与任务、完整A/B及后续同场景仿真后果，判断是否接受B并评分。当前完成家庭和计划输入，尚无本版物理后果或真人标签。
 
 ## 1. 家庭如何生成

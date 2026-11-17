@@ -1,5 +1,7 @@
 # 全队列分配与封存版重建
 
+规则与参数依据见[统一依据表](../../docs/GENERATION_RULES.md)，复现范围见[流程](../../docs/GENERATION_REPRODUCIBILITY.md)，覆盖和分组见[聚合统计](../../docs/GENERATION_STATISTICS.md)。
+
 入口为cohort_recipe.py。它接收完整、已验证的上游候选池，在固定家庭、任务和A上分配题位；不启动EnergyPlus、不调用LLM、不生成真人答案。
 
 ## 两个不同用途

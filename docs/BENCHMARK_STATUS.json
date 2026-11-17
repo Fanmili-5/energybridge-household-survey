@@ -242,5 +242,13 @@
       "physical_or_coverage_admission_inherited_by_V4": false
     }
   },
-  "generation_overview": "docs/GENERATION.md"
+  "generation_overview": "docs/GENERATION.md",
+  "method_documentation": {
+    "rule_basis": "GENERATION_RULES.md",
+    "reproducibility": "GENERATION_REPRODUCIBILITY.md",
+    "aggregate_statistics": "GENERATION_STATISTICS.json",
+    "statistics_entry": "benchmark.ab_generation.method_statistics",
+    "runtime_generation_rules_changed": false,
+    "households_and_AB_changed": false
+  }
 }
