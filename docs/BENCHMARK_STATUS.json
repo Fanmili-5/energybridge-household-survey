@@ -109,7 +109,27 @@
     "attitude_templates": 6,
     "public_base_entry": "benchmark.ab_generation.generation_pipeline",
     "public_base_entry_stages": "commit tasks before A;native candidates;bounded coverage selection;seal identities;compile question inputs",
-    "exact_reconstruction_of_V4_extra_cohort_allocation_by_public_base_entry_qualified": false
+    "exact_reconstruction_of_V4_extra_cohort_allocation_by_public_base_entry_qualified": false,
+    "cohort_recipe": {
+      "entry": "benchmark.ab_generation.cohort_recipe",
+      "method": "benchmark/ab_generation/COHORT_RECIPE.md",
+      "historical_reconstruction_qualified": true,
+      "independent_historical_search_regeneration_proven": false,
+      "uses_explicit_archived_candidate_choices": true,
+      "final_B_plan_files_copied": false,
+      "current_exact_pairs": 10000,
+      "whole_question_inputs_equal": 10000,
+      "mismatches": 0,
+      "relocated_reproduction_passed": true,
+      "fresh_solver_test_historical_choice_file_available": false,
+      "fresh_allocation_households": 1000,
+      "fresh_materialized_pairs": 10000,
+      "fresh_root_cells": 939,
+      "fresh_two_country_cells": 918,
+      "fresh_dataset_activated": false,
+      "physical_outcomes": null,
+      "human_answers": null
+    }
   },
   "IDF": {
     "public_snapshot": "benchmark/idf_reference/SOURCE_LOCK.json",

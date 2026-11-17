@@ -65,7 +65,7 @@ python -B -m benchmark.ab_generation.generation_pipeline \
 
 演示为SYNTHETIC源池，不代表调查数据。真实数据按许可准备，或传入冻结的--households和--expected-household-sha256，不能混用源池模式。
 
-公开generation_pipeline提供基础候选补全、队列重选与封存，可生成新批；不承诺逐字节重建当前V4经过额外全队列分配后的每个B。--reference-batch仅最后比较计划哈希，不参与生成。当前V4专用补全/全队列分配编排尚未发布为通用公开CLI；代码复用与该生产批次精确重建分别报告。
+公开generation_pipeline提供基础候选补全、队列重选与封存，可生成新批；不承诺逐字节重建当前V4经过额外全队列分配后的每个B。--reference-batch仅最后比较计划哈希，不参与生成。额外全队列分配及封存版重建现由[cohort_recipe命令](COHORT_RECIPE.md)提供：solve重新求解，reproduce依明示历史候选ID锁重建；后者不构成独立重跑历史所有搜索。
 
 单户与分步入口见[README](README.md)。已封存、已绑定任务身份的批次可导出同题输入：
 

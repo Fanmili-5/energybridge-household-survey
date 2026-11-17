@@ -84,7 +84,7 @@
   "provenance_note": "actual A execution budget logged outside the historical outcome hash;code and configuration fully pinned by run manifests",
   "deterministic_cohort_constraint_order": true,
   "task_semantics": "eb.shared_daily_tasks.v4",
-  "current_production_exact_rebuild_by_public_recipe_qualified": false,
+  "current_production_exact_rebuild_by_public_recipe_qualified": true,
   "reference_programme_minutes": {
     "washer": 120,
     "dishwasher": 90,
@@ -98,5 +98,10 @@
     "legacy969_selected": 925,
     "legacy969_without_qualified_current_opportunity": 44,
     "additional_current_cells": 14
-  }
+  },
+  "cohort_entry": "benchmark.ab_generation.cohort_recipe",
+  "historical_reconstruction_mode": "explicit archived candidate-choice replay",
+  "historical_reconstruction_qualified": true,
+  "independent_historical_search_regeneration_proven": false,
+  "current_production_exact_rebuild_requires_archived_choices": true
 }

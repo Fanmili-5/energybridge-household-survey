@@ -37,7 +37,7 @@ python -B -m benchmark.ab_generation.generation_pipeline \
   --start-date 2007-07-18 --workers 4 --out /path/to/new-demo96
 ```
 
-公开入口可构造新批，当前V4专用补全/全队列编排尚未发布为通用CLI，不能宣称该入口逐题重现封存V4。原生文件固定到官方paper-v1-final/c58a2a7a，确切路径和SHA见算法说明。公开演示从320条声明的合成池生成96户×10题，先保存任务，再补候选、重选、封存并生成同题问卷输入。真实源池/原件和冻结家庭的两种入口、扩量步骤、预算及失败含义均在同一说明中。--reference-batch在封存后核对实际A/B哈希，不参与选题。
+公开入口可构造新批，全队列分配与封存版逐题重建现见[cohort_recipe命令](../benchmark/ab_generation/COHORT_RECIPE.md)，重建使用明示历史选择锁，不声称独立重跑全部历史优化。原生文件固定到官方paper-v1-final/c58a2a7a，确切路径和SHA见算法说明。公开演示从320条声明的合成池生成96户×10题，先保存任务，再补候选、重选、封存并生成同题问卷输入。真实源池/原件和冻结家庭的两种入口、扩量步骤、预算及失败含义均在同一说明中。--reference-batch在封存后核对实际A/B哈希，不参与选题。
 
 该入口不运行物理引擎或制造真人答案。单户和逐阶段研究可继续用[分步CLI](../benchmark/ab_generation/README.md#复用)。
 

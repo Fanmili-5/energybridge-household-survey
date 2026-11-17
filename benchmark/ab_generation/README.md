@@ -13,7 +13,7 @@ A用CP-SAT安排完整程序，优先减少晚间延后及参考时刻偏移；B
 
 ## 复用
 
-使用Python3.14.3及generation-requirements-lock.txt。完整基础入口为generation_pipeline，见[统一入口](ALGORITHM.md#统一入口)。它支持公开合成源池、授权调查来源或冻结家庭，不启动物理引擎或生成标签。当前V4在该基础上额外做了固定A的全队列补全/分配；公开基础入口不承诺精确重建该封存批次每个B。
+使用Python3.14.3及generation-requirements-lock.txt。完整基础入口为generation_pipeline，见[统一入口](ALGORITHM.md#统一入口)。它支持公开合成源池、授权调查来源或冻结家庭，不启动物理引擎或生成标签。当前V4在该基础上额外做了固定A的全队列补全/分配；[全队列命令](COHORT_RECIPE.md)现支持新求解与按历史选择记录精确重建封存批次，两种模式分别报告。
 
 单户原生计划：
 

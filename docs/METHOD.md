@@ -65,3 +65,5 @@ IDF由固定OpenStudio-HPXML参考住宅构造、围护材料、地点天气和E
 当前consequences和targets为空，collection_ready=false。正式发放前需验收物理交接、UI91评分代码簿与前后端/导出一致性、费用/补偿口径和真人理解测试。接受B相对A不自动定义跨家庭可比较的绝对效用。
 
 同户10题、共享源记录、C/D配对和重复参与者关系必须用于分组。125组C/D配对加750单户组共875个构造组，不等于875个已证独立观测；实际采集与数据划分尚未验收。状态见[BENCHMARK_STATUS.json](BENCHMARK_STATUS.json)。
+
+全队列分配与封存版复现见[可复用命令](../benchmark/ab_generation/COHORT_RECIPE.md)。10000题完整输入已一致重建；历史选择回放、新求解和物理验证分别报告。
