@@ -21,6 +21,7 @@
   "stages": [
     "source normalization or provided frozen households",
     "quota and compatible household construction",
+    "derive and fix life-task origins/readiness before either plan",
     "household-conditioned daily A",
     "bounded original-EB B catalogue",
     "raw-cell audit",
@@ -29,7 +30,8 @@
     "programme dependency completion",
     "extra-only cohort selection",
     "bounded joint coverage refinement",
-    "native replay and current-index seal"
+    "native replay and current-index seal",
+    "exact task/scene-bound question input compilation"
   ],
   "constraints": {
     "mandatory_control": "AC",
@@ -52,7 +54,8 @@
     "native/COVERAGE_TARGETED_SEARCH.json",
     "native/COVERAGE_PROGRAMME_COMPLETION.json",
     "PIPELINE_RESULT.json",
-    "PHYSICS_HANDOFF.json"
+    "PHYSICS_HANDOFF.json",
+    "question_inputs/QUESTION_INDEX.jsonl"
   ],
   "algorithm_configuration": [
     "GENERATION_REPAIR_CONFIG.json",
@@ -76,8 +79,24 @@
     "OR-Tools CP-SAT",
     "IPOG-C-style bounded covering search"
   ],
-  "construction_method_version": "eb.household_conditioned_daily_A.v2",
-  "maintenance_revision": "wired-budget-typed-status-public-completion-deterministic-cohort-v1",
+  "construction_method_version": "eb.household_conditioned_daily_A.v5_original_EB_programmes",
+  "maintenance_revision": "task_first_original_programmes_current_input_identity",
   "provenance_note": "actual A execution budget logged outside the historical outcome hash;code and configuration fully pinned by run manifests",
-  "deterministic_cohort_constraint_order": true
+  "deterministic_cohort_constraint_order": true,
+  "task_semantics": "eb.shared_daily_tasks.v4",
+  "current_production_exact_rebuild_by_public_recipe_qualified": false,
+  "reference_programme_minutes": {
+    "washer": 120,
+    "dishwasher": 90,
+    "dryer": 90
+  },
+  "current_production_scope": {
+    "root_cells": 939,
+    "selected": 939,
+    "two_or_more_countries": 924,
+    "single_country": 15,
+    "legacy969_selected": 925,
+    "legacy969_without_qualified_current_opportunity": 44,
+    "additional_current_cells": 14
+  }
 }

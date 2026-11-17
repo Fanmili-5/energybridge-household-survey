@@ -1,1 +1,84 @@
-{"AC_nominal_upper_W":null,"EV_reserve_SOC":0.15,"dishwasher_next_morning_deadline_min":600,"facts_not_modified":true,"heating_C":20.0,"maximum_preload_wait_min":720,"maximum_retrieval_wait_min":{"dishwasher":1440,"dryer":720,"washer":720},"mixed_water_target_C":40.5555555555556,"physical_outputs_used":false,"programs":{"dishwasher":{"duration_min":240,"nominal_peak_kw":0.4128531584521265,"source_model_key":"hpxml_004ca3ce_joint_dishwasher","source_version":"source_reference.v1"},"dryer":{"duration_min":60,"nominal_peak_kw":1.2222753880483284,"source_model_key":"hpxml_004ca3ce_joint_dryer","source_version":"source_reference.v1"},"washer":{"duration_min":240,"nominal_peak_kw":0.36963719963106173,"source_model_key":"hpxml_004ca3ce_joint_washer","source_version":"source_reference.v1"}},"reference_running_water_duration_min":8,"reference_shower_flow_L_min":7.6,"reference_sources":[{"path":"source/domain","sha256":"5192fd9bea4e9eb6c59c0abd7fe61ee8cdff5165566a5100e789760ceb0cd776"},{"path":"source/profile","sha256":"5c7be11bd27520aa9b84d4fa576d8ac927f5bb1ed3fec7d8698d6aad2d26c90c"},{"scope":"explicit efficient fixture reference;not national consumption","url":"https://www.epa.gov/watersense/showerheads"},{"scope":"approximately8min used as a rounded experimental running-water interval inside existing bathing opportunity","url":"https://www.epa.gov/sites/default/files/2017-02/documents/watersense-at-work_final_508c3.pdf"}],"schema":"eb.V9_dated_service_reference.v1","tank_maximum_C":65.0,"tank_normal_C":55.0}
+{
+  "AC_nominal_upper_W": null,
+  "EV_reserve_SOC": 0.15,
+  "dishwasher_next_morning_deadline_min": 600,
+  "facts_not_modified": true,
+  "heating_C": 20.0,
+  "maximum_preload_wait_min": 720,
+  "maximum_retrieval_wait_min": {
+    "dishwasher": 1440,
+    "dryer": 720,
+    "washer": 720
+  },
+  "mixed_water_target_C": 40.5555555555556,
+  "physical_outputs_used": false,
+  "programs": {
+    "dishwasher": {
+      "duration_min": 90,
+      "nominal_peak_kw": 1.2,
+      "source_model_key": "EB_paper_v1_dishwasher",
+      "source_version": "paper-v1-final/c58a2a7a",
+      "source_file": "energybridge/roleplay/personas/all_appliances_full.json"
+    },
+    "dryer": {
+      "duration_min": 90,
+      "nominal_peak_kw": 2.5,
+      "source_model_key": "EB_paper_v1_dryer",
+      "source_version": "paper-v1-final/c58a2a7a",
+      "source_file": "energybridge/roleplay/personas/all_appliances_full.json"
+    },
+    "washer": {
+      "duration_min": 120,
+      "nominal_peak_kw": 1.5,
+      "source_model_key": "EB_paper_v1_washer",
+      "source_version": "paper-v1-final/c58a2a7a",
+      "source_file": "energybridge/roleplay/personas/all_appliances_full.json"
+    }
+  },
+  "reference_running_water_duration_min": 8,
+  "reference_shower_flow_L_min": 7.6,
+  "reference_sources": [
+    {
+      "path": "source/domain",
+      "sha256": "5192fd9bea4e9eb6c59c0abd7fe61ee8cdff5165566a5100e789760ceb0cd776"
+    },
+    {
+      "path": "source/profile",
+      "sha256": "5c7be11bd27520aa9b84d4fa576d8ac927f5bb1ed3fec7d8698d6aad2d26c90c"
+    },
+    {
+      "scope": "explicit efficient fixture reference;not national consumption",
+      "url": "https://www.epa.gov/watersense/showerheads"
+    },
+    {
+      "scope": "approximately8min used as a rounded experimental running-water interval inside existing bathing opportunity",
+      "url": "https://www.epa.gov/sites/default/files/2017-02/documents/watersense-at-work_final_508c3.pdf"
+    }
+  ],
+  "schema": "eb.life_task_original_programme_reference.v2",
+  "tank_maximum_C": 65.0,
+  "tank_normal_C": 55.0,
+  "programme_parameter_origin": {
+    "repo": "Agentic-Intelligence-Lab/EnergyBridge",
+    "commit": "c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0",
+    "verified_live_GitHub": true,
+    "washer_duration_also_in_all_six_basic_roles": true,
+    "old_HPXML_programmes_retired": true,
+    "source_profiles_are_not_EB_fixed_duration_rules": true
+  },
+  "ordinary_A": {
+    "soft_completion_preferred_min": 1320,
+    "soft_completion_rule_origin": "benchmark ordinary-A construction preference; not EB action constraint and not a measured household bedtime",
+    "washer_preferred_h_by_EB_role": {
+      "a": 19.0,
+      "b": 10.0,
+      "c": 19.0,
+      "d": 13.0,
+      "e": 10.0,
+      "f": 20.0
+    },
+    "day_off_morning_target_min": 600,
+    "home_presence_is_soft_timing_context_not_operator_action": true,
+    "task_origin_determines_DW_anchor": true
+  }
+}

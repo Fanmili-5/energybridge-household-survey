@@ -28,6 +28,20 @@ def seal(root,households,generator_code=None):
             if any(not pair['paper_v1_execution'][side]['passed'] for side in ['A','B']):raise ValueError('ORIGINAL_EXECUTION_FAILED')
             baseline=load(folder/(pair['date']+'_A.json.gz'))
             if baseline['context']['A']!=pair['A']:raise ValueError('A_CHANGED_DURING_SELECTION')
+            if 'task_context' not in baseline['problem']:
+                raise ValueError('TASK_COMMITMENT_REQUIRED_BEFORE_SEAL')
+            from .task_context import audit_tasks
+            tc=baseline['problem']['task_context']
+            if tc['sha256']!=digest({k:v for k,v in tc.items() if k!='sha256'}) or tc['household_case_sha256']!=digest(case):
+                raise ValueError('TASK_CONTEXT_SOURCE_OR_HASH_CHANGED')
+            for arm in ('A','B'):
+                if audit_tasks(tc,pair[arm]):raise ValueError('SEALED_PLAN_TASK_ERROR:'+arm)
+            event=baseline['context']['events'][0];context_sha=digest(baseline['context'])
+            scenario_sha=digest(dict(case_id=case['case_id'],date=pair['date'],event=event,context_sha256=context_sha,task_context_sha256=tc['sha256']))
+            pair.update(task_context_sha256=tc['sha256'],context_sha256=context_sha,event=event,scenario_sha256=scenario_sha,
+                        pair_id=digest(dict(scenario_sha256=scenario_sha,A_sha256=pair['A_sha256'],B_sha256=pair['B_sha256'])),
+                        context_relative_path=str(Path(folder.name)/(pair['date']+'_A.json.gz')))
+            write_gzip(p,pair)
             old=folder/(pair['date']+'_INITIAL_PAIR.json.gz')
             if old.exists() and load(old)['B_sha256']!=pair['B_sha256']:changed+=1
             pairs.append(dict(date=pair['date'],path=p.name,A_sha256=pair['A_sha256'],B_sha256=pair['B_sha256']))

@@ -127,7 +127,7 @@ def _ev_profiles(c,plan,children,side):
                 if not any(r['start_min']<=t and t+10<=r['end_min'] for r in windows):continue
                 # EB window override avoids VPP automatically. An unchanged EV
                 # retains the ordinary normal-mode execution of A.
-                if side=='B' and ((aid,nid) in changed or c.get('source',{}).get('appliance_command_protocol')=='eb.primary_appliance_calls.v1') and any(e['start_min']<t+10 and e['end_min']>t for e in c['events']):continue
+                if side=='B' and (aid,nid) in changed and any(e['start_min']<t+10 and e['end_min']>t for e in c['events']):continue
                 amount=min(kw/6,left)
                 if amount>1e-10:rows.append(dict(start_min=t,end_min=t+10,grid_kWh=amount,power_kw=amount*6));left-=amount
                 if left<=1e-10:break

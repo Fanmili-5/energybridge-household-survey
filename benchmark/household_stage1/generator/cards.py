@@ -14,16 +14,17 @@ def card(c):
     fixture=c['source']['dataset']=='SYNTHETIC'
     lines=[f'## {c["case_id"]} / {c["source"]["country"]} / {c["benchmark_role"]}类',
       '**公开虚构演示：本卡没有真实同户调查事实。**' if fixture else '历史调查支持的参考家庭；不是原调查家庭实际一周的重建。',
-      '角色与态度【EB实验条件】：'+compact(c['card']),
+      '角色【EB实验条件】：'+c['card']['core'],
       '原始事实按字段保留来源与状态；具体成员补全、参考周、控制接入与舒适参数均按 household_provenance 标注。',
       '源标识：'+compact(c['source']),
       '原调查家庭人数：'+compact(c['household_size']),
       '原调查住房/匹配信息：'+compact(c['dwelling']),
       '原调查在家状态及原范围：'+compact(c['known_presence']),
+       '历史调查设备证据仅用于来源核查；本题可用设备及控制范围以下方参考配置为准。',
       '运行住房【匹配或实验补全】：'+compact(h['dwelling']),
       '决策与控制授权【实验】：'+compact(h['decision_authorization']),
       '态度【EB角色条件，非调查预测】：'+compact(h['attitudes']),
-      '温度约束【实验参数】：'+compact(h['comfort']),'','### 全体成员','']
+      '温度偏好【实验参数，不是B的硬准入条件】：'+compact(h['comfort']),'','### 全体成员','']
     for m in h['members']:
         relevant={k:v for k,v in p.items() if k.startswith('members.'+m['id']+'.')}
         lines+=['- '+compact(m),'  来源状态：'+compact(relevant)]

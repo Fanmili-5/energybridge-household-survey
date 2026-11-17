@@ -130,6 +130,10 @@ def run(args):
             save(root/'PHYSICS_HANDOFF.json',handoff)
             if implementation()!=frozen:raise ValueError('PIPELINE_CODE_CHANGED_DURING_SCENE_COMPLETION')
             result['seconds']=round(time.monotonic()-started,2)
+        phase('13_question_inputs','benchmark.ab_generation.prepare_question_inputs',
+              ['--households',households,'--batch',result['current_native_batch'],'--out',root/'question_inputs',
+               '--expected-household-sha256',source_sha])
+        result['question_inputs_manifest']=load(root/'question_inputs/MANIFEST.json')
         save(root/'PIPELINE_RESULT.json',result);print(json.dumps(result),flush=True);return result
     except Exception as error:
         save(root/'PIPELINE_FAILURE.json',dict(schema='eb.generation_recipe.failure.v1',status='failed',error_type=type(error).__name__,error=str(error),completed_stages=steps,output_not_a_release=True))

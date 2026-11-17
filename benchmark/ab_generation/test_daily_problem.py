@@ -21,7 +21,7 @@ class NativeDailyTests(TestCase):
         registry={f:{'asset_id':f,'functions':[f]} for f in fs}
         if shared:
             del registry['DR'];registry['WM']['functions'].append('DR')
-        h={'members':[{'id':'M'}],'controlled_function_ids':list(fs),'service_asset_registry':registry,
+        h={'role_id':'role_a_price_cooperative_commuter','members':[{'id':'M','reference_age':35}],'controlled_function_ids':list(fs),'service_asset_registry':registry,
            'calendar':{'weekly_events':[]},'comfort':{'preferred_cooling_c':[24,26],'allowed_short_adjustment_c':1.0},
            'service_contracts':{f:{'operation_policy':'whole_non_interruptible_cycle'} for f in fs}}
         h['service_contracts']['DR']['predecessor']={'same_load_required':True,'timing':'wash_end_lte_dry_start'}
@@ -33,9 +33,13 @@ class NativeDailyTests(TestCase):
                      'charge_efficiency':.9,'service_scope':'one selected parking-session episode; not repeated daily charging demand',
                      'charging_contiguity':'one_continuous_session_is_required_for_base_need'}
         h['routine']={'daily_services':[{'day':day,'flexible_chore_window':[1080,1200],'meals':[{'kind':'dinner','location':'home','start':1080,'end':1110}], 'bathing_services':[{'start':1140,'end':1150,'member_id':'M'}]} for day in range(7)]}
+        h['routine']['information_contract']={'reference_week_is_actual_diary':False,'claims_real_unpredictability':False,'C_changes_are_measured':False}
         case={'case_id':'synthetic-native','household':h}
         ref={'programs':{k:{'duration_min':d,'nominal_peak_kw':kw} for k,d,kw in [('washer',120,1.5),('dryer',60,2),('dishwasher',90,1)]},
              'AC_nominal_upper_W':None,'tank_normal_C':55,'tank_maximum_C':65,'heating_C':20,'EV_reserve_SOC':.15}
+        import json
+        pinned=json.loads(Path(__file__).with_name('examples').joinpath('EB_REFERENCE_RULES.json').read_text())
+        for key in ('ordinary_A','programme_parameter_origin'):ref[key]=deepcopy(pinned[key])
         cfg=entry_config();cfg['A_target_context_mode']='frozen_v3'
         return case,ref,cfg
     def generate(self,ev=False,shared=False):
@@ -92,7 +96,10 @@ class NativeDailyTests(TestCase):
         for seed in range(12):
             cfg['seed']=seed;r=generate_day_baseline(case,'2007-07-18',ref,cfg,MANIFEST,native_appliance_source_path=NATIVE)
             starts.add(next(t['start_min'] for t in r['result']['A']['tasks'] if t['kind']=='washer'))
-        self.assertGreater(len(starts),5)
+            again=generate_day_baseline(case,'2007-07-18',ref,cfg,MANIFEST,native_appliance_source_path=NATIVE)
+            self.assertEqual(r['result']['A'],again['result']['A'])
+        self.assertGreater(len(starts),1)
+        self.assertTrue(all(1110<=t<=1140 for t in starts)) # Reference 19h +/-30m, followed by full programmes before22h.
     def test_EV_is_the_only_overnight_service_and_reaches_target(self):
         _,_,_,r=self.generate(ev=True);A=r['result']['A']
         windows=[x for x in A['controls'] if x['kind']=='ev_charge_window']
@@ -204,17 +211,20 @@ class NativeServiceContractTests(TestCase):
 
 class HouseholdRoutineBindingTests(TestCase):
     fixture=NativeDailyTests.fixture
-    def test_A_responds_to_household_routine_without_mutating_source(self):
+    def test_A_responds_to_task_preparation_without_mutating_source(self):
         from .common import digest
         case,ref,cfg=self.fixture()
         if not NATIVE.exists():self.skipTest('original EB source unavailable')
         before=digest(case);a=generate_day_baseline(case,'2007-07-18',ref,cfg,MANIFEST,native_appliance_source_path=NATIVE)
         self.assertEqual(before,digest(case))
         for day in case['household']['routine']['daily_services']:
-            day['flexible_chore_window']=[900,960]
+            day['meals']=[dict(kind='lunch',location='home',start=750,end=780,participants=['M'])]
+        changed_before=digest(case)
         b=generate_day_baseline(case,'2007-07-18',ref,cfg,MANIFEST,native_appliance_source_path=NATIVE)
+        self.assertEqual(changed_before,digest(case))
         starts=lambda e:{t['kind']:t['start_min'] for t in e['context']['A']['tasks']}
-        self.assertNotEqual(starts(a)['washer'],starts(b)['washer'])
+        self.assertNotEqual(starts(a)['dishwasher'],starts(b)['dishwasher'])
+        self.assertGreaterEqual(starts(b)['dishwasher'],780)
         self.assertEqual([t['end_min']-t['start_min'] for t in a['context']['A']['tasks']],[t['end_min']-t['start_min'] for t in b['context']['A']['tasks']])
     def test_odd_minute_baths_do_not_create_off_grid_heater_commands(self):
         case,ref,cfg=self.fixture(ev=True)
@@ -226,7 +236,7 @@ class HouseholdRoutineBindingTests(TestCase):
             if c['kind']=='tank_setpoint':self.assertEqual((c['start_min']%10,c['end_min']%10),(0,0))
         self.assertEqual(case['household']['routine']['daily_services'][2]['bathing_services'][0]['start'],1145)
 
-    def test_late_dinner_uses_an_existing_earlier_meal_without_overnight(self):
+    def test_late_dinner_preserves_frozen_feasible_batch_without_overnight(self):
         case,ref,cfg=self.fixture();ref['programs']['dishwasher']['duration_min']=240
         if not NATIVE.exists():self.skipTest('original EB source unavailable')
         for day in case['household']['routine']['daily_services']:
@@ -234,6 +244,9 @@ class HouseholdRoutineBindingTests(TestCase):
         e=generate_day_baseline(case,'2007-07-18',ref,cfg,MANIFEST,native_appliance_source_path=NATIVE)
         job=next(j for j in e['problem']['jobs'] if j['kind']=='dishwasher')
         task=next(t for t in e['context']['A']['tasks'] if t['kind']=='dishwasher')
-        self.assertEqual(job['A_reference_dish_load']['meal_kind'],'breakfast')
+        frozen=next(t for t in e['problem']['task_context']['tasks'] if t['function']=='DW')
+        self.assertEqual(job['A_routine_meal_anchor']['meal_kind'],frozen['source_meal'])
+        self.assertTrue(frozen['source_day_offset']==-1 or frozen['source_meal']=='breakfast')
+        self.assertGreaterEqual(task['start_min'],frozen['ready_min'])
         self.assertGreaterEqual(task['start_min'],470);self.assertLessEqual(task['end_min'],1440)
         self.assertEqual(job['release_min'],480) # Native B window is not replaced by the meal preference.

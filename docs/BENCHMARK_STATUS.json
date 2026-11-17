@@ -1,6 +1,6 @@
 {
   "schema": "eb.benchmark.pipeline_status.v1",
-  "scope": "V9 eight-country household pipeline;separate from historic online50 release",
+  "scope": "eight-country survey-grounded reference household and task-first paired-plan construction;not a completed human preference dataset",
   "source_households_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
   "households": {
     "count": 1000,
@@ -32,173 +32,84 @@
     "accepted_scope": "source/life/service/coverage/replay;not human preference validity"
   },
   "AB": {
-    "rules": "paper-v1-final primitive and actual checkpoint mapping;explicit benchmark service subset",
-    "producer_guard_connected": true,
-    "formal10000_regeneration_complete": false,
+    "rules": "pinned paper-v1 main method actions;separate explicit benchmark task subset",
+    "task_semantics": "eb.shared_daily_tasks.v4",
+    "A_method": "eb.household_conditioned_daily_A.v5_original_EB_programmes",
+    "task_origins_fixed_before_plans": true,
+    "native10000_regeneration_complete": true,
+    "formal_questionnaire_release": false,
     "native_batch": {
       "households": 1000,
       "pairs": 10000,
-      "native_plan_qualification_passed": true,
-      "selected_pair_native_replays": 20000,
-      "source_unchanged": true,
-      "unique_reselected_pairs": 634,
-      "formal_questionnaire_release": false,
-      "all_10000_physics_qualified": false,
-      "unique_reselected_pairs_basis": "relative to d46 sealed parent;includes604 matched-event controls",
-      "source_A_unchanged": true
+      "original_execution_checks": 20000,
+      "plans_task_checked_on20261117": 20000,
+      "question_inputs_recompiled_exactly_on20261117": 10000,
+      "source_household_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
+      "A_index_sha256": "90fc4a1bbadf1258f93c19e806d4a3beb5a0fa274e05125d7395f675cce2b9b0",
+      "pair_index_sha256": "66a95e74cc83611f9235830d6d887d8e1ce55a028f7fc4d6a07d90574a8f9cb1",
+      "question_index_sha256": "d3e98203dea35988b7840250388da649f8b4fc29fff67a83e3e324e3c3a1c20c",
+      "physical_outcomes": null,
+      "human_answers": null
     },
-    "native_batch_coverage": {
-      "schema": "eb.same_role_raw_cell_review.v1",
-      "denominator": "pre-selection raw root cells with intrinsic checks;not selected examples or materialized pool",
-      "country_goal": "two per role/cell when raw support spans at least two countries;otherwise one",
-      "final": {
-        "role_a_price_cooperative_commuter": {
-          "declared_raw_cells": 158,
-          "selected_at_least_one": 158,
-          "selected_country_goals_met": 157,
-          "materialized_country_goals_met": 158,
-          "cells_without_materialized_witness": 0,
-          "source_intrinsic_exclusion_instances": 0
-        },
-        "role_b_home_comfort_gated": {
-          "declared_raw_cells": 155,
-          "selected_at_least_one": 155,
-          "selected_country_goals_met": 155,
-          "materialized_country_goals_met": 155,
-          "cells_without_materialized_witness": 0,
-          "source_intrinsic_exclusion_instances": 0
-        },
-        "role_c_irregular_cautious": {
-          "declared_raw_cells": 158,
-          "selected_at_least_one": 158,
-          "selected_country_goals_met": 157,
-          "materialized_country_goals_met": 158,
-          "cells_without_materialized_witness": 0,
-          "source_intrinsic_exclusion_instances": 0
-        },
-        "role_d_ideal_dr_participant": {
-          "declared_raw_cells": 158,
-          "selected_at_least_one": 158,
-          "selected_country_goals_met": 158,
-          "materialized_country_goals_met": 158,
-          "cells_without_materialized_witness": 0,
-          "source_intrinsic_exclusion_instances": 0
-        },
-        "role_e_caregiver_low_dr": {
-          "declared_raw_cells": 163,
-          "selected_at_least_one": 163,
-          "selected_country_goals_met": 160,
-          "materialized_country_goals_met": 163,
-          "cells_without_materialized_witness": 0,
-          "source_intrinsic_exclusion_instances": 0
-        },
-        "role_f_ev_commuter_optimizer": {
-          "declared_raw_cells": 177,
-          "selected_at_least_one": 177,
-          "selected_country_goals_met": 177,
-          "materialized_country_goals_met": 177,
-          "cells_without_materialized_witness": 0,
-          "source_intrinsic_exclusion_instances": 0
-        }
+    "programme_reference": {
+      "washer": {
+        "minutes": 120,
+        "kW": 1.5
       },
-      "reselected_slots": 634,
-      "all_declared_goals_met": false,
-      "unmaterialized_is_unknown_not_infeasible": true,
-      "original_household_base_coverage_preserved": true,
-      "physics_or_human_answers_used": false,
-      "optimizer": "bounded event-scene discovery and capacity-aware CP-SAT allocation with matched controls",
+      "dishwasher": {
+        "minutes": 90,
+        "kW": 1.2
+      },
+      "dryer": {
+        "minutes": 90,
+        "kW": 2.5
+      },
+      "source": "original EB all_appliances_full persona configuration;not exclusive interface durations"
+    },
+    "coverage": {
+      "current_witnessed_root_cells": 939,
+      "selected": 939,
+      "two_or_more_countries": 924,
+      "single_country": 15,
+      "legacy969_selected": 925,
+      "legacy969_without_qualified_current_opportunity": 44,
+      "additional_current_cells": 14,
+      "eligible_household_functions": 4990,
+      "covered_eligible_household_functions": 4990,
+      "registered_household_functions": 5001,
+      "proven_no_current_event_opportunity": 11,
+      "higher_order_interactions_exhaustive": false,
+      "all_cells_two_country_replicated": false,
       "global_optimality_claimed": false,
-      "total_declared_raw_cells": 969,
-      "total_selected_at_least_one": 969,
-      "total_selected_country_goals_met": 964,
-      "initial_selected_at_least_one": 931,
-      "initial_selected_country_goals_met": 861,
-      "unique_reselected_pairs": 634,
-      "unselected_cells": 0,
-      "all_cell_occurrence_goals_met": true,
-      "all_country_replication_goals_met": false
+      "country_target_warning": "opportunity-capped goals are weaker than universal two-country replication"
     },
-    "native10000_regeneration_complete": true,
-    "current_scene_coverage": {
-      "acceptance": "benchmark/ab_generation/validation/scene_coverage_20261114/RESULT.json",
-      "manifest": {
-        "schema": "eb.sealed_scene_native_plan_batch.v1",
-        "households": 1000,
-        "pairs": 10000,
-        "source_sha256": "81fe13c3bb37cfe961418333690a5008e68b09e834f73241437a42fba5b82a11",
-        "pair_index_sha256": "d7559b71746f3a44208259306ff343f41a35042c0a21439b6a40d1de7a9cd0cf",
-        "current_plan_and_scenario_hashes_checked": true,
-        "all_full_A_plans_unchanged": true,
-        "all_basic_tokens_preserved": true,
-        "source_households_unchanged": true,
-        "A_hashes_equal": 10000,
-        "B_hashes_changed": 634,
-        "fresh_original_native_replays": 20000,
-        "coverage": {
-          "original_raw_targets": 969,
-          "selected_at_least_one": 969,
-          "selected_country_goals_met": 964,
-          "selected_additional_scene_cells": {
-            "role_a_price_cooperative_commuter": 0,
-            "role_b_home_comfort_gated": 0,
-            "role_c_irregular_cautious": 0,
-            "role_d_ideal_dr_participant": 0,
-            "role_e_caregiver_low_dr": 0,
-            "role_f_ev_commuter_optimizer": 0
-          },
-          "explored_scene_raw_cells": {
-            "role_e_caregiver_low_dr": 216,
-            "role_f_ev_commuter_optimizer": 157
-          },
-          "explored_scene_domain_is_not_claimed_exhaustive": true,
-          "target_definition": "frozen pre-scene raw root-cell ledger;not every possible external event or joint plan"
-        },
-        "event_counts": {
-          "1080": 9376,
-          "1040": 240,
-          "1000": 96,
-          "960": 48,
-          "970": 144,
-          "980": 48,
-          "990": 48
-        },
-        "max_changed_questions_per_household": 4,
-        "matched_event_counts_equal_across_all_country_role_strata": true,
-        "physical_qualification_not_inherited": true,
-        "formal_questionnaire_release": false,
-        "human_answers_generated": false
-      },
-      "method": "benchmark/ab_generation/SCENE_ALGORITHM.md"
+    "event_start_counts": {
+      "1080": 9955,
+      "960": 12,
+      "1170": 2,
+      "970": 8,
+      "1100": 1,
+      "1140": 1,
+      "1040": 10,
+      "980": 1,
+      "1000": 3,
+      "990": 3,
+      "1200": 2,
+      "1190": 1,
+      "1030": 1
     },
-    "coverage_support": {
-      "declared": 969,
-      "questions_per_cell": {
-        "min": 1,
-        "p10": 2,
-        "median": 7,
-        "max": 337
-      },
-      "distinct_households_per_cell": {
-        "min": 1,
-        "p10": 2,
-        "median": 7,
-        "max": 200
-      },
-      "distinct_countries_per_cell": {
-        "min": 1,
-        "p10": 2,
-        "median": 5,
-        "max": 8
-      },
-      "cells_with_one_question": 29,
-      "cells_with_one_household": 29,
-      "cells_with_fewer_than5_households": 332,
-      "cells_with_one_country": 30,
-      "cells_with_exactly_two_countries": 193
+    "unpopular_B_preserved": true,
+    "known_nominal_event_effect_pairs": {
+      "negative": 1794,
+      "zero": 408,
+      "not_EnergyPlus_results": true
     },
     "construction_groups": 875,
     "CD_pairs": 125,
-    "attitude_templates": 6
+    "attitude_templates": 6,
+    "public_base_entry": "benchmark.ab_generation.generation_pipeline",
+    "public_base_entry_stages": "commit tasks before A;native candidates;bounded coverage selection;seal identities;compile question inputs",
+    "exact_reconstruction_of_V4_extra_cohort_allocation_by_public_base_entry_qualified": false
   },
   "IDF": {
     "public_snapshot": "benchmark/idf_reference/SOURCE_LOCK.json",
@@ -222,17 +133,7 @@
     "remaining_original_failed_requests_without_passing_alternative": 2,
     "default_city_candidate_activated": false,
     "corrected_AB_physics_accepted": false,
-    "corrected_AB_pipeline_probe_pairs": 2,
-    "corrected_AB_probe_physics_passed": true,
     "heater_window_mapping_preserved": true,
-    "corrected_AB_probe_current_plan_identity_rechecked": {
-      "probes": 2,
-      "A_unchanged": true,
-      "B_unchanged": true,
-      "event_unchanged": true,
-      "new_simulation_runs": 0,
-      "physical_acceptance_not_inherited_by_full_batch": true
-    },
     "current_scene_handoff": {
       "primary_public_module": "benchmark/idf_reference",
       "energyplus": "25.2.0-cf7368216c",
@@ -256,8 +157,8 @@
         "not_additive_to_old76": true
       },
       "remaining_failed_original_requests": 2,
-      "current_plan_physics_probe_pairs": 2,
-      "current_probe_plan_and_reference_event_identities_rechecked": true,
+      "current_plan_physics_probe_pairs": 0,
+      "current_probe_plan_and_reference_event_identities_rechecked": false,
       "changed_event_probe_pairs": 0,
       "generic_current_index_scene_to_physics_adapter_qualified": false,
       "existing_adapter_reads_legacy_pilot_context": true,
@@ -271,7 +172,16 @@
       "current_model_assignment_manifest": null,
       "current_physical_qualification": false,
       "old_results_not_admission_for_current10000": true,
-      "seven_fourteen_day_cumulative_savings_not_supported": true
+      "seven_fourteen_day_cumulative_savings_not_supported": true,
+      "evidence_note": "legacy probes retained separately;not current V4 task/programme physical evidence"
+    },
+    "current_version": {
+      "qualified_pairs": 0,
+      "physical_outcomes": null,
+      "new_physics_runs": 0,
+      "physics_launch_allowed": false,
+      "legacy_probes_not_admission_for_current_task_programme_revision": true,
+      "current_index_to_CASE_IDF_adapter_qualified": false
     }
   },
   "questionnaire": {
@@ -286,13 +196,30 @@
     "existing_public_pointer_formal_collection_ready": false,
     "existing_public_pointer_synthetic_display_values": true,
     "actual_online_live_version_checked_this_turn": false,
-    "new_V9_isolated_UI91_preview_passed": true,
-    "new_V9_preview_pairs": 1,
+    "new_V9_isolated_UI91_preview_passed": false,
+    "new_V9_preview_pairs": 0,
     "new_V9_real_human_answers": 0,
-    "pricing_and_incentive_policy_pending": true
+    "pricing_and_incentive_policy_pending": true,
+    "legacy_UI91_preview_exists_not_current_V4_qualified": true,
+    "current_input_documents": 10000,
+    "current_input_collection_ready": false,
+    "current_input_consequences": null,
+    "current_input_targets": null,
+    "score_frontend_backend_export_consistency_qualified": false,
+    "collection_and_group_split_qualified": false
   },
   "method": "docs/METHOD.md",
-  "as_of": "2026-11-16",
+  "as_of": "2026-11-17",
   "interfaces": "docs/PIPELINE_CONTRACTS.md",
-  "reproduce": "docs/REPRODUCE.md"
+  "reproduce": "docs/REPRODUCE.md",
+  "generation_revision": "causal_v4_original_EB_programmes_new_B_frozen_A",
+  "history": {
+    "pre_V4_scene_batch": {
+      "pair_index_sha256": "d7559b71746f3a44208259306ff343f41a35042c0a21439b6a40d1de7a9cd0cf",
+      "legacy_root_cells_selected": 969,
+      "legacy_root_cells_total": 969,
+      "country_goals_met": 964,
+      "physical_or_coverage_admission_inherited_by_V4": false
+    }
+  }
 }

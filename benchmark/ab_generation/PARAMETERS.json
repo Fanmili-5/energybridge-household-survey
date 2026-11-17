@@ -9491,7 +9491,7 @@
     },
     {
       "path": "examples/EB_REFERENCE_RULES.json",
-      "sha256": "4e31874fa2d7d951903b9b682a25ba69bc7b22c18dc280e40acc906441ba0a9d",
+      "sha256": "652aab85edfc0d1799a8a8f9913e24e26f55232edeca4cabac95ebc9cb8be13c",
       "quantitative_fields": [
         {
           "path_pattern": "/EV_reserve_SOC",
@@ -9499,8 +9499,8 @@
           "values": [
             0.15
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
           "exact_value_from_paper": false
         },
         {
@@ -9509,8 +9509,8 @@
           "values": [
             600
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
           "exact_value_from_paper": false
         },
         {
@@ -9519,8 +9519,8 @@
           "values": [
             true
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
           "exact_value_from_paper": false
         },
         {
@@ -9529,8 +9529,8 @@
           "values": [
             20.0
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
           "exact_value_from_paper": false
         },
         {
@@ -9539,8 +9539,8 @@
           "values": [
             720
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Inactive compatibility parameters retained for older manual-operation route",
+          "purpose_and_boundary": "Not used by the original-native task-first A/B route;no manual loading,retrieval or maximum wet-wait admission inferred",
           "exact_value_from_paper": false
         },
         {
@@ -9549,8 +9549,8 @@
           "values": [
             1440
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Inactive compatibility parameters retained for older manual-operation route",
+          "purpose_and_boundary": "Not used by the original-native task-first A/B route;no manual loading,retrieval or maximum wet-wait admission inferred",
           "exact_value_from_paper": false
         },
         {
@@ -9559,8 +9559,8 @@
           "values": [
             720
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Inactive compatibility parameters retained for older manual-operation route",
+          "purpose_and_boundary": "Not used by the original-native task-first A/B route;no manual loading,retrieval or maximum wet-wait admission inferred",
           "exact_value_from_paper": false
         },
         {
@@ -9569,8 +9569,8 @@
           "values": [
             720
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Inactive compatibility parameters retained for older manual-operation route",
+          "purpose_and_boundary": "Not used by the original-native task-first A/B route;no manual loading,retrieval or maximum wet-wait admission inferred",
           "exact_value_from_paper": false
         },
         {
@@ -9579,8 +9579,108 @@
           "values": [
             40.5555555555556
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/ordinary_A/day_off_morning_target_min",
+          "occurrences": 1,
+          "values": [
+            600
+          ],
+          "origin": "Explicit ordinary-A benchmark construction rule;role start anchors from pinned EB profiles,22h andday-off choices are experimental",
+          "purpose_and_boundary": "A-only soft timing objective;not a B legality rule or measured bedtime/routine distribution",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/ordinary_A/home_presence_is_soft_timing_context_not_operator_action",
+          "occurrences": 1,
+          "values": [
+            true
+          ],
+          "origin": "Explicit ordinary-A benchmark construction rule;role start anchors from pinned EB profiles,22h andday-off choices are experimental",
+          "purpose_and_boundary": "A-only soft timing objective;not a B legality rule or measured bedtime/routine distribution",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/ordinary_A/soft_completion_preferred_min",
+          "occurrences": 1,
+          "values": [
+            1320
+          ],
+          "origin": "Explicit ordinary-A benchmark construction rule;role start anchors from pinned EB profiles,22h andday-off choices are experimental",
+          "purpose_and_boundary": "A-only soft timing objective;not a B legality rule or measured bedtime/routine distribution",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/ordinary_A/task_origin_determines_DW_anchor",
+          "occurrences": 1,
+          "values": [
+            true
+          ],
+          "origin": "Explicit ordinary-A benchmark construction rule;role start anchors from pinned EB profiles,22h andday-off choices are experimental",
+          "purpose_and_boundary": "A-only soft timing objective;not a B legality rule or measured bedtime/routine distribution",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/ordinary_A/washer_preferred_h_by_EB_role/a",
+          "occurrences": 1,
+          "values": [
+            19.0
+          ],
+          "origin": "Explicit ordinary-A benchmark construction rule;role start anchors from pinned EB profiles,22h andday-off choices are experimental",
+          "purpose_and_boundary": "A-only soft timing objective;not a B legality rule or measured bedtime/routine distribution",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/ordinary_A/washer_preferred_h_by_EB_role/b",
+          "occurrences": 1,
+          "values": [
+            10.0
+          ],
+          "origin": "Explicit ordinary-A benchmark construction rule;role start anchors from pinned EB profiles,22h andday-off choices are experimental",
+          "purpose_and_boundary": "A-only soft timing objective;not a B legality rule or measured bedtime/routine distribution",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/ordinary_A/washer_preferred_h_by_EB_role/c",
+          "occurrences": 1,
+          "values": [
+            19.0
+          ],
+          "origin": "Explicit ordinary-A benchmark construction rule;role start anchors from pinned EB profiles,22h andday-off choices are experimental",
+          "purpose_and_boundary": "A-only soft timing objective;not a B legality rule or measured bedtime/routine distribution",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/ordinary_A/washer_preferred_h_by_EB_role/d",
+          "occurrences": 1,
+          "values": [
+            13.0
+          ],
+          "origin": "Explicit ordinary-A benchmark construction rule;role start anchors from pinned EB profiles,22h andday-off choices are experimental",
+          "purpose_and_boundary": "A-only soft timing objective;not a B legality rule or measured bedtime/routine distribution",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/ordinary_A/washer_preferred_h_by_EB_role/e",
+          "occurrences": 1,
+          "values": [
+            10.0
+          ],
+          "origin": "Explicit ordinary-A benchmark construction rule;role start anchors from pinned EB profiles,22h andday-off choices are experimental",
+          "purpose_and_boundary": "A-only soft timing objective;not a B legality rule or measured bedtime/routine distribution",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/ordinary_A/washer_preferred_h_by_EB_role/f",
+          "occurrences": 1,
+          "values": [
+            20.0
+          ],
+          "origin": "Explicit ordinary-A benchmark construction rule;role start anchors from pinned EB profiles,22h andday-off choices are experimental",
+          "purpose_and_boundary": "A-only soft timing objective;not a B legality rule or measured bedtime/routine distribution",
           "exact_value_from_paper": false
         },
         {
@@ -9589,68 +9689,108 @@
           "values": [
             false
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/programme_parameter_origin/old_HPXML_programmes_retired",
+          "occurrences": 1,
+          "values": [
+            true
+          ],
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/programme_parameter_origin/source_profiles_are_not_EB_fixed_duration_rules",
+          "occurrences": 1,
+          "values": [
+            true
+          ],
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/programme_parameter_origin/verified_live_GitHub",
+          "occurrences": 1,
+          "values": [
+            true
+          ],
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
+          "exact_value_from_paper": false
+        },
+        {
+          "path_pattern": "/programme_parameter_origin/washer_duration_also_in_all_six_basic_roles",
+          "occurrences": 1,
+          "values": [
+            true
+          ],
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
           "exact_value_from_paper": false
         },
         {
           "path_pattern": "/programs/dishwasher/duration_min",
           "occurrences": 1,
           "values": [
-            240
+            90
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Pinned original EB all_appliances_full.json at c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0;programme duration and constant-power reference configuration",
+          "purpose_and_boundary": "Selected EB persona reference parameter;not the only legal EB interface value and not an observed household appliance measurement",
           "exact_value_from_paper": false
         },
         {
           "path_pattern": "/programs/dishwasher/nominal_peak_kw",
           "occurrences": 1,
           "values": [
-            0.4128531584521265
+            1.2
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Pinned original EB all_appliances_full.json at c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0;programme duration and constant-power reference configuration",
+          "purpose_and_boundary": "Selected EB persona reference parameter;not the only legal EB interface value and not an observed household appliance measurement",
           "exact_value_from_paper": false
         },
         {
           "path_pattern": "/programs/dryer/duration_min",
           "occurrences": 1,
           "values": [
-            60
+            90
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Pinned original EB all_appliances_full.json at c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0;programme duration and constant-power reference configuration",
+          "purpose_and_boundary": "Selected EB persona reference parameter;not the only legal EB interface value and not an observed household appliance measurement",
           "exact_value_from_paper": false
         },
         {
           "path_pattern": "/programs/dryer/nominal_peak_kw",
           "occurrences": 1,
           "values": [
-            1.2222753880483284
+            2.5
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Pinned original EB all_appliances_full.json at c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0;programme duration and constant-power reference configuration",
+          "purpose_and_boundary": "Selected EB persona reference parameter;not the only legal EB interface value and not an observed household appliance measurement",
           "exact_value_from_paper": false
         },
         {
           "path_pattern": "/programs/washer/duration_min",
           "occurrences": 1,
           "values": [
-            240
+            120
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Pinned original EB all_appliances_full.json at c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0;programme duration and constant-power reference configuration",
+          "purpose_and_boundary": "Selected EB persona reference parameter;not the only legal EB interface value and not an observed household appliance measurement",
           "exact_value_from_paper": false
         },
         {
           "path_pattern": "/programs/washer/nominal_peak_kw",
           "occurrences": 1,
           "values": [
-            0.36963719963106173
+            1.5
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Pinned original EB all_appliances_full.json at c58a2a7a3189482f57b93ddd0637f2c58ce5b5d0;programme duration and constant-power reference configuration",
+          "purpose_and_boundary": "Selected EB persona reference parameter;not the only legal EB interface value and not an observed household appliance measurement",
           "exact_value_from_paper": false
         },
         {
@@ -9659,8 +9799,8 @@
           "values": [
             8
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
           "exact_value_from_paper": false
         },
         {
@@ -9669,8 +9809,8 @@
           "values": [
             7.6
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
           "exact_value_from_paper": false
         },
         {
@@ -9679,8 +9819,8 @@
           "values": [
             65.0
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
           "exact_value_from_paper": false
         },
         {
@@ -9689,8 +9829,8 @@
           "values": [
             55.0
           ],
-          "origin": "Frozen reference prototype and explicit benchmark settings;see reference_sources inside this file",
-          "purpose_and_boundary": "Reference equipment/service inputs for the generation repair;not observed household use or universal real-machine cycle duration;new hardware requires source validation",
+          "origin": "Frozen reference equipment/service or source-provenance metadata;see reference_sources and programme_parameter_origin",
+          "purpose_and_boundary": "Reference input,not observed per-household behaviour;thermal response and human acceptability remain unmeasured",
           "exact_value_from_paper": false
         }
       ]

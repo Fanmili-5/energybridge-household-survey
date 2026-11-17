@@ -59,7 +59,13 @@ def zipped(path,value):
         json.dump(value,stream,ensure_ascii=False,separators=(',',':'))
 
 def generate(case,dates,reference,manifest_sha256,out,native_source,configuration=None):
+    from .task_commitment import committed_tasks
     out=Path(out);out.mkdir(parents=True,exist_ok=False)
+    with committed_tasks([case],dates,reference,out/'TASK_INPUTS',manifest_sha256):
+        return _generate_committed(case,dates,reference,manifest_sha256,out,native_source,configuration)
+
+def _generate_committed(case,dates,reference,manifest_sha256,out,native_source,configuration=None):
+    out=Path(out)
     cfg=deepcopy(configuration) if configuration is not None else entry_config(Path(__file__).with_name('GENERATION_REPAIR_CONFIG.json'))
     frozen=implementation();portrait=digest(case)
     save(out/'PRE_RUN.json',dict(schema='eb.native_daily_plan_pre_run.v2',household_sha256=portrait,
@@ -67,18 +73,27 @@ def generate(case,dates,reference,manifest_sha256,out,native_source,configuratio
         dates=dates,configuration=cfg,implementation=frozen,scope='plans_and_original_native_execution_only',
         physical_outcomes_computed=False,human_answers_generated=False))
     contexts={};candidates=[];catalogues=[]
+    import os
+    from .task_context import frozen_tasks,audit_tasks
+    if not os.environ.get('EB_FROZEN_TASK_ROOT'):raise ValueError('PRODUCTION_REQUIRES_PRECOMMITTED_TASKS')
     for date in dates:
-        baseline=generate_day_baseline(case,date,reference,cfg,manifest_sha256,native_appliance_source_path=native_source)
+        task=frozen_tasks(case,date,reference)
+        daycfg=deepcopy(cfg)
+        baseline=generate_day_baseline(case,date,reference,daycfg,manifest_sha256,native_appliance_source_path=native_source)
         if baseline['status']!='accepted_plan_only':raise DailyBaselineError(date,baseline)
         contexts[date]=baseline
         zipped(out/(date+'_A.json.gz'),baseline)
-        catalogue=generate_household_day(baseline['context'],case,manifest_sha256,cfg,native_appliance_source_path=native_source)
+        catalogue=generate_household_day(baseline['context'],case,manifest_sha256,daycfg,native_appliance_source_path=native_source)
         if catalogue['status']!='candidate_catalogue' or not catalogue['rows']:raise ValueError('NO_B_CANDIDATES:'+date)
         record_raw_cells(catalogue)
         candidates.extend(catalogue['rows'])
         # Literal domains regenerate from the frozen input/code/seed. Preserve
         # every materialized witness and the actual denominator, not just hits.
-        catalogues.append({k:v for k,v in catalogue.items() if k not in {'native_domains','native_templates','support_native_domain'}})
+        compact={k:v for k,v in catalogue.items() if k not in {'native_domains','native_templates','support_native_domain','engineering_diagnostics','relevance_diagnostics'}}
+        from collections import Counter
+        compact['diagnostic_counts']={name:dict(Counter(str(issue) for row in catalogue.get(name,[]) for issue in row.get('issues',[]))) for name in ['engineering_diagnostics','relevance_diagnostics']}
+        compact['diagnostic_full_requests_regenerable_from_frozen_inputs']=True
+        catalogues.append(compact)
     zipped(out/'CATALOGUES.json.gz',catalogues)
     selected=select_block(candidates,cfg);zipped(out/'SELECTION.json.gz',selected)
     chosen=[r for r in candidates if r['id'] in set(selected['selected_ids'])]
@@ -88,6 +103,9 @@ def generate(case,dates,reference,manifest_sha256,out,native_source,configuratio
         e=contexts[date];context=e['context'];row=next(r for r in chosen if r['date']==date)
         b=apply(context['A'],row['patches']);native=audit(context,b,row['components'],side='B')
         if not native['passed']:raise ValueError('SELECTED_B_NATIVE_ERROR:'+date)
+        for arm,plan in [('A',context['A']),('B',b)]:
+            issues=audit_tasks(e['problem']['task_context'],plan)
+            if issues:raise ValueError(arm+':CAUSAL_TASK_ERROR:'+','.join(issues))
         traces={side:replay(e['problem'],context,plan,native_source) for side,plan in [('A',context['A']),('B',b)]}
         pair=dict(schema='eb.paper_v1.native_verified_pair.v2',date=date,
             source_household_sha256=portrait,source_manifest_sha256=manifest_sha256,
@@ -95,6 +113,12 @@ def generate(case,dates,reference,manifest_sha256,out,native_source,configuratio
             selected_proposal=row,daily_service_contract=context['daily_service_requirements'],
             native_B_acceptance=native,paper_v1_execution=traces,
             physical_outcomes=None,human_answers=None,formal_questionnaire_release=False)
+        task_sha=e['problem']['task_context']['sha256'];context_sha=digest(context)
+        event=deepcopy(context['events'][0])
+        scenario_sha=digest(dict(case_id=case['case_id'],date=date,event=event,context_sha256=context_sha,task_context_sha256=task_sha))
+        pair.update(task_context_sha256=task_sha,context_sha256=context_sha,event=event,scenario_sha256=scenario_sha,
+                    pair_id=digest(dict(scenario_sha256=scenario_sha,A_sha256=pair['A_sha256'],B_sha256=pair['B_sha256'])),
+                    context_relative_path=str(Path(out.name)/(date+'_A.json.gz')))
         name=date+'_PAIR.json.gz';zipped(out/name,pair)
         pairs.append(dict(date=date,path=name,A_sha256=pair['A_sha256'],B_sha256=pair['B_sha256']))
     if digest(case)!=portrait or implementation()!=frozen:raise ValueError('SOURCE_OR_IMPLEMENTATION_CHANGED_DURING_GENERATION')

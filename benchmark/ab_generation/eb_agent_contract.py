@@ -151,7 +151,7 @@ def plan_errors(context,plan):
             errors.append("PAPER_V1_CHECKPOINT_CLOCK_CANNOT_REPRODUCE_LITERAL_PLAN")
     return sorted(set(errors))
 
-def complete_appliance_payload(plan):
+def complete_appliance_payload(plan, *, inherit_ev_normal=False):
     """An accepted whole-plan payload; future-day EV is applied by dated queue."""
     actions={}
     for row in plan["tasks"]:
@@ -162,6 +162,8 @@ def complete_appliance_payload(plan):
         row=rows[0]
         actions.update(water_heater_preheat=True,water_heater_preheat_start_h=row["start_min"]/60,water_heater_preheat_end_h=row["end_min"]/60,water_heater_preheat_temp_c=row["value_C"])
     ev=next((r for r in plan["controls"] if r["kind"]=="ev_charge_window"),None)
-    if ev:
+    if ev and inherit_ev_normal:
+        actions['ev_mode']='normal'
+    elif ev:
         actions.update(ev_charge_start_h=(ev["start_min"]%1440)/60,ev_charge_end_h=24.0 if ev["end_min"]%1440==0 else (ev["end_min"]%1440)/60)
     return actions

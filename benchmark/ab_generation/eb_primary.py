@@ -119,6 +119,8 @@ def build_problem(case,date,reference):
             source_facts_modified=False,requested_days=1,technical_EV_tail_days=1,
             A_method='original_EB_no_DR_allowed_window_sampling_on_declared10min_command_grid',
             manual_handling_fields_consulted=False,programme_completion='same_calendar_date;EV_only_may_overnight'))
+    from .task_context import bind
+    bind(problem,case,reference)
     from .household_routine_A import bind_routine
     return bind_routine(problem,h,reference)
 
